@@ -7,9 +7,6 @@
             "pattern": "\\.\\./media/"
         },
         {
-            "pattern": "^/media/"
-        },
-        {
             "comment": "anchors to current file are ignored",
             "pattern": "^#.+$"
         }
@@ -19,6 +16,11 @@
             "comment": "remove anchor part",
             "pattern": "#.+$",
             "replacement": ""
+        },
+        {
+            "comment": "prefix with repo root",
+            "pattern": "^/media",
+            "replacement": "<ROOT>/media"
         }
     ]
 }

@@ -2,14 +2,6 @@
 #
 # This script is used to verify links in markdown docs.
 #
-# - External links are ignored in CI because these links may go down out of our contorl.
-# - Anchors are ignored
-# - Internal links conventions
-#   - Must be absolute and start from repo root
-#   - Only files in current directory and /media are allowed
-# - When a file was moved, all other references are required to be updated for now, even if alias are given
-#   - This is recommended because of less redirects and better anchors support.
-#
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
@@ -39,7 +31,7 @@ function in_array() {
 for d in zh en; do
     echo "info: checking links under $ROOT/$d directory..."
     sed \
-        -e "s#<ROOT>#$ROOT/$d#g" \
+        -e "s#<ROOT>#$ROOT#g" \
         $ROOT/hack/markdown-link-check.tpl > $CONFIG_TMP
     if [ -n "$VERBOSE" ]; then
         cat $CONFIG_TMP
