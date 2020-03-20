@@ -21,14 +21,10 @@ TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上的 TiDB 集群开启
 
 开启此功能的步骤为：
 
-- 为即将创建的 TiDB 集群生成两套证书：为 TiDB Server 创建一套 Server
-  端证书，为 MySQL Client 创建一套 Client
-  端证书。有多种生成证书的方式：用户自己提供证书，使用 K8s
-  内置证书颁发系统或者使用 `cert-manager` 颁发证书；
-- 创建两个 K8s Secret 对象，这两个 Secret 对象分别包含上述创建的 Server
-  端证书和客户端证书，这两个 Secret 的名字为
-  `<cluster-name>-tidb-server-secret` 和
-  `<cluster-name>-tidb-client-secret`； 
+- 为即将创建的 TiDB 集群生成两套证书：为 TiDB Server 创建一套 Server 端证书，为 MySQL Client 创建一套 Client 端证书。有多种生成证书的方式：
+    - 用户自己提供证书，并使用 Kubernetes 内置证书颁发系统
+    - 使用 `cert-manager` 颁发证书
+- 创建两个 K8s Secret 对象，这两个 Secret 对象分别包含上述创建的 Server 端证书和客户端证书，这两个 Secret 的名字为 `<cluster-name>-tidb-server-secret` 和  `<cluster-name>-tidb-client-secret`； 
 - 在创建集群的时候开启此功能。
 
 ## 为 TiDB 集群生成两套证书
