@@ -98,7 +98,7 @@ category: how-to
 
 5. 生成 Server 端证书
 
-    首先生成默认的 `server.json` 文件
+    首先生成默认的 `server.json` 文件：
     
     {{< copyable "shell-regular" >}}
     
@@ -136,7 +136,7 @@ category: how-to
 
 6. 生成 Client 端证书
 
-    首先生成默认的 `client.json` 文件
+    首先生成默认的 `client.json` 文件：
     
     {{< copyable "shell-regular" >}}
     
