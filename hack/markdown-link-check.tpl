@@ -1,0 +1,24 @@
+{
+    "ignorePatterns": [
+        {
+            "pattern": "^(http|https|ftp|mailto):"
+        },
+        {
+            "pattern": "\\.\\./media/"
+        },
+        {
+            "pattern": "^/media/"
+        },
+        {
+            "comment": "anchors to current file are ignored",
+            "pattern": "^#.+$"
+        }
+    ],
+    "replacementPatterns": [
+        {
+            "comment": "remove anchor part",
+            "pattern": "#.+$",
+            "replacement": ""
+        }
+    ]
+}
