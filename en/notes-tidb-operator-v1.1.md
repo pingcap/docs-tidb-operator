@@ -1,12 +1,12 @@
 ---
-title: TiDB Operator v1.1 Notice
-summary:
+title: TiDB Operator v1.1 Notes
+summary: Important notes for TiDB Operator v1.1.
 category: how-to
 ---
 
-# TiDB Operator v1.1 Notice
+# TiDB Operator v1.1 Notes
 
-This document introduces important notice for TiDB Operator v1.1.
+This document introduces important notes for TiDB Operator v1.1.
 
 ## PingCAP no longer updates or maintains tidb-cluster chart
 
