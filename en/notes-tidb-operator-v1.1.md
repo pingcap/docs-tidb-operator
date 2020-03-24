@@ -40,11 +40,11 @@ The Discovery service is generated in TiDB Operator. No configuration from the u
 
 In tidb-cluster chart, the configurations of PD, TiDB, and TiKV are rendered into ConfigMap by Helm.
 
-Since TiDB Operator v1.1, these configurations can also be completed in TidbCluster Custom Resouce (CR). For configuration details, refer to [Configure a TiDB Cluster using TidbCluster](configure-cluster-using-tidbcluster.md)
+Since TiDB Operator v1.1, these configurations can also be completed in TidbCluster Custom Resouce (CR). For configuration details, refer to [Configure a TiDB Cluster using TidbCluster](configure-cluster-using-tidbcluster.md).
 
 > **Note:**
 >
-> The rendering configuration of TiDB Operator is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to CR, the corresponding components might be rolling updated.
+> The way TiDB Operator renders configurations is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to CR, the corresponding components might be rolling updated.
 
 ### Monitor
 
@@ -56,9 +56,9 @@ To create TidbMonitor CR and manage the Monitor component, refer to [Monitor a T
 
 ### Initializer
 
-If the initializer job is executed before TiDB Operator is upgraded to v1.1, the initializer job does not need to be migrated from tidb-cluster chart to TidbInitializer CR.
+- If the initialization job is executed before TiDB Operator is upgraded to v1.1, the initialization job does not need to be migrated from tidb-cluster chart to TidbInitializer CR.
 
-If the initializer job is not executed before TiDB Operator is upgraded to v1.1, and the password for the TiDB root user has not been modified, you need to initialize your cluster after upgrading to TiDB Operator v1.1. For details, refer to [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md).
+- If the initialization job is not executed before TiDB Operator is upgraded to v1.1, and the password for the TiDB root user has not been modified, you need to initialize your cluster after upgrading to TiDB Operator v1.1. For details, refer to [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md).
 
 ### Pump
 
@@ -91,8 +91,8 @@ You can modify `version`, `replicas`, `storageClassName`, `requests.storage` and
 
 After TiDB Operator is upgraded to v1.1, you can configure scheduled full backup using BackupSchedule CR:
 
-- If the TiDB cluster version < 3.1,refer to [Scheduled backup using mydumper](backup-to-s3.md#scheduled-full-backup)
-- If the TiDB cluster version >= 3.1, refer to [Scheduled backup using BR](backup-to-aws-s3-using-br.md#scheduled-full-backup)
+- If the TiDB cluster version < 3.1,refer to [Scheduled backup using mydumper](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage)
+- If the TiDB cluster version >= 3.1, refer to [Scheduled backup using BR](backup-to-aws-s3-using-br.md#scheduled-full-backup-to-s3-compatible-storage)
 
 > **Note:**
 >
