@@ -38,6 +38,7 @@
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
+  - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
 + Tools
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)

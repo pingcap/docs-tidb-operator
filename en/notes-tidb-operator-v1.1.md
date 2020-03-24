@@ -1,0 +1,110 @@
+---
+title: TiDB Operator v1.1 Notice
+summary:
+category: how-to
+---
+
+# TiDB Operator v1.1 Notice
+
+This document introduces important notice for TiDB Operator v1.1.
+
+## PingCAP no longer updates or maintains tidb-cluster chart
+
+Since TiDB Operator v1.1.0, PingCAP no longer updates or maintains the tidb-cluster chart. The components and features that were managed by tidb-cluster chart have changed as in the following table:
+
+| Components/Features | v1.1 |
+| :--- | :--- |
+| TiDB Cluster (PD, TiDB, TiKV) | [TidbCluster CR](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) |
+| TiDB Monitor | [TidbMonitor CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/monitor/tidb-monitor.yaml) |
+| TiDB Initializer | [TidbInitializer CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/initializer/tidb-initializer.yaml) |
+| Scheduled Backup | [BackupSchedule CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-schedule-aws-s3-br.yaml) |
+| Pump | [TidbCluster CR](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) |
+| Drainer | [tidb-drainer chart](https://github.com/pingcap/tidb-operator/tree/master/charts/tidb-drainer) |
+| Importer | [tikv-importer chart](https://github.com/pingcap/tidb-operator/tree/master/charts/tikv-importer) |
+
+- The tidb-cluster chart will continue to be released, but no new feature is added, such as the component TLS (now partially supported), auto-scaling of TiKV and TiDB.
+
+- If you deploy your TiDB cluster by TiDB Operator (v1.0.0 <= version < v1.1), after TiDB Operator is upgraded to v1.1, you can still upgrade and manage your TiDB cluster by tidb-cluster chart v1.1.
+
+## The components and features managed by tidb-cluster chart are switched to services fully supported by TiDB Operator v1.1
+
+In TiDB Operator v1.1, you can still manage your cluster using Helm and the tidb-cluster chart. Since new features are not added to tidb-cluster chart, you can contribute new features for tidb-cluster chart by yourself, or switch to services that are full supported by TiDB Operator v1.1.
+
+This section describes how to switch your components and features to services in TiBD Operator v1.1.
+
+### Discovery
+
+The Discovery service is generated in TiDB Operator. No configuration from the user is needed.
+
+### PD/TiDB/TiKV
+
+In tidb-cluster chart, the configurations of PD, TiDB, and TiKV are rendered into ConfigMap by Helm.
+
+Since TiDB Operator v1.1, these configurations can also be completed in TidbCluster Custom Resouce (CR). For configuration details, refer to [Configure a TiDB Cluster using TidbCluster](configure-cluster-using-tidbcluster.md)
+
+> **Note:**
+>
+> The rendering configuration of TiDB Operator is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to CR, the corresponding components might be rolling updated.
+
+### Monitor
+
+To create TidbMonitor CR and manage the Monitor component, refer to [Monitor a TiDB Cluster using TidbMonitor](monitor-using-tidbmonitor.md).
+
+> **Note:**
+>
+> The way TiDB Operator renders resources is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to TidbMonitor CR, the Monitor component might be rolling updated.
+
+### Initializer
+
+If the initializer job is executed before TiDB Operator is upgraded to v1.1, the initializer job does not need to be migrated from tidb-cluster chart to TidbInitializer CR.
+
+If the initializer job is not executed before TiDB Operator is upgraded to v1.1, and the password for the TiDB root user has not been modified, you need to initialize your cluster after upgrading to TiDB Operator v1.1. For details, refer to [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md).
+
+### Pump
+
+After TiDB Operator is upgraded to v1.1, you can modify the TidbCluster CR and add the configuration of Pump. You can then manage the Pump component using TidbCluster CR.
+
+``` yaml
+spec
+  ...
+  pump:
+    baseImage: pingcap/tidb-binlog
+    version: v3.0.11
+    replicas: 1
+    storageClassName: local-storage
+    requests:
+      storage: 30Gi
+    schedulerName: default-scheduler
+    config:
+      addr: 0.0.0.0:8250
+      gc: 7
+      heartbeat-interval: 2
+```
+
+You can modify `version`, `replicas`, `storageClassName`, `requests.storage` and other configurations according to the needs of your cluster.
+
+> **Note:**
+>
+> The way TiDB Operator renders resources is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to TidbCluster CR, the Pump component might be rolling updated.
+
+### Scheduled Backup
+
+After TiDB Operator is upgraded to v1.1, you can configure scheduled full backup using BackupSchedule CR:
+
+- If the TiDB cluster version < 3.1,refer to [Scheduled backup using mydumper](backup-to-s3.md#scheduled-full-backup)
+- If the TiDB cluster version >= 3.1, refer to [Scheduled backup using BR](backup-to-aws-s3-using-br.md#scheduled-full-backup)
+
+> **Note:**
+>
+> - Currently, with BackupSchedule CR, you can only back up data to S3 and GCS using mydumper, and back up data to S3 using BR. If your scheduled full backup sends data to local Persistent Volume Claim (PVC) before upgrade, it cannot switch to management by CR after upgrade.
+> - If you switch to management by CR, to avoid repeated backup, delete the Cronjob of the former scheduled full backup.
+
+### Drainer
+
+- If Drainer is not deployed before TiDB Operator is upgraded to v1.1, you can deploy Drainer as in [Deploy multiple drainers](maintain-tidb-binlog.md#deploy-multiple-drainers).
+- If Drainer is already deployed before TiDB Operator is upgraded to v1.1, it is recommended to manage Drainer using kubectl.
+
+### TiKV Importer
+
+- If TiKV Importer is not deployed before TiDB Operator is upgraded to v1.1, you can deploy TiKV Importer as in [Deploy TiKV Importer](restore-data-using-tidb-lightning.md#deploy-tikv-importer).
+- If TiKV Importer is already deployed before TiDB Operator is upgraded to v1.1, it is recommended to manage TiKV Importer using kubectl.
