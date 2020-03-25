@@ -38,6 +38,8 @@
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
++ Security
+  - [Enable TLS for MySQL Client](enable-tls-for-mysql-client.md)
 + Tools
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
