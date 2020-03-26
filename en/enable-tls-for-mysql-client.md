@@ -143,7 +143,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
 6. Generate the client-side certificate:
 
-    First, create the default `server.json` file:
+    First, create the default `client.json` file:
 
     {{< copyable "shell-regular" >}}
 
