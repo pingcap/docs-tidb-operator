@@ -18,12 +18,13 @@
   - [TiDB in GCP GKE](deploy-on-gcp-gke.md)
   - [TiDB in Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
   - [Access TiDB in Kubernetes](access-tidb.md)
+  - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
 + Configure
   - [Initialize a Cluster](initialize-a-cluster.md)
   - [Configure a TiDB Cluster](configure-a-tidb-cluster.md)
   - [Configure Backup](configure-backup.md)
   - [Configure Storage Class](configure-storage-class.md)
-  - [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
+  - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
 - [Monitor](monitor-a-tidb-cluster.md)
 + Maintain
   - [Destroy a TiDB cluster](destroy-a-tidb-cluster.md)
@@ -32,7 +33,6 @@
   - [Backup and Restore](backup-and-restore.md)
   - [Restore Data with TiDB Lightning](restore-data-using-tidb-lightning.md)
   - [Collect TiDB Logs](collect-tidb-logs.md)
-  - [Maintain TiDB Binlog](maintain-tidb-binlog.md)
   - [Enable Automatic Failover](use-auto-failover.md)
 - [Scale](scale-a-tidb-cluster.md)
 + Upgrade
