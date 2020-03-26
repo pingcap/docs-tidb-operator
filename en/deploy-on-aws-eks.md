@@ -271,11 +271,11 @@ For example, to scale out the TiDB nodes, you can modify the number of TiDB inst
 default_cluster_tidb_count = 4
 ```
 
-After the scaling, modify the `spec.tidb.replicas` in `TidbCluster` to scale out the Pod.
+After the nodes scale out, modify the `spec.tidb.replicas` in `TidbCluster` to scale out the Pod.
 
 > **Note:**
 >
-> Currently, scaling in is NOT supported because we cannot determine which node to scale.
+> Currently, scaling in is NOT supported because we cannot determine which node to scale in.
 > Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
 
 ## Customize
@@ -321,7 +321,7 @@ module example-cluster {
 >
 > The `cluster_name` of each cluster must be unique.
 
-When you finish modification, execute `terraform init` and `terraform apply` to create the TiDB cluster.
+When you finish the modification, execute `terraform init` and `terraform apply` to create the nodes pool for the TiDB cluster.
 
 Finally, [deploy TiDB cluster and monitor](#deploy-tidb-cluster-and-monitor).
 
