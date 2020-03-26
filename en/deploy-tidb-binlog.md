@@ -198,7 +198,11 @@ You can install the `tidb-drainer` Helm chart to deploy multiple drainers for a 
     ```shell
     helm install pingcap/tidb-drainer --name=<cluster-name> --namespace=<namespace> --version=<chart-version> -f values.yaml
     ```
-    
+
     > **Note:**
     >
     > This chart must be installed to the same namespace as the source TiDB cluster.
+
+## Enable TLS
+
+If you want to enable TLS for the TiDB cluster and TiDB Binlog, refer to [Enable TLS between Components](enable-tls-between-components.md).
