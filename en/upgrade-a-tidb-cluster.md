@@ -19,7 +19,7 @@ If the TiDB cluster is deployed directly using TidbCluster CR, or deployed using
 
 1. Modify the image configurations of all components in TidbCluster CR.
 
-    Note that TidbCluster CR has multiple parameters for image configuration:
+    Note that TidbCluster CR has multiple parameters for the image configuration:
 
     - `spec.version`: the format is `imageTag`, such as `v3.1.0`
 
@@ -33,7 +33,7 @@ If the TiDB cluster is deployed directly using TidbCluster CR, or deployed using
 
     `spec.<pd/tidb/tikv/pump>.baseImage` + `spec.<pd/tidb/tikv/pump>.version` > `spec.<pd/tidb/tikv/pump>.baseImage` + `spec.version` > `spec.<pd/tidb/tikv/pump>.image`
 
-    Usually, all components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`.
+    Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`. Therefore, you can upgrade the TiDB cluster simply by modifying `spec.version`.
 
     {{< copyable "shell-regular" >}}
 
@@ -59,9 +59,9 @@ It is recommended that you set `spec.configUpdateStrategy` to `RollingUpdate` to
 
 1. Set `spec.configUpdateStrategy` to `RollingUpdate`.
 
-2. Refer to [Configure a TiDB Cluster](configure-a-tidb-cluster.md)
+2. Modify the configuration items of the cluster, as described in [Configure a TiDB Cluster](configure-a-tidb-cluster.md)
 
-3. Check the update progress:
+3. View the update progress:
 
     {{< copyable "shell-regular" >}}
 
