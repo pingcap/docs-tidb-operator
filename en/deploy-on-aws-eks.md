@@ -275,7 +275,8 @@ After the scaling, modify the `spec.tidb.replicas` in `TidbCluster` to scale out
 
 > **Note:**
 >
-> Currently, scaling in is NOT supported because we cannot determine which node to scale. Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
+> Currently, scaling in is NOT supported because we cannot determine which node to scale.
+> Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
 
 ## Customize
 
@@ -287,7 +288,7 @@ An Amazon EC2 instance is also created by default as the bastion machine to conn
 
 ### Customize TiDB Operator
 
-Tp customize the TiDB Operator, modify the `operator_values` parameter in `terraform.tfvars` to pass the customized contents of `values.yaml`. For example:
+To customize the TiDB Operator, modify the `operator_values` parameter in `terraform.tfvars` to pass the customized contents of `values.yaml`. For example:
 
 ```hcl
 operator_values = "./operator_values.yaml"
