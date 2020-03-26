@@ -184,7 +184,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
     - The TiDB server loads one Secret object when it starts
     - The MySQL client uses another Secret object when it connects to the TiDB cluster
 
-You can generate multiple sets of client-side certificates. At least one set of client-side certificate is needed for the internal components of TiDB Operator to access the TiDB server. Currently, TidbInitializer access the TiDB server to set password or perform initialization.
+You can generate multiple sets of client-side certificates. At least one set of client-side certificate is needed for the internal components of TiDB Operator to access the TiDB server. Currently, TidbInitializer access the TiDB server to set the password or perform initialization.
 
 ### Using `cert-manager`
 
@@ -360,60 +360,64 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     After the object is created, cert-manager generates a `<cluster-name>-tidb-client-secret` Secret object to be used by the TiDB client.
 
+You can generate multiple sets of client-side certificates. At least one set of client-side certificate is needed for the internal components of TiDB Operator to access the TiDB server. Currently, TidbInitializer access the TiDB server to set the password or perform initialization.
+
 ## Step 2: Deploy the TiDB cluster
 
 In this step, you create a TiDB cluster using two CR object, enable TLS for the MySQL client and initialize the cluster. An `app` database is created for the purpose of demonstration.
 
-Create a `cr.yaml` file with the following content:
+1. Create a `cr.yaml` file with the following content:
 
-``` yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
- name: <cluster-name>
- namespace: <namespace>
-spec:
- version: v3.0.8
- timezone: UTC
- pvReclaimPolicy: Retain
- pd:
-   baseImage: pingcap/pd
-   replicas: 1
-   requests:
-     storage: "1Gi"
-   config: {}
- tikv:
-   baseImage: pingcap/tikv
-   replicas: 1
-   requests:
-     storage: "1Gi"
-   config: {}
- tidb:
-   baseImage: pingcap/tidb
-   replicas: 1
-   service:
-     type: ClusterIP
-   config: {}
-   tlsClient:
-     enabled: true
----
-apiVersion: pingcap.com/v1alpha1
-kind: TidbInitializer
-metadata:
- name: <cluster-name>-init
- namespace: <namespace>
-spec:
- image: tnir/mysqlclient
- cluster:
-   namespace: <namespace>
-   name: <cluster-name>
- initSql: |-
-   create database app;
-```
+    ``` yaml
+    apiVersion: pingcap.com/v1alpha1
+    kind: TidbCluster
+    metadata:
+    name: <cluster-name>
+    namespace: <namespace>
+    spec:
+    version: v3.0.8
+    timezone: UTC
+    pvReclaimPolicy: Retain
+    pd:
+      baseImage: pingcap/pd
+      replicas: 1
+      requests:
+        storage: "1Gi"
+      config: {}
+    tikv:
+      baseImage: pingcap/tikv
+      replicas: 1
+      requests:
+        storage: "1Gi"
+      config: {}
+    tidb:
+      baseImage: pingcap/tidb
+      replicas: 1
+      service:
+        type: ClusterIP
+      config: {}
+      tlsClient:
+        enabled: true
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: TidbInitializer
+    metadata:
+    name: <cluster-name>-init
+    namespace: <namespace>
+    spec:
+    image: tnir/mysqlclient
+    cluster:
+      namespace: <namespace>
+      name: <cluster-name>
+    initSql: |-
+      create database app;
+    ```
 
-In the above file, `<cluster-name>` is the name of the cluster, and `<namespace>` is the namespace in which the TiDB cluster is deployed. To enable TLS for the MySQL client, set `spec.tidb.tlsClient.enabled` to `true`.
+    In the above file, `<cluster-name>` is the name of the cluster, and `<namespace>` is the namespace in which the TiDB cluster is deployed.
 
-Execute `kubectl apply -f cr.yaml` to create the TiDB cluster.
+2. To enable TLS for the MySQL client, set `spec.tidb.tlsClient.enabled` to `true`.
+
+3. Execute `kubectl apply -f cr.yaml` to create the TiDB cluster.
 
 ## Step 3: Configure the MySQL client to use encrypted connection
 
