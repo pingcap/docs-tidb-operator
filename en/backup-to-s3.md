@@ -16,31 +16,13 @@ Ad-hoc full backup describes the backup by creating a `Backup` custom resource (
 
 For the current S3-compatible storage types, Ceph and Amazon S3 work normally as tested. Therefore, this document shows examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to Ceph and Amazon S3 respectively.
 
+### Three methods to grant permissions of AWS account
+
+If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-permissions-of-aws-account). If Ceph is used as backend storage in backup and restore test, the permission is granted through AccessKey and SecretKey.
+
 ### Prerequisites for ad-hoc backup
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f backup-rbac.yaml -n test1
-    ```
-
-2. Create the `s3-secret` secret which stores the credential used to access the S3-compatible storage:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-literal=secret_key=yyy --namespace=test1
-    ```
-
-3. Create the `backup-demo1-tidb-secret` secret which stores the root account and password needed to access the TiDB cluster:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
-    ```
+Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequisites-for-ad-hoc-full-backup).
 
 ### Ad-hoc backup process
 
