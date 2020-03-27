@@ -22,7 +22,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 
 ## Restoration process
 
-+ Create the `Restore` CR, and restore the cluster data by importing AccessKey and SecretKey to grant permissions:
++ Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 
     {{< copyable "shell-regular" >}}
 
@@ -55,7 +55,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
       storageSize: 1Gi
     ```
 
-+ Create the `Restore` CR, and restore the cluster data by importing AccessKey and SecretKey to grant permissions:
++ Create the `Restore` CR, and restore the cluster data from Amazon S3 by importing AccessKey and SecretKey to grant permissions:
 
     {{< copyable "shell-regular" >}}
 
@@ -73,15 +73,16 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
       name: demo2-restore
       namespace: test2
     spec:
+      backupType: full
       to:
         host: <tidb-host-ip>
         port: <tidb-port>
         user: <tidb-user>
         secretName: restore-demo2-tidb-secret
       s3:
-        provider: ceph
-        endpoint: http://10.233.2.161
-        secretName: ceph-secret
+        provider: aws
+        region: us-west-1
+        secretName: s3-secret
         path: s3://<path-to-backup>
       storageClassName: local-storage
       storageSize: 1Gi
