@@ -1,51 +1,51 @@
 ---
-title: Back up TiDB Cluster Data to AWS Using BR
-summary:
+title: Back up TiDB Cluster Data to AWS S3 using BR
+summary: Learn how to back up data to AWS S3 using BR.
 category: how-to
 ---
 
-# Back up TiDB Cluster Data to AWS Using BR
+# Back up TiDB Cluster Data to AWS S3 using BR
 
 This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [`BR`](https://pingcap.com/docs/v3.1/reference/tools/br/br) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
-## Three methods to get AWS account authorization
+## Three methods to grant AWS account permissions
 
-In the AWS cloud environment, different types of Kubernetes clusters provide different methods to get AWS account authorization. This document describes the following three methods:
+In the AWS cloud environment, different types of Kubernetes clusters provide different methods to grant AWS account permissions. This document describes the following three methods:
 
 1. Import the AccessKey and SecretKey of the AWS account:
 
-    - The AWS client supports reading `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the process environment variables to get privileges of the associated user or role.
+    - The AWS client supports reading `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the process environment variables to get the permissions of the associated user or role.
 
-2. Bind [IAM](https://aws.amazon.com/cn/iam/) with Pod:
+2. Bind [IAM](https://aws.amazon.com/cn/iam/) with the Pod:
 
-    - By binding the IAM role of the user with the running Pod resources, the process that runs in Pod gets the privileges owned by the role. 
+    - By binding the IAM role of the user with the running Pod resources, the process that runs in Pod gets the permissions owned by the role.
     - This authorization method is provided by [`kube2iam`](https://github.com/jtblin/kube2iam).
 
     > **Note:**
     >
-    > - When you use this method, refer to [`kube2iam` Usage] for instructions on how to create the `kube2iam` environment in the Kubernetes cluster and deploy TiDB Operator and TiDB cluster.
+    > - When you use this method, refer to [`kube2iam` Usage] for instructions on how to create the `kube2iam` environment in the Kubernetes cluster and deploy TiDB Operator and the TiDB cluster.
     > - This method does not apply to [`hostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy). Please make sure that the `spec.tikv.hostNetwork` parameter is set to `false`.
 
 3. Bind [IAM](https://aws.amazon.com/cn/iam/) with ServiceAccount:
 
-    - By binding the IAM role of the user with the [`serviceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) resources in Kubernetes, the Pods of this ServiceAccount get the privileges owned by the role.
+    - By binding the IAM role of the user with the [`serviceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) resources in Kubernetes, the Pods of this ServiceAccount get the permissions owned by the role.
     - This method is provided by [`EKS Pod Identity Webhook`](https://github.com/aws/amazon-eks-pod-identity-webhook).
 
-> **Note:**
->
-> When you use this method, refer to [AWS Documentation] for instructions on how to create a EKS cluster and deploy TiDB Operator and TiDB cluster.
+    > **Note:**
+    >
+    > When you use this method, refer to [AWS Documentation] for instructions on how to create a EKS cluster and deploy TiDB Operator and the TiDB cluster.
 
 ## Ad-hoc full backup
 
 Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-Currently, the above three authorization methods are supported in ad-hoc full backup. Therefore, this document shows examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage.
+Currently, the above three authorization methods are supported in ad-hoc full backup. Therefore, this document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage.
 
-### Prerequisites for ad-hoc backup
+### Prerequisites for ad-hoc full backup
 
-#### Get authorization by AccessKey and SecretKey
+#### Grant permissions by AccessKey and SecretKey
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -71,7 +71,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
-#### Get authorization by binding IAM with Pod
+#### Grant permissions by binding IAM with Pod
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -92,17 +92,17 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
 3. Create the IAM role:
 
     - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
-    - Give the IAM role you created the permission it needs. Because `Backup` needs to access AWS S3 storage, IAM is given the `AmazonS3FullAccess` permission.
+    - Give the IAM role you created the required permission. Because `Backup` needs to access AWS S3 storage, IAM is given the `AmazonS3FullAccess` permission.
 
 4. Bind IAM to TiKV Pod:
 
     - In the process of backup using BR, both TiKV Pod and BR Pod need to read and write S3 storage. Therefore, you need to add annotation to TiKV Pod to bind it with the IAM role:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl edit tc demo1 -n test1
-    ```
+        ```shell
+        kubectl edit tc demo1 -n test1
+        ```
 
     - Find `spec.tikv.annotations`, append the `arn:aws:iam::123456789012:role/user` annotation, and then exit. After TiKV Pod is restarted, check whether the annotation is added to TiKV Pod.
 
@@ -110,7 +110,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-#### Get authorization by binding IAM with ServiceAccount
+#### Grant permissions by binding IAM with ServiceAccount
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -132,7 +132,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
 
     - To enable the IAM role on your EKS cluster, refer to [Amazon EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
 
-4. Create a IAM role:
+4. Create the IAM role:
 
     - Create a IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
 
@@ -152,15 +152,15 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
     kubectl edit tc demo1 -n test1
     ```
 
-    Set `spec.tikv.serviceAccount` to tidb-backup-manager. After TiKV Pod is restarted, check whether the `serviceAccountName` of TiKV Pod has changed.
+    Modify `spec.tikv.serviceAccount` to `tidb-backup-manager`. After TiKV Pod is restarted, check whether the `serviceAccountName` of TiKV Pod has changed.
 
     > **Note:**
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-### Back up data to Amazon S3
+### Process of ad-hoc full backup
 
-- Create the `Backup` CR, and back up cluster data by way of accessKey and secretKey authorization:
+- If you grant permissions by accessKey and secretKey, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -203,7 +203,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
         prefix: my-folder
     ```
 
-- Create the `Backup` CR, and back up cluster data by way of binding IAM with Pod:
+- If you grant permissions by binding IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -247,7 +247,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
         prefix: my-folder
     ```
 
-- Create the `Backup` CR, and back up cluster data by way of binding IAM with ServiceAccount:
+- If you grant permissions by binding IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -290,7 +290,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
         prefix: my-folder
     ```
 
-The above three examples uses three methods of authorization to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored.
+The above three examples uses three methods to grant permissions to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored.
 
 Amazon S3 supports the following access-control list (ACL) policies:
 
@@ -314,7 +314,7 @@ Amazon S3 supports the following `storageClass` types:
 
 If `storageClass` is not configured, `STANDARD_IA` is used by default. For the detailed description of these storage types, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html).
 
-After creating the `Backup` CR, you can use the following command to check the backup status:
+After creating the `Backup` CR, use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
 
@@ -342,3 +342,184 @@ More S3-compatible `provider`s are described as follows:
 - `other`：Any other S3 compatible provider
 
 ## Scheduled full backup
+
+You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
+
+### Prerequisites for scheduled full backup
+
+The prerequisites for the scheduled full backup is the same with the [prerequisites for ad-hoc full backup](#prerequisites-for-ad-hoc-full-backup).
+
+### Process of scheduled full backup
+
++ If you grant permissions by accessKey and secretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f backup-scheduler-aws-s3.yaml
+    ```
+
+    The content of `backup-scheduler-aws-s3.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: demo1-backup-schedule-s3
+      namespace: test1
+    spec:
+      #maxBackups: 5
+      #pause: true
+      maxReservedTime: "3h"
+      schedule: "*/2 * * * *"
+      backupTemplate:
+        backupType: full
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          # enableTLSClient: false
+          # logLevel: info
+          # statusAddr: <status-addr>
+          # concurrency: 4
+          # rateLimit: 0
+          # timeAgo: <time>
+          # checksum: true
+          # sendCredToTikv: true
+        from:
+          host: <tidb-host-ip>
+          port: <tidb-port>
+          user: <tidb-user>
+          secretName: backup-demo1-tidb-secret
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder
+    ```
+
++ If you grant permissions by binding IAM with Pod, create the `BackupSchedule` CR, and back up cluster data as described below:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f backup-scheduler-aws-s3.yaml
+    ```
+
+    The content of `backup-scheduler-aws-s3.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: demo1-backup-schedule-s3
+      namespace: test1
+      annotations:
+        iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
+    spec:
+      #maxBackups: 5
+      #pause: true
+      maxReservedTime: "3h"
+      schedule: "*/2 * * * *"
+      backupTemplate:
+        backupType: full
+        br:
+          cluster: demo1
+          sendCredToTikv: false
+          clusterNamespace: test1
+          # enableTLSClient: false
+          # logLevel: info
+          # statusAddr: <status-addr>
+          # concurrency: 4
+          # rateLimit: 0
+          # timeAgo: <time>
+          # checksum: true
+        from:
+          host: <tidb-host-ip>
+          port: <tidb-port>
+          user: <tidb-user>
+          secretName: backup-demo1-tidb-secret
+        s3:
+          provider: aws
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder
+    ```
+
++ If you grant permissions by binding IAM with ServiceAccount, create the `BackupSchedule` CR, and back up cluster data as described below:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f backup-scheduler-aws-s3.yaml
+    ```
+
+    The content of `backup-scheduler-aws-s3.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: demo1-backup-schedule-s3
+      namespace: test1
+    spec:
+      #maxBackups: 5
+      #pause: true
+      maxReservedTime: "3h"
+      schedule: "*/2 * * * *"
+      serviceAccount: tidb-backup-manager
+      backupTemplate:
+        backupType: full
+        br:
+          cluster: demo1
+          sendCredToTikv: false
+          clusterNamespace: test1
+          # enableTLSClient: false
+          # logLevel: info
+          # statusAddr: <status-addr>
+          # concurrency: 4
+          # rateLimit: 0
+          # timeAgo: <time>
+          # checksum: true
+        from:
+          host: <tidb-host-ip>
+          port: <tidb-port>
+          user: <tidb-user>
+          secretName: backup-demo1-tidb-secret
+        s3:
+          provider: aws
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder
+    ```
+
+After creating the scheduled full backup, use the following command to check the backup status:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get bks -n test1 -o wide
+```
+
+You can use the following command to check all the backup items:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
+```
+
+From the above two examples, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
+
+`backupTemple` specifies the configuration related to the S3 storage, which is the same as the configuration of the ad-hoc full backup to S3 (refer to [S3 backup process](#process-of-ad-hoc-full-backup) for details). The following are the unique configuration items of `backupSchedule`:
+
+- `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
+
+- `.spec.maxReservedTime`: A backup retention policy based on time. For example, if you set the value of this configuration to `24h`, only backup items within the recent 24 hours are retained. All backup items out of this time are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set the maximum number of backup items and the longest retention time of backup items at the same time, the latter setting takes effect.
+
+- `.spec.schedule`: The time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
+
+- `.spec.pause`: `false` by default. If this parameter is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time is reached. During this pause, the backup [Garbage Collection](https://pingcap.com/docs/stable/reference/garbage-collection/overview) (GC) runs normally. If you change `true` to `false`, the full backup process is restarted.
