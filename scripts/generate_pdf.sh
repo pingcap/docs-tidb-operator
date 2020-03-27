@@ -16,8 +16,9 @@ _version_tag="$(date '+%Y%m%d')"
 # used to debug template setting error
 lang=(en zh)
 
-for d in "${lang[@]}"
+for l in "${lang[@]}"
 do
+echo 'lang' $l
 pandoc -N --toc --smart --latex-engine=xelatex \
 --template=templates/template.tex \
 --columns=80 \
@@ -29,5 +30,5 @@ pandoc -N --toc --smart --latex-engine=xelatex \
 -V fontsize=12pt \
 -V geometry:margin=1in \
 -V include-after="\\input{templates/copyright.tex}" \
-"$d/doc.md" -s -o "output_$d.pdf"
+"$l/doc.md" -s -o "output_$l.pdf"
 done
