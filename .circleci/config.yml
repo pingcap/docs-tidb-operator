@@ -19,7 +19,7 @@ jobs:
 
       - run:
           name: "Generate PDF"
-          command: cd ..; bash scripts/generate_pdf.sh;
+          command: bash scripts/generate_pdf.sh;
 
       # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
@@ -30,13 +30,6 @@ jobs:
               python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-manual-en-dev.pdf;
               python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-manual-cn-dev.pdf;
             fi
-
-      - run:
-          name: "Copy Generated PDF"
-          command: mkdir /tmp/artifacts && cp output_en.pdf en/doc.md output_zh.pdf zh/doc.md /tmp/artifacts
-
-      - store_artifacts:
-          path: /tmp/artifacts
 
 workflows:
   version: 2
