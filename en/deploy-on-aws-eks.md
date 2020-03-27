@@ -158,7 +158,7 @@ You can use the `terraform output` command to get the output again.
 
     > **Note:**
     >
-    > * Replace all `CLUSTER_NAME` in `dm.yaml` and `db-monitor.yaml` files with `default_cluster_name` configured during EKS deployment.
+    > * Replace all `CLUSTER_NAME` in `db.yaml` and `db-monitor.yaml` files with `default_cluster_name` configured during EKS deployment.
     > * Make sure that during EKS deployment, the number of PD, TiKV or TiDB nodes is consistent with the value of the `replicas` field of the corresponding component in `db.yaml`.
     > * Make sure that `spec.initializer.version` in `db-monitor.yaml` and `spec.version` in `db.yaml` are the same to ensure normal monitor display.
 
@@ -253,7 +253,7 @@ The initial Grafana login credentials are:
 
 To upgrade the TiDB cluster, edit the `spec.version` by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> edit tc <default_cluster_name> -n <namespace>`.
 
-The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
+The upgrading doesn't finish immediately. You can watch the upgrading progress by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
 
 ## Scale
 
@@ -261,8 +261,10 @@ To scale the TiDB cluster, modify the `default_cluster_tikv_count` or `default_c
 
 After the scaling, modify the `replicas` of the corresponding component by the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```
-`kubectl --kubeconfig credentials/kubeconfig_<eks_name> edit tc <default_cluster_name> -n <namespace>`
+kubectl --kubeconfig credentials/kubeconfig_<eks_name> edit tc <default_cluster_name> -n <namespace>
 ```
 
 For example, to scale out the TiDB nodes, you can modify the number of TiDB instances from 2 to 4:
@@ -276,7 +278,7 @@ After the nodes scale out, modify the `spec.tidb.replicas` in `TidbCluster` to s
 > **Note:**
 >
 > Currently, scaling in is NOT supported because we cannot determine which node to scale in.
-> Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
+> Scaling out needs a few minutes to complete, you can watch the scaling out progress by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <namespace> --watch`.
 
 ## Customize
 
@@ -348,8 +350,8 @@ This section describes the best practice to manage multiple Kubernetes clusters,
 
 The Terraform module in our case typically combines several sub-modules:
 
-- A `tidb-operator` module, that creates the EKS cluster and [deploy TiDB Operator](deploy-tidb-operator.md) on the EKS cluster
-- A `tidb-cluster` module, that creates the resource pool required by the TiDB cluster
+- A `tidb-operator` module, which creates the EKS cluster and [deploy TiDB Operator](deploy-tidb-operator.md) on the EKS cluster
+- A `tidb-cluster` module, which creates the resource pool required by the TiDB cluster
 - A `VPC` module, a `bastion` module and a `key-pair` module that are dedicated to TiDB on AWS
 
 The best practice for managing multiple Kubernetes clusters is creating a new directory for each of your Kubernetes clusters, and combine the above modules according to your needs via Terraform scripts, so that the Terraform states among clusters do not interfere with each other, and it is convenient to expand. Here's an example:
