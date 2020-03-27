@@ -2,7 +2,7 @@
 title: 基于 Helm Charts 实现的 TiDB 集群备份恢复
 summary: 介绍如何基于 Helm Charts 实现 TiDB 集群的备份与恢复。
 category: how-to
-aliases: ['/docs-cn/devmaintain/backup-and-store/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-restore/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/backup-and-restore/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/']
 ---
 
 # 基于 Helm Charts 实现的 TiDB 集群备份与恢复
@@ -137,7 +137,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 增量备份使用 [TiDB Binlog](https://pingcap.com/docs-cn/stable/reference/tidb-binlog/overview) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
-有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](maintain-tidb-binlog.md)。
+有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](deploy-tidb-binlog.md)。
 
 ### Pump 缩容
 
