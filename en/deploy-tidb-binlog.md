@@ -21,7 +21,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
 
 1. Modify the TidbCluster CR file to add the Pump configuration.
 
-For example:
+    For example:
 
     ``` yaml
     spec
@@ -48,7 +48,7 @@ For example:
 
     By default, the affinity of TiDB and Pump is set to `{}`. Currently, each TiDB instance does not have a corresponding Pump instance by default. When TiDB Binlog is enabled, if Pump and TiDB are separately deployed and network isolation occurs, and `ignore-error` is enabled in TiDB components, TiDB loses binlogs.
 
-    In this situation, it is recommended to deploy a TiDB instance and a Pump instance on the same node using the affinity feature, and to split Pump instances on different nodes using the anti-affinity feature. For each node, only one Pump instance is required.
+    In this situation, it is recommended to deploy a TiDB instance and a Pump instance on the same node using the affinity feature, and to split Pump instances on different nodes using the anti-affinity feature. For each node, only one Pump instance is required. The steps are as follows:
 
     * Configure `spec.tidb.affinity` as follows:
 
