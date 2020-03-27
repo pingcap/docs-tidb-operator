@@ -141,7 +141,7 @@ tidb-ctl schema in mysql
 1. 参考[官方文档](https://v2.helm.sh/docs/using_helm/#installing-helm)安装 Helm 客户端
 2. 安装 Helm 服务端
 
-    在集群中应用 helm 服务端组件 `tiller` 所需的 `RBAC` 规则并安装 `tiller`：
+    在集群中应用 Helm 服务端组件 `tiller` 所需的 `RBAC` 规则，并安装 `tiller`：
 
     {{< copyable "shell-regular" >}}
 
@@ -174,7 +174,7 @@ tidb-ctl schema in mysql
     helm init --upgrade
     ```
 
-Kubernetes 应用在 helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
+Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
 
 * `tidb-operator`：用于部署 TiDB Operator；
 * `tidb-cluster`：用于部署 TiDB 集群；
