@@ -8,15 +8,15 @@ category: how-to
 
 This document describes how to enable TLS for MySQL client of the TiDB cluster on Kubernetes. Starting from TiDB Operator v1.1, TLS for the MySQL client of the TiDB cluster on Kubernetes is supported.
 
-To enable TLS for the MySQL client, take three steps:
+To enable TLS for the MySQL client, perform the following steps:
 
-1. Issue two sets of certificates: a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret object, `<cluster-name>-tidb-server-secret` and `<cluster-name>-tidb-client-secret`, which include the two sets of certificates respectively.
+1. Issue two sets of certificates: a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `<cluster-name>-tidb-server-secret` and `<cluster-name>-tidb-client-secret`, including the two sets of certificates respectively.
 
 2. Deploy the cluster, and set `.spec.tidb.tlsClient.enabled` to `true`.
 
 3. Configure the MySQL client to use encrypted connection.
 
-There are multiple methods to issue certificates. Two methods are described in this document. Users can choose either of them to issue certificates for the TiDB cluster:
+There are multiple methods to issue certificates. Two methods are described in this document. You can choose either of them to issue certificates for the TiDB cluster:
 
 - Issue certificates using the `cfssl` system
 - Issue certificates using the `cert-manager` system
@@ -31,7 +31,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     mkdir -p ~/bin
     curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
     curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
@@ -46,7 +46,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
 2. Configure the client auth (CA) option in `ca-config.json`:
 
-    ``` json
+    ```json
     {
         "signing": {
             "default": {
@@ -76,7 +76,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
 3. Change the certificate signing request (CSR) of `ca-csr.json`:
 
-     ``` json
+    ```json
     {
         "CN": "TiDB Server",
         "key": {
@@ -97,9 +97,9 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
 4. Generate CA by the configured option:
 
-     {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
     ```
 
@@ -174,7 +174,7 @@ This section describe how to issue certificates for the TiDB cluster using two m
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     kubectl create secret generic <cluster-name>-tidb-server-secret --namespace=<namespace> --from-file=tls.crt=~/cfssl/server.pem --from-file=tls.key=~/cfssl/server-key.pem --from-file=ca.crt=~/cfssl/ca.pem
     kubectl create secret generic <cluster-name>-tidb-client-secret --namespace=<namespace> --from-file=tls.crt=~/cfssl/client.pem --from-file=tls.key=~/cfssl/client-key.pem --from-file=ca.crt=~/cfssl/ca.pem
     ```
@@ -205,9 +205,9 @@ You can generate multiple sets of client-side certificates. At least one set of 
     cd ~/cert-manager
     ```
 
-    Then, create a ``tidb-server-issuer.yaml` file with the following content:
+    Then, create a `tidb-server-issuer.yaml` file with the following content:
 
-    ``` yaml
+    ```yaml
     apiVersion: cert-manager.io/v1alpha2
     kind: ClusterIssuer
     metadata:
@@ -368,7 +368,7 @@ In this step, you create a TiDB cluster using two CR object, enable TLS for the 
 
 1. Create a `cr.yaml` file with the following content:
 
-    ``` yaml
+    ```yaml
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
     metadata:
