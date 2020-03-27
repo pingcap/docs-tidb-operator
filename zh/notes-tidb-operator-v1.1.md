@@ -52,8 +52,8 @@ Discovery 服务直接由 TiDB Operator 内部生成，不再需要用户做任�
 
 ### Initializer
 
-- 如果在升级到 TiDB Operator v1.1 之前，初始化 job 已经执行，初始化 job 不需要从 tidb-cluster chart 中迁移到 TidbInitializer CR。
-- 如果在升级到 TiDB Operator v1.1 之前，没有执行过初始化 job，也没有修改过 TiDB 服务 root 用户的密码，升级到 TiDB Operator v1.1 之后，需要执行初始化，可以参考 [Kubernetes 上的集群初始化配置](initialize-a-cluster.md)进行配置。
+- 如果在升级到 TiDB Operator v1.1 之前，初始化 Job 已经执行，初始化 Job 不需要从 tidb-cluster chart 中迁移到 TidbInitializer CR。
+- 如果在升级到 TiDB Operator v1.1 之前，没有执行过初始化 Job，也没有修改过 TiDB 服务 root 用户的密码，升级到 TiDB Operator v1.1 之后，需要执行初始化，可以参考 [Kubernetes 上的集群初始化配置](initialize-a-cluster.md)进行配置。
 
 ### Pump
 
@@ -96,10 +96,35 @@ spec
 
 ### Drainer
 
-- 如果在升级到 TiDB Operator v1.1 之前，没有部署 Drainer，现在需要新部署，可以参考 [Drainer 部署](maintain-tidb-binlog.md#部署多个-drainer)。
-- 如果在升级到 TiDB Operator v1.1 之前，已经部署 Drainer，建议直接用 kubectl 管理。
+- 如果在升级到 TiDB Operator v1.1 之前，没有部署 Drainer，现在需要新部署，可以参考 [Drainer 部署](deploy-tidb-binlog.md#部署-drainer)。
+- 如果在升级到 TiDB Operator v1.1 之前，已经通过 `tidb-drainer` chart 部署 Drainer，继续用 `tidb-drainer` chart 管理。
+- 如果在升级到 TiDB Operator v1.1 之前，已经通过 `tidb-cluster` chart 部署 Drainer，建议直接用 kubectl 管理。
 
 ### TiKV Importer
 
 - 如果在升级到 TiDB Operator v1.1 之前，没有部署 TiKV Importer，现在需要新部署，可以参考 [TiKV Importer 部署](restore-data-using-tidb-lightning.md#部署-tikv-importer)。
 - 如果在升级到 TiDB Operator v1.1 之前，已经部署 TiKV Importer，建议直接用 kubectl 管理。
+
+## 其他由 chart 管理的组件或者功能切换到 v1.1 支持的方式
+
+### Ad-hoc 全量备份
+
+升级到 TiDB Operator v1.1 之后，可以通过 Backup CR 进行全量备份：
+
+- 如果 TiDB 集群版本 < v3.1，可以参考 [mydumper Ad-hoc 全量备份](backup-to-s3.md#Ad-hoc-全量备份)
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR Ad-hoc 全量备份](backup-to-aws-s3-using-br.md#Ad-hoc-全量备份)
+
+> **注意：**
+>
+> * Backup CR mydumper 方式目前只支持备份到 s3、gcs，BR 方式只支持备份到 s3，如果升级之前的 Ad-hoc 全量备份是备份到本地 PVC，则不能切换到 CR 方式管理。
+
+### 备份恢复
+
+升级到 TiDB Operator v1.1 之后，可以通过 Restore CR 进行备份恢复：
+
+- 如果 TiDB 集群版本 < v3.1，可以参考 [loader 备份恢复](restore-from-s3.md)
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR 备份恢复](restore-from-aws-s3-using-br.md)
+
+> **注意：**
+>
+> * Restore CR loader 方式目前只支持从 s3、gcs 获取备份数据进行恢复，BR 方式只支持从 s3 获取备份数据进行恢复，如果需要从本地 PVC 获取备份数据进行恢复，则不能切换到 CR 方式管理。
