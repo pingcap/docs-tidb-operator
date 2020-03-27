@@ -14,7 +14,7 @@ If you find that the memory leak occurs in a Pod of the TiDB cluster during use,
 
 ## Enable the configurations
 
-To activate the graceful logoff feature, you need to enable some Operator-related configurations. These configurations are disabled by default, follow the next step to manually turn them on.
+To activate the graceful logoff feature, you need to enable some related configurations in TiDB Operator. These configurations are disabled by default. Take the following steps to manually turn them on.
 
 1. Edit the `values.yaml` file.
 
@@ -27,13 +27,13 @@ To activate the graceful logoff feature, you need to enable some Operator-relate
         pods: true
     ```
 
-2. Install or update the TiDB Operator.
+2. Install or update TiDB Operator.
 
-    To install or update the TiDB Operator. see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
+    To install or update TiDB Operator, see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
 
-## Use annotate to mark the targe Pod
+## Use annotate to mark the target Pod
 
-You can use `kubectl annotate` to mark the target Pod component of the TiDB cluster. After marking, the TiDB Operator automatically perform graceful logoff the Pod and restart the cluster. To mark the target Pod, run the following command:
+You can use `kubectl annotate` to mark the target Pod component of the TiDB cluster. After marking, the TiDB Operator automatically performs graceful logoff of the Pod and restarts the cluster. To mark the target Pod, run the following command:
 
 {{< copyable "shell-regular" >}}
 
