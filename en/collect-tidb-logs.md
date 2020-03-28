@@ -63,7 +63,7 @@ For versions prior to 3.0, by default, TiDB prints slow query logs to standard o
 
 In some cases, you may want to use some tools or automated systems to analyze and process the log content. The application log of each TiDB component uses [unified log format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md), which facilitates parsing with other programs. However, because slow query logs use a multi-line format that is compatible with MySQL, it might be difficult to parse slow query logs when they are mixed with application logs.
 
-If you want to separate the slow query logs from the application logs, you can configure the `spec.tidb.separateSlowLog: true` parameter in the `TidbCluster` CR. This outputs the slow query log to a dedicated bypass container so that it can be stored in a separate file on the host.
+If you want to separate the slow query logs from the application logs, you can configure the `spec.tidb.separateSlowLog: true` parameter in the `TidbCluster` CR. This outputs the slow query log to a dedicated sidecar container so that it can be stored in a separate file on the host.
 
 Then you can view the slow query log through the sidecar container named `slowlog`:
 

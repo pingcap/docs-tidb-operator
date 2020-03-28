@@ -24,20 +24,20 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
     For example:
 
     ``` yaml
-    spec
-    ...
-    pump:
-      baseImage: pingcap/tidb-binlog
-      version: v3.0.11
-      replicas: 1
-      storageClassName: local-storage
-      requests:
-        storage: 30Gi
-      schedulerName: default-scheduler
-      config:
-        addr: 0.0.0.0:8250
-        gc: 7
-        heartbeat-interval: 2
+    spec:
+      ...
+      pump:
+        baseImage: pingcap/tidb-binlog
+        version: v3.0.11
+        replicas: 1
+        storageClassName: local-storage
+        requests:
+          storage: 30Gi
+        schedulerName: default-scheduler
+        config:
+          addr: 0.0.0.0:8250
+          gc: 7
+          heartbeat-interval: 2
     ```
 
     Edit `version`, `replicas`, `storageClassName`, and `requests.storage` according to your cluster.
@@ -140,7 +140,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
 
 ## Deploy drainer
 
-You can install the `tidb-drainer` Helm chart to deploy multiple drainers for a TiDB cluster, as described below:
+You can deploy multiple drainers with the `tidb-drainer` Helm chart for a TiDB cluster, as described below:
 
 1. Make sure that the PingCAP Helm repository is up to date:
 
