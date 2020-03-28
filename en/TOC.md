@@ -45,7 +45,7 @@
   - [Enable Automatic Failover](use-auto-failover.md)
 + Scale TiDB Cluster
   - [Scale](scale-a-tidb-cluster.md)
-  - [Enable auto-scaling](enable-tidb-cluster-auto-scaling.md)
+  - [Enable Auto-scaling](enable-tidb-cluster-auto-scaling.md)
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
