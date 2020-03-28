@@ -1,12 +1,12 @@
 ---
-title: Enable Auto-scaling in a TiDB Cluster
-summary: Learn how to use the auto-scaling feature in a TiDB Cluster
+title: Enable TidbCluster Auto-scaling
+summary: Learn how to use the TidbCluster auto-scaling feature.
 category: how-to
 ---
 
-# Enable Auto-scaling in a TiDB Cluster
+# Enable TidbCluster Auto-scaling
 
-Kubernetes provides [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), a native API based on CPU utilization. Correspondingly, in TiDB Operator 1.1 and later versions, you can enable the auto-scaling feature in a TiDB cluster based on the features of Kubernetes. This document introduces how to enable and use the auto-scaling feature in a TiDB cluster.
+Kubernetes provides [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), a native API based on CPU utilization. Correspondingly, in TiDB Operator 1.1 and later versions, you can enable the auto-scaling feature in a TiDB cluster based on the features of Kubernetes. This document introduces how to enable and use the auto-scaling feature of TidbCluster.
 
 ## Enable the auto-scaling feature
 
