@@ -178,7 +178,7 @@ All the instances except ACK mandatory workers are deployed across availability 
 
     > **Note:**
     >
-    > A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. You can give it a name that is easy to memorize, such as the same name as `tidb_cluster_name`.
+    > You can give the [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) a name that is easy to memorize, such as the same name as `tidb_cluster_name`.
 
 3. Deploy the TiDB cluster:
 
