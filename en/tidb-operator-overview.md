@@ -79,7 +79,7 @@ After the deployment is complete, see the following documents to use, operate, a
 + [Back up a TiDB Cluster](backup-to-aws-s3-using-br.md)
 + [Restore a TiDB Cluster](restore-from-aws-s3-using-br.md)
 + [Automatic Failover](use-auto-failover.md)
-+ [Monitor a TiDB Cluster in Kubernetes](monitor.md)
++ [Monitor a TiDB Cluster in Kubernetes](monitor-a-tidb-cluster.md)
 + [Collect TiDB Logs in Kubernetes](collect-tidb-logs.md)
 + [Maintain Kubernetes Nodes that Hold the TiDB Cluster](maintain-a-kubernetes-node.md)
 
