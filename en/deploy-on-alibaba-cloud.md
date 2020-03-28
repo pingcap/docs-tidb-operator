@@ -160,7 +160,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cd manifests/ && mv db-monitor.yaml.example db-monitor.yaml && mv db.yaml.example db.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) and [Using TidbCluster](configure-cluster-using-tidbcluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) and [Configuring TiDB Cluster](configure-cluster-using-tidbcluster.md).
 
     > **Note:**
     >
@@ -233,7 +233,7 @@ kubectl get pods --namespace <namespace> -o wide --watch
 
 ## Scale
 
-To scale the TiDB cluster, modify `tikv_count` or `tidb_count` in the `terraform.tfvars` file, and then run `terraform apply`. You can scale out the number of nodes in the corresponding components.
+To scale the TiDB cluster, modify `tikv_count` or `tidb_count` in the `terraform.tfvars` file, and then run `terraform apply` to scale out the number of nodes for the corresponding components.
 
 After the scaling out, modify the `replicas` in the corresponding components by running `kubectl --kubeconfig credentials/kubeconfig edit tc <tidb_cluster_name> -n <namespace>`.
 
@@ -273,7 +273,7 @@ It may take a long time to finish destroying the cluster.
 
 ### Configure TiDB Operator
 
-You can set variables in `terraform.tfvars` to configure TiDB Operator. Most configuration items can be modified after understanding the semantics based on the comment of `variable`. Note that the `operator_helm_values` configuration item can provide a customized `values.yaml` configuration file for TiDB Operator. For example:
+You can set variables in `terraform.tfvars` to configure TiDB Operator. Most configuration items can be modified after understanding the semantics based on the comments of the `variable`. Note that the `operator_helm_values` configuration item can provide a customized `values.yaml` configuration file for TiDB Operator. For example:
 
 - Set `operator_helm_values` in `terraform.tfvars`:
 
@@ -291,7 +291,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) and [Using TidbCluster](configure-cluster-using-tidbcluster.md).
+See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) and [Configuring TiDB Cluster](configure-cluster-using-tidbcluster.md).
 
 ## Manage multiple TiDB clusters
 
