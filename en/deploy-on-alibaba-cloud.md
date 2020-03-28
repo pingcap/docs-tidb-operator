@@ -235,7 +235,7 @@ kubectl get pods --namespace <namespace> -o wide --watch
 
 To scale the TiDB cluster, modify `tikv_count` or `tidb_count` in the `terraform.tfvars` file, and then run `terraform apply` to scale out the number of nodes for the corresponding components.
 
-After the scaling out, modify the `replicas` in the corresponding components by running `kubectl --kubeconfig credentials/kubeconfig edit tc <tidb_cluster_name> -n <namespace>`.
+After the nodes scale out, modify the `replicas` of the corresponding components by running `kubectl --kubeconfig credentials/kubeconfig edit tc <tidb_cluster_name> -n <namespace>`.
 
 ## Destroy
 
