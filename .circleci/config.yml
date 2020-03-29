@@ -26,9 +26,9 @@ jobs:
           name: "Publish PDF"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-manual-en-dev.pdf;
-              python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-manual-cn-dev.pdf;
+            if [ "${CIRCLE_BRANCH}" == "release-1.1" ]; then
+              python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-manual-en-v1.1.pdf;
+              python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-manual-cn-v1.1.pdf;
             fi
 
 workflows:
@@ -39,4 +39,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - release-1.1
