@@ -2,6 +2,7 @@
 title: 恢复 Kubernetes 上的 TiDB 集群数据
 summary: 使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据。
 category: how-to
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-restore/lightning/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/lightning/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/backup-and-restore/lightning/']
 ---
 
 # 恢复 Kubernetes 上的 TiDB 集群数据

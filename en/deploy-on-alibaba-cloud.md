@@ -2,6 +2,7 @@
 title: Deploy TiDB on Alibaba Cloud Kubernetes
 summary: Learn how to deploy a TiDB cluster on Alibaba Cloud Kubernetes.
 category: how-to
+aliases: ['/docs/dev/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs/v3.1/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs/v3.0/tidb-in-kubernetes/deploy/alibaba-cloud/']
 ---
 
 # Deploy TiDB on Alibaba Cloud Kubernetes

@@ -2,6 +2,7 @@
 title: TiDB Cluster Configurations in Kubernetes
 summary: Learn the configurations of a TiDB cluster in Kubernetes.
 category: reference
+aliases: ['/docs/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster/','/docs/v3.1/tidb-in-kubernetes/reference/configuration/tidb-cluster/','/docs/v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster/']
 ---
 
 # TiDB Cluster Configurations in Kubernetes

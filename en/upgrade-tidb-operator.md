@@ -2,6 +2,7 @@
 title: Upgrade TiDB Operator and Kubernetes
 summary: Learn how to upgrade TiDB Operator and Kubernetes.
 category: how-to
+aliases: ['/docs/dev/tidb-in-kubernetes/upgrade/tidb-operator/','/docs/v3.1/tidb-in-kubernetes/upgrade/tidb-operator/','/docs/v3.0/tidb-in-kubernetes/upgrade/tidb-operator/']
 ---
 
 # Upgrade TiDB Operator and Kubernetes

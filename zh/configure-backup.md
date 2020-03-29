@@ -2,6 +2,7 @@
 title: Kubernetes 上的 TiDB 集群备份配置
 summary: 介绍 Kubernetes 上 TiDB 集群备份 tidb-backup 的配置参数。
 category: reference
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/v3.0/tidb-in-kubernetes/reference/configuration/backup/']
 ---
 
 # Kubernetes 上的 TiDB 集群备份配置
