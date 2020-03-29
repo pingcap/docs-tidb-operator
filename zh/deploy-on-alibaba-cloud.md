@@ -16,11 +16,7 @@ category: how-to
     > Access Key 需要具有操作相应资源的权限。
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
-<<<<<<< HEAD
-- [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.1 且 <= 2.11.0
-=======
 - [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 且 < 2.16.4
->>>>>>> c7d9fb4... zh: lock helm version (#55)
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*
 
