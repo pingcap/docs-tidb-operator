@@ -2,6 +2,7 @@
 title: Monitor a TiDB Cluster in Kubernetes
 summary: Learn how to monitor a TiDB cluster in kubernetes.
 category: how-to
+aliases: ['/docs/dev/tidb-in-kubernetes/monitor/tidb-in-kubernetes/','/docs/v3.1/tidb-in-kubernetes/monitor/tidb-in-kubernetes/','/docs/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes/']
 ---
 
 # Monitor a TiDB Cluster in Kubernetes
