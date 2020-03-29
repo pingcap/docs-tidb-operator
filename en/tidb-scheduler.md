@@ -10,13 +10,15 @@ TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https
 
 ## TiDB cluster scheduling requirements
 
-A TiDB cluster includes three key components: PD, TiKV, and TiDB. Each consists of multiple nodes: PD is a Raft cluster, and TiKV is a multi-group Raft cluster. PD and TiKV components are stateful. Therefore, the default scheduling rules of the Kubernetes (K8s) scheduler can no longer meet the TiDB cluster scheduling requirements. To extend the K8s scheduling rules, TiDB Scheduler implements the following customized scheduling rules:
+A TiDB cluster includes three key components: PD, TiKV, and TiDB. Each consists of multiple nodes: PD is a Raft cluster, and TiKV is a multi-Raft group cluster. PD and TiKV components are stateful. The default scheduling rules of the Kubernetes scheduler cannot meet the high availability scheduling requirements of the TiDB cluster, so the Kubernetes scheduling rules need to be extended.
+
+TiDB Scheduler implements the following customized scheduling rules:
 
 ### PD component
 
 Scheduling rule 1: Make sure that the number of PD instances scheduled on each node is less than `Replicas / 2`. For example:
 
-| PD cluster size (Replicas) | Maximum number of PD instances scheduled on each node |
+| PD cluster size (Replicas) | Maximum number of PD instances that can be scheduled on each node |
 | ------------- | ------------- |
 This conversation was marked as resolved by toutdesuite
 | 1  | 1  |
@@ -28,9 +30,9 @@ This conversation was marked as resolved by toutdesuite
 
 ### TiKV component
 
-Scheduling rule 2: If the number of K8s nodes is less than three (In this case, TiKV is not highly available), arbitrary scheduling is supported; otherwise, the number of TiKV instances that can be scheduled on each node must be `ceil(Replicas / 3)`. For example:
+Scheduling rule 2: If the number of Kubernetes nodes is less than three (in this case, TiKV cannot achieve high availability), scheduling is not limited; otherwise, the number of TiKV instances that can be scheduled on each node is no more than `ceil(Replicas / 3)`. For example:
 
-| TiKV cluster size (Replicas) | Maximum number of TiKV instances scheduled on each node | Best scheduling distribution |
+| TiKV cluster size (Replicas) | Maximum number of TiKV instances that can be scheduled on each node | Best scheduling distribution |
 | ------------- | ------------- | ------------- |
 | 3  | 1  | 1,1,1  |
 | 4  | 2  | 1,1,2  |
@@ -42,25 +44,25 @@ Scheduling rule 2: If the number of K8s nodes is less than three (In this case, 
 
 ### TiDB component
 
-Scheduling rule 3: When you perform a rolling upgrade to a TiDB instance, the instance tends to be scheduled back to its original node.
+Scheduling rule 3: When you perform a rolling update to a TiDB instance, the instance tends to be scheduled back to its original node.
 
-This ensures stable scheduling and is helpful for the scenario of manually mounting Node IP and NodePort to the LB backend. It can reduce the impact on the cluster during the rolling upgrade because you do not need to rearrange the LB when the Node IP is changed after the upgrade.
+This ensures stable scheduling and is helpful for the scenario of manually configuring Node IP and NodePort to the LB backend. It can reduce the impact on the cluster during the rolling update because you do not need to adjust the LB configuration when the Node IP is changed after the upgrade.
 
 ## How TiDB Scheduler works
 
 ![TiDB Scheduler Overview](/media/tidb-scheduler-overview.png)
 
-TiDB Scheduler adds customized scheduling rules by implementing K8s [Scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md).
+TiDB Scheduler adds customized scheduling rules by implementing Kubernetes [Scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md).
 
-The TiDB Scheduler component is deployed as one or more Pods, though only one Pod is working at the same time. Each Pod has two Containers inside: one Container is a native `kube-scheduler`, and the other is a `tidb-scheduler` implemented as a K8s scheduler extender.
+The TiDB Scheduler component is deployed as one or more Pods, though only one Pod is working at the same time. Each Pod has two Containers inside: one Container is a native `kube-scheduler`, and the other is a `tidb-scheduler` implemented as a Kubernetes scheduler extender.
 
-The `.spec.schedulerName` attribute of all Pods created by the TiDB Operator is set to `tidb-scheduler`. This means that the TiDB Scheduler is used for the scheduling.
+The `.spec.schedulerName` attribute of PD, TiDB, and TiKV Pods created by the TiDB Operator is set to `tidb-scheduler`. This means that the TiDB Scheduler is used for the scheduling.
 
-If you are using a testing cluster and do not require high availability, you can change `.spec.schedulerName` into `default-scheduler` to use the built-in K8s scheduler.
+If you are using a testing cluster and do not require high availability, you can change `.spec.schedulerName` into `default-scheduler` to use the built-in Kubernetes scheduler.
 
 The scheduling process of a Pod is as follows:
 
-- First, `kube-scheduler` pulls all Pods whose `.spec.schedulerName` is `tidb-scheduler`. And Each Pod is filtered using the default K8s scheduling rules.
+- First, `kube-scheduler` pulls all Pods whose `.spec.schedulerName` is `tidb-scheduler`. And Each Pod is filtered using the default Kubernetes scheduling rules.
 - Then, `kube-scheduler` sends a request to the `tidb-scheduler` service. Then `tidb-scheduler` filters the sent nodes through the customized scheduling rules (as mentioned above), and returns schedulable nodes to `kube-scheduler`.
 - Finally, `kube-scheduler` determines the nodes to be scheduled.
 

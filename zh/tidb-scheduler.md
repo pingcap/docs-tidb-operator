@@ -10,7 +10,7 @@ TiDB Scheduler 是 [Kubernetes 调度器扩展](https://github.com/kubernetes/co
 
 ## TiDB 集群调度需求
 
-TiDB 集群包括 PD，TiKV 以及 TiDB 三个核心组件，每个组件又是由多个节点组成，PD 是一个 Raft 集群，TiKV 是一个多 Group Raft 集群，并且这两个组件都是有状态的。因此，默认 Kubernetes 的调度器的调度规则已经无法满足 TiDB 集群的调度需求，需要扩展 Kubernetes 的调度规则。
+TiDB 集群包括 PD，TiKV 以及 TiDB 三个核心组件，每个组件又是由多个节点组成，PD 是一个 Raft 集群，TiKV 是一个多 Raft Group 集群，并且这两个组件都是有状态的。默认 Kubernetes 的调度器的调度规则无法满足 TiDB 集群的高可用调度需求，需要扩展 Kubernetes 的调度规则。
 
 目前，TiDB Scheduler 实现了如下几种自定义的调度规则。
 
@@ -55,7 +55,7 @@ TiDB Scheduler 通过实现 Kubernetes 调度器扩展（[Scheduler extender](ht
 
 TiDB Scheduler 组件部署为一个或者多个 Pod，但同时只有一个 Pod 在工作。Pod 内部有两个 Container，一个 Container 是原生的 `kube-scheduler`；另外一个 Container 是 `tidb-scheduler`，实现为一个 Kubernetes scheduler extender。
 
-TiDB Operator 创建的所有 Pod 的 `.spec.schedulerName` 属性会被设置为 `tidb-scheduler`，即都用 TiDB Scheduler 自定义调度器来调度。如果是测试集群，并且不要求高可用，可以将 `.spec.schedulerName` 改成 `default-scheduler` 使用 Kubernetes 内置的调度器。
+TiDB Operator 创建的 PD、TiDB、TiKV Pod 的 `.spec.schedulerName` 属性会被设置为 `tidb-scheduler`，即都用 TiDB Scheduler 自定义调度器来调度。如果是测试集群，并且不要求高可用，可以将 `.spec.schedulerName` 改成 `default-scheduler` 使用 Kubernetes 内置的调度器。
 
 一个 Pod 的调度流程是这样的：
 
