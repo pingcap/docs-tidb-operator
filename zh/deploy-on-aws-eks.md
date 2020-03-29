@@ -1,5 +1,6 @@
 ---
-title: 在 AWS EKS 上部署 TiDB 集群
+title: 在 AWS EKS 上部署 TiDB 
+summary: 介绍如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集群。
 category: how-to
 ---
 
@@ -35,8 +36,8 @@ category: how-to
     > Access key 必须至少具有以下权限：创建 VPC、创建 EBS、创建 EC2 和创建 Role。
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) >= 0.12
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
-* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
+* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 且 < 2.16.4
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)，AWS 权限鉴定工具，确保安装在 `PATH` 路径下。
 
