@@ -21,13 +21,8 @@ category: how-to
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Google Cloud SDK](https://cloud.google.com/sdk/install)
 * [Terraform](https://www.terraform.io/downloads.html) >= 0.12
-<<<<<<< HEAD
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.14
-* [Helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
-=======
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
 * [Helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 且 < 2.16.4
->>>>>>> c7d9fb4... zh: lock helm version (#55)
 * [jq](https://stedolan.github.io/jq/download/)
 
 ## 配置
