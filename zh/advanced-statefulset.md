@@ -34,7 +34,7 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
         kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1.yaml
         ```
 
-2. 在 TiDB Operator chart 的 values 中启用 `AdvancedStatefulSet` 特性：
+2. 在 TiDB Operator chart 的 `values.yaml` 中启用 `AdvancedStatefulSet` 特性：
 
     {{< copyable "shell-regular" >}}
 
@@ -55,8 +55,7 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
 
 ### 通过 kubectl 查看 AdvancedStatefulSet 对象
 
-`AdvancedStatefulSet` 数据格式与 `StatefulSet` 完全一致，但以 CRD
-方式实现，别名为 `asts` ，可通过一下方法查看命令空间下的对象。
+`AdvancedStatefulSet` 数据格式与 `StatefulSet` 完全一致，但以 CRD 方式实现，别名为 `asts` ，可通过以下方法查看命令空间下的对象。
 
 {{< copyable "shell-regular" >}}
 
@@ -101,7 +100,7 @@ spec:
     config: {}
 ```
 
-上述配置会部署 4 个 tikv 实例，分别为 basic-tikv-0，basic-tikv-1，...，basic-tikv-3。若想缩容掉 basic-tikv-1 需要修改 `spec.tikv.replicas` 为 3，同时配置以下 annotations:
+上述配置会部署 4 个 TiKV 实例，分别为 basic-tikv-0，basic-tikv-1，...，basic-tikv-3。若想缩容掉 basic-tikv-1 需要修改 `spec.tikv.replicas` 为 3，同时配置以下 annotations:
 
 {{< copyable "" >}}
 
@@ -111,7 +110,9 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[1]'
 ```
 
-> **注意**：对 replicas 和 delete slot annotation 的修改需在同一个操作中完成，不然控制器会根据修改一般的期望进行操作。
+> **注意：**
+>
+> 对 `replicas` 和 `delete slot annotation` 的修改需在同一个操作中完成，不然控制器会根据修改一般的期望进行操作。
 
 完整例子如下：
 
@@ -160,7 +161,9 @@ spec:
 
 对前面缩容进行反向操作，即可恢复 pod-1 。
 
-> **注意**：同常规 StatefulSet 缩容一样，并不会主动删除 Pod 关联的 PVC ，若想避免使用之前数据，在原位置处扩容，需主动删除关联的 PVC 。
+> **注意：**
+>
+> 同常规 StatefulSet 缩容一样，并不会主动删除 Pod 关联的 PVC，若想避免使用之前数据，在原位置处扩容，需主动删除关联的 PVC。
 
 例子如下：
 
@@ -197,4 +200,4 @@ spec:
     config: {}
 ```
 
-其中 delete slots annotations 可留空或完全删除，均可。
+其中 delete slots annotations 可留空，也可完全删除。
