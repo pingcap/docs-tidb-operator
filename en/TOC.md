@@ -53,6 +53,6 @@
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
 + Components
-    - [TiDB Scheduler](tidb-scheduler.md)
+  - [TiDB Scheduler](tidb-scheduler.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
