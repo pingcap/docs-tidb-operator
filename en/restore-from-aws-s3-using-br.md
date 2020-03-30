@@ -18,6 +18,8 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
 
 ## Prerequisites
 
+Before you restore data from AWS S3 storage, you need to grant AWS account permissions. This section describes three methods to grant AWS account permissions.
+
 ### Grant permissions by importing AccessKey and SecretKey
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
