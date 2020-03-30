@@ -13,6 +13,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
 | v1.1 | v3.0, v3.1, v4.0, dev |
+| dev | v3.0, v3.1, v4.0, dev |
 
 TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
 
