@@ -70,9 +70,9 @@ You can deploy tikv-importer using the Helm chart. See the following example:
     >
     > You must deploy tikv-importer in the same namespace where the target TiDB cluster is deployed.
 
-## Deploy tidb-lightning
+## Deploy TiDB Lightning
 
-### Configure TiDB Lightning
+### Configure
 
 Use the following command to get the default configuration of TiDB Lightning:
 
@@ -82,25 +82,25 @@ Use the following command to get the default configuration of TiDB Lightning:
 helm inspect values pingcap/tidb-lightning --version=<chart-version> > tidb-lightning-values.yaml
 ```
 
-TiDB Lightning Helm chart supports both local and remote data source.
+TiDB Lightning Helm chart supports both local and remote data sources.
 
 * Local
 
-    Local mode requires the Mydumper backup data to be on one of the Kubernetes node. This mode can be enabled by setting `dataSource.local.nodeName` to the node name and `dataSource.local.hostPath` to the Mydumper backup data directory path which contains a file named `metadata`.
+    The local mode requires Mydumper backup data to be on one of the Kubernetes node. This mode can be enabled by setting `dataSource.local.nodeName` to the node name and `dataSource.local.hostPath` to Mydumper backup data directory path which contains a file named `metadata`.
 
 * Remote
 
-    Unlike local mode, remote mode needs to use [rclone](https://rclone.org) to download Mydumper backup tarball file from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [AWS S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
+    Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download Mydumper backup tarball file from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [AWS S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
 
     To restore backup data from the remote source, take the following steps:
 
     1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
 
-    2. Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, please refer to [rclone documentation](https://rclone.org/). Using AWS S3 as the storage is the same as restoring data using BR and Mydumper.
+    2. Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using AWS S3 as the storage is the same as restoring data using BR and Mydumper.
 
         There are three methods to grant permissions. The configuration varies with different methods. For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
 
-        * If you grant permissions by way of AWS S3 AccessKey and SecretKey, or if you use Ceph or GCS as the storage, use the following configuration:
+        * If you grant permissions by importing AWS S3 AccessKey and SecretKey, or if you use Ceph or GCS as the storage, use the following configuration:
 
             {{< copyable "" >}}
 
@@ -136,7 +136,7 @@ TiDB Lightning Helm chart supports both local and remote data source.
               service_account_credentials = <service-account-json-file-content>
             ```
 
-        * If you grant permissions by binding AWS S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`:
+        * If you grant permissions by associating AWS S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`:
 
             {{< copyable "" >}}
     
@@ -161,11 +161,11 @@ TiDB Lightning Helm chart supports both local and remote data source.
 
     3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
 
-### Deploy TiDB Lightning
+### Deploy
 
 The method of deploying TiDB Lightning varies with different methods of granting permissions and different storages.
 
-* If you grant permissions by way of AWS S3 AccessKey and SecretKey, or if you use Ceph or GCS as the storage, run the following command to deploy TiDB Lightning:
+* If you grant permissions by importing AWS S3 AccessKey and SecretKey, or if you use Ceph or GCS as the storage, run the following command to deploy TiDB Lightning:
 
     {{< copyable "shell-regular" >}}
 
@@ -173,7 +173,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
     helm install pingcap/tidb-lightning --name=<tidb-lightning-release-name> --namespace=<namespace> --set failFast=true -f tidb-lightning-values.yaml --version=<chart-version>
     ```
 
-* If you grant permissions by binding AWS S3 IAM with Pod, take the following steps:
+* If you grant permissions by associating AWS S3 IAM with Pod, take the following steps:
 
     1. Create the IAM role:
 
@@ -193,7 +193,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
         >
         > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 1.
 
-* If you grant permissions by binding AWS S3 with ServiceAccount, take the following steps:
+* If you grant permissions by associating AWS S3 with ServiceAccount, take the following steps:
 
     1. Enable the IAM role for the service account on the cluster:
 
@@ -203,7 +203,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
 
         [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html). Grant the `AmazonS3FullAccess` permission to the role, and edit `Trust relationships` of the role.
 
-    3. Bind IAM to the ServiceAccount resources:
+    3. Associate IAM with the ServiceAccount resources:
 
         {{< copyable "shell-regular" >}}
 
