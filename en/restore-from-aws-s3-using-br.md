@@ -18,7 +18,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
 
 ## Prerequisites
 
-### Grant permissions by AccessKey and SecretKey
+### Grant permissions by importing AccessKey and SecretKey
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
@@ -44,7 +44,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=<password> --namespace=test2
     ```
 
-### Grant permissions by binding IAM with Pod
+### Grant permissions by associating IAM with Pod
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
@@ -67,9 +67,9 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
     - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
     - Give the IAM role you created the required permission (refer to [access policies manage](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details). Because `Restore` needs to access AWS S3 storage, IAM is given the `AmazonS3FullAccess` permission.
 
-4. Bind IAM to TiKV Pod:
+4. Associate IAM with TiKV Pod:
 
-    - In the process of restore using BR, both TiKV Pod and BR Pod need to read and write S3 storage. Therefore, you need to add annotation to TiKV Pod to bind it with the IAM role:
+    - In the process of restore using BR, both TiKV Pod and BR Pod need to read and write S3 storage. Therefore, you need to add annotation to TiKV Pod to associate it with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -83,7 +83,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-### Grant permissions by binding IAM with ServiceAccount
+### Grant permissions by associating IAM with ServiceAccount
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
@@ -109,7 +109,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
 
     - Create a IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
 
-5. Bind IAM to the ServiceAccount resources:
+5. Associate IAM with the ServiceAccount resources:
 
     {{< copyable "shell-regular" >}}
 
@@ -133,7 +133,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
 
 ## Restore process
 
-+ If you grant permissions by accessKey and secretKey, create the `Restore` CR, and restore cluster data as described below:
++ If you grant permissions by importing accessKey and secretKey, create the `Restore` CR, and restore cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -175,7 +175,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
         prefix: my-folder
     ```
 
-+ If you grant permissions by binding IAM with Pod, create the `Restore` CR, and restore cluster data as described below:
++ If you grant permissions by associating IAM with Pod, create the `Restore` CR, and restore cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -218,7 +218,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
         prefix: my-folder
     ```
 
-+ If you grant permissions by binding IAM with ServiceAccount, create the `Restore` CR, and restore cluster data as described below:
++ If you grant permissions by associating IAM with ServiceAccount, create the `Restore` CR, and restore cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -273,4 +273,4 @@ More `Restore` CR fields are described as follows:
 * `.spec.to.host`: the address of the TiDB cluster to be restored.
 * `.spec.to.port`: the port of the TiDB cluster to be restored.
 * `.spec.to.user`: the accessing user of the TiDB cluster to be restored.
-* `.spec.to.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be restored.
+* `.spec.to.tidbSecretName`: the secret of the user password of the `.spec.to.tidbSecretName` TiDB cluster.

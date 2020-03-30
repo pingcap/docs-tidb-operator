@@ -18,9 +18,9 @@ In the AWS cloud environment, different types of Kubernetes clusters provide dif
 
     - The AWS client supports reading `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the process environment variables to get the permissions of the associated user or role.
 
-+ Bind [IAM](https://aws.amazon.com/cn/iam/) with the Pod:
++ Associate [IAM](https://aws.amazon.com/cn/iam/) with the Pod:
 
-    - By binding the IAM role of the user with the running Pod resources, the process that runs in a Pod gets the permissions owned by the role.
+    - By associating the IAM role of the user with the running Pod resources, the process that runs in a Pod gets the permissions owned by the role.
     - This authorization method is provided by [`kube2iam`](https://github.com/jtblin/kube2iam).
 
     > **Note:**
@@ -28,9 +28,9 @@ In the AWS cloud environment, different types of Kubernetes clusters provide dif
     > - When you use this method, refer to [`kube2iam` Usage](https://github.com/jtblin/kube2iam#usage) for instructions on how to create the `kube2iam` environment in the Kubernetes cluster, and then deploy TiDB Operator and the TiDB cluster.
     > - This method does not apply to [`hostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy). Make sure that the `spec.tikv.hostNetwork` parameter is set to `false`.
 
-+ Bind [IAM](https://aws.amazon.com/cn/iam/) with ServiceAccount:
++ Associate [IAM](https://aws.amazon.com/cn/iam/) with ServiceAccount:
 
-    - By binding the IAM role of the user with the [`serviceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) resources in Kubernetes, the Pods of this ServiceAccount get the permissions owned by the role.
+    - By Associating the IAM role of the user with the [`serviceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) resources in Kubernetes, the Pods of this ServiceAccount get the permissions owned by the role.
     - This method is provided by [`EKS Pod Identity Webhook`](https://github.com/aws/amazon-eks-pod-identity-webhook).
 
     > **Note:**
@@ -44,6 +44,8 @@ Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (
 Currently, the above three authorization methods are supported for the ad-hoc full backup. This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage and all the above methods are used in the examples.
 
 ### Prerequisites for ad-hoc full backup
+
+Before you perform ad-hoc full backup, AWS account permissions need to be granted. This section describes three methods to grant AWS account permissions.
 
 #### Grant permissions by importing AccessKey and SecretKey
 
@@ -71,7 +73,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
-#### Grant permissions by binding IAM with Pod
+#### Grant permissions by associating IAM with Pod
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -94,9 +96,9 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
     - Give the IAM role you created the required permission. Refer to [Adding and Removing IAM Identity Permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details. Because `Backup` needs to access the AWS S3 storage, IAM is granted the `AmazonS3FullAccess` permission.
 
-4. Bind IAM to TiKV Pod:
+4. Associate IAM with TiKV Pod:
 
-    - In the process of backup using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to bind it with the IAM role:
+    - In the process of backup using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate it with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -136,7 +138,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
 
     - Create a IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
 
-5. Bind IAM to the ServiceAccount resources:
+5. Associate IAM with the ServiceAccount resources:
 
     {{< copyable "shell-regular" >}}
 
