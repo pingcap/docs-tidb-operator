@@ -6,7 +6,7 @@ category: alpha
 
 # 使用增强型 StatefulSet 控制器
 
-Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 为 Pods 分配连续的序号。比如 3 个副本时，Pods 分别为 pod-0, pod-1, pod-2 。扩缩容时，必须在尾部增加或删除 Pods 。比如扩容到 4 个副本时，会新增 pod-3 。缩容到 2 副本时，会删除 pod-2 。 
+Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 为 Pods 分配连续的序号。比如 3 个副本时，Pods 分别为 pod-0, pod-1, pod-2。扩缩容时，必须在尾部增加或删除 Pods。比如扩容到 4 个副本时，会新增 pod-3。缩容到 2 副本时，会删除 pod-2。 
 
 在使用本地存储时，Pods 与 Nodes 存储资源绑定，无法自由调度。若希望删除掉中间某个 Pod ，以便维护其所在的 Node 但并没有其他 Node 可以迁移时，或者某个 Pod 故障想直接删除，另起一个序号不一样的 Pod 时，无法通过内置 StatefulSet 实现。
 
@@ -16,21 +16,21 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
 
 1. 载入 Advanced StatefulSet 的 CRD 文件：
 
-    Kubernetes 1.16 之前版本：
+    * Kubernetes 1.16 之前版本：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1beta1.yaml
-    ```
+        ```shell
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1beta1.yaml
+        ```
 
-    Kubernetes 1.16 之后:
+    * Kubernetes 1.16 之后:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1.yaml
-    ```
+        ```
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1.yaml
+        ```
 
 2. 在 TiDB Operator chart 的 values 中启用 `AdvancedStatefulSet` 特性：
 
@@ -43,14 +43,11 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
       create: true
     ```
 
-    然后升级 TiDB Operator ，具体可参考[升级 TiDB Operator 文档]((upgrade-TiDB Operator.md))。
+    然后升级 TiDB Operator，具体可参考[升级 TiDB Operator 文档](upgrade-TiDB Operator.md)。
 
 > **注意：**
 >
-> TiDB Operator 通过开启 `AdvancedStatefulSet` 特性，会将当前 `StatefulSet`
-> 对象转换成 `AdvancedStatefulSet 对象。但并不支持关闭 `AdvancedStatefulSet`
-> 特性后，自动从 `AdvancedStatefulSet` 转换为 Kubernetes 内置的 `StatefulSet`
-> 对象。
+> TiDB Operator 通过开启 `AdvancedStatefulSet` 特性，会将当前 `StatefulSet` 对象转换成 `AdvancedStatefulSet 对象。但是，TiDB Operator 不支持在关闭 `AdvancedStatefulSet` 特性后，自动从 `AdvancedStatefulSet` 转换为 Kubernetes 内置的 `StatefulSet` 对象。
 
 ## 使用
 
@@ -67,7 +64,7 @@ kubectl get -n <namespace> asts
 
 ### 操作 TidbCluster 对象指定 pod 进行缩容
 
-使用增强型 StatefulSet 时，在对 TidbCluster 进行缩容时，除了减少副本数，可同时通过配置 annotations 指定对 pd, tidb 或 tikv 组件下任意一个 pod 进行缩容。
+使用增强型 StatefulSet 时，在对 TidbCluster 进行缩容时，除了减少副本数，可同时通过配置 annotations 指定对 PD，TiDB 或 TiKV 组件下任意一个 Pod 进行缩容。
 
 比如：
 
@@ -102,7 +99,7 @@ spec:
     config: {}
 ```
 
-会部署 4 个 tikv 实例，分别为 basic-tikv-0, basic-tikv-1, ..., basic-tikv-3。若想缩容掉 basic-tikv-1 需要在修改 `spec.tikv.replicas` 为 3 同时配置以下 annotations:
+上述配置会部署 4 个 tikv 实例，分别为 basic-tikv-0，basic-tikv-1，...，basic-tikv-3。若想缩容掉 basic-tikv-1 需要修改 `spec.tikv.replicas` 为 3，同时配置以下 annotations:
 
 {{< copyable "" >}}
 
@@ -149,8 +146,8 @@ spec:
 
 支持的 annotations 为：
 
-- `pd.tidb.pingcap.com/delete-slots`: 指定 pd 组件需要删除的 pod 序号。
-- `tidb.tidb.pingcap.com/delete-slots`: 指定 tidb 组件需要删除的 pod 序号
-- `tikv.tidb.pingcap.com/delete-slots`: 指定 tikv 组件需要删除的 pod 序号
+- `pd.tidb.pingcap.com/delete-slots`：指定 PD 组件需要删除的 Pod 序号。
+- `tidb.tidb.pingcap.com/delete-slots`：指定 TiDB 组件需要删除的 Pod 序号。
+- `tikv.tidb.pingcap.com/delete-slots`：指定 TiKV 组件需要删除的 Pod 序号。
 
 其中 Annotation 值为 JSON 的整数数组，比如 `[0]`, `[0,1]`, `[1,3]` 等。
