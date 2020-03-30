@@ -9,13 +9,6 @@ aliases: ['/docs-cn/dev/maintain/backup-and-store/','/docs-cn/dev/tidb-in-kubern
 
 本文详细描述了如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。本文使用的备份恢复方式是基于 Helm Charts 实现的。
 
-TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现，详情可参阅以下文档：
-
-- [备份 TiDB 集群到 GCS](backup-to-gcs.md)
-- [恢复 GCS 上的备份数据](restore-from-gcs.md)
-- [备份 TiDB 集群到兼容 S3 的存储](backup-to-s3.md)
-- [恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
-
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 * [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](https://pingcap.com/docs-cn/stable/reference/tools/mydumper) 获取集群的逻辑备份；
@@ -133,7 +126,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 增量备份使用 [TiDB Binlog](https://pingcap.com/docs-cn/stable/reference/tidb-binlog/overview) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
-有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](maintain-tidb-binlog.md)。
+有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](deploy-tidb-binlog.md)。
 
 ### Pump 缩容
 
