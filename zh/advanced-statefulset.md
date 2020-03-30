@@ -112,7 +112,7 @@ metadata:
 
 > **注意：**
 >
-> 对 `replicas` 和 `delete slot annotation` 的修改需在同一个操作中完成，不然控制器会根据修改一般的期望进行操作。
+> 对 `replicas` 和 `delete-slots annotation` 的修改需在同一个操作中完成，不然控制器会根据修改一般的期望进行操作。
 
 完整例子如下：
 
@@ -159,11 +159,11 @@ spec:
 
 ### 操作 TidbCluster 对象在指定位置进行扩容
 
-对前面缩容进行反向操作，即可恢复 pod-1 。
+对前面缩容进行反向操作，即可恢复 basic-tikv-1。
 
 > **注意：**
 >
-> 同常规 StatefulSet 缩容一样，并不会主动删除 Pod 关联的 PVC，若想避免使用之前数据，在原位置处扩容，需主动删除关联的 PVC。
+> 同常规 StatefulSet 缩容一样，并不会主动删除 Pod 关联的 PVC，若想避免使用之前数据，在原位置处扩容之前，需主动删除之前关联的 PVC。
 
 例子如下：
 
@@ -200,4 +200,4 @@ spec:
     config: {}
 ```
 
-其中 delete slots annotations 可留空，也可完全删除。
+其中 delete-slots annotations 可留空，也可完全删除。
