@@ -134,7 +134,7 @@ This section describes how to deploy a TiDB cluster.
     > **Note:**
     >
     > * The Regional cluster is created by default, which creates nodes in the 3 Availability Zones. For example, if you configure `pd_count = 1`, 3 nodes are actually created for PD. You can specify the Availability Zones by configuring `node_locations`, or create the Zonal cluster by configuring `location`. See the example in `examples/` for details.
-    > * The number of worker nodes created depends on the number of Availability Zones in the specified Region. Most Regions have 3 zones, but `us-central1` has 4 zones. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
+    > * The number of worker nodes to create depends on the number of Availability Zones in the specified Region. Most Regions have three zones, but `us-central1` has four zones. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information. See the [Customize](#customize) section to learn how to customize node pools in a regional cluster.
 
 2. Execute the script to deploy the TiDB cluster.
 
@@ -159,7 +159,7 @@ This section describes how to deploy a TiDB cluster.
     kubeconfig_file = ./credentials/kubeconfig_tidb-cluster
     ```
 
-### Deploy the TiDB cluster and monitor
+### Deploy the TiDB cluster and the monitor
 
 1. Prepare the TidbCluster and TidbMonitor CR files:
 
@@ -180,7 +180,7 @@ This section describes how to deploy a TiDB cluster.
 
     > **Note:**
     >
-    > * Make sure the numbers of nodes in PD, TiKV, and TiDB are the same as the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes actully created is `pd_count/tikv_count/tidb_count` * 3.
+    > * Make sure the number of PD nodes, TiKV nodes, or TiDB nodes is the same as the value of the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes to actually create is `pd_count` * `3`, `tikv_count` * `3`, or `tidb_count` * `3`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
 
 2. Create `Namespace`:
@@ -210,6 +210,8 @@ After `terraform apply` is successful executed, perform the following steps to a
 
 1. Get the IP address of the TiDB Internal LoadBalancer:
 
+{{< copyable "shell-regular" >}}
+
     ```shell
     kubectl --kubeconfig credentials/kubeconfig_<gke_name> get svc <cluster-name>-tidb -n <namespace>
     ```
@@ -234,8 +236,8 @@ After `terraform apply` is successful executed, perform the following steps to a
 
     > **Note:**
     >
-    > You need to install the MySQL client before you connect to TiDB via MySQL. If you use CentOS, install by `sudo yum install -y mysql`.
-    > `<tidb_ilb_ip> is the IP address of the Internal LoadBalancer acquired before.
+    > You need to install the MySQL client before you connect to TiDB via MySQL. If you use CentOS, install the client by executing `sudo yum install -y mysql`.
+    > `<tidb_ilb_ip> is the IP address of the Internal LoadBalancer acquired in step 1.
 
 ## Interact with the GKE cluster
 
@@ -322,7 +324,7 @@ An instance of a `tidb-cluster` module corresponds to a TiDB cluster in the GKE 
     > **Note:**
     >
     > - `cluster_name` must be unique for each cluster.
-    > - The total number of nodes actually created for each component = the number of nodes in the configuration file * the number of Availability Zones in the Region. The number of Regional clusters is 3 by default.
+    > - The total number of nodes actually to create for each component = the number of nodes in the configuration file * the number of Availability Zones in the Region. The number of Regional clusters is `3` by default.
 
 2. After you finish modification, execute `terraform init` and `terraform apply` to create the cluster.
 
