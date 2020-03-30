@@ -6,7 +6,7 @@ category: how-to
 
 # Restore Data from AWS S3 using BR
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [`BR`](https://pingcap.com/docs/v3.1/reference/tools/br/br) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://pingcap.com/docs/v3.1/reference/tools/br/br) is used to perform the restoration.
 
 The restoration method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -64,12 +64,12 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
 
 3. Create the IAM role:
 
-    - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
-    - Give the IAM role you created the required permission (refer to [access policies manage](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details). Because `Restore` needs to access AWS S3 storage, IAM is given the `AmazonS3FullAccess` permission.
+    - To create an IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
+    - Give the required permission to the IAM role you have created  (refer to [access policies manage](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details). Because `Restore` needs to access the AWS S3 storage, the IAM here is given the `AmazonS3FullAccess` permission.
 
 4. Associate IAM with TiKV Pod:
 
-    - In the process of restore using BR, both TiKV Pod and BR Pod need to read and write S3 storage. Therefore, you need to add annotation to TiKV Pod to associate it with the IAM role:
+    - In the process of restoration using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate it with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -77,7 +77,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
         kubectl edit tc demo2 -n test2
         ```
 
-    - Find `spec.tikv.annotations`, append the `arn:aws:iam::123456789012:role/user` annotation, and then exit. After TiKV Pod is restarted, check whether the annotation is added to TiKV Pod.
+    - Find `spec.tikv.annotations`, append the `arn:aws:iam::123456789012:role/user` annotation, and then exit. After the TiKV Pod is restarted, check whether the annotation is added to the TiKV Pod.
 
     > **Note:**
     >
@@ -125,15 +125,15 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
     kubectl edit tc demo2 -n test2
     ```
 
-    Modify `spec.tikv.serviceAccount` to `tidb-backup-manager`. After TiKV Pod is restarted, check whether the `serviceAccountName` of TiKV Pod has changed.
+    Modify the value of `spec.tikv.serviceAccount` to `tidb-backup-manager`. After the TiKV Pod is restarted, check whether the `serviceAccountName` of the TiKV Pod has changed.
 
     > **Note:**
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-## Restore process
+## Restoration process
 
-+ If you grant permissions by importing accessKey and secretKey, create the `Restore` CR, and restore cluster data as described below:
++ If you grant permissions by importing AccessKey and SecretKey, create the `Restore` CR, and restore cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -258,6 +258,7 @@ Refer to [Back up Data to AWS S3 using BR](backup-to-aws-s3-using-br.md#three-me
         region: us-west-1
         bucket: my-bucket
         prefix: my-folder
+    ```
 
 After creating the `Restore` CR, execute the following command to check the restoration status:
 
