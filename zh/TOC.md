@@ -62,9 +62,6 @@
   - [TiDB Toolkit](tidb-toolkit.md)
 + 组件
   - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
-<<<<<<< HEAD
-=======
   - [增强型 StatefulSet 控制器](advanced-statefulset.md)
->>>>>>> 37c9915... zh: add Advanced StatefulSet (#52)
 - [故障诊断](troubleshoot.md)
 - [常见问题](faq.md)
