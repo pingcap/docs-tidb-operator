@@ -71,7 +71,7 @@ Before you restore data from AWS S3 storage, you need to grant AWS account permi
 
 4. Associate IAM with TiKV Pod:
 
-    - In the process of restoration using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate it with the IAM role:
+    - In the restoration process using BR, both the TiKV Pod and the BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate the Pod with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -109,7 +109,7 @@ Before you restore data from AWS S3 storage, you need to grant AWS account permi
 
 4. Create the IAM role:
 
-    - Create a IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
+    - Create an IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
 
 5. Associate IAM with the ServiceAccount resources:
 

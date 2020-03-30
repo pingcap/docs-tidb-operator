@@ -93,12 +93,12 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
 
 3. Create the IAM role:
 
-    - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
-    - Give the IAM role you created the required permission. Refer to [Adding and Removing IAM Identity Permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details. Because `Backup` needs to access the AWS S3 storage, IAM is granted the `AmazonS3FullAccess` permission.
+    - To create an IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
+    - Give the required permission to the IAM role you have created. Refer to [Adding and Removing IAM Identity Permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details. Because `Backup` needs to access the AWS S3 storage, IAM is granted the `AmazonS3FullAccess` permission.
 
 4. Associate IAM with TiKV Pod:
 
-    - In the process of backup using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate it with the IAM role:
+    - In the backup process using BR, both the TiKV Pod and the BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to associate the Pod with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -106,7 +106,7 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
         kubectl edit tc demo1 -n test1
         ```
 
-    - Find `spec.tikv.annotations`, append the `arn:aws:iam::123456789012:role/user` annotation, and then exit. After TiKV Pod is restarted, check whether the annotation is added to TiKV Pod.
+    - Find `spec.tikv.annotations`, append the `arn:aws:iam::123456789012:role/user` annotation, and then exit. After the TiKV Pod is restarted, check whether the annotation is added to the TiKV Pod.
 
     > **Note:**
     >
@@ -132,11 +132,11 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
 
 3. Enable the IAM role for the service account on the cluster:
 
-    - To enable the IAM role on your EKS cluster, refer to [Amazon EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
+    - To enable the IAM role on your EKS cluster, refer to [Amazon EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html).
 
 4. Create the IAM role:
 
-    - Create a IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
+    - Create an IAM role and give the `AmazonS3FullAccess` permission to the role. Modify `Trust relationships` of the role. For details, refer to [Creating an IAM Role and Policy](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html).
 
 5. Associate IAM with the ServiceAccount resources:
 
