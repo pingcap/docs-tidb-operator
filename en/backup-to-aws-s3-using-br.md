@@ -6,7 +6,7 @@ category: how-to
 
 # Back up TiDB Cluster Data to AWS S3 using BR
 
-This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [`BR`](https://pingcap.com/docs/v3.1/reference/tools/br/br) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
+This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://pingcap.com/docs/v3.1/reference/tools/br/br) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -14,38 +14,38 @@ The backup method described in this document is implemented using Custom Resourc
 
 In the AWS cloud environment, different types of Kubernetes clusters provide different methods to grant AWS account permissions. This document describes the following three methods:
 
-1. Import the AccessKey and SecretKey of the AWS account:
++ Import the AccessKey and SecretKey of the AWS account:
 
     - The AWS client supports reading `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the process environment variables to get the permissions of the associated user or role.
 
-2. Bind [IAM](https://aws.amazon.com/cn/iam/) with the Pod:
++ Bind [IAM](https://aws.amazon.com/cn/iam/) with the Pod:
 
-    - By binding the IAM role of the user with the running Pod resources, the process that runs in Pod gets the permissions owned by the role.
+    - By binding the IAM role of the user with the running Pod resources, the process that runs in a Pod gets the permissions owned by the role.
     - This authorization method is provided by [`kube2iam`](https://github.com/jtblin/kube2iam).
 
     > **Note:**
     >
-    > - When you use this method, refer to [`kube2iam` Usage] for instructions on how to create the `kube2iam` environment in the Kubernetes cluster and deploy TiDB Operator and the TiDB cluster.
-    > - This method does not apply to [`hostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy). Please make sure that the `spec.tikv.hostNetwork` parameter is set to `false`.
+    > - When you use this method, refer to [`kube2iam` Usage](https://github.com/jtblin/kube2iam#usage) for instructions on how to create the `kube2iam` environment in the Kubernetes cluster, and then deploy TiDB Operator and the TiDB cluster.
+    > - This method does not apply to [`hostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy). Make sure that the `spec.tikv.hostNetwork` parameter is set to `false`.
 
-3. Bind [IAM](https://aws.amazon.com/cn/iam/) with ServiceAccount:
++ Bind [IAM](https://aws.amazon.com/cn/iam/) with ServiceAccount:
 
     - By binding the IAM role of the user with the [`serviceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) resources in Kubernetes, the Pods of this ServiceAccount get the permissions owned by the role.
     - This method is provided by [`EKS Pod Identity Webhook`](https://github.com/aws/amazon-eks-pod-identity-webhook).
 
     > **Note:**
     >
-    > When you use this method, refer to [AWS Documentation] for instructions on how to create a EKS cluster and deploy TiDB Operator and the TiDB cluster.
+    > When you use this method, refer to [AWS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) for instructions on how to create a EKS cluster, and then deploy TiDB Operator and the TiDB cluster.
 
 ## Ad-hoc full backup
 
 Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-Currently, the above three authorization methods are supported in ad-hoc full backup. Therefore, this document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage.
+Currently, the above three authorization methods are supported for the ad-hoc full backup. This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage and all the above methods are used in the examples.
 
 ### Prerequisites for ad-hoc full backup
 
-#### Grant permissions by AccessKey and SecretKey
+#### Grant permissions by importing AccessKey and SecretKey
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -92,11 +92,11 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
 3. Create the IAM role:
 
     - To create a IAM role for the account, refer to [Create an IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
-    - Give the IAM role you created the required permission. Because `Backup` needs to access AWS S3 storage, IAM is given the `AmazonS3FullAccess` permission.
+    - Give the IAM role you created the required permission. Refer to [Adding and Removing IAM Identity Permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) for details. Because `Backup` needs to access the AWS S3 storage, IAM is granted the `AmazonS3FullAccess` permission.
 
 4. Bind IAM to TiKV Pod:
 
-    - In the process of backup using BR, both TiKV Pod and BR Pod need to read and write S3 storage. Therefore, you need to add annotation to TiKV Pod to bind it with the IAM role:
+    - In the process of backup using BR, both TiKV Pod and BR Pod need to perform read and write operations on the S3 storage. Therefore, you need to add the annotation to the TiKV Pod to bind it with the IAM role:
 
         {{< copyable "shell-regular" >}}
 
@@ -110,7 +110,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-#### Grant permissions by binding IAM with ServiceAccount
+#### Grant permissions by associating IAM with ServiceAccount
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -152,7 +152,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
     kubectl edit tc demo1 -n test1
     ```
 
-    Modify `spec.tikv.serviceAccount` to `tidb-backup-manager`. After TiKV Pod is restarted, check whether the `serviceAccountName` of TiKV Pod has changed.
+    Modify the value of `spec.tikv.serviceAccount` to `tidb-backup-manager`. After the TiKV Pod is restarted, check whether the `serviceAccountName` of the TiKV Pod has changed.
 
     > **Note:**
     >
@@ -160,7 +160,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
 
 ### Process of ad-hoc full backup
 
-- If you grant permissions by accessKey and secretKey, create the `Backup` CR, and back up cluster data as described below:
+- If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -203,7 +203,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
         prefix: my-folder
     ```
 
-- If you grant permissions by binding IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
+- If you grant permissions by associating IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -247,7 +247,7 @@ Currently, the above three authorization methods are supported in ad-hoc full ba
         prefix: my-folder
     ```
 
-- If you grant permissions by binding IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
+- If you grant permissions by associating IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -328,7 +328,7 @@ More `Backup` CR fields are described as follows:
 - `.spec.from.host`: the address of the TiDB cluster to be backed up.
 - `.spec.from.port`: the port of the TiDB cluster to be backed up.
 - `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
-- `.spec.from.tidbSecretName`: the secret of the credential needed by the `.spec.from.user` TiDB cluster to be backed up.
+- `.spec.from.tidbSecretName`: the secret of the user password of the `.spec.from.user` TiDB cluster.
 
 More S3-compatible `provider`s are described as follows:
 
@@ -351,7 +351,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
 
 ### Process of scheduled full backup
 
-+ If you grant permissions by accessKey and secretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
++ If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -399,7 +399,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
           prefix: my-folder
     ```
 
-+ If you grant permissions by binding IAM with Pod, create the `BackupSchedule` CR, and back up cluster data as described below:
++ If you grant permissions by associating IAM with the Pod, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -448,7 +448,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
           prefix: my-folder
     ```
 
-+ If you grant permissions by binding IAM with ServiceAccount, create the `BackupSchedule` CR, and back up cluster data as described below:
++ If you grant permissions by associating IAM with ServiceAccount, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
