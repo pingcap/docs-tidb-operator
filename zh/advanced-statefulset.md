@@ -1,10 +1,12 @@
 ---
-title: 使用增强型 StatefulSet 控制器
+title: 增强型 StatefulSet 控制器
 summary: 介绍如何开启、使用增强型 StatefulSet 控制器
-category: alpha
+category: reference
 ---
 
-# 使用增强型 StatefulSet 控制器
+# 增强型 StatefulSet 控制器
+
+> **特性状态**: Alpha
 
 Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 为 Pods 分配连续的序号。比如 3 个副本时，Pods 分别为 pod-0, pod-1, pod-2。扩缩容时，必须在尾部增加或删除 Pods。比如扩容到 4 个副本时，会新增 pod-3。缩容到 2 副本时，会删除 pod-2。
 

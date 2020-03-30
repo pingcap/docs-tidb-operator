@@ -62,7 +62,6 @@
   - [TiDB Toolkit](tidb-toolkit.md)
 + 组件
   - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
-+ Alpha 功能特性
-  - [使用增强型 StatefulSet 控制器](using-advanced-statefulset.md)
+  - [增强型 StatefulSet 控制器](advanced-statefulset.md)
 - [故障诊断](troubleshoot.md)
 - [常见问题](faq.md)
