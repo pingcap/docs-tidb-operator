@@ -176,7 +176,6 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
       br:
         cluster: demo1
         clusterNamespace: test1
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
@@ -222,7 +221,6 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         cluster: demo1
         sendCredToTikv: false
         clusterNamespace: test1
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
@@ -265,7 +263,6 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         cluster: demo1
         sendCredToTikv: false
         clusterNamespace: test1
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
@@ -372,7 +369,6 @@ Amazon S3 支持以下几种 `storageClass` 类型：
         br:
           cluster: demo1
           clusterNamespace: test1
-          # enableTLSClient: false
           # logLevel: info
           # statusAddr: <status-addr>
           # concurrency: 4
@@ -423,7 +419,6 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           cluster: demo1
           sendCredToTikv: false
           clusterNamespace: test1
-          # enableTLSClient: false
           # logLevel: info
           # statusAddr: <status-addr>
           # concurrency: 4
@@ -471,7 +466,6 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           cluster: demo1
           sendCredToTikv: false
           clusterNamespace: test1
-          # enableTLSClient: false
           # logLevel: info
           # statusAddr: <status-addr>
           # concurrency: 4

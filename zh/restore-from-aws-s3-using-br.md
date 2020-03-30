@@ -154,7 +154,6 @@ category: how-to
       br:
         cluster: demo2
         clusterNamespace: test2
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
@@ -199,7 +198,6 @@ category: how-to
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
@@ -241,7 +239,6 @@ category: how-to
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        # enableTLSClient: false
         # logLevel: info
         # statusAddr: <status-addr>
         # concurrency: 4
