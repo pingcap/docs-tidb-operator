@@ -237,38 +237,6 @@ To scale the TiDB cluster, modify `tikv_count` or `tidb_count` in the `terraform
 
 After the nodes scale out, modify the `replicas` of the corresponding components by running `kubectl --kubeconfig credentials/kubeconfig edit tc <tidb_cluster_name> -n <namespace>`.
 
-## Destroy
-
-1. Refer to [Destroy a TiDB cluster](destroy-a-tidb-cluster.md) to delete the cluster.
-
-2. Destroy the ACK cluster by running the following command:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    terraform destroy
-    ```
-
-If the Kubernetes cluster is not successfully created, the `destroy` operation might return an error and fail. In such cases, manually remove the Kubernetes resources from the local state:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-terraform state list
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
-```
-
-It may take a long time to finish destroying the cluster.
-
-> **Note:**
->
-> You have to manually delete the cloud disk used by the components in the Alibaba Cloud console.
-
 ## Configure
 
 ### Configure TiDB Operator
@@ -420,6 +388,38 @@ You can customize this script. For example, you can remove the `module "bastion"
 > **Note:**
 >
 > You can copy the `deploy/aliyun` directory. But you cannot copy a directory on which the `terraform apply` operation is currently performed. In this case, it is recommended to clone the repository again and then copy it.
+
+## Destroy
+
+1. Refer to [Destroy a TiDB cluster](destroy-a-tidb-cluster.md) to delete the cluster.
+
+2. Destroy the ACK cluster by running the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    terraform destroy
+    ```
+
+If the Kubernetes cluster is not successfully created, the `destroy` operation might return an error and fail. In such cases, manually remove the Kubernetes resources from the local state:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+terraform state list
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
+```
+
+It may take a long time to finish destroying the cluster.
+
+> **Note:**
+>
+> You have to manually delete the cloud disk used by the components in the Alibaba Cloud console.
 
 ## Limitation
 
