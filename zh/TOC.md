@@ -18,6 +18,7 @@
   - [GCP 上的 TiDB 集群](deploy-on-gcp-gke.md)
   - [阿里云上的 TiDB 集群](deploy-on-alibaba-cloud.md)
   - [访问 Kubernetes 上的 TiDB 集群](access-tidb.md)
+  - [部署 TiDB Binlog](deploy-tidb-binlog.md)
 + 配置
   - [初始化集群](initialize-a-cluster.md)
   - [配置集群](configure-a-tidb-cluster.md)
@@ -31,14 +32,8 @@
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   + 备份与恢复
     - [基于 Helm Charts 的备份恢复](backup-and-restore-using-helm-charts.md)
-    + 基于 CRD 的备份恢复
-      - [备份 TiDB 集群到 GCS](backup-to-gcs.md)
-      - [恢复 GCS 上的备份数据](restore-from-gcs.md)
-      - [备份 TiDB 集群到兼容 S3 的存储](backup-to-s3.md)
-      - [恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
     - [使用 TiDB Lightning 恢复集群数据](restore-data-using-tidb-lightning.md)
-  - [收集日志](collect-tidb-binlogs.md)
-  - [TiDB Binlog 运维](maintain-tidb-binlog.md)
+  - [收集日志](collect-tidb-logs.md)
   - [集群故障自动转移](use-auto-failover.md)
 - [扩缩容](scale-a-tidb-cluster.md)
 + 升级
@@ -47,5 +42,7 @@
 + 工具
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
++ 组件
+    - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
 - [故障诊断](troubleshoot.md)
 - [常见问题](faq.md)

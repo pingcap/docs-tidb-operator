@@ -1,50 +1,51 @@
 ---
-title: Maintain TiDB Binlog
-summary: Learn how to maintain TiDB Binlog of a TiDB cluster in Kubernetes.
+title: TiDB Binlog 运维
+summary: 了解如何在 Kubernetes 上运维 TiDB 集群的 TiDB Binlog。
 category: how-to
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/tidb-binlog/']
 ---
 
-# Maintain TiDB Binlog
+# TiDB Binlog 运维
 
-This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/stable/reference/tidb-binlog/overview) of a TiDB cluster in Kubernetes.
+本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](https://pingcap.com/docs-cn/dev/reference/tidb-binlog/overview)。
 
-## Prerequisites
+## 运维准备
 
-- [Deploy TiDB Operator](deploy-tidb-operator.md);
-- [Install Helm](tidb-toolkit.md#use-helm) and configure it with the official PingCAP chart.
+- [部署 TiDB Operator](deploy-tidb-operator.md)；
+- [安装 Helm](tidb-toolkit.md#使用-helm) 并配置 PingCAP 官方 chart 仓库。
 
-## Enable TiDB Binlog of a TiDB cluster
+## 启用 TiDB 集群的 TiDB Binlog
 
-TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster with TiDB Binlog enabled, or enable TiDB Binlog in an existing TiDB cluster:
+默认情况下，TiDB Binlog 在 TiDB 集群中处于禁用状态。若要创建一个启用 TiDB Binlog 的 TiDB 集群，或在现有 TiDB 集群中启用 TiDB Binlog，可根据以下步骤进行操作：
 
-1. Modify the `values.yaml` file as described below:
+1. 按照以下说明修改 `values.yaml` 文件：
 
-    * Set `binlog.pump.create` to `true`.
-    * Set `binlog.drainer.create` to `true`.
-    * Set `binlog.pump.storageClassName` and `binlog.drainer.storageClassName` to an available `storageClass` in your Kubernetes cluster.
-    * Set `binlog.drainer.destDBType` to your desired downstream storage as needed, which is explained in details below.
+    * 将 `binlog.pump.create` 的值设为 `true`。
+    * 将 `binlog.drainer.create` 的值设为 `true`。
+    * 将 `binlog.pump.storageClassName` 和 `binlog.drainer.storageClassName` 设为所在 Kubernetes 集群上可用的 `storageClass`。
+    * 将 `binlog.drainer.destDBType` 设为所需的下游存储类型。
 
-        TiDB Binlog supports three types of downstream storage:
+        TiDB Binlog 支持三种下游存储类型：
 
-        * PersistenceVolume: the default downstream storage. You can configure a large PV for `drainer` (by modifying `binlog.drainer.storage`) in this case.
-        * MySQL compatible databases: enabled by setting `binlog.drainer.destDBType` to `mysql`. Meanwhile, you must configure the address and credential of the target database in `binlog.drainer.mysql`.
-        * Apache Kafka: enabled by setting `binlog.drainer.destDBType` to `kafka`. Meanwhile, you must configure the zookeeper address and Kafka address of the target cluster in `binlog.drainer.kafka`.
+        * PersistenceVolume：默认的下游存储类型。可通过修改 `binlog.drainer.storage` 来为 `drainer` 配置大 PV。
 
-2. Set affinity and anti-affinity for TiDB and the Pump component:
+        * 与 MySQL 兼容的数据库：通过将 `binlog.drainer.destDBType` 设置为 `mysql` 来启用。同时，必须在 `binlog.drainer.mysql` 中配置目标数据库的地址和凭据。
 
-    > **Note:**
+        * Apache Kafka：通过将 `binlog.drainer.destDBType` 设置为 `kafka` 来启用。同时，必须在 `binlog.drainer.kafka` 中配置目标集群的 zookeeper 地址和 Kafka 地址。
+
+2. 为 TiDB 与 Pump 组件设置亲和性和反亲和性：
+
+    > **注意：**
     >
-    > If you enable TiDB Binlog in the production environment, it is recommended to set affinity and anti-affinity for TiDB and the Pump component; if you enable TiDB Binlog in a test environment on the internal network, you can skip this step.
+    > 如果在生产环境中开启 TiDB Binlog，建议为 TiDB 与 Pump 组件设置亲和性和反亲和性。如果在内网测试环境中尝试使用开启 TiDB Binlog，可以跳过此步。
 
-    By default, TiDB's affinity is set to `{}`. Currently, each TiDB instance does not have a corresponding Pump instance by default. When TiDB Binlog is enabled, if Pump and TiDB are separately deployed and network isolation occurs, and `ignore-error` is enabled, TiDB loses binlogs. In this situation, it is recommended to deploy a TiDB instance and a Pump instance on the same node using the affinity feature, and to split Pump instances on different nodes using the anti-affinity feature. For each node, only one Pump instance is required.
+    默认情况下，TiDB 的 affinity 亲和性设置为 `{}`。由于目前 Pump 组件与 TiDB 组件默认并非一一对应，当启用 TiDB Binlog 时，如果 Pump 与 TiDB 组件分开部署并出现网络隔离，而且 TiDB 组件还开启了 `ignore-error`，则会导致 TiDB 丢失 Binlog。推荐通过亲和性特性将 TiDB 组件与 Pump 部署在同一台 Node 上，同时通过反亲和性特性将 Pump 分散在不同的 Node 上，每台 Node 上至多仅需一个 Pump 实例。
 
-    > Note:
+    > **注意：**
     >
-    > `<release-name>` needs to be replaced with the `Helm-release-name` of the target `tidb-cluster` chart.
+    > `<release-name>` 需要替换为目标 `tidb-cluster` 的 Helm release name。
 
-    * Configure `tidb.affinity` as follows:
-
-        {{< copyable "" >}}
+    * 将 `tidb.affinity` 按照如下设置：
 
         ```yaml
         tidb:
@@ -72,9 +73,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
                   topologyKey: kubernetes.io/hostname
         ```
 
-    * Configure `binlog.pump.affinity` as follows:
-
-        {{< copyable "" >}}
+    * 将 `binlog.pump.affinity` 按照如下设置：
 
         ```yaml
         binlog:
@@ -128,9 +127,9 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
                     topologyKey: kubernetes.io/hostname
         ```
 
-3. Create a new TiDB cluster or update an existing cluster:
+3. 创建一个新的 TiDB 集群或更新现有的集群：
 
-    * Create a new TiDB cluster with TiDB Binlog enabled:
+    * 创建一个启用 TiDB Binlog 的 TiDB 新集群：
 
         {{< copyable "shell-regular" >}}
 
@@ -138,11 +137,11 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
         helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=<chart-version> -f <values-file>
         ```
 
-    * Update an existing TiDB cluster to enable TiDB Binlog:
+    * 更新现有的 TiDB 集群以启用 TiDB Binlog：
 
-        > Note:
+        > **注意：**
         >
-        > If you set the affinity for TiDB and its components, updating the existing TiDB cluster causes rolling updates of the TiDB components in the cluster.
+        > 如果设置了 TiDB 组件的亲和性，那么更新现有的 TiDB 集群将引起 TiDB 集群中的 TiDB 组件滚动更新。
 
         {{< copyable "shell-regular" >}}
 
@@ -150,11 +149,11 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
         helm upgrade <release-name> pingcap/tidb-cluster --version=<chart-version> -f <values-file>
         ```
 
-## Deploy multiple drainers
+## 部署多个 drainer
 
-By default, only one downstream drainer is created. You can install the `tidb-drainer` Helm chart to deploy more drainers for a TiDB cluster, as described below:
+默认情况下，仅创建一个下游 drainer。可安装 `tidb-drainer` Helm chart 来为 TiDB 集群部署多个 drainer，示例如下：
 
-1. Make sure that the PingCAP Helm repository is up to date:
+1. 确保 PingCAP Helm 库是最新的：
 
     {{< copyable "shell-regular" >}}
 
@@ -168,13 +167,15 @@ By default, only one downstream drainer is created. You can install the `tidb-dr
     helm search tidb-drainer -l
     ```
 
-2. Get the default `values.yaml` file to facilitate customization:
+2. 获取默认的 `values.yaml` 文件以方便自定义：
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     helm inspect values pingcap/tidb-drainer --version=<chart-version> > values.yaml
     ```
 
-3. Modify the `values.yaml` file to specify the source TiDB cluster and the downstream database of the drainer. Here is an example:
+3. 修改 `values.yaml` 文件以指定源 TiDB 集群和 drainer 的下游数据库。示例如下：
 
     ```yaml
     clusterName: example-tidb
@@ -197,11 +198,11 @@ By default, only one downstream drainer is created. You can install the `tidb-dr
       port = 4000
     ```
 
-    The `clusterName` and `clusterVersion` must match the desired source TiDB cluster.
+    `clusterName` 和 `clusterVersion` 必须匹配所需的源 TiDB 集群。
 
-    For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](configure-tidb-binlog-drainer.md).
+    有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](configure-tidb-binlog-drainer.md)。
 
-4. Deploy the drainer:
+4. 部署 drainer：
 
     {{< copyable "shell-regular" >}}
 
@@ -209,6 +210,6 @@ By default, only one downstream drainer is created. You can install the `tidb-dr
     helm install pingcap/tidb-drainer --name=<release-name> --namespace=<namespace> --version=<chart-version> -f values.yaml
     ```
 
-    > **Note:**
+    > **注意：**
     >
-    > This chart must be installed to the same namespace as the source TiDB cluster.
+    > 该 chart 必须与源 TiDB 集群安装在相同的命名空间中。
