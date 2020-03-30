@@ -39,7 +39,7 @@ In addition, TiDB Operator also provides `tkctl`, the command-line interface for
 The diagram above is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR. The overall control flow is described as follows:
 
 1. The user creates a `TidbCluster` object and other CR objects through kubectl, such as `TidbMonitor`;
-2. TiDB Operator watches `TidbCluster` and other related objects, and constantly adjust the `StatefulSet`, `Deployment` and `Service`, and other objects of PD, TiKV, TiDB, Monitor or other components based on the actual state of the cluster;
+2. TiDB Operator watches `TidbCluster` and other related objects, and constantly adjust the `StatefulSet`, `Deployment`, `Service`, and other objects of PD, TiKV, TiDB, Monitor or other components based on the actual state of the cluster;
 3. Kubernetes' native controllers create, update, or delete the corresponding `Pod` based on objects such as `StatefulSet`, `Deployment`, and `Job`;
 4. In the `Pod` declaration of PD, TiKV, and TiDB, the `tidb-scheduler` scheduler is specified. `tidb-scheduler` applies the specific scheduling logic of TiDB when scheduling the corresponding `Pod`.
 
