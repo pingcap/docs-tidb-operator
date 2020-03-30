@@ -97,7 +97,7 @@ The custom configuration of alert rules is supported. You can modify the alert r
 
 The default Prometheus and alert configuration do not support sending alert messages. To send an alert message, you can integrate Prometheus with any tool that supports Prometheus alerts. It is recommended to manage and send alert messages via [AlertManager](https://prometheus.io/docs/alerting/alertmanager/).
 
-- If you already have an available AlertManager service in your existing infrastructure, you can modify `spec.alertmanagerURL` and configure its address for use by Prometheus. For details, refer to [Set kube-prometheus and AlertManager](monitor-using-tidbmonitor.md#set-kube-prometheus-and-alertmanager).
+- If you already have an available AlertManager service in your existing infrastructure, you can set the value of `spec.alertmanagerURL` to the address of `AlertManager`, which will be used by Prometheus. For details, refer to [Set kube-prometheus and AlertManager](monitor-using-tidbmonitor.md#set-kube-prometheus-and-alertmanager).
 
 - If there is no AlertManager service available, or if you want to deploy a separate set of services, you can refer to [Prometheus official document](https://github.com/prometheus/alertmanager).
 
