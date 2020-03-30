@@ -55,6 +55,7 @@
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
 + Components
-    - [TiDB Scheduler](tidb-scheduler.md)
+  - [TiDB Scheduler](tidb-scheduler.md)
+  - [Advanced StatefulSet Controller](advanced-statefulset.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
