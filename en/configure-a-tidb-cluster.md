@@ -122,7 +122,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 
 ## Resource configuration
 
-Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configurations must be specified according to component needs. Detailed reference: [Hardware Recommendations](https://pingcap.com/docs/dev/how-to/deploy/hardware-recommendations/).
+Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configurations must be specified according to component needs. Detailed reference: [Hardware Recommendations](https://pingcap.com/docs/v3.0/how-to/deploy/hardware-recommendations/).
 
 To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level QoS by letting `limits` equal to `requests` when configuring resources. Detailed reference: [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 
@@ -190,7 +190,7 @@ affinity:
 
 ### Disaster recovery of data
 
-Before configuring the data disaster recovery, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/dev/how-to/deploy/geographic-redundancy/location-awareness/) which describes how the disaster recovery of the TiDB cluster is implemented.
+Before configuring the data disaster recovery, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/v3.0/how-to/deploy/geographic-redundancy/location-awareness/) which describes how the disaster recovery of the TiDB cluster is implemented.
 
 To add the data disaster recovery feature in Kubernetes:
 
