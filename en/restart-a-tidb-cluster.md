@@ -23,8 +23,6 @@ To activate the graceful logoff feature, you need to enable some related configu
     ```yaml
     admissionWebhook:
       create: true
-      mutation:
-        pods: true
     ```
 
 2. Install or update TiDB Operator.
@@ -33,7 +31,7 @@ To activate the graceful logoff feature, you need to enable some related configu
 
 ## Use annotate to mark the target Pod
 
-You can use `kubectl annotate` to mark the target Pod component of the TiDB cluster. After marking, the TiDB Operator automatically performs graceful logoff of the Pod and restarts the cluster. To mark the target Pod, run the following command:
+You can use `kubectl annotate` to mark the target Pod component of the TiDB cluster. After marking, the TiDB Operator automatically performs graceful logoff of the Pod and restarts the target Pod. To mark the target Pod, run the following command:
 
 {{< copyable "shell-regular" >}}
 
