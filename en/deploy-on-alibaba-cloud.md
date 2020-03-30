@@ -79,7 +79,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cd tidb-operator/deploy/aliyun
     ```
 
-    You can create or modify `terraform.tfvars` to set the variables, and configure the cluster to fit your need. You can view the configurable variables and their descriptions by `variables.tf`. The following is an example of how to configure the ACK cluster name, the TiDB cluster name and the number of nodes in PD, TiKV, and TiDB.
+    You can create or modify `terraform.tfvars` to set the values of the variables, and configure the cluster to fit your needs. You can view the configurable variables and their descriptions in `variables.tf`. The following is an example of how to configure the ACK cluster name, the TiDB cluster name and the number of PD, TiKV, and TiDB nodes.
 
     ```
     cluster_name = "testack"
@@ -97,7 +97,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     terraform init
     ```
 
-    Input "yes" to confirm execution when you run the `apply` command:
+    Input "yes" to confirm execution when you run the following `apply` command:
 
     {{< copyable "shell-regular" >}}
 
@@ -165,7 +165,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     > **Note:**
     >
     > * Replace all the `TIDB_CLUSTER_NAME` in the `db.yaml` and `db-monitor.yaml` files with `tidb_cluster_name` configured in the deployment of ACK.
-    > * Make sure the numbers of nodes in PD, TiKV, and TiDB are the same as the `replicas` field in `db.yaml`.
+    > * Make sure the number of PD, TiKV, and TiDB nodes is the same as the `replicas` value of the corresponding component in `db.yaml`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
 
 2. Create `Namespace`:
@@ -217,7 +217,7 @@ The initial login user account and password:
 
 > **Warning:**
 >
-> If you already have a VPN connecting to your VPC or plan to set up one, it is strongly recommended to set `db-monitor.yaml` - `spec.grafana.service.annotations` - `service.beta.kubernetes.io/alicloud-loadbalancer-address-type` to `intranet` for security.
+> If you already have a VPN connecting to your VPC or plan to set up one, it is strongly recommended that you go to the `spec.grafana.service.annotations` section in the `db-monitor.yaml` file and set `service.beta.kubernetes.io/alicloud-loadbalancer-address-type` to `intranet` for security.
 
 ## Upgrade
 
@@ -247,9 +247,9 @@ After the nodes scale out, modify the `replicas` of the corresponding components
 
     ```shell
     terraform destroy
-    ```	```
+    ```
 
-If the Kubernetes cluster is not successfully created, the `destroy` operation might return an error and cannot be executed. In such cases, remove the Kubernetes resources from the local state manually:
+If the Kubernetes cluster is not successfully created, the `destroy` operation might return an error and fail. In such cases, manually remove the Kubernetes resources from the local state:
 
 {{< copyable "shell-regular" >}}
 
@@ -273,7 +273,7 @@ It may take a long time to finish destroying the cluster.
 
 ### Configure TiDB Operator
 
-You can set variables in `terraform.tfvars` to configure TiDB Operator. Most configuration items can be modified after understanding the semantics based on the comments of the `variable`. Note that the `operator_helm_values` configuration item can provide a customized `values.yaml` configuration file for TiDB Operator. For example:
+You can set the variables in `terraform.tfvars` to configure TiDB Operator. Most configuration items can be modified after you understand the semantics based on the comments of the `variable`. Note that the `operator_helm_values` configuration item can provide a customized `values.yaml` configuration file for TiDB Operator. For example:
 
 - Set `operator_helm_values` in `terraform.tfvars`:
 
