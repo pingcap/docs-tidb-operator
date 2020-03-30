@@ -6,7 +6,7 @@ category: alpha
 
 # 使用增强型 StatefulSet 控制器
 
-Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 为 Pods 分配连续的序号。比如 3 个副本时，Pods 分别为 pod-0, pod-1, pod-2。扩缩容时，必须在尾部增加或删除 Pods。比如扩容到 4 个副本时，会新增 pod-3。缩容到 2 副本时，会删除 pod-2。 
+Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 为 Pods 分配连续的序号。比如 3 个副本时，Pods 分别为 pod-0, pod-1, pod-2。扩缩容时，必须在尾部增加或删除 Pods。比如扩容到 4 个副本时，会新增 pod-3。缩容到 2 副本时，会删除 pod-2。
 
 在使用本地存储时，Pods 与 Nodes 存储资源绑定，无法自由调度。若希望删除掉中间某个 Pod ，以便维护其所在的 Node 但并没有其他 Node 可以迁移时，或者某个 Pod 故障想直接删除，另起一个序号不一样的 Pod 时，无法通过内置 StatefulSet 实现。
 
@@ -77,9 +77,9 @@ metadata:
   name: asts
 spec:
   version: v3.0.12
-  timezone: UTC 
+  timezone: UTC
   pvReclaimPolicy: Delete
-  pd: 
+  pd:
     baseImage: pingcap/pd
     replicas: 3
     requests:
@@ -106,8 +106,10 @@ spec:
 ```yaml
 metadata:
   annotations:
-   	tikv.tidb.pingcap.com/delete-slots: '[1]'
+    tikv.tidb.pingcap.com/delete-slots: '[1]'
 ```
+
+> **注意**：对 replicas 和 delete slot annotation 的修改需在同一个操作中完成，不然控制器会根据修改一般的期望进行操作。
 
 完整例子如下：
 
@@ -118,13 +120,13 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   annotations:
-   	tikv.tidb.pingcap.com/delete-slots: '[1]'
+    tikv.tidb.pingcap.com/delete-slots: '[1]'
   name: asts
 spec:
   version: v3.0.12
-  timezone: UTC 
+  timezone: UTC
   pvReclaimPolicy: Delete
-  pd: 
+  pd:
     baseImage: pingcap/pd
     replicas: 3
     requests:
@@ -151,3 +153,46 @@ spec:
 - `tikv.tidb.pingcap.com/delete-slots`：指定 TiKV 组件需要删除的 Pod 序号。
 
 其中 Annotation 值为 JSON 的整数数组，比如 `[0]`, `[0,1]`, `[1,3]` 等。
+
+### 操作 TidbCluster 对象在指定位置进行扩容
+
+对前面缩容进行反向操作，即可恢复 pod-1 。
+
+> **注意**：同常规 StatefulSet 缩容一样，并不会主动删除 Pod 关联的 PVC ，若想避免使用之前数据，在原位置处扩容，需主动删除关联的 PVC 。
+
+例子如下：
+
+{{< copyable "" >}}
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  annotations:
+    tikv.tidb.pingcap.com/delete-slots: '[]'
+  name: asts
+spec:
+  version: v3.0.12
+  timezone: UTC
+  pvReclaimPolicy: Delete
+  pd:
+    baseImage: pingcap/pd
+    replicas: 3
+    requests:
+      storage: "1Gi"
+    config: {}
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 4
+    requests:
+      storage: "1Gi"
+    config: {}
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 2
+    service:
+      type: ClusterIP
+    config: {}
+```
+
+其中 delete slots annotations 可留空或完全删除，均可。
