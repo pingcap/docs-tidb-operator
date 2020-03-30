@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.1
 
 # TiDB Binlog 运维
 
-本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](https://pingcap.com/docs-cn/dev/reference/tidb-binlog/overview)。
+本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](https://pingcap.com/docs-cn/v3.0/reference/tidb-binlog/overview)。
 
 ## 运维准备
 
