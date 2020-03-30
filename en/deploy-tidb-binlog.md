@@ -7,7 +7,7 @@ aliases: ['/docs/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs/v3.1/tidb-
 
 # Maintain TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/stable/reference/tidb-binlog/overview) of a TiDB cluster in Kubernetes.
+This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/v3.0/reference/tidb-binlog/overview) of a TiDB cluster in Kubernetes.
 
 ## Prerequisites
 
