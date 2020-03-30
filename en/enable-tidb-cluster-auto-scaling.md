@@ -41,7 +41,7 @@ To turn this feature on, you need to enable some related configurations in TiDB 
 
 ## TidbClusterAutoScaler
 
-The `TidbClusterAutoScaler` CR object is used to control the behavior of the auto-scaling in the TiDB cluster. If you have used [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), presumably you are familiar with the notion `TidbClusterAutoScaler`. The following is a auto-scaling sample in TiKV.
+The `TidbClusterAutoScaler` CR object is used to control the behavior of the auto-scaling in the TiDB cluster. If you have used [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), presumably you are familiar with the notion `TidbClusterAutoScaler`. The following is an auto-scaling example in TiKV.
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -69,9 +69,9 @@ spec:
 
 The TiDB component can be configured using `spec.tidb`. Currently, the auto-scaling API of TiDB is the same as that of TiKV.
 
-In a `TidbClusterAutoScaler` object, the `cluster` attribute specifies the TiDB clusters to be auto-scaled. These clusters are marked by `name` and `namespace`. You need to provide the metrics collection and query service to `TidbClusterAutoScaler` because it grabs resource usage through the metrics collection component. The `monitor` attribute refers to the `TidbMonitor` object. For more information, see [Monitor TiDB Clusters using TidbMonitor](monitor-using-tidbmonitor.md).
+In a `TidbClusterAutoScaler` object, the `cluster` attribute specifies the TiDB clusters to be auto-scaled. These clusters are marked by `name` and `namespace`. You need to provide the metrics collection and query service to `TidbClusterAutoScaler` because it captures resource usage through the metrics collection component. The `monitor` attribute refers to the `TidbMonitor` object. For more information, see [Monitor TiDB Clusters using TidbMonitor](monitor-using-tidbmonitor.md).
 
-If you use the external `Prometheus` instead of `TidbMonitor`, you can fill in the Host by configuring `spec.metricsUrl` to specify the monitoring metrics collection service for the TiDB cluster. If you deploy the monitoring of the TiDB cluster using `Helm`, take the following steps to specify `spec.metricsUrl`.
+For the external `Prometheus` other than `TidbMonitor`, you can fill in the Host by configuring `spec.metricsUrl` to specify the monitoring metrics collection service for the TiDB cluster. If you deploy the monitoring of the TiDB cluster using `Helm`, take the following steps to specify `spec.metricsUrl`.
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -101,7 +101,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/maste
 tidbclusterautoscaler.pingcap.com/auto-scaling-demo created
 ```
 
-When you create the TiDB cluster, you can stress test the auto-scaling feature through database stress test tools such as [sysbench](https://www.percona.com/blog/tag/sysbench/).
+After the TiDB cluster is created, you can stress test the auto-scaling feature through database stress test tools such as [sysbench](https://www.percona.com/blog/tag/sysbench/).
 
 Run the following commands to destroy the environment:
 
@@ -115,8 +115,8 @@ kubectl delete tidbclusterautoscaler auto-scaling-demo -n <namespace>
 
 1. Set the auto-scaling interval.
 
-    Compared with the stateless web service, a distributed database software is often sensitive to the instance auto-scaling. You need to make sure that there is a certain interval between each auto-scaling in case it is too often.
-    You can set the interval (s) between each auto-scaling by configuring `spec.tikv.scaleInIntervalSeconds` and `spec.tikv.ScaleOutIntervalSeconds` in TiTV. This also applies to TiDB.
+    Compared with the stateless web service, a distributed database software is often sensitive to the instance auto-scaling. You need to make sure that there is a certain interval between each auto-scaling in case scaling operations are too frequent.
+    You can set the interval (in seconds) between each auto-scaling by configuring `spec.tikv.scaleInIntervalSeconds` and `spec.tikv.ScaleOutIntervalSeconds` in TiTV. This also applies to TiDB.
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -134,7 +134,7 @@ kubectl delete tidbclusterautoscaler auto-scaling-demo -n <namespace>
 
 2. Set the maximum value and the minimum value.
 
-    You can set the maximum value and the minimum value of each `TidbClusterAutoScaler` component to control the scaling range of `TiDB` and `TiKV`, which is similar to [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
+    You can set the maximum value and the minimum value of each component in `TidbClusterAutoScaler` to control the scaling range of `TiDB` and `TiKV`, which is similar to [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -174,7 +174,7 @@ kubectl delete tidbclusterautoscaler auto-scaling-demo -n <namespace>
 
 4. Set the time window configurations
 
-    The CPU utilization based auto-scaling allows `TidbClusterAutoScaler` getting the CPU metrics of `TiDB` and `TiKV` from the specified monitoring system. You can specify the time window of metrics collection.
+    The CPU utilization based auto-scaling allows `TidbClusterAutoScaler` to get the CPU metrics of `TiDB` and `TiKV` from the specified monitoring system. You can specify the time window of metrics collection.
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1

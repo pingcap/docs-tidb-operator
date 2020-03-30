@@ -43,7 +43,7 @@
   - [Collect TiDB Logs](collect-tidb-logs.md)
   - [Maintain TiDB Binlog](maintain-tidb-binlog.md)
   - [Enable Automatic Failover](use-auto-failover.md)
-+ Scale TiDB Cluster
++ Scale
   - [Scale](scale-a-tidb-cluster.md)
   - [Enable Auto-scaling](enable-tidb-cluster-auto-scaling.md)
 + Upgrade
