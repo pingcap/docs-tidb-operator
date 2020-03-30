@@ -153,7 +153,7 @@ tidb-ctl schema in mysql
     helm init --service-account=tiller --upgrade
     ```
 
-    If you cannot access `gcr.io`, trying using the mirror repository:
+    If you cannot access `gcr.io`, try using the mirror repository:
 
     {{< copyable "shell-regular" >}}
 
