@@ -6,14 +6,14 @@ category: how-to
 
 # Enable TLS between TiDB Components
 
-This document describes how to enable TLS between components of the TiDB cluster on Kubernetes. Starting from TiDB Operator v1.1, TLS between components of the TiDB cluster on Kubernetes is supported.
+This document describes how to enable Transport Layer Security (TLS) between components of the TiDB cluster in Kubernetes, which is supported since TiDB Operator v1.1.
 
 To enable TLS between TiDB components, perform the following steps:
 
-1. Issue two sets of certificates for each component of the TiDB cluster to be created:
+1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for PD/TiKV/TiDB/Pump/Drainer components, saved as the Kubernetes Secret objects: `<cluster-name>-<component-name>-cluster-secret`
-   - A common set of client-side certificates for the various clients of all components, saved as the Kubernetes Secret objects:  `<cluster-name>-cluster-client-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer component, saved as the Kubernetes Secret objects: `<cluster-name>-<component-name>-cluster-secret`
+   - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects:  `<cluster-name>-cluster-client-secret`.
 
 2. Deploy the cluster, and set `.spec.tlsClient.enabled` to `true`.
 3. Configure `pd-ctl` to connect to the cluster.
@@ -23,9 +23,9 @@ Certificates can be issued in multiple methods. This document describes two meth
     - [Using the `cfssl` system](#using-cfssl)
     - [Using the `cert-manager` system](#using-cert-manager)
 
-## Step 1: Issue certificates for components of the TiDB cluster
+## Step 1: Generate certificates for components of the TiDB cluster
 
-This section describe how to issue certificates using two methods: `cfssl` and `cert-manager`.
+This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
 ### Using `cfssl`
 
@@ -115,7 +115,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
     - PD
 
-        First, create the default `pd-server.json` file:
+        First, generate the default `pd-server.json` file:
 
         {{< copyable "shell-regular" >}}
 
@@ -123,7 +123,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
         cfssl print-defaults csr > pd-server.json
         ```
 
-        Then, edit this file to change the `CN`, `hosts` attributes:
+        Then, edit this file to change the `CN` and `hosts` attributes:
 
         ```json
         ...
@@ -156,7 +156,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
     - TiKV
 
-        First, create the default `tikv-server.json` file:
+        First, generate the default `tikv-server.json` file:
 
         {{< copyable "shell-regular" >}}
 
@@ -164,7 +164,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
         cfssl print-defaults csr > tikv-server.json
         ```
 
-        Then, edit this file to change the `CN`, `hosts` attributes:
+        Then, edit this file to change the `CN` and `hosts` attributes:
 
         ```json
         ...
@@ -296,18 +296,18 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
         Drainer is deployed using Helm. The `hosts` field varies with different configuration of the `values.yaml` file.
 
-        If you set the `drainerName` attributes when deploying Drainer as follows:
+        If you have set the `drainerName` attribute when deploying Drainer as follows:
 
         ```yaml
         ...
-        # Change the name of the statefulset and pod
-        # The default is clusterName-ReleaseName-drainer
-        # Do not change the name of an existing running drainer: this is unsupported.
+        # Changes the names of the statefulset and Pod.
+        # The default value is clusterName-ReleaseName-drainer.
+        # Does not change the name of an existing running Drainer, which is unsupported.
         drainerName: my-drainer
         ...
         ```
 
-        Then you can set the `hosts` attributes as described below:
+        Then you can set the `hosts` attribute as described below:
 
         ```json
         ...
@@ -322,7 +322,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
         ...
         ```
 
-        If you didn't set the `drainerName` attribute when deploying Drainer, configure the `hosts` attributes as follows:
+        If you have not set the `drainerName` attribute when deploying Drainer, configure the `hosts` attribute as follows:
 
         ```json
         ...
@@ -374,7 +374,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
 7. Create the Kubernetes Secret object:
 
-    If you have already generated a set of certificates for each component and a set of client-side certificate for each client as described in the above steps, create the Secret objects for the TiDB cluster by the following command:
+    If you have already generated a set of certificates for each component and a set of client-side certificate for each client as described in the above steps, create the Secret objects for the TiDB cluster by executing the following command:
 
     - The PD cluster certificate Secret:
 
@@ -426,16 +426,16 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
     You have created two Secret objects:
 
-    - One Secret object for the PD/TiKV/TiDB/Pump/Drainer server-side certificates to load when they are started
-    - Another Secret object for their clients to connect
+    - One Secret object for each PD/TiKV/TiDB/Pump/Drainer server-side certificate to load when the server is started;
+    - One Secret object for their clients to connect.
 
 ### Using `cert-manager`
 
 1. Install `cert-manager`.
 
-    Refer to [cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html).
+    Refer to [cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html) for details.
 
-2. Create a ClusterIssuer to issue certificates for the TiDB cluster.
+2. Create a ClusterIssuer to issue certificates to the TiDB cluster.
 
     To configure `cert-manager`, create the Issuer or ClusterIssuer resources. This document describes how to use ClusterIssuer, which supports issuing certificates in multiple `namespace`.
 
@@ -480,11 +480,11 @@ This section describe how to issue certificates using two methods: `cfssl` and `
         secretName: tidb-cluster-issuer-cert
     ```
 
-    This `.yaml` file creates three objects:
+    The above yaml file creates three objects:
 
-    - A ClusterIssuer object of SelfSigned class, used to generate the CA certificate needed by ClusterIssuer of CA class
-    - A Certificate object, whose `isCa` is set to `true`
-    - A ClusterIssuer, used to issue TLS certificates between TiDB components
+    - A ClusterIssuer object of the SelfSigned type, used to generate the CA certificate needed by ClusterIssuer of the CA type;
+    - A Certificate object, whose `isCa` is set to `true`.
+    - A ClusterIssuer, used to issue TLS certificates between TiDB components.
 
     Finally, execute the following command to create a ClusterIssuer:
 
@@ -498,7 +498,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
     In `cert-manager`, the Certificate resource represents the certificate interface. This certificate is issued and updated by the ClusterIssuer created in Step 2.
 
-    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a common client-side certificate for their clients.
+    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
 
     - PD
 
@@ -551,10 +551,10 @@ This section describe how to issue certificates using two methods: `cfssl` and `
             - `*.<cluster-name>-pd-peer`
             - `*.<cluster-name>-pd-peer.<namespace>`
             - `*.<cluster-name>-pd-peer.<namespace>.svc`
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
+        - Add the following two IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
-        - Add the ClusterIssuer created above in the `issuerRef`
+        - Add the ClusterIssuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `<cluster-name>-pd-cluster-secret` Secret object to be used by the PD component of the TiDB server.
@@ -615,7 +615,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
         - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
-        - Add the ClusterIssuer created above in the `issuerRef`
+        - Add the ClusterIssuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `<cluster-name>-tikv-cluster-secret` Secret object to be used by the TiKV component of the TiDB server.
@@ -847,13 +847,13 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
     - Set `spec.secretName` to `<cluster-name>-cluster-client-secret`
     - Add `client auth` in `usages`
-    - Do not configure `dnsNames` and `ipAddresses`
+    - You can leave `dnsNames` and `ipAddresses` empty.
     - Add the ClusterIssuer created above in the `issuerRef`
     - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
     After the object is created, `cert-manager` generates a `<cluster-name>-cluster-client-secret` Secret object to be used by the clients of the TiDB components. 
     
-    To obtain the client certificate, run the following command:
+    To obtain the client certificate, run the following commands:
 
     {{< copyable "shell-regular" >}}
 
@@ -867,7 +867,7 @@ This section describe how to issue certificates using two methods: `cfssl` and `
 
 ## Step 2: Deploy the TiDB cluster
 
-In this step, you need to finish the following operation:
+In this step, you need to perform the following operations:
 
     - Create a TiDB cluster
     - Enable TLS between the TiDB components
@@ -1067,7 +1067,7 @@ In this step, you need to finish the following operation:
 
 2. Connect to the cluster:
 
-    First, download the client-side certificate, which is the client certificate you created in Step 1. You can directly use it, or obtain it from the `<cluster-name>-cluster-client-secret` Kubernetes Secret object created before.
+    First, download the client-side certificate, which is the client certificate you have created in Step 1. You can directly use it, or obtain it from the `<cluster-name>-cluster-client-secret` Kubernetes Secret object created before.
 
     {{< copyable "shell-regular" >}}
 
