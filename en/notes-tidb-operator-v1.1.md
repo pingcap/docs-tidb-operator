@@ -12,7 +12,7 @@ This document introduces important notes for TiDB Operator v1.1.
 
 Since TiDB Operator v1.1.0, PingCAP no longer updates or maintains the tidb-cluster chart. The components and features that have been managed using the tidb-cluster chart will be managed in new ways in v1.1. See the following table for details:
 
-| Components/Features | Managements in v1.1 |
+| Components/Features | Managements in TiDB Operator v1.1 |
 | :--- | :--- |
 | TiDB Cluster (PD, TiDB, TiKV) | [TidbCluster CR](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html) |
 | TiDB Monitor | [TidbMonitor CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/monitor/tidb-monitor.yaml) |
