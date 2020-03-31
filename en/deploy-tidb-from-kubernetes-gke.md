@@ -138,7 +138,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 After `TidbCluster` custom resource type is created, install TiDB Operator in your Kubernetes cluster.
 
-1. Get the `values.yaml` file of the `tidb-operator` chart you want to install.
+1. Get the `values.yaml` file of the `tidb-operator` chart you want to install:
 
     {{< copyable "shell-regular" >}}
 
@@ -149,7 +149,7 @@ After `TidbCluster` custom resource type is created, install TiDB Operator in yo
 
     Modify the configuration in `values.yaml` according to your needs.
 
-2. Install TiDB Operator.
+2. Install TiDB Operator:
 
     {{< copyable "shell-regular" >}}
 
@@ -263,7 +263,7 @@ To scale out the TiDB cluster, modify `spec.pd.replicas`, `spec.tidb.replicas`, 
 kubectl -n demo edit tc basic
 ```
 
-## Accessing the Grafana dashboard
+## Access the Grafana dashboard
 
 To access the Grafana dashboards, you can create a tunnel between the Grafana service and your shell.
 To do so, use the following command:
