@@ -18,7 +18,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
 
 1. Load the Advanced StatefulSet CRD file:
 
-    * For Kubernetes versions <= 1.16:
+    * For Kubernetes versions < 1.16:
 
         {{< copyable "shell-regular" >}}
 
@@ -26,7 +26,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
         kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1beta1.yaml
         ```
 
-    * For Kubernetes versions > 1.16:
+    * For Kubernetes versions >= 1.16:
 
         {{< copyable "shell-regular" >}}
 
