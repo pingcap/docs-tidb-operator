@@ -358,7 +358,7 @@ category: how-to
 
 > **注意：**
 >
-> TiDB Server 的 TLS 支持兼容 MySQL 协议。当证书内容发生改变后，需要管理员手工执行 SQL 语句 `alter instance reload tls` 进行刷新。
+> TiDB Server 的 TLS 兼容 MySQL 协议。当证书内容发生改变后，需要管理员手动执行 SQL 语句 `alter instance reload tls` 进行刷新。
 
 ## 第二步：部署 TiDB 集群
 
