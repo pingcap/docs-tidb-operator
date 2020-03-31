@@ -856,7 +856,7 @@ category: how-to
 
 > **注意：**
 >
-> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一项。
+> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。
 
 在这一步中，需要完成以下操作：
 
