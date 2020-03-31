@@ -14,7 +14,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 可以在 `TidbMonitor` 中设置 `spec.persistent` 为 `true` 来持久化监控数据。开启此选项时应将 `spec.storageClassName` 设置为一个当前集群中已有的存储，并且此存储应当支持将数据持久化，否则会存在数据丢失的风险。
 
-在 [TiDB 集群监控](https://pingcap.com/docs-cn/stable/how-to/monitor/monitor-a-cluster/)中有一些监控系统配置的细节可供参考。
+在 [TiDB 集群监控](https://pingcap.com/docs-cn/v3.0/how-to/monitor/monitor-a-cluster/)中有一些监控系统配置的细节可供参考。
 
 ### 查看监控面板
 
@@ -92,7 +92,7 @@ kubectl port-forward -n <namespace> svc/<cluster-name>-prometheus 9090:9090 &>/t
 
 默认的 Prometheus 和报警配置不能发送报警消息，如需发送报警消息，可以使用任意支持 Prometheus 报警的工具与其集成。推荐通过 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/) 管理与发送报警消息。
 
-如果在你的现有基础设施中已经有可用的 AlertManager 服务，可以参考[设置 kube-prometheus 与 AlertManager](monitor-using-tidbmonitor.md#设置-kube-prometheus-与-AlertManager) 设置 `spec.alertmanagerURL` 配置其地址供 Prometheus 使用；如果没有可用的 AlertManager 服务，或者希望部署一套独立的服务，可以参考官方的[说明](https://github.com/prometheus/alertmanager)部署。
+如果在你的现有基础设施中已经有可用的 AlertManager 服务，可以参考[设置 kube-prometheus 与 AlertManager](monitor-using-tidbmonitor.md#设置-kube-prometheus-与-alertmanager) 设置 `spec.alertmanagerURL` 配置其地址供 Prometheus 使用；如果没有可用的 AlertManager 服务，或者希望部署一套独立的服务，可以参考官方的[说明](https://github.com/prometheus/alertmanager)部署。
 
 ### Kubernetes 报警
 

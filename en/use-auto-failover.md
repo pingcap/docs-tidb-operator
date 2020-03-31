@@ -10,7 +10,7 @@ Automatic failover means that when a node in the TiDB cluster fails, TiDB Operat
 
 TiDB Operator manages Pods based on `StatefulSet`, which does not automatically create a new node to replace the original node when a Pod goes down. For this reason, the automatic failover feature is added to TiDB Operator, which expands the behavior of `StatefulSet`.
 
-The automatic failover feature is disabled by default in TiDB Operator. You can enable it by setting `controllerManager.autoFailover` to `true` in the `charts/tidb-operator/values.yaml` file when deploying TiDB Operator:
+The automatic failover feature is enabled by default in TiDB Operator. You can disable it by setting `controllerManager.autoFailover` to `false` in the `charts/tidb-operator/values.yaml` file when deploying TiDB Operator:
 
 ```yaml
 controllerManager:
@@ -46,7 +46,7 @@ Assume that there are 3 nodes in a PD cluster. If a PD node is down for over 5 m
 
 ### Failover with TiKV
 
-When a TiKV node fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying [`max-store-down-time`](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file#max-store-down-time) in PD's [configuration file](https://github.com/pingcap/pd/blob/master/conf/config.toml)), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tikvFailoverPeriod`), TiDB Operator creates a new TiKV node if this TiKV node is still down. If the failed TiKV node gets back online, TiDB Operator does not automatically delete the newly created node, and you need to manually drop it and restore the original number of nodes. To do this, you can delete the TiKV node from the `status.tikv.failureStores` field of the `TidbCluster` object:
+When a TiKV node fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying [`max-store-down-time`](https://pingcap.com/docs/v3.0/reference/configuration/pd-server/configuration-file#max-store-down-time) in PD's [configuration file](https://github.com/pingcap/pd/blob/master/conf/config.toml)), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tikvFailoverPeriod`), TiDB Operator creates a new TiKV node if this TiKV node is still down. If the failed TiKV node gets back online, TiDB Operator does not automatically delete the newly created node, and you need to manually drop it and restore the original number of nodes. To do this, you can delete the TiKV node from the `status.tikv.failureStores` field of the `TidbCluster` object:
 
 {{< copyable "shell-regular" >}}
 

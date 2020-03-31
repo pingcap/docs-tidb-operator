@@ -12,6 +12,14 @@ category: reference
 >
 > 每个 Kubernetes 集群中只能部署一个 TiDB Operator。
 
+TiDB Operator 与适用的 TiDB 版本的对应关系如下：
+
+| TiDB Operator 版本 | 适用的 TiDB 版本 |
+|:---|:---|
+| v1.0 | v2.1, v3.0 |
+| v1.1 | v3.0, v3.1, v4.0 |
+| dev | v3.0, v3.1, v4.0, dev |
+
 ## TiDB Operator 整体架构
 
 ![TiDB Operator Overview](/media/tidb-operator-overview-1.1.png)
@@ -74,7 +82,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + [TiDB 集群备份恢复](restore-from-aws-s3-using-br.md)
 + [配置 TiDB 集群故障自动转移](use-auto-failover.md)
 + [监控 TiDB 集群](monitor-a-tidb-cluster.md)
-+ [TiDB 集群日志收集](collect-tidb-binlogs.md)
++ [TiDB 集群日志收集](collect-tidb-logs.md)
 + [维护 TiDB 所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
 
 当集群出现问题需要进行诊断时，你可以：
