@@ -273,7 +273,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - Drainer
 
-        First, create the default `drainer-server.json` file:
+        First, generate the default `drainer-server.json` file:
 
         {{< copyable "shell-regular" >}}
 
@@ -539,8 +539,8 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         `<cluster-name>` is the name of the cluster. Configure the items as follows:
 
-        - Set `spec.secretName` to `<cluster-name>-pd-cluster-secret`
-        - Add `server auth` and `client auth` in `usages`
+        - Set `spec.secretName` to `<cluster-name>-pd-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
         - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
             - `<cluster-name>-pd`
             - `<cluster-name>-pd.<namespace>`
@@ -598,10 +598,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         `<cluster-name>` is the name of the cluster. Configure the items as follows:
 
-        - Set `spec.secretName` to `<cluster-name>-tikv-cluster-secret`
-        - Add `server auth` and `client auth` in `usages`
+        - Set `spec.secretName` to `<cluster-name>-tikv-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
         - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
-            
+
             - `<cluster-name>-tikv`
             - `<cluster-name>-tikv.<namespace>`
             - `<cluster-name>-tikv.<namespace>.svc`
@@ -676,7 +676,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
-        - Add the ClusterIssuer created above in the `issuerRef`
+        - Add the ClusterIssuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `<cluster-name>-tidb-cluster-secret` Secret object to be used by the TiDB component of the TiDB server.
@@ -738,9 +738,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         ```yaml
         ...
-        # Change the name of the statefulset and pod
-        # The default is clusterName-ReleaseName-drainer
-        # Do not change the name of an existing running drainer: this is unsupported.
+        # Changes the name of the statefulset and Pod.
+        # The default value is clusterName-ReleaseName-drainer
+        # Does not change the name of an existing running Drainer, which is unsupported.
         drainerName: my-drainer
         ...
         ```
@@ -809,13 +809,13 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         `<cluster-name>` is the name of the cluster. `<namespace>` is the namespace in which the TiDB cluster is deployed. `<release-name>` is the `release name` you set when `helm install` is executed. `<drainer-name>` is `drainerName` in the `values.yaml` file. You can also add your customized `dnsNames`.
 
-        - Set `spec.secretName` to `<cluster-name>-drainer-cluster-secret`
-        - Add `server auth` and `client auth` in `usages`
+        - Set `spec.secretName` to `<cluster-name>-drainer-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
         - See the above descriptions for `dnsNames`.
         - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
-        - Add the ClusterIssuer created above in the `issuerRef`
+        - Add the ClusterIssuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `<cluster-name>-drainer-cluster-secret` Secret object to be used by the Drainer component of the TiDB server.
@@ -845,14 +845,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     `<cluster-name>` is the name of the cluster. Configure the items as follows:
 
-    - Set `spec.secretName` to `<cluster-name>-cluster-client-secret`
-    - Add `client auth` in `usages`
+    - Set `spec.secretName` to `<cluster-name>-cluster-client-secret`.
+    - Add `client auth` in `usages`.
     - You can leave `dnsNames` and `ipAddresses` empty.
-    - Add the ClusterIssuer created above in the `issuerRef`
+    - Add the ClusterIssuer created above in `issuerRef`.
     - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
 
-    After the object is created, `cert-manager` generates a `<cluster-name>-cluster-client-secret` Secret object to be used by the clients of the TiDB components. 
-    
+    After the object is created, `cert-manager` generates a `<cluster-name>-cluster-client-secret` Secret object to be used by the clients of the TiDB components.
+
     To obtain the client certificate, run the following commands:
 
     {{< copyable "shell-regular" >}}
@@ -944,7 +944,7 @@ In this step, you need to perform the following operations:
 
 2. Create a Drainer component and enable TLS:
 
-    - Method 1: Set `drainerName` when you create Drainer
+    - Method 1: Set `drainerName` when you create Drainer.
 
         Edit the `values.yaml` file, set `drainer-name`, and enable the TLS feature:
 
@@ -964,7 +964,7 @@ In this step, you need to perform the following operations:
         helm install charts/tidb-drainer --name=<release-name> --namespace=<namespace>
         ```
 
-    - Method 2: Do not set `drainerName` when you create Drainer
+    - Method 2: Do not set `drainerName` when you create Drainer.
 
         Edit the `values.yaml` file, and enable the TLS feature:
 
