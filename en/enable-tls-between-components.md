@@ -13,7 +13,7 @@ To enable TLS between TiDB components, perform the following steps:
 1. Generate certificates for each component of the TiDB cluster to be created:
 
    - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer component, saved as the Kubernetes Secret objects: `<cluster-name>-<component-name>-cluster-secret`
-   - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects:  `<cluster-name>-cluster-client-secret`.
+   - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `<cluster-name>-cluster-client-secret`.
 
 2. Deploy the cluster, and set `.spec.tlsClient.enabled` to `true`.
 3. Configure `pd-ctl` to connect to the cluster.
@@ -78,7 +78,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     > **Note:**
     >
-    > Add `"client auth"` in `profile`-`server`- `usages`, because this server-side certificate is also used as the client-side certificate.
+    > Add `"client auth"` in `profiles` - `server` - `usages`, because this server-side certificate is also used as the client-side certificate.
 
 3. Change the certificate signing request (CSR) of `ca-csr.json`:
 
