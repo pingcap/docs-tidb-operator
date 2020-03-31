@@ -10,7 +10,7 @@ category: reference
 
 > **Note:**
 >
-> For TiDB Operator v1.1 and later versions, it is recommended not to use the tidb-backup chart to deploy and manage the TiDB cluster backup. For details, refer to [Notes for TiDB Operator v1.1](notes-tidb-operator-v1.1).
+> For TiDB Operator v1.1 and later versions, it is recommended not to use the tidb-backup chart to deploy and manage the TiDB cluster backup. For details, refer to [Notes for TiDB Operator v1.1](notes-tidb-operator-v1.1.md).
 
 ## Configuration
 
