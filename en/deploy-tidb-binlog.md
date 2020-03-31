@@ -1,6 +1,6 @@
 ---
 title: Deploy TiDB Binlog
-summary: Learn how to deploy TiDB Binlog of a TiDB cluster in Kubernetes.
+summary: Learn how to deploy TiDB Binlog for a TiDB cluster in Kubernetes.
 category: how-to
 ---
 
@@ -23,7 +23,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
 
     For example:
 
-    ``` yaml
+    ```yaml
     spec:
       ...
       pump:
@@ -140,7 +140,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
 
 ## Deploy drainer
 
-You can deploy multiple drainers with the `tidb-drainer` Helm chart for a TiDB cluster, as described below:
+To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB cluster, take the following steps:
 
 1. Make sure that the PingCAP Helm repository is up to date:
 
