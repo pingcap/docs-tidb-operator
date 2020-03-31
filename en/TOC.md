@@ -43,7 +43,9 @@
   - [Restore Data with TiDB Lightning](restore-data-using-tidb-lightning.md)
   - [Collect TiDB Logs](collect-tidb-logs.md)
   - [Enable Automatic Failover](use-auto-failover.md)
-- [Scale](scale-a-tidb-cluster.md)
++ Scale
+  - [Scale](scale-a-tidb-cluster.md)
+  - [Enable Auto-scaling](enable-tidb-cluster-auto-scaling.md)
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
@@ -52,5 +54,7 @@
 + Tools
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
++ Components
+    - [TiDB Scheduler](tidb-scheduler.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
