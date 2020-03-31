@@ -18,12 +18,24 @@ lang=(en zh)
 
 for l in "${lang[@]}"
 do
+<<<<<<< HEAD
 echo 'lang' $l
+=======
+if [ $d = "en" ]; then
+    docs_title=" TiDB in Kubernetes Documentation"
+else
+    docs_title=" TiDB in Kubernetes 用户文档"
+fi
+>>>>>>> 2bae619... update PDF title (#134)
 pandoc -N --toc --smart --latex-engine=xelatex \
 --template=templates/template.tex \
 --columns=80 \
 --listings \
+<<<<<<< HEAD
 -V title="TiDB Documentation" \
+=======
+-V title="$docs_title" \
+>>>>>>> 2bae619... update PDF title (#134)
 -V author="PingCAP Inc." \
 -V date="${_version_tag}" \
 -V CJKmainfont="${MAINFONT}" \
