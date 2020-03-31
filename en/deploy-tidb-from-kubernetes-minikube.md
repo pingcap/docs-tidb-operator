@@ -136,7 +136,7 @@ After `TidbCluster` custom resource type is created, install TiDB Operator in yo
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
 
-## Deploy a TiDB cluster
+## Deploy the TiDB cluster
 
 Deploy the TiDB cluster by the following steps:
 
@@ -172,7 +172,7 @@ Deploy the TiDB cluster by the following steps:
     kubectl get po -n demo
     ```
 
-## Test a TiDB cluster
+## Test the TiDB cluster
 
 Before you start testing your TiDB cluster, make sure you have installed a MySQL client. Note that there can be a small delay between the time when the pod is up and running, and when the service is available. You can watch the list of available services with:
 
@@ -202,7 +202,7 @@ To connect your MySQL client to the TiDB server, take the following steps:
     mysql -h 127.0.0.1 -P 4000 -uroot -e 'select tidb_version();'
     ```
 
-## Monitor a TiDB cluster
+## Monitor the TiDB cluster
 
 To monitor the status of the TiDB cluster, take the following steps.
 
@@ -222,7 +222,7 @@ To monitor the status of the TiDB cluster, take the following steps.
 
     And it will automatically set up the proxy and open the browser for Grafana.
 
-## Delete a TiDB cluster
+## Delete the TiDB cluster
 
 To destroy a TiDB cluster, run the following command:
 
