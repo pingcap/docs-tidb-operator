@@ -62,5 +62,9 @@
   - [TiDB Toolkit](tidb-toolkit.md)
 + Components
   - [TiDB Scheduler](tidb-scheduler.md)
+<<<<<<< HEAD
+=======
+  - [Advanced StatefulSet Controller](advanced-statefulset.md)
+>>>>>>> 20180ef... en: add doc for advanced statefulset (#110)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
