@@ -6,7 +6,7 @@ category: how-to
 
 # Enable Admission Controller in TiDB Operator
 
-Kubernetes 1.9 introduces the [dynamic admission control](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/) to modify and validate resources. TiDB Operator also supports the dynamic admission control to modify, validate, and maintain resources. This document describes how to enable the admission controller and introduces the functionality of the admission controller.
+Kubernetes v1.9 introduces the [dynamic admission control](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/) to modify and validate resources. TiDB Operator also supports the dynamic admission control to modify, validate, and maintain resources. This document describes how to enable the admission controller and introduces the functionality of the admission controller.
 
 ## Enable the admission controller
 
@@ -23,25 +23,25 @@ With a default installation, TiDB Operator disables the admission controller. Ta
 
 2. Configure the failure policy.
 
-    Prior to Kubernetes 1.15, the management mechanism of the dynamic admission control is coarser-grained and is inconvenient to use. To prevent the dynamic admission control of TiDB Operator from having effects on the global cluster, you need to configure the [Failure Policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy).
+    Prior to Kubernetes v1.15, the management mechanism of the dynamic admission control is coarser-grained and is inconvenient to use. To prevent the impact of the dynamic admission control on the global cluster, you need to configure the [Failure Policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy).
 
-    In prior versions of Kubernetes 1.15, it is recommended to set the `failurePolicy` of TiDB Operator to `Ignore`. This avoids the influence on the whole cluster in case of `admission webhook` exception in TiDB Operator .
+    * For Kubernetes versions earlier than v1.15, it is recommended to set the `failurePolicy` of TiDB Operator to `Ignore`. This avoids the influence on the global cluster in case of `admission webhook` exception in TiDB Operator .
 
-    ```yaml
-    ......
-    failurePolicy:
-        validation: Ignore
-        mutation: Ignore
-    ```
+        ```yaml
+        ......
+        failurePolicy:
+            validation: Ignore
+            mutation: Ignore
+        ```
 
-    For Kubernetes 1.15 and later versions, it is recommended to set the `failurePolicy` of TiDB Operator to `Failure`. The exception occurs in `admission webhook` does not effect the whole cluster, because the dynamic admission control supports the label-based filtering mechanism.
+    * For Kubernetes v1.15 and later versions, it is recommended to set the `failurePolicy` of TiDB Operator to `Failure`. The exception occurs in `admission webhook` does not effect the whole cluster, because the dynamic admission control supports the label-based filtering mechanism.
 
-    ```yaml
-    ......
-    failurePolicy:
-        validation: Failure
-        mutation: Failure
-    ```
+        ```yaml
+        ......
+        failurePolicy:
+            validation: Failure
+            mutation: Failure
+        ```
 
 3. Install or update TiDB Operator.
 
@@ -101,11 +101,11 @@ TiDB Operator implements many functions using the admission controller. This sec
         pingcapResources: false
     ```
 
-    For example, regarding `TidbCluster` resources, the admission controller for TiDB Operator resources validation checks the required fields of the `spec` field. When you create or update `TidbCluster`, If the check is not passed because the `spec.pd.image` filed and the `spec.pd.baseImage` field are not defined at the same time, this admission controller refuses the request.
+    For example, regarding `TidbCluster` resources, the admission controller for TiDB Operator resources validation checks the required fields of the `spec` field. When you create or update `TidbCluster`, if the check is not passed (for example, neither of the `spec.pd.image` filed and the `spec.pd.baseImage` field are defined), this admission controller refuses the request.
 
 4. Admission controller for Pod modification
 
-    The admission controller for Pod modification supports the hotspot  scheduling of TiKV in the auto-scaling scenario. To [enable TidbCluster auto-scaling](enable-tidb-cluster-auto-scaling.md), you need to enable this controller. The component is enabled by default if the admission controller is enabled.
+    The admission controller for Pod modification supports the hotspot scheduling of TiKV in the auto-scaling scenario. To [enable TidbCluster auto-scaling](enable-tidb-cluster-auto-scaling.md), you need to enable this controller. The component is enabled by default if the admission controller is enabled.
 
     ```yaml
     admissionWebhook:
