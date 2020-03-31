@@ -43,7 +43,7 @@ category: how-to
 
 3. 确认目标 TiDB 集群资源设置
 
-    目标 TiDB 集群在使用弹性伸缩前，必须首先需要设置好对应组件的 CPU 设置。以 TiKV 为例，你需要申明 `spec.tikv.requests.cpu`
+    目标 TiDB 集群在使用弹性伸缩前，首先需要设置好对应组件的 CPU 设置。以 TiKV 为例，你需要申明 `spec.tikv.requests.cpu`：
 
     ```yaml
     spec:
