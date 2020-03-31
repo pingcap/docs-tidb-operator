@@ -163,7 +163,7 @@ TiDB Lightning Helm chart supports both local and remote data sources.
 
 ### Deploy
 
-The method of deploying TiDB Lightning varies with different methods of granting permissions and different storages.
+The method of deploying TiDB Lightning varies with different methods of granting permissions and with different storages.
 
 * If you grant permissions by importing AWS S3 AccessKey and SecretKey, or if you use Ceph or GCS as the storage, run the following command to deploy TiDB Lightning:
 
@@ -224,7 +224,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
         > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 1.
         > `<service-account>` is the ServiceAccount used by TiDB Lightning. The default value is `default`.
 
-When TiDB Lightning fails to restore data, it cannot simply be restarted. **Manual intervention** is required. So the TiDB Lightning's `Job` restart policy is set to `Never`.
+When TiDB Lightning fails to restore data, you cannot simply restart it. **Manual intervention** is required. So the TiDB Lightning's `Job` restart policy is set to `Never`.
 
 If the lightning fails to restore data, follow the steps below to do manual intervention:
 
