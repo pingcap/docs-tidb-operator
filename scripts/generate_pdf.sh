@@ -16,19 +16,23 @@ _version_tag="$(date '+%Y%m%d')"
 # used to debug template setting error
 lang=(en zh)
 
-for l in "${lang[@]}"
+for d in "${lang[@]}"
 do
-echo 'lang' $l
+if [ $d = "en" ]; then
+    docs_title=" TiDB in Kubernetes Documentation"
+else
+    docs_title=" TiDB in Kubernetes 用户文档"
+fi
 pandoc -N --toc --smart --latex-engine=xelatex \
 --template=templates/template.tex \
 --columns=80 \
 --listings \
--V title="TiDB Documentation" \
+-V title="$docs_title" \
 -V author="PingCAP Inc." \
 -V date="${_version_tag}" \
 -V CJKmainfont="${MAINFONT}" \
 -V fontsize=12pt \
 -V geometry:margin=1in \
 -V include-after="\\input{templates/copyright.tex}" \
-"$l/doc.md" -s -o "output_$l.pdf"
+"$d/doc.md" -s -o "output_$d.pdf"
 done
