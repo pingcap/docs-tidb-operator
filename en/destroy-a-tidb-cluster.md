@@ -38,7 +38,7 @@ helm delete <cluster-name> --purge
 
 ## Delete data
 
-The above commands only removes the running Pod, but the data is still retained. If you want the data to be deleted as well, you can use the following commands:
+The above commands that destroy the cluster only remove the running Pod, but the data is still retained. If you want the data to be deleted as well, you can use the following commands:
 
 > **Warning:**
 >
