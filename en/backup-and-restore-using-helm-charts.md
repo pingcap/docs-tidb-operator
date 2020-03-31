@@ -9,17 +9,21 @@ aliases: ['/docs/dev/tidb-in-kubernetes/maintain/backup-and-restore/','/docs/v3.
 
 This document describes how to back up and restore the data of a TiDB cluster in Kubernetes using Helm charts.
 
-For TiDB Operator 1.1 or later versions, it is recommended that you use the backup and restoration methods based on CustomResourceDefinition (CRD). Refer to the following documents for details:
+For TiDB Operator 1.1 or later versions, it is recommended that you use the backup and restoration methods based on CustomResourceDefinition (CRD).
 
-* [Back up Data to GCS](backup-to-gcs.md)
-* [Restore Data from GCS](restore-from-gcs.md)
-* [Back up Data to S3-Compatible Storage](backup-to-s3.md)
-* [Restore Data from S3-Compatible Storage](restore-from-s3.md)
++ If the TiDB cluster version < v3.1, refer to the following documents:
+    - [Back up Data to GCS](backup-to-gcs.md)
+    - [Restore Data from GCS](restore-from-gcs.md)
+    - [Back up Data to S3-Compatible Storage Using Mydumper](backup-to-s3.md)
+    - [Restore Data from S3-Compatible Storage Using Loader](restore-from-s3.md)
++ If the TiDB cluster version >= v3.1, refer to the following documents:
+    - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
+    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
 
 TiDB in Kubernetes supports two backup strategies using Helm charts:
 
-* [Full backup](#full-backup) (scheduled or ad-hoc): use [`mydumper`](https://pingcap.com/docs/stable/reference/tools/mydumper) to take a logical backup of the TiDB cluster.
-* [Incremental backup](#incremental-backup): use [TiDB Binlog](https://pingcap.com/docs/stable/reference/tidb-binlog/overview) to replicate data from the TiDB cluster to another database or execute a real-time backup of the data.
+* [Full backup](#full-backup) (scheduled or ad-hoc): use [`mydumper`](https://pingcap.com/docs/v3.0/reference/tools/mydumper) to take a logical backup of the TiDB cluster.
+* [Incremental backup](#incremental-backup): use [TiDB Binlog](https://pingcap.com/docs/v3.0/reference/tidb-binlog/overview) to replicate data from the TiDB cluster to another database or execute a real-time backup of the data.
 
 Currently, TiDB in Kubernetes only supports automatic [restoration](#restore) for full backup taken by `mydumper`. Restoring the incremental backup data by `TiDB Binlog` requires manual operations.
 
@@ -131,9 +135,9 @@ The `pingcap/tidb-backup` helm chart helps restore a TiDB cluster using backup d
 
 ## Incremental backup
 
-Incremental backup uses [TiDB Binlog](https://pingcap.com/docs/stable/reference/tidb-binlog/overview) to collect binlog data from TiDB and provide near real-time backup and replication to downstream platforms.
+Incremental backup uses [TiDB Binlog](https://pingcap.com/docs/v3.0/reference/tidb-binlog/overview) to collect binlog data from TiDB and provide near real-time backup and replication to downstream platforms.
 
-For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](maintain-tidb-binlog.md).
+For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](deploy-tidb-binlog.md).
 
 ### Scale in Pump
 
