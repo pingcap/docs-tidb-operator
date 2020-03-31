@@ -33,7 +33,7 @@ kubectl port-forward -n <namespace> svc/<release-name>-grafana 3000:3000 &>/tmp/
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser and log on with the default username and password `admin`.
 
-You can also set `spec.grafana.service.type` to `NodePort` or `LoadBalancer`, and then view the monitoring dashboard through `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster using TidbMonitor](monitor-using-tidbmonitor.md).
+You can also set `spec.grafana.service.type` to `NodePort` or `LoadBalancer`, and then view the monitoring dashboard through `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
 
 If there is no need to use Grafana, you can delete the part of `spec.grafana` in `TidbMonitor` during deployment. In this case, you need to use other existing or newly deployed data visualization tools to directly access the monitoring data.
 
@@ -49,7 +49,7 @@ kubectl port-forward -n <namespace> svc/<release-name>-prometheus 9090:9090 &>/t
 
 Then open [http://localhost:9090](http://localhost:9090) in your browser or access this address via a client tool.
 
-You can also set `spec.prometheus.service.type` to `NodePort` or `LoadBalancer`, and then view the monitoring data through `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster using TidbMonitor](monitor-using-tidbmonitor.md).
+You can also set `spec.prometheus.service.type` to `NodePort` or `LoadBalancer`, and then view the monitoring data through `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
 
 ## Monitor the Kubernetes cluster
 
@@ -92,7 +92,7 @@ When Prometheus is deployed with a TiDB cluster, some default alert rules are au
 
 The custom configuration of alert rules is supported. You can modify the alert rules by taking the following steps:
 
-1. When deploying the monitoring system for the TiDB cluster, set `spec.reloader.service.type` to `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster using TidbMonitor](monitor-using-tidbmonitor.md).
+1. When deploying the monitoring system for the TiDB cluster, set `spec.reloader.service.type` to `NodePort` or `LoadBalancer`. For details, see [Monitor the TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
 2. Access the `reloader` service through `NodePort` or `LoadBalancer`. Click the `Files` button above to select the alert rule file to be modified, and make the custom configuration. Click `Save` after the modification.
 
 The default Prometheus and alert configuration do not support sending alert messages. To send an alert message, you can integrate Prometheus with any tool that supports Prometheus alerts. It is recommended to manage and send alert messages via [AlertManager](https://prometheus.io/docs/alerting/alertmanager/).
