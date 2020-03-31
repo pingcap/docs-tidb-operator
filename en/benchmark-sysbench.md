@@ -242,11 +242,11 @@ Host Network:
 
 QPS comparison:
 
-![Pod vs Host Network](/media/sysbench-in-k8s/pod-vs-host-network-qps.png)
+![Pod vs Host Network](/media/pod-vs-host-network-qps.png)
 
 Latency comparison:
 
-![Pod vs Host Network](/media/sysbench-in-k8s/pod-vs-host-network-latency.png)
+![Pod vs Host Network](/media/pod-vs-host-network-latency.png)
 
 From the images above, the performance in Host network mode is slightly better than that in Pod network.
 
@@ -280,11 +280,11 @@ Ubuntu:
 
 QPS comparison:
 
-![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-qps.png)
+![COS vs Ubuntu](/media/cos-vs-ubuntu-qps.png)
 
 Latency comparison:
 
-![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-latency.png)
+![COS vs Ubuntu](/media/cos-vs-ubuntu-latency.png)
 
 From the images above, TiDB performs better on Ubuntu than on COS in the Point Select test.
 
@@ -323,11 +323,11 @@ Load Balancer:
 
 QPS comparison:
 
-![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-qps.png)
+![Service vs Load Balancer](/media/service-vs-load-balancer-qps.png)
 
 Latency comparison:
 
-![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-latency.png)
+![Service vs Load Balancer](/media/service-vs-load-balancer-latency.png)
 
 From the images above, TiDB performs better when accessed via Kubernetes Service than accessed via GCP Load Balancer in the Point Select test.
 
@@ -363,11 +363,11 @@ c2-standard-16:
 
 QPS comparison:
 
-![n1-standard-16 vs c2-standard-16](/media/sysbench-in-k8s/n1-standard-16-vs-c2-standard-16-qps.png)
+![n1-standard-16 vs c2-standard-16](/media/n1-standard-16-vs-c2-standard-16-qps.png)
 
 Latency comparison:
 
-![n1-standard-16 vs c2-standard-16](/media/sysbench-in-k8s/n1-standard-16-vs-c2-standard-16-latency.png)
+![n1-standard-16 vs c2-standard-16](/media/n1-standard-16-vs-c2-standard-16-latency.png)
 
 ### OLTP and other tests
 
@@ -384,8 +384,8 @@ The Point Select test is conducted on different operating systems and in differe
 | 1200    | 22121.87  | 90.78           |
 | 1500    | 22650.13  | 118.92          |
 
-![OLTP Update Index](/media/sysbench-in-k8s/oltp-update-index-qps.png)
-![OLTP Update Index](/media/sysbench-in-k8s/oltp-update-index-latency.png)
+![OLTP Update Index](/media/oltp-update-index-qps.png)
+![OLTP Update Index](/media/oltp-update-index-latency.png)
 
 #### OLTP Update Non Index
 
@@ -398,8 +398,8 @@ The Point Select test is conducted on different operating systems and in differe
 | 1200    | 33942.60  | 54.83           |
 | 1500    | 42603.13  | 125.52          |
 
-![OLTP Update No Index](/media/sysbench-in-k8s/oltp-update-no-index-qps.png)
-![OLTP Update No Index](/media/sysbench-in-k8s/oltp-update-no-index-latency.png)
+![OLTP Update No Index](/media/oltp-update-no-index-qps.png)
+![OLTP Update No Index](/media/oltp-update-no-index-latency.png)
 
 #### OLTP Read Write
 
@@ -412,8 +412,8 @@ The Point Select test is conducted on different operating systems and in differe
 | 1200    | 125615.89 | 282.25          |
 | 1500    | 128501.34 | 344.082         |
 
-![OLTP Read Write](/media/sysbench-in-k8s/oltp-read-write-qps.png)
-![OLTP Read Write](/media/sysbench-in-k8s/oltp-read-write-latency.png)
+![OLTP Read Write](/media/oltp-read-write-qps.png)
+![OLTP Read Write](/media/oltp-read-write-latency.png)
 
 ### Performance comparison between single AZ and multiple AZs
 
@@ -443,11 +443,11 @@ Multiple AZs:
 
 QPS comparison:
 
-![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-qps.png)
+![Single Zonal vs Regional](/media/single-zonal-vs-regional-qps.png)
 
 Latency comparison:
 
-![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-latency.png)
+![Single Zonal vs Regional](/media/single-zonal-vs-regional-latency.png)
 
 From the images above, the impact of network latency goes down as the concurrency pressure increases. In this situation, the extra network latency is no longer the main bottleneck of performance.
 
