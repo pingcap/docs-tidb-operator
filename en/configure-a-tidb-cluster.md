@@ -1,10 +1,10 @@
 ---
-title: Resource and Disaster Recovery Configurations of TiDB Cluster in Kubernetes
+title: Resource and Disaster Recovery Configurations
 summary: Learn the resource and disaster recovery configurations of a TiDB cluster in Kubernetes.
 category: reference
 ---
 
-# Resource and Disaster Recovery Configurations of TiDB Cluster in Kubernetes
+# Resource and Disaster Recovery Configurations
 
 This document introduces the following items of a TiDB cluster in Kubernetes:
 
@@ -92,7 +92,7 @@ To add the data disaster recovery feature in Kubernetes:
     > **Note:**
     >
     > * For PD versions < v3.0.9, the `/` in the label name is not supported.
-    > * If you configure `hostname` in the `location-labels`, TiDB Operator get the value from the `kubernetes.io/hostname` in the node label.
+    > * If you configure `hostname` in the `location-labels`, TiDB Operator will get the value from the `kubernetes.io/hostname` in the node label.
 
 2. Set the topological information of the Node where the TiKV node is located.
 

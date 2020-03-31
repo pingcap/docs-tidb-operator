@@ -127,7 +127,7 @@ If all interrupts are sent to the same CPU, configure SMP IRQ Affinity by the fo
 
 ## `ulimit` configuration
 
-The TiDB cluster uses many file descriptors by default. The `ulimit` of the worker node and the above Docker process must be greater than or equal to `1048576`.
+The TiDB cluster uses many file descriptors by default. The `ulimit` of the worker node and the Docker process must be greater than or equal to `1048576`.
 
 * Set the `ulimit` value of the worker node. For details, refer to [How to set ulimit values](https://access.redhat.com/solutions/61334).
 
@@ -149,9 +149,9 @@ The TiDB cluster uses many file descriptors by default. The `ulimit` of the work
 
     Set `LimitNOFILE` to be greater than or equal to `1048576`.
 
-> **Note:**
->
-> `LimitNOFILE` must be explicitly set to `1048576` or a greater value, other than `infinity` by default. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value in some versions of `systemd` is `65536`.
+    > **Note:**
+    >
+    > `LimitNOFILE` must be explicitly set to `1048576` or a greater value, other than `infinity` by default. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value in some versions of `systemd` is `65536`.
 
 ## Hardware and deployment requirements
 

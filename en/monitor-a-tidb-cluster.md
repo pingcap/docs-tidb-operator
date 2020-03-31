@@ -15,7 +15,7 @@ This document gives a brief introduction to the two monitoring tasks.
 
 ## Monitor the TiDB cluster
 
-You can monitor the TiDB cluster with Prometheus and Grafana. If you create a new TiDB cluster using TiDB Operator, refer to [Monitor a TiDB Cluster using TidbMonitor](monitor-using-tidbmonitor.md). A separate monitoring system is created and configured for each TiDB cluster created by TiDB Operator. The monitoring system runs in the same namespace as the TiDB cluster, and includes two components: Prometheus and Grafana.
+You can monitor the TiDB cluster with Prometheus and Grafana. When you create a new TiDB cluster using TiDB Operator, refer to [Monitor a TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md) to deploy a separate monitoring system for the TiDB cluster. The monitoring system must run in the same namespace as the TiDB cluster, and includes two components: Prometheus and Grafana.
 
 The monitoring data is not persisted by default. To persist the monitoring data, you can set `spec.persistent` to `true` in `TidbMonitor`. When you enable this option, you need to set `spec.storageClassName` to an existing storage in the current cluster, and this storage is required to support persisting data; otherwise, there is a risk of data loss.
 

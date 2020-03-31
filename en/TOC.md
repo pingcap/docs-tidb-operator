@@ -27,8 +27,8 @@
   - [Configure tidb-cluster Chart](tidb-cluster-chart-config.md)
   - [Configure tidb-backup Chart](configure-backup.md)
 + Monitor
-  - [Monitor the TiDB cluster](monitor-a-tidb-cluster.md)
-  - [Monitor TiDB cluster using TidbMonitor](monitor-using-tidbmonitor.md)
+  - [Monitor a TiDB cluster](monitor-a-tidb-cluster.md)
+  - [Monitor a TiDB cluster Using TidbMonitor](monitor-using-tidbmonitor.md)
 + Maintain
   - [Destroy a TiDB cluster](destroy-a-tidb-cluster.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
@@ -44,11 +44,11 @@
   + Use CRDs
     - [Back up Data to GCS](backup-to-gcs.md)
     - [Restore Data from GCS](restore-from-gcs.md)
-    - [Back up Data to S3-Compatible Storage using Mydumper](backup-to-s3.md)
-    - [Restore Data from S3-Compatible Storage using Loader](restore-from-s3.md)
-    - [Back up Data to S3-Compatible Storage using BR](backup-to-aws-s3-using-br.md)
-    - [Restore Data from S3-Compatible Storage using BR](restore-from-aws-s3-using-br.md)
-  - [Restore Data with TiDB Lightning](restore-data-using-tidb-lightning.md)
+    - [Back up Data to S3-Compatible Storage Using Mydumper](backup-to-s3.md)
+    - [Restore Data from S3-Compatible Storage Using Loader](restore-from-s3.md)
+    - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
+    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
+  - [Restore Data Using TiDB Lightning](restore-data-using-tidb-lightning.md)
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
