@@ -12,7 +12,7 @@ This document introduces how to horizontally and vertically scale a TiDB cluster
 
 Horizontally scaling TiDB means that you scale TiDB out or in by adding or remove nodes in your pool of resources. When you scale a TiDB cluster, PD, TiKV, and TiDB are scaled out or in sequentially according to the values of their replicas. Scaling out operations add nodes based on the node ID in ascending order, while scaling in operations remove nodes based on the node ID in descending order.
 
-Currently, the TiDB cluster supports management by Helm and TidbCluster Custom Resource (CR). You can choose the scaling method based on the management method of your TiDB cluster.
+Currently, the TiDB cluster supports management by Helm or by TidbCluster Custom Resource (CR). You can choose the scaling method based on the management method of your TiDB cluster.
 
 ### Horizontal scaling operations (Helm)
 
@@ -30,7 +30,7 @@ To perform a horizontal scaling operation, take the following steps:
 
 ### Horizontal scaling operations (CR)
 
-Modify `spec.pd.replicas`, `spec.tidb.replicas`, `spec.tikv.replicas` in the `TidbCluster` object that corresponds to the cluster to the desired values using kubectl.
+Modify `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` in the `TidbCluster` object that corresponds to the cluster to the desired values using kubectl.
 
 ### View the scaling status
 
@@ -55,7 +55,7 @@ When the number of Pods for all components reaches the preset value and all comp
 
 Vertically scaling TiDB means that you scale TiDB up or down by increasing or decreasing the limit of resources on the node. Vertically scaling is essentially the rolling update of the nodes.
 
-Currently, the TiDB cluster supports management by Helm and TidbCluster Custom Resource (CR). You can choose the scaling method based on the management method of your TiDB cluster.
+Currently, the TiDB cluster supports management by Helm or by TidbCluster Custom Resource (CR). You can choose the scaling method based on the management method of your TiDB cluster.
 
 ### Vertical scaling operations (Helm)
 
@@ -73,9 +73,9 @@ To perform a vertical scaling operation:
 
 ### Vertical scaling operations (CR)
 
-Modify `spec.pd.resources`, `spec.tikv.resources`, `spec.tikv.resources` in the `TidbCluster` object that corresponds to the cluster to the desired values using kubectl.
+Modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tikv.resources` in the `TidbCluster` object that corresponds to the cluster to the desired values using kubectl.
 
-### View the progress of the upgrade
+### View the upgrade progress
 
 To view the upgrade progress of the cluster, run the following command:
 
