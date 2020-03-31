@@ -364,7 +364,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
 > **Note:**
 >
-> TiDB Server's TLS is compatible with the MySQL protocol. When the certificates contents are changed, the administrator needs to manually execute the SQL statement `alter instance reload tls` to refresh the contents.
+> TiDB server's TLS is compatible with the MySQL protocol. When the certificates contents are changed, the administrator needs to manually execute the SQL statement `alter instance reload tls` to refresh the contents.
 
 ## Step 2: Deploy the TiDB cluster
 
