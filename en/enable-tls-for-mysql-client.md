@@ -241,7 +241,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     - A ClusterIssuer object of SelfSigned class, used to generate the CA certificate needed by ClusterIssuer of CA class
     - A Certificate object, whose `isCa` is set to `true`
-    - A ClusterIssuer, used to issue TLS certificates between TiDB components
+    - A ClusterIssuer, used to issue TLS certificates for the TiDB server
 
     Finally, execute the following command to create a ClusterIssuer:
 
@@ -447,4 +447,4 @@ To connect the MySQL client with the TiDB cluster, use the client-side certifica
     mysql -uroot -p -P 4000 -h <tidb-host> --ssl-cert=~/cert-manager/client-tls.crt --ssl-key=~/cert-manager/client-tls.key --ssl-ca=~/cert-manager/client-ca.crt
     ```
 
-Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).
+Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).

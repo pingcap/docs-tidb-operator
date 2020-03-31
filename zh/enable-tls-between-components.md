@@ -490,7 +490,7 @@ category: how-to
 
     在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 ClusterIssuer 颁发并保持更新。
 
-    根据官网文档：[Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
+    根据官网文档：[Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-between-components/)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
 
     - PD 组件的 Server 端证书。
 
@@ -966,9 +966,9 @@ category: how-to
         helm install charts/tidb-drainer --name=<release-name> --namespace=<namespace>
         ```
 
-3. 创建 Backup/Restore 资源对象并开启 TLS。
+3. 创建 Backup/Restore 资源对象。
 
-    - 创建 `backup.yaml` 文件，并将 TLS 功能打开：
+    - 创建 `backup.yaml` 文件：
 
         ``` yaml
         apiVersion: pingcap.com/v1alpha1
@@ -982,8 +982,6 @@ category: how-to
             cluster: <cluster-name>
             clusterNamespace: <namespace>
             sendCredToTikv: true
-            tlsCluster:
-              enabled: true
           from:
             host: <host>
             secretName: <tidb-secret>
@@ -1005,7 +1003,7 @@ category: how-to
         kubectl apply -f backup.yaml
         ```
 
-    - 创建 `restore.yaml` 文件，并将 TLS 功能打开：
+    - 创建 `restore.yaml` 文件：
 
         ``` yaml
         apiVersion: pingcap.com/v1alpha1
@@ -1019,8 +1017,6 @@ category: how-to
             cluster: <cluster-name>
             clusterNamespace: <namespace>
             sendCredToTikv: true
-            tlsCluster:
-              enabled: true
           to:
             host: <host>
             secretName: <tidb-secret>
@@ -1047,7 +1043,7 @@ category: how-to
 
 1. 下载 `pd-ctl`。
 
-    参考官网文档：[Download TiDB installation package](https://pingcap.com/docs/stable/reference/tools/pd-control/#download-tidb-installation-package)。
+    参考官网文档：[Download TiDB installation package](https://pingcap.com/docs/v3.0/reference/tools/pd-control/#download-tidb-installation-package)。
 
 2. 连接集群。
 
