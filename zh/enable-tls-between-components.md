@@ -852,7 +852,7 @@ category: how-to
 
 ## 第二步：部署 TiDB 集群
 
-在部署 TiDB 集群时，可以开启集群间 TLS，同时可以设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用来验证集群间各组件证书的 CN（Common Name）。
+在部署 TiDB 集群时，可以开启集群间的 TLS，同时可以设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用来验证集群间各组件证书的 CN (Common Name)。
 
 > **注意：**
 >
