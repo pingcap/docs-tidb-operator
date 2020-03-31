@@ -99,7 +99,7 @@ The default Prometheus and alert configuration do not support sending alert mess
 
 - If you already have an available AlertManager service in your existing infrastructure, you can set the value of `spec.alertmanagerURL` to the address of `AlertManager`, which will be used by Prometheus. For details, refer to [Set kube-prometheus and AlertManager](monitor-using-tidbmonitor.md#set-kube-prometheus-and-alertmanager).
 
-- If there is no AlertManager service available, or if you want to deploy a separate AlertManager service, you can refer to [Prometheus official document](https://github.com/prometheus/alertmanager).
+- If no AlertManager service is available, or if you want to deploy a separate AlertManager service, refer to the [Prometheus official document](https://github.com/prometheus/alertmanager).
 
 ### Alerts in Kubernetes
 
