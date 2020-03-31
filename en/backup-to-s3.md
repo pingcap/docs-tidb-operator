@@ -18,7 +18,8 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
 ### Three methods to grant permissions of AWS account
 
-If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). If Ceph is used as backend storage in backup and restore test, the permission is granted by importing AccessKey and SecretKey.
+- If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+- If Ceph is used as backend storage in backup and restore test, the permission is granted by importing AccessKey and SecretKey.
 
 ### Prerequisites for ad-hoc backup
 
@@ -26,7 +27,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 
 ### Ad-hoc backup process
 
-+ Create the `Backup` CR, and back up cluster data by importing AccessKey and SecretKey to grant permissions:
++ Create the `Backup` CR, and back up cluster data to AWS S3 by importing AccessKey and SecretKey to grant permissions:
 
     {{< copyable "shell-regular" >}}
 

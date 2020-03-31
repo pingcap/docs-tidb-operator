@@ -14,7 +14,8 @@ This document shows an example in which the backup data stored in the specified 
 
 ## Three methods to grant AWS account permissions
 
-If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). If Ceph is used as backend storage in backup and restore test, the permission is granted by importing AccessKey and SecretKey.
+- If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+- If Ceph is used as backend storage in backup and restore test, the permission is granted by importing AccessKey and SecretKey.
 
 ## Prerequisites
 
