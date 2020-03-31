@@ -1,6 +1,6 @@
 ---
 title: Advanced StatefulSet Controller
-summary: Learn how to enable and use advanced StatefulSet controller.
+summary: Learn how to enable and use the advanced StatefulSet controller.
 category: reference
 ---
 
@@ -8,11 +8,11 @@ category: reference
 
 **Feature Stage**: Alpha
 
-Kubernetes has a built-in [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) to allocate consecutive serial numbers to Pods. For example, when there are three replicas, the Pods are named as pod-0, pod-1, and pod-2. When scaling out or scaling in, you must append a Pod at the end or delete the last pod. For example, when you scale out to four replicas, pod-3 is added. When you scale in to two replicas, pod-2 is deleted.
+Kubernetes has a built-in [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) that allocates consecutive serial numbers to Pods. For example, when there are three replicas, the Pods are named as pod-0, pod-1, and pod-2. When scaling out or scaling in, you must append a Pod at the end or delete the last pod. For example, when you scale out to four replicas, pod-3 is added. When you scale in to two replicas, pod-2 is deleted.
 
-When you use local storage, Pods are associated with Nodes storage resources and cannot be scheduled freely. If you want to delete one of the Pods in the middle to maintain its Node but no other Nodes can be migrated, or if you want to delete a Pod that fails and create another Pod with a different serial number, you cannot implement the desired function by the built-in StatefulSet.
+When you use local storage, Pods are associated with the Nodes storage resources and cannot be scheduled freely. If you want to delete one of the Pods in the middle to maintain its Node but no other Nodes can be migrated, or if you want to delete a Pod that fails and create another Pod with a different serial number, you cannot implement the desired function by the built-in StatefulSet.
 
-The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statefulset) is implemented based on the built-in StatefulSet implementation. It supports freely controlling the serial number of Pods. This document describes how to use the advanced StatefulSet controller in TiDB Operator.
+The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statefulset) is implemented based on the built-in StatefulSet controller. It supports freely controlling the serial number of Pods. This document describes how to use the advanced StatefulSet controller in TiDB Operator.
 
 ## Enable
 
@@ -45,19 +45,19 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
       create: true
     ```
 
-    Upgrade TiDB Operator. For details, refer to [Upgrade TiDB Operator](upgrade-tidb-operator).
+    Upgrade TiDB Operator. For details, refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md).
 
 > **Note:**
 >
-> TiDB Operator converts the current `StatefulSet` object into an `AdvancedStatefulSet` object by enabling the `AdvancedStatefulSet` feature. However, after the `AdvancedStatefulSet` feature is disabled, the `AdvancedStatefulSet` object cannot be automatically converted to the built-in `StatefulSet` object of Kubernetes.
+> If the `AdvancedStatefulSet` feature is enabled, TiDB Operator converts the current `StatefulSet` object into an `AdvancedStatefulSet` object. However, after the `AdvancedStatefulSet` feature is disabled, the `AdvancedStatefulSet` object cannot be automatically converted to the built-in `StatefulSet` object of Kubernetes.
 
 ## Usage
 
 This section describes how to use the advanced StatefulSet controller.
 
-### View the `AdvancedStatefulSet` Object by  kubectl
+### View the `AdvancedStatefulSet` Object by kubectl
 
-The data format of `AdvancedStatefulSet` is the same as that of `StatefulSet`, but `AdvancedStatefulSet` is implemented in CRD, with the alias as `asts`. You can view the object in the namespace by running the following command.
+The data format of `AdvancedStatefulSet` is the same as that of `StatefulSet`, but `AdvancedStatefulSet` is implemented in CRD, with the alias as `asts`. You can view the `AdvancedStatefulSet` object in the namespace by running the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -114,7 +114,7 @@ metadata:
 
 > **Note:**
 >
-> When modifying `replicas` and `delete-slot annotation`, complete the modification in the same operation; otherwise, the controller operates according to the general expectations.
+> When modifying `replicas` and `delete-slots annotation`, complete the modification in the same operation; otherwise, the controller operates the modification according to the general expectations.
 
 The complete example is as follows:
 
@@ -165,7 +165,7 @@ You can reverse the above operation of scaling in to restore `basic-tikv-1`.
 
 > **Note:**
 >
-> The specified scaling out performed by the advanced StatefulSet controller is the same as the regular StatefulSet scaling, which does not delete the PVC associated with the Pod. If you want to avoid using the previous data, you need to delete the associated PVC before scaling out at the original location.
+> The specified scaling out performed by the advanced StatefulSet controller is the same as the regular StatefulSet scaling, which does not delete the Persistent Volume Claims (PVCs) associated with the Pod. If you want to avoid using the previous data, delete the associated PVCs before scaling out at the original location.
 
 For example:
 
