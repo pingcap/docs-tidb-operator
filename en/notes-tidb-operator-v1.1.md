@@ -52,7 +52,8 @@ To create TidbMonitor CR and manage the Monitor component, refer to [Monitor a T
 
 > **Note:**
 >
-> The way TiDB Operator renders resources is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to TidbMonitor CR, the Monitor component might be rolling updated.
+> * The `metadata.name` in the TidbMonitor CR must be consistent with the name of the TidbCluster CR in the cluster.
+> * The way TiDB Operator renders resources is different from that of Helm. If you migrate configurations from `tidb-cluster chart values.yaml` to TidbMonitor CR, the Monitor component might be rolling updated.
 
 ### Initializer
 
