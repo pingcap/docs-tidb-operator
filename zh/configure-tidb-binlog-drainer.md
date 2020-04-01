@@ -2,7 +2,7 @@
 title: Kubernetes 上的 TiDB Binlog Drainer 配置
 summary: 了解 Kubernetes 上的 TiDB Binlog Drainer 配置参数。
 category: reference
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/tidb-drainer/','/docs-cn/v3.0/tidb-in-kubernetes/reference/configuration/tidb-drainer/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/tidb-drainer/','/docs-cn/stable/tidb-in-kubernetes/reference/configuration/tidb-drainer/']
 ---
 
 # Kubernetes 上的 TiDB Binlog Drainer 配置

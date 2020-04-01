@@ -2,7 +2,7 @@
 title: 维护 TiDB 集群所在的 Kubernetes 节点
 summary: 介绍如何维护 TiDB 集群所在的 Kubernetes 节点。
 category: how-to
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/kubernetes-node/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/kubernetes-node/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/kubernetes-node/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/kubernetes-node/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/kubernetes-node/','/docs-cn/stable/tidb-in-kubernetes/maintain/kubernetes-node/']
 ---
 
 # 维护 TiDB 集群所在的 Kubernetes 节点

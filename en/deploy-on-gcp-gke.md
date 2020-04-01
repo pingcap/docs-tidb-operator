@@ -2,7 +2,7 @@
 title: Deploy TiDB on GCP GKE
 summary: Learn how to deploy a TiDB cluster on GCP GKE.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/deploy/gcp-gke/','/docs/v3.1/tidb-in-kubernetes/deploy/gcp-gke/','/docs/v3.0/tidb-in-kubernetes/deploy/gcp-gke/']
+aliases: ['/docs/dev/tidb-in-kubernetes/deploy/gcp-gke/','/docs/v3.1/tidb-in-kubernetes/deploy/gcp-gke/','/docs/stable/tidb-in-kubernetes/deploy/gcp-gke/']
 ---
 
 # Deploy TiDB on GCP GKE
@@ -450,7 +450,7 @@ operator_helm_values_file = "./test-operator.yaml"
 
 ### Customize logging
 
-GKE uses Fluentd as its default log collector, which then forwards logs to Stackdriver. The Fluentd process can be quite resource hungry and consume a non-trivial share of CPU and RAM.
+GKE uses [Fluentd](https://www.fluentd.org/) as its default log collector, which then forwards logs to Stackdriver. The Fluentd process can be quite resource hungry and consume a non-trivial share of CPU and RAM.
 Fluent Bit is a more performant and less resource intensive alternative. It is recommended to use Fluent Bit over Fluentd for a production set up. See [this repository](https://github.com/pingcap/k8s-fluent-bit-stackdriver) for an example of how to set up Fluent Bit on a GKE cluster.
 
 ### Customize node pools
