@@ -867,7 +867,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
 ## Step 2: Deploy the TiDB cluster
 
-When you deploy a TiDB cluster, you can enable TLS across clusters, and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component certificate across clusters.
+When you deploy a TiDB cluster, you can enable TLS between TiDB components, and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component certificate between TiDB components.
 
 > **Note:**
 >
