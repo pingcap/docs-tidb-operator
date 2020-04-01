@@ -15,7 +15,7 @@ Currently, we maintain the following three versions of documentation, each with 
 | `release-1.1` | the 1.1 rc version |
 | `release-1.0` | the latest 1.0 stable version |
 
-> Note:
+> **Note:**
 >
 > - Previously, we maintain the TiDB in Kubernetes documentation in the [docs](https://github.com/pingcap/docs) and [docs-cn](https://github.com/pingcap/docs-cn) repository.
 > - Since the end of March 2020, the TiDB in Kubernetes documentation is moved in this repository, and separated in the above three branches.
