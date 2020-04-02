@@ -70,7 +70,7 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl apply -f <cluster-name> -n <namespace>
+    kubectl apply -f <cluster-name>/tidb-cluster.yaml -n <namespace>
     ```
 
 3. 通过下面命令查看 Pod 状态：
