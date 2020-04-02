@@ -105,7 +105,7 @@ kubectl cluster-info
 
 ## Deploy TiDB Operator
 
-TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` custom resource type.
+TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
 
 {{< copyable "shell-regular" >}}
 
@@ -114,7 +114,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-After `TidbCluster` custom resource type is created, install TiDB Operator in your Kubernetes cluster.
+After `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
 1. Get the `values.yaml` file of the `tidb-operator` chart you want to install:
 
@@ -138,7 +138,7 @@ After `TidbCluster` custom resource type is created, install TiDB Operator in yo
 
 ## Deploy the TiDB cluster
 
-Deploy the TiDB cluster by the following steps:
+To deploy the TiDB cluster, perform the following steps:
 
 1. Create `Namespace`:
 

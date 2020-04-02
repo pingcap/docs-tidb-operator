@@ -90,9 +90,9 @@ If you see `Ready` for all nodes, congratulations! You've setup your first Kuber
 
 [Helm](https://helm.sh/) is a package management tool for Kubernetes. Make sure your Helm version >= 2.11.0 and < 2.16.4. The installation steps are as follows:
 
-1. Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install Helm client.
+1. Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install the Helm client.
 
-2. Install Helm server.
+2. Install the Helm server.
 
     Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
 
@@ -127,7 +127,7 @@ If you see `Ready` for all nodes, congratulations! You've setup your first Kuber
 
 ## Deploy TiDB Operator
 
-TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` custom resource type.
+TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
 
 {{< copyable "shell-regular" >}}
 
@@ -136,7 +136,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-After `TidbCluster` custom resource type is created, install TiDB Operator in your Kubernetes cluster.
+After `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
 1. Get the `values.yaml` file of the `tidb-operator` chart you want to install:
 
@@ -168,7 +168,7 @@ After `TidbCluster` custom resource type is created, install TiDB Operator in yo
 
 ## Deploy the TiDB cluster
 
-Deploy the TiDB cluster by the following steps:
+To deploy the TiDB cluster, perform the following steps:
 
 1. Create `Namespace`:
 
@@ -204,7 +204,7 @@ Deploy the TiDB cluster by the following steps:
 
 ## Connect to the TiDB cluster
 
-There can be a small delay between the pod being up and running, and the service being available. You can view the service status with the following command:
+There can be a small delay between the pod being up and running, and the service being available. You can view the service status using the following command:
 
 {{< copyable "shell-regular" >}}
 
