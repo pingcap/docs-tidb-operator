@@ -871,7 +871,7 @@ When you deploy a TiDB cluster, you can enable TLS between TiDB components, and 
 
 > **Note:**
 >
-> Currently, you can set only one value for the `cert-allowed-cn` configuration item for the PD.
+> Currently, you can set only one value for the `cert-allowed-cn` configuration item of PD.
 
 In this step, you need to perform the following operations:
 
