@@ -6,6 +6,8 @@
 ## TOC
 
 - [About TiDB Operator](tidb-operator-overview.md)
++ Benchmark
+  - [Sysbench](benchmark-sysbench.md)
 + Get Started
   - [kind](deploy-tidb-from-kubernetes-kind.md)
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
@@ -61,6 +63,7 @@
   - [tkctl](use-tkctl.md)
   - [TiDB Toolkit](tidb-toolkit.md)
 + Components
-    - [TiDB Scheduler](tidb-scheduler.md)
+  - [TiDB Scheduler](tidb-scheduler.md)
+  - [Advanced StatefulSet Controller](advanced-statefulset.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
