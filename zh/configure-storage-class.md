@@ -71,7 +71,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 1. 参考 Kubernetes 提供的[操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在集群节点中预分配本地存储。
 
-2. 部署 `local-volume-provisioner` 程序。
+2. 部署 `local-volume-provisioner` 程序。这里我们沿用了 `local-static-provisioner` 中 `/mnt/disk` 的例子。
 
     {{< copyable "shell-regular" >}}
 
