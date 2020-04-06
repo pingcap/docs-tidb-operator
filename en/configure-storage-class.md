@@ -71,7 +71,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 
 1. Pre-allocate local storage in cluster nodes. See the [operation guide](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md) provided by Kubernetes.
 
-2. Deploy `local-volume-provisioner`.
+2. Deploy `local-volume-provisioner`. Here, for example we inherited the `/mnt/disk` example in `local-volume-provisioner`.
 
       {{< copyable "shell-regular" >}}
 
