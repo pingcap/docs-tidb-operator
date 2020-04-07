@@ -107,7 +107,7 @@ operator_version = "v1.1.0-rc.1"
 
 > **Note:**
 >
-> Check the default TiDB Operator version of the current script in the `operator_version` of the `variables.tf` file. If the default version is not your desired one, configure `operator_version` in `terraform.tfvars`.
+> Check the `operator_version` in the `variables.tf` file for the default TiDB Operator version of the current scripts. If the default version is not your desired one, configure `operator_version` in `terraform.tfvars`.
 
 After configuration, execute the `terraform` command to initialize and deploy the cluster:
 
