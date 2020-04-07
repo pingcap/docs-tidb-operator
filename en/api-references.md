@@ -1,7 +1,7 @@
 ---
 title: TiDB Operator API Document
 summary: Reference of TiDB Operator API
-category: how-to
+category: reference
 ---
 <h1>API Document</h1>
 <h2>Packages:</h2>
