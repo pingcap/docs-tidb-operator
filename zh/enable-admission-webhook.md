@@ -21,7 +21,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
       create: true
     ```
 
-    TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过 [扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) + [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的配置组合。默认情况下，如果你的 Kubernetes 集群版本大于等于 1.13.0，你可以通过上述配置直接开启 Webhook 功能。
+    TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过[扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) + [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的配置组合。默认情况下，如果你的 Kubernetes 集群版本大于等于 v1.13.0，你可以通过上述配置直接开启 Webhook 功能。
 
     如果你的 Kubernetes 集群版本小于 v1.13.0，你需要执行以下命令，将得到的返回值配置在 `values.yaml` 中的 `admissionWebhook.cabundle`
 
