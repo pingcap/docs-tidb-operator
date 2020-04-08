@@ -146,7 +146,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server webhook-server.json | cfssljson -bare webhook-server
     ```
 
-    它会生成如下文件:
+    上述命令会生成如下文件:
 
     ```bash
     $ ls | grep webhook-server
