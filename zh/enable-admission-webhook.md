@@ -69,7 +69,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
 1. 生成自定义证书
 
-    参考 [为 TiDB 组件间开启 TLS](enable-tls-between-components.md) 文档中，使用 `使用 cfssl 系统颁发证书` 的第一步至第四步，生成自定义 CA 文件。
+    参考[使用 `cfssl` 系统颁发证书](enable-tls-between-components.md#使用-cfssl-系统颁发证书)的第一步至第四步，生成自定义 CA 文件。
     对于 `ca-config.json`，我们使用如下配置:
 
     ```json
