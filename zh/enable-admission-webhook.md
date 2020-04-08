@@ -25,7 +25,11 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
     如果你的 Kubernetes 集群版本小于 1.13.0，你需要执行以下命令，将得到的返回值配置在 `values.yaml` 中的 `admissionWebhook.cabundle`
 
-    > kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n'
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n'
+    ```
 
     ```yaml
     admissionWebhook:
