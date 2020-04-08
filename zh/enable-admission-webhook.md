@@ -92,10 +92,9 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     }
     ```
 
-    当执行至第四步以后，`cfssl` 文件夹下应该有以下文件:
+    当执行至第四步以后，通过 `ls` 命令执行，`cfssl` 文件夹下应该有以下文件:
 
     ```bash
-    $ ls
     ca-config.json ca-csr.json    ca-key.pem     ca.csr         ca.pem
     ```
 
@@ -146,10 +145,9 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server webhook-server.json | cfssljson -bare webhook-server
     ```
 
-    上述命令会生成如下文件:
+    执行完上述命令后，通过 `ls | grep webhook-server` 命令应该能查询到以下文件:
 
     ```bash
-    $ ls | grep webhook-server
     webhook-server-key.pem
     webhook-server.csr
     webhook-server.json
@@ -166,6 +164,14 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
 4. 修改 values.yaml 并安装或升级 Operator
 
+    获取 `ca.crt` 的值
+    
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get secret <secret-name> --namespace=<release-namespace> -o=jsonpath='{.data.ca\.crt}'
+    ```
+
     将 `values.yaml` 中下述配置按说明来进行配置:
 
     ```yaml
@@ -173,9 +179,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
       apiservice:
         insecureSkipTLSVerify: false # 开启 TLS 验证
         tlsSecret: "<secret-name>" # 将上文中所创建的 secret 的 name 填写在这里
-        # 执行以下命令，将输出填写到 caBundle 中
-        # kubectl get secret <secret-name> --namespace=<release-namespace> -o=jsonpath='{.data.ca\.crt}'
-        caBundle: "<caBundle>"
+        caBundle: "<caBundle>" # 将上文中 ca.crt 的值填入此处
     ```
 
     修改完 `values.yaml` 文件中上述配置项以后进行 TiDB Operator 部署或者更新。安装与更新 Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)。
