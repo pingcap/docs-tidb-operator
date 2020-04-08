@@ -2,7 +2,7 @@
 title: Maintain TiDB Binlog
 summary: Learn how to maintain TiDB Binlog of a TiDB cluster in Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs/v3.1/tidb-in-kubernetes/maintain/tidb-binlog/','/docs/stable/tidb-in-kubernetes/maintain/tidb-binlog/']
+aliases: ['/docs/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs/v3.1/tidb-in-kubernetes/maintain/tidb-binlog/','/docs/v3.0/tidb-in-kubernetes/maintain/tidb-binlog/']
 ---
 
 # Maintain TiDB Binlog

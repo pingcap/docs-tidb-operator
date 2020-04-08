@@ -2,7 +2,7 @@
 title: Kubernetes 上的 TiDB 集群备份配置
 summary: 介绍 Kubernetes 上 TiDB 集群备份 tidb-backup 的配置参数。
 category: reference
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/stable/tidb-in-kubernetes/reference/configuration/backup/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/backup/','/docs-cn/v3.0/tidb-in-kubernetes/reference/configuration/backup/']
 ---
 
 # Kubernetes 上的 TiDB 集群备份配置
@@ -60,7 +60,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/backup/','/do
 
 + 恢复参数
 + 默认："-t 16"
-+ 为恢复数据时使用的 [Loader](https://pingcap.com/docs-cn/stable/reference/tools/loader) 指定额外的运行参数
++ 为恢复数据时使用的 [Loader](https://pingcap.com/docs-cn/v3.0/reference/tools/loader) 指定额外的运行参数
 
 ## `gcp.bucket`
 
