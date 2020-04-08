@@ -197,12 +197,12 @@ To add the data disaster recovery feature in Kubernetes:
 
 1. Set the label collection of topological location for PD
 
-    Replace the `location-labels` information in the `pd.config` with the label collection that describes the topological location on the nodes in the Kubernetes cluster.
+    Configure the `location-labels` in the `pd.config` with the labels that describe the topology on the nodes in the Kubernetes cluster.
 
     > **Note:**
     >
     > * For PD versions < v3.0.9, the `/` in the label name is not supported.
-    > * If you configure `hostname` in the `location-labels`, TiDB Operator will get the value from the `kubernetes.io/hostname` in the node label.
+    > * If you configure `hostname` in the `location-labels`, TiDB Operator will get the value from the `kubernetes.io/hostname` label on the node.
 
 2. Set the topological information of the Node where the TiKV node is located.
 
