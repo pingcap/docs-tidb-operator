@@ -2,7 +2,7 @@
 title: Perform a Rolling Update to a TiDB Cluster in Kubernetes
 summary: Learn how to perform a rolling update to a TiDB cluster in Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs/v3.1/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs/stable/tidb-in-kubernetes/upgrade/tidb-cluster/']
+aliases: ['/docs/dev/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs/v3.1/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs/v3.0/tidb-in-kubernetes/upgrade/tidb-cluster/']
 ---
 
 # Perform a Rolling Update to a TiDB Cluster in Kubernetes
