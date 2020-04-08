@@ -182,7 +182,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
         caBundle: "<caBundle>" # 将上文中 ca.crt 的值填入此处
     ```
 
-    修改完 `values.yaml` 文件中上述配置项以后进行 TiDB Operator 部署或者更新。安装与更新 Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)。
+    修改完 `values.yaml` 文件中上述配置项以后进行 TiDB Operator 部署或者更新。安装 TiDB Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)，升级 TiDB Operator 请参考[升级 TiDB Operator](upgrade-tidb-operator.md)
 
 ## TiDB Operator 准入控制器功能
 
