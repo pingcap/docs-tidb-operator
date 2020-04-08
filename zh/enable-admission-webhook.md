@@ -63,7 +63,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
     修改完 `values.yaml` 文件中的上述配置项以后，进行 TiDB Operator 部署或者更新。安装与更新 TiDB Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)。
 
-## 设置 TiDB Operator 准入控制器 tls 证书
+## 为 TiDB Operator 准入控制器设置 TLS 证书
 
 在默认情况下，TiDB Operator 准入控制器与 Kubernetes api-server 之间跳过了 [TLS 验证环节](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#contacting-the-extension-apiserver)，你可以通过以下步骤手动开启并配置 TiDB Operator 准入控制器与 Kubernetes api-server 之间的 TLS 验证。
 
