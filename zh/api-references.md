@@ -7003,7 +7003,7 @@ GcsStorageProvider
 </p>
 <p>
 <p>TLSCluster can enable TLS connection between TiDB server components
-<a href="https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/">https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/</a></p>
+<a href="https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-between-components/">https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-between-components/</a></p>
 </p>
 <table>
 <thead>
@@ -7028,7 +7028,7 @@ and it does not support applying to only part of the components.
 The steps to enable this feature:
 1. Generate TiDB server components certificates and a client-side certifiacete for them.
 There are multiple ways to generate these certificates:
-- user-provided certificates: <a href="https://pingcap.com/docs/stable/how-to/secure/generate-self-signed-certificates/">https://pingcap.com/docs/stable/how-to/secure/generate-self-signed-certificates/</a>
+- user-provided certificates: <a href="https://pingcap.com/docs/v3.0/how-to/secure/generate-self-signed-certificates/">https://pingcap.com/docs/v3.0/how-to/secure/generate-self-signed-certificates/</a>
 - use the K8s built-in certificate signing system signed certificates: <a href="https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/">https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/</a>
 - or use cert-manager signed certificates: <a href="https://cert-manager.io/">https://cert-manager.io/</a>
 2. Create one secret object for one component which contains the certificates created above.
@@ -7129,7 +7129,7 @@ Optional: Defaults to nil</p>
 </p>
 <p>
 <p>TiDBConfig is the configuration of tidb-server
-For more detail, refer to <a href="https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration/">https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration/</a></p>
+For more detail, refer to <a href="https://pingcap.com/docs/v3.0/reference/configuration/tidb-server/configuration/">https://pingcap.com/docs/v3.0/reference/configuration/tidb-server/configuration/</a></p>
 </p>
 <table>
 <thead>
@@ -8132,7 +8132,7 @@ bool
 The steps to enable this feature:
 1. Generate a TiDB server-side certificate and a client-side certifiacete for the TiDB cluster.
 There are multiple ways to generate certificates:
-- user-provided certificates: <a href="https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/">https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/</a>
+- user-provided certificates: <a href="https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-clients/">https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-clients/</a>
 - use the K8s built-in certificate signing system signed certificates: <a href="https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/">https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/</a>
 - or use cert-manager signed certificates: <a href="https://cert-manager.io/">https://cert-manager.io/</a>
 2. Create a K8s Secret object which contains the TiDB server-side certificate created above.

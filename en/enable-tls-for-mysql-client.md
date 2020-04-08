@@ -427,7 +427,7 @@ In this step, you create a TiDB cluster using two CR object, enable TLS for the 
 
 ## Step 3: Configure the MySQL client to use encrypted connection
 
-To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/#configure-the-mysql-client-to-use-encrypted-connections).
+To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-clients/#configure-the-mysql-client-to-use-encrypted-connections).
 
 1. If you issue certificates using `cfssl`, execute the following command to connect with the TiDB server:
 

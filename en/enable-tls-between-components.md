@@ -500,7 +500,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In `cert-manager`, the Certificate resource represents the certificate interface. This certificate is issued and updated by the Issuer created in Step 2.
 
-    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
+    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
 
     - PD
 
@@ -1083,7 +1083,7 @@ In this step, you need to perform the following operations:
 
 1. Download `pd-ctl`:
 
-    Refer to [Download TiDB installation package](https://pingcap.com/docs/stable/reference/tools/pd-control/#download-tidb-installation-package).
+    Refer to [Download TiDB installation package](https://pingcap.com/docs/v3.0/reference/tools/pd-control/#download-tidb-installation-package).
 
 2. Connect to the cluster:
 
