@@ -65,7 +65,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
 ## 设置 TiDB Operator 准入控制器 tls 证书
 
-在默认情况下，TiDB Operator 准入控制器与 Kubernetes api-server 之间默认跳过了 [TLS 验证环节](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#contacting-the-extension-apiserver)，你可以通过以下步骤手动开启并配置 TiDB Operator 准入控制器与 Kubernetes api-server 之间的 TLS 验证。
+在默认情况下，TiDB Operator 准入控制器与 Kubernetes api-server 之间跳过了 [TLS 验证环节](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#contacting-the-extension-apiserver)，你可以通过以下步骤手动开启并配置 TiDB Operator 准入控制器与 Kubernetes api-server 之间的 TLS 验证。
 
 1. 参考安全章节，生成自定义证书
 
