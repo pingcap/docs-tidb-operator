@@ -109,7 +109,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     cfssl print-defaults csr > webhook-server.json
     ```
 
-    然后将 `webhook-server.json` 内容修改为:
+    然后将 `webhook-server.json` 文件的内容修改如下:
 
     ```json
     {
