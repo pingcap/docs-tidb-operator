@@ -197,7 +197,7 @@ To add the data disaster recovery feature in Kubernetes:
 
 1. Set the label collection of topological location for PD
 
-    Configure the `location-labels` in the `pd.config` with the labels that describe the topology on the nodes in the Kubernetes cluster.
+    Configure `location-labels` in the `pd.config` file using the labels that describe the topology on the nodes in the Kubernetes cluster.
 
     > **Note:**
     >
