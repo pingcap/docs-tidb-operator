@@ -154,7 +154,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     webhook-server.pem
     ```
 
-3. 创建 Secret 至 Kubernetes 集群
+3. 在 Kubernetes 集群中创建 Secret
 
     {{< copyable "shell-regular" >}}
 
