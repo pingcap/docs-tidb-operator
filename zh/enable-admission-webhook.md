@@ -95,7 +95,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     当执行至第四步以后，通过 `ls` 命令执行，`cfssl` 文件夹下应该有以下文件:
 
     ```bash
-    ca-config.json ca-csr.json    ca-key.pem     ca.csr         ca.pem
+    ca-config.json    ca-csr.json    ca-key.pem    ca.csr    ca.pem
     ```
 
 2. 生成 TiDB Operator 准入控制器证书
