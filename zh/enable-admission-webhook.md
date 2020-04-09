@@ -164,7 +164,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
 4. 修改 values.yaml 并安装或升级 Operator
 
-    获取 `ca.crt` 的值
+    获取 `ca.crt` 的值：
     
     {{< copyable "shell-regular" >}}
 
