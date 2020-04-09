@@ -344,13 +344,13 @@ Finally, [deploy TiDB cluster and monitor](#deploy-tidb-cluster-and-monitor).
     terraform destroy
     ```
 
-    If the following error occured during `terraform destroy`:
+    If the following error occurs during `terraform destroy`:
 
     ```
     Error: Get http://localhost/apis/apps/v1/namespaces/kube-system/deployments/tiller-deploy: dial tcp [::1]:80: connect: connection refused
     ```
 
-    Please run the following command:
+    Run the following command:
 
     {{< copyable "shell-regular" >}}
 
