@@ -135,7 +135,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     }
     ```
 
-    其中 `<namespace>` 为 TiDB 集群部署的命名空间。
+    其中 `<namespace>` 为 TiDB Operator 部署的命名空间。
 
     然后生成 TiDB Operator Webhook Server 端证书:
 
