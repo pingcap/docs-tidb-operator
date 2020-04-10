@@ -8,6 +8,12 @@ category: how-to
 
 Kubernetes 在 1.9 版本引入了 [动态准入机制](https://kubernetes.io/zh/docs/reference/access-authn-authz/extensible-admission-controllers/)，从而使得拥有对 Kubernetes 中的各类资源进行修改与验证的功能。 在 TiDB Operator 中，我们也同样使用了动态准入机制来帮助我们进行相关资源的修改、验证与运维。
 
+## 先置条件
+
+TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过[扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) 与 [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的两个机制组合而成。所以需要 Kubernetes 集群启用聚合层功能，通常情况下这个功能已经默认开启。你可以通过以下官方文档来查看是否开启聚合层功能。
+
+[启用-kubernetes-apiserver-标志](https://kubernetes.io/zh/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#%E5%90%AF%E7%94%A8-kubernetes-apiserver-%E6%A0%87%E5%BF%97)
+
 ## 开启 TiDB Operator 准入控制器
 
 TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手动开启:
@@ -21,7 +27,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
       create: true
     ```
 
-    TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过[扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) 与 [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的两个机制组合而成。默认情况下，如果你的 Kubernetes 集群版本大于等于 v1.13.0，你可以通过上述配置直接开启 Webhook 功能。
+    默认情况下，如果你的 Kubernetes 集群版本大于等于 v1.13.0，你可以通过上述配置直接开启 Webhook 功能。
 
     如果你的 Kubernetes 集群版本小于 v1.13.0，你需要执行以下命令，将得到的返回值配置在 `values.yaml` 中的 `admissionWebhook.cabundle`：
 
