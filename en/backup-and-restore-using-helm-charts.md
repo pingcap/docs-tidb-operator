@@ -2,7 +2,7 @@
 title: Backup and Restore
 summary: Learn how to back up and restore the data of TiDB cluster in Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/maintain/backup-and-restore/','/docs/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/','/docs/stable/tidb-in-kubernetes/maintain/backup-and-restore/']
+aliases: ['/docs/dev/tidb-in-kubernetes/maintain/backup-and-restore/','/docs/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/','/docs/v3.0/tidb-in-kubernetes/maintain/backup-and-restore/']
 ---
 
 # Backup and Restore

@@ -2,7 +2,7 @@
 title: TiDB Operator 简介
 summary: 介绍 TiDB Operator 的整体架构及使用方式。
 category: reference
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/tidb-operator-overview/','/docs-cn/v3.1/tidb-in-kubernetes/tidb-operator-overview/','/docs-cn/stable/tidb-in-kubernetes/tidb-operator-overview/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/tidb-operator-overview/','/docs-cn/v3.1/tidb-in-kubernetes/tidb-operator-overview/','/docs-cn/v3.0/tidb-in-kubernetes/tidb-operator-overview/']
 ---
 
 # TiDB Operator 简介

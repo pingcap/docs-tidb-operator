@@ -2,12 +2,12 @@
 title: TiDB Binlog 运维
 summary: 了解如何在 Kubernetes 上运维 TiDB 集群的 TiDB Binlog。
 category: how-to
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/stable/tidb-in-kubernetes/maintain/tidb-binlog/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/tidb-binlog/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/tidb-binlog/']
 ---
 
 # TiDB Binlog 运维
 
-本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](https://pingcap.com/docs-cn/stable/reference/tidb-binlog/overview)。
+本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](https://pingcap.com/docs-cn/v3.0/reference/tidb-binlog/overview)。
 
 ## 运维准备
 

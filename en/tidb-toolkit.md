@@ -2,7 +2,7 @@
 title: Tools in Kubernetes
 summary: Learn about operation tools for TiDB in Kubernetes.
 category: reference
-aliases: ['/docs/dev/tidb-in-kubernetes/reference/tools/in-kubernetes/','/docs/v3.1/tidb-in-kubernetes/reference/tools/in-kubernetes/','/docs/stable/tidb-in-kubernetes/reference/tools/in-kubernetes/']
+aliases: ['/docs/dev/tidb-in-kubernetes/reference/tools/in-kubernetes/','/docs/v3.1/tidb-in-kubernetes/reference/tools/in-kubernetes/','/docs/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes/']
 ---
 
 # Tools in Kubernetes
@@ -11,7 +11,7 @@ Operations on TiDB in Kubernetes require some open source tools. In the meantime
 
 ## Use PD Control in Kubernetes
 
-[PD Control](https://pingcap.com/docs/stable/reference/tools/pd-control) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters in Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
+[PD Control](https://pingcap.com/docs/v3.0/reference/tools/pd-control) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters in Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 
@@ -45,7 +45,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## Use TiKV Control in Kubernetes
 
-[TiKV Control](https://pingcap.com/docs/stable/reference/tools/tikv-control) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters in Kubernetes, be aware that each operation mode involves different steps, as described below:
+[TiKV Control](https://pingcap.com/docs/v3.0/reference/tools/tikv-control) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters in Kubernetes, be aware that each operation mode involves different steps, as described below:
 
 * **Remote Mode**: In this mode, `tikv-ctl` accesses the TiKV service or the PD service through network. Firstly you need to establish the connection from local to the PD service and the target TiKV node using `kubectl port-forward`:
 
@@ -115,7 +115,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## Use TiDB Control in Kubernetes
 
-[TiDB Control](https://pingcap.com/docs/stable/reference/tools/tidb-control) is the command-line tool for TiDB. To use TiDB Control in Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
+[TiDB Control](https://pingcap.com/docs/v3.0/reference/tools/tidb-control) is the command-line tool for TiDB. To use TiDB Control in Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 

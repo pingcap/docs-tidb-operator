@@ -2,7 +2,7 @@
 title: Troubleshoot TiDB in Kubernetes
 summary: Learn how to diagnose and resolve issues when you use TiDB in Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/troubleshoot/','/docs/v3.1/tidb-in-kubernetes/troubleshoot/','/docs/stable/tidb-in-kubernetes/troubleshoot/']
+aliases: ['/docs/dev/tidb-in-kubernetes/troubleshoot/','/docs/v3.1/tidb-in-kubernetes/troubleshoot/','/docs/v3.0/tidb-in-kubernetes/troubleshoot/']
 ---
 
 # Troubleshoot TiDB in Kubernetes
@@ -196,7 +196,7 @@ If the log fails to help diagnose the problem, you can add the `-p` parameter to
 kubectl -n <namespace> logs -p <pod-name>
 ```
 
-After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-tidb-server), [Cannot start `tikv-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-tikv-server), and [Cannot start `pd-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-pd-server) for further troubleshooting.
+After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](https://pingcap.com/docs/v3.0/how-to/troubleshoot/cluster-setup#cannot-start-tidb-server), [Cannot start `tikv-server`](https://pingcap.com/docs/v3.0/how-to/troubleshoot/cluster-setup#cannot-start-tikv-server), and [Cannot start `pd-server`](https://pingcap.com/docs/v3.0/how-to/troubleshoot/cluster-setup#cannot-start-pd-server) for further troubleshooting.
 
 When the "cluster id mismatch" message appears in the TiKV Pod log, it means that the TiKV Pod might have used old data from other or previous TiKV Pod. If the data on the local disk remain uncleared when you configure local storage in the cluster, or the data is not recycled by the local volume provisioner due to a forced deletion of PV, an error might occur.
 

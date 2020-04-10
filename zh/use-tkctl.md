@@ -2,7 +2,7 @@
 title: tkctl 使用指南
 summary: 介绍如何使用 tkctl 命令行工具来运维集群和诊断集群问题。
 category: reference
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/tools/tkctl/','/docs-cn/v3.1/tidb-in-kubernetes/reference/tools/tkctl/','/docs-cn/stable/tidb-in-kubernetes/reference/tools/tkctl/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/tools/tkctl/','/docs-cn/v3.1/tidb-in-kubernetes/reference/tools/tkctl/','/docs-cn/v3.0/tidb-in-kubernetes/reference/tools/tkctl/']
 ---
 
 # tkctl 使用指南
