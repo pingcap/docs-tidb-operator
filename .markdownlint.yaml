@@ -1,4 +1,4 @@
-comment: 'Rules for PingCAP docs'
+comment: 'Rules for PingCAP docs-tidb-operator'
 
 # disable all by default
 default: false
