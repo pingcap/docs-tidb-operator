@@ -168,7 +168,7 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
     kubectl create secret generic <secret-name> --namespace=<namespace> --from-file=tls.crt=~/cfssl/webhook-server.pem --from-file=tls.key=~/cfssl/webhook-server-key.pem --from-file=ca.crt=~/cfssl/ca.pem
     ```
 
-4. 修改 values.yaml 并安装或升级 Operator
+4. 修改 values.yaml 并安装或升级 TiDB Operator
 
     获取 `ca.crt` 的值：
     
