@@ -157,7 +157,7 @@ region = us-west-21
     cd manifests/ && mv db-monitor.yaml.example db-monitor.yaml && mv db.yaml.example db.yaml
     ```
 
-    参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.html)和[集群配置文档](configure-cluster-using-tidbcluster.md)完成 CR 文件配置。
+    参考 [API 文档](api-references.md)和[集群配置文档](configure-cluster-using-tidbcluster.md)完成 CR 文件配置。
 
     > **注意：**
     >
@@ -333,6 +333,22 @@ module example-cluster {
 ```shell
 terraform destroy
 ```
+
+如果执行 `terraform destroy` 过程中遇到如下错误：
+
+```
+Error: Get http://localhost/apis/apps/v1/namespaces/kube-system/deployments/tiller-deploy: dial tcp [::1]:80: connect: connection refused
+```
+
+请执行以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+terraform state rm module.tidb-operator.helm_release.tidb-operator
+```
+
+然后再次执行 `terraform destroy`。
 
 > **注意：**
 >
