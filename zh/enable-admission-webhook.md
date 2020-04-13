@@ -10,9 +10,7 @@ Kubernetes 在 1.9 版本引入了 [动态准入机制](https://kubernetes.io/zh
 
 ## 先置条件
 
-TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过[扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) 与 [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的两个机制组合而成。所以需要 Kubernetes 集群启用聚合层功能，通常情况下这个功能已经默认开启。你可以通过以下官方文档来查看是否开启聚合层功能。
-
-[启用-kubernetes-apiserver-标志](https://kubernetes.io/zh/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#%E5%90%AF%E7%94%A8-kubernetes-apiserver-%E6%A0%87%E5%BF%97)
+TiDB Operator 准入控制器与大部分 Kubernetes 平台上产品的准入控制器较为不同，TiDB Operator 通过[扩展 API-Server](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/) 与 [WebhookConfiguration](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#configure-admission-webhooks-on-the-fly) 的两个机制组合而成。所以需要 Kubernetes 集群启用聚合层功能，通常情况下这个功能已经默认开启。如需查看是否开启聚合层功能，请参考[启用 Kubernetes Apiserver 标志](https://kubernetes.io/zh/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#%E5%90%AF%E7%94%A8-kubernetes-apiserver-%E6%A0%87%E5%BF%97)。
 
 ## 开启 TiDB Operator 准入控制器
 
