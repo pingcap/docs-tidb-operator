@@ -129,6 +129,47 @@ You can use the `terraform output` command to get the output again.
 >
 > EKS versions earlier than 1.14 do not support auto enabling cross-zone load balancing via Network Load Balancer (NLB). Therefore, unbalanced pressure distributed among TiDB instances can be expected in default settings. It is strongly recommended that you refer to [AWS Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html#enable-cross-zone) to manually enable cross-zone load balancing for a production environment.
 
+<<<<<<< HEAD
+=======
+### Deploy TiDB cluster and monitor
+
+1. Prepare the TidbCluster and TidbMonitor CR files:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cd manifests/ && mv db-monitor.yaml.example db-monitor.yaml && mv db.yaml.example db.yaml
+    ```
+
+    To complete the CR file configuration, refer to [API documentation](api-references.md).
+
+    > **Note:**
+    >
+    > * Replace all `CLUSTER_NAME` in `db.yaml` and `db-monitor.yaml` files with `default_cluster_name` configured during EKS deployment.
+    > * Make sure that during EKS deployment, the number of PD, TiKV or TiDB nodes is consistent with the value of the `replicas` field of the corresponding component in `db.yaml`.
+    > * Make sure that `spec.initializer.version` in `db-monitor.yaml` and `spec.version` in `db.yaml` are the same to ensure normal monitor display.
+
+2. Create `Namespace`:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cd .. && kubectl --kubeconfig credentials/kubeconfig_<eks_name> create namespace <namespace>
+    ```
+
+    > **Note:**
+    >
+    > A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. You can give it a name that is easy to memorize, such as the same name as `default_cluster_name`.
+
+3. Deploy the TiDB cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_<eks_name> create -f manifests/ -n <namespace>
+    ```
+
+>>>>>>> f6cc80e... Add markdownlint in CI (#188)
 ## Access the database
 
 To access the deployed TiDB cluster, use the following commands to first `ssh` into the bastion machine, and then connect it via MySQL client (replace the `<>` parts with values from the output):

@@ -169,7 +169,21 @@ This section describes how to deploy a TiDB cluster.
 
 After `terraform apply` is successful executed, perform the following steps to access the TiDB cluster. Replace the `<>` section with the output of running `terraform apply` above.
 
+<<<<<<< HEAD
 1. Connect to the bastion machine by using `ssh`.
+=======
+1. Get the IP address of the TiDB Internal LoadBalancer:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_<gke_name> get svc <cluster-name>-tidb -n <namespace>
+    ```
+
+    `EXTERNAL-IP` is the IP address of the Internal LoadBalancer.
+
+2. Connect to the bastion machine by using `ssh`.
+>>>>>>> f6cc80e... Add markdownlint in CI (#188)
 
     {{< copyable "shell-regular" >}}
 

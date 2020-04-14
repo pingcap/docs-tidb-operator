@@ -111,6 +111,60 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
     helm install pingcap/tidb-lightning --name=<tidb-lightning-release-name> --namespace=<namespace> --set failFast=true -f tidb-lightning-values.yaml --version=<chart-version>
     ```
 
+<<<<<<< HEAD
+=======
++ 使用 AWS S3 IAM 绑定 Pod 的授权方式时，需要做以下步骤：
+
+    1. 创建 IAM 角色：
+
+        可以参考 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)来为账号创建一个 IAM 角色，并且通过 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html)为 IAM 角色赋予需要的权限。由于 `Lightning` 需要访问 AWS 的 S3 存储，所以这里给 IAM 赋予了 `AmazonS3FullAccess` 的权限。
+
+    2. 修改 tidb-lightning-values.yaml, 找到字段 `annotations`，增加 annotation `iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user`。
+
+    3. 部署 Tidb-Lightning：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm install pingcap/tidb-lightning --name=<tidb-lightning-release-name> --namespace=<namespace> --set failFast=true -f tidb-lightning-values.yaml --version=<chart-version>
+        ```
+
+        > **注意：**
+        >
+        > `arn:aws:iam::123456789012:role/user` 为步骤 1 中创建的 IAM 角色。
+
++ 使用 AWS S3 IAM 绑定 ServiceAccount 授权方式时：
+
+    1. 在集群上为服务帐户启用 IAM 角色：
+
+        可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) 开启所在的 EKS 集群的 IAM 角色授权。
+
+    2. 创建 IAM 角色：
+
+        可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html)创建一个 IAM 角色，为角色赋予 `AmazonS3FullAccess` 的权限，并且编辑角色的 `Trust relationships`。
+
+    3. 绑定 IAM 到 ServiceAccount 资源上：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl annotate sa <servie-account> -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user
+        ```
+    
+    4. 部署 Tidb-Lightning：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm install pingcap/tidb-lightning --name=<tidb-lightning-release-name> --namespace=<namespace> --set-string failFast=true,serviceAccount=<servie-account> -f tidb-lightning-values.yaml --version=<chart-version>
+        ```
+
+        > **注意：**
+        >
+        > `arn:aws:iam::123456789012:role/user` 为步骤 1 中创建的 IAM 角色。
+        > <service-account> 为 tidb-lightning 使用的 ServiceAccount，默认为 default。
+
+>>>>>>> f6cc80e... Add markdownlint in CI (#188)
 当 TiDB Lightning 未能成功恢复数据时，不能简单地直接重启进程，必须进行**手动干预**，否则将很容易出现错误。因此，tidb-lightning 的 `Job` 重启策略被设置为 `Never`。
 
 > **注意：**

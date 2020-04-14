@@ -39,6 +39,7 @@ kubectl get pod -n <namespace> -l app.kubernetes.io/component=<component-name>
 
 要强制重启某个组件的所有 Pod，执行以下命令：
 
+<<<<<<< HEAD
 {{< copyable "shell-regular" >}}
 
 ```shell
@@ -56,6 +57,9 @@ kubectl delete pod -n <namespace> -l app.kubernetes.io/component=<component-name
 ```shell
 kubectl get pod -n <namespace> -l  app.kubernetes.io/instance=<tidb-cluster-name>
 ```
+=======
+## 使用 annotate 标记目标 Pod 节点
+>>>>>>> f6cc80e... Add markdownlint in CI (#188)
 
 要强制重启 TiDB 集群的所有 Pod，包括 `monitor`、`discovery` 等，执行以下命令：
 
