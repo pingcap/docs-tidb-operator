@@ -109,57 +109,57 @@ By default, the admission controller and Kubernetes api-server skip the [TLS ver
 
     1. Create the default `webhook-server.json` file:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    cfssl print-defaults csr > webhook-server.json
-    ```
+        ```shell
+        cfssl print-defaults csr > webhook-server.json
+        ```
 
-    Modify the `webhook-server.json` file as follows:
+    2. Modify the `webhook-server.json` file as follows:
 
-    ```json
-    {
-        "CN": "TiDB Operator Webhook",
-        "hosts": [
-            "tidb-admission-webhook.<namespace>",
-            "tidb-admission-webhook.<namespace>.svc",
-            "tidb-admission-webhook.<namespace>.svc.cluster",
-            "tidb-admission-webhook.<namespace>.svc.cluster.local"
-        ],
-        "key": {
-            "algo": "rsa",
-            "size": 2048
-        },
-        "names": [
-            {
-                "C": "US",
-                "L": "CA",
-                "O": "PingCAP",
-                "ST": "Beijing",
-                "OU": "TiDB"
-            }
-        ]
-    }
-    ```
+        ```json
+        {
+            "CN": "TiDB Operator Webhook",
+            "hosts": [
+                "tidb-admission-webhook.<namespace>",
+                "tidb-admission-webhook.<namespace>.svc",
+                "tidb-admission-webhook.<namespace>.svc.cluster",
+                "tidb-admission-webhook.<namespace>.svc.cluster.local"
+            ],
+            "key": {
+                "algo": "rsa",
+                "size": 2048
+            },
+            "names": [
+                {
+                    "C": "US",
+                    "L": "CA",
+                    "O": "PingCAP",
+                    "ST": "Beijing",
+                    "OU": "TiDB"
+                }
+            ]
+        }
+        ```
 
-    `<namespace>` is the namespace which TiDB Operator is deployed in.
+        `<namespace>` is the namespace which TiDB Operator is deployed in.
 
-    Then, generate the server-side certificate for TiDB Operator Webhook:
+    3. Generate the server-side certificate for TiDB Operator Webhook:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server webhook-server.json | cfssljson -bare webhook-server
-    ```
+        ```shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server webhook-server.json | cfssljson -bare webhook-server
+        ```
 
-    After executing the above step, run the `ls | grep webhook-server` command. The following files should be listed:
+    4. Run the `ls | grep webhook-server` command. The following files should be listed:
 
-    ```bash
-    webhook-server-key.pem
-    webhook-server.csr
-    webhook-server.json
-    webhook-server.pem
-    ```
+        ```bash
+        webhook-server-key.pem
+        webhook-server.csr
+        webhook-server.json
+        webhook-server.pem
+        ```
 
 3. Create a secret in the Kubernetes cluster:
 
