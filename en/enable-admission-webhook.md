@@ -27,9 +27,9 @@ With a default installation, TiDB Operator disables the admission controller. Ta
       create: true
     ```
 
-    * If your Kubernetes cluster version >= v1.13.0, you can enable the Webhook feature by the configuration above.
+    * If your Kubernetes cluster version >= v1.13.0, enable the Webhook feature by using the configuration above.
 
-    * If your Kubernetes cluster version < v1.13.0, you need to run the following command and configure the `admissionWebhook.cabundle` in `values.yaml` as the return value:
+    * If your Kubernetes cluster version < v1.13.0, run the following command and configure the `admissionWebhook.cabundle` in `values.yaml` as the return value:
 
         {{< copyable "shell-regular" >}}
 
@@ -39,7 +39,7 @@ With a default installation, TiDB Operator disables the admission controller. Ta
 
         ```yaml
         admissionWebhook:
-          # Configure `admissionWebhook.cabundle` as the return value of the command above
+          # Configure the value of `admissionWebhook.cabundle` as the return value of the command above
           cabundle: <cabundle>
         ```
 
@@ -69,11 +69,11 @@ With a default installation, TiDB Operator disables the admission controller. Ta
 
     To install or update TiDB Operator, see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
 
-## Set TLS certificate for the admission controller
+## Set the TLS certificate for the admission controller
 
 By default, the admission controller and Kubernetes api-server skip the [TLS verification](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/#contacting-the-extension-apiserver). To manually enable and configure the TLS verification between the admission controller and Kubernetes api-server, take the following steps:
 
-1. Generate the custom certificate
+1. Generate the custom certificate.
 
     To generate the custom CA (client auth) file, refer to Step 1 to Step 4 in [Generate certificates using `cfssl`](enable-tls-between-components.md#using-cfssl).
 
@@ -105,9 +105,9 @@ By default, the admission controller and Kubernetes api-server skip the [TLS ver
     ca-config.json    ca-csr.json    ca-key.pem    ca.csr    ca.pem
     ```
 
-2. Generate the certificate for the admission controller
+2. Generate the certificate for the admission controller.
 
-    First, create the default `webhook-server.json` file:
+    1. Create the default `webhook-server.json` file:
 
     {{< copyable "shell-regular" >}}
 
@@ -169,7 +169,7 @@ By default, the admission controller and Kubernetes api-server skip the [TLS ver
     kubectl create secret generic <secret-name> --namespace=<namespace> --from-file=tls.crt=~/cfssl/webhook-server.pem --from-file=tls.key=~/cfssl/webhook-server-key.pem --from-file=ca.crt=~/cfssl/ca.pem
     ```
 
-4. Modify `values.yaml` and install/upgrade TiDB Operator
+4. Modify `values.yaml`, and install or upgrade TiDB Operator.
 
     Get the value of `ca.crt`:
 
