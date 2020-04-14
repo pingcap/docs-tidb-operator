@@ -1,6 +1,20 @@
 version: 2
 
 jobs:
+  lint:
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    working_directory: ~/pingcap/docs-tidb-operator
+    steps:
+      - checkout
+      - run:
+          name: "Install markdownlint"
+          command: |
+            sudo npm install -g markdownlint-cli@0.17.0
+      - run:
+          name: "Lint"
+          command: |
+            markdownlint .
   build:
     docker:
       - image: andelf/doc-build:0.1.9
@@ -19,7 +33,7 @@ jobs:
 
       - run:
           name: "Generate PDF"
-          command: pwd; bash scripts/generate_pdf.sh;
+          command: bash scripts/generate_pdf.sh;
 
       # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
@@ -30,9 +44,11 @@ jobs:
               python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-manual-en-v1.0.pdf;
               python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-manual-cn-v1.0.pdf;
             fi
-
 workflows:
   version: 2
+  lint:
+    jobs:
+      - lint
   build:
     jobs:
       - build:
