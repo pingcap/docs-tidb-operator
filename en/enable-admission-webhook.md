@@ -220,8 +220,8 @@ TiDB Operator implements many functions using the admission controller. This sec
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate tidbcluster <name> -n <namespace> tidb.pingcap.com/tikv-partition=2 &&
-    tidbcluster.pingcap.com/<name> annotated
+    kubectl annotate tidbcluster ${name} -n ${namespace} tidb.pingcap.com/tikv-partition=2 &&
+    tidbcluster.pingcap.com/${name} annotated
     ```
 
     Execute the following commands to unset the gated launch:
@@ -229,8 +229,8 @@ TiDB Operator implements many functions using the admission controller. This sec
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate tidbcluster <name> -n <namespace> tidb.pingcap.com/tikv-partition- &&
-    tidbcluster.pingcap.com/<name> annotated
+    kubectl annotate tidbcluster ${name} -n ${namespace} tidb.pingcap.com/tikv-partition- &&
+    tidbcluster.pingcap.com/${name} annotated
     ```
 
     This also applies to the TiDB component.
