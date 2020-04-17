@@ -6,7 +6,6 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-restore/','/docs-
 ---
 
 # 基于 Helm Charts 实现的 TiDB 集群备份与恢复
-
 本文详细描述了如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。本文使用的备份恢复方式是基于 Helm Charts 实现的。
 
 TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现：
