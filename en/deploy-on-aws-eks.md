@@ -328,6 +328,10 @@ module example-cluster {
   monitor_instance_type         = "t2.xlarge"
   # The version of tidb-cluster helm chart
   tidb_cluster_chart_version    = "v1.0.0"
+  # Decides whether or not to create the tidb-cluster helm release.
+  # If this variable is set to false, you have to
+  # install the helm release manually
+  create_tidb_cluster_release   = true
 }
 ```
 
@@ -350,6 +354,25 @@ output "example-cluster_monitor-hostname" {
 When you finish modification, you can execute `terraform init` and `terraform apply` to create the TiDB cluster.
 
 To delete the TiDB cluster, you can remove the `tidb-cluster` module in `cluster.tf`, execute `terraform apply` and the corresponding EC2 resources will be released as well.
+
+## Manage the infrastructure only
+
+To configure the Terraform script to create only the Kubernetes cluster and TiDB Operator, take the following step:
+
+Modify the `create_tidb_cluster_release` configuration item of the TiDB cluster in `clusters.tf`:
+
+```hcl
+module "default-cluster" {
+  ...
+  create_tidb_cluster_release = false
+}
+```
+
+If `create_tidb_cluster_release` is set to `false`, the Terraform script does not create or modify the TiDB cluster. However, it still creates the computing and storage resources needed by the TiDB cluster. You can manage the cluster independently using tools like Helm.
+
+> **Note:**
+>
+> If you set `create_tidb_cluster_release` to `false` on a cluster that has been deployed, the installed TiDB cluster will be deleted, and the corresponding TiDB cluster object will also be deleted.
 
 ## Destroy clusters
 
