@@ -59,7 +59,8 @@ category: how-to
     kubectl apply -f ${cluster_name} -n ${namespace}
     ```
 
-## 优雅重启 TiDB 集群组件的单个 Pod 节点
+## 优雅重启 TiDB 集群组件的单个 Pod
+
 ### 开启相关设置
 
 开启优雅下线功能，需要打开 Operator 相关设置。默认情况下相关配置是关闭的，你需要手动开启:
