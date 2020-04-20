@@ -63,7 +63,7 @@ category: how-to
 
 ### 开启相关设置
 
-开启优雅下线功能，需要打开 Operator 相关设置。默认情况下相关配置是关闭的，你需要手动开启:
+开启优雅下线功能，需要打开 Webhook 相关设置。默认情况下 Webhook 相关配置是关闭的，你需要手动开启:
     
 1. 修改 Operator 的 `values.yaml`
 
