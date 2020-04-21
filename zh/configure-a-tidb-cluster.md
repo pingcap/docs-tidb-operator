@@ -5,6 +5,8 @@ category: reference
 aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster/','/docs-cn/v3.1/tidb-in-kubernetes/reference/configuration/tidb-cluster/','/docs-cn/v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster/']
 ---
 
+<!-- markdownlint-disable MD007 -->
+
 # Kubernetes 上的 TiDB 集群配置
 
 本文介绍 Kubernetes 上 TiDB 集群的配置参数、资源配置，以及容灾配置。
