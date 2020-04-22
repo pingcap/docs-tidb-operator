@@ -330,7 +330,7 @@ module example-cluster {
   tidb_cluster_chart_version    = "v1.0.0"
   # Decides whether or not to create the tidb-cluster helm release.
   # If this variable is set to false, you have to
-  # install the helm release manually
+  # install the helm release manually.
   create_tidb_cluster_release   = true
 }
 ```
@@ -372,7 +372,7 @@ If `create_tidb_cluster_release` is set to `false`, the Terraform script does no
 
 > **Note:**
 >
-> If you set `create_tidb_cluster_release` to `false` on a cluster that has been deployed, the installed TiDB cluster will be deleted, and the corresponding TiDB cluster object will also be deleted.
+> If you set `create_tidb_cluster_release` to `false` in a cluster that has been deployed, the installed TiDB cluster will be deleted, and the corresponding TiDB cluster object will also be deleted.
 
 ## Destroy clusters
 
