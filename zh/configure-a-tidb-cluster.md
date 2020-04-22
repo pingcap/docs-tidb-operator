@@ -7,6 +7,8 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster/
 
 # Kubernetes 上的 TiDB 集群配置
 
+<!-- markdownlint-disable MD007 -->
+
 本文介绍 Kubernetes 上 TiDB 集群的配置参数、资源配置，以及容灾配置。
 
 ## 配置参数
