@@ -14,7 +14,7 @@ If you find that the memory leak occurs in a Pod during use, you need to restart
 
 ## Gracefully rolling restart all the Pods in a component
 
-1. Refer to [Deploy TiDB on general Kubernetes](deploy-on-general-kubernetes.md) and modify the `${cluster_name}/tidb-cluster.yaml`.
+1. Refer to [Deploy TiDB on general Kubernetes](deploy-on-general-kubernetes.md) and modify the `${cluster_name}/tidb-cluster.yaml` file.
 
     Add `tidb.pingcap.com/restartedAt` in the annotation of the `spec` of the TiDB component you want to gracefully rolling restart, and set its value to be the current time.
 
