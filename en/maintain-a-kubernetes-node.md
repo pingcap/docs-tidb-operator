@@ -235,11 +235,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    kuebctl delete node <node-name>
-=======
-    kubectl delete node ${node_name}
->>>>>>> 59d975b... zh, en: fix a typo in maintain-a-kubernetes-node.md (#228)
+    kubectl delete node <node-name>
     ```
 
 Now, you have successfully finished the maintenance task for the node.
