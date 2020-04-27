@@ -6,13 +6,13 @@ category: how-to
 
 # Restart a TiDB Cluster in Kubernetes
 
-If you find that the memory leak occurs in a Pod during use, you need to restart the cluster. This document describes how to gracefully rolling restart all the Pods in a component of the TiDB cluster, or gracefully logoff a Pod in the TiDB cluster and then restart the Pod using the gracefully restart command.
+If you find that the memory leak occurs in a Pod during use, you need to restart the cluster. This document describes how to perform a graceful rolling restart to all the Pods in a component of the TiDB cluster, or gracefully log off a Pod in the TiDB cluster and then restart the Pod using the graceful restart command.
 
 > **Warning:**
 >
 > It is not recommended to manually remove a Pod in the TiDB cluster without graceful restart in a production environment, because this might lead to some request failures of accessing the TiDB cluster though the `StatefulSet` controller pulls the Pod up again.
 
-## Gracefully rolling restart all the Pods in a component
+## Performing a graceful rolling restart to all Pods in a component
 
 1. Refer to [Deploy TiDB on general Kubernetes](deploy-on-general-kubernetes.md) and modify the `${cluster_name}/tidb-cluster.yaml` file.
 
