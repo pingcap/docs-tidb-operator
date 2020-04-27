@@ -235,7 +235,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kuebctl delete node <node-name>
+    kubectl delete node <node-name>
     ```
 
 Now, you have successfully finished the maintenance task for the node.
