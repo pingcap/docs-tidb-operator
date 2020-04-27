@@ -235,11 +235,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    kuebctl delete node <node-name>
-=======
-    kubectl delete node ${node_name}
->>>>>>> 59d975b... zh, en: fix a typo in maintain-a-kubernetes-node.md (#228)
+    kubectl delete node <node-name>
     ```
 
 至此，操作完成。
