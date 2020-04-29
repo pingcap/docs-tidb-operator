@@ -126,7 +126,10 @@ This section describe how to issue certificates for the TiDB cluster using two m
           "${cluster_name}-tidb.${namespace}.svc",
           "*.${cluster_name}-tidb",
           "*.${cluster_name}-tidb.${namespace}",
-          "*.${cluster_name}-tidb.${namespace}.svc"
+          "*.${cluster_name}-tidb.${namespace}.svc",
+          "*.${cluster_name}-tidb-peer",
+          "*.${cluster_name}-tidb-peer.${namespace}",
+          "*.${cluster_name}-tidb-peer.${namespace}.svc"
         ],
     ...
     ```
@@ -281,6 +284,9 @@ You can generate multiple sets of client-side certificates. At least one set of 
         - "*.${cluster_name}-tidb"
         - "*.${cluster_name}-tidb.${namespace}"
         - "*.${cluster_name}-tidb.${namespace}.svc"
+        - "*.${cluster_name}-tidb-peer"
+        - "*.${cluster_name}-tidb-peer.${namespace}"
+        - "*.${cluster_name}-tidb-peer.${namespace}.svc"
       ipAddresses:
         - 127.0.0.1
         - ::1
@@ -301,6 +307,9 @@ You can generate multiple sets of client-side certificates. At least one set of 
         - `*.${cluster_name}-tidb`
         - `*.${cluster_name}-tidb.${namespace}`
         - `*.${cluster_name}-tidb.${namespace}.svc`
+        - `*.${cluster_name}-tidb-peer`
+        - `*.${cluster_name}-tidb-peer.${namespace}`
+        - `*.${cluster_name}-tidb-peer.${namespace}.svc`
     - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
         - `127.0.0.1`
         - `::1`
@@ -379,7 +388,7 @@ In this step, you create a TiDB cluster using two CR object, enable TLS for the 
     name: ${cluster_name}
     namespace: ${namespace}
     spec:
-    version: v3.0.8
+    version: v3.1.0
     timezone: UTC
     pvReclaimPolicy: Retain
     pd:
@@ -451,4 +460,4 @@ To connect the MySQL client with the TiDB cluster, use the client-side certifica
     mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=~/cert-manager/client-tls.crt --ssl-key=~/cert-manager/client-tls.key --ssl-ca=~/cert-manager/client-ca.crt
     ```
 
-Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).
+Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/v3.1/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).
