@@ -70,7 +70,7 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: visit-dashboard
+  name: access-dashboard
   namespace: ${namespace}
 spec:
   rules:
