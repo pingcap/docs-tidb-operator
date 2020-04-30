@@ -32,8 +32,8 @@ category: how-to
     chmod +x ~/bin/{cfssl,cfssljson}
     export PATH=$PATH:~/bin
 
-    mkdir -p ~/cfssl
-    cd ~/cfssl
+    CFSSL_HOME=$(mktemp -d /tmp/cfssl-XXXXXX)
+    cd $CFSSL_HOME
     cfssl print-defaults config > ca-config.json
     cfssl print-defaults csr > ca-csr.json
     ```
@@ -172,8 +172,8 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl create secret generic ${cluster_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=~/cfssl/server.pem --from-file=tls.key=~/cfssl/server-key.pem --from-file=ca.crt=~/cfssl/ca.pem
-    kubectl create secret generic ${cluster_name}-tidb-client-secret --namespace=${namespace} --from-file=tls.crt=~/cfssl/client.pem --from-file=tls.key=~/cfssl/client-key.pem --from-file=ca.crt=~/cfssl/ca.pem
+    kubectl create secret generic ${cluster_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem
+    kubectl create secret generic ${cluster_name}-tidb-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
     这样就给 Server/Client 端证书分别创建了：
@@ -198,8 +198,8 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mkdir -p ~/cert-manager
-    cd ~/cert-manager
+    CERT_MANAGER_HOME=$(mktemp -d /tmp/cert-manager-XXXXXX)
+    cd $CERT_MANAGER_HOME
     ```
 
     然后创建一个 `tidb-server-issuer.yaml` 文件，输入以下内容：
@@ -247,7 +247,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl apply -f ~/cert-manager/tidb-server-issuer.yaml
+    kubectl apply -f tidb-server-issuer.yaml
     ```
 
 3. 创建 Server 端证书。
@@ -315,7 +315,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl apply -f ~/cert-manager/tidb-server-cert.yaml
+    kubectl apply -f tidb-server-cert.yaml
     ```
 
     创建这个对象以后，cert-manager 会生成一个名字为 `${cluster_name}-tidb-server-secret` 的 Secret 对象供 TiDB Server 使用。
@@ -358,7 +358,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl apply -f ~/cert-manager/tidb-client-cert.yaml
+    kubectl apply -f tidb-client-cert.yaml
     ```
 
     创建这个对象以后，cert-manager 会生成一个名字为 `${cluster_name}-tidb-client-secret` 的 Secret 对象供 TiDB Client 使用。
@@ -434,7 +434,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=~/cfssl/client.pem --ssl-key=~/cfssl/client-key.pem --ssl-ca=~/cfssl/ca.pe
+    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=$CFSSL_HOME/client.pem --ssl-key=$CFSSL_HOME/client-key.pem --ssl-ca=$CFSSL_HOME/ca.pem
     ```
 
 2. 通过 `cert-manager` 颁发证书，获取 Client 证书的方式并连接 TiDB Server 的方法是：
@@ -442,15 +442,15 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > ~/cert-manager/client-tls.crt
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > ~/cert-manager/client-tls.key
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}' | base64 --decode >  ~/cert-manager/client-ca.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.key
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}' | base64 --decode >  $CERT_MANAGER_HOME/client-ca.crt
     ```
 
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=~/cert-manager/client-tls.crt --ssl-key=~/cert-manager/client-tls.key --ssl-ca=~/cert-manager/client-ca.crt
+    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=$CERT_MANAGER_HOME/client-tls.crt --ssl-key=$CERT_MANAGER_HOME/client-tls.key --ssl-ca=$CERT_MANAGER_HOME/client-ca.crt
     ```
 
 最后请参考 [官网文档](https://pingcap.com/docs-cn/v3.1/how-to/secure/enable-tls-clients/#检查当前连接是否是加密连接) 来验证是否正确开启了 TLS。
