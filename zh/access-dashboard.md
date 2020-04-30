@@ -23,6 +23,7 @@ kind: TidbCluster
 metadata:
   name: tidb
 spec:
+  storageClassName: ${storageClass}
   timezone: UTC
   pvReclaimPolicy: Delete
   imagePullPolicy: IfNotPresent
@@ -70,14 +71,14 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: visit-dashboard
-  namespace: ${NAMESPACE}
+  namespace: ${namespace}
 spec:
   rules:
     - host: exmaple.com
       http:
         paths:
           - backend:
-              serviceName: ${TIDBCLUSTER_NAME}-pd
+              serviceName: ${tidbcluster-name}-pd
               servicePort: 2379
             path: /dashboard
 ```
@@ -95,7 +96,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: visit-dashboard
-  namespace: ${NAMESPACE}
+  namespace: ${namespace}
 spec:
   tls:
   - hosts:
@@ -106,18 +107,18 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: ${TIDBCLUSTER_NAME}-pd
+              serviceName: ${tidbcluster-name}-pd
               servicePort: 2379
             path: /dashboard
 ```
 
 ## 通过 NodePort 访问 TiDB Dashboard
 
-你可以将对应 TiDB 集群的 `ServiceType` 设置为 `NodePort`，从而暴露 `TiDB Dashboard`, 以下是一个例子:
+你可以将对应 TiDB 集群中 PD 组件的 `ServiceType` 设置为 `NodePort`，从而暴露 `TiDB Dashboard`, 以下是一个例子:
 
 > **警告：**
 >
-> 由于以下方式中 TiDB Dashboard 内嵌在 PD 中，并且都通过 2379 端口暴露服务，所以我们极其不推荐在生产、关键环境中以这种形式暴露服务，将会有将 PD api 暴露的安全风险存在。
+> 由于以下方式中 TiDB Dashboard 内嵌在 PD 中，并且都通过 2379 端口暴露服务，所以我们极其不推荐在生产、关键环境中以这种形式暴露服务，这将会导致将 PD api 暴露的安全风险。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -125,6 +126,7 @@ kind: TidbCluster
 metadata:
   name: tidb
 spec:
+  storageClassName: ${storageClass}
   timezone: UTC
   pvReclaimPolicy: Delete
   imagePullPolicy: IfNotPresent
