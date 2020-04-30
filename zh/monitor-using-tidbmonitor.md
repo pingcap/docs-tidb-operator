@@ -171,6 +171,100 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
+## 开启 Ingress
+
+目前, `TidbMonitor` 提供了通过 Ingress 将 Prometheus/Grafana 服务暴露出去的方式，你可以通过[Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/)了解更多关于 Ingress 的详情。
+
+以下是一个开启了 Prometheus 与 Grafana Ingress 的 `TidbMonitor` 例子。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: ingress-demo
+spec:
+  clusters:
+    - name: demo
+  persistent: false
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.11.1
+    ingress:
+      hosts:
+      - exmaple.com
+      annotations:
+        foo: "bar"
+  grafana:
+    baseImage: grafana/grafana
+    version: 6.0.1
+    service:
+      type: ClusterIP
+    ingress:
+      hosts:
+        - exmaple.com
+      annotations:
+        foo: "bar"
+  initializer:
+    baseImage: pingcap/tidb-monitor-initializer
+    version: v3.0.5
+  reloader:
+    baseImage: pingcap/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
+你可以通过 `spec.prometheus.ingress.annotations` 与 `spec.grafana.ingress.annotations` 来设置对应的 Ingress Annotations 的设置。如果你使用的是默认的 Nginx Ingress 方案，你可以在 [Nginx Ingress Controller Annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) 了解更多关于 Annotations 的详情。
+
+
+`TidbMonitor` 的 Ingress 设置同样支持设置 tls ， 以下是一个设置为 Ingress 设置 tls 的例子。 你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 来了解更多关于 Ingress TLS 的资料。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: ingress-demo
+spec:
+  clusters:
+    - name: demo
+  persistent: false
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.11.1
+    ingress:
+      hosts:
+      - exmaple.com
+      tls:
+      - hosts:
+        - exmaple.com
+        secretName: testsecret-tls
+  grafana:
+    baseImage: grafana/grafana
+    version: 6.0.1
+    service:
+      type: ClusterIP
+  initializer:
+    baseImage: pingcap/tidb-monitor-initializer
+    version: v3.0.5
+  reloader:
+    baseImage: pingcap/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
+ TLS Secret 必须包含名为 tls.crt 和 tls.key 的密钥，这些密钥包含用于 TLS 的证书和私钥，例如：
+
+ ```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testsecret-tls
+  namespace: default
+data:
+  tls.crt: base64 encoded cert
+  tls.key: base64 encoded key
+type: kubernetes.io/tls
+ ```
+
 ## 参考
 
 了解 TidbMonitor 更为详细的 API 设置，可以参考 [API 文档](api-references.md)。
