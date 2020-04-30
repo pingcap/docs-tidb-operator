@@ -6,7 +6,7 @@ category: how-to
 
 # Restore Data from S3-Compatible Storage Using Loader
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`loader`](https://pingcap.com/docs/v3.0/reference/tools/loader) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
 
 The restoration method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. For the restoration method implemented based on Helm Charts, refer to [Back up and Restore TiDB Cluster Data Based on Helm Charts](backup-and-restore-using-helm-charts.md).
 
@@ -22,6 +22,18 @@ This document shows an example in which the backup data stored in the specified 
 Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-hoc-full-backup).
 
 ## Restoration process
+
+> **Note:**
+>
+> Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+>
+> ```yaml
+> spec:
+>   ...
+>   s3:
+>     ...
+>     options:
+>     - --ignore-checksum
 
 + Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 
@@ -49,7 +61,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
         secretName: restore-demo2-tidb-secret
       s3:
         provider: ceph
-        endpoint: http://10.233.2.161
+        endpoint: ${endpoint}
         secretName: s3-secret
         path: s3://${backup_path}
       storageClassName: local-storage
@@ -82,7 +94,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
         secretName: restore-demo2-tidb-secret
       s3:
         provider: aws
-        region: us-west-1
+        region: ${region}
         secretName: s3-secret
         path: s3://${backup_path}
       storageClassName: local-storage
@@ -117,7 +129,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
           secretName: restore-demo2-tidb-secret
         s3:
           provider: aws
-          region: us-west-1
+          region: ${region}
           path: s3://${backup_path}
         storageClassName: local-storage
         storageSize: 1Gi
@@ -150,7 +162,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
           secretName: restore-demo2-tidb-secret
         s3:
           provider: aws
-          region: us-west-1
+          region: ${region}
           path: s3://${backup_path}
         storageClassName: local-storage
         storageSize: 1Gi
@@ -172,6 +184,6 @@ More `Restore` CRs are described as follows:
 * `.spec.to.host`: the address of the TiDB cluster to be restored.
 * `.spec.to.port`: the port of the TiDB cluster to be restored.
 * `.spec.to.user`: the accessing user of the TiDB cluster to be restored.
-* `.spec.to.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be restored.
-* `.spec.storageClassName`: the persistent volume (PV) type specified for the restoration. If this item is not specified, the value of the `default-backup-storage-class-name` parameter (`standard` by default, specified when TiDB Operator is started) is used by default.
-* `.spec.storageSize`: the PV size specified for the restoration. This value must be greater than the size of the backed up TiDB cluster.
+* `.spec.to.secretName`: the secret contains the password of the `.spec.to.user`.
+* `.spec.storageClassName`: the persistent volume (PV) type specified for the restoration.
+* `.spec.storageSize`: the PV size specified for the restoration. This value must be greater than the backup data size of the TiDB cluster.

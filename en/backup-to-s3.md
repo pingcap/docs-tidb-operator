@@ -27,6 +27,19 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 
 ### Ad-hoc backup process
 
+> **Note:**
+>
+> * If need to add `Prefix` to the backup data path, you can add the `Prefix` in the `bucket` configuration, e.g. `bucket: demo-bucket/demo-prefix`
+> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+>
+>     ```yaml
+>     spec:
+>       ...
+>       s3:
+>         ...
+>         options:
+>         - --ignore-checksum
+
 + Create the `Backup` CR, and back up cluster data to AWS S3 by importing AccessKey and SecretKey to grant permissions:
 
     {{< copyable "shell-regular" >}}
@@ -55,7 +68,8 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
       s3:
         provider: aws
         secretName: s3-secret
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -89,7 +103,8 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
       s3:
         provider: ceph
         secretName: s3-secret
-        endpoint: http://10.0.0.1:30074
+        endpoint: ${endpoint}
+        bucket: ${bucket}
       storageClassName: local-storage
       storageSize: 10Gi
     ```
@@ -122,7 +137,8 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
         secretName: backup-demo1-tidb-secret
     s3:
         provider: aws
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -157,7 +173,8 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
         secretName: backup-demo1-tidb-secret
     s3:
         provider: aws
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -165,7 +182,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     storageSize: 10Gi
     ```
 
-In the above two examples, all data of the TiDB cluster is exported and backed up to Amazon S3 and Ceph respectively. You can ignore the `region`, `acl`, `endpoint`, and `storageClass` configuration items in the Amazon S3 configuration. S3-compatible storage types other than Amazon S3 can also use configuration similar to that of Amazon S3. You can also leave the configuration item fields empty if you do not need to configure these items as shown in the above Ceph configuration.
+In the above two examples, all data of the TiDB cluster is exported and backed up to Amazon S3 and Ceph respectively. You can ignore the `acl`, `endpoint`, and `storageClass` configuration items in the Amazon S3 configuration. S3-compatible storage types other than Amazon S3 can also use configuration similar to that of Amazon S3. You can also leave the configuration item fields empty if you do not need to configure these items as shown in the above Ceph configuration.
 
 Amazon S3 supports the following access-control list (ACL) polices:
 
@@ -203,9 +220,11 @@ More `Backup` CRs are described as follows:
 * `.spec.from.host`: the address of the TiDB cluster to be backed up.
 * `.spec.from.port`: the port of the TiDB cluster to be backed up.
 * `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
-* `.spec.from.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be backed up.
-* `.spec.storageClassName`: the persistent volume (PV) type specified for the backup operation. If this item is not specified, the value of the `default-backup-storage-class-name` parameter (`standard` by default, specified when TiDB Operator is started) is used by default.
-* `.spec.storageSize`: the PV size specified for the backup operation. This value must be greater than the size of the TiDB cluster to be backed up.
+* `.spec.from.secretName`：the secret contains the password of the `.spec.from.user`.
+* `.spec.s3.region`: the region of Amazon S3.
+* `.spec.s3.bucket`: the bucket name of S3.
+* `.spec.storageClassName`: the persistent volume (PV) type specified for the backup operation.
+* `.spec.storageSize`: the PV size specified for the backup operation. This value must be greater than the backup data size of the TiDB cluster.
 
 More S3-compatible `provider`s are described as follows:
 
@@ -227,6 +246,21 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 The prerequisites for the scheduled backup is the same as the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
 
 ### Scheduled backup process
+
+> **Note:**
+>
+> * If need to add `Prefix` to the backup data path, you can add the `Prefix` in the `bucket` configuration, e.g. `bucket: demo-bucket/demo-prefix`
+> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.backupTemplate.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+>
+>     ```yaml
+>     spec:
+>       ...
+>       backupTemplate:
+>         ...
+>         s3:
+>           ...
+>           options:
+>           - --ignore-checksum
 
 + Create the `BackupSchedule` CR to enable the scheduled full backup to Amazon S3 by importing AccessKey and SecretKey to grant permissions:
 
@@ -259,7 +293,8 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
         s3:
         provider: aws
         secretName: s3-secret
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -298,7 +333,8 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
         s3:
         provider: ceph
         secretName: s3-secret
-        endpoint: http://10.0.0.1:30074
+        endpoint: ${endpoint}
+        bucket: ${bucket}
         storageClassName: local-storage
         storageSize: 10Gi
     ```
@@ -335,7 +371,8 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
           secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
-          # region: us-east-1
+          region: ${region}
+          bucket: ${bucket}
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:
@@ -374,7 +411,8 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
           secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
-          # region: us-east-1
+          region: ${region}
+          bucket: ${bucket}
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:

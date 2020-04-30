@@ -26,6 +26,19 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到兼容 S3 的存储
 
+> **注意：**
+>
+> * 如果要为备份数据指定 `Prefix`，可以将 `Prefix` 配置在下面 yaml 中的 `bucket` 配置后面，比如 `bucket: demo-bucket/demo-prefix`
+> * 由于 `rclone` 存在[问题](https://github.com/rclone/rclone/issues/1824)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在下面步骤中的 yaml 文件里配置 `spec.s3.options` 以保证备份成功，详细解释可以参考[文档](https://rclone.org/s3/#key-management-system-kms)：
+>
+>     ```yaml
+>     spec:
+>       ...
+>       s3:
+>         ...
+>         options:
+>         - --ignore-checksum
+
 + 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
@@ -52,7 +65,8 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       s3:
         provider: aws
         secretName: s3-secret
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -86,7 +100,8 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       s3:
         provider: ceph
         secretName: s3-secret
-        endpoint: http://10.0.0.1:30074
+        endpoint: ${endpoint}
+        bucket: ${bucket}
       storageClassName: local-storage
       storageSize: 10Gi
     ```
@@ -119,7 +134,8 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
         secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -154,7 +170,8 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
         secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
-        # region: us-east-1
+        region: ${region}
+        bucket: ${bucket}
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
@@ -162,7 +179,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       storageSize: 10Gi
     ```
 
-以上两个示例分别将 TiDB 集群的数据全量导出备份到 Amazon S3 和 Ceph 上。Amazon S3 的 `region`、`acl`、`endpoint`、`storageClass` 配置项均可以省略。其余非 Amazon S3 的但是兼容 S3 的存储均可使用和 Amazon S3 类似的配置。可参考上面例子中 Ceph 的配置，省略不需要配置的字段。
+以上两个示例分别将 TiDB 集群的数据全量导出备份到 Amazon S3 和 Ceph 上。Amazon S3 的 `acl`、`endpoint`、`storageClass` 配置项均可以省略。其余非 Amazon S3 的但是兼容 S3 的存储均可使用和 Amazon S3 类似的配置。可参考上面例子中 Ceph 的配置，省略不需要配置的字段。
 
 Amazon S3 支持以下几种 access-control list (ACL) 策略：
 
@@ -200,9 +217,11 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 * `.spec.from.host`：待备份 TiDB 集群的访问地址。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
-* `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
-* `.spec.storageClassName`: 备份时所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
-* `.spec.storageSize`: 备份时指定所需的 PV 大小。该值须大于备份 TiDB 集群的数据大小。
+* `.spec.from.secretName`：存储 `.spec.from.user` 用户的密码的 secret。
+* `.spec.s3.region`: 使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
+* `.spec.s3.bucket`: 兼容 S3 存储的 bucket 名字。
+* `.spec.storageClassName`: 备份时所需的 persistent volume (PV) 类型。
+* `.spec.storageSize`: 备份时指定所需的 PV 大小。该值须大于 TiDB 集群备份的数据大小。
 
 更多支持的兼容 S3 的 `provider` 如下：
 
@@ -224,6 +243,21 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
 
 ### 定时全量备份数据到 S3 兼容存储
+
+> **注意：**
+>
+> * 如果要为备份数据指定 `Prefix`，可以将 `Prefix` 配置在下面 yaml 中的 `bucket` 配置后面，比如 `bucket: demo-bucket/demo-prefix`
+> * 由于 `rclone` 存在[问题](https://github.com/rclone/rclone/issues/1824)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在下面步骤中的 yaml 文件里配置 `spec.backupTemplate.s3.options` 以保证备份成功，详细解释可以参考[文档](https://rclone.org/s3/#key-management-system-kms)：
+>
+>     ```yaml
+>     spec:
+>       ...
+>       backupTemplate:
+>         ...
+>         s3:
+>           ...
+>           options:
+>           - --ignore-checksum
 
 + 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 
@@ -256,7 +290,8 @@ Amazon S3 支持以下几种 `storageClass` 类型：
         s3:
           provider: aws
           secretName: s3-secret
-          # region: us-east-1
+          region: ${region}
+          bucket: ${bucket}
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:
@@ -295,7 +330,8 @@ Amazon S3 支持以下几种 `storageClass` 类型：
         s3:
           provider: ceph
           secretName: s3-secret
-          endpoint: http://10.0.0.1:30074
+          endpoint: ${endpoint}
+          bucket: ${bucket}
         storageClassName: local-storage
         storageSize: 10Gi
     ```
@@ -332,7 +368,8 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
-          # region: us-east-1
+          region: ${region}
+          bucket: ${bucket}
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:
@@ -371,7 +408,8 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
-          # region: us-east-1
+          region: ${region}
+          bucket: ${bucket}
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:
