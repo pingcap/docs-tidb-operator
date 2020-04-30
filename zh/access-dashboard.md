@@ -97,7 +97,7 @@ Ingress 提供了 TLS 支持，你可以通过 [Ingress TLS](https://kubernetes.
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: visit-dashboard
+  name: access-dashboard
   namespace: ${namespace}
 spec:
   tls:
