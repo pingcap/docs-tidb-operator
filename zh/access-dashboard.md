@@ -74,7 +74,7 @@ metadata:
   namespace: ${namespace}
 spec:
   rules:
-    - host: exmaple.com
+    - host: ${host}
       http:
         paths:
           - backend:
@@ -82,6 +82,8 @@ spec:
               servicePort: 2379
             path: /dashboard
 ```
+
+当部署了 `Ingress` 后，你可以通过 `http://${host}/dashboard` 访问 `TiDB Dashboard` 。
 
 ## 开启 Ingress TLS
 
@@ -100,10 +102,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - exmaple.com
+    - ${host}
     secretName: testsecret-tls
   rules:
-    - host: exmaple.com
+    - host: ${host}
       http:
         paths:
           - backend:
@@ -111,6 +113,22 @@ spec:
               servicePort: 2379
             path: /dashboard
 ```
+
+以下是 `testsecret-tls` 的一个例子:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testsecret-tls
+  namespace: default
+data:
+  tls.crt: base64 encoded cert
+  tls.key: base64 encoded key
+type: kubernetes.io/tls
+```
+
+当 Ingress 部署完成以后， 你就可以通过 `https://{host}/dashboard 访问 `TiDB Dashboard` 。
 
 ## 通过 NodePort 访问 TiDB Dashboard
 
