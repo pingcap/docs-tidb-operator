@@ -8,7 +8,6 @@ category: how-to
 
 `TiDB Dashboard` 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://github.com/pingcap-incubator/tidb-dashboard) 了解详情。 本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
 
-
 ## 快速上手
 
 > **注意：**
@@ -60,7 +59,6 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 ```
 
 然后在浏览器中访问 `http://localhost:2379/dashboard` 即可访问到 `TiDB Dashboard` 
-
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
@@ -128,7 +126,7 @@ data:
 type: kubernetes.io/tls
 ```
 
-当 Ingress 部署完成以后， 你就可以通过 `https://{host}/dashboard 访问 `TiDB Dashboard` 。
+当 Ingress 部署完成以后， 你就可以通过 `https://{host}/dashboard` 访问 `TiDB Dashboard` 。
 
 ## 通过 NodePort 访问 TiDB Dashboard
 
