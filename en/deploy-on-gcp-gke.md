@@ -181,7 +181,7 @@ This section describes how to deploy a TiDB cluster.
 
     > **Note:**
     >
-    > * Make sure the number of PD nodes, TiKV nodes, or TiDB nodes is the same as the value of the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes to actually create is `pd_count` * `3`, `tikv_count` * `3`, or `tidb_count` * `3`.
+    > * Make sure the number of PD nodes, TiKV nodes, or TiDB nodes is the same as the value of the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes to actually create is `pd_count*3`, `tikv_count*3`, or `tidb_count*3`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
 
 2. Create `Namespace`:
