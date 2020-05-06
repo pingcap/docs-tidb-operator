@@ -38,8 +38,8 @@ This section describe how to issue certificates for the TiDB cluster using two m
     chmod +x ~/bin/{cfssl,cfssljson}
     export PATH=$PATH:~/bin
 
-    CFSSL_HOME=$(mktemp -d /tmp/cfssl-XXXXXX)
-    cd $CFSSL_HOME
+    mkdir -p cfssl
+    cd cfssl
     cfssl print-defaults config > ca-config.json
     cfssl print-defaults csr > ca-csr.json
     ```
@@ -204,8 +204,8 @@ You can generate multiple sets of client-side certificates. At least one set of 
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    CERT_MANAGER_HOME=$(mktemp -d /tmp/cert-manager-XXXXXX)
-    cd $CERT_MANAGER_HOME
+    mkdir -p cert-manager
+    cd cert-manager
     ```
 
     Then, create a `tidb-server-issuer.yaml` file with the following content:
@@ -436,28 +436,20 @@ In this step, you create a TiDB cluster using two CR object, enable TLS for the 
 
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/#configure-the-mysql-client-to-use-encrypted-connections).
 
-1. If you issue certificates using `cfssl`, execute the following command to connect with the TiDB server:
+Execute the following command to acquire the client-side certificate and connect to the TiDB server:
 
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=$CFSSL_HOME/client.pem --ssl-key=$CFSSL_HOME/client-key.pem --ssl-ca=$CFSSL_HOME/ca.pem
-    ```
-
-2. If you issue certificates using `cert-manager`, execute the following command to acquire the client-side certificate and connect to the TiDB server:
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.crt
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.key
-    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}' | base64 --decode >  $CERT_MANAGER_HOME/client-ca.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+    kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
     ```
 
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=$CERT_MANAGER_HOME/client-tls.crt --ssl-key=$CERT_MANAGER_HOME/client-tls.key --ssl-ca=$CERT_MANAGER_HOME/client-ca.crt
+    mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
     ```
 
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/v3.1/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).

@@ -34,8 +34,8 @@ category: how-to
     chmod +x ~/bin/{cfssl,cfssljson}
     export PATH=$PATH:~/bin
 
-    CFSSL_HOME=$(mktemp -d /tmp/cfssl-XXXXXX)
-    cd $CFSSL_HOME
+    mkdir -p cfssl
+    cd cfssl
     cfssl print-defaults config > ca-config.json
     cfssl print-defaults csr > ca-csr.json
     ```
@@ -436,8 +436,8 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    CERT_MANAGER_HOME=$(mktemp -d /tmp/cert-manager-XXXXXX)
-    cd $CERT_MANAGER_HOME
+    mkdir -p cert-manager
+    cd cert-manager
     ```
 
     然后创建一个 `tidb-cluster-issuer.yaml` 文件，输入以下内容：
@@ -955,7 +955,7 @@ category: how-to
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install charts/tidb-drainer --name=${release_name} --namespace=${namespace}
+        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
     - 第二种方式：创建 Drainer 的时候不设置 `drainerName`：
@@ -976,7 +976,7 @@ category: how-to
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install charts/tidb-drainer --name=${release_name} --namespace=${namespace}
+        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
 3. 创建 Backup/Restore 资源对象。
@@ -1065,9 +1065,9 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.crt
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.key
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}' | base64 --decode >  $CERT_MANAGER_HOME/client-ca.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
     ```
 
 3. 使用 pd-ctl 连接 PD 集群。
@@ -1077,5 +1077,5 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    pd-ctl --cacert=$CERT_MANAGER_HOME/client-ca.crt --cert=$CERT_MANAGER_HOME/client-tls.crt --key=$CERT_MANAGER_HOME/client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
+    pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
     ```

@@ -40,8 +40,8 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     chmod +x ~/bin/{cfssl,cfssljson}
     export PATH=$PATH:~/bin
 
-    CFSSL_HOME=$(mktemp -d /tmp/cfssl-XXXXXX)
-    cd $CFSSL_HOME
+    mkdir -p cfssl
+    cd cfssl
     cfssl print-defaults config > ca-config.json
     cfssl print-defaults csr > ca-csr.json
     ```
@@ -445,8 +445,8 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    CERT_MANAGER_HOME=$(mktemp -d /tmp/cert-manager-XXXXXX)
-    cd $CERT_MANAGER_HOME
+    mkdir -p cert-manager
+    cd cert-manager
     ```
 
     Then, create a `tidb-cluster-issuer.yaml` file with the following content:
@@ -972,7 +972,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install charts/tidb-drainer --name=${release_name} --namespace=${namespace}
+        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
     - Method 2: Do not set `drainerName` when you create Drainer.
@@ -993,7 +993,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install charts/tidb-drainer --name=${release_name} --namespace=${namespace}
+        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
 3. Create the Backup/Restore resource object:
@@ -1081,9 +1081,9 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.crt
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > $CERT_MANAGER_HOME/client-tls.key
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}' | base64 --decode >  $CERT_MANAGER_HOME/client-ca.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
     ```
 
 3. Connect to the PD cluster by `pd-ctl`:
@@ -1093,5 +1093,5 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    pd-ctl --cacert=$CERT_MANAGER_HOME/client-ca.crt --cert=$CERT_MANAGER_HOME/client-tls.crt --key=$CERT_MANAGER_HOME/client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
+    pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
     ```
