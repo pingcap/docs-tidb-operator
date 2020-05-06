@@ -12,7 +12,7 @@ category: how-to
 
 > **注意：**
 >
-> 以下教程仅为演示如何快速 `TiDB Dashboard`，请勿在生产环境中直接使用以下方法。 
+> 以下教程仅为演示如何快速访问 `TiDB Dashboard`，请勿在生产环境中直接使用以下方法。 
 
 `TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。
 
@@ -58,7 +58,7 @@ spec:
 kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 ```
 
-然后在浏览器中访问 `http://localhost:2379/dashboard` 即可访问到 `TiDB Dashboard` 
+然后在浏览器中访问 `http://localhost:2379/dashboard` 即可访问到 `TiDB Dashboard`。
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
@@ -81,7 +81,7 @@ spec:
             path: /dashboard
 ```
 
-当部署了 `Ingress` 后，你可以通过 `http://${host}/dashboard` 访问 `TiDB Dashboard` 。
+当部署了 `Ingress` 后，你可以通过 `http://${host}/dashboard` 访问 `TiDB Dashboard`。
 
 ## 开启 Ingress TLS
 
@@ -89,7 +89,7 @@ spec:
 >
 > 由于 Ingress 假定了 TLS 终止，所以当目前 TiDB 集群开启了 [TLS 验证](enable-tls-between-components.md)时，你将无法通过 Ingress 访问 Dashboard。
 
-Ingress 提供了 TLS 支持，你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 了解更多。 以下是一个使用 Ingress TLS 的例子，其中 `testsecret-tls` 包含了 `exmaple.com` 所需要的 `tls.crt`与 `tls.key`:
+Ingress 提供了 TLS 支持，你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 了解更多。以下是一个使用 Ingress TLS 的例子，其中 `testsecret-tls` 包含了 `exmaple.com` 所需要的 `tls.crt` 与 `tls.key`：
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -126,11 +126,11 @@ data:
 type: kubernetes.io/tls
 ```
 
-当 Ingress 部署完成以后， 你就可以通过 `https://{host}/dashboard` 访问 `TiDB Dashboard` 。
+当 Ingress 部署完成以后，你就可以通过 `https://{host}/dashboard` 访问 `TiDB Dashboard`。
 
 ## 通过 NodePort 访问 TiDB Dashboard
 
-你可以将对应 TiDB 集群中 PD 组件的 `ServiceType` 设置为 `NodePort`，从而暴露 `TiDB Dashboard`, 以下是一个例子:
+你可以将对应 TiDB 集群中 PD 组件的 `ServiceType` 设置为 `NodePort`，从而暴露 `TiDB Dashboard`，以下是一个例子：
 
 > **警告：**
 >
