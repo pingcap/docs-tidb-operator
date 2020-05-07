@@ -62,7 +62,7 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
-你可以通过 `Ingress` 来将 TiDB Dashboard 暴露服务，从而在集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多。
+你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -81,7 +81,7 @@ spec:
             path: /dashboard
 ```
 
-当部署了 `Ingress` 后，你可以通过 `http://${host}/dashboard` 访问 `TiDB Dashboard`。
+当部署了 `Ingress` 后，你可以在 `Kubernetes` 集群外通过 `http://${host}/dashboard` 访问 `TiDB Dashboard`。
 
 ## 开启 Ingress TLS
 
