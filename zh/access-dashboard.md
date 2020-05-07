@@ -14,7 +14,7 @@ category: how-to
 >
 > 以下教程仅为演示如何快速访问 `TiDB Dashboard`，请勿在生产环境中直接使用以下方法。 
 
-`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。
+`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。你可以通过 `kubectl apply -f ` 将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -22,7 +22,6 @@ kind: TidbCluster
 metadata:
   name: tidb
 spec:
-  storageClassName: ${storageClass}
   timezone: UTC
   pvReclaimPolicy: Delete
   imagePullPolicy: IfNotPresent
@@ -62,7 +61,11 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
-你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。
+> **注意：**
+>
+> 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。我们极其不推荐使用 `Ingress` 以外的方式在生产环境、关键环境暴露 `TiDB Dashboard` 服务。
+
+你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。你可以通过 `kubectl apply -f ` 将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -127,45 +130,3 @@ type: kubernetes.io/tls
 ```
 
 当 Ingress 部署完成以后，你就可以通过 `https://{host}/dashboard` 访问 `TiDB Dashboard`。
-
-## 通过 NodePort 访问 TiDB Dashboard
-
-你可以将对应 TiDB 集群中 PD 组件的 `ServiceType` 设置为 `NodePort`，从而暴露 `TiDB Dashboard`，以下是一个例子：
-
-> **警告：**
->
-> 由于以下方式中 TiDB Dashboard 内嵌在 PD 中，并且都通过 2379 端口暴露服务，所以我们极其不推荐在生产、关键环境中以这种形式暴露服务，这将会导致将 PD api 暴露的安全风险。
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: tidb
-spec:
-  storageClassName: ${storageClass}
-  timezone: UTC
-  pvReclaimPolicy: Delete
-  imagePullPolicy: IfNotPresent
-  pd:
-    image: pingcap/pd:v4.0.0-rc
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-    service:
-      type: NodePort
-  tikv:
-    config: {}
-    image: pingcap/tikv:v4.0.0-rc
-    replicas: 1
-    requests:
-      storage: "1Gi"
-  tidb:
-    enableAdvertiseAddress: true
-    image: pingcap/tidb:v4.0.0-rc
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    config: {}
-    requests:
-      cpu: 1
-```
