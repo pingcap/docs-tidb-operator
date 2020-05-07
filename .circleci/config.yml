@@ -29,7 +29,7 @@ jobs:
 
       - run:
           name: "Merge Makedown Files"
-          command: python3 scripts/merge_by_toc.py en/; python3 scripts/merge_by_toc.py /zh;
+          command: python3 scripts/merge_by_toc.py en/; python3 scripts/merge_by_toc.py zh/;
 
       - run:
           name: "Generate PDF"
