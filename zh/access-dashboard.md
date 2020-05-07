@@ -14,7 +14,7 @@ category: how-to
 >
 > 以下教程仅为演示如何快速访问 `TiDB Dashboard`，请勿在生产环境中直接使用以下方法。 
 
-`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。你可以通过 `kubectl apply -f ` 将以下 yaml 文件部署到 Kubernetes 集群中。
+`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。你可以通过 `kubectl apply -f` 将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -65,7 +65,7 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 >
 > 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。我们极其不推荐使用 `Ingress` 以外的方式在生产环境、关键环境暴露 `TiDB Dashboard` 服务。
 
-你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。你可以通过 `kubectl apply -f ` 将以下 yaml 文件部署到 Kubernetes 集群中。
+你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。你可以通过 `kubectl apply -f` 将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: extensions/v1beta1
