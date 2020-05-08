@@ -25,7 +25,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 
 > **Note:**
 >
-> Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+> Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
 >
 > ```yaml
 > spec:
@@ -34,6 +34,9 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 >     ...
 >     options:
 >     - --ignore-checksum
+> ```
+>
+> For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
 
 + Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 

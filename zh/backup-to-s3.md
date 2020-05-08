@@ -38,6 +38,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 >         ...
 >         options:
 >         - --ignore-checksum
+>    ```
 
 + 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 
@@ -258,6 +259,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 >           ...
 >           options:
 >           - --ignore-checksum
+>     ```
 
 + 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 

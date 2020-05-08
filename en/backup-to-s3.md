@@ -29,8 +29,8 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 
 > **Note:**
 >
-> * If need to add `Prefix` to the backup data path, you can add the `Prefix` in the `bucket` configuration, e.g. `bucket: demo-bucket/demo-prefix`
-> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+> * If you need to add `Prefix` to the backup data path, configure the `Prefix` in the `bucket` configuration in the YAML file, e.g.: `bucket: demo-bucket/demo-prefix`
+> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
 >
 >     ```yaml
 >     spec:
@@ -39,6 +39,9 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 >         ...
 >         options:
 >         - --ignore-checksum
+>     ```
+>
+> * For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
 
 + Create the `Backup` CR, and back up cluster data to AWS S3 by importing AccessKey and SecretKey to grant permissions:
 
@@ -249,8 +252,8 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
 > **Note:**
 >
-> * If need to add `Prefix` to the backup data path, you can add the `Prefix` in the `bucket` configuration, e.g. `bucket: demo-bucket/demo-prefix`
-> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you have to configure `spec.backupTemplate.s3.options` as below in the yamls used in the following procedures, for more detail, refer to the [document](https://rclone.org/s3/#key-management-system-kms):
+> * If you need to add `Prefix` to the backup data path, configure the `Prefix` in the `bucket` configuration in the YAML file, e.g.: `bucket: demo-bucket/demo-prefix`
+> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.backupTemplate.s3.options` in the YAML file in the following steps:
 >
 >     ```yaml
 >     spec:
@@ -261,6 +264,9 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 >           ...
 >           options:
 >           - --ignore-checksum
+>     ```
+>
+> * For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
 
 + Create the `BackupSchedule` CR to enable the scheduled full backup to Amazon S3 by importing AccessKey and SecretKey to grant permissions:
 

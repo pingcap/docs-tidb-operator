@@ -33,6 +33,7 @@ category: how-to
 >     ...
 >     options:
 >     - --ignore-checksum
+> ```
 
 1. 创建 Restore customer resource (CR)，将制定备份数据恢复至 TiDB 集群
 
