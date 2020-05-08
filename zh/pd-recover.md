@@ -36,7 +36,7 @@ tar -xzf tidb-${version}-linux-amd64.tar.gz
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 kubectl get tc ${cluster_name} -n ${namespace} -o='go-template={{.status.clusterID}}{{"\n"}}'
 ```
 
@@ -61,7 +61,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
@@ -69,7 +69,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl edit sts ${cluster_name}-pd -n ${namespace}
     ```
 
@@ -77,7 +77,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl get pod -n ${namespace}
     ```
 
@@ -85,7 +85,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl delete pvc -l app.kubernetes.io/component=pd,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
     ```
 
@@ -95,7 +95,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
@@ -103,7 +103,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl edit sts ${cluster_name}-pd -n ${namespace}
     ```
 
@@ -111,7 +111,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl get pod -n ${namespace}
     ```
 
@@ -121,7 +121,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
@@ -129,7 +129,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
@@ -137,7 +137,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     `pd-recover` 命令执行成功后，会打印如下输出：
 
-    ```
+    ```shell
     recover success! please restart the PD cluster
     ```
 
@@ -149,7 +149,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
@@ -157,7 +157,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
@@ -165,7 +165,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     curl 127.0.0.1:2379/pd/api/v1/cluster
     ```
 
@@ -177,7 +177,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
@@ -185,7 +185,7 @@ kubectl edit tc ${cluster_name} -n ${namespace}
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} && 
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```
