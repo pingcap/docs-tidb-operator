@@ -1,10 +1,10 @@
 ---
-title: Use PD Recover to Recover the PD cluster
+title: Use PD Recover to Recover the PD Cluster
 summary: Learn how to use PD Recover to recover the PD cluster.
 category: reference
 ---
 
-# Use PD Recover to Recover the PD cluster
+# Use PD Recover to Recover the PD Cluster
 
 [PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover) is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally.
 
@@ -51,13 +51,13 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### Get Alloc ID
 
-When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id` which is larger than the largest allocated ID (`Alloc ID`) of the original cluster.
+When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id` which should be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
 1. Access the Prometheus monitoring data of the TiDB cluster by taking steps in [Access the monitoring data](monitor-a-tidb-cluster.md#access-the-monitoring-data).
 
-2. Enter `pd_cluster_id` in the input box and click the `Execute` button to make a query. Get the largest value in query result.
+2. Enter `pd_cluster_id` in the input box and click the `Execute` button to make a query. Get the largest value in the query result.
 
-3. Multiply the largest value in the query result by `100`. This multiplied value is the `alloc-id` value specified when using `pd-recover`.
+3. Multiply the largest value in the query result by `100`. Use the multiplied value as the `alloc-id` value specified when using `pd-recover`.
 
 ### Recover the PD Pod
 
@@ -71,7 +71,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. You need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `0`.
+    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `0`.
 
     {{< copyable "shell-regular" >}}
 
@@ -87,7 +87,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl get pod -n ${namespace}
     ```
 
-2. After confirming that all PD Pods are deleted, execute the following command to delete the PVC bound to the PD Pods:
+2. After confirming that all PD Pods are deleted, execute the following command to delete the PVCs bound to the PD Pods:
 
     {{< copyable "shell-regular" >}}
 
@@ -95,7 +95,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl delete pvc -l app.kubernetes.io/component=pd,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
     ```
 
-3. After the PVC is deleted, increase the capacity of the PD cluster to one Pod:
+3. After the PVCs are deleted, scale out the PD cluster to one Pod:
 
     Execute the following command to set the value of `spec.pd.replicas` to `1`:
 
@@ -105,7 +105,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. You need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `1`.
+    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `1`.
 
     {{< copyable "shell-regular" >}}
 
