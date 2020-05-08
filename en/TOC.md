@@ -29,9 +29,10 @@
   - [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
 - [Monitor](monitor-a-tidb-cluster.md)
 + Maintain
-  - [Destroy a TiDB cluster](destroy-a-tidb-cluster.md)
+  - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
   - [Maintain a Hosting Kubernetes Node](maintain-a-kubernetes-node.md)
+  - [Use PD Recover to Recover the PD Cluster](pd-recover.md)
   + Backup and Restore
     - [Backup and Restore](backup-and-restore-using-helm-charts.md)
     - [Restore Data with TiDB Lightning](restore-data-using-tidb-lightning.md)
