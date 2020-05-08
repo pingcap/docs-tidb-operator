@@ -10,27 +10,29 @@ category: reference
 
 ## 下载 PD Recover
 
-下载 TiDB 官方安装包：
+1. 下载 TiDB 官方安装包：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
-```
+    ```shell
+    wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
+    ```
 
-`${version}` 是 TiDB 集群版本，例如，`v4.0.0-rc`。
+    `${version}` 是 TiDB 集群版本，例如，`v4.0.0-rc`。
 
-解压安装包：
+2. 解压安装包：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tar -xzf tidb-${version}-linux-amd64.tar.gz
-```
+    ```shell
+    tar -xzf tidb-${version}-linux-amd64.tar.gz
+    ```
 
-`pd-recover` 在 `tidb-${version}-linux-amd64/bin` 目录下。
+    `pd-recover` 在 `tidb-${version}-linux-amd64/bin` 目录下。
 
 ## 使用 PD Recover 恢复 PD 集群
+
+本小节详细介绍如何使用 PD Recover 来恢复 PD 集群。
 
 ### 获取 Cluster ID
 
@@ -49,13 +51,17 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### 获取 Alloc ID
 
-使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`，`alloc-id` 的值需要是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
+使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`。`alloc-id` 的值需要是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
 
-参考[访问监控数据](monitor-a-tidb-cluster.md#访问监控数据)打开 TiDB 集群的 Prometheus 访问页面，在输入框中输入 `pd_cluster_id` 并点击 `Execute` 按钮查询数据，获取查询结果中的最大值，并乘以 `100`，作为使用 `pd-recover` 时指定的 `alloc-id`。
+1. 参考[访问监控数据](monitor-a-tidb-cluster.md#访问监控数据)打开 TiDB 集群的 Prometheus 访问页面。
+
+2. 在输入框中输入 `pd_cluster_id` 并点击 `Execute` 按钮查询数据，获取查询结果中的最大值。
+
+3. 将查询结果中的最大值乘以 `100`，作为使用 `pd-recover` 时指定的 `alloc-id`。
 
 ### 恢复 PD 集群 Pod
 
-1. 删除 PD 集群 Pod
+1. 删除 PD 集群 Pod。
 
     通过如下命令设置 `spec.pd.replicas` 为 `0`：
 
@@ -65,7 +71,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `0`：
+    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD StatefulSet，所以需要通过如下命令设置 PD StatefulSet `spec.replicas` 为 `0`：
 
     {{< copyable "shell-regular" >}}
 
@@ -99,7 +105,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `1`：
+    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD StatefulSet，所以需要通过如下命令设置 PD StatefulSet `spec.replicas` 为 `1`：
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +121,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl get pod -n ${namespace}
     ```
 
-### 使用 pd-recover 恢复集群
+### 使用 PD Recover 恢复集群
 
 1. 通过 `port-forward` 暴露 PD 服务：
 
@@ -141,11 +147,11 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     recover success! please restart the PD cluster
     ```
 
-3. 回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
+3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
 ### 重启 PD Pod
 
-1. 删除 PD Pod
+1. 删除 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -169,7 +175,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     curl 127.0.0.1:2379/pd/api/v1/cluster
     ```
 
-4. 回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
+4. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
 ### 扩容 PD 集群
 
