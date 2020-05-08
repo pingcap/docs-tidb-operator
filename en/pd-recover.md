@@ -6,7 +6,7 @@ category: reference
 
 # Use PD Recover to Recover the PD Cluster
 
-[PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover) is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally.
+[PD Recover](https://pingcap.com/docs/stable/reference/tools/pd-recover) is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/architecture/#placement-driver-server), used to recover the PD cluster which cannot start or provide services normally.
 
 ## Download PD Recover
 
@@ -51,7 +51,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### Get Alloc ID
 
-When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id` which should be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
+When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id`. The value of `alloc-id` must be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
 1. Access the Prometheus monitoring data of the TiDB cluster by taking steps in [Access the monitoring data](monitor-a-tidb-cluster.md#access-the-monitoring-data).
 
@@ -159,7 +159,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
-2. After the Pod is started normally, execute the `port-forward` command to expose the PD service:
+2. After the Pod is started successfully, execute the `port-forward` command to expose the PD service:
 
     {{< copyable "shell-regular" >}}
 
