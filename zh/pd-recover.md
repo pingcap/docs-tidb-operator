@@ -51,7 +51,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`，`alloc-id` 的值需要是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
 
-通过查看 PD 集群[监控面板](monitor-a-tidb-cluster.md#查看监控面板)中的 `Current peer count` 监控项，获取历史最大值，并乘以 `1000`，作为使用 `pd-recover` 时指定的 `alloc-id`。
+参考[访问监控数据](monitor-a-tidb-cluster.md#访问监控数据)打开 TiDB 集群的 Prometheus 访问页面，在输入框中输入 `pd_cluster_id` 并点击 `Execute` 按钮查询数据，获取查询结果中的最大值，并乘以 `100`，作为使用 `pd-recover` 时指定的 `alloc-id`。
 
 ### 恢复 PD 集群 Pod
 
@@ -133,7 +133,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
-    `${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#获取-alloc-id) 步骤中获取的 `Current peer count` 的历史最大值再乘以 `1000`。
+    `${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
 
     `pd-recover` 命令执行成功后，会打印如下输出：
 
