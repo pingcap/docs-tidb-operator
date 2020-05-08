@@ -29,7 +29,7 @@
   - [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
 - [Monitor](monitor-a-tidb-cluster.md)
 + Maintain
-  - [Destroy a TiDB cluster](destroy-a-tidb-cluster.md)
+  - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
   - [Maintain a Hosting Kubernetes Node](maintain-a-kubernetes-node.md)
   + Backup and Restore
@@ -37,7 +37,25 @@
     - [Restore Data with TiDB Lightning](restore-data-using-tidb-lightning.md)
   - [Collect TiDB Logs](collect-tidb-logs.md)
   - [Enable Automatic Failover](use-auto-failover.md)
+<<<<<<< HEAD
 - [Scale](scale-a-tidb-cluster.md)
+=======
+  - [Enable Admission Controller](enable-admission-webhook.md)
+  - [Use PD Recover to Recover the PD Cluster](pd-recover.md)
++ Scale
+  - [Scale](scale-a-tidb-cluster.md)
+  - [Enable Auto-scaling](enable-tidb-cluster-auto-scaling.md)
++ Backup and Restore
+  - [Use Helm Charts](backup-and-restore-using-helm-charts.md)
+  + Use CRDs
+    - [Back up Data to GCS Using Mydumper](backup-to-gcs.md)
+    - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
+    - [Back up Data to S3-Compatible Storage Using Mydumper](backup-to-s3.md)
+    - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
+    - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
+    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
+  - [Restore Data Using TiDB Lightning](restore-data-using-tidb-lightning.md)
+>>>>>>> bcac7ce... en: add pd-recover doc (#250)
 + Upgrade
   - [TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [TiDB Operator](upgrade-tidb-operator.md)
