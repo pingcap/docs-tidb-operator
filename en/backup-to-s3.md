@@ -29,19 +29,16 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 
 > **Note:**
 >
-> * If you need to add `Prefix` to the backup data path, configure the `Prefix` in the `bucket` configuration in the YAML file, e.g.: `bucket: demo-bucket/demo-prefix`
-> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
+> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
 >
->     ```yaml
->     spec:
->       ...
->       s3:
->         ...
->         options:
->         - --ignore-checksum
->     ```
->
-> * For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
+> ```yaml
+> spec:
+>   ...
+>   s3:
+>     ...
+>     options:
+>     - --ignore-checksum
+> ```
 
 + Create the `Backup` CR, and back up cluster data to AWS S3 by importing AccessKey and SecretKey to grant permissions:
 
@@ -252,21 +249,18 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
 > **Note:**
 >
-> * If you need to add `Prefix` to the backup data path, configure the `Prefix` in the `bucket` configuration in the YAML file, e.g.: `bucket: demo-bucket/demo-prefix`
-> * Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.backupTemplate.s3.options` in the YAML file in the following steps:
+> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.backupTemplate.s3.options` in the YAML file in the following steps:
 >
->     ```yaml
->     spec:
+> ```yaml
+> spec:
+>   ...
+>   backupTemplate:
+>     ...
+>     s3:
 >       ...
->       backupTemplate:
->         ...
->         s3:
->           ...
->           options:
->           - --ignore-checksum
->     ```
->
-> * For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
+>       options:
+>       - --ignore-checksum
+> ```
 
 + Create the `BackupSchedule` CR to enable the scheduled full backup to Amazon S3 by importing AccessKey and SecretKey to grant permissions:
 

@@ -24,7 +24,7 @@ category: how-to
 
 > **注意：**
 >
-> 由于 `rclone` 存在[问题](https://github.com/rclone/rclone/issues/1824)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在下面步骤中的 yaml 文件里配置 `spec.s3.options` 以保证备份恢复成功，详细解释可以参考[文档](https://rclone.org/s3/#key-management-system-kms)：
+> 由于 `rclone` 存在[问题](https://rclone.org/s3/#key-management-system-kms)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在下面步骤中的 yaml 文件里配置 `spec.s3.options` 以保证备份恢复成功：
 >
 > ```yaml
 > spec:

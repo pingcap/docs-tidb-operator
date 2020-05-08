@@ -15,7 +15,7 @@ For TiDB Operator 1.1 or later versions, it is recommended that you use the back
     - [Back up Data to GCS](backup-to-gcs.md)
     - [Restore Data from GCS](restore-from-gcs.md)
     - [Back up Data to S3-Compatible Storage Using Mydumper](backup-to-s3.md)
-    - [Restore Data from S3-Compatible Storage Using Loader](restore-from-s3.md)
+    - [Restore Data from S3-Compatible Storage Using Lightning](restore-from-s3.md)
 + If the TiDB cluster version >= v3.1, refer to the following documents:
     - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
     - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)

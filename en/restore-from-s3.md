@@ -1,10 +1,10 @@
 ---
-title: Restore Data from S3-Compatible Storage Using Loader
+title: Restore Data from S3-Compatible Storage Using Lightning
 summary: Learn how to restore data from the S3-compatible storage.
 category: how-to
 ---
 
-# Restore Data from S3-Compatible Storage Using Loader
+# Restore Data from S3-Compatible Storage Using Lightning
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
 
@@ -25,7 +25,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 
 > **Note:**
 >
-> Due to the [issue](https://github.com/rclone/rclone/issues/1824) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
+> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
 >
 > ```yaml
 > spec:
@@ -35,8 +35,6 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 >     options:
 >     - --ignore-checksum
 > ```
->
-> For more details, refer to the [rclone | Key Management System](https://rclone.org/s3/#key-management-system-kms).
 
 + Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 
