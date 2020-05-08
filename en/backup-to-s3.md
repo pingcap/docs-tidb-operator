@@ -29,7 +29,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
 
 > **Note:**
 >
-> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
+> Because of the `rclone` [issue](https://rclone.org/s3/#key-management-system-kms), if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to add the following `spec.s3.options` configuration to the YAML file:
 >
 > ```yaml
 > spec:
@@ -182,7 +182,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     storageSize: 10Gi
     ```
 
-In the above two examples, all data of the TiDB cluster is exported and backed up to Amazon S3 and Ceph respectively. You can ignore the `acl`, `endpoint`, and `storageClass` configuration items in the Amazon S3 configuration. S3-compatible storage types other than Amazon S3 can also use configuration similar to that of Amazon S3. You can also leave the configuration item fields empty if you do not need to configure these items as shown in the above Ceph configuration.
+In the four examples above, all data of the TiDB cluster is exported and backed up to Amazon S3 and Ceph respectively. You can ignore the `acl`, `endpoint`, and `storageClass` configuration items in the Amazon S3 configuration. S3-compatible storage types other than Amazon S3 can also use configuration similar to that of Amazon S3. You can also leave the configuration item fields empty if you do not need to configure these items as shown in the above Ceph configuration.
 
 Amazon S3 supports the following access-control list (ACL) polices:
 
@@ -249,7 +249,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
 > **Note:**
 >
-> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.backupTemplate.s3.options` in the YAML file in the following steps:
+> Because of the `rclone` [issue](https://rclone.org/s3/#key-management-system-kms), if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to add the following `spec.backupTemplate.s3.options` configuration to the YAML file:
 >
 > ```yaml
 > spec:
@@ -436,7 +436,7 @@ You can use the following command to check all the backup items:
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
 ```
 
-From the above two examples, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemple` specifies the configuration related to the S3-compatible storage, which is the same as the configuration of the ad-hoc full backup to the S3-compatible storage (refer to [Ad-hoc backup process](#ad-hoc-backup-process) for details). The following are the unique configuration items of `backupSchedule`:
+From the four examples above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemple` specifies the configuration related to the S3-compatible storage, which is the same as the configuration of the ad-hoc full backup to the S3-compatible storage (refer to [Ad-hoc backup process](#ad-hoc-backup-process) for details). The following are the unique configuration items of `backupSchedule`:
 
 + `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 + `.spec.maxReservedTime`: A backup retention policy based on time. For example, if you set the value of this configuration to `24h`, only backup items within the recent 24 hours are retained. All backup items out of this time are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set the maximum number of backup items and the longest retention time of backup items at the same time, the latter setting takes effect.

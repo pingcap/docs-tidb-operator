@@ -1,10 +1,10 @@
 ---
-title: Restore Data from S3-Compatible Storage Using Lightning
+title: Restore Data from S3-Compatible Storage Using TiDB Lightning
 summary: Learn how to restore data from the S3-compatible storage.
 category: how-to
 ---
 
-# Restore Data from S3-Compatible Storage Using Lightning
+# Restore Data from S3-Compatible Storage Using TiDB Lightning
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
 
@@ -25,7 +25,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 
 > **Note:**
 >
-> Due to the [issue](https://rclone.org/s3/#key-management-system-kms) of `rclone`, if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to configure `spec.s3.options` in the YAML file in the following steps:
+> Because of the `rclone` [issue](https://rclone.org/s3/#key-management-system-kms), if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to add the following `spec.s3.options` configuration to the YAML file:
 >
 > ```yaml
 > spec:
