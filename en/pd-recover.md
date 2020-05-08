@@ -167,7 +167,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the set ID.
+3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the one got in [Get Cluster ID](#get-cluster-id).
 
     {{< copyable "shell-regular" >}}
 
