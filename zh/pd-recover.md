@@ -1,6 +1,6 @@
 ---
 title: 使用 PD Recover 恢复 PD 集群
-summary: 使用 PD Recover 恢复 PD 集群
+summary: 了解如何使用 PD Recover 恢复 PD 集群。
 category: reference
 ---
 
@@ -8,13 +8,13 @@ category: reference
 
 [PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover) 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。
 
-## 下载 pd-recover
+## 下载 PD Recover
 
 下载 TiDB 官方安装包：
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
 ```
 
@@ -24,13 +24,13 @@ wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 tar -xzf tidb-${version}-linux-amd64.tar.gz
 ```
 
 `pd-recover` 在 `tidb-${version}-linux-amd64/bin` 目录下。
 
-## 使用 pd-recover 恢复 PD 集群
+## 使用 PD Recover 恢复 PD 集群
 
 ### 获取 Cluster ID
 
