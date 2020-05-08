@@ -49,146 +49,127 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### 获取 Alloc ID
 
-Alloc ID 是 TiKV 或者 TiFlash 分配的 StoreID。
+使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`，`alloc-id` 的值需要是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
 
-{{< copyable "shell-regular" >}}
-
-```
-kubectl get tc ${cluster_name} -n ${namespace} -o='go-template={{range .status.tikv.stores}}{{.id}}{{"\n"}}{{end}}'
-```
-
-如果集群中部署了 TiFlash，还需要查看 TiFlash 的 StoreID：
-
-{{< copyable "shell-regular" >}}
-
-```
-kubectl get tc ${cluster_name} -n ${namespace} -o='go-template={{range .status.tiflash.stores}}{{.id}}{{"\n"}}{{end}}'
-```
-
-示例：
-
-```
-kubectl get tc test -n test -o='go-template={{range .status.tikv.stores}}{{.id}}{{"\n"}}{{end}}'
-1
-47
-69
-```
-
-使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`，`alloc-id` 的值需要是一个比当前最大的 `Alloc ID` 更大的值。
+通过查看 PD 集群[监控面板](monitor-a-tidb-cluster.md#查看监控面板)中的 `Current peer count` 监控项，获取历史最大值，并乘以 `1000`，作为使用 `pd-recover` 时指定的 `alloc-id`。
 
 ### 恢复 PD 集群 Pod
 
-通过如下命令设置 `spec.pd.replicas` 为 `0`：
+1. 删除 PD 集群 Pod
 
-{{< copyable "shell-regular" >}}
+    通过如下命令设置 `spec.pd.replicas` 为 `0`：
 
-```
-kubectl edit tc ${cluster_name} -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `0`：
+    ```
+    kubectl edit tc ${cluster_name} -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `0`：
 
-```
-kubectl edit sts ${cluster_name}-pd -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-通过如下命令确认 PD Pod 已经被删除：
+    ```
+    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+    通过如下命令确认 PD Pod 已经被删除：
 
-```
-kubectl get pod -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-确认所有 PD Pod 已经被删除后，通过如下命令删除 PD Pod 绑定的 PVC：
+    ```
+    kubectl get pod -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+2. 确认所有 PD Pod 已经被删除后，通过如下命令删除 PD Pod 绑定的 PVC：
 
-```
-kubectl delete pvc -l app.kubernetes.io/component=pd,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-PVC 删除完成后，扩容 PD 集群至一个 Pod。
+    ```
+    kubectl delete pvc -l app.kubernetes.io/component=pd,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
+    ```
 
-通过如下命令设置 `spec.pd.replicas` 为 `1`：
+3. PVC 删除完成后，扩容 PD 集群至一个 Pod。
 
-{{< copyable "shell-regular" >}}
+    通过如下命令设置 `spec.pd.replicas` 为 `1`：
 
-```
-kubectl edit tc ${cluster_name} -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `1`：
+    ```
+    kubectl edit tc ${cluster_name} -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+    由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD Statefulset，所以需要通过如下命令设置 PD Statefulset `spec.replicas` 为 `1`：
 
-```
-kubectl edit sts ${cluster_name}-pd -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-通过如下命令确认 PD Pod 已经启动：
+    ```
+    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+    通过如下命令确认 PD Pod 已经启动：
 
-```
-kubectl get pod -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
+
+    ```
+    kubectl get pod -n ${namespace}
+    ```
 
 ### 使用 pd-recover 恢复集群
 
-通过 `port-forward` 暴露 PD 服务：
+1. 通过 `port-forward` 暴露 PD 服务：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
-```
+    ```
+    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    ```
 
-打开一个**新**终端标签或窗口，进入到 `pd-recover` 所在的目录，使用 `pd-recover` 恢复 PD 集群：
+2. 打开一个**新**终端标签或窗口，进入到 `pd-recover` 所在的目录，使用 `pd-recover` 恢复 PD 集群：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
-```
+    ```
+    ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
+    ```
 
-`${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是一个比[获取 Alloc ID](#获取-alloc-id) 步骤中获取的最大的 `Alloc ID` 更大的值。
+    `${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#获取-alloc-id) 步骤中获取的 `Current peer count` 的历史最大值再乘以 `1000`。
 
-`pd-recover` 命令执行成功后，会打印如下输出：
+    `pd-recover` 命令执行成功后，会打印如下输出：
 
-```
-recover success! please restart the PD cluster
-```
+    ```
+    recover success! please restart the PD cluster
+    ```
 
-回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
+3. 回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
 
 ### 重启 PD Pod
 
-{{< copyable "shell-regular" >}}
+1. 删除 PD Pod
 
-```
-kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
-```
+    {{< copyable "shell-regular" >}}
 
-Pod 正常启动后，通过 `port-forward` 暴露 PD 服务：
+    ```
+    kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
+    ```
 
-{{< copyable "shell-regular" >}}
+2. Pod 正常启动后，通过 `port-forward` 暴露 PD 服务：
 
-```
-kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
-```
+    {{< copyable "shell-regular" >}}
 
-打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为设置的 ID：
+    ```
+    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    ```
 
-{{< copyable "shell-regular" >}}
+3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为设置的 ID：
 
-```
-curl 127.0.0.1:2379/pd/api/v1/cluster
-```
+    {{< copyable "shell-regular" >}}
 
-回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
+    ```
+    curl 127.0.0.1:2379/pd/api/v1/cluster
+    ```
+
+4. 回到 `port-forward` 命令所在窗口，按 `Ctrl + C` 停止并退出。
 
 ### 扩容 PD 集群
 
