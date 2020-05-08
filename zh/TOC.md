@@ -32,6 +32,7 @@
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
+  - [使用 PD Recover 恢复 PD 集群](pd-recover.md)
   + 备份与恢复
     - [基于 Helm Charts 的备份恢复](backup-and-restore-using-helm-charts.md)
     - [使用 TiDB Lightning 恢复集群数据](restore-data-using-tidb-lightning.md)
