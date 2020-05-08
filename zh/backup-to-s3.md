@@ -1,10 +1,10 @@
 ---
-title: 备份 TiDB 集群到兼容 S3 的存储
-summary: 介绍如何备份 TiDB 集群到兼容 S3 的存储。
+title: 使用 Mydumper 备份 TiDB 集群数据到兼容 S3 的存储
+summary: 介绍如何使用 Mydumper 备份 TiDB 集群数据到兼容 S3 的存储。
 category: how-to
 ---
 
-# 备份 TiDB 集群到兼容 S3 的存储
+# 使用 Mydumper 备份 TiDB 集群数据到兼容 S3 的存储
 
 本文详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](https://pingcap.com/docs-cn/v3.0/reference/tools/mydumper) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
 

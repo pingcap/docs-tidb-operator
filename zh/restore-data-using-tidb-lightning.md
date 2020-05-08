@@ -1,10 +1,10 @@
 ---
-title: 恢复 Kubernetes 上的 TiDB 集群数据
+title: 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
 summary: 使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据。
 category: how-to
 ---
 
-# 恢复 Kubernetes 上的 TiDB 集群数据
+# 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
 
 本文介绍了如何使用 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) 快速恢复 Kubernetes 上的 TiDB 集群数据。
 

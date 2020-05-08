@@ -1,10 +1,10 @@
 ---
-title: 恢复 S3 兼容存储上的备份数据
-summary: 介绍如何将兼容 S3 存储的备份数据恢复到 TiDB 集群。
+title: 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
+summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据恢复到 TiDB 集群。
 category: how-to
 ---
 
-# 恢复 S3 兼容存储上的备份数据
+# 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
 
 本文描述了将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [TiDB Lightning](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) 来恢复数据。
 
