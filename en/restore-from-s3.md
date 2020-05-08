@@ -25,7 +25,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 
 > **Note:**
 >
-> Because of the `rclone` [issue](https://rclone.org/s3/#key-management-system-kms), if the backup data is stored in AWS S3 and the `AWS-KMS` encryption is enabled, you need to add the following `spec.s3.options` configuration to the YAML file:
+> Because of the `rclone` [issue](https://rclone.org/s3/#key-management-system-kms), if the backup data is stored in Amazon S3 and the `AWS-KMS` encryption is enabled, you need to add the following `spec.s3.options` configuration to the YAML file in the examples of this section:
 >
 > ```yaml
 > spec:
@@ -35,6 +35,8 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
 >     options:
 >     - --ignore-checksum
 > ```
+
+**Examples:**
 
 + Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 
@@ -102,7 +104,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
       storageSize: 1Gi
     ```
 
-+ Create the `Restore` CR, and restore the cluster data by binding IAM with Pod to grant permissions:
++ Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with Pod to grant permissions:
 
     {{< copyable "shell-regular" >}}
 
@@ -136,7 +138,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites-for-ad-ho
         storageSize: 1Gi
     ```
 
-+ Create the `Restore` CR, and restore the cluster data by binding IAM with ServiceAccount to grant permissions:
++ Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with ServiceAccount to grant permissions:
 
     {{< copyable "shell-regular" >}}
 
@@ -177,7 +179,7 @@ After creating the `Restore` CR, execute the following command to check the rest
 kubectl get rt -n test2 -owide
 ```
 
-In the above example, the backup data stored in the `spec.s3.path` path on the S3-compatible storage is restored to the `spec.to.host` TiDB cluster. For the configuration of the S3-compatible storage, refer to [backup-s3.yaml](backup-to-s3.md#ad-hoc-backup-process).
+In the examples above, the backup data stored in the `spec.s3.path` path on the S3-compatible storage is restored to the `spec.to.host` TiDB cluster. For the configuration of the S3-compatible storage, refer to [backup-s3.yaml](backup-to-s3.md#ad-hoc-backup-process).
 
 More `Restore` CRs are described as follows:
 

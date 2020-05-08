@@ -135,4 +135,4 @@ After the TiDB Operator is upgraded to v1.1, you can restore data using the Rest
 
 > **Note:**
 >
-> Currently, with Backup CR, you can restore data only from S3 and GCS using TiDB Lightning, and restore data from S3 using BR. If you need to restore the backup data from local Persistent Volume Claim (PVC), you cannot switch to the CR management.
+> Currently, with Restore CR, you can use TiDB Lightning to restore data from S3 and GCS, and use BR to restore data only from S3. If you need to restore the backup data from local Persistent Volume Claim (PVC), you cannot switch to the CR management.
