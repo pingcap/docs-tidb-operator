@@ -1,10 +1,10 @@
 ---
-title: Recover the PD Cluster Using PD Recover
-summary: Learn how to recover the PD cluster using PD Recover.
+title: Use PD Recover to Recover the PD cluster
+summary: Learn how to use PD Recover to recover the PD cluster.
 category: reference
 ---
 
-# Recover the PD cluster Using PD Recover
+# Use PD Recover to Recover the PD cluster
 
 [PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover) is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally.
 
@@ -53,9 +53,9 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id` which is larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
-1. Access the Prometheus monitoring data of the TiDB cluster by taking the steps in [Access the monitoring data](monitor-a-tidb-cluster.md#access-the-monitoring-data).
+1. Access the Prometheus monitoring data of the TiDB cluster by taking steps in [Access the monitoring data](monitor-a-tidb-cluster.md#access-the-monitoring-data).
 
-2. Enter `pd_cluster_id` in the input box and click the `Execute` button make a query. Get the largest value in query result.
+2. Enter `pd_cluster_id` in the input box and click the `Execute` button to make a query. Get the largest value in query result.
 
 3. Multiply the largest value in the query result by `100`. This multiplied value is the `alloc-id` value specified when using `pd-recover`.
 
@@ -63,7 +63,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 1. Delete the Pod of the PD cluster.
 
-    Use the following command to set the value of `spec.pd.replicas` to `0`:
+    Execute the following command to set the value of `spec.pd.replicas` to `0`:
 
     {{< copyable "shell-regular" >}}
 
@@ -71,7 +71,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. Then you need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `0`.
+    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. You need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `0`.
 
     {{< copyable "shell-regular" >}}
 
@@ -97,7 +97,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 3. After the PVC is deleted, increase the capacity of the PD cluster to one Pod:
 
-    Use the following command to set the value of `spec.pd.replicas` to `1`:
+    Execute the following command to set the value of `spec.pd.replicas` to `1`:
 
     {{< copyable "shell-regular" >}}
 
@@ -105,7 +105,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. Then you need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `1`.
+    Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to PD StatefulSet. You need to execute the following command to set the value of PD StatefulSet `spec.replicas` to `1`.
 
     {{< copyable "shell-regular" >}}
 
@@ -123,7 +123,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 ### Recover the cluster
 
-1. Use the `port-forward` command to expose the PD service:
+1. Execute the `port-forward` command to expose the PD service:
 
     {{< copyable "shell-regular" >}}
 
@@ -131,7 +131,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-2. Open a **new** terminal tab or window, enter the directory where `pd-recover` is located, and use the `pd-recover` command to recover the PD cluster:
+2. Open a **new** terminal tab or window, enter the directory where `pd-recover` is located, and execute the `pd-recover` command to recover the PD cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -141,7 +141,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
     In the command above, `${cluster_id}` is the cluster ID got in [Get Cluster ID](#get-cluster-id). `${alloc_id}` is the largest value of `pd_cluster_id` (got in [Get Alloc ID](#get-alloc-id)) multiplied by `100`.
 
-    After the `pd-recover` is successfully executed, the following result is printed:
+    After the `pd-recover` command is successfully executed, the following result is printed:
 
     ```shell
     recover success! please restart the PD cluster
@@ -159,7 +159,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
-2. After the Pod is started normally, use the `port-forward` command to expose the PD service:
+2. After the Pod is started normally, execute the `port-forward` command to expose the PD service:
 
     {{< copyable "shell-regular" >}}
 
@@ -167,7 +167,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. Open a **new** terminal tab or window, use the following command to confirm the Cluster ID is the set ID.
+3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the set ID.
 
     {{< copyable "shell-regular" >}}
 
@@ -179,7 +179,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 ### Increase the capacity of the PD cluster
 
-Use the following command to set the value of `spec.pd.replicas` to the desired number of Pods:
+Execute the following command to set the value of `spec.pd.replicas` to the desired number of Pods:
 
 {{< copyable "shell-regular" >}}
 

@@ -39,7 +39,7 @@
   - [Collect TiDB Logs](collect-tidb-logs.md)
   - [Enable Automatic Failover](use-auto-failover.md)
   - [Enable Admission Controller](enable-admission-webhook.md)
-  - [Recover the PD Cluster Using PD Recover](pd-recover.md)
+  - [Use PD Recover to Recover the PD cluster](pd-recover.md)
 + Scale
   - [Scale](scale-a-tidb-cluster.md)
   - [Enable Auto-scaling](enable-tidb-cluster-auto-scaling.md)
