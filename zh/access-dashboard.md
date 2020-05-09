@@ -76,7 +76,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: ${tidbcluster-name}-pd
+              serviceName: ${cluster_name}-pd
               servicePort: 2379
             path: /dashboard
 ```
@@ -107,7 +107,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: ${tidbcluster-name}-pd
+              serviceName: ${cluster_name}-pd
               servicePort: 2379
             path: /dashboard
 ```
