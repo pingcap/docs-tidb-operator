@@ -20,33 +20,30 @@ category: how-to
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: tidb
+  name: basic
 spec:
+  version: v4.0.0-rc
   timezone: UTC
   pvReclaimPolicy: Delete
-  imagePullPolicy: IfNotPresent
   pd:
-    image: pingcap/pd:v4.0.0-rc
+    baseImage: pingcap/pd
     replicas: 1
     requests:
       storage: "1Gi"
     config: {}
   tikv:
-    config: {}
-    image: pingcap/tikv:v4.0.0-rc
+    baseImage: pingcap/tikv
     replicas: 1
     requests:
       storage: "1Gi"
+    config: {}
   tidb:
-    enableAdvertiseAddress: true
-    image: pingcap/tidb:v4.0.0-rc
-    imagePullPolicy: IfNotPresent
+    baseImage: pingcap/tidb
     replicas: 1
     service:
       type: ClusterIP
     config: {}
-    requests:
-      cpu: 1
+
 ```
 
 当集群创建完毕时，你可以通过以下指令将 `TiDB Dashboard` 暴露在本地机器:
@@ -63,7 +60,7 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 
 > **注意：**
 >
-> 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。我们极其不推荐使用 `Ingress` 以外的方式在生产环境、关键环境暴露 `TiDB Dashboard` 服务。
+> 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。由于内嵌式 Dashboard 的端口与 PD API 的端口是同一个端口，如果采用其他自治方案在生产环境、关键环境内暴露 `TiDB Dashboard` 服务，需要注意不应该暴露 PD API 的相关接口。
 
 你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。你可以通过 `kubectl apply -f` 将以下 yaml 文件部署到 Kubernetes 集群中。
 
