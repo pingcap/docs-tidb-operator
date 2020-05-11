@@ -6,12 +6,9 @@ category: reference
 
 <!-- markdownlint-disable MD007 -->
 
-<<<<<<< HEAD
 # Kubernetes 上的 TiDB 集群的资源配置以及容灾配置
 
 本文介绍 Kubernetes 上 TiDB 集群的资源配置以及容灾配置。
-=======
-本文介绍 Kubernetes 上 TiDB 集群的配置参数、资源配置，以及容灾配置。
 
 ## 配置参数
 
@@ -120,7 +117,6 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `tidb.treatOldVersionUtf8AsUtf8mb4` | 用于升级兼容性。设置为 `true` 将把旧版本的表/列的 `utf8` 字符集视为 `utf8mb4` 字符集<br/>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tidb.config` 配置：<br/>`treat-old-version-utf8-as-utf8mb4 = true` | `true` |
 | `tidb.lease` | `tidb.lease`是 TiDB Schema lease 的期限，对其更改是非常危险的，除非你明确知道可能产生的结果，否则不建议更改。<br/>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tidb.config` 配置：<br/>`lease = "45s"` | `45s` |
 | `tidb.maxProcs` | 最大可使用的 CPU 核数，0 代表机器/Pod 上的 CPU 数量<br/>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tidb.config` 配置：<br/>`[performance]`<br/>`max-procs = 0` | `0` |
->>>>>>> e84b517... fix: add closing tag for 'br' (#261)
 
 ## 资源配置说明
 
