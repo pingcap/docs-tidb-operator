@@ -11,8 +11,6 @@ This document introduces the following items of a TiDB cluster in Kubernetes:
 + The configuration of resources
 + The configuration of disaster recovery
 
-<<<<<<< HEAD
-=======
 ## Configuration parameters
 
 TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration file obtained through Helm provides the basic configuration by default with which you could quickly start a TiDB cluster. However, if you want special configurations or are deploying in a production environment, you need to manually configure the corresponding parameters according to the table below.
@@ -121,7 +119,6 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | `tidb.lease` | The lease time of TiDB Schema lease. It is highly risky to change this parameter. Therefore, it is not recommended to do so unless you know exactly what might be happening.<br/>If the version of TiDB Operator is later than v1.0.0, configure this parameter via `tidb.config`:<br/>`lease = "45s"`  | `45s` |
 | `tidb.maxProcs` | The maximum available CPU cores. `0` represents the number of CPU on the machine or Pod.<br/>If the version of TiDB Operator is later than v1.0.0, configure this parameter via `tidb.config`:<br/>`[performance]`<br/>`max-procs = 0` | `0` |
 
->>>>>>> e84b517... fix: add closing tag for 'br' (#261)
 ## Resource configuration
 
 Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configurations must be specified according to component needs. Detailed reference: [Hardware Recommendations](https://pingcap.com/docs/v3.0/how-to/deploy/hardware-recommendations/).
