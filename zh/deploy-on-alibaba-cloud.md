@@ -90,7 +90,7 @@ category: how-to
     operator_version = "v1.1.0-rc.1"
     ```
 
-    如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 "ecs.i2.2xlarge"。
+    如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 `ecs.i2.2xlarge`。
 
     > **注意：**
     >

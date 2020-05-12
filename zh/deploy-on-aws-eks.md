@@ -101,7 +101,7 @@ eks_name = "my-cluster"
 operator_version = "v1.1.0-rc.1"
 ```
 
-如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `cluster_tiflash_count` 和 `cluster_tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`cluster_tiflash_count` 默认为 `2`，`cluster_tiflash_instance_type` 默认为 "i3.4xlarge"。
+如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `cluster_tiflash_count` 和 `cluster_tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`cluster_tiflash_count` 默认为 `2`，`cluster_tiflash_instance_type` 默认为 `i3.4xlarge`。
 
 > **注意：**
 >
@@ -164,7 +164,7 @@ region = us-west-21
     如果要部署 TiFlash，可以在 db.yaml 中配置 `spec.tiflash`，例如：
 
     ```yaml
-    spec
+    spec:
       ...
       tiflash:
         baseImage: pingcap/tiflash
