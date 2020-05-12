@@ -51,6 +51,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     ```sql
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
+
 5. 等待相关表的 TiFlash 副本被删除。
 
     连接到 TiDB 服务，执行如下命令，查不到相关表的同步信息时即为副本被删除：
