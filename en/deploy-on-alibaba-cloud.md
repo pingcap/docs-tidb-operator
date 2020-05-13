@@ -90,7 +90,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     operator_version = "v1.1.0-rc.1"
     ```
 
-    If you need to deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`, or configure the node number and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. The value of `tiflash_count` is `2` by default, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
+    If you need to deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`, or configure the node number and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
 
     > **Note:**
     >
@@ -197,7 +197,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     > **Note:**
     >
     > * Replace all the `TIDB_CLUSTER_NAME` in the `db.yaml` and `db-monitor.yaml` files with `tidb_cluster_name` configured in the deployment of ACK.
-    > * Make sure the number of PD, TiKV, TiFlash and TiDB nodes is >= the `replicas` value of the corresponding component in `db.yaml`.
+    > * Make sure the number of PD, TiKV, TiFlash, or TiDB nodes is >= the `replicas` value of the corresponding component in `db.yaml`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
 
 2. Create `Namespace`:
