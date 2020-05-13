@@ -25,10 +25,9 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
 
 ## 第 1 步：通过 kind 部署 Kubernetes 集群
 
-参考 `kind` [快速使用文档](https://kind.sigs.k8s.io/docs/user/quick-start) 安装
-`kind` 并创建一个集群。
+参考 `kind` [快速使用文档](https://kind.sigs.k8s.io/docs/user/quick-start)安装 `kind` 并创建一个集群。
 
-以下以 `0.8.1` 版本为例：
+以下以 0.8.1 版本为例：
 
 ```
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-$(uname)-amd64
@@ -44,7 +43,7 @@ kubectl cluster-info
 
 ## 第 2 步：部署 TiDB Operator
 
-参考 `helm` [安装文档](https://helm.sh/docs/intro/install/) 安装 `helm` 或使用以下命令安装最新 helm 3 稳定版：
+参考 [Helm 安装文档](https://helm.sh/docs/intro/install/) 安装 Helm 或使用以下命令安装最新 Helm 3 稳定版：
 
 {{< copyable "shell-regular" >}}
 
@@ -61,7 +60,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0-
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-安装 TiDB Operator，以下使用 helm 3 为例：
+安装 TiDB Operator，以下使用 Helm 3 为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -71,7 +70,7 @@ kubectl create ns pingcap
 helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0-rc.3
 ```
 
-若是使用 helm 2，参考[安装 Helm](tidb-toolkit.md#使用-helm) 初始化 helm 后，使用以下命令部署：
+若是使用 Helm 2，参考[安装 Helm](tidb-toolkit.md#使用-helm) 初始化 Helm 后，使用以下命令部署 TiDB Operator：
 
 {{< copyable "shell-regular" >}}
 
