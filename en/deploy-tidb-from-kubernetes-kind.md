@@ -55,7 +55,7 @@ First, install Helm. You can either refer to [Installing Helm](https://helm.sh/d
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
-TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create CRDs, such as `TidbCluster`:
+Create [CRDs (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/). TiDB Operator uses CRDs to extend Kubernetes. Therefore, to use TiDB Operator, you must first create CRDs, such as `TidbCluster`:
 
 {{< copyable "shell-regular" >}}
 
@@ -64,7 +64,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0-
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-The following is an example of installing TiDB Operator using Helm 3:
+Install TiDB Operator. The following is an example of installing TiDB Operator using Helm 3:
 
 {{< copyable "shell-regular" >}}
 
