@@ -47,49 +47,51 @@ kubectl cluster-info
 
 ## Step 2: Deploy TiDB Operator
 
-First, install Helm. You can either refer to [Installing Helm](https://helm.sh/docs/intro/install/) or install the latest stable version of Helm 3:
+1. Install Helm. You can either refer to [Installing Helm](https://helm.sh/docs/intro/install/) or install the latest stable version of Helm 3:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-```
+    ```shell
+    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+    ```
 
-Create [CRDs (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/). TiDB Operator uses CRDs to extend Kubernetes. Therefore, to use TiDB Operator, you must first create CRDs, such as `TidbCluster`:
+2. Create [CRDs (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/). TiDB Operator uses CRDs to extend Kubernetes. Therefore, to use TiDB Operator, you must first create CRDs, such as `TidbCluster`:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0-rc.3/manifests/crd.yaml && \
-kubectl get crd tidbclusters.pingcap.com
-```
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0-rc.3/manifests/crd.yaml && \
+    kubectl get crd tidbclusters.pingcap.com
+    ```
 
-Install TiDB Operator. The following is an example of installing TiDB Operator using Helm 3:
+3. Install TiDB Operator.
 
-{{< copyable "shell-regular" >}}
+    - The following is an example of installing TiDB Operator using Helm 3:
 
-```shell
-helm repo add pingcap https://charts.pingcap.org/
-kubectl create ns pingcap
-helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0-rc.3
-```
+        {{< copyable "shell-regular" >}}
 
-If you use Helm 2, refer to [Install Helm](tidb-toolkit.md#use-helm) to initialize Helm. After that, deploy TiDB Operator by running the following command:
+        ```shell
+        helm repo add pingcap https://charts.pingcap.org/
+        kubectl create ns pingcap
+        helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0-rc.3
+        ```
 
-{{< copyable "shell-regular" >}}
+    - If you use Helm 2, refer to [Install Helm](tidb-toolkit.md#use-helm) to initialize Helm. After that, deploy TiDB Operator by running the following command:
 
-```shell
-helm repo add pingcap https://charts.pingcap.org/
-helm install --namespace pingcap --name tidb-operator pingcap/tidb-operator --version v1.1.0-rc.3
-```
+        {{< copyable "shell-regular" >}}
 
-Check the status of TiDB Operator:
+        ```shell
+        helm repo add pingcap https://charts.pingcap.org/
+        helm install --namespace pingcap --name tidb-operator pingcap/tidb-operator --version v1.1.0-rc.3
+        ```
 
-{{< copyable "shell-regular" >}}
+4. Check the status of TiDB Operator:
 
-```shell
-kubectl -n pingcap get pods
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n pingcap get pods
+    ```
 
 ## Step 3: Deploy the TiDB cluster
 
