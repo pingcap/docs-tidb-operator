@@ -89,7 +89,7 @@ The TiDB automatic failover policy works the same way as `Deployment` does in Ku
 
 ### Failover with TiFlash
 
-When a TiFlash node fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying `max-store-down-time = "30m"` in the `[schedule]` section of the `pd.config` file), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tiflashFailoverPeriod`), TiDB Operator creates a new TiFlash node if this TiFlash node is still down. If the failed TiFlash node gets back online, TiDB Operator does not automatically delete the newly created node, and you need to manually drop it and restore the original number of nodes. To do this, you can delete the TiFlash node from the `status.tiflash.failureStores` field of the `TidbCluster` object.
+When a TiFlash Pod fails, its store status turns to `Disconnected`. After 30 minutes (configurable by modifying `max-store-down-time = "30m"` in the `[schedule]` section of the `pd.config` file), the store status turns to `Down`. After waiting for 5 minutes (configurable by modifying `tiflashFailoverPeriod`), TiDB Operator creates a new TiFlash Pod if this TiFlash Pod is still down. If the failed TiFlash Pod gets back online, TiDB Operator does not automatically delete the newly created Pod, and you need to manually drop it and restore the original number of Pods. To do this, you can delete the TiFlash Pod from the `status.tiflash.failureStores` field of the `TidbCluster` object.
 
 For example, assume two TiFlash Pods are in abnormal state:
 

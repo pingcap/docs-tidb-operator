@@ -41,7 +41,7 @@ spec:
       storageClassName: local-storage
 ```
 
-TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure various `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
+TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
 
 ```yaml
   tiflash:
@@ -59,4 +59,4 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
-To add TiFlash component to an existing TiDB cluster, `replication.enable-placement-rules` should be set to `true` in PD. After you add the TiFlash configuration in TidbCluster by taking the above steps, TiDB automatically configure `replication.enable-placement-rules: "true"` in PD.
+To add TiFlash component to an existing TiDB cluster, `replication.enable-placement-rules` should be set to `true` in PD. After you add the TiFlash configuration in TidbCluster by taking the above steps, TiDB Operator will automatically configure `replication.enable-placement-rules: "true"` in PD.

@@ -56,7 +56,7 @@ If you want to enable TiFlash in the cluster, configure `spec.pd.config.replicat
       storageClassName: local-storage
 ```
 
-TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure various `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
+TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
 
 ```yaml
   tiflash:
