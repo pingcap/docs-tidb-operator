@@ -37,7 +37,7 @@ category: how-to
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) >= 0.12
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
-* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 且 < 2.16.4
+* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797)
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)，AWS 权限鉴定工具，确保安装在 `PATH` 路径下。
 
@@ -70,9 +70,9 @@ category: how-to
 
 ## 部署集群
 
-### 部署 EKS 和 TiDB Operator
+### 部署 EKS、TiDB Operator 和 TiDB 集群节点池
 
-使用如下步骤部署 EKS 和 TiDB Operator。
+使用如下步骤部署 EKS、TiDB Operator 和 TiDB 集群节点池。
 
 从 Github 克隆代码并进入指定路径：
 
@@ -100,6 +100,8 @@ default_cluster_name = "tidb"
 eks_name = "my-cluster"
 operator_version = "v1.1.0-rc.1"
 ```
+
+如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `cluster_tiflash_count` 和 `cluster_tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`cluster_tiflash_count` 默认为 `2`，`cluster_tiflash_instance_type` 默认为 `i3.4xlarge`。
 
 > **注意：**
 >
@@ -159,10 +161,35 @@ region = us-west-21
 
     参考 [API 文档](api-references.md)和[集群配置文档](configure-cluster-using-tidbcluster.md)完成 CR 文件配置。
 
+    如果要部署 TiFlash，可以在 db.yaml 中配置 `spec.tiflash`，例如：
+
+    ```yaml
+    spec:
+      ...
+      tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 3
+        nodeSelector:
+          dedicated: CLUSTER_NAME-tiflash
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+              storage: 100Gi
+          storageClassName: local-storage
+        tolerations:
+        - effect: NoSchedule
+          key: dedicated
+          operator: Equal
+          value: CLUSTER_NAME-tiflash
+    ```
+
+    根据实际情况修改 `replicas`、`storageClaims[].resources.requests.storage`、`storageClassName`。
+
     > **注意：**
     >
     > * 请使用 EKS 部署过程中配置的 `default_cluster_name` 替换 `db.yaml` 和 `db-monitor.yaml` 文件中所有的 `CLUSTER_NAME`。
-    > * 请确保 EKS 部署过程中 PD、TiKV 或者 TiDB 节点的数量的值，与 `db.yaml` 中对应组件的 `replicas` 字段值一致。
+    > * 请确保 EKS 部署过程中 PD、TiKV、TiFlash 或者 TiDB 节点的数量的值大于等于 `db.yaml` 中对应组件的 `replicas`。
     > * 请确保 `db-monitor.yaml` 中 `spec.initializer.version` 和 `db.yaml` 中 `spec.version` 一致，以保证监控显示正常。
 
 2. 创建 `Namespace`：
@@ -179,12 +206,179 @@ region = us-west-21
 
 3. 部署 TiDB 集群：
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```shell
-  kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db.yaml -n ${namespace} &&
-  kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
-  ```
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db.yaml -n ${namespace} &&
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
+    ```
+
+### 为 TiDB 服务 LoadBalancer 开启 Cross-Zone Load Balancing
+
+由于 AWS Network Load Balancer (NLB) [问题](https://github.com/kubernetes/kubernetes/issues/82595)，为 TiDB 服务创建的 NLB 无法自动开启 Cross-Zone Load Balancing，请参考以下步骤手动开启：
+
+1. 获取 TiDB 服务 NLB 名字：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-tidb -n ${namespace}
+    ```
+
+    示例：
+
+    ```
+    kubectl --kubeconfig credentials/kubeconfig_test get svc test-tidb -n test
+    NAME        TYPE           CLUSTER-IP      EXTERNAL-IP                                                                     PORT(S)                          AGE
+    tidb-tidb   LoadBalancer   172.20.39.180   a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com   4000:32387/TCP,10080:31486/TCP   3m46s
+    ```
+
+    `EXTERNAL-IP` 字段值中以 `-` 分隔的第一个字段即为 NLB 名字，上述示例中 `a7aa544c49f914930b3b0532022e7d3c` 即为 NLB 名字。
+
+2. 获取 NLB LoadBalancerArn：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancers | grep ${LoadBalancerName}
+    ```
+
+    `${LoadBalancerName}` 为第一步获取的 NLB 名字。
+
+    示例：
+
+    ```
+    aws elbv2 describe-load-balancers | grep a7aa544c49f914930b3b0532022e7d3c
+              "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075",
+              "DNSName": "a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com",
+              "LoadBalancerName": "a7aa544c49f914930b3b0532022e7d3c",
+    ```
+
+    `LoadBalancerArn` 字段值即为 NLB LoadBalancerArn。
+
+3. 查看 NLB 属性：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
+    ```
+
+    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
+
+    示例：
+
+    ```
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075"
+    {
+      "Attributes": [
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+    如果 `load_balancing.cross_zone.enabled` 的值为 `false`，继续下一步，为 NLB 开启 Cross-Zone Load Balancing。
+
+4. 为 NLB 开启 Cross-Zone Load Balancing：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 modify-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn} --attributes Key=load_balancing.cross_zone.enabled,Value=true
+    ```
+
+    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
+
+    示例：
+
+    ```
+    aws elbv2 modify-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075" --attributes Key=load_balancing.cross_zone.enabled,Value=true
+    {
+      "Attributes": [
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "true"
+          },
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+5. 确认 NLB Cross-Zone Load Balancing 属性已经开启：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
+    ```
+
+    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
+
+    示例：
+
+    ```
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075"
+    {
+      "Attributes": [
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "true"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+    确认 `load_balancing.cross_zone.enabled` 的值为 `true`。
 
 ## 访问数据库
 
@@ -206,7 +400,7 @@ mysql -h ${tidb_lb} -P 4000 -u root
 
 `eks_name` 默认为 `my-cluster`。如果 DNS 名字无法解析，请耐心等待几分钟。
 
-`tidb_lb` 为 TiDB Service 的 LoadBalancer。
+`tidb_lb` 为 TiDB Service 的 LoadBalancer，可以通过 `kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-tidb -n ${namespace}` 输出中的 `EXTERNAL-IP` 字段查看。
 
 你还可以通过 `kubectl` 和 `helm` 命令使用 kubeconfig 文件 `credentials/kubeconfig_${eks_name}` 和 EKS 集群交互，主要有两种方式，如下所示。
 
@@ -248,7 +442,7 @@ mysql -h ${tidb_lb} -P 4000 -u root
 
 你可以通过浏览器访问 `<monitor-lb>:3000` 地址查看 Grafana 监控指标。
 
-`monitor-lb` 是集群 Monitor Service 的 LoadBalancer。
+`monitor-lb` 是集群 Monitor Service 的 LoadBalancer，可以通过 `kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-grafana -n ${namespace}` 输出中的 `EXTERNAL-IP` 字段查看。
 
 Grafana 默认登录信息：
 
@@ -263,7 +457,7 @@ Grafana 默认登录信息：
 
 ## 扩容 TiDB 集群
 
-若要扩容 TiDB 集群，可以在文件 `terraform.tfvars` 文件中设置 `default_cluster_tikv_count` 或者 `default_cluster_tidb_count` 变量，然后运行 `terraform apply`，扩容对应组件节点数量，节点扩容完成后，通过 `kubectl --kubeconfig credentials/kubeconfig_${eks_name} edit tc ${default_cluster_name} -n ${namespace}` 修改对应组件的 `replicas`。
+若要扩容 TiDB 集群，可以在文件 `terraform.tfvars` 文件中设置 `default_cluster_tikv_count`、`cluster_tiflash_count` 或者 `default_cluster_tidb_count` 变量，然后运行 `terraform apply`，扩容对应组件节点数量，节点扩容完成后，通过 `kubectl --kubeconfig credentials/kubeconfig_${eks_name} edit tc ${default_cluster_name} -n ${namespace}` 修改对应组件的 `replicas`。
 
 例如，可以将 `default_cluster_tidb_count` 从 2 改为 4 以扩容 TiDB 节点：
 
