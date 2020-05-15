@@ -486,6 +486,8 @@ kubectl apply -f tidb-components-client-cert.yaml
 - 创建一个 Restore 对象对进群进行恢复；
 - TidbInitializer，PD Dashboard，Backup 以及 Restore 分别使用单独的 Client 证书（用 `tlsClientSecretName` 指定）。
 
+tidb-cluster.yaml:
+
 ``` yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -531,7 +533,11 @@ spec:
  initSql: |-
    create database app;
  tlsClientSecretName: ${cluster_name}-tidb-initializer-client-secret
----
+```
+
+backup.yaml:
+
+```
 apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
@@ -555,7 +561,11 @@ spec:
     secretName: ${s3_secret}
     bucket: ${my_bucket}
     prefix: ${my_folder}
----
+```
+
+restore.yaml:
+
+```
 apiVersion: pingcap.com/v1alpha1
 kind: Restore
 metadata:
