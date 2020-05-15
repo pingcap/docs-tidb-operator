@@ -36,7 +36,7 @@ The modified configuration is not automatically applied to the TiDB cluster by d
 
 It is recommended that you set `spec.configUpdateStrategy` to `RollingUpdate` to enable automatic update of configurations. This way, every time the configuration is updated, all components are rolling updated automatically, and the modified configuration is applied to the cluster.
 
-If you want to enable TiFlash in the cluster, configure `spec.pd.config.replication.enable-placement-rules` to `true` in the `${cluster_name}/tidb-cluster.yaml` file, and configure `spec.tiflash` as follows:
+If you want to enable TiFlash in the cluster, configure `spec.pd.config.replication.enable-placement-rules` to `true` and configure `spec.tiflash` in the `${cluster_name}/tidb-cluster.yaml` file as follows:
 
 ```yaml
   pd:
