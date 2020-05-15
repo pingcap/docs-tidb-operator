@@ -260,8 +260,8 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 * `.spec.from.secretName`：存储 `.spec.from.user` 用户的密码的 secret。
 * `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
 * `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
-* `.spec.s3.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径`s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
-* `.spec.mydumper`： mydumper 相关的配置，主要有两个字段一个是 [options](https://pingcap.com/docs-cn/stable/reference/tools/mydumper/), 里面可以指定 mydumper 需要的一些参数。一个是 tableRegex 字段可以指定让 mydumper 备份符合这个正则表达式的表。默认情况下 mydumper 这个字段可以不用配置。当不指定 mydumper 的配置时，`options` 和 `tableRegex` 字段的默认值如下：
+* `.spec.s3.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
+* `.spec.mydumper`：Mydumper 相关的配置，主要有两个字段：一个是 [`options`](https://pingcap.com/docs-cn/stable/reference/tools/mydumper/) 字段，里面可以指定 Mydumper 需要的一些参数；一个是 `tableRegex` 字段，可以指定让 Mydumper 备份符合这个正则表达式的表。默认情况下 Mydumper 这个字段可以不用配置。当不指定 Mydumper 的配置时，`options` 和 `tableRegex` 字段的默认值如下：
 
     ```
     options:
