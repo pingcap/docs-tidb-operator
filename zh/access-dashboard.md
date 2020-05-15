@@ -12,9 +12,9 @@ category: how-to
 
 > **注意：**
 >
-> 以下教程仅为演示如何快速访问 `TiDB Dashboard`，请勿在生产环境中直接使用以下方法。 
+> 以下教程仅为演示如何快速访问 TiDB Dashboard，请勿在生产环境中直接使用以下方法。 
 
-`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。你可以通过 `kubectl apply -f` 将以下 yaml 文件部署到 Kubernetes 集群中。
+`TiDB Dashboard` 目前在 4.0 版本中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.0-rc 版本的 TiDB 集群。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -54,7 +54,7 @@ spec:
 kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 ```
 
-然后在浏览器中访问 `http://localhost:2379/dashboard` 即可访问到 `TiDB Dashboard`。
+然后在浏览器中访问 <http://localhost:2379/dashboard> 即可访问到 TiDB Dashboard。
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
@@ -62,7 +62,7 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 >
 > 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。由于内嵌式 Dashboard 的端口与 PD API 的端口是同一个端口，如果采用其他自治方案在生产环境、关键环境内暴露 `TiDB Dashboard` 服务，需要注意不应该暴露 PD API 的相关接口。
 
-你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。 你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。你可以通过 `kubectl apply -f` 将以下 yaml 文件部署到 Kubernetes 集群中。
+你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -81,7 +81,7 @@ spec:
             path: /dashboard
 ```
 
-当部署了 `Ingress` 后，你可以在 `Kubernetes` 集群外通过 `http://${host}/dashboard` 访问 `TiDB Dashboard`。
+当部署了 Ingress 后，你可以在 Kubernetes 集群外通过 <http://${host}/dashboard> 访问 TiDB Dashboard。
 
 ## 开启 Ingress TLS
 
@@ -126,4 +126,4 @@ data:
 type: kubernetes.io/tls
 ```
 
-当 Ingress 部署完成以后，你就可以通过 `https://{host}/dashboard` 访问 `TiDB Dashboard`。
+当 Ingress 部署完成以后，你就可以通过 <https://{host}/dashboard> 访问 TiDB Dashboard。
