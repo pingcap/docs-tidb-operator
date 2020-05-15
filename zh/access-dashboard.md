@@ -62,6 +62,12 @@ kubectl port-forward svc/tidb-pd -n ${namespace} 2379:2379
 >
 > 我们推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。由于内嵌式 Dashboard 的端口与 PD API 的端口是同一个端口，如果采用其他自治方案在生产环境、关键环境内暴露 `TiDB Dashboard` 服务，需要注意不应该暴露 PD API 的相关接口。
 
+### 环境准备
+
+使用 `Ingress` 前需要 Kubernetes 集群安装有 `Ingress` 控制器，仅创建 `Ingress` 资源无效。您可能需要部署 `Ingress` 控制器，例如 [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)。您可以从许多 [Ingress 控制器](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) 中进行选择。
+
+### 使用 Ingress
+
 你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
