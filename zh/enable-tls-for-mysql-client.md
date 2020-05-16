@@ -365,116 +365,116 @@ category: how-to
 
 5. 创建多套 Client 端证书（可选）。
 
-TiDB Operator 集群内部有 4 个组件需要请求 TiDB Server，当开启 TLS 验证后，这些组件可以使用证书来请求 TiDB Server，每个组件都可以使用单独的证书。这些组件有：
+    TiDB Operator 集群内部有 4 个组件需要请求 TiDB Server，当开启 TLS 验证后，这些组件可以使用证书来请求 TiDB Server，每个组件都可以使用单独的证书。这些组件有：
 
-- TidbInitializer
-- PD Dashboard
-- Backup
-- Restore
+    - TidbInitializer
+    - PD Dashboard
+    - Backup
+    - Restore
 
-下面就来生成这些组件的 Client 证书。
+    下面就来生成这些组件的 Client 证书。
 
-创建一个 `tidb-components-client-cert.yaml` 文件，并输入以下内容：
+    1. 创建一个 `tidb-components-client-cert.yaml` 文件，并输入以下内容：
 
-``` yaml
-apiVersion: cert-manager.io/v1alpha2
-kind: Certificate
-metadata:
-  name: ${cluster_name}-tidb-initializer-client-secret
-  namespace: ${namespace}
-spec:
-  secretName: ${cluster_name}-tidb-initializer-client-secret
-  duration: 8760h # 365d
-  renewBefore: 360h # 15d
-  organization:
-    - PingCAP
-  commonName: "TiDB Initializer client"
-  usages:
-    - client auth
-  issuerRef:
-    name: ${cluster_name}-tidb-issuer
-    kind: Issuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1alpha2
-kind: Certificate
-metadata:
-  name: ${cluster_name}-pd-dashboard-client-secret
-  namespace: ${namespace}
-spec:
-  secretName: ${cluster_name}-pd-dashboard-client-secret
-  duration: 8760h # 365d
-  renewBefore: 360h # 15d
-  organization:
-    - PingCAP
-  commonName: "PD Dashboard client"
-  usages:
-    - client auth
-  issuerRef:
-    name: ${cluster_name}-tidb-issuer
-    kind: Issuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1alpha2
-kind: Certificate
-metadata:
-  name: ${cluster_name}-backup-client-secret
-  namespace: ${namespace}
-spec:
-  secretName: ${cluster_name}-backup-client-secret
-  duration: 8760h # 365d
-  renewBefore: 360h # 15d
-  organization:
-    - PingCAP
-  commonName: "Backup client"
-  usages:
-    - client auth
-  issuerRef:
-    name: ${cluster_name}-tidb-issuer
-    kind: Issuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1alpha2
-kind: Certificate
-metadata:
-  name: ${cluster_name}-restore-client-secret
-  namespace: ${namespace}
-spec:
-  secretName: ${cluster_name}-restore-client-secret
-  duration: 8760h # 365d
-  renewBefore: 360h # 15d
-  organization:
-    - PingCAP
-  commonName: "Restore client"
-  usages:
-    - client auth
-  issuerRef:
-    name: ${cluster_name}-tidb-issuer
-    kind: Issuer
-    group: cert-manager.io
-```
+        ``` yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+        name: ${cluster_name}-tidb-initializer-client-secret
+        namespace: ${namespace}
+        spec:
+        secretName: ${cluster_name}-tidb-initializer-client-secret
+        duration: 8760h # 365d
+        renewBefore: 360h # 15d
+        organization:
+            - PingCAP
+        commonName: "TiDB Initializer client"
+        usages:
+            - client auth
+        issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ---
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+        name: ${cluster_name}-pd-dashboard-client-secret
+        namespace: ${namespace}
+        spec:
+        secretName: ${cluster_name}-pd-dashboard-client-secret
+        duration: 8760h # 365d
+        renewBefore: 360h # 15d
+        organization:
+            - PingCAP
+        commonName: "PD Dashboard client"
+        usages:
+            - client auth
+        issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ---
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+        name: ${cluster_name}-backup-client-secret
+        namespace: ${namespace}
+        spec:
+        secretName: ${cluster_name}-backup-client-secret
+        duration: 8760h # 365d
+        renewBefore: 360h # 15d
+        organization:
+            - PingCAP
+        commonName: "Backup client"
+        usages:
+            - client auth
+        issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ---
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+        name: ${cluster_name}-restore-client-secret
+        namespace: ${namespace}
+        spec:
+        secretName: ${cluster_name}-restore-client-secret
+        duration: 8760h # 365d
+        renewBefore: 360h # 15d
+        organization:
+            - PingCAP
+        commonName: "Restore client"
+        usages:
+            - client auth
+        issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
 
-其中 `${cluster_name}` 为集群的名字：
+        其中 `${cluster_name}` 为集群的名字：
 
-- `spec.secretName` 请设置为 `${cluster_name}-${component}-client-secret`；
-- `usages` 请添加上 `client auth`；
-- `dnsNames` 和 `ipAddresses` 不需要填写；
-- `issuerRef` 请填写上面创建的 Issuer；
-- 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - `spec.secretName` 请设置为 `${cluster_name}-${component}-client-secret`；
+        - `usages` 请添加上 `client auth`；
+        - `dnsNames` 和 `ipAddresses` 不需要填写；
+        - `issuerRef` 请填写上面创建的 Issuer；
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
-通过执行下面的命令来创建证书：
+    2. 通过执行下面的命令来创建证书：
 
-{{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-``` shell
-kubectl apply -f tidb-components-client-cert.yaml
-```
+        ``` shell
+        kubectl apply -f tidb-components-client-cert.yaml
+        ```
 
-创建这些对象以后，cert-manager 会生成 4 个 Secret 对象供上面四个组件使用。
+    3. 创建这些对象以后，cert-manager 会生成 4 个 Secret 对象供上面四个组件使用。
 
-> **注意：**
->
-> TiDB Server 的 TLS 兼容 MySQL 协议。当证书内容发生改变后，需要管理员手动执行 SQL 语句 `alter instance reload tls` 进行刷新。
+    > **注意：**
+    >
+    > TiDB Server 的 TLS 兼容 MySQL 协议。当证书内容发生改变后，需要管理员手动执行 SQL 语句 `alter instance reload tls` 进行刷新。
 
 ## 第二步：部署 TiDB 集群
 
