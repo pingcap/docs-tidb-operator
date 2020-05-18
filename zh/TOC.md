@@ -13,10 +13,10 @@
   - [简介](tidb-operator-overview.md)
 + 部署
   - 部署 TiDB 集群
-    - [AWS EKS 上的 TiDB 集群](deploy-on-aws-eks.md)
-    - [GCP GKE 上的 TiDB 集群](deploy-on-gcp-gke.md)
-    - [阿里云 ACK 上的 TiDB 集群](deploy-on-alibaba-cloud.md)
-    + Self-managed Kubernetes
+    - [部署到 AWS EKS](deploy-on-aws-eks.md)
+    - [部署到 GCP GKE](deploy-on-gcp-gke.md)
+    - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
+    + 部署到自托管的 Kubernetes
       - [集群环境要求](prerequisites.md)
       - [配置 Storage Class](configure-storage-class.md)
       - [部署 TiDB Operator](deploy-tidb-operator.md)
@@ -52,7 +52,7 @@
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [收集日志](collect-tidb-logs.md)
   - [集群故障自动转移](use-auto-failover.md)
-  - [使用 PD Recover 恢复 PD 集群](pd-recover.md)
+  - [恢复 PD 集群](pd-recover.md)
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
 + TiDB Operator 运维
   - [升级 TiDB Operator](upgrade-tidb-operator.md)

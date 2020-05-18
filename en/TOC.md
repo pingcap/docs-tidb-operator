@@ -13,21 +13,21 @@
   - [Overview](tidb-operator-overview.md)
 + Deploy
   - Deploy TiDB Cluster
-    - [TiDB in AWS EKS](deploy-on-aws-eks.md)
-    - [TiDB in GCP GKE](deploy-on-gcp-gke.md)
-    - [TiDB in Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
-    + Self-managed Kubernetes
+    - [On AWS EKS](deploy-on-aws-eks.md)
+    - [On GCP GKE](deploy-on-gcp-gke.md)
+    - [On Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+    + On Self-managed Kubernetes
       - [Prerequisites](prerequisites.md)
       - [Configure Storage Class](configure-storage-class.md)
       - [Deploy TiDB Operator](deploy-tidb-operator.md)
       - [Configure Resource and Disaster Recovery](configure-a-tidb-cluster.md)
-      - [Configure a TiDB Cluster Using TidbCluster](configure-cluster-using-tidbcluster.md)
+      - [Configure TiDB Cluster Using TidbCluster](configure-cluster-using-tidbcluster.md)
       - [Deploy TiDB Cluster](deploy-on-general-kubernetes.md)
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
-  + Monitor TiDB Cluster
+  + Deploy Monitoring
     - [Monitor TiDB Cluster](monitor-a-tidb-cluster.md)
     - [Monitor TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md)
 + Security
@@ -51,7 +51,7 @@
   - [Maintain a Kubernetes Node](maintain-a-kubernetes-node.md)
   - [Collect TiDB Logs](collect-tidb-logs.md)
   - [Enable Automatic Failover](use-auto-failover.md)
-  - [Use PD Recover to Recover the PD Cluster](pd-recover.md)
+  - [Recover the PD Cluster](pd-recover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
 + Maintain TiDB Operator
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
