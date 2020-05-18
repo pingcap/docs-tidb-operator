@@ -9,7 +9,7 @@
   - [kind](deploy-tidb-from-kubernetes-kind.md)
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
   - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
-+ About TiDB Operator
++ Introduction
   - [Overview](tidb-operator-overview.md)
 + Deploy
   - Deploy TiDB Cluster
