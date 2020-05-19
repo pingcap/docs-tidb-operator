@@ -17,6 +17,7 @@
   - [部署 TiDB Operator](deploy-tidb-operator.md)
   - [标准 Kubernetes 上的 TiDB 集群](deploy-on-general-kubernetes.md)
   - [部署 TiFlash](deploy-tiflash.md)
+  - [部署 TiCDC](deploy-ticdc.md)
   - [AWS EKS 上的 TiDB 集群](deploy-on-aws-eks.md)
   - [GCP 上的 TiDB 集群](deploy-on-gcp-gke.md)
   - [阿里云上的 TiDB 集群](deploy-on-alibaba-cloud.md)
