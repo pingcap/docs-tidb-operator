@@ -46,7 +46,7 @@ If TiFlash is deployed in the cluster, you can scale out TiFlash by modifying `s
 
 3. Go back to the terminal window in Step 1, where `port-forward` is running. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop `port-forward`.
 
-4. If after the scaling-in operation, the number of remaining Pods in TiFlash >= `N`, skip to Step 6. Otherwise, take the following steps:
+4. After the scale-in operation, if the number of remaining Pods in TiFlash >= `N`, skip to Step 6. Otherwise, take the following steps:
 
     1. Refer to [Access TiDB](access-tidb.md) and connect to the TiDB service.
 
@@ -68,7 +68,7 @@ If TiFlash is deployed in the cluster, you can scale out TiFlash by modifying `s
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-    If you cannot view the replication information of the related tables, it means the TiFlash replicas are successfully deleted.
+    If you cannot view the replication information of related tables, the TiFlash replicas are successfully deleted.
 
 6. Modify `spec.tiflash.replicas` to scale in TiFlash.
 
