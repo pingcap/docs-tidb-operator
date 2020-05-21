@@ -12,9 +12,9 @@ This document describes how to access TiDB Dashboard in Kubernetes.
 
 ## Quick start
 
-> **Note:**
+> **Warning:**
 >
-> This guide shows how to quickly access TiDB Dashboard. Do not use this method in production.
+> This guide shows how to quickly access TiDB Dashboard. Do **NOT** use this method in the production environment.
 
 TiDB Dashboard is built-in the PD component in 4.0 versions. You can refer to the following example to quickly deploy a 4.0.0-rc TiDB cluster in Kubernetes.
 
@@ -49,7 +49,7 @@ TiDB Dashboard is built-in the PD component in 4.0 versions. You can refer to th
         config: {}
     ```
 
-2. After the cluster is created, expose TiDB to the local machine by running the following command:
+2. After the cluster is created, expose TiDB Dashboard to the local machine by running the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -65,7 +65,7 @@ TiDB Dashboard is built-in the PD component in 4.0 versions. You can refer to th
 >
 > It is recommended to expose the TiDB Dashboard service using Ingress in critical production environments.
 >
-> Because the built-in TiDB Dashboard uses the same port as PD APIs, if you expose TiDB Dashboard in other methods, note that the interfaces related to PD APIs should not be exposed.
+> Because the built-in TiDB Dashboard uses the same port as PD APIs do, if you expose TiDB Dashboard in other methods, note that the interfaces related to PD APIs should not be exposed.
 
 ### Prerequisites
 
@@ -75,7 +75,7 @@ To deploy the Ingress controller, refer to [ingress-nginx](https://kubernetes.gi
 
 ### Use Ingress
 
-You can expose the TiDB Dashboard service outside of the Kubernetes cluster by using Ingress. This way, the service can be accessed from outside of Kubernetes by way of `http/https`. For more details, see [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/).
+You can expose the TiDB Dashboard service outside the Kubernetes cluster by using Ingress. In this way, the service can be accessed outside Kubernetes via `http`/`https`. For more details, see [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/).
 
 The following is an `.yaml` example of accessing TiDB Dashboard using Ingress:
 
@@ -98,7 +98,7 @@ The following is an `.yaml` example of accessing TiDB Dashboard using Ingress:
                 path: /dashboard
     ```
 
-2. Visit <http://${host}/dashboard> from outside of the Kubernetes cluster to access TiDB Dashboard.
+2. After Ingress is deployed, you can access TiDB Dashboard via <http://${host}/dashboard> outside the Kubernetes cluster.
 
 ## Enable Ingress TLS
 
@@ -106,7 +106,7 @@ The following is an `.yaml` example of accessing TiDB Dashboard using Ingress:
 >
 > Ingress presumes that Transport Layer Security (TLS) is terminated. Therefore, if the current TiDB cluster enables [TLS verification](enable-tls-between-components.md), you cannot access TiDB Dashboard by Ingress.
 
-Ingress supports TLS (see [Ingress TLS](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls)). The following example shows how to use Ingress TLS:
+Ingress supports TLS. See [Ingress TLS](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls). The following example shows how to use Ingress TLS:
 
 ```yaml
 apiVersion: extensions/v1beta1
