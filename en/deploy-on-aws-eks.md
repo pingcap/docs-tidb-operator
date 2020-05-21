@@ -192,7 +192,7 @@ You can use the `terraform output` command to get the output again.
 
 Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS Network Load Balancer (NLB), the NLB created for the TiDB service cannot enable cross-zone load balancing. You can manually enable it by taking the following steps:
 
-1. Get the name of the TiDB service NLB:
+1. Get the name of the NLB created for the TiDB service:
 
     {{< copyable "shell-regular" >}}
 
@@ -208,9 +208,9 @@ Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS 
     tidb-tidb   LoadBalancer   172.20.39.180   a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com   4000:32387/TCP,10080:31486/TCP   3m46s
     ```
 
-    In the `EXTERNAL-IP` field value, the first field that is separated by `-` is the name of NLB. In the above example, it is `a7aa544c49f914930b3b0532022e7d3c`.
+    In the `EXTERNAL-IP` field value, the first field that is separated by `-` is the name of NLB. In the example above, the NLB name is `a7aa544c49f914930b3b0532022e7d3c`.
 
-2. Get the NLB LoadBalancerArn:
+2. Get the LoadBalancerArn for the NLB:
 
     {{< copyable "shell-regular" >}}
 
@@ -229,7 +229,7 @@ Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS 
               "LoadBalancerName": "a7aa544c49f914930b3b0532022e7d3c",
     ```
 
-    The value of the `LoadBalancerArn` is the NLB LoadBalancerArn.
+    The value of the `LoadBalancerArn` field is the NLB LoadBalancerArn.
 
 3. View the NLB attributes:
 
