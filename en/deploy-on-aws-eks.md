@@ -188,7 +188,7 @@ You can use the `terraform output` command to get the output again.
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
     ```
 
-### Enable cross-zone load balancing for the TiDB service LoadBalancer
+### Enable cross-zone load balancing for the LoadBalancer of the TiDB service
 
 Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS Network Load Balancer (NLB), the NLB created for the TiDB service cannot enable cross-zone load balancing. You can manually enable it by taking the following steps:
 
@@ -208,7 +208,7 @@ Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS 
     tidb-tidb   LoadBalancer   172.20.39.180   a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com   4000:32387/TCP,10080:31486/TCP   3m46s
     ```
 
-    In the `EXTERNAL-IP` field value, the first field that is separated by `-` is the name of NLB. In the example above, the NLB name is `a7aa544c49f914930b3b0532022e7d3c`.
+    In the value of the `EXTERNAL-IP` field, the first field that is separated by `-` is the name of NLB. In the example above, the NLB name is `a7aa544c49f914930b3b0532022e7d3c`.
 
 2. Get the LoadBalancerArn for the NLB:
 
