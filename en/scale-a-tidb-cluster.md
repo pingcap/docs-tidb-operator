@@ -60,7 +60,7 @@ If TiFlash is deployed in the cluster, you can scale out TiFlash by modifying `s
 
 5. Wait for TiFlash replicas in the related tables to be deleted.
 
-    Connect to the TiDB service, and run the following service:
+    Connect to the TiDB service, and run the following command:
 
     {{< copyable "sql" >}}
 

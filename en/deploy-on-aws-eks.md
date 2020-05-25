@@ -72,7 +72,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
 
 This section describes how to deploy EKS, TiDB operator, TiDB cluster and monitor.
 
-### Deploy EKS, TiDB Operator and TiDB cluster node pool
+### Deploy EKS, TiDB Operator, and TiDB cluster node pool
 
 Use the following commands to deploy EKS, TiDB Operator, and the TiDB cluster node pool.
 

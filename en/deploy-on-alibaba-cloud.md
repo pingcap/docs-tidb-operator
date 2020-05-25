@@ -272,8 +272,8 @@ After the nodes scale out, modify the `replicas` of the corresponding components
 
 > **Note:**
 >
-> - Because it is impossible to determine which node is taken offline during the scale-in process, the scale-in of TiDB clusters is currently not supported.
-> - The scale-out process takes a few minutes. You can watch the status by running `kubectl --kubeconfig credentials/kubeconfig get po -n ${namespace} --watch`
+> - Because it is impossible to determine which node will be taken offline during the scale-in process, the scale-in of TiDB clusters is currently not supported.
+> - The scale-out process takes a few minutes. You can watch the status by running `kubectl --kubeconfig credentials/kubeconfig get po -n ${namespace} --watch`.
 
 ## Configure
 
