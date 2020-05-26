@@ -105,7 +105,7 @@ eks_name = "my-cluster"
 operator_version = "v1.1.0-rc.1"
 ```
 
-If you need to deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`, or configure the node count and instance type of the TiFlash node pool by modifying `cluster_tiflash_count` and `cluster_tiflash_instance_type`. By default, the value of `cluster_tiflash_count` is `2`, and the value of `cluster_tiflash_instance_type` is `i3.4xlarge`.
+If you need to deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `cluster_tiflash_count` and `cluster_tiflash_instance_type`. By default, the value of `cluster_tiflash_count` is `2`, and the value of `cluster_tiflash_instance_type` is `i3.4xlarge`.
 
 > **Note:**
 >
