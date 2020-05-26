@@ -16,7 +16,7 @@ This document describes how to access TiDB Dashboard in Kubernetes.
 >
 > This guide shows how to quickly access TiDB Dashboard. Do **NOT** use this method in the production environment. For production environments, refer to [Access TiDB Dashboard by Ingress](#access-tidb-dashboard-by-ingress).
 
-TiDB Dashboard is built-in the PD component in 4.0 versions. You can refer to the following example to quickly deploy a 4.0.0-rc TiDB cluster in Kubernetes.
+TiDB Dashboard is built in the PD component in 4.0 versions. You can refer to the following example to quickly deploy a 4.0.0-rc TiDB cluster in Kubernetes.
 
 1. Deploy the following `.yaml` file into the Kubernetes cluster by running the `kubectl apply -f` command:
 
