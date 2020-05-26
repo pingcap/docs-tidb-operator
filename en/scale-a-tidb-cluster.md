@@ -34,7 +34,7 @@ If TiFlash is deployed in the cluster, you can scale out TiFlash by modifying `s
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-2. Open a **new** terminal tab or window. Check the maximum number (`N`) of replicas of all data tables that have enabled TiFlash by running the following command:
+2. Open a **new** terminal tab or window. Check the maximum number (`N`) of replicas of all data tables with which TiFlash is enabled by running the following command:
 
     {{< copyable "shell-regular" >}}
 
