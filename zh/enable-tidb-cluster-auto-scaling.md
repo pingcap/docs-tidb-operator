@@ -188,7 +188,7 @@ auto-scaling-demo-tikv-1                      1/1     Running   0	       15m
 auto-scaling-demo-tikv-2                      1/1     Running   0	       15m
 ```
 
-观察 Pod 的变化情况与 sysbench 的 tps 与 qps，当 TiKV 与 TiDB 组件新增时，sysbench 的 tps 与 qps 值有显著提升。
+观察 Pod 的变化情况与 sysbench 的 tps 与 qps，当 TiKV 与 TiDB Pod 新增时，sysbench 的 tps 与 qps 值有显著提升。 当 sysbench 结束后，观察 Pod 变化情况，发现新增的 TiKV 与 TiDB Pod 自动消失。
 
 
 
