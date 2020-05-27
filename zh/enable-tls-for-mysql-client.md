@@ -593,7 +593,29 @@ spec:
 
 其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间。通过设置 `spec.tidb.tlsClient.enabled` 属性为 `true` 来开启 MySQL 客户端 TLS。
 
-将上面文件保存为 `cr.yaml`，然后使用 `kubectl apply -f cr.yaml` 来创建 TiDB 集群。
+然后部署 TiDB 集群：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl apply -f tidb-cluster.yaml
+```
+
+集群备份：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl apply -f backup.yaml
+```
+
+以及集群恢复：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl apply -f restore.yaml
+```
 
 ## 第三步：配置 MySQL 客户端使用加密连接
 
