@@ -106,6 +106,8 @@ spec:
 
 我们将通过以下指令快速部署一个 3 PD、3 TiKV、2 TiDB，并带有监控与弹性伸缩能力的 TiDB 集群。
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
 tidbcluster.pingcap.com/auto-scaling-demo created
