@@ -29,13 +29,13 @@ systemctl disable firewalld
 
 ## 配置 Iptables
 
-FORWARD 默认配置成 ACCEPT：
+FORWARD 链默认配置成 ACCEPT：
 
 ```shell
 iptables -P FORWARD ACCEPT
 ```
 
-禁用 SELinux：
+## 禁用 SELinux
 
 {{< copyable "shell-regular" >}}
 
@@ -94,9 +94,9 @@ sysctl --system
 systemctl start irqbalance
 ```
 
-## 配置 Cpupower 为 performance 模式
+## CPUfreq 调节器模式设置
 
-为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考 [在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
 
 {{< copyable "shell-regular" >}}
 
@@ -120,11 +120,11 @@ sysctl --system
 
 ## Docker 服务
 
-安装 Docker，建议使用版本 Docker CE 18.09.6。 请参考 Docker [官方文档](https://docs.docker.com/engine/install/centos/)进行安装。
+安装 Docker，建议使用版本 Docker CE 18.09.6 及以上。 请参考 Docker [官方文档](https://docs.docker.com/engine/install/centos/) 进行安装。
 
 安装完 Docker 服务以后：
 
-1. 将 Docker 的数据保存到一块单独的盘上，通过设置 [`--data-root`](https://docs.docker.com/config/daemon/systemd/#runtime-directory-and-storage-driver) 参数来实现：
+1. 将 Docker 的数据保存到一块单独的盘上，Docker 的数据主要包括镜像和容器日志数据。通过设置 [`--data-root`](https://docs.docker.com/config/daemon/systemd/#runtime-directory-and-storage-driver) 参数来实现：
 
     ```shell
     cat > /etc/docker/daemon.json <<EOF
@@ -162,7 +162,7 @@ sysctl --system
 
 ## K8s 服务
 
-请参考 K8s [官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/) 来部署一套多 master 节点高可用集群。
+请参考 K8s [官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/) 来部署一套多 Master 节点高可用集群。
 
 K8s Master 节点的配置取决于 K8s 集群中 Node 节点个数，节点数越多，需要的资源也就越多。可根据需要做微调。
 
@@ -177,7 +177,7 @@ K8s Master 节点的配置取决于 K8s 集群中 Node 节点个数，节点数�
 
 安装完 Kubelet 之后：
 
-1. 将 Kubelet 的数据保存到一块单独盘上（可跟 Docker 共用一块盘），通过设置 `--root-dir` 参数来实现：
+1. 将 Kubelet 的数据保存到一块单独盘上（可跟 Docker 共用一块盘），Kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。通过设置 `--root-dir` 参数来实现：
 
     {{< copyable "shell-regular" >}}
     
@@ -188,10 +188,10 @@ K8s Master 节点的配置取决于 K8s 集群中 Node 节点个数，节点数�
    
     上面会将 Kubelet 数据目录设置为 `/data1/kubelet`。
     
-2. 通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)来保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
+2. 通过 kubelet 设置 [预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) 来保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
 
 ## TiDB 集群资源需求
 
 请根据 [服务器建议配置](https://pingcap.com/docs-cn/stable/hardware-and-software-requirements/#生产环境) 来规划机器的配置。
 
-另外，在生产环境的使用上尽量不要在 K8s master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。这里的主要考虑点是网卡带宽，因为 master 节点网卡满负荷工作会影响到 worker 节点和 master 节点之间的心跳信息汇报，导致比较严重的问题。
+另外，在生产环境的使用上尽量不要在 K8s Master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。这里的主要考虑点是网卡带宽，因为 Master 节点网卡满负荷工作会影响到 Worker 节点和 Master 节点之间的心跳信息汇报，导致比较严重的问题。
