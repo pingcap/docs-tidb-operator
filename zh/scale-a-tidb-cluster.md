@@ -28,18 +28,24 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 
 ```shell
 kubectl edit tidbcluster ${cluster-name} -n ${namespace}
+```
 
 无论你是通过本地文件，还是通过在线指令修改，你都可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
 
 > kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
 
-如果展现出来的 `TidbCluster` 定义和预期一致，那么可以通过以下指令来观察 `TidbCluster` Pod 是否新增或者减少。
+如果展现出来的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下指令来观察 `TidbCluster` Pod 是否新增或者减少。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 watch kubectl -n ${namespace} get pod -o wide
 ```
+
+## 扩缩容故障
+
+无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
+
 
 #### 扩容 TiFlash
 
@@ -114,7 +120,7 @@ watch kubectl -n ${namespace} get pod -o wide
 通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
 如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。
 
-### 查看升级进度
+### 查看垂直扩缩容进度
 
 {{< copyable "shell-regular" >}}
 
