@@ -20,7 +20,11 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 
 如果你本地有着描述 TiDB 集群的 yaml 文件，那么你可以在修改本地文件中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值，然后使用以下命令将 yaml 文件部署到集群中。
 
-> kubectl apply -f ${target-file}.yaml -n ${namespace}
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl apply -f ${target-file}.yaml -n ${namespace}
+```
 
 同样，你可以使用以下命令在线修改 Kubernetes 集群中的 `TidbCluster` 定义。
 
@@ -32,9 +36,13 @@ kubectl edit tidbcluster ${cluster-name} -n ${namespace}
 
 无论你是通过本地文件，还是通过在线指令修改，你都可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
 
-> kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
+{{< copyable "shell-regular" >}}
 
-如果展现出来的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下指令来观察 `TidbCluster` Pod 是否新增或者减少。
+```shell
+kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
+```
+
+如果展现出来的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下指令来观察 `TidbCluster` Pod 是否新增或者减少。对于 PD 和 TiDB 而言，会需要 10 到 30 秒左右的时间出现扩容或者缩容。对于 TiKV 组件，由于涉及到数据搬迁，可能会需要 3 到 5 分钟来进行扩容或者缩容。
 
 {{< copyable "shell-regular" >}}
 
@@ -92,6 +100,14 @@ watch kubectl -n ${namespace} get pod -o wide
     ```
     
 6. 修改 `spec.tiflash.replicas` 对 TiFlash 进行缩容。
+
+    你都可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下指令输出内容中，`spec.tiflash.replicas` 的值是否符合预期值。
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
+    ```
 
 ### 查看集群水平扩缩容状态
 
