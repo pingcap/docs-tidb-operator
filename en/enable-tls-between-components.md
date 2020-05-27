@@ -1074,9 +1074,9 @@ In this step, you need to perform the following operations:
 
     Refer to [Download TiDB installation package](https://pingcap.com/docs/stable/reference/tools/pd-control/#download-tidb-installation-package).
 
-2. Connect to the cluster:
+2. Download the client-side certificate:
 
-    First, download the client-side certificate, which is the client certificate you have created in Step 1. You can directly use it, or obtain it from the `${cluster_name}-cluster-client-secret` Kubernetes Secret object created before.
+    The client-side certificate is the client certificate you have created in [Generate certificates for components](#generate-certificates-for-components-of-the-tidb-cluster). You can directly use the certificate, or obtain it from the `${cluster_name}-cluster-client-secret` Kubernetes Secret object created before.
 
     {{< copyable "shell-regular" >}}
 
@@ -1090,9 +1090,18 @@ In this step, you need to perform the following operations:
 
     When you deploy the server-side certificate for the PD and TiKV component, some `hosts` are customized, so you need to use these `hosts` to connect to the PD and TiKV cluster.
 
-    {{< copyable "shell-regular" >}}
+    - Connect to the PD cluster:
 
-    ``` shell
-    pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
-    tikv-ctl --ca-path=client-ca.crt --cert-path=client-tls.crt --key-path=client-tls.key --host ${cluster_name}-tikv-0.${cluster_name}-tikv-peer.${namespace}:20160 cluster
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
+        ```
+
+    - Connect to the TiKV cluster:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tikv-ctl --ca-path=client-ca.crt --cert-path=client-tls.crt --key-path=client-tls.key --host ${cluster_name}-tikv-0.${cluster_name}-tikv-peer.${namespace}:20160 cluster
+        ```
