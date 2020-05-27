@@ -50,10 +50,9 @@ kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
 watch kubectl -n ${namespace} get pod -o wide
 ```
 
-## 扩缩容故障
+## 水平扩缩容故障
 
 无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
-
 
 #### 扩容 TiFlash
 
@@ -104,7 +103,7 @@ watch kubectl -n ${namespace} get pod -o wide
     你都可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下指令输出内容中，`spec.tiflash.replicas` 的值是否符合预期值。
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
     ```
@@ -151,6 +150,6 @@ watch kubectl -n ${namespace} get pod -o wide
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
 > - TiDB 作为一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
 
-## 扩缩容故障
+## 垂直扩缩容故障
 
 无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
