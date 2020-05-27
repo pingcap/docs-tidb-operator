@@ -18,35 +18,48 @@ category: how-to
 
 ## 在现有 TiDB 集群上新增 TiCDC 组件
 
-编辑 TidbCluster Custom Resource：
+1. 编辑 TidbCluster Custom Resource：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-kubectl edit tc ${cluster_name} -n ${namespace}
-```
+    ``` shell
+    kubectl edit tc ${cluster_name} -n ${namespace}
+    ```
 
-按照如下示例增加 TiCDC 配置：
+2. 按照如下示例增加 TiCDC 配置：
 
-```yaml
-spec:
-  ticdc:
-    baseImage: pingcap/ticdc
-    replicas: 3
-```
+    ```yaml
+    spec:
+      ticdc:
+        baseImage: pingcap/ticdc
+        replicas: 3
+    ```
 
-部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
+3. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it ${pod_name} -n ${namespace} sh
-```
+    ```shell
+    kubectl exec -it ${pod_name} -n ${namespace} sh
+    ```
 
-然后通过 `cdc cli` 进行[管理集群和同步任务](https://pingcap.com/docs-cn/stable/ticdc/manage-ticdc/)。
+4. 然后通过 `cdc cli` 进行[管理集群和同步任务](https://pingcap.com/docs-cn/stable/ticdc/manage-ticdc/)。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-/cdc cli capture list --pd=${pd_address}:2379
-```
+    ```shell
+    /cdc cli capture list --pd=${pd_address}:2379
+    ```
+
+    ```shell
+    [
+            {
+                    "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
+                    "is-owner": true
+            },
+            {
+                    "id": "b293999a-4168-4988-a4f4-35d9589b226b",
+                    "is-owner": false
+            }
+    ]
+    ```
