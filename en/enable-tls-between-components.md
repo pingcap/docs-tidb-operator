@@ -16,14 +16,14 @@ To enable TLS between TiDB components, perform the following steps:
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
-3. Configure `pd-ctl` to connect to the cluster.
+3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
-## Step 1: Generate certificates for components of the TiDB cluster
+## Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
@@ -856,7 +856,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     After the object is created, `cert-manager` generates a `${cluster_name}-cluster-client-secret` Secret object to be used by the clients of the TiDB components.
 
-## Step 2: Deploy the TiDB cluster
+## Deploy the TiDB cluster
 
 When you deploy a TiDB cluster, you can enable TLS between TiDB components, and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component's certificate.
 
@@ -1068,7 +1068,7 @@ In this step, you need to perform the following operations:
         kubectl apply -f restore.yaml
         ```
 
-## Step 3: Configure `pd-ctl` and connect to the cluster
+## Configure `pd-ctl` and connect to the cluster
 
 1. Download `pd-ctl`:
 
@@ -1086,12 +1086,13 @@ In this step, you need to perform the following operations:
     kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
     ```
 
-3. Connect to the PD cluster by `pd-ctl`:
+3. Connect to the PD and TiKV cluster using `pd-ctl` and `tikv-ctl`:
 
-    When you deploy the server-side certificate for the PD component, some `hosts` are customized, so you need to use these `hosts` to connect to the PD cluster.
+    When you deploy the server-side certificate for the PD and TiKV component, some `hosts` are customized, so you need to use these `hosts` to connect to the PD and TiKV cluster.
 
     {{< copyable "shell-regular" >}}
 
     ``` shell
     pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
+    tikv-ctl --ca-path=client-ca.crt --cert-path=client-tls.crt --key-path=client-tls.key --host ${cluster_name}-tikv-0.${cluster_name}-tikv-peer.${namespace}:20160 cluster
     ```
