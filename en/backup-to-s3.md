@@ -263,10 +263,10 @@ More `Backup` CRs are described as follows:
 * `.spec.from.port`: the port of the TiDB cluster to be backed up.
 * `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
 * `.spec.from.secretName`：the secret contains the password of the `.spec.from.user`.
-* `spec.s3.region`: configure the Region where Amazon S3 is located if you want to use Amazon S3 for backup storage.
+* `spec.s3.region`: configures the Region where Amazon S3 is located if you want to use Amazon S3 for backup storage.
 * `.spec.s3.bucket`: the name of the bucket compatible with S3 storage.
-* `.spec.s3.prefix`: this field can be ignored. If you set this field, it will be used to make up the storage path of the remote storage, `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
-* `.spec.mydumper`: Mydumper-related configurations, with two major fields. One is the [`options`](https://pingcap.com/docs/stable/reference/tools/mydumper/) field, which specifies some parameters needed by Mydumper, and another is the `tableRegex` field, which allows Mydumper to back up a table that matches this regular expression. These configurations of Mydumper can be ignored by default. When not specified, the default value of `options` and `tableRegex` is as follows:
+* `.spec.s3.prefix`: this field can be ignored. If you set this field, it will be used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
+* `.spec.mydumper`: Mydumper-related configurations, with two major fields. One is the [`options`](https://pingcap.com/docs/stable/reference/tools/mydumper/) field, which specifies some parameters needed by Mydumper, and the other is the `tableRegex` field, which allows Mydumper to back up a table that matches this regular expression. These configurations of Mydumper can be ignored by default. When not specified, the values of `options` and `tableRegex` (by default) is as follows:
 
     ```
     options:
