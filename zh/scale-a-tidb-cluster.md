@@ -24,7 +24,10 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 
 同样，你可以使用以下命令在线修改 Kubernetes 集群中的 `TidbCluster` 定义。
 
-> kubectl edit tidbcluster ${cluster-name} -n ${namespace}
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl edit tidbcluster ${cluster-name} -n ${namespace}
 
 无论你是通过本地文件，还是通过在线指令修改，你都可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
 
