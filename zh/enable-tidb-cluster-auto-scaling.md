@@ -168,7 +168,6 @@ Threads started!
 
 新建一个会话终端，通过以下命令观察 TiDB 集群的 Pod 变化情况。
 
-
 {{< copyable "shell-regular" >}}
 
 ```shell
@@ -178,20 +177,17 @@ watch -n1 "kubectl -n ${namespace} get pod"
 出现如下输出:
 
 ```sh
-auto-scaling-demo-discovery-fbd95b679-f4cb9   1/1     Running   0	       17m
-auto-scaling-demo-monitor-6857c58564-ftkp4    3/3     Running   0	       17m
-auto-scaling-demo-pd-0                        1/1     Running   0	       17m
-auto-scaling-demo-tidb-0                      2/2     Running   0	       15m
-auto-scaling-demo-tidb-1                      2/2     Running   0	       15m
-auto-scaling-demo-tikv-0                      1/1     Running   0    	   15m
-auto-scaling-demo-tikv-1                      1/1     Running   0	       15m
-auto-scaling-demo-tikv-2                      1/1     Running   0	       15m
+auto-scaling-demo-discovery-fbd95b679-f4cb9   1/1     Running   0          17m
+auto-scaling-demo-monitor-6857c58564-ftkp4    3/3     Running   0          17m
+auto-scaling-demo-pd-0                        1/1     Running   0          17m
+auto-scaling-demo-tidb-0                      2/2     Running   0          15m
+auto-scaling-demo-tidb-1                      2/2     Running   0          15m
+auto-scaling-demo-tikv-0                      1/1     Running   0          15m
+auto-scaling-demo-tikv-1                      1/1     Running   0          15m
+auto-scaling-demo-tikv-2                      1/1     Running   0          15m
 ```
 
 观察 Pod 的变化情况与 sysbench 的 tps 与 qps，当 TiKV 与 TiDB Pod 新增时，sysbench 的 tps 与 qps 值有显著提升。 当 sysbench 结束后，观察 Pod 变化情况，发现新增的 TiKV 与 TiDB Pod 自动消失。
-
-
-
 
 使用如下命令销毁环境：
 
