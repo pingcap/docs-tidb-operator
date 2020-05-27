@@ -82,8 +82,8 @@ spec:
   gcs:
     projectId: <your-project-id>
     secretName: gcs-secret
-	bucket: <my-bucket>
-	prefix: <my-folder>
+    bucket: <my-bucket>
+    prefix: <my-folder>
     # location: us-east1
     # storageClass: STANDARD_IA
     # objectAcl: private
@@ -183,7 +183,7 @@ spec:
       secretName: gcs-secret
       projectId: <your-project-id>
       bucket: <my-bucket>
-	  prefix: <my-folder>
+      prefix: <my-folder>
       # location: us-east1
       # storageClass: STANDARD_IA
       # objectAcl: private

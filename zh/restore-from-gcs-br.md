@@ -28,7 +28,7 @@ category: how-to
 
     ```shell
     kubectl create secret generic gcs-secret --from-file=credentials=./google-credentials.json -n test1
-	```
+    ```
 
 3. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 集群的 root 账号和密钥：
 
@@ -79,7 +79,7 @@ category: how-to
         projectId: <your-project-id>
         secretName: gcs-secret
         bucket: <my-bucket>
-	    prefix: <my-folder>
+        prefix: <my-folder>
         # location: us-east1
         # storageClass: STANDARD_IA
         # objectAcl: private
