@@ -12,8 +12,6 @@ category: how-to
 
 TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 进行顺序扩缩容操作。扩容操作按照节点编号由小到大增加节点，缩容操作按照节点编号由大到小删除节点。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
 
-### 水平扩缩容操作 (CR)
-
 #### 扩缩容 PD、TiDB、TiKV
 
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
@@ -49,10 +47,6 @@ kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
 ```shell
 watch kubectl -n ${namespace} get pod -o wide
 ```
-
-## 水平扩缩容故障
-
-无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
 
 #### 扩容 TiFlash
 
@@ -125,6 +119,10 @@ watch kubectl -n ${namespace} get pod -o wide
 > - TiKV 组件不支持在缩容过程中进行扩容操作，强制执行此操作可能导致集群状态异常。假如异常已经发生，可以参考 [TiKV Store 异常进入 Tombstone 状态](troubleshoot.md#tikv-store-异常进入-tombstone-状态) 进行解决。
 > - TiFlash 组件缩容处理逻辑和 TiKV 组件相同。
 > - PD、TiKV、TiFlash 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。
+
+### 水平扩缩容故障
+
+无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
 
 ## 垂直扩缩容
 
