@@ -1076,11 +1076,6 @@ category: how-to
 
     - 连接 PD 集群:
 
-<<<<<<< HEAD
-    ``` shell
-    pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
-    ```
-=======
         {{< copyable "shell-regular" >}}
 
         ``` shell
@@ -1094,4 +1089,3 @@ category: how-to
         ``` shell
         tikv-ctl --ca-path=client-ca.crt --cert-path=client-tls.crt --key-path=client-tls.key --host ${cluster_name}-tikv-0.${cluster_name}-tikv-peer.${namespace}:20160 cluster
         ```
->>>>>>> 30f9ec7... en, zh: add tikv-ctl in tls document (#320)
