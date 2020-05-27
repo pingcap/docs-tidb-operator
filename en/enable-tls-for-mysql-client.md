@@ -492,60 +492,138 @@ In this step, you create a TiDB cluster and perform the following operations:
 - Create a Restore object to restore the cluster
 - Use separate client-side certificates for TidbInitializer, PD Dashboard, Backup, and Restore (specified by `tlsClientSecretName`)
 
-1. Create a `tidb-cluster.yaml` file with the following content:
+1. Create three `.yaml` files:
 
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      name: ${cluster_name}
-      amespace: ${namespace}
-    spec:
-      version: v3.1.0
-      timezone: UTC
-      pvReclaimPolicy: Retain
-      pd:
-        baseImage: pingcap/pd
-        replicas: 1
-        requests:
-          storage: "1Gi"
-      config: {}
-      tlsClientSecretName: ${cluster_name}-pd-dashboard-client-secret
-    tikv:
-      baseImage: pingcap/tikv
-      replicas: 1
-      requests:
-        storage: "1Gi"
-      config: {}
-    tidb:
-      baseImage: pingcap/tidb
-      replicas: 1
-      service:
-        type: ClusterIP
-      config: {}
-      tlsClient:
-        enabled: true
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbInitializer
-    metadata:
-      name: ${cluster_name}-init
-      namespace: ${namespace}
-    spec:
-      image: tnir/mysqlclient
-      cluster:
-        namespace: ${namespace}
-        name: ${cluster_name}
-      initSql: |-
-        create database app;
-      tlsClientSecretName: ${cluster_name}-tidb-initializer-client-secret
+    - `tidb-cluster.yaml` file:
+
+        ```yaml
+        apiVersion: pingcap.com/v1alpha1
+        kind: TidbCluster
+        metadata:
+          name: ${cluster_name}
+          amespace: ${namespace}
+        spec:
+          version: v3.1.0
+          timezone: UTC
+          pvReclaimPolicy: Retain
+          pd:
+            baseImage: pingcap/pd
+            replicas: 1
+            requests:
+              storage: "1Gi"
+            config: {}
+            tlsClientSecretName: ${cluster_name}-pd-dashboard-client-secret
+          tikv:
+            baseImage: pingcap/tikv
+            replicas: 1
+            requests:
+              storage: "1Gi"
+            config: {}
+          tidb:
+            baseImage: pingcap/tidb
+            replicas: 1
+            service:
+              type: ClusterIP
+            config: {}
+            tlsClient:
+              enabled: true
+        ---
+        apiVersion: pingcap.com/v1alpha1
+        kind: TidbInitializer
+        metadata:
+          name: ${cluster_name}-init
+          namespace: ${namespace}
+        spec:
+          image: tnir/mysqlclient
+          cluster:
+            namespace: ${namespace}
+            name: ${cluster_name}
+          initSql: |-
+            create database app;
+          tlsClientSecretName: ${cluster_name}-tidb-initializer-client-secret
+        ```
+
+    - `backup.yaml`:
+
+        ```
+        apiVersion: pingcap.com/v1alpha1
+        kind: Backup
+        metadata:
+          name: ${cluster_name}-backup
+          namespace: ${namespace}
+        spec:
+          backupType: full
+          br:
+          cluster: ${cluster_name}
+          clusterNamespace: ${namespace}
+          sendCredToTikv: true
+          from:
+            host: ${host}
+            secretName: ${tidb_secret}
+            port: 4000
+            user: root
+            tlsClientSecretName: ${cluster_name}-backup-client-secret
+          s3:
+            provider: aws
+            region: ${my_region}
+            secretName: ${s3_secret}
+            bucket: ${my_bucket}
+            prefix: ${my_folder}
+        ```
+
+    - `restore.yaml`:
+
+        ```
+        apiVersion: pingcap.com/v1alpha1
+        kind: Restore
+        metadata:
+          name: ${cluster_name}-restore
+          namespace: ${namespace}
+        spec:
+          backupType: full
+          br:
+            cluster: ${cluster_name}
+            clusterNamespace: ${namespace}
+            sendCredToTikv: true
+          to:
+            host: ${host}
+            secretName: ${tidb_secret}
+            port: 4000
+            user: root
+            tlsClientSecretName: ${cluster_name}-restore-client-secret
+          s3:
+            provider: aws
+            region: ${my_region}
+            secretName: ${s3_secret}
+            bucket: ${my_bucket}
+            prefix: ${my_folder}
+        ```
+
+    In the above file, `${cluster_name}` is the name of the cluster, and `${namespace}` is the namespace in which the TiDB cluster is deployed. To enable TLS for the MySQL client, set `spec.tidb.tlsClient.enabled` to `true`.
+
+2. Deploy the TiDB cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl apply -f tidb-cluster.yaml
     ```
 
-    In the above file, `${cluster_name}` is the name of the cluster, and `${namespace}` is the namespace in which the TiDB cluster is deployed.
+3. Back up the cluster:
 
-2. To enable TLS for the MySQL client, set `spec.tidb.tlsClient.enabled` to `true`.
+    {{< copyable "shell-regular" >}}
 
-3. Execute `kubectl apply -f cr.yaml` to create the TiDB cluster.
+    ``` shell
+    kubectl apply -f backup.yaml
+    ```
+
+4. Restore the cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl apply -f restore.yaml
+    ```
 
 ## Configure the MySQL client to use encrypted connection
 
