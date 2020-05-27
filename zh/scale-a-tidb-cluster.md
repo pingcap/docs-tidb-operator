@@ -12,7 +12,7 @@ category: how-to
 
 TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 进行顺序扩缩容操作。扩容操作按照节点编号由小到大增加节点，缩容操作按照节点编号由大到小删除节点。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
 
-#### 扩缩容 PD、TiDB、TiKV
+### 扩缩容 PD、TiDB、TiKV
 
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
 
