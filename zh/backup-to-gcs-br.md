@@ -102,7 +102,7 @@ spec:
 
 配置中 `checksum` 代表了是否在 备份/恢复 结束之后对文件进行验证。默认为 `true`。
 
-配置中 `sendCredToTikv` BR 组件是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
+配置中 `sendCredToTikv` BR 进程是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
 
 以上示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的 `location`、`objectAcl`、`storageClass` 项均可以省略。
 
