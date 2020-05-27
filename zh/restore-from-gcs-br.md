@@ -67,7 +67,6 @@ category: how-to
         # statusAddr: <status-addr>
         # concurrency: 4
         # rateLimit: 0
-        # timeAgo: <time>
         # checksum: true
         # sendCredToTikv: true
       to:
