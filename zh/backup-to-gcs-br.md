@@ -76,7 +76,6 @@ spec:
     # statusAddr: <status-addr>
     # concurrency: 4
     # rateLimit: 0
-    # timeAgo: <time>
     # checksum: true
     # sendCredToTikv: true
   gcs:
@@ -89,7 +88,23 @@ spec:
     # objectAcl: private
 ```
 
-以上示例将 TiDB 集群的数据全量导出备份到 GCS。GCS 配置中的 `location`、`objectAcl`、`storageClass` 项均可以省略。
+以上示例中 `spec.br` 中的一些参数 `enableTLSClient`、`logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv` 项均可省略。
+
+配置中 `enableTLSClient` 代表集群是否开启了 TLS 加密传输。如果集群开启了加密传输。则该项应该设置为 `true` 默认为 `false`,证书的创建规则见 [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)。
+
+配置中 `logLevel` 代表了日志的级别。默认为 `info`。
+
+配置中 `statusAddr` 会为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试，如果不填，则默认不监听。
+
+配置中 `concurrency` 的数量等于 备份/恢复 时每一个 TiKV 进程会使用的线程数。备份时默认为 4， 恢复时默认为 128。
+
+配置中 `rateLimit` 代表了对流量进行限制。单位为 MB/S, 例如 设置为 `4` 代表了限速 4M/S, 默认不限速。
+
+配置中 `checksum` 代表了是否在 备份/恢复 结束之后对文件进行验证。默认为 `true`。
+
+配置中 `sendCredToTikv` BR 组件是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
+
+以上示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的 `location`、`objectAcl`、`storageClass` 项均可以省略。
 
 配置中的 `projectId` 代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 
@@ -176,7 +191,6 @@ spec:
       # statusAddr: <status-addr>
       # concurrency: 4
       # rateLimit: 0
-      # timeAgo: <time>
       # checksum: true
       # sendCredToTikv: true
     gcs:
