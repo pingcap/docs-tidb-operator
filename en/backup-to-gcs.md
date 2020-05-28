@@ -142,7 +142,7 @@ More `Backup` CRs are described as follows:
 * `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
 * `.spec.from.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be backed up.
 * `.spec.gcs.bucket`: the name of the bucket that stores data.
-* `.spec.gcs.prefix`: this field can be ignored. If you set this field, it will be used to make up the storage path of the remote storage, `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
+* `.spec.gcs.prefix`: this field can be ignored. If you set this field, it will be used to make up the remote storage path `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`.
 * `.spec.mydumper`: Mydumper-related configurations, with two major fields. One is the [`options`](https://pingcap.com/docs/stable/reference/tools/mydumper/) field, which specifies some parameters needed by Mydumper, and the other is the `tableRegex` field, which allows Mydumper to back up a table that matches this regular expression. These configuration items of Mydumper can be ignored by default. When not specified, the values of `options` and `tableRegex` (by default) are as follows:
 
     ```
