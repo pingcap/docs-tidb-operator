@@ -64,45 +64,42 @@ metadata:
 spec:
   # backupType: full
   from:
-    host: <tidb-host-ip>
-    port: <tidb-port>
-    user: <tidb-user>
+    host: ${tidb-host}
+    port: ${tidb-port}
+    user: ${tidb-user}
     secretName: backup-demo1-tidb-secret
   br:
     cluster: demo1
     clusterNamespace: test1
-    # enableTLSClient: false
     # logLevel: info
-    # statusAddr: <status-addr>
+    # statusAddr: ${status-addr}
     # concurrency: 4
     # rateLimit: 0
     # checksum: true
     # sendCredToTikv: true
   gcs:
-    projectId: <your-project-id>
+    projectId: ${project-id}
     secretName: gcs-secret
-    bucket: <my-bucket>
-    prefix: <my-folder>
+    bucket: ${bucket}
+    prefix: ${prefix}
     # location: us-east1
     # storageClass: STANDARD_IA
     # objectAcl: private
 ```
 
-以上示例中 `spec.br` 中的一些参数 `enableTLSClient`、`logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv` 项均可省略。
+以上示例中 `spec.br` 中的一些参数 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv` 项均可省略。
 
-配置中 `enableTLSClient` 代表集群是否开启了 TLS 加密传输。如果集群开启了加密传输。则该项应该设置为 `true` 默认为 `false`,证书的创建规则见 [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)。
+`spec.br.logLevel` 代表了日志的级别。默认为 `info`。
 
-配置中 `logLevel` 代表了日志的级别。默认为 `info`。
+`spec.br.statusAddr` 会为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试，如果不填，则默认不监听。
 
-配置中 `statusAddr` 会为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试，如果不填，则默认不监听。
+`spec.br.concurrency` 的数量等于 备份/恢复 时每一个 TiKV 进程会使用的线程数。备份时默认为 4， 恢复时默认为 128。
 
-配置中 `concurrency` 的数量等于 备份/恢复 时每一个 TiKV 进程会使用的线程数。备份时默认为 4， 恢复时默认为 128。
+`spec.br.rateLimit` 代表了对流量进行限制。单位为 MB/S, 例如 设置为 `4` 代表了限速 4M/S, 默认不限速。
 
-配置中 `rateLimit` 代表了对流量进行限制。单位为 MB/S, 例如 设置为 `4` 代表了限速 4M/S, 默认不限速。
+`spec.br.checksum` 代表了是否在 备份/恢复 结束之后对文件进行验证。默认为 `true`。
 
-配置中 `checksum` 代表了是否在 备份/恢复 结束之后对文件进行验证。默认为 `true`。
-
-配置中 `sendCredToTikv` BR 进程是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
+`spec.br.sendCredToTikv` BR 进程是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
 
 以上示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的 `location`、`objectAcl`、`storageClass` 项均可以省略。
 
@@ -143,7 +140,17 @@ GCS 支持以下几种 object access-control list (ACL) 策略：
 * `.spec.from.host`：待备份 TiDB 集群的访问地址。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
+* `.spec.gcs.bucket`：存储数据的 bucket 名字。
+* `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
+
+    如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
+    ```
 
 ## 定时全量备份
 
@@ -179,25 +186,25 @@ spec:
   schedule: "*/2 * * * *"
   backupTemplate:
     from:
-      host: <tidb-host-ip>
-      port: <tidb-port>
-      user: <tidb-user>
+      host: ${tidb_host}
+      port: ${tidb_port}
+      user: ${tidb_user}
       secretName: backup-demo1-tidb-secret
     br:
       cluster: demo1
       clusterNamespace: test1
       # enableTLSClient: false
       # logLevel: info
-      # statusAddr: <status-addr>
+      # statusAddr: ${status-addr}
       # concurrency: 4
       # rateLimit: 0
       # checksum: true
       # sendCredToTikv: true
     gcs:
       secretName: gcs-secret
-      projectId: <your-project-id>
-      bucket: <my-bucket>
-      prefix: <my-folder>
+      projectId: ${project-id}
+      bucket: ${bucket}
+      prefix: ${prefix}
       # location: us-east1
       # storageClass: STANDARD_IA
       # objectAcl: private

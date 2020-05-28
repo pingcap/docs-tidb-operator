@@ -62,23 +62,22 @@ category: how-to
       br:
         cluster: demo2
         clusterNamespace: test2
-        # enableTLSClient: false
         # logLevel: info
-        # statusAddr: <status-addr>
+        # statusAddr: ${status-addr}
         # concurrency: 4
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
       to:
-        host: <tidb-host-ip>
-        port: <tidb-port>
-        user: <tidb-user>
+        host: ${tidb_host}
+        port: ${tidb_port}
+        user: ${tidb_user}
         secretName: restore-demo2-tidb-secret
       gcs:
-        projectId: <your-project-id>
+        projectId: ${project-id}
         secretName: gcs-secret
-        bucket: <my-bucket>
-        prefix: <my-folder>
+        bucket: ${bucket}
+        prefix: ${prefix}
         # location: us-east1
         # storageClass: STANDARD_IA
         # objectAcl: private
@@ -101,5 +100,11 @@ category: how-to
 * `.spec.to.port`：待恢复 TiDB 集群访问的端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
 * `.spec.to.tidbSecretName`：待恢复 TiDB 集群所需凭证的 secret。
-* `.spec.storageClassName`：指定恢复时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
-* `.spec.storageSize`：恢复集群时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
+
+    如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
+    ```  
