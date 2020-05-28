@@ -120,7 +120,7 @@ spec:
 
 ## Configure TiCDC start parameters
 
-TiCDC start parameters can be configured by `spec.ticdc.config` in TidbCluster Custom Resource.
+You can configure TiCDC start parameters through `spec.ticdc.config` in TidbCluster Custom Resource.
 
 For example:
 

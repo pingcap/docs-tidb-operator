@@ -1,20 +1,22 @@
 ---
-title: Deploy TiCDC on Kubernetes
-summary: Learn how to deploy TiCDC on Kubernetes.
+title: Deploy TiCDC in Kubernetes
+summary: Learn how to deploy TiCDC in Kubernetes.
 category: how-to
 ---
 
-# Deploy TiCDC on Kubernetes
+# Deploy TiCDC in Kubernetes
 
 [TiCDC](https://pingcap.com/docs/stable/ticdc/ticdc-overview/) is a tool for replicating the incremental data of TiDB. This document describes how to deploy TiCDC on Kubernetes using TiDB Operator.
 
+You can deploy TiCDC when deploying a new TiDB cluster, or add the TiCDC component to an existing TiDB cluster.
+
 ## Prerequisites
 
-* TiDB Operator is [deployed](deploy-tidb-operator.md).
+TiDB Operator is [deployed](deploy-tidb-operator.md).
 
 ## Fresh TiCDC deployment
 
-To deploy TiFlash when deploying the TiDB cluster, refer to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
+To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Add TiCDC component to an existing TiDB cluster
 
