@@ -10,7 +10,7 @@ This document describes how to enable TLS for MySQL client of the TiDB cluster o
 
 To enable TLS for the MySQL client, perform the following steps:
 
-1. [Issue two sets of certificates](#issue-two-sets-of-certificates-for-the-tidb-cluster): a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`, including the two sets of certificates respectively.
+1. [Issue two sets of certificates](#issue-two-sets-of-certificates-for-the-tidb-cluster): a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`, respectively including these two sets of certificates.
 
     Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
