@@ -462,11 +462,11 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
         In the `.yaml` file above, `${cluster_name}` is the name of the cluster. Configure the items as follows:
 
-        - Set `spec.secretName` to `${cluster_name}-${component}-client-secret`
-        - Add `client auth` in `usages`
-        - `dnsNames` and `ipAddresses` are not required
-        - Add the Issuer created above in the `issuerRef`
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)
+        - Set the value of `spec.secretName` to `${cluster_name}-${component}-client-secret`.
+        - Add `client auth` in `usages`.
+        - `dnsNames` and `ipAddresses` are not required.
+        - Add the Issuer created above in the `issuerRef`.
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
     
     2. Create the certificate by running the following command:
 
@@ -476,7 +476,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
         kubectl apply -f tidb-components-client-cert.yaml
         ```
     
-    3. After creating these objects, cert-manager will generate four secret objects for the four components to use.
+    3. After creating these objects, cert-manager will generate four secret objects for the four components.
 
     > **Note:**
     >
