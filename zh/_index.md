@@ -42,6 +42,8 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
     - [部署到 GCP GKE](deploy-on-gcp-gke.md)
     - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
     - [部署到自托管的 Kubernetes](prerequisites.md.md)
+    - [部署 TiFlash](deploy-tiflash.md)
+    - [部署 TiDB 集群监控](monitor-a-tidb-cluster.md)
 
   </NavColumn>
 
