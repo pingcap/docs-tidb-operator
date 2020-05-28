@@ -69,6 +69,7 @@
   + 工具
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
+    - [Cheat Sheet](cheat-sheet.md)
   + 配置
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
     - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
