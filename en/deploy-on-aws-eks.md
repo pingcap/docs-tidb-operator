@@ -190,7 +190,7 @@ You can use the `terraform output` command to get the output again.
 
 ### Enable cross-zone load balancing for the LoadBalancer of the TiDB service
 
-Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS Network Load Balancer (NLB), the NLB created for the TiDB service cannot enable cross-zone load balancing. You can manually enable it by taking the following steps:
+Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS Network Load Balancer (NLB), the NLB created for the TiDB service cannot automatically enable cross-zone load balancing. You can manually enable it by taking the following steps:
 
 1. Get the name of the NLB created for the TiDB service:
 
