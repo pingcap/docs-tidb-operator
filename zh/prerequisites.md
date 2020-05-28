@@ -29,7 +29,7 @@ systemctl disable firewalld
 
 ## 配置 Iptables
 
-FORWARD 链默认配置成 ACCEPT：
+FORWARD 链默认配置成 ACCEPT，并将其设置到开机启动脚本里：
 
 ```shell
 iptables -P FORWARD ACCEPT
@@ -91,6 +91,7 @@ sysctl --system
 {{< copyable "shell-regular" >}}
 
 ```shell
+systemctl enable irqbalance
 systemctl start irqbalance
 ```
 
