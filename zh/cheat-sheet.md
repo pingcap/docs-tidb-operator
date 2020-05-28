@@ -358,7 +358,7 @@ category: how-to
 
 ### 与 Node 交互
 
-* 把 Node 置为不可调度：
+* 把 Node 设置为不可调度：
 
     {{< copyable "shell-regular" >}}
 
