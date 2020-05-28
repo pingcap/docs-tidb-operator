@@ -5,10 +5,7 @@
 
 ## TOC
 
-+ Get Started
-  - [kind](deploy-tidb-from-kubernetes-kind.md)
-  - [GKE](deploy-tidb-from-kubernetes-gke.md)
-  - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
+- [Get Started](get-started-kubernetes.md)
 + Introduction
   - [Overview](tidb-operator-overview.md)
   - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
