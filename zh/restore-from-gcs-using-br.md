@@ -91,7 +91,7 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在 GCS 上指定路径 `spec.gcs.bucket` 存储桶中 `spec.gcs.prefix`文件夹下的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](backup-to-gcs-using-br.md#备份数据到-gcs) 中的配置。
+以上示例将存储在 GCS 上指定路径 `spec.gcs.bucket` 存储桶中 `spec.gcs.prefix`文件夹下的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 BR、GCS 的配置项可以参考 [backup-gcs.yaml](backup-to-gcs-using-br.md#备份数据到-gcs) 中的配置。
 
 更多 `Restore` CR 字段的详细解释如下：
 
@@ -99,7 +99,8 @@ category: how-to
 * `.spec.to.host`：待恢复 TiDB 集群的访问地址。
 * `.spec.to.port`：待恢复 TiDB 集群访问的端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
-* `.spec.to.tidbSecretName`：待恢复 TiDB 集群所需凭证的 secret。
+* `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
+* `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
 
     如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
 

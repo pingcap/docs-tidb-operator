@@ -89,6 +89,10 @@ spec:
 
 以上示例中 `spec.br` 中的一些参数 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv` 项均可省略。
 
+`spec.br.cluster` 代表了需要 备份/恢复 的集群名字。
+
+`spec.br.clusterNamespace` 代表了需要 备份/恢复 的集群所在的 `namespace`。
+
 `spec.br.logLevel` 代表了日志的级别。默认为 `info`。
 
 `spec.br.statusAddr` 会为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试，如果不填，则默认不监听。
@@ -142,7 +146,8 @@ GCS 支持以下几种 object access-control list (ACL) 策略：
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
 * `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
-* `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
+* `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
+* `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
 
     如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
 
