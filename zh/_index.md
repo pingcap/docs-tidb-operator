@@ -41,7 +41,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 - [部署到 AWS EKS](deploy-on-aws-eks.md)
 - [部署到 GCP GKE](deploy-on-gcp-gke.md)
 - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
-- [部署到自托管的 Kubernetes](prerequisites.md.md)
+- [部署到自托管的 Kubernetes](prerequisites.md)
 - [部署 TiFlash](deploy-tiflash.md)
 - [部署 TiDB 集群监控](monitor-a-tidb-cluster.md)
 
@@ -70,7 +70,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 <NavColumn>
 <ColumnTitle>参考</ColumnTitle>
 
-- [架构](tidb-scheduler.md.md)
+- [架构](tidb-scheduler.md)
 - [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
 - [工具](use-tkctl.md)
 - [配置](configure-tidb-binlog-drainer.md)
