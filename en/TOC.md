@@ -27,6 +27,7 @@
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
   - [Deploy TiFlash](deploy-tiflash.md)
+  - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
   + Deploy Monitoring
     - [Monitor Kubernetes and TiDB Cluster](monitor-a-tidb-cluster.md)
@@ -64,7 +65,7 @@
     - [TiDB Scheduler](tidb-scheduler.md)
     - [Advanced StatefulSet Controller](advanced-statefulset.md)
     - [Admission Controller](enable-admission-webhook.md)
-  - [API References](api-references.md)
+  - [API References](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
   + Tools
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
