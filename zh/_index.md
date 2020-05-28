@@ -15,6 +15,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 | v1.1 | v3.0, v3.1, v4.0 |
 | dev | v3.0, v3.1, v4.0, dev |
 
+<<<<<<< HEAD
 TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + 测试环境：
@@ -53,5 +54,66 @@ Kubernetes 上的 TiDB 提供了专用的命令行工具 `tkctl` 用于集群管
 
 + 参考 [`tkctl` 使用指南](use-tkctl.md) 来使用 `tkctl`；
 + 参考 [Kubernetes 上的 TiDB 相关工具使用指南](tidb-toolkit.md)来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
+=======
+<NavColumns>
+<NavColumn>
+<ColumnTitle>关于 TiDB Operator</ColumnTitle>
+
+- [TiDB Operator 简介](tidb-operator-overview.md)
+- [v1.1 重要注意事项](notes-tidb-operator-v1.1.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>快速上手</ColumnTitle>
+
+- [kind](deploy-tidb-from-kubernetes-kind.md)
+- [GKE](deploy-tidb-from-kubernetes-gke.md)
+- [Minikube](deploy-tidb-from-kubernetes-minikube.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>部署集群</ColumnTitle>
+
+- [部署到 AWS EKS](deploy-on-aws-eks.md)
+- [部署到 GCP GKE](deploy-on-gcp-gke.md)
+- [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
+- [部署到自托管的 Kubernetes](prerequisites.md)
+- [部署 TiFlash](deploy-tiflash.md)
+- [部署 TiDB 集群监控](monitor-a-tidb-cluster.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>安全</ColumnTitle>
+
+- [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
+- [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>运维</ColumnTitle>
+
+- [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
+- [升级 TiDB Operator](upgrade-tidb-operator.md)
+- [集群扩缩容](scale-a-tidb-cluster.md)
+- [备份与恢复](backup-and-restore-using-helm-charts.md)
+- [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
+- [集群故障自动转移](use-auto-failover.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>参考</ColumnTitle>
+
+- [架构](tidb-scheduler.md)
+- [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
+- [工具](use-tkctl.md)
+- [配置](configure-tidb-binlog-drainer.md)
+
+</NavColumn>
+>>>>>>> 11d7a80... Fix _index.md (#352)
 
 最后，当 TiDB Operator 发布新版本时，你可以参考[升级 TiDB Operator](upgrade-tidb-operator.md) 进行版本更新。
