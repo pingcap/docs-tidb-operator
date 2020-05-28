@@ -18,7 +18,6 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 | dev | v3.0, v3.1, v4.0, dev |
 
 <NavColumns>
-
 <NavColumn>
 <ColumnTitle>关于 TiDB Operator</ColumnTitle>
 
