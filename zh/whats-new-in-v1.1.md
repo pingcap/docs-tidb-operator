@@ -9,10 +9,10 @@ TiDB Operator 1.1 在 1.0 基础上新增了许多功能，支持 TiDB 4.0 以�
 
 ## TidbCluster
 
-- TidbCluster CR 支持部署管理 PD discovery 组件，可完全替代 tidb-cluster chart
+- TidbCluster CR 支持部署管理 PD Discovery 组件，可完全替代 tidb-cluster chart 管理 TiDB 集群
 - 管理 TiDB 集群
 - 新增 Pump、TiFlash、TiCDC 支持
-- 新增 PD Dashboard  支持
+- 新增 TiDB Dashboard  支持
 - 全面支持 TiDB 组件及客户端 TLS 证书配置
 
 ## 新增 CRD
@@ -28,6 +28,10 @@ TiDB Operator 1.1 在 1.0 基础上新增了许多功能，支持 TiDB 4.0 以�
 - 新增可选的[增强型 StatefulSet 控制器](advanced-statefulset.md)，提供对指定 Pod 进行删除的功能 (开启 `AdvancedStatefulSet` 特性开关后使用)
 - `tidb-scheduler` 支持任意维度的 HA 调度和 Preemption 支持
 - 备份、恢复支持 S3 和 GCS
+- [优雅重启 TiDB 集群组件](restart-a-tidb-cluster.md)
+- tidb-lightning chart [导入集群数据](restore-data-using-tidb-lightning.md)
+- tidb-drainer chart [部署、管理 TiDB Drainer](deploy-tidb-binlog.md#部署-drainer)
+- tikv-importer chart [部署、管理 TiKV Importer](restore-data-using-tidb-lightning.md#部署-tikv-importer)
 
 完成发布日志参见 [1.1 CHANGE LOG](https://github.com/pingcap/tidb-operator/blob/master/CHANGELOG-1.1.md) 。
 TiDB Operator 在 Kubernetes 上部署参见[安装文档](#deploy-tidb-operator.md)，CRD 文档参见 [API References](#api-references.md) 。
