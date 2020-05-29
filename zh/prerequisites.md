@@ -189,7 +189,7 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
    
     上面会将 Kubelet 数据目录设置为 `/data1/kubelet`。
     
-2. 通过 kubelet 设置 [预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) 来保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
+2. 通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)，保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
 
 ## TiDB 集群资源需求
 
