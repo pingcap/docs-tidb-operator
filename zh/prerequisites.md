@@ -46,7 +46,7 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 ## 关闭 Swap
 
-Kubelet 正常工作需要关闭 Swap，并且把 `/etc/fstab` 里面有关 Swap 的那行注视掉：
+Kubelet 正常工作需要关闭 Swap，并且把 `/etc/fstab` 里面有关 Swap 的那行注释掉：
 
 {{< copyable "shell-regular" >}}
 
