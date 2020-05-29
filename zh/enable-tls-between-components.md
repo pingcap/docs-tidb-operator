@@ -1076,7 +1076,6 @@ category: how-to
 
     - 连接 PD 集群:
 
-<<<<<<< HEAD
         {{< copyable "shell-regular" >}}
 
         ``` shell
