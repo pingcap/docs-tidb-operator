@@ -72,9 +72,9 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
 
 This section describes how to deploy EKS, TiDB operator, TiDB cluster and monitor.
 
-### Deploy EKS and TiDB Operator
+### Deploy EKS, TiDB Operator, and TiDB cluster node pool
 
-Use the following commands to deploy EKS and TiDB Operator.
+Use the following commands to deploy EKS, TiDB Operator, and the TiDB cluster node pool.
 
 Get the code from Github:
 
@@ -104,6 +104,8 @@ default_cluster_name = "tidb"
 eks_name = "my-cluster"
 operator_version = "v1.1.0-rc.1"
 ```
+
+If you need to deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `cluster_tiflash_count` and `cluster_tiflash_instance_type`. By default, the value of `cluster_tiflash_count` is `2`, and the value of `cluster_tiflash_instance_type` is `i3.4xlarge`.
 
 > **Note:**
 >
@@ -159,12 +161,37 @@ You can use the `terraform output` command to get the output again.
     cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
     ```
 
-    To complete the CR file configuration, refer to [API documentation](api-references.md).
+    To complete the CR file configuration, refer to [API documentation](api-references.md) and [Configure a TiDB Cluster Using TidbCluster](configure-cluster-using-tidbcluster.md).
+
+    To deploy TiFlash, configure `spec.tiflash` in `db.yaml` as follows:
+
+    ```yaml
+    spec:
+      ...
+      tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 3
+        nodeSelector:
+          dedicated: CLUSTER_NAME-tiflash
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+              storage: 100Gi
+          storageClassName: local-storage
+        tolerations:
+        - effect: NoSchedule
+          key: dedicated
+          operator: Equal
+          value: CLUSTER_NAME-tiflash
+    ```
+
+    Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
 
     > **Note:**
     >
     > * Replace all `CLUSTER_NAME` in `db.yaml` and `db-monitor.yaml` files with `default_cluster_name` configured during EKS deployment.
-    > * Make sure that during EKS deployment, the number of PD, TiKV or TiDB nodes is consistent with the value of the `replicas` field of the corresponding component in `db.yaml`.
+    > * Make sure that during EKS deployment, the number of PD, TiKV, TiFlash, or TiDB nodes is >= the value of the `replicas` field of the corresponding component in `db.yaml`.
     > * Make sure that `spec.initializer.version` in `db-monitor.yaml` and `spec.version` in `db.yaml` are the same to ensure normal monitor display.
 
 2. Create `Namespace`:
@@ -188,6 +215,173 @@ You can use the `terraform output` command to get the output again.
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
     ```
 
+### Enable cross-zone load balancing for the LoadBalancer of the TiDB service
+
+Due to an [issue](https://github.com/kubernetes/kubernetes/issues/82595) of AWS Network Load Balancer (NLB), the NLB created for the TiDB service cannot automatically enable cross-zone load balancing. You can manually enable it by taking the following steps:
+
+1. Get the name of the NLB created for the TiDB service:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-tidb -n ${namespace}
+    ```
+
+    This is an example of the output:
+
+    ```
+    kubectl --kubeconfig credentials/kubeconfig_test get svc test-tidb -n test
+    NAME        TYPE           CLUSTER-IP      EXTERNAL-IP                                                                     PORT(S)                          AGE
+    tidb-tidb   LoadBalancer   172.20.39.180   a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com   4000:32387/TCP,10080:31486/TCP   3m46s
+    ```
+
+    In the value of the `EXTERNAL-IP` field, the first field that is separated by `-` is the name of NLB. In the example above, the NLB name is `a7aa544c49f914930b3b0532022e7d3c`.
+
+2. Get the LoadBalancerArn for the NLB:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancers | grep ${LoadBalancerName}
+    ```
+
+    `${LoadBalancerName}` is the NLB name obtained in Step 1.
+
+    This is an example of the output:
+
+    ```
+    aws elbv2 describe-load-balancers | grep a7aa544c49f914930b3b0532022e7d3c
+              "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075",
+              "DNSName": "a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com",
+              "LoadBalancerName": "a7aa544c49f914930b3b0532022e7d3c",
+    ```
+
+    The value of the `LoadBalancerArn` field is the NLB LoadBalancerArn.
+
+3. View the NLB attributes:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
+    ```
+
+    `${LoadBalancerArn}` is the NLB LoadBalancerArn obtained in Step 2.
+
+    This is an example of the output:
+
+    ```
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075"
+    {
+      "Attributes": [
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+    If the value of `load_balancing.cross_zone.enabled` is `false`, continue the next step to enable cross-zone load balancing.
+
+4. Enable cross-zone load balancing for NLB:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 modify-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn} --attributes Key=load_balancing.cross_zone.enabled,Value=true
+    ```
+
+    `${LoadBalancerArn}` is the NLB LoadBalancerArn obtained in Step 2.
+
+    This is an example of the output:
+
+    ```
+    aws elbv2 modify-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075" --attributes Key=load_balancing.cross_zone.enabled,Value=true
+    {
+      "Attributes": [
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "true"
+          },
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+5. Confirm that the NLB cross-zone load balancing attribute is enabled:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
+    ```
+
+    `${LoadBalancerArn}` is the NLB LoadBalancerArn obtained in Step 2.
+
+    This is an example of the output:
+
+    ```
+    aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:687123456789:loadbalancer/net/a7aa544c49f914930b3b0532022e7d3c/83c0c97d8b659075"
+    {
+      "Attributes": [
+          {
+              "Key": "access_logs.s3.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "load_balancing.cross_zone.enabled",
+              "Value": "true"
+          },
+          {
+              "Key": "access_logs.s3.prefix",
+              "Value": ""
+          },
+          {
+              "Key": "deletion_protection.enabled",
+              "Value": "false"
+          },
+          {
+              "Key": "access_logs.s3.bucket",
+              "Value": ""
+          }
+      ]
+    }
+    ```
+
+    Confirm that the value of `load_balancing.cross_zone.enabled` is `true`.
+
 ## Access the database
 
 After deploying the cluster, to access the deployed TiDB cluster, use the following commands to first `ssh` into the bastion machine, and then connect it via MySQL client (replace the `${}` parts with values from the output):
@@ -206,7 +400,7 @@ mysql -h ${tidb_lb} -P 4000 -u root
 
 The default value of `eks_name` is `my-cluster`. If the DNS name is not resolvable, be patient and wait a few minutes.
 
-`tidb_lb` is the LoadBalancer of TiDB Service.
+`tidb_lb` is the LoadBalancer of TiDB Service. To check this value, run `kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-tidb -n ${namespace}` and view the `EXTERNAL-IP` field in the output information.
 
 You can interact with the EKS cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_${eks_name}` in the following two ways.
 
@@ -248,7 +442,7 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
 
 You can access the `<monitor-lb>:3000` address (printed in outputs) using your web browser to view monitoring metrics.
 
-`monitor-lb` is the LoadBalancer of the cluster Monitor Service.
+`monitor-lb` is the LoadBalancer of the cluster Monitor Service. To check this value, run `kubectl --kubeconfig credentials/kubeconfig_${eks_name} get svc ${default_cluster_name}-grafana -n ${namespace}` and view the `EXTERNAL-IP` field in the output information.
 
 The initial Grafana login credentials are:
 
@@ -263,7 +457,7 @@ The upgrading doesn't finish immediately. You can watch the upgrading progress b
 
 ## Scale
 
-To scale the TiDB cluster, modify the `default_cluster_tikv_count` or `default_cluster_tidb_count` variable in the `terraform.tfvars` file to your desired count, and then run `terraform apply` to scale out the number of the corresponding component nodes.
+To scale out the TiDB cluster, modify the `default_cluster_tikv_count`, `cluster_tiflash_count`, or `default_cluster_tidb_count` variable in the `terraform.tfvars` file to your desired count, and then run `terraform apply` to scale out the number of the corresponding component nodes.
 
 After the scaling, modify the `replicas` of the corresponding component by the following command:
 
