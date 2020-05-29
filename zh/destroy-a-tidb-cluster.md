@@ -52,7 +52,7 @@ kubectl delete pvc -n ${namespace} -l app.kubernetes.io/instance=${cluster_name}
 
 > **警告：**
 >
-> 为了确保数据安全，在任何情况下都不要删除 PV，除非您熟悉 [`local-volume-provisioner`](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 的工作原理。
+> 为了确保数据安全，在任何情况下都不要删除 PV，除非你熟悉 [`local-volume-provisioner`](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 的工作原理。
 
 {{< copyable "shell-regular" >}}
 
