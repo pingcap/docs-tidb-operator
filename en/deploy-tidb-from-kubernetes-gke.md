@@ -159,7 +159,7 @@ When you see `basic-tidb` appear, the service is ready to access. You can use <k
 To connect to TiDB within the Kubernetes cluster, you can establish a tunnel between the TiDB service and your Cloud Shell. This is recommended only for debugging purposes, because the tunnel will not automatically be transferred if your Cloud Shell restarts. To establish a tunnel:
 
 ```shell
-kubectl -n demo port-forward svc/basic-tidb 4000:4000 &>/tmp/port-forward.log &
+kubectl -n demo port-forward svc/basic-tidb 4000:4000 &>/tmp/pf4000.log &
 ```
 
 From your Cloud Shell:
@@ -197,16 +197,17 @@ kubectl -n demo edit tc basic
 
 ## Access the Grafana dashboard
 
-To access the Grafana dashboards, you can create a tunnel between the Grafana service and your shell.
+To access the Grafana dashboards, you can forward a port from the Cloud Shell to the Grafana service in Kubernetes. (Cloud Shell already uses port 3000 so we use port 3003 in this example instead.)
+
 To do so, use the following command:
 
 ```shell
-kubectl -n demo port-forward svc/basic-grafana 3000:3000 &>/dev/null &
+kubectl -n demo port-forward svc/basic-grafana 3003:3000 &>/tmp/pf3003.log &
 ```
 
-In Cloud Shell, click on the Web Preview button and enter 3000 for the port. This opens a new browser tab pointing to the Grafana dashboards. Alternatively, use the following URL <https://ssh.cloud.google.com/devshell/proxy?port=3000> in a new tab or window.
+Open this URL to view the Grafana dashboard: <https://ssh.cloud.google.com/devshell/proxy?port=3003> . (Alternatively, in Cloud Shell, click on the Web Preview button and enter 3003 for the port.  If not using Cloud Shell, point a browser to `localhost:3000`.
 
-If not using Cloud Shell, point a browser to `localhost:3000`.
+The default username and password are both "admin".
 
 ## Destroy the TiDB cluster
 
@@ -231,7 +232,7 @@ kubectl get pv -l app.kubernetes.io/namespace=demo,app.kubernetes.io/managed-by=
 
 ## Shut down the Kubernetes cluster
 
-Once you have finished experimenting, you can delete the Kubernetes cluster with:
+Once you have finished experimenting, you can delete the Kubernetes cluster:
 
 ```shell
 gcloud container clusters delete tidb
@@ -239,4 +240,4 @@ gcloud container clusters delete tidb
 
 ## More Information
 
-A simple [deployment based on Terraform] is also provided.
+To learn more about creating a deployment on GKE suitable for production use, please consult <https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/>.
