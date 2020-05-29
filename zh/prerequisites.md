@@ -163,7 +163,7 @@ sysctl --system
 
 ## Kubernetes 服务
 
-请参考 K8s [官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/) 来部署一套多 Master 节点高可用集群。
+参考 [Kubernetes 官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)，部署一套多 Master 节点高可用集群。
 
 Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个数，节点数越多，需要的资源也就越多。节点数可根据需要做微调。
 
