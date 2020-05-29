@@ -176,7 +176,7 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
 | 251-500 | 16vCPUs 64GB Memory|
 | 501-5000 | 32vCPUs 128GB Memory|
 
-安装完 Kubelet 之后：
+安装完 Kubelet 之后，执行以下步骤：
 
 1. 将 Kubelet 的数据保存到一块单独盘上（可跟 Docker 共用一块盘），Kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。通过设置 `--root-dir` 参数来实现：
 
