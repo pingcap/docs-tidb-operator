@@ -1,24 +1,24 @@
 ---
-title: Get Started With TiDB Cluster in Kubernetes
+title: Get Started With TiDB Operator in Kubernetes
 summary: Learn how to deploy TiDB Cluster in TiDB Operator in a Kubernetes cluster.
 category: how-to
 aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/']
 ---
 
 
-# Get Started with TiDB Cluster in Kubernetes
+# Get Started with TiDB Operator in Kubernetes
 
 This document explains how to create a simple Kubernetes cluster and use it to do a basic test deployment of TiDB Cluster using TiDB Operator.
 
 > **Warning:**
 >
-> These deployments are for demonstration puroses only. **Do not use** for qualitifcation or in production!
+> These deployments are for demonstration purposes only. **Do not use** for qualification or in production!
 
 These are the steps this document follows:
 1. [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
 3. [Deploy TiDB Cluster](#deploy-tidb-cluster)
-4. [Connect to TiDB Cluster](#connect-to-tidb).
+4. [Connect to TiDB Cluster](#connect-to-tidb)
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
 
@@ -424,6 +424,18 @@ Before proceeding, make sure the following requirements are satisfied:
 
     Expected output:
     ```
+    NAME                              READY   STATUS            RESTARTS   AGE
+    basic-discovery-6bb656bfd-kjkxw   1/1     Running           0          29s
+    basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
+    basic-pd-0                        1/1     Running           0          29s
+    basic-pd-1                        1/1     Running           0          29s
+    basic-pd-2                        1/1     Running           0          29s
+    ```
+
+    Wait until all pods for all services have been started. As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-tidb)!
+
+    Expected output:
+    ```
     NAME                              READY   STATUS    RESTARTS   AGE
     basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m9s
     basic-monitor-5fc8589c89-gvgjj    3/3     Running   0          8m58s
@@ -437,227 +449,287 @@ Before proceeding, make sure the following requirements are satisfied:
     basic-tikv-2                      1/1     Running   0          8m13s
     ```
 
-    As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-tidb)!
 
 ## Connect to TiDB
 
-To connect to TiDB, you'll need a MySQL-compatible command-line client installed on the host where you've used `kubectl`. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from your operating system's package repository.
+1. Install `mysql` command-line client
+    To connect to TiDB, you'll need a MySQL-compatible command-line client installed on the host where you've used `kubectl`. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from your operating system's package repository.
 
-Once the `-tidb` pods are Running, it's time to connect to the cluster.
+2. Forward port 4000
 
-We'll connect by first forwarding a port from the local host to the TiDB **service** in Kubernetes. First, get a list of services in the tidb-cluster namespace:
+    We'll connect by first forwarding a port from the local host to the TiDB **service** in Kubernetes. First, get a list of services in the tidb-cluster namespace:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl get svc -n tidb-cluster
+    ```
+
+    Expected output:
+    ```
+    NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
+    basic-discovery          ClusterIP   10.101.69.5      <none>        10261/TCP            10m
+    basic-grafana            ClusterIP   10.106.41.250    <none>        3000/TCP             10m
+    basic-monitor-reloader   ClusterIP   10.99.157.225    <none>        9089/TCP             10m
+    basic-pd                 ClusterIP   10.104.43.232    <none>        2379/TCP             10m
+    basic-pd-peer            ClusterIP   None             <none>        2380/TCP             10m
+    basic-prometheus         ClusterIP   10.106.177.227   <none>        9090/TCP             10m
+    basic-tidb               ClusterIP   10.99.24.91      <none>        4000/TCP,10080/TCP   8m40s
+    basic-tidb-peer          ClusterIP   None             <none>        10080/TCP            8m40s
+    basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
+    ```
+
+    In this case, the TiDB service is called **basic-tidb**. Use kubectl to forward this port from the local host to the cluster service:
 
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-kubectl get svc -n tidb-cluster
-```
+    ``` shell
+    kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+    ```
 
-Expected output:
-```
-NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
-basic-discovery          ClusterIP   10.101.69.5      <none>        10261/TCP            10m
-basic-grafana            ClusterIP   10.106.41.250    <none>        3000/TCP             10m
-basic-monitor-reloader   ClusterIP   10.99.157.225    <none>        9089/TCP             10m
-basic-pd                 ClusterIP   10.104.43.232    <none>        2379/TCP             10m
-basic-pd-peer            ClusterIP   None             <none>        2380/TCP             10m
-basic-prometheus         ClusterIP   10.106.177.227   <none>        9090/TCP             10m
-basic-tidb               ClusterIP   10.99.24.91      <none>        4000/TCP,10080/TCP   8m40s
-basic-tidb-peer          ClusterIP   None             <none>        10080/TCP            8m40s
-basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
-```
-
-In this case, the TiDB service is called **basic-tidb**. Use kubectl to forward this port from the local host to the cluster service:
+    This command runs in the background and writes its output to a file called `pf4000.out` so we can continue working in the same shell session.
 
 
-{{< copyable "shell-regular" >}}
+3. Connect to TiDB
 
-``` shell
-kubectl port-forward svc/basic-tidb 4000 > pf.out &
-```
+    {{< copyable "shell-regular" >}}
 
-This command runs in the background and writes its output to a file called `pf.out` so we can continue working in the same shell session.
+    ``` shell
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
 
-{{< copyable "shell-regular" >}}
+    Expected output:
+    ```
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 76
+    Server version: 5.7.25-TiDB-v4.0.0 MySQL Community Server (Apache License 2.0)
 
-``` shell
-mysql -h 127.0.0.1 -P 4000 -u root
-```
+    Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
-Expected output:
-```
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 76
-Server version: 5.7.25-TiDB-v4.0.0 MySQL Community Server (Apache License 2.0)
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
 
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
+    mysql> 
+    ```
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB:
 
-mysql> 
-```
+    ```
+    mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
+    Query OK, 0 rows affected (0.17 sec)
 
-Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB:
+    mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
+    *************************** 1. row ***************************
+           REGION_ID: 2
+           START_KEY: 7480000000000000FF3700000000000000F8
+             END_KEY:
+            TABLE_ID: 55
+             DB_NAME: test
+          TABLE_NAME: hello_world
+            IS_INDEX: 0
+            INDEX_ID: NULL
+          INDEX_NAME: NULL
+      EPOCH_CONF_VER: 5
+       EPOCH_VERSION: 23
+       WRITTEN_BYTES: 0
+          READ_BYTES: 0
+    APPROXIMATE_SIZE: 1
+    APPROXIMATE_KEYS: 0
+    1 row in set (0.03 sec)
+    ```
 
-```
-mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-Query OK, 0 rows affected (0.17 sec)
+    ```
+    mysql> select tidb_version()\G
+    *************************** 1. row ***************************
+    tidb_version(): Release Version: v4.0.0
+    Edition: Community
+    Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
+    Git Branch: heads/refs/tags/v4.0.0
+    UTC Build Time: 2020-05-28 01:37:40
+    GoVersion: go1.13
+    Race Enabled: false
+    TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+    Check Table Before Drop: false
+    1 row in set (0.00 sec)
+    ```
 
-mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-*************************** 1. row ***************************
-       REGION_ID: 2
-       START_KEY: 7480000000000000FF3700000000000000F8
-         END_KEY:
-        TABLE_ID: 55
-         DB_NAME: test
-      TABLE_NAME: hello_world
-        IS_INDEX: 0
-        INDEX_ID: NULL
-      INDEX_NAME: NULL
-  EPOCH_CONF_VER: 5
-   EPOCH_VERSION: 23
-   WRITTEN_BYTES: 0
-      READ_BYTES: 0
-APPROXIMATE_SIZE: 1
-APPROXIMATE_KEYS: 0
-1 row in set (0.03 sec)
-```
+    ```
+    mysql> select * from information_schema.tikv_store_status\G
+    *************************** 1. row ***************************
+             STORE_ID: 1
+              ADDRESS: basic-tikv-1.basic-tikv-peer.tidb-cluster.svc:20160
+          STORE_STATE: 0
+     STORE_STATE_NAME: Up
+                LABEL: null
+              VERSION: 4.0.0
+             CAPACITY: 58.42GiB
+            AVAILABLE: 36.18GiB
+         LEADER_COUNT: 6
+        LEADER_WEIGHT: 1
+         LEADER_SCORE: 6
+          LEADER_SIZE: 6
+         REGION_COUNT: 21
+        REGION_WEIGHT: 1
+         REGION_SCORE: 21
+          REGION_SIZE: 21
+             START_TS: 2020-05-28 22:47:41
+    LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
+               UPTIME: 4m20.455396487s
+    *************************** 2. row ***************************
+             STORE_ID: 4
+              ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+          STORE_STATE: 0
+     STORE_STATE_NAME: Up
+                LABEL: null
+              VERSION: 4.0.0
+             CAPACITY: 58.42GiB
+            AVAILABLE: 36.18GiB
+         LEADER_COUNT: 3
+        LEADER_WEIGHT: 1
+         LEADER_SCORE: 3
+          LEADER_SIZE: 3
+         REGION_COUNT: 21
+        REGION_WEIGHT: 1
+         REGION_SCORE: 21
+          REGION_SIZE: 21
+             START_TS: 2020-05-28 22:48:21
+    LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
+               UPTIME: 3m40.598302151s
+    *************************** 3. row ***************************
+             STORE_ID: 5
+              ADDRESS: basic-tikv-2.basic-tikv-peer.tidb-cluster.svc:20160
+          STORE_STATE: 0
+     STORE_STATE_NAME: Up
+                LABEL: null
+              VERSION: 4.0.0
+             CAPACITY: 58.42GiB
+            AVAILABLE: 36.18GiB
+         LEADER_COUNT: 12
+        LEADER_WEIGHT: 1
+         LEADER_SCORE: 12
+          LEADER_SIZE: 12
+         REGION_COUNT: 21
+        REGION_WEIGHT: 1
+         REGION_SCORE: 21
+          REGION_SIZE: 21
+             START_TS: 2020-05-28 22:47:17
+    LAST_HEARTBEAT_TS: 2020-05-28 22:52:07
+               UPTIME: 4m50.214838934s
+    3 rows in set (0.01 sec)
+    ```
 
-```
-mysql> select tidb_version()\G
-*************************** 1. row ***************************
-tidb_version(): Release Version: v4.0.0
-Edition: Community
-Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
-Git Branch: heads/refs/tags/v4.0.0
-UTC Build Time: 2020-05-28 01:37:40
-GoVersion: go1.13
-Race Enabled: false
-TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
-Check Table Before Drop: false
-1 row in set (0.00 sec)
-```
+    ```
+    mysql> select * from information_schema.cluster_info\G
+    *************************** 1. row ***************************
+              TYPE: tidb
+          INSTANCE: basic-tidb-1.basic-tidb-peer.tidb-cluster.svc:4000
+    STATUS_ADDRESS: basic-tidb-1.basic-tidb-peer.tidb-cluster.svc:10080
+           VERSION: 5.7.25-TiDB-v4.0.0
+          GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
+        START_TIME: 2020-05-28T22:49:17Z
+            UPTIME: 4m15.459086883s
+    *************************** 2. row ***************************
+              TYPE: tidb
+          INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
+    STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
+           VERSION: 5.7.25-TiDB-v4.0.0
+          GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
+        START_TIME: 2020-05-28T22:50:11Z
+            UPTIME: 3m21.459090928s
+    *************************** 3. row ***************************
+              TYPE: pd
+          INSTANCE: basic-pd:2379
+    STATUS_ADDRESS: basic-pd:2379
+           VERSION: 4.0.0
+          GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
+        START_TIME: 2020-05-28T22:45:04Z
+            UPTIME: 8m28.459091915s
+    *************************** 4. row ***************************
+              TYPE: tikv
+          INSTANCE: basic-tikv-1.basic-tikv-peer.tidb-cluster.svc:20160
+    STATUS_ADDRESS: 0.0.0.0:20180
+           VERSION: 4.0.0
+          GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
+        START_TIME: 2020-05-28T22:47:41Z
+            UPTIME: 5m51.45910075s
+    *************************** 5. row ***************************
+              TYPE: tikv
+          INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+    STATUS_ADDRESS: 0.0.0.0:20180
+           VERSION: 4.0.0
+          GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
+        START_TIME: 2020-05-28T22:48:21Z
+            UPTIME: 5m11.459102648s
+    *************************** 6. row ***************************
+              TYPE: tikv
+          INSTANCE: basic-tikv-2.basic-tikv-peer.tidb-cluster.svc:20160
+    STATUS_ADDRESS: 0.0.0.0:20180
+           VERSION: 4.0.0
+          GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
+        START_TIME: 2020-05-28T22:47:17Z
+            UPTIME: 6m15.459103932s
+    6 rows in set (0.01 sec)
+    ```
 
-```
-mysql> select * from information_schema.tikv_store_status\G
-*************************** 1. row ***************************
-         STORE_ID: 1
-          ADDRESS: basic-tikv-1.basic-tikv-peer.tidb-cluster.svc:20160
-      STORE_STATE: 0
- STORE_STATE_NAME: Up
-            LABEL: null
-          VERSION: 4.0.0
-         CAPACITY: 58.42GiB
-        AVAILABLE: 36.18GiB
-     LEADER_COUNT: 6
-    LEADER_WEIGHT: 1
-     LEADER_SCORE: 6
-      LEADER_SIZE: 6
-     REGION_COUNT: 21
-    REGION_WEIGHT: 1
-     REGION_SCORE: 21
-      REGION_SIZE: 21
-         START_TS: 2020-05-28 22:47:41
-LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-           UPTIME: 4m20.455396487s
-*************************** 2. row ***************************
-         STORE_ID: 4
-          ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-      STORE_STATE: 0
- STORE_STATE_NAME: Up
-            LABEL: null
-          VERSION: 4.0.0
-         CAPACITY: 58.42GiB
-        AVAILABLE: 36.18GiB
-     LEADER_COUNT: 3
-    LEADER_WEIGHT: 1
-     LEADER_SCORE: 3
-      LEADER_SIZE: 3
-     REGION_COUNT: 21
-    REGION_WEIGHT: 1
-     REGION_SCORE: 21
-      REGION_SIZE: 21
-         START_TS: 2020-05-28 22:48:21
-LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-           UPTIME: 3m40.598302151s
-*************************** 3. row ***************************
-         STORE_ID: 5
-          ADDRESS: basic-tikv-2.basic-tikv-peer.tidb-cluster.svc:20160
-      STORE_STATE: 0
- STORE_STATE_NAME: Up
-            LABEL: null
-          VERSION: 4.0.0
-         CAPACITY: 58.42GiB
-        AVAILABLE: 36.18GiB
-     LEADER_COUNT: 12
-    LEADER_WEIGHT: 1
-     LEADER_SCORE: 12
-      LEADER_SIZE: 12
-     REGION_COUNT: 21
-    REGION_WEIGHT: 1
-     REGION_SCORE: 21
-      REGION_SIZE: 21
-         START_TS: 2020-05-28 22:47:17
-LAST_HEARTBEAT_TS: 2020-05-28 22:52:07
-           UPTIME: 4m50.214838934s
-3 rows in set (0.01 sec)
-```
+4. Load Grafana dashboard
 
-```
-mysql> select * from information_schema.cluster_info\G
-*************************** 1. row ***************************
-          TYPE: tidb
-      INSTANCE: basic-tidb-1.basic-tidb-peer.tidb-cluster.svc:4000
-STATUS_ADDRESS: basic-tidb-1.basic-tidb-peer.tidb-cluster.svc:10080
-       VERSION: 5.7.25-TiDB-v4.0.0
-      GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    START_TIME: 2020-05-28T22:49:17Z
-        UPTIME: 4m15.459086883s
-*************************** 2. row ***************************
-          TYPE: tidb
-      INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-       VERSION: 5.7.25-TiDB-v4.0.0
-      GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    START_TIME: 2020-05-28T22:50:11Z
-        UPTIME: 3m21.459090928s
-*************************** 3. row ***************************
-          TYPE: pd
-      INSTANCE: basic-pd:2379
-STATUS_ADDRESS: basic-pd:2379
-       VERSION: 4.0.0
-      GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-    START_TIME: 2020-05-28T22:45:04Z
-        UPTIME: 8m28.459091915s
-*************************** 4. row ***************************
-          TYPE: tikv
-      INSTANCE: basic-tikv-1.basic-tikv-peer.tidb-cluster.svc:20160
-STATUS_ADDRESS: 0.0.0.0:20180
-       VERSION: 4.0.0
-      GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-    START_TIME: 2020-05-28T22:47:41Z
-        UPTIME: 5m51.45910075s
-*************************** 5. row ***************************
-          TYPE: tikv
-      INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-STATUS_ADDRESS: 0.0.0.0:20180
-       VERSION: 4.0.0
-      GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-    START_TIME: 2020-05-28T22:48:21Z
-        UPTIME: 5m11.459102648s
-*************************** 6. row ***************************
-          TYPE: tikv
-      INSTANCE: basic-tikv-2.basic-tikv-peer.tidb-cluster.svc:20160
-STATUS_ADDRESS: 0.0.0.0:20180
-       VERSION: 4.0.0
-      GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-    START_TIME: 2020-05-28T22:47:17Z
-        UPTIME: 6m15.459103932s
-6 rows in set (0.01 sec)
-```
+    As done above for port 4000 to the TiDB service, also forward the port for Grafana so we can load the monitoring dashboard:
+
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
+    ```
+
+    The dashboard will be accessible at <http://localhost:3000> on the host where you've run `kubectl`. Note that if you're running `kubectl` in a Docker container or on a remote host, you may not be able to load this URL and additional networking beyond the scope of this document may be necessary.
+
+    The default username and password in Grafana are both "admin".
+
+
+## Destroy TiDB Cluster
+
+After you've finished testing, you may wish to destroy the TiDB Cluster.
+
+Instructions for destroying the Kubernetes clusters depend on where the Kubernetes cluster is running and how it was created, so refer to those sections for more details. The following steps will destroy the TiDB Cluster, but will not affect the Kubernetes cluster itself.
+
+1. Delete TiDB Cluster:
+
+    {{< copyable "shell-regular" >}}
+
+     ```shell
+    kubectl delete tc basic -n tidb-cluster
+    ```
+
+2. Delete TiDB Monitor:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete tidbmonitor basic -n tidb-cluster
+    ```
+
+3. Delete persistend data
+
+    If your deployment has persistent data storage, deleting TiDB Cluster will not remove the cluster's data. If you do not need the data anymore, you should run the following commands to clean the data and the dynamically created persistent disks:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete pvc -n tidb-cluster -l app.kubernetes.io/instance=basic,app.kubernetes.io/managed-by=tidb-operator && \
+    kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=basic -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+    ``` 
+
+4. Delete namespaces
+
+    To make sure there are no lingering resources, you can delete the namespace used for TiDB Cluster.
+
+    {{< copyable "shell-regular" >}}
+    ```shell
+    kubectl delete namespace tidb-cluster
+    ```
 
