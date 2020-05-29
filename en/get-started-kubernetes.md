@@ -2,7 +2,7 @@
 title: Get Started With TiDB Cluster in Kubernetes
 summary: Learn how to deploy TiDB Cluster in TiDB Operator in a Kubernetes cluster.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-gke/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/']
+aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/']
 ---
 
 
@@ -18,7 +18,7 @@ These are the steps this document follows:
 1. [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
 3. [Deploy TiDB Cluster](#deploy-tidb-cluster)
-4. [Connect to TiDB Cluster](#connect-to-tidb-cluster).
+4. [Connect to TiDB Cluster](#connect-to-tidb).
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
 
@@ -42,7 +42,7 @@ This section covers 3 different ways to create a simple Kubernetes cluster that 
 
 - [Using kind](#create-a-kubernetes-cluster-using-kind) (Kubernetes in Docker)
 - [Using minikube](#create-a-kubernetes-cluster-using-minikube) (Kubernetes running locally in a VM)
-- [Using the GKE console](#...) (Kubernetes running in the Google Kubernetes Engine in Google Cloud Platform)
+- [Using the Google Cloud Shell](deploy-tidb-from-kubernetes-gke.md) (Kubernetes running in the Google Kubernetes Engine in Google Cloud Platform)
 
 ### Create a Kubernetes Cluster Using kind
 
@@ -199,6 +199,15 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
+You're now ready to [Deploy TiDB Operator](#deploy-tidb-operator)!
+
+To destroy the Kubernetes cluster, run the following command:
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+minikube delete
+```
 
 ## Deploy TiDB Operator
 
@@ -208,78 +217,55 @@ Before proceeding, make sure the following requirements are satisfied:
 - A running Kubernetes Cluster that kubectl can connect to
 - [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= Helm 2.16.5) or the latest stable version of Helm 3
 
-1. Configure Helm
+1. Install TiDB Operator
 
-    The deployment of Helm is a little different depending on whether you're using Helm 2 or Helm 3.
+    The usage of Helm is a little different depending on whether you're using Helm 2 or Helm 3. Check the version of Helm using `helm version --short`.
 
-    Check the version of Helm using `helm version`.
+    1. If you're using Helm 2, you must set up the server-side component by installing tiller. If you're using Helm 3, skip to the next step.
 
-    Helm 2 output:
-    ```
-    Client: &version.Version{SemVer:"v2.16.5", GitCommit:"89bd14c1541fa93a09492010030fd3699ca65a97", GitTreeState:"clean"}
-    Error: could not find tiller
-    ```
+        Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
 
-    Helm 3 output:
-    ```
-    version.BuildInfo{Version:"v3.1.2", GitCommit:"d878d4d45863e42fd5cff6743294a11d28a9abce", GitTreeState:"clean", GoVersion:"go1.13.8"}
-    ```
+        {{< copyable "shell-regular" >}}
 
-    - Helm 3 steps
+        ```shell
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
+        helm init --service-account=tiller --upgrade
+        ```
 
-        Helm 3 doesn't have a server-side component, so the steps are very straightforward:
+        To confirm that the `tiller` Pod is in the `running` state, run the following command:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get po -n kube-system -l name=tiller
+        ```
+
+        Expected output:
+        ```
+        NAME                            READY   STATUS    RESTARTS   AGE
+        tiller-deploy-b7b9488b5-j6m6p   1/1     Running   0          18s
+        ```
+
+        Once you see "1/1" in the "READY" column for the "tidb-deploy" pod, go on to the next step.
+
+    2. Add the repository:
 
         {{< copyable "shell-regular" >}}
 
         ```shell
         helm repo add pingcap https://charts.pingcap.org/
-        kubectl create ns pingcap
-        helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0
         ```
 
-    - Helm 2 steps
+        Expected output:
+        ```
+        "pingcap" has been added to your repositories
+        ```
 
-        1. Install the Helm server.
+    3. Install TiDB Operator
 
-            Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
+        The `helm install` syntax is slightly different between Helm 2 and Helm 3.
 
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
-            helm init --service-account=tiller --upgrade
-            ```
-
-            To confirm that the `tiller` Pod is in the `running` state, run the following command:
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl get po -n kube-system -l name=tiller
-            ```
-
-            Expected output:
-            ```
-            NAME                            READY   STATUS    RESTARTS   AGE
-            tiller-deploy-b7b9488b5-j6m6p   1/1     Running   0          18s
-            ```
-
-            Once you see "1/1" in the "READY" column for the "tidb-deploy" pod, go on to the next step.
-
-        2. Add the repository:
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            helm repo add pingcap https://charts.pingcap.org/
-            ```
-
-            Expected output:
-            ```
-            "pingcap" has been added to your repositories
-            ```
-
-        3. Install TiDB Operator
+        - Helm 2:
 
             {{< copyable "shell-regular" >}}
 
@@ -287,76 +273,84 @@ Before proceeding, make sure the following requirements are satisfied:
             helm install --namespace pingcap --name tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
-            Expected output:
-            ```
-            NAME:   tidb-operator
-            LAST DEPLOYED: Thu May 28 15:17:38 2020
-            NAMESPACE: pingcap
-            STATUS: DEPLOYED
-
-            RESOURCES:
-            ==> v1/ConfigMap
-            NAME                   DATA  AGE
-            tidb-scheduler-policy  1     0s
-
-            ==> v1/Deployment
-            NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-            tidb-controller-manager  0/1    1           0          0s
-            tidb-scheduler           0/1    1           0          0s
-
-            ==> v1/Pod(related)
-            NAME                                      READY  STATUS             RESTARTS  AGE
-            tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-            tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-
-            ==> v1/ServiceAccount
-            NAME                     SECRETS  AGE
-            tidb-controller-manager  1        0s
-            tidb-scheduler           1        0s
-
-            ==> v1beta1/ClusterRole
-            NAME                                   CREATED AT
-            tidb-operator:tidb-controller-manager  2020-05-28T22:17:38Z
-            tidb-operator:tidb-scheduler           2020-05-28T22:17:38Z
-
-            ==> v1beta1/ClusterRoleBinding
-            NAME                                   ROLE                                               AGE
-            tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
-            tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
-            tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
-            tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
-
-
-            NOTES:
-            1. Make sure tidb-operator components are running
-               kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
-            2. Install CRD
-               kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
-               kubectl get customresourcedefinitions
-            3. Modify tidb-cluster/values.yaml and create a TiDB cluster by installing tidb-cluster charts
-               helm install tidb-cluster
-            ```
-
-            Confirm that the TiDB Operator components are running with this command:
+        - Helm 3:
 
             {{< copyable "shell-regular" >}}
 
             ```shell
-            kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
+            helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
-            Expected output:
-            ```
-            NAME                                       READY   STATUS    RESTARTS   AGE
-            tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
-            tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
-            ```
+        In the case of both Helm 2 and Helm 3, the expected output of the `helm install` command is something like this:
+        ```
+        NAME:   tidb-operator
+        LAST DEPLOYED: Thu May 28 15:17:38 2020
+        NAMESPACE: pingcap
+        STATUS: DEPLOYED
 
-            As soon as all pods are in "Running" state, proceed to the next step.
+        RESOURCES:
+        ==> v1/ConfigMap
+        NAME                   DATA  AGE
+        tidb-scheduler-policy  1     0s
+
+        ==> v1/Deployment
+        NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
+        tidb-controller-manager  0/1    1           0          0s
+        tidb-scheduler           0/1    1           0          0s
+
+        ==> v1/Pod(related)
+        NAME                                      READY  STATUS             RESTARTS  AGE
+        tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
+        tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
+
+        ==> v1/ServiceAccount
+        NAME                     SECRETS  AGE
+        tidb-controller-manager  1        0s
+        tidb-scheduler           1        0s
+
+        ==> v1beta1/ClusterRole
+        NAME                                   CREATED AT
+        tidb-operator:tidb-controller-manager  2020-05-28T22:17:38Z
+        tidb-operator:tidb-scheduler           2020-05-28T22:17:38Z
+
+        ==> v1beta1/ClusterRoleBinding
+        NAME                                   ROLE                                               AGE
+        tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
+        tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
+        tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
+        tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
+
+
+        NOTES:
+        1. Make sure tidb-operator components are running
+           kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
+        2. Install CRD
+           kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+           kubectl get customresourcedefinitions
+        3. Modify tidb-cluster/values.yaml and create a TiDB cluster by installing tidb-cluster charts
+           helm install tidb-cluster
+        ```
+
+        Confirm that the TiDB Operator components are running with this command:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
+        ```
+
+        Expected output:
+        ```
+        NAME                                       READY   STATUS    RESTARTS   AGE
+        tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
+        tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
+        ```
+
+        As soon as all pods are in "Running" state, proceed to the next step.
 
 2. Install TiDB Operator CRDs:
 
-    TiDB Operator includes a number of Custom Resource Definitions that implement different components of TiDB Cluster.
+    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of TiDB Cluster.
 
     Execute this command to install the CRDs into your cluster:
 
@@ -377,7 +371,9 @@ Before proceeding, make sure the following requirements are satisfied:
     customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
     ```
 
-3. Deploy the TiDB Cluster:
+## Deploy TiDB Cluster
+
+1. Deploy the TiDB Cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -392,7 +388,7 @@ Before proceeding, make sure the following requirements are satisfied:
     tidbcluster.pingcap.com/basic created
     ```
 
-4. Deploy the TiDB cluster monitor:
+2. Deploy the TiDB cluster monitor:
 
     {{< copyable "shell-regular" >}}
 
@@ -405,7 +401,7 @@ Before proceeding, make sure the following requirements are satisfied:
     tidbmonitor.pingcap.com/basic created
     ```
 
-5. View the Pod status:
+3. View the Pod status:
 
     {{< copyable "shell-regular" >}}
 
@@ -428,7 +424,7 @@ Before proceeding, make sure the following requirements are satisfied:
     basic-tikv-2                      1/1     Running   0          8m13s
     ```
 
-    As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-TiDB)!
+    As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-tidb)!
 
 ## Connect to TiDB
 
