@@ -97,7 +97,7 @@ systemctl start irqbalance
 
 ## CPUfreq 调节器模式设置
 
-为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考 [在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
 
 {{< copyable "shell-regular" >}}
 
