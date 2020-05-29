@@ -161,7 +161,7 @@ sysctl --system
     >
     > `LimitNOFILE` 需要显式设置为 `1048576` 或者更大，而不是默认的 `infinity`，由于 `systemd` 的 [bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
 
-## K8s 服务
+## Kubernetes 服务
 
 请参考 K8s [官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/) 来部署一套多 Master 节点高可用集群。
 
