@@ -248,7 +248,7 @@ Before proceeding, make sure the following requirements are satisfied:
 
         Once you see "1/1" in the "READY" column for the "tidb-deploy" pod, go on to the next step.
 
-    2. Add the repository:
+    2. Add the PingCAP repository:
 
         {{< copyable "shell-regular" >}}
 
@@ -261,6 +261,19 @@ Before proceeding, make sure the following requirements are satisfied:
         "pingcap" has been added to your repositories
         ```
 
+    3. Create a namespace for TiDB Operator
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create namespace tidb-admin
+        ```
+
+        Expected output:
+        ```
+        namespace/tidb-admin created
+        ```
+
     3. Install TiDB Operator
 
         The `helm install` syntax is slightly different between Helm 2 and Helm 3.
@@ -270,7 +283,7 @@ Before proceeding, make sure the following requirements are satisfied:
             {{< copyable "shell-regular" >}}
 
             ```shell
-            helm install --namespace pingcap --name tidb-operator pingcap/tidb-operator --version v1.1.0
+            helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
         - Helm 3:
@@ -278,14 +291,14 @@ Before proceeding, make sure the following requirements are satisfied:
             {{< copyable "shell-regular" >}}
 
             ```shell
-            helm install --namespace pingcap tidb-operator pingcap/tidb-operator --version v1.1.0
+            helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
         In the case of both Helm 2 and Helm 3, the expected output of the `helm install` command is something like this:
         ```
         NAME:   tidb-operator
         LAST DEPLOYED: Thu May 28 15:17:38 2020
-        NAMESPACE: pingcap
+        NAMESPACE: tidb-admin
         STATUS: DEPLOYED
 
         RESOURCES:
@@ -323,7 +336,7 @@ Before proceeding, make sure the following requirements are satisfied:
 
         NOTES:
         1. Make sure tidb-operator components are running
-           kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
+           kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
         2. Install CRD
            kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
            kubectl get customresourcedefinitions
@@ -336,7 +349,7 @@ Before proceeding, make sure the following requirements are satisfied:
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl get pods --namespace pingcap -l app.kubernetes.io/instance=tidb-operator
+        kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
         ```
 
         Expected output:
@@ -461,7 +474,7 @@ In this case, the TiDB service is called **basic-tidb**. Use kubectl to forward 
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl port-forward svc/basic-tidb 4000 > pf.out &>&1 &
+kubectl port-forward svc/basic-tidb 4000 > pf.out &
 ```
 
 This command runs in the background and writes its output to a file called `pf.out` so we can continue working in the same shell session.
