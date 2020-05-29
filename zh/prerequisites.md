@@ -27,9 +27,47 @@ systemctl stop firewalld
 systemctl disable firewalld
 ```
 
+如果无法关闭 firewalld 服务，为了保证 Kubernetes 正常运行，需要打开以下端口：
+
+1. 在 Master 节点上，打开以下端口，然后重新启动服务：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    firewall-cmd --permanent --add-port=6443/tcp
+    firewall-cmd --permanent --add-port=2379-2380/tcp
+    firewall-cmd --permanent --add-port=10250/tcp
+    firewall-cmd --permanent --add-port=10251/tcp
+    firewall-cmd --permanent --add-port=10252/tcp
+    firewall-cmd --permanent --add-port=10255/tcp
+    firewall-cmd --permanent --add-port=8472/udp
+    firewall-cmd --add-masquerade --permanent
+
+    # 当需要在 Master 节点上暴露 NodePort 时候设置
+    firewall-cmd --permanent --add-port=30000-32767/tcp
+
+    systemctl restart firewalld
+    ```
+
+2. 在 Node 节点上，打开以下端口，然后重新启动服务：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    firewall-cmd --permanent --add-port=10250/tcp
+    firewall-cmd --permanent --add-port=10255/tcp
+    firewall-cmd --permanent --add-port=8472/udp
+    firewall-cmd --permanent --add-port=30000-32767/tcp
+    firewall-cmd --add-masquerade --permanent
+
+    systemctl restart firewalld
+    ```
+
 ## 配置 Iptables
 
 FORWARD 链默认配置成 ACCEPT，并将其设置到开机启动脚本里：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 iptables -P FORWARD ACCEPT
