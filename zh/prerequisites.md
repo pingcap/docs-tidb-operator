@@ -123,7 +123,7 @@ sysctl --system
 
 安装 Docker 时，建议选择 Docker CE 18.09.6 及以上版本。 请参考 [Docker 安装指南](https://docs.docker.com/engine/install/centos/) 进行安装。
 
-安装完 Docker 服务以后：
+安装完 Docker 服务以后，执行以下步骤：
 
 1. 将 Docker 的数据保存到一块单独的盘上，Docker 的数据主要包括镜像和容器日志数据。通过设置 [`--data-root`](https://docs.docker.com/config/daemon/systemd/#runtime-directory-and-storage-driver) 参数来实现：
 
