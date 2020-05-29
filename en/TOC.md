@@ -5,7 +5,7 @@
 
 ## TOC
 
-- [Get Started](get-started-kubernetes.md)
+- [Get Started](get-started.md)
 + Introduction
   - [Overview](tidb-operator-overview.md)
   - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
