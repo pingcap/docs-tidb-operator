@@ -6,9 +6,9 @@ category: how-to
 
 # Deploy TiDB on Google Cloud
 
-This tutorial is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs-tidb-operator&tutorial=en/deploy-tidb-from-kubernetes-gke.md).
+This tutorial is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
-<a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs-tidb-operator&tutorial=en/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
+<a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
 
 It takes you through the following steps:
 
@@ -74,40 +74,24 @@ The last step is to verify that `kubectl` can connect to the cluster, and all th
 kubectl get nodes
 ```
 
-If you see `Ready` for all nodes, congratulations! You've setup your first Kubernetes cluster.
+If you see `Ready` for all nodes, congratulations! You've set up your first Kubernetes cluster.
 
 ## Install Helm
 
-[Helm](https://helm.sh/) is a package management tool for Kubernetes. Make sure your Helm version >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797). The installation steps are as follows:
+[Helm](https://helm.sh/) is a package management tool for Kubernetes.
 
-1. Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install the Helm client.
-
-2. Install the Helm server.
-
-    Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
+1. Install the Helm client:
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
-    helm init --service-account=tiller --upgrade
+    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
     ```
 
-    To confirm that the `tiller` Pod is in the `running` state, run the following command:
-
-    ```shell
-    kubectl get po -n kube-system -l name=tiller
-    ```
-
-3. Add the repository:
+2. Add the PingCAP repository:
 
     ```shell
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-    Use `helm search` to search the chart provided by PingCAP:
-
-    ```shell
-    helm search pingcap -l
-    ```
 
 ## Deploy TiDB Operator
 
@@ -118,25 +102,17 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-After `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
+After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
-1. Get the `values.yaml` file of the `tidb-operator` chart you want to install:
-
-    ```shell
-    mkdir -p /home/tidb/tidb-operator && \
-    helm inspect values pingcap/tidb-operator --version=v1.1.0-rc.1 > /home/tidb/tidb-operator/values-tidb-operator.yaml
-    ```
-
-    Modify the configuration in `values.yaml` according to your needs.
-
-2. Install TiDB Operator:
+1. Install TiDB Operator:
 
     ```shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=v1.1.0-rc.1 -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
+    kubectl create namespace tidb-admin
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
 
-3. Create the `pd-ssd` StorageClass:
+2. Create the `pd-ssd` StorageClass:
 
     ``` shell
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/persistent-disk.yaml
