@@ -195,4 +195,4 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
 
 请根据[服务器建议配置](https://pingcap.com/docs-cn/stable/hardware-and-software-requirements/#生产环境)来规划机器的配置。
 
-另外，在生产环境的使用上尽量不要在 K8s Master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。这里的主要考虑点是网卡带宽，因为 Master 节点网卡满负荷工作会影响到 Worker 节点和 Master 节点之间的心跳信息汇报，导致比较严重的问题。
+另外，在生产环境中，尽量不要在 Kubernetes Master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。因为网卡带宽的限制，Master 节点网卡满负荷工作会影响到 Worker 节点和 Master 节点之间的心跳信息汇报，导致比较严重的问题。
