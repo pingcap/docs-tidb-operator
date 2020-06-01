@@ -5,13 +5,14 @@
 
 ## 文档目录
 
++ 关于 TiDB Operator
+  - [简介](tidb-operator-overview.md)
+  - [What's New in v1.1](whats-new-in-v1.1.md)
+  - [TiDB Operator v1.1 重要注意事项](notes-tidb-operator-v1.1.md)
 + 快速上手
   - [kind](deploy-tidb-from-kubernetes-kind.md)
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
   - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
-+ 关于 TiDB Operator
-  - [简介](tidb-operator-overview.md)
-  - [TiDB Operator v1.1 重要注意事项](notes-tidb-operator-v1.1.md)
 + 部署
   - 部署 TiDB 集群
     - [部署到 AWS EKS](deploy-on-aws-eks.md)
@@ -27,6 +28,7 @@
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
   - [部署 TiFlash](deploy-tiflash.md)
+  - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   + 部署 TiDB 集群监控
     - [监控 Kubernetes 和 TiDB 集群](monitor-a-tidb-cluster.md)
@@ -64,7 +66,8 @@
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
-  - [API 参考文档](api-references.md)
+  - [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
+  - [Cheat Sheet](cheat-sheet.md)
   + 工具
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
