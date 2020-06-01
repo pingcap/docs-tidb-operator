@@ -159,7 +159,7 @@ sysctl --system
 
 ## Docker 服务
 
-安装 Docker 时，建议选择 Docker CE 18.09.6 及以上版本。 请参考 [Docker 安装指南](https://docs.docker.com/engine/install/centos/) 进行安装。
+安装 Docker 时，建议选择 Docker CE 18.09.6 及以上版本。请参考 [Docker 安装指南](https://docs.docker.com/engine/install/centos/) 进行安装。
 
 安装完 Docker 服务以后，执行以下步骤：
 
