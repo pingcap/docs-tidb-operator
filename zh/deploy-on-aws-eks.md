@@ -196,13 +196,13 @@ region = us-west-21
       tiflash:
         baseImage: pingcap/ticdc
         nodeSelector:
-          dedicated: CLUSTER_NAME-ticdc
+          dedicated: CLUSTER_NAME-cdc
         replicas: 3
         tolerations:
         - effect: NoSchedule
           key: dedicated
           operator: Equal
-          value: CLUSTER_NAME-ticdc
+          value: CLUSTER_NAME-cdc
     ```
 
     根据实际情况修改 `replicas`。

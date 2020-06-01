@@ -199,7 +199,7 @@ category: how-to
       ticdc:
         baseImage: pingcap/ticdc
         nodeSelector:
-          dedicated: TIDB_CLUSTER_NAME-ticdc
+          dedicated: TIDB_CLUSTER_NAME-cdc
         replicas: 3
         tolerations:
         - effect: NoSchedule
