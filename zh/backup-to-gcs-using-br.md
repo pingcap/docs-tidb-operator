@@ -6,7 +6,7 @@ category: how-to
 
 # 备份 TiDB 集群到 GCS
 
-本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`BR`](https://pingcap.com/docs-cn/v3.1/reference/tools/br/br) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
+本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`BR`](https://pingcap.com/docs-cn/stable/reference/tools/br/br) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
 
 本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
 
@@ -87,25 +87,18 @@ spec:
     # objectAcl: private
 ```
 
-以上示例中 `spec.br` 中的一些参数 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv` 项均可省略。
+以上示例中 `spec.br` 中的一些参数项均可省略,如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv`。
 
 `spec.br.cluster` 代表了需要 备份/恢复 的集群名字。
-
 `spec.br.clusterNamespace` 代表了需要 备份/恢复 的集群所在的 `namespace`。
-
 `spec.br.logLevel` 代表了日志的级别。默认为 `info`。
-
 `spec.br.statusAddr` 会为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试，如果不填，则默认不监听。
-
 `spec.br.concurrency` 的数量等于 备份/恢复 时每一个 TiKV 进程会使用的线程数。备份时默认为 4， 恢复时默认为 128。
-
 `spec.br.rateLimit` 代表了对流量进行限制。单位为 MB/S, 例如 设置为 `4` 代表了限速 4M/S, 默认不限速。
-
 `spec.br.checksum` 代表了是否在 备份/恢复 结束之后对文件进行验证。默认为 `true`。
-
 `spec.br.sendCredToTikv` BR 进程是否将自己的 AWS/GCP 权限传输给 TiKV 进程。默认为 `true`。
 
-以上示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的 `location`、`objectAcl`、`storageClass` 项均可以省略。
+以上示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的一些参数项均可省略,如`location`、`objectAcl`、`storageClass`。
 
 配置中的 `projectId` 代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 

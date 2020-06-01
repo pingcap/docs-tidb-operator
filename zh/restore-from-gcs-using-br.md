@@ -6,7 +6,7 @@ category: how-to
 
 # 使用 BR 工具恢复 GCS 上的备份数据
 
-本文描述了如何将存储在 GCS 存储的备份的数据恢复到 Kubernetes 环境中的 TiDB 集群的操作过程。底层通过使用 [`BR`](https://pingcap.com/docs-cn/v3.1/reference/tools/br/br) 来进行集群恢复。
+本文描述了如何将存储在 GCS 存储的备份的数据恢复到 Kubernetes 环境中的 TiDB 集群的操作过程。底层通过使用 [`BR`](https://pingcap.com/docs-cn/stable/reference/tools/br/br) 来进行集群恢复。
 
 本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
 
