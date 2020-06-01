@@ -15,6 +15,7 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 > These deployments are for demonstration purposes only. **Do not use** for qualification or in production!
 
 These are the steps this document follows:
+
 1. [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
 3. [Deploy TiDB Cluster](#deploy-tidb-cluster)
@@ -35,7 +36,6 @@ If you want to do a production-quality deployment, use one of these resources:
     3. Install TiDB Operator in a Kubernetes cluster according to [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
     4. Deploy your TiDB cluster according to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
 
-
 ## Create a Kubernetes Cluster
 
 This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test TiDB Cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
@@ -44,6 +44,7 @@ This section covers 2 different ways to create a simple Kubernetes cluster that 
 - [Using minikube](#create-a-kubernetes-cluster-using-minikube) (Kubernetes running locally in a VM)
 
 You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the Google Cloud Shell, and follow an integrated tutorial to deploy TiDB Operator and TiDB Cluster:
+
 - [Open in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md)
 
 ### Create a Kubernetes Cluster Using kind
@@ -72,6 +73,7 @@ kind create cluster
 ```
 
 Expected output:
+
 ```
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -97,6 +99,7 @@ kubectl cluster-info
 ```
 
 Expected output:
+
 ```
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -127,7 +130,7 @@ This section describes how to deploy a Kubernetes cluster using minikube.
 Before deployment, make sure the following requirements are satisfied:
 
 - [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/): version 1.0.0+
-  - minikube requires a compatible hypervisor; find more information about that in minikube's installation instructions.
+    - minikube requires a compatible hypervisor; find more information about that in minikube's installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): version >= 1.12
 
 > **Note:**
@@ -141,6 +144,7 @@ minikube start
 ```
 
 You should see output like this, with some differences depending on your OS and hypervisor:
+
 ```
 😄  minikube v1.10.1 on Darwin 10.15.4
 ✨  Automatically selected the hyperkit driver. Other choices: docker, vmwarefusion
@@ -186,7 +190,6 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 See [minikube setup](https://kubernetes.io/docs/setup/minikube/) for more options to configure your virtual machine and Kubernetes cluster.
 
-
 Execute this command to check the status of your Kubernetes and make sure `kubectl` can connect to it:
 
 ```
@@ -194,6 +197,7 @@ kubectl cluster-info
 ```
 
 Expect this output:
+
 ```
 Kubernetes master is running at https://192.168.64.2:8443
 KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -213,7 +217,6 @@ minikube delete
 
 ## Deploy TiDB Operator
 
-
 Before proceeding, make sure the following requirements are satisfied:
 
 - A running Kubernetes Cluster that kubectl can connect to
@@ -232,6 +235,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
     customresourcedefinition.apiextensions.k8s.io/backups.pingcap.com created
@@ -266,6 +270,7 @@ Before proceeding, make sure the following requirements are satisfied:
         ```
 
         Expected output:
+
         ```
         NAME                            READY   STATUS    RESTARTS   AGE
         tiller-deploy-b7b9488b5-j6m6p   1/1     Running   0          18s
@@ -282,6 +287,7 @@ Before proceeding, make sure the following requirements are satisfied:
         ```
 
         Expected output:
+
         ```
         "pingcap" has been added to your repositories
         ```
@@ -295,11 +301,12 @@ Before proceeding, make sure the following requirements are satisfied:
         ```
 
         Expected output:
+
         ```
         namespace/tidb-admin created
         ```
 
-    3. Install TiDB Operator
+    4. Install TiDB Operator
 
         The `helm install` syntax is slightly different between Helm 2 and Helm 3.
 
@@ -320,6 +327,7 @@ Before proceeding, make sure the following requirements are satisfied:
             ```
 
         In the case of both Helm 2 and Helm 3, the expected output of the `helm install` command is something like this:
+
         ```
         NAME:   tidb-operator
         LAST DEPLOYED: Thu May 28 15:17:38 2020
@@ -378,6 +386,7 @@ Before proceeding, make sure the following requirements are satisfied:
         ```
 
         Expected output:
+
         ```
         NAME                                       READY   STATUS    RESTARTS   AGE
         tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
@@ -385,7 +394,6 @@ Before proceeding, make sure the following requirements are satisfied:
         ```
 
         As soon as all pods are in "Running" state, proceed to the next step.
-
 
 ## Deploy TiDB Cluster
 
@@ -399,6 +407,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     namespace/tidb-cluster created
     tidbcluster.pingcap.com/basic created
@@ -413,6 +422,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     tidbmonitor.pingcap.com/basic created
     ```
@@ -426,6 +436,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     NAME                              READY   STATUS            RESTARTS   AGE
     basic-discovery-6bb656bfd-kjkxw   1/1     Running           0          29s
@@ -438,6 +449,7 @@ Before proceeding, make sure the following requirements are satisfied:
     Wait until all pods for all services have been started. As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-tidb)!
 
     Expected output:
+
     ```
     NAME                              READY   STATUS    RESTARTS   AGE
     basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m9s
@@ -451,7 +463,6 @@ Before proceeding, make sure the following requirements are satisfied:
     basic-tikv-1                      1/1     Running   0          8m13s
     basic-tikv-2                      1/1     Running   0          8m13s
     ```
-
 
 ## Connect to TiDB
 
@@ -469,6 +480,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
     basic-discovery          ClusterIP   10.101.69.5      <none>        10261/TCP            10m
@@ -484,7 +496,6 @@ Before proceeding, make sure the following requirements are satisfied:
 
     In this case, the TiDB service is called **basic-tidb**. Use kubectl to forward this port from the local host to the cluster service:
 
-
     {{< copyable "shell-regular" >}}
 
     ``` shell
@@ -492,7 +503,6 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     This command runs in the background and writes its output to a file called `pf4000.out` so we can continue working in the same shell session.
-
 
 3. Connect to TiDB
 
@@ -503,6 +513,7 @@ Before proceeding, make sure the following requirements are satisfied:
     ```
 
     Expected output:
+
     ```
     Welcome to the MySQL monitor.  Commands end with ; or \g.
     Your MySQL connection id is 76
@@ -682,7 +693,6 @@ Before proceeding, make sure the following requirements are satisfied:
 
     As done above for port 4000 to the TiDB service, also forward the port for Grafana so we can load the monitoring dashboard:
 
-
     {{< copyable "shell-regular" >}}
 
     ``` shell
@@ -692,7 +702,6 @@ Before proceeding, make sure the following requirements are satisfied:
     The dashboard will be accessible at <http://localhost:3000> on the host where you've run `kubectl`. Note that if you're running `kubectl` in a Docker container or on a remote host, you may not be able to load this URL and additional networking beyond the scope of this document may be necessary.
 
     The default username and password in Grafana are both "admin".
-
 
 ## Destroy TiDB Cluster
 
@@ -732,6 +741,7 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
     To make sure there are no lingering resources, you can delete the namespace used for TiDB Cluster.
 
     {{< copyable "shell-regular" >}}
+
     ```shell
     kubectl delete namespace tidb-cluster
     ```

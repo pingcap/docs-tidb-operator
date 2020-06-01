@@ -92,7 +92,6 @@ If you see `Ready` for all nodes, congratulations! You've set up your first Kube
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-
 ## Deploy TiDB Operator
 
 TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
