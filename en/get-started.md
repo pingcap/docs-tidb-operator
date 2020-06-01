@@ -318,6 +318,57 @@ Before proceeding, make sure the following requirements are satisfied:
             helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
+            Expected output:
+
+            ```
+            NAME:   tidb-operator
+            LAST DEPLOYED: Thu May 28 15:17:38 2020
+            NAMESPACE: tidb-admin
+            STATUS: DEPLOYED
+
+            RESOURCES:
+            ==> v1/ConfigMap
+            NAME                   DATA  AGE
+            tidb-scheduler-policy  1     0s
+
+            ==> v1/Deployment
+            NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
+            tidb-controller-manager  0/1    1           0          0s
+            tidb-scheduler           0/1    1           0          0s
+
+            ==> v1/Pod(related)
+            NAME                                      READY  STATUS             RESTARTS  AGE
+            tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
+            tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
+
+            ==> v1/ServiceAccount
+            NAME                     SECRETS  AGE
+            tidb-controller-manager  1        0s
+            tidb-scheduler           1        0s
+
+            ==> v1beta1/ClusterRole
+            NAME                                   CREATED AT
+            tidb-operator:tidb-controller-manager  2020-05-28T22:17:38Z
+            tidb-operator:tidb-scheduler           2020-05-28T22:17:38Z
+
+            ==> v1beta1/ClusterRoleBinding
+            NAME                                   ROLE                                               AGE
+            tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
+            tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
+            tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
+            tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
+
+
+            NOTES:
+            1. Make sure tidb-operator components are running
+               kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+            2. Install CRD
+               kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+               kubectl get customresourcedefinitions
+            3. Modify tidb-cluster/values.yaml and create a TiDB cluster by installing tidb-cluster charts
+               helm install tidb-cluster
+            ```
+
         - Helm 3:
 
             {{< copyable "shell-regular" >}}
@@ -326,56 +377,24 @@ Before proceeding, make sure the following requirements are satisfied:
             helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
-        In the case of both Helm 2 and Helm 3, the expected output of the `helm install` command is something like this:
+            Expected output:
 
-        ```
-        NAME:   tidb-operator
-        LAST DEPLOYED: Thu May 28 15:17:38 2020
-        NAMESPACE: tidb-admin
-        STATUS: DEPLOYED
-
-        RESOURCES:
-        ==> v1/ConfigMap
-        NAME                   DATA  AGE
-        tidb-scheduler-policy  1     0s
-
-        ==> v1/Deployment
-        NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-        tidb-controller-manager  0/1    1           0          0s
-        tidb-scheduler           0/1    1           0          0s
-
-        ==> v1/Pod(related)
-        NAME                                      READY  STATUS             RESTARTS  AGE
-        tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-        tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-
-        ==> v1/ServiceAccount
-        NAME                     SECRETS  AGE
-        tidb-controller-manager  1        0s
-        tidb-scheduler           1        0s
-
-        ==> v1beta1/ClusterRole
-        NAME                                   CREATED AT
-        tidb-operator:tidb-controller-manager  2020-05-28T22:17:38Z
-        tidb-operator:tidb-scheduler           2020-05-28T22:17:38Z
-
-        ==> v1beta1/ClusterRoleBinding
-        NAME                                   ROLE                                               AGE
-        tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
-        tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
-        tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
-        tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
-
-
-        NOTES:
-        1. Make sure tidb-operator components are running
-           kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-        2. Install CRD
-           kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
-           kubectl get customresourcedefinitions
-        3. Modify tidb-cluster/values.yaml and create a TiDB cluster by installing tidb-cluster charts
-           helm install tidb-cluster
-        ```
+            ```
+            NAME: tidb-operator
+            LAST DEPLOYED: Mon Jun  1 12:31:43 2020
+            NAMESPACE: tidb-admin
+            STATUS: deployed
+            REVISION: 1
+            TEST SUITE: None
+            NOTES:
+            1. Make sure tidb-operator components are running
+               kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+            2. Install CRD
+               kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+               kubectl get customresourcedefinitions
+            3. Modify tidb-cluster/values.yaml and create a TiDB cluster by installing tidb-cluster charts
+               helm install tidb-cluster
+            ```
 
         Confirm that the TiDB Operator components are running with this command:
 
@@ -530,7 +549,7 @@ Before proceeding, make sure the following requirements are satisfied:
     mysql> 
     ```
 
-    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB:
+    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade TiDB Cluster](#upgrade-tidb-cluster) section).
 
     ```
     mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -703,6 +722,96 @@ Before proceeding, make sure the following requirements are satisfied:
 
     The default username and password in Grafana are both "admin".
 
+    For more information about monitoring TiDB Cluster in TiDB Operator, consult [Monitor a TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
+
+## Upgrade TiDB Cluster
+
+TiDB Operator also makes it easy to perform a rolling upgrade of TiDB Cluster. If you've deployed TiDB 3.0 or TiDB 3.1 using TiDB Operator, you can perform an online upgrade to TiDB 4.0.
+
+In this example, we'll upgrade TiDB Cluster to the "nightly" release.
+
+Kubernetes makes it possible to both "edit" and "patch" deployed resources.
+
+`kubectl edit` opens a resource specification in an interactive text editor, where an administrator can make changes and save them. If the changes are valid, they'll be propagated to the cluster resources; if they're invalid, they'll be rejected with an error message. Note that not all elements of the specification are validated at this time; it's possible to save changes that may not be applied to the cluster even though they're accepted.
+
+`kubectl patch` applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
+
+1. Patch the TidbCluster resource
+
+    In this case, we can use a JSON merge patch to update the version of the TiDB Cluster to "nightly":
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "release-4.0-nightly"} }'
+    ```
+
+    Expected output:
+
+    ```
+    tidbcluster.pingcap.com/basic patched
+    ```
+
+2. Wait for all pods to restart
+
+    Execute this command to follow the progress of the cluster as its components are upgrade. You should see some pods transition to "Terminating" and then back to "ContainerCreating" and back to "Running". Note the value in the "AGE" pod column to see which pods have restarted.
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    watch kubectl get po -n tidb-cluster
+    ```
+
+    Expected output:
+
+    ```
+    NAME                              READY   STATUS        RESTARTS   AGE
+    basic-discovery-6bb656bfd-7lbhx   1/1     Running       0          24m
+    basic-pd-0                        1/1     Terminating   0          5m31s
+    basic-pd-1                        1/1     Running       0          8s
+    basic-pd-2                        1/1     Running       0          19s
+    basic-tidb-0                      2/2     Running       0          2m19s
+    basic-tidb-1                      2/2     Running       0          3m29s
+    basic-tikv-0                      1/1     Running       0          4m13s
+    basic-tikv-1                      1/1     Running       0          4m20s
+    basic-tikv-2                      1/1     Running       0          5m19s
+    ```
+
+3. Forward port
+
+    After all pods have been restarted, you should be able to see that the version number of the cluster has changed. Note that any port forwarding you set up in a previous step will need to be re-done, because the pod(s) they forwarded to will have been destroyed and re-created. If the `kubectl port-forward` process is still running in your shell, kill it before forwarding the port again.
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+    ```
+
+4. Check version of TiDB Cluster
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+    ```
+
+    Expected output:
+
+    ```
+    *************************** 1. row ***************************
+    tidb_version(): Release Version: v4.0.0-6-gdec49a126
+    Edition: Community
+    Git Commit Hash: dec49a12654c4f09f6fedfd2a0fb0154fc095449
+    Git Branch: release-4.0
+    UTC Build Time: 2020-06-01 10:07:32
+    GoVersion: go1.13
+    Race Enabled: false
+    TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+    Check Table Before Drop: false
+    ```
+
+For more details about upgrading TiDB Cluster running in TiDB Operator, consult [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md).
+
 ## Destroy TiDB Cluster
 
 After you've finished testing, you may wish to destroy the TiDB Cluster.
@@ -745,3 +854,5 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
     ```shell
     kubectl delete namespace tidb-cluster
     ```
+
+For more information about destroying a TiDB Cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
