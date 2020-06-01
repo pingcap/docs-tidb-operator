@@ -119,7 +119,7 @@ spec:
     tidbclusterautoscaler.pingcap.com/auto-scaling-demo created
     ```
 
-2. 当 TiDB 集群创建完毕以后，以下方式暴露 TiDB 集群服务到本地。
+2. 当 TiDB 集群创建完毕以后，使用以下方式暴露 TiDB 集群服务到本地。
 
     {{< copyable "shell-regular" >}}
 
@@ -127,7 +127,7 @@ spec:
     kubectl port-forward svc/auto-scaling-demo-tidb 4000:4000 &
     ```
 
-    将以下内容复制本地的 sysbench.config 文件中
+    将以下内容复制到本地的 sysbench.config 文件中：
 
     ```config
     mysql-host=127.0.0.1
@@ -141,7 +141,9 @@ spec:
     db-driver=mysql
     ```
 
-3. 使用 [sysbench](https://github.com/akopytov/sysbench) 工具准备数据并进行压测，通过以下命令准备数据:
+3. 使用 [sysbench](https://github.com/akopytov/sysbench) 工具准备数据并进行压测。
+
+    通过以下命令准备数据:
 
     {{< copyable "shell-regular" >}}
 
@@ -157,7 +159,7 @@ spec:
     sysbench --config-file=${path-to-file}/sysbench.config oltp_point_select --tables=1 --table-size=20000 run
     ```
 
-    出现如下输出:
+    上述命令执行完毕后，出现如下输出：
 
     ```sh
     Initializing worker threads...
@@ -189,7 +191,7 @@ spec:
     auto-scaling-demo-tikv-2                      1/1     Running   0          15m
     ```
 
-    观察 Pod 的变化情况与 sysbench 的 tps 与 qps，当 TiKV 与 TiDB Pod 新增时，sysbench 的 tps 与 qps 值有显著提升。 当 sysbench 结束后，观察 Pod 变化情况，发现新增的 TiKV 与 TiDB Pod 自动消失。
+    观察 Pod 的变化情况与 sysbench 的 TPS 与 QPS，当 TiKV 与 TiDB Pod 新增时，sysbench 的 TPS 与 QPS 值有显著提升。当 sysbench 结束后，观察 Pod 变化情况，发现新增的 TiKV 与 TiDB Pod 自动消失。
 
 5. 使用如下命令销毁环境：
 
