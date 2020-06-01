@@ -38,17 +38,19 @@ If you want to do a production-quality deployment, use one of these resources:
 
 ## Create a Kubernetes Cluster
 
-This section covers 3 different ways to create a simple Kubernetes cluster that can be used to test TiDB Cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
+This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test TiDB Cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
 - [Using kind](#create-a-kubernetes-cluster-using-kind) (Kubernetes in Docker)
 - [Using minikube](#create-a-kubernetes-cluster-using-minikube) (Kubernetes running locally in a VM)
-- [Using the Google Cloud Shell](deploy-tidb-from-kubernetes-gke.md) (Kubernetes running in the Google Kubernetes Engine in Google Cloud Platform)
+
+You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the Google Cloud Shell, and follow an integrated tutorial to deploy TiDB Operator and TiDB Cluster:
+- [Open in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md)
 
 ### Create a Kubernetes Cluster Using kind
 
 This section shows how to deploy a Kubernetes cluster using kind.
 
-[kind](https://kind) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
+[kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
 
 > **Warning:**
 >
@@ -217,7 +219,30 @@ Before proceeding, make sure the following requirements are satisfied:
 - A running Kubernetes Cluster that kubectl can connect to
 - [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= Helm 2.16.5) or the latest stable version of Helm 3
 
-1. Install TiDB Operator
+1. Install TiDB Operator CRDs:
+
+    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of TiDB Cluster.
+
+    Execute this command to install the CRDs into your cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+    ```
+
+    Expected output:
+    ```
+    customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/backups.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/restores.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/backupschedules.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/tidbmonitors.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com created
+    customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
+    ```
+
+2. Install TiDB Operator
 
     The usage of Helm is a little different depending on whether you're using Helm 2 or Helm 3. Check the version of Helm using `helm version --short`.
 
@@ -361,28 +386,6 @@ Before proceeding, make sure the following requirements are satisfied:
 
         As soon as all pods are in "Running" state, proceed to the next step.
 
-2. Install TiDB Operator CRDs:
-
-    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of TiDB Cluster.
-
-    Execute this command to install the CRDs into your cluster:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
-    ```
-
-    Expected output:
-    ```
-    customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/backups.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/restores.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/backupschedules.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/tidbmonitors.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com created
-    customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
-    ```
 
 ## Deploy TiDB Cluster
 
