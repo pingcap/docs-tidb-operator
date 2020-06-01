@@ -205,7 +205,7 @@ category: how-to
         - effect: NoSchedule
           key: dedicated
           operator: Equal
-          value: TIDB_CLUSTER_NAME-ticdc
+          value: TIDB_CLUSTER_NAME-cdc
     ```
 
     根据实际情况修改 `replicas`。
