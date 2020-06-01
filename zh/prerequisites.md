@@ -205,7 +205,7 @@ sysctl --system
 
 Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个数，节点数越多，需要的资源也就越多。节点数可根据需要做微调。
 
-| K8s 集群 Node 节点个数 | K8s Master 节点配置 |
+| Kubernetes 集群 Node 节点个数 | Kubernetes Master 节点配置 |
 | :--- | :--- |
 | 1-5 | 1vCPUs 4GB Memory|
 | 6-10 | 2vCPUs 8GB Memory|
