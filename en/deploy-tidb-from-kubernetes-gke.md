@@ -240,4 +240,4 @@ gcloud container clusters delete tidb
 
 ## More Information
 
-To learn more about creating a deployment on GKE suitable for production use, please consult <https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/>.
+To learn more about creating a deployment on GKE suitable for production use, please consult [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
