@@ -46,7 +46,7 @@ This section covers 3 different ways to create a simple Kubernetes cluster that 
 
 ### Create a Kubernetes Cluster Using kind
 
-This tutorial shows how to deploy [TiDB Operator](https://github.com/pingcap/tidb-operator) and a TiDB cluster in Kubernetes on your laptop (Linux or macOS) using .sigs.k8s.io/).
+This section shows how to deploy a Kubernetes cluster using kind.
 
 [kind](https://kind) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
 
@@ -732,4 +732,3 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
     ```shell
     kubectl delete namespace tidb-cluster
     ```
-
