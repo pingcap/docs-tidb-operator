@@ -132,7 +132,7 @@ Before deployment, make sure the following requirements are satisfied:
 
 > **Note:**
 >
-> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [kind](deploy-tidb-from-kubernetes-kind.md) instead.
+> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
 Execute the following command to start a minikube Kubernetes cluster:
 
