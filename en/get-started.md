@@ -114,7 +114,7 @@ kind delete cluster
 
 ### Create a Kubernetes Cluster Using minikube
 
-This document describes how to deploy a TiDB cluster in the [minikube](https://kubernetes.io/docs/setup/minikube/) cluster.
+This section describes how to deploy a Kubernetes cluster using minikube.
 
 [Minikube](https://kubernetes.io/docs/setup/minikube/) can start a local Kubernetes cluster inside a VM on your laptop. It works on macOS, Linux, and Windows.
 
