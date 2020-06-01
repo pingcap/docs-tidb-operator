@@ -145,7 +145,7 @@ cpupower frequency-set --governor performance
 
 ## Ulimit 设置
 
-TiDB 集群默认会使用很多文件描述符，工作节点上面的 `ulimit` 设置大于等于 `1048576`：
+TiDB 集群默认会使用很多文件描述符，需要将工作节点上面的 `ulimit` 设置为大于等于 `1048576`：
 
 ```shell
 cat <<EOF >>  /etc/security/limits.conf
