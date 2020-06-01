@@ -6,6 +6,8 @@ category: how-to
 
 # 查看日志
 
+本文档介绍如何查看 TiDB 集群各组件日志，以及 TiDB 慢查询日志。
+
 ## TiDB 集群各组件日志
 
 通过 TiDB Operator 部署的 TiDB 各组件默认将日志输出在容器的 `stdout` 和 `stderr` 中。可以通过下面的方法查看单个 Pod 的日志：
