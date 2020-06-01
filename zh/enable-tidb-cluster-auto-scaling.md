@@ -148,7 +148,6 @@ spec:
 
 3. 使用 [sysbench](https://github.com/akopytov/sysbench) 工具准备数据并进行压测。
 
-
     将以下内容复制到本地的 sysbench.config 文件中：
 
     ```config
