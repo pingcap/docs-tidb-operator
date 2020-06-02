@@ -65,6 +65,7 @@
     - [TiDB Scheduler](tidb-scheduler.md)
     - [Advanced StatefulSet Controller](advanced-statefulset.md)
     - [Admission Controller](enable-admission-webhook.md)
+  - [Sysbench Performance Test](benchmark-sysbench.md)
   - [API References](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
   + Tools
     - [tkctl](use-tkctl.md)
