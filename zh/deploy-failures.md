@@ -10,7 +10,7 @@ category: how-to
 
 ## Pod 未正常创建
 
-通过 `helm install` 创建集群后，如果 Pod 没有创建，则可以通过以下方式进行诊断：
+创建集群后，如果 Pod 没有创建，则可以通过以下方式进行诊断：
 
 {{< copyable "shell-regular" >}}
 
@@ -38,7 +38,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，需要在 `values.yaml` 里面将 `storageClassName` 修改为集群中可用的 StorageClass 名字，执行 `helm upgrade`，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，需要将 `storageClassName` 修改为集群中可用的 StorageClass 名字，然后运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
@@ -83,4 +83,4 @@ root        soft        core          unlimited
 root        soft        stack         10240
 ```
 
-假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过[诊断模式](#诊断模式)进行进一步排查。
+假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过[诊断模式](tips.md#诊断模式)进行进一步排查。

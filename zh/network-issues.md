@@ -19,11 +19,11 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get endpoints ${release_name}-pd
-    kubectl -n ${namespace} get endpoints ${release_name}-tidb
-    kubectl -n ${namespace} get endpoints ${release_name}-pd-peer
-    kubectl -n ${namespace} get endpoints ${release_name}-tikv-peer
-    kubectl -n ${namespace} get endpoints ${release_name}-tidb-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-pd
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb
+    kubectl -n ${namespace} get endpoints ${cluster_name}-pd-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tikv-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
     ```
 
     以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 `cluster_ip:port` 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
@@ -117,6 +117,14 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
         dig ${tidb_service_domain}
         ```
 
+        通过 `kubectl exec` 进入集群中任意一个 Pod 后执行：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        dig ${tidb_service_domain}
+        ```
+
     * 检查各个 node 上的 kube-proxy 是否正常运行：
 
         {{< copyable "shell-regular" >}}
@@ -134,6 +142,12 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
         ```
 
     * 检查对应的 endpoint 是否正确
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get endpoints -n ${namespaces} ${cluster_name}-tidb
+        ```
 
 3. 如果通过 PodIP 访问不了 TiDB 服务，问题出在 Pod 层面的网络上，排查项如下：
 
