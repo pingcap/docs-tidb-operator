@@ -44,15 +44,13 @@ helm delete ${cluster_name} --purge
 >
 > 下列命令会彻底删除数据，务必考虑清楚再执行。
 >
-> 为了确保数据安全，在任何情况下都不要删除 PV，除非您熟悉 PV 的工作原理。
+> 为了确保数据安全，在任何情况下都不要删除 PV，除非你熟悉 PV 的工作原理。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl delete pvc -n ${namespace} -l app.kubernetes.io/instance=${cluster_name},app.kubernetes.io/managed-by=tidb-operator
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=${cluster_name} -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
