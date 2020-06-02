@@ -57,7 +57,7 @@
   - [Enable Automatic Failover](use-auto-failover.md)
   - [Recover the PD Cluster](pd-recover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
-- [Import Data to TiDB Cluster](restore-data-using-tidb-lightning.md)
+- [Import Data](restore-data-using-tidb-lightning.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
 + Reference
