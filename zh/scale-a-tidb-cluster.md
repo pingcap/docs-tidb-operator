@@ -126,7 +126,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 水平扩缩容故障
 
-无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [故障诊断](troubleshoot.md#pod-处于-pending-状态)。
+无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [Pod 处于 Pending 状态](deploy-failures.md#pod-处于-pending-状态)。
 
 ## 垂直扩缩容
 
