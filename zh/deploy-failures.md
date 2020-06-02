@@ -17,7 +17,7 @@ category: how-to
 ```shell
 kubectl get tidbclusters -n ${namespace}
 kubectl get statefulsets -n ${namespace}
-kubectl describe statefulsets -n ${namespace} ${release_name}-pd
+kubectl describe statefulsets -n ${namespace} ${cluster_name}-pd
 ```
 
 ## Pod 处于 Pending 状态
