@@ -44,7 +44,7 @@ category: how-to
     dig ${HOSTNAME}
     ```
 
-    使用 `ping` 命令诊断到目的 IP 的三层网络是否连通（目的 IP 为使用 `dig` 解析出的 ClusterIP）:
+    使用 `ping` 命令诊断到目的 IP 的三层网络是否连通（目的 IP 为使用 `dig` 解析出的 Pod IP）:
 
     {{< copyable "shell-regular" >}}
 
