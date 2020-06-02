@@ -43,16 +43,14 @@ helm delete ${cluster_name} --purge
 > **警告：**
 >
 > 下列命令会彻底删除数据，务必考虑清楚再执行。
+>
+> 为了确保数据安全，在任何情况下都不要删除 PV，除非您熟悉 PV 的工作原理。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl delete pvc -n ${namespace} -l app.kubernetes.io/instance=${cluster_name},app.kubernetes.io/managed-by=tidb-operator
 ```
-
-> **警告：**
->
-> 为了确保数据安全，在任何情况下都不要删除 PV，除非您熟悉 [`local-volume-provisioner`](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 的工作原理。
 
 {{< copyable "shell-regular" >}}
 
