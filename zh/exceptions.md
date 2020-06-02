@@ -17,7 +17,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n ${namespace} tidbcluster ${release_name} -ojson | jq '.status.tikv.stores'
+    kubectl get -n ${namespace} tidbcluster ${cluster_name} -ojson | jq '.status.tikv.stores'
     ```
 
 2. 查看 TiKV Pod 运行状态：
