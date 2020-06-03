@@ -486,6 +486,7 @@ Before proceeding, make sure the following requirements are satisfied:
 ## Connect to TiDB
 
 1. Install `mysql` command-line client
+
     To connect to TiDB, you'll need a MySQL-compatible command-line client installed on the host where you've used `kubectl`. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from your operating system's package repository.
 
     > **Note:**
