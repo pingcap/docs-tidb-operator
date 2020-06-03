@@ -488,6 +488,10 @@ Before proceeding, make sure the following requirements are satisfied:
 1. Install `mysql` command-line client
     To connect to TiDB, you'll need a MySQL-compatible command-line client installed on the host where you've used `kubectl`. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from your operating system's package repository.
 
+> **Note:**
+>
+> + To connect to TiDB using a MySQL client from MySQL 8.0, you must explicitly specify `--default-auth=mysql_native_password` if the user account has a password, because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
+
 2. Forward port 4000
 
     We'll connect by first forwarding a port from the local host to the TiDB **service** in Kubernetes. First, get a list of services in the tidb-cluster namespace:
