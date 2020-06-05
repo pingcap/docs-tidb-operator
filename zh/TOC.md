@@ -54,7 +54,7 @@
       - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
-  - [收集日志](collect-tidb-logs.md)
+  - [查看日志](view-logs.md)
   - [集群故障自动转移](use-auto-failover.md)
   - [恢复 PD 集群](pd-recover.md)
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
@@ -66,6 +66,7 @@
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
+  - [Sysbench 性能测试](benchmark-sysbench.md)
   - [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
   - [Cheat Sheet](cheat-sheet.md)
   + 工具
@@ -75,3 +76,4 @@
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
     - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
     - [tidb-backup chart 配置](configure-backup.md)
+  - [日志收集](logs-collection.md)
