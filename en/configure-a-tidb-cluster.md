@@ -4,40 +4,41 @@ summary: Learn how to configure a TiDB cluster in Kubernetes.
 category: how-to
 ---
 
+# Configure a TiDB Cluster in Kubernetes
+
 This document introduces how to configure a TiDB cluster for production deployment. It covers the following content:
 
-- Resource configuration
+- [Configure resources](#configure-resources)
 
-- Configure a TiDB deployment
+- [Configure TiDB deployment](#configure-tidb-deployment)
 
-- High availability
+- [Configure high availability](#configure-high-availability)
 
-# Resource configuration
+## Configure resources
 
-Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configurations must be specified according to component needs. Detailed reference: [Hardware Recommendations](https://pingcap.com/docs/v3.0/how-to/deploy/hardware-recommendations/).
+Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://pingcap.com/docs/stable/hardware-and-software-requirements/).
 
-To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level QoS by letting `limits` equal to `requests` when configuring resources. Detailed reference: [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
+To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level QoS by making `limits` equal to `requests` when configuring resources. For details, refer to [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 
-If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management policy on the node for better performance. In order to allow the TiDB cluster component to monopolize the corresponding CPU resources, the CPU quota must be an integer greater than or equal to `1` besides setting Guaranteed-level QoS as mentioned above. Detailed reference: [Control CPU Management Policies on the Node](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies).
+If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management policy on the node for better performance. In order to allow the TiDB cluster component to monopolize the corresponding CPU resources, the CPU quota must be an integer greater than or equal to `1`, apart from setting Guaranteed-level QoS as mentioned above. For details, refer to [Control CPU Management Policies on the Node](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies).
 
-# Configure a TiDB deployment
+## Configure TiDB deployment
 
-To configure a TiDB deployment, you need to configure the `TiDBCluster` CR, refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml) for an example. For complete configurations of `TiDBCluster` CR, refer to [API documentation](api-references.md).
+To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md).
 
 > **Note:**
 >
 > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
-
-> **Note:**
->x
+> 
 > The modified configuration is not automatically applied to the TiDB cluster by default. The new configuration file is loaded only when the Pod restarts.
+
 It is recommended that you set `spec.configUpdateStrategy` to `RollingUpdate` to enable automatic update of configurations. This way, every time the configuration is updated, all components are rolling updated automatically, and the modified configuration is applied to the cluster.
 
-## Cluster name
+### Cluster name
 
 The cluster name can be configured by changing `metadata.name` in the `TiDBCuster` CR.
 
-## Version
+### Version
 
 Note that TidbCluster CR has multiple parameters for the image configuration:
 
@@ -55,7 +56,7 @@ The priority for acquiring the image configuration is as follows:
 
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`.
 
-## Storage class
+### Storage class
 
 You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](configure-storage-class.md) supported by the Kubernetes cluster, check with your system administrator.
 
@@ -69,7 +70,7 @@ For demonstration environment or functional verification, you can use network st
 >
 > If you set a storage class that does not exist in the TiDB cluster that you are creating, then the cluster creation goes to the Pending state. In this situation, you must [destroy the TiDB cluster in Kubernetes](destroy-a-tidb-cluster.md).
 
-## Cluster topology
+### Cluster topology
 
 The deployed cluster topology by default has 3 PD Pods, 3 TiKV Pods, and 2 TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least 3 nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
 
@@ -115,13 +116,13 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
-## Configure TiDB components
+### Configure TiDB components
 
 This document introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash.
 
 The current TiDB Operator v1.1 supports all parameters of TiDB v3.1. For parameters of different components, refer to [TiDB documentation](https://pingcap.com/docs/).
 
-### Configure TiDB parameters
+#### Configure TiDB parameters
 
 TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Resource.
 
@@ -153,7 +154,7 @@ For all the configurable parameters of TiDB, refer to [TiDB Configuration File](
 >
 > If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiDB components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 
-### Configure TiKV parameters
+#### Configure TiKV parameters
 
 TiKV parameters can be configured by `spec.tikv.config` in TidbCluster Custom Resource.
 
@@ -182,7 +183,7 @@ For all the configurable parameters of TiKV, refer to [TiKV Configuration File](
 >
 > If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 
-### Configure PD parameters
+#### Configure PD parameters
 
 PD parameters can be configured by `spec.pd.config` in TidbCluster Custom Resource.
 
@@ -208,7 +209,7 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 >
 > If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 
-### Configure TiFlash parameters
+#### Configure TiFlash parameters
 
 TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Custom Resource.
 
@@ -257,7 +258,7 @@ For all configurable start parameters of TiCDC, see [TiCDC start parameters](htt
 >
 > If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiFlash components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 
-# High availability
+## Configure high availability
 
 > **Note:**
 >
@@ -265,7 +266,7 @@ For all configurable start parameters of TiCDC, see [TiCDC start parameters](htt
 
 TiDB is a distributed database and its high availability must ensure that when any physical topology node fails, not only the service is unaffected, but also the data is complete and available. The two configurations of high availability are described separately as follows.
 
-## High avalability of TiDB service
+### High avalability of TiDB service
 
 High availability at other levels (such as rack, zone, region) are guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
@@ -319,7 +320,7 @@ affinity:
        - ${namespace}
 ```
 
-## High availability of data
+### High availability of data
 
 Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/v3.0/how-to/deploy/geographic-redundancy/location-awareness/) which describes how high availability of TiDB cluster is implemented.
 
