@@ -6,11 +6,11 @@ category: how-to
 
 # 使用 BR 工具恢复 GCS 上的备份数据
 
-本文描述了如何将存储在 GCS 存储的备份的数据恢复到 Kubernetes 环境中的 TiDB 集群的操作过程。底层通过使用 [`BR`](https://pingcap.com/docs-cn/stable/reference/tools/br/br) 来进行集群恢复。
+本文描述了如何将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上的备份数据恢复到 Kubernetes 环境中的 TiDB 集群。底层通过使用 [`BR`](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-tool) 来进行集群恢复。
 
 本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
 
-以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径上的集群备份数据恢复到 TiDB 集群。
+以下示例将存储在 GCS 上指定路径的集群备份数据恢复到 TiDB 集群。
 
 ## 环境准备
 
@@ -38,7 +38,7 @@ category: how-to
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
     ```
 
-## 将指定备份数据恢复到 TiDB 集群
+## 恢复过程
 
 1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
@@ -83,7 +83,7 @@ category: how-to
         # objectAcl: private
     ```
 
-2. 创建好 `Restore` CR 后可通过以下命令查看恢复的状态：
+2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
 
     {{< copyable "shell-regular" >}}
 
@@ -102,7 +102,7 @@ category: how-to
 * `.spec.to.tidbSecretName`：待备份 TiDB 集群 `.spec.to.user` 用户的密码所对应的 secret。
 * `.spec.to.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
 
-    如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
+    如果 TiDB 集群[已开启 TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
 
     {{< copyable "shell-regular" >}}
 
