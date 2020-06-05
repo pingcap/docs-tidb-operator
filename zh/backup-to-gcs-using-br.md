@@ -4,7 +4,7 @@ summary: 介绍如何使用 BR 工具备份 TiDB 集群到 Google Cloud Storage 
 category: how-to
 ---
 
-# 备份 TiDB 集群到 GCS
+# 使用 BR 工具备份 TiDB 集群到 GCS
 
 本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`BR`](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-tool) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
 
