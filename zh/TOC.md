@@ -55,9 +55,11 @@
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
-  - [集群故障自动转移](use-auto-failover.md)
-  - [恢复 PD 集群](pd-recover.md)
+  - [集群故障自动转移](use-auto-failover.md)  
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
++ 灾难恢复
+  - [恢复 PD 集群](pd-recover.md)
+  - [恢复误删的集群](recover-deleted-cluster.md)
 - [导入集群数据](restore-data-using-tidb-lightning.md)
 + 故障诊断
   - [使用技巧](tips.md)
@@ -70,6 +72,7 @@
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
+  - [Sysbench 性能测试](benchmark-sysbench.md)
   - [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
   - [Cheat Sheet](cheat-sheet.md)
   + 工具
