@@ -198,7 +198,7 @@ tidb-ctl schema in mysql
 
     ```shell
     kubectl apply -f tiller-rbac.yaml
-    helm init --service-account=tiller --upgrade
+    helm init --service-account=tiller --skip-refresh
     ```
 
     Helm 服务端是一个名字叫 `tiller` 的服务，是作为一个 Pod 运行在 Kubernetes 集群里的。这个 Pod 使用的镜像是 `gcr.io/kubernetes-helm/tiller:v2.16.7`，如果无法访问 gcr.io，你可以尝试 mirror 仓库：
