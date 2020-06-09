@@ -241,6 +241,7 @@ tidb-ctl schema in mysql
     ```shell
     helm init --upgrade
     ```
+
 3. 配置 Helm repo
 
     Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
