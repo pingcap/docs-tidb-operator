@@ -222,6 +222,7 @@ spec:
           count: 5
           level: information
 ```
+
 For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/v3.1/tiflash/tiflash-configuration/).
 
 ## Configure TiCDC start parameters
@@ -245,7 +246,6 @@ spec:
 ```
 
 For all configurable start parameters of TiCDC, see [TiCDC start parameters](https://pingcap.com/docs/stable/ticdc/deploy-ticdc/#manually-add-ticdc-component-to-an-existing-tidb-cluster).
-
 
 > **Note:**
 >

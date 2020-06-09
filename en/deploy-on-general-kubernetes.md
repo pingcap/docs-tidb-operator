@@ -37,6 +37,7 @@ After you configure TiDB cluster, deploy TiDB cluster by the following steps:
     ``` shell
     kubectl apply -f ${cluster_name} -n ${namespace}
     ```
+
     > **Note:**
     >
     > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
@@ -49,7 +50,6 @@ After you configure TiDB cluster, deploy TiDB cluster by the following steps:
     kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${cluster_name}
     ```
   
-
 You can use TiDB Operator to deploy and manage multiple TiDB clusters in a single Kubernetes cluster by repeating the above procedure and replacing `cluster_name` with a different name.
 
 Different clusters can be in the same or different `namespace`, which is based on your actual needs.
