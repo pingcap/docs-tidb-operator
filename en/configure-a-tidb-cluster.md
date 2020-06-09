@@ -29,7 +29,6 @@ To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refe
 > **Note:**
 >
 > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
-> 
 The modified configuration is not automatically applied to the TiDB cluster by default. The new configuration file is loaded only when the Pod restarts.
 
 It is recommended that you set `spec.configUpdateStrategy` to `RollingUpdate` to enable automatic update of configurations. This way, every time the configuration is updated, all components are rolling updated automatically, and the modified configuration is applied to the cluster.
@@ -40,14 +39,14 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 
 ### Version
 
-Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump>.version`.
+Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
 - `spec.version`: the format is `imageTag`, such as `v4.0.0`
 
-- `spec.<pd/tidb/tikv/pump>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump>.version`: the format is `imageTag`, such as `v4.0.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.0`
 
 ### Storage class
 
@@ -55,7 +54,7 @@ You can set the storage class by modifying `storageClassName` of each component 
 
 Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
 
-For the production environment, local storage is recommended. The actual local storage in Kubernetes clusters might be sorted by disk types, such as `nvme-disks` and `sas-disks`.
+For the production environment, local storage is recommended for TiKV. The actual local storage in Kubernetes clusters might be sorted by disk types, such as `nvme-disks` and `sas-disks`.
 
 For demonstration environment or functional verification, you can use network storage, such as `ebs` and `nfs`.
 
@@ -65,11 +64,15 @@ For demonstration environment or functional verification, you can use network st
 
 ### Cluster topology
 
+#### PD/TiKV/TiDB
+
 The deployed cluster topology by default has 3 PD Pods, 3 TiKV Pods, and 2 TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least 3 nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
 
 > **Note:**
 >
 > If the number of Kubernetes cluster nodes is less than 3, 1 PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than 3, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
+
+#### Enable TiFlash
 
 If you want to enable TiFlash in the cluster, configure `spec.pd.config.replication.enable-placement-rules` to `true` and configure `spec.tiflash` in the `${cluster_name}/tidb-cluster.yaml` file as follows:
 
@@ -109,11 +112,21 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
+#### Enable TiCDC
+
+If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBCluster` CR. For example:
+
+ ```yaml
+    spec:
+      ticdc:
+        baseImage: pingcap/ticdc
+        replicas: 3
+
 ### Configure TiDB components
 
 This document introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash.
 
-The current TiDB Operator v1.1 supports all parameters of TiDB v3.1. For parameters of different components, refer to [TiDB documentation](https://pingcap.com/docs/).
+The current TiDB Operator v1.1 supports all parameters of TiDB v4.0.
 
 #### Configure TiDB parameters
 
@@ -129,7 +142,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap.com/tidb:v3.1.0
+    image: pingcap.com/tidb:v4.0.0
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -161,7 +174,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap.com/tikv:v3.1.0
+    image: pingcap.com/tikv:v4.0.0
     config:
       grpc-concurrenc: 4
       sync-log: true
@@ -190,7 +203,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap.com/pd:v3.1.0
+    image: pingcap.com/pd:v4.0.0
     config:
       format: "format"
       disable-timestamp: false
@@ -246,10 +259,6 @@ spec:
 ```
 
 For all configurable start parameters of TiCDC, see [TiCDC start parameters](https://pingcap.com/docs/stable/ticdc/deploy-ticdc/#manually-add-ticdc-component-to-an-existing-tidb-cluster).
-
-> **Note:**
->
-> If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiFlash components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 
 ## Configure high availability
 
@@ -315,7 +324,7 @@ affinity:
 
 ### High availability of data
 
-Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/v3.0/how-to/deploy/geographic-redundancy/location-awareness/) which describes how high availability of TiDB cluster is implemented.
+Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/stable/location-awareness/) which describes how high availability of TiDB cluster is implemented.
 
 To add the data high availability feature in Kubernetes:
 
