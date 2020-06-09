@@ -184,7 +184,7 @@ spec:
       cpu: 2
 ```
 
-For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/v3.1/reference/configuration/tikv-server/configuration-file/).
+For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/).
 
 > **Note:**
 >
@@ -210,7 +210,7 @@ spec:
       disable-timestamp: false
 ```
 
-For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/v3.1/reference/configuration/pd-server/configuration-file/).
+For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
 
 > **Note:**
 >
@@ -237,7 +237,7 @@ spec:
           level: information
 ```
 
-For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/v3.1/tiflash/tiflash-configuration/).
+For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
 
 #### Configure TiCDC start parameters
 
