@@ -262,7 +262,7 @@ For all configurable start parameters of TiCDC, see [TiCDC start parameters](htt
 
 > **Note:**
 >
-> TiDB Operator provides a custom scheduler that guarantees TiDB service can tolerate host level failures through the specified scheduling algorithm. Currently, the TiDB cluster uses this scheduler as the default scheduler, which is configured through the item `schedulerName`. This section focuses on configuring a TiDB cluster to tolerate failures at other levels such as rack, zone or region. This section is optional.
+> TiDB Operator provides a custom scheduler that guarantees TiDB service can tolerate host level failures through the specified scheduling algorithm. Currently, the TiDB cluster uses this scheduler as the default scheduler, which is configured through the item `spec.schedulerName`. This section focuses on configuring a TiDB cluster to tolerate failures at other levels such as rack, zone or region. This section is optional.
 
 TiDB is a distributed database and its high availability must ensure that when any physical topology node fails, not only the service is unaffected, but also the data is complete and available. The two configurations of high availability are described separately as follows.
 

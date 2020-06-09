@@ -39,7 +39,7 @@ After you configure TiDB cluster, deploy TiDB cluster by the following steps:
     ```
     > **Note:**
     >
-    > > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
+    > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
 
 3. View the Pod status:
 
