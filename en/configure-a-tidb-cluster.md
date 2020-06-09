@@ -24,7 +24,7 @@ If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management 
 
 ## Configure TiDB deployment
 
-To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md).
+To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/tiflash/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md).
 
 > **Note:**
 >
@@ -40,21 +40,14 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 
 ### Version
 
-Note that TidbCluster CR has multiple parameters for the image configuration:
+Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`, if you need to configure different version for different components, you can configure `spec.<pd/tidb/tikv/pump>.version`.
+Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v3.1.0`
+- `spec.version`: the format is `imageTag`, such as `v4.0.0`
 
 - `spec.<pd/tidb/tikv/pump>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump>.version`: the format is `imageTag`, such as `v3.1.0`
-
-- `spec.<pd/tidb/tikv/pump>.image`: the format is `imageName:imageTag`, such as `pingcap/tidb:v3.1.0`
-
-The priority for acquiring the image configuration is as follows:
-
-`spec.<pd/tidb/tikv/pump>.baseImage` + `spec.<pd/tidb/tikv/pump>.version` > `spec.<pd/tidb/tikv/pump>.baseImage` + `spec.version` > `spec.<pd/tidb/tikv/pump>.image`
-
-Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump>.baseImage` and `spec.version`.
+- `spec.<pd/tidb/tikv/pump>.version`: the format is `imageTag`, such as `v4.0.0`
 
 ### Storage class
 
