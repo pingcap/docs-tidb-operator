@@ -16,7 +16,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
 
 Before you deploy TiDB cluster, you should configure the TiDB cluster. Refer to [Configure a TiDB Cluster in Kubernetes](configure-a-tidb-cluster.md)
 
-After you configure TiDB cluster, deploy TiDB cluster by the following steps:
+After you configure TiDB cluster, deploy the TiDB cluster by the following steps:
 
 1. Create `Namespace`:
 
