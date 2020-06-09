@@ -225,7 +225,7 @@ spec:
 
 For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/v3.1/tiflash/tiflash-configuration/).
 
-## Configure TiCDC start parameters
+#### Configure TiCDC start parameters
 
 You can configure TiCDC start parameters through `spec.ticdc.config` in TidbCluster Custom Resource.
 
