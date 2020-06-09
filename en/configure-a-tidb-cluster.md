@@ -116,15 +116,16 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 
 If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBCluster` CR. For example:
 
- ```yaml
-    spec:
-      ticdc:
-        baseImage: pingcap/ticdc
-        replicas: 3
+```yaml
+  spec:
+    ticdc:
+      baseImage: pingcap/ticdc
+      replicas: 3
+```
 
 ### Configure TiDB components
 
-This document introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash.
+This section introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash/TiCDC.
 
 The current TiDB Operator v1.1 supports all parameters of TiDB v4.0.
 
