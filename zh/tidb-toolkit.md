@@ -140,7 +140,7 @@ tidb-ctl schema in mysql
 
 1. 参考[官方文档](https://v2.helm.sh/docs/using_helm/#installing-helm)安装 Helm 客户端。
 
-    如果服务器没有外网，需要先将 Helm 客户端在有外网的机器上下载下来，然后再拷贝到服务器上, 这里以安装 Helm 客户端 `2.16.7` 为例：
+    如果服务器没有外网，需要先将 Helm 客户端在有外网的机器上下载下来，然后再拷贝到服务器上，这里以安装 Helm 客户端 `2.16.7` 为例：
 
     {{< copyable "shell-regular" >}}
 
@@ -184,7 +184,7 @@ tidb-ctl schema in mysql
     helm init --service-account=tiller --upgrade
     ```
 
-   如果服务器没有外网，需要先将 `tiller-rbac.yaml` 文件在有外网的机器下载下来：
+   如果服务器没有外网，需要先用有外网的机器下载 `tiller-rbac.yaml` 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -263,29 +263,29 @@ tidb-ctl schema in mysql
 
     添加完成后，可以使用 `helm search` 搜索 PingCAP 提供的 chart：
 
-    如果 Helm 版本 < 2.16.0:
+    - 如果 Helm 版本 < 2.16.0:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    helm search pingcap -l
-    ```
+        ```shell
+        helm search pingcap -l
+        ```
 
-    如果 Helm 版本 >= 2.16.0:
+    - 如果 Helm 版本 >= 2.16.0:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    helm search pingcap -l --devel
-    ```
+        ```shell
+        helm search pingcap -l --devel
+        ```
 
-    ```
-    NAME                    CHART VERSION   APP VERSION DESCRIPTION
-    pingcap/tidb-backup     v1.0.0                      A Helm chart for TiDB Backup or Restore
-    pingcap/tidb-cluster    v1.0.0                      A Helm chart for TiDB Cluster
-    pingcap/tidb-operator   v1.0.0                      tidb-operator Helm chart for Kubernetes
-    ...
-    ```
+        ```
+        NAME                    CHART VERSION   APP VERSION DESCRIPTION
+        pingcap/tidb-backup     v1.0.0                      A Helm chart for TiDB Backup or Restore
+        pingcap/tidb-cluster    v1.0.0                      A Helm chart for TiDB Cluster
+        pingcap/tidb-operator   v1.0.0                      tidb-operator Helm chart for Kubernetes
+        ...
+        ```
 
     当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
 
@@ -335,9 +335,9 @@ tidb-ctl schema in mysql
 
 4. 离线情况下配置 Helm repo
 
-    如果服务器上没有外网，就无法通过配置 Helm repo 来安装 tidb-operator 组件以及其他应用。这时，我们需要在有外网的机器上将集群安装用到的 chart 文件下载下来，拷贝到服务器上。
+    如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，我们需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
-    我们可以通过下面命令将集群安装时候用到的 chart 下载下来：
+    通过以下命令，下载集群安装时需要的 chart 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -347,7 +347,7 @@ tidb-ctl schema in mysql
     wget http://charts.pingcap.org/tidb-lightning-v1.1.0.tgz
     ```
 
-    将这些 chart 文件拷贝到服务器上并解压，然后就可以 `helm install` 使用这些 chart 来安装了，以 `tidb-operator` 为例：
+    将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
 
     {{< copyable "shell-regular" >}}
 
