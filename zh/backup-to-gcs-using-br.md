@@ -64,13 +64,13 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     name: demo1-backup-gcs
     namespace: test1
     spec:
-    # backupType: full
-    from:
+      # backupType: full
+      from:
         host: ${tidb-host}
         port: ${tidb-port}
         user: ${tidb-user}
         secretName: backup-demo1-tidb-secret
-    br:
+      br:
         cluster: demo1
         clusterNamespace: test1
         # logLevel: info
@@ -79,7 +79,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-    gcs:
+      gcs:
         projectId: ${project-id}
         secretName: gcs-secret
         bucket: ${bucket}
@@ -186,34 +186,33 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     name: demo1-backup-schedule-gcs
     namespace: test1
     spec:
-    #maxBackups: 5
-    #pause: true
-    maxReservedTime: "3h"
-    schedule: "*/2 * * * *"
-    backupTemplate:
+      #maxBackups: 5
+      #pause: true
+      maxReservedTime: "3h"
+      schedule: "*/2 * * * *"
+      backupTemplate:
         from:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: backup-demo1-tidb-secret
+          host: ${tidb_host}
+          port: ${tidb_port}
+          user: ${tidb_user}
+          secretName: backup-demo1-tidb-secret
         br:
-        cluster: demo1
-        clusterNamespace: test1
-        # enableTLSClient: false
-        # logLevel: info
-        # statusAddr: ${status-addr}
-        # concurrency: 4
-        # rateLimit: 0
-        # checksum: true
-        # sendCredToTikv: true
+          cluster: demo1
+          clusterNamespace: test1
+          # logLevel: info
+          # statusAddr: ${status-addr}
+          # concurrency: 4
+          # rateLimit: 0
+          # checksum: true
+          # sendCredToTikv: true
         gcs:
-        secretName: gcs-secret
-        projectId: ${project-id}
-        bucket: ${bucket}
-        prefix: ${prefix}
-        # location: us-east1
-        # storageClass: STANDARD_IA
-        # objectAcl: private
+          secretName: gcs-secret
+          projectId: ${project-id}
+          bucket: ${bucket}
+          prefix: ${prefix}
+          # location: us-east1
+          # storageClass: STANDARD_IA
+          # objectAcl: private
     ```
 
 2. 定时全量备份创建完成后，通过以下命令查看备份的状态：
