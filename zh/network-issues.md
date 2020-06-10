@@ -1,7 +1,7 @@
 ---
-title: 网络问题
+title: Kubernetes 上的 TiDB 集群常见网络问题
 summary: 介绍 Kubernetes 上 TiDB 集群的常见网络问题以及诊断解决方案。
-category: how-to
+category: troubleshoot
 ---
 
 # Kubernetes 上的 TiDB 集群常见网络问题
@@ -124,7 +124,7 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
         kubectl get po -n kube-system -l k8s-app=kube-proxy
         ```
 
-    * 检查 node 上的 iptables 规则中 TiDB 服务的规则是否正确
+    * 检查 node 上的 iptables 规则中 TiDB 服务的规则是否正确：
 
         {{< copyable "shell-regular" >}}
 
@@ -132,7 +132,7 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
         iptables-save -t nat |grep ${clusterIP}
         ```
 
-    * 检查对应的 endpoint 是否正确
+    * 检查对应的 endpoint 是否正确：
 
         {{< copyable "shell-regular" >}}
 
