@@ -70,7 +70,9 @@ tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略。对于同一�
 
 ## Pod 处于 CrashLoopBackOff 状态
 
-Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退出（异常退出后，容器被 Kubelet 重启，重启后又异常退出，如此往复）。可能导致 CrashLoopBackOff 的原因有很多，此时，最有效的定位办法是查看 Pod 内容器的日志：
+Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退出（异常退出后，容器被 Kubelet 重启，重启后又异常退出，如此往复）。定位方法有很多种。
+
+### 查看 Pod 内当前容器的日志
 
 {{< copyable "shell-regular" >}}
 
@@ -78,7 +80,7 @@ Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退�
 kubectl -n ${namespace} logs -f ${pod_name}
 ```
 
-假如本次日志没有能够帮助诊断的有效信息，可以添加 `-p` 参数输出容器上次启动时的日志信息：
+### 查看 Pod 内容器上次启动时的日志信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -88,9 +90,13 @@ kubectl -n ${namespace} logs -p ${pod_name}
 
 确认日志中的错误信息后，可以根据 [tidb-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#tidb-server-启动报错)，[tikv-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#tikv-server-启动报错)，[pd-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
+### cluster id mismatch
+
 若是 TiKV Pod 日志中出现 "cluster id mismatch" 信息，则 TiKV Pod 使用的数据可能是其他或之前的 TiKV Pod 的旧数据。在集群配置本地存储时未清除机器上本地磁盘上的数据，或者强制删除了 PV 导致数据并没有被 local volume provisioner 程序回收，可能导致 PV 遗留旧数据，导致错误。
 
 在确认该 TiKV 应作为新节点加入集群、且 PV 上的数据应该删除后，可以删除该 TiKV Pod 和关联 PVC。TiKV Pod 将自动重建并绑定新的 PV 来使用。集群本地存储配置中，应对机器上的本地存储删除，避免 Kubernetes 使用机器上遗留的数据。集群运维中，不可强制删除 PV ，应由 local volume provisioner 程序管理。用户通过创建、删除 PVC 以及设置 PV 的 reclaimPolicy 来管理 PV 的生命周期。
+
+### ulimit 不足
 
 另外，TiKV 在 ulimit 不足时也会发生启动失败的状况，对于这种情况，可以修改 Kubernetes 节点的 `/etc/security/limits.conf` 调大 ulimit：
 
@@ -100,5 +106,7 @@ root        hard        nofile        1000000
 root        soft        core          unlimited
 root        soft        stack         10240
 ```
+
+### 其他原因
 
 假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过[诊断模式](tips.md#诊断模式)进行进一步排查。
