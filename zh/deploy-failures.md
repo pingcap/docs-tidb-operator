@@ -1,5 +1,5 @@
 ---
-title: 部署错误
+title: Kubernetes 上的 TiDB 常见部署错误
 summary: 介绍 Kubernetes 上 TiDB 部署的常见错误以及处理办法。
 category: how-to
 ---
