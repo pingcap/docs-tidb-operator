@@ -91,6 +91,14 @@ TiDB 服务访问不了时，首先确认 TiDB 服务是否部署成功，确认
 kubectl get po -n ${namespace}
 ```
 
+查看 TiDB 服务是否正确生成了 Endpoint 对象。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get ep -n ${namespace}
+```
+
 检查 TiDB 组件的日志，看日志是否有报错。
 
 {{< copyable "shell-regular" >}}
@@ -106,7 +114,7 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
     * 客户端到 node 节点的网络不通。
     * 查看 TiDB service 的 `externalTrafficPolicy` 属性是否为 Local。如果是 Local 则客户端必须通过 TiDB Pod 所在 node 的 IP 来访问。
 
-2. 如果 service domain 或 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `<PodIP>:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 service domain 或 clusterIP 到 PodIP 之间的连接上，排查项如下：
+2. 如果 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `<PodIP>:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 clusterIP 到 PodIP 之间的连接上，排查项如下：
 
     * 检查 DNS 服务是否正常：
 
