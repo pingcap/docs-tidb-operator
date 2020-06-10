@@ -61,7 +61,7 @@ kubectl describe po -n ${namespace} ${pod_name}
     {{< copyable "shell-regular" >}}
 
     ```
-    kubectl delete pvc -n ${namespace} ${pvc-name}
+    kubectl delete pvc -n ${namespace} ${pvc_name}
     kubectl delete sts -n ${namespace} ${statefulset_name}
     ```
 
