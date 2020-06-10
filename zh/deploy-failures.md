@@ -80,7 +80,7 @@ Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退�
 kubectl -n ${namespace} logs -f ${pod_name}
 ```
 
-### 查看 Pod 内容器上次启动时的日志信息：
+### 查看 Pod 内容器上次启动时的日志信息
 
 {{< copyable "shell-regular" >}}
 
