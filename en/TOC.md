@@ -5,13 +5,10 @@
 
 ## TOC
 
-+ Get Started
-  - [kind](deploy-tidb-from-kubernetes-kind.md)
-  - [GKE](deploy-tidb-from-kubernetes-gke.md)
-  - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
 + Introduction
   - [Overview](tidb-operator-overview.md)
   - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
+- [Get Started](get-started.md)
 + Deploy
   - Deploy TiDB Cluster
     - [On AWS EKS](deploy-on-aws-eks.md)
@@ -21,12 +18,12 @@
       - [Prerequisites](prerequisites.md)
       - [Configure Storage Class](configure-storage-class.md)
       - [Deploy TiDB Operator](deploy-tidb-operator.md)
-      - [Configure Resource and Disaster Recovery](configure-a-tidb-cluster.md)
-      - [Configure TiDB Cluster Using TidbCluster](configure-cluster-using-tidbcluster.md)
+      - [Configure TiDB Cluster](configure-a-tidb-cluster.md)
       - [Deploy TiDB Cluster](deploy-on-general-kubernetes.md)
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
   - [Deploy TiFlash](deploy-tiflash.md)
+  - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
   + Deploy Monitoring
     - [Monitor Kubernetes and TiDB Cluster](monitor-a-tidb-cluster.md)
@@ -56,7 +53,7 @@
   - [Enable Automatic Failover](use-auto-failover.md)
   - [Recover the PD Cluster](pd-recover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
-- [Import Data to TiDB Cluster](restore-data-using-tidb-lightning.md)
+- [Import Data](restore-data-using-tidb-lightning.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
 + Reference
@@ -64,7 +61,8 @@
     - [TiDB Scheduler](tidb-scheduler.md)
     - [Advanced StatefulSet Controller](advanced-statefulset.md)
     - [Admission Controller](enable-admission-webhook.md)
-  - [API References](api-references.md)
+  - [Sysbench Performance Test](benchmark-sysbench.md)
+  - [API References](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
   + Tools
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
