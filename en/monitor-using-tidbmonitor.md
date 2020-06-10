@@ -153,9 +153,9 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 ### Set kube-prometheus and AlertManager
 
-In some cases, TidbMonitor needs to obtain the monitoring metrics on Kubernetes. To obtain the kube-prometheus metrics, configure `TidbMonitor.Spec.kubePrometheusURL`. For details, refer to [kube-prometheus](https://github.com/coreos/kube-prometheus).
+In some cases, TidbMonitor needs to obtain the monitoring metrics on Kubernetes. To obtain the kube-prometheus metrics, configure `TidbMonitor.Spec.kubePrometheusURL`. For details, see [kube-prometheus](https://github.com/coreos/kube-prometheus).
 
-Similarly, you can configure TidbMonitor to push the monitoring alert to AlertManager. For details, refer to [AlertManager](https://prometheus.io/docs/alerting/alertmanager/).
+Similarly, you can configure TidbMonitor to push the monitoring alert to AlertManager. For details, see [AlertManager](https://prometheus.io/docs/alerting/alertmanager/).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -293,4 +293,4 @@ type: kubernetes.io/tls
 
 ## References
 
-For more detailed API information of TidbMonitor, refer to [TiDB Operator API documentation](api-references.md).
+For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](api-references.md).
