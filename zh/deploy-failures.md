@@ -44,18 +44,25 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 PVC 的 StorageClass 找不到，可采取以下步骤：
 
-1. 将 `storageClassName` 修改为集群中可用的 StorageClass 名字。
-
-2. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新。
-
-3. 将 Statefulset 删除，并且将对应的 PVC 也都删除。
-
-4. 通过以下命令获取集群中可用的 StorageClass：
+1. 通过以下命令获取集群中可用的 StorageClass：
 
     {{< copyable "shell-regular" >}}
 
     ```
     kubectl get storageclass
+    ```
+
+2. 将 `storageClassName` 修改为集群中可用的 StorageClass 名字。
+
+3. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新。
+
+4. 将 Statefulset 删除，并且将对应的 PVC 也都删除。
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    kubectl delete pvc -n ${namespace} ${pvc-name}
+    kubectl delete sts -n ${namespace} ${statefulset-name}
     ```
 
 ### 可用 PV 不足

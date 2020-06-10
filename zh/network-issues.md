@@ -96,7 +96,7 @@ kubectl get po -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get ep -n ${namespace}
+kubectl get endpoints -n ${namespaces} ${cluster_name}-tidb
 ```
 
 检查 TiDB 组件的日志，看日志是否有报错。
