@@ -116,23 +116,6 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
 
 2. 如果 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `<PodIP>:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 clusterIP 到 PodIP 之间的连接上，排查项如下：
 
-    * 检查 DNS 服务是否正常：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get po -n kube-system -l k8s-app=kube-dns
-        dig ${tidb_service_domain}
-        ```
-
-        通过 `kubectl exec` 进入集群中任意一个 Pod 后执行：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        dig ${tidb_service_domain}
-        ```
-
     * 检查各个 node 上的 kube-proxy 是否正常运行：
 
         {{< copyable "shell-regular" >}}
