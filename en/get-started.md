@@ -839,7 +839,7 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
     kubectl delete tidbmonitor basic -n tidb-cluster
     ```
 
-3. Delete persistend data
+3. Delete persistent data
 
     If your deployment has persistent data storage, deleting TiDB Cluster will not remove the cluster's data. If you do not need the data anymore, you should run the following commands to clean the data and the dynamically created persistent disks:
 
@@ -858,6 +858,16 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
 
     ```shell
     kubectl delete namespace tidb-cluster
+    ```
+
+5. Stop `kubectl` port forwarding
+
+    If you still have running `kubectl` processes that are forwarding ports, end them.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pgrep -lfa kubectl
     ```
 
 For more information about destroying a TiDB Cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
