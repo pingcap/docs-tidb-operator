@@ -36,7 +36,9 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 kubectl describe po -n ${namespace} ${pod_name}
 ```
 
-如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
+### CPU 或内存资源不足
+
+如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请，使其能够得到调度，或是增加新的 Kubernetes 节点。
 
 如果是 PVC 的 StorageClass 找不到，需要将 `storageClassName` 修改为集群中可用的 StorageClass 名字，然后运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
 
