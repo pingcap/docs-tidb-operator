@@ -101,7 +101,7 @@ kubectl logs -f ${pod_name} -n ${namespace} -c tidb
 
 如果确定集群部署成功，则进行网络检查：
 
-1. 如果你是通过 `NodePort` 方式访问不了 TiDB 服务，请在 node 上尝试使用 service domain 或 clusterIP 访问 TiDB 服务，假如 serviceName 或 clusterIP 的方式能访问，基本判断 Kubernetes 集群内的网络是正常的，问题可能出在下面两个方面：
+1. 如果你是通过 `NodePort` 方式访问不了 TiDB 服务，请在 node 上尝试使用 clusterIP 访问 TiDB 服务，假如 clusterIP 的方式能访问，基本判断 Kubernetes 集群内的网络是正常的，问题可能出在下面两个方面：
 
     * 客户端到 node 节点的网络不通。
     * 查看 TiDB service 的 `externalTrafficPolicy` 属性是否为 Local。如果是 Local 则客户端必须通过 TiDB Pod 所在 node 的 IP 来访问。
