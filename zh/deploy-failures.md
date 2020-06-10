@@ -40,13 +40,23 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请，使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，需要将 `storageClassName` 修改为集群中可用的 StorageClass 名字，然后运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
+### PVC 的 StorageClass 不存在
 
-{{< copyable "shell-regular" >}}
+如果是 PVC 的 StorageClass 找不到，可采取以下步骤：
 
-```
-kubectl get storageclass
-```
+1. 将 `storageClassName` 修改为集群中可用的 StorageClass 名字。
+
+2. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新。
+
+3. 将 Statefulset 删除，并且将对应的 PVC 也都删除。
+
+4. 通过以下命令获取集群中可用的 StorageClass：
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    kubectl get storageclass
+    ```
 
 如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)进行扩充。
 
