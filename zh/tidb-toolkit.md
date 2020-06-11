@@ -333,7 +333,7 @@ tidb-ctl schema in mysql
 
     更多 helm 的相关文档，请参考 [Helm 官方文档](https://helm.sh/docs/)。
 
-4. 离线情况下配置 Helm repo
+4. 离线情况下使用 Helm chart
 
     如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，我们需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
