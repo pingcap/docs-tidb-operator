@@ -120,7 +120,11 @@ helm init --service-account tiller --upgrade
 
 It takes a minute for helm to initialize `tiller`, its server component:
 
+<<<<<<< HEAD
 {{< copyable "shell-regular" >}}
+=======
+TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
+>>>>>>> a8baced... en: fix a broken link for CustomResourceDefinition (#404)
 
 ```shell
 watch "kubectl get pods --namespace kube-system | grep tiller"
