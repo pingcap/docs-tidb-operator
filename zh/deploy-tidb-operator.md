@@ -80,9 +80,11 @@ tidbinitializers.pingcap.com         2020-06-11T07:59:42Z
 tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 ```
 
+### 安装 
+
 创建以上各种自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator，有两种安装方式：在线和离线安装 TiDB Operator。
 
-### 在线安装 TiDB Operator
+#### 在线安装 TiDB Operator
 
 1. 下载 `tidb-operator` chart
 
@@ -126,13 +128,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     helm upgrade tidb-operator pingcap/tidb-operator -f  /home/tidb/tidb-operator/values-tidb-operator.yaml
     ```
 
-### 离线安装 TiDB Operator
+#### 离线安装 TiDB Operator
 
 如果服务器没有外网，需要按照下面的步骤来离线安装 TiDB Operator：
 
 1. 下载 `tidb-operator` chart
 
-    如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，我们需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
+    如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
     通过以下命令，下载 `tidb-operator` chart 文件：
 

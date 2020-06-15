@@ -186,7 +186,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/
 helm init --service-account=tiller --upgrade
 ```
 
-果服务器没有外网，需要先用有外网的机器下载 `tiller-rbac.yaml` 文件：
+如果服务器没有外网，需要先用有外网的机器下载 `tiller-rbac.yaml` 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -297,7 +297,9 @@ helm repo add pingcap https://charts.pingcap.org/
 helm repo update
 ```
 
-Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项，基于 Helm 社区约定俗称的命名方式，我们在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
+### Helm 常用操作
+
+Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，我们在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
 
 执行部署、升级、销毁等操作前，可以使用 `helm ls` 查看集群中已部署的应用：
 
