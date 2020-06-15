@@ -177,13 +177,16 @@ Client: &version.Version{SemVer:"v2.16.7", GitCommit:"5f2584fd3d35552c4af26036f0
 
 ### 安装 Helm 服务端
 
-在集群中应用 Helm 服务端组件 `tiller` 所需的 `RBAC` 规则，并安装 `tiller`：
+### 安装 RBAC
+
+如果 Kubernetes 集群没有启用 `RBAC`，请跳过此小结，直接安装 Tiller 即可。
+
+Helm 服务端是一个名字叫 `tiller` 的服务, 请首先安装 `tiller` 所需的 `RBAC` 规则：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/tiller-rbac.yaml && \
-helm init --service-account=tiller --upgrade
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/tiller-rbac.yaml
 ```
 
 如果服务器没有外网，需要先用有外网的机器下载 `tiller-rbac.yaml` 文件：
@@ -194,16 +197,25 @@ helm init --service-account=tiller --upgrade
 wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/tiller-rbac.yaml
 ```
 
-将 `tiller-rbac.yaml` 文件拷贝到服务器上并安装 `tiller`：
+将 `tiller-rbac.yaml` 文件拷贝到服务器上并安装 `RBAC`：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl apply -f tiller-rbac.yaml
-helm init --service-account=tiller --skip-refresh
 ```
 
-Helm 服务端是一个名字叫 `tiller` 的服务，是作为一个 Pod 运行在 Kubernetes 集群里的。这个 Pod 使用的镜像是 `gcr.io/kubernetes-helm/tiller:v2.16.7`，如果无法访问 gcr.io，你可以尝试 mirror 仓库：
+### 安装 Tiller
+
+Helm 服务端是一个名字叫 `tiller` 的服务，是作为一个 Pod 运行在 Kubernetes 集群里的。使用下面的命令安装 `tiller`：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+helm init --service-account=tiller --upgrade
+```
+
+`tiller` 这个Pod 使用的镜像是 `gcr.io/kubernetes-helm/tiller:v2.16.7`，如果服务器无法访问 gcr.io，你可以尝试 mirror 仓库：
 
 {{< copyable "shell-regular" >}}
 
@@ -211,7 +223,7 @@ Helm 服务端是一个名字叫 `tiller` 的服务，是作为一个 Pod 运行
 helm init --service-account=tiller --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -Eo 'v[0-9]\.[0-9]+\.[0-9]+')
 ```
 
-如果服务器没有外网或者无法访问 `gcr.io` 和 `registry.cn-hangzhou.aliyuncs.com`，需要先将 `tiller` Docker 镜像在有外网的机器下载下来：
+如果服务器没有外网，需要先将 `tiller` 所使用的 Docker 镜像在有外网的机器下载下来：
 
 {{< copyable "shell-regular" >}}
 
@@ -228,20 +240,13 @@ docker save -o tiller-v2.16.7.tar gcr.io/kubernetes-helm/tiller:v2.16.7
 docker load -i tiller-v2.16.7.tar
 ```
 
-通过下面命令确认 `tiller` Pod 进入 running 状态：
+最后通过下面命令安装 `tiller` 并确认 `tiller` Pod 进入 Running 状态：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
+helm init --service-account=tiller --skip-refresh
 kubectl get po -n kube-system -l name=tiller
-```
-
-如果 Kubernetes 集群没有启用 `RBAC`，那么可以直接使用下列命令安装 `tiller`：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-helm init --upgrade
 ```
 
 ### 配置 Helm repo
