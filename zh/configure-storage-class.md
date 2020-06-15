@@ -88,7 +88,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
-    local-volume-provisioner 程序是一个 DaemonSet，会在每个 K8s 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
+    local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
 
     {{< copyable "shell-regular" >}}
 
