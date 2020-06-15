@@ -214,9 +214,9 @@ spec:
     auto-scaling-demo-tikv-2                      1/1     Running   0          15m
     ```
 
-    View the changing status of Pods and the TPS and QPS of sysbench. When a new Pod is created in TiKV and TiDB, the TPS and QPS of sysbench increase significantly. 
+    View the changing status of Pods and the TPS and QPS of sysbench. When new Pods are created in TiKV and TiDB, the TPS and QPS of sysbench increase significantly. 
     
-    After sysbench finishes the test, the newly created Pod in TiKV and TiDB disappears automatically.
+    After sysbench finishes the test, the newly created Pods in TiKV and TiDB disappear automatically.
 
 5. Destroy the environment by running the following commands:
 
