@@ -34,7 +34,7 @@ Modify `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` in the
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-After modifying the values above, check if the TiDB cluster in Kubernetes has updated to your desired definition:
+After modifying the values above, check whether the TiDB cluster in Kubernetes has updated to your desired definition:
 
 {{< copyable "shell-regular" >}}
 
@@ -110,7 +110,7 @@ If TiCDC is deployed in the cluster, you can scale out TiCDC by modifying `spec.
 
 6. Modify `spec.tiflash.replicas` to scale in TiFlash.
 
-    Check if TiFlash in the TiDB cluster in Kubernetes has updated to your desired definition. Run the following command and see if the value of `spec.tiflash.replicas` returned is expected:
+    Check whether TiFlash in the TiDB cluster in Kubernetes has updated to your desired definition. Run the following command and see whether the value of `spec.tiflash.replicas` returned is expected:
 
     {{< copyable "shell-regular" >}}
 

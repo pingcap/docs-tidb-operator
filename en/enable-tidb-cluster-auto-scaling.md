@@ -148,7 +148,7 @@ spec:
     db-driver=mysql
     ```
 
-3. Prepare data and stress test the auto-scaling feature using [sysbench](https://github.com/akopytov/sysbench).
+3. Prepare data and perform the stress test against the auto-scaling feature using [sysbench](https://github.com/akopytov/sysbench).
 
     Copy the following content and paste it to the local `sysbench.config` file:
 
@@ -182,7 +182,7 @@ spec:
     sysbench --config-file=${path-to-file}/sysbench.config oltp_point_select --tables=1 --table-size=20000 run
     ```
 
-    The above command will return the following result:
+    The command above will return the following result:
 
     ```sh
     Initializing worker threads...
@@ -216,9 +216,9 @@ spec:
 
     View the changing status of Pods and the TPS and QPS of sysbench. When a new Pod is created in TiKV and TiDB, the TPS and QPS of sysbench increase significantly. 
     
-    After sysbench finishes the test, the newly created Pod in TiKV and TiDB vanishes automatically.
+    After sysbench finishes the test, the newly created Pod in TiKV and TiDB disappears automatically.
 
-5. Destroy the environment by running the following command:
+5. Destroy the environment by running the following commands:
 
     {{< copyable "shell-regular" >}}
 
