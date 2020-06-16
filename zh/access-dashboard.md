@@ -10,7 +10,7 @@ TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群�
 
 ## 前置条件
 
-你需要使用 v1.1.1 版本及其以上的 TiDB Operator 以及 4.0.1 版本及其以上的 TiDB 集群才能在 Kubernetes 环境中流畅使用 `Dashboard`。 你需要在 `TidbCluster` 对象文件中通过以下方式开启 `Dashboard` 快捷访问:
+你需要使用 v1.1.1 版本及以上的 TiDB Operator 以及 4.0.1 版本及以上的 TiDB 集群，才能在 Kubernetes 环境中流畅使用 `Dashboard`。 你需要在 `TidbCluster` 对象文件中通过以下方式开启 `Dashboard` 快捷访问:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
