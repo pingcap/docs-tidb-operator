@@ -345,7 +345,7 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 ### 配置 TiDB 集群
 
-参考 [API 文档](api-references.md)和[集群配置文档](configure-cluster-using-tidbcluster.md)修改 TiDB 集群配置。
+参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-cluster-using-tidbcluster.md)修改 TiDB 集群配置。
 
 ## 管理多个 TiDB 集群
 

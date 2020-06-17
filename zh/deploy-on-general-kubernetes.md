@@ -14,7 +14,7 @@ category: how-to
 
 ## 配置 TiDB 集群
 
-参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml)和 [API 文档](api-references.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)，并保存到文件 `${cluster_name}/tidb-cluster.yaml`。
+参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)，并保存到文件 `${cluster_name}/tidb-cluster.yaml`。
 
 需要注意的是，TidbCluster CR 中关于镜像配置有多个参数：
 
