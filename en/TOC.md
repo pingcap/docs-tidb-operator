@@ -63,6 +63,7 @@
     - [Admission Controller](enable-admission-webhook.md)
   - [Sysbench Performance Test](benchmark-sysbench.md)
   - [API References](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
+  - [Cheat Sheet](cheat-sheet.md)
   + Tools
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
