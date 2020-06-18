@@ -145,7 +145,6 @@ type: kubernetes.io/tls
 
 当 Ingress 部署完成以后，你就可以通过 <https://{host}/dashboard> 访问 TiDB Dashboard。
 
-
 ## 更新 TiDB 集群
 
 如果你是在一个已经运行的 TiDB 集群上进行更新来开启快捷访问 `Dashboard` 功能，以下两项配置都需要更新:
