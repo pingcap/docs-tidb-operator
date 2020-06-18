@@ -317,7 +317,7 @@ Before proceeding, make sure the following requirements are satisfied:
             helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
-            For Chinese mainland users, you may use local images:
+            If the network connection to the Docker Hub is slow, you can try images hosted in Alibaba Cloud:
 
             ```
             helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.0 \
@@ -384,7 +384,7 @@ Before proceeding, make sure the following requirements are satisfied:
             helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0
             ```
 
-            For Chinese mainland users, you may use local images:
+            If the network connection to the Docker Hub is slow, you can try images hosted in Alibaba Cloud:
 
             ```
             helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0 \
@@ -441,7 +441,7 @@ Before proceeding, make sure the following requirements are satisfied:
     kubectl -n tidb-cluster apply -f tidb-cluster.yaml
     ```
 
-    For Chinese mainland users, you may use this yaml which uses local images:
+    If the network connection to the Docker Hub is slow, you can try this example which uses images hosted in Alibaba Cloud:
 
     ```
     kubectl create namespace tidb-cluster
@@ -465,7 +465,7 @@ Before proceeding, make sure the following requirements are satisfied:
     kubectl -n tidb-cluster apply -f tidb-monitor.yaml
     ```
 
-    For Chinese mainland users, you may use this yaml which uses local images:
+    If the network connection to the Docker Hub is slow, you can try this example which uses images hosted in Alibaba Cloud:
 
     ```
     curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
