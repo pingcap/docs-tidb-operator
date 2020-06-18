@@ -119,7 +119,6 @@ EKS 部署脚本中提供两种部署方式：
     cp prod.tfvars terraform.tfvars
     ```
 
-
 除了上述配置，可以编辑 `terraform.tfvars`，在其中设置变量的值，按需配置集群，可以通过 `variables.tf` 查看有哪些变量可以设置以及各变量的详细描述。
 
 例如，下面示例配置 EKS 集群名称，TiDB 集群名称，TiDB Operator 版本及 PD、TiKV 和 TiDB 节点的数量：
