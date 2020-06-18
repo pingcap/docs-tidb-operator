@@ -179,7 +179,7 @@ Client: &version.Version{SemVer:"v2.16.7", GitCommit:"5f2584fd3d35552c4af26036f0
 
 ### 安装 RBAC
 
-如果 Kubernetes 集群没有启用 `RBAC`，请跳过此小结，直接安装 Tiller 即可。
+如果 Kubernetes 集群没有启用 `RBAC`，请跳过此小节，直接安装 Tiller 即可。
 
 Helm 服务端是一个名字叫 `tiller` 的服务, 请首先安装 `tiller` 所需的 `RBAC` 规则：
 

@@ -86,46 +86,42 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 #### 在线安装 TiDB Operator
 
-1. 下载 `tidb-operator` chart
-
-    请按照 [配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 来下载 `tidb-operator` chart。
-
-2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
+1. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mkdir -p /home/tidb/tidb-operator && \
-    helm inspect values pingcap/tidb-operator --version=${chart_version} > /home/tidb/tidb-operator/values-tidb-operator.yaml
+    mkdir -p ${HOME}/tidb-operator && \
+    helm inspect values pingcap/tidb-operator --version=${chart_version} > ${HOME}/tidb-operator/values-tidb-operator.yaml
     ```
 
     > **注意：**
     >
     > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.0`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
 
-3. 配置 TiDB Operator
+2. 配置 TiDB Operator
 
-    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImageName` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
+    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `${HOME}/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImageName` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
 
     其他项目例如：`limits`、`requests` 和 `replicas`，请根据需要进行修改。
 
-4. 安装 TiDB Operator
+3. 安装 TiDB Operator
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chart_version} -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
+    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
 
-5. 升级 TiDB Operator
+4. 升级 TiDB Operator
 
-    如果需要升级 TiDB Operator，请先修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件，然后执行下面的命令进行升级：
+    如果需要升级 TiDB Operator，请先修改 `${HOME}/tidb-operator/values-tidb-operator.yaml` 文件，然后执行下面的命令进行升级：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator pingcap/tidb-operator -f  /home/tidb/tidb-operator/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator -f  ${HOME}/tidb-operator/values-tidb-operator.yaml
     ```
 
 #### 离线安装 TiDB Operator
