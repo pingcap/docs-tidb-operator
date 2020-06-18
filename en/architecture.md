@@ -1,10 +1,16 @@
 ---
 title: TiDB Architecture
-summary: Learn the architecture of tidb-operator and how it works.
+summary: Learn the architecture of TiDB Operator and how it works.
 category: reference
 ---
 
 # TiDB Operator Architecture
+
+This document describes the architecture of TiDB Operator and how it works.
+
+## Architecture
+
+The following diagram is an overview of the architecture of TiDB Operator.
 
 ![TiDB Operator Overview](/media/tidb-operator-overview-1.1.png)
 
@@ -26,9 +32,13 @@ The following components are responsible for the orchestration and scheduling lo
 
 In addition, TiDB Operator also provides `tkctl`, the command-line interface for TiDB clusters in Kubernetes. It is used for cluster operations and troubleshooting cluster issues.
 
+## Control flow
+
+The following diagram is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR. 
+
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow-1.1.png)
 
-The diagram above is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR. The overall control flow is described as follows:
+The overall control flow is described as follows:
 
 1. The user creates a `TidbCluster` object and other CR objects through kubectl, such as `TidbMonitor`;
 2. TiDB Operator watches `TidbCluster` and other related objects, and constantly adjust the `StatefulSet`, `Deployment`, `Service`, and other objects of PD, TiKV, TiDB, Monitor or other components based on the actual state of the cluster;

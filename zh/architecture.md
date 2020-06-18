@@ -1,10 +1,16 @@
 ---
 title: TiDB Operator 架构
-summary: 了解 TiDB Operator 架构以其工作原理。
+summary: 了解 TiDB Operator 架构及其工作原理。
 category: reference
 ---
 
 # TiDB Operator 架构
+
+本文档介绍 TiDB Operator 的架构及其工作原理。
+
+## 架构
+
+下图是 TiDB Operator 的架构概览。
 
 ![TiDB Operator Overview](/media/tidb-operator-overview-1.1.png)
 
@@ -26,9 +32,13 @@ TiDB 集群的编排和调度逻辑则由下列组件负责：
 
 此外，TiDB Operator 还提供了命令行接口 `tkctl` 用于运维集群和诊断集群问题。
 
+## 流程解析
+
+下图是 TiDB Operator 的控制流程解析。从 TiDB Operator v1.1 开始，TiDB 集群、监控、初始化、备份等组件，都通过 CR 进行部署、管理。
+
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow-1.1.png)
 
-上图是 TiDB Operator 的控制流程解析。从 TiDB Operator v1.1 开始，TiDB 集群、监控、初始化、备份等组件，都通过 CR 进行部署、管理。整体的控制流程如下：
+整体的控制流程如下：
 
 1. 用户通过 kubectl 创建 `TidbCluster` 和其他 CR 对象，比如 `TidbMonitor` 等；
 2. TiDB Operator 会 watch `TidbCluster` 以及其它相关对象，基于集群的实际状态不断调整 PD、TiKV、TiDB 或者 Monitor 等组件的 `StatefulSet`、`Deployment` 和 `Service` 等对象；
