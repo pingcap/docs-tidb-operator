@@ -276,4 +276,4 @@ type: kubernetes.io/tls
 
 ## 参考
 
-了解 TidbMonitor 更为详细的 API 设置，可以参考 [API 文档](api-references.md)。
+了解 TidbMonitor 更为详细的 API 设置，可以参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/release-1.1/docs/api-references/docs.md)。
