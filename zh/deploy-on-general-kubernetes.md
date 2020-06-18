@@ -123,9 +123,7 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    部署 TiDB 集群可能用到的 Docker 镜像有，这里假设 TiDB 集群版本是 `v4.0.0`：
-
-    {{< copyable "shell-regular" >}}
+    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v4.0.0）：
 
     ```shell
     pingcap/pd:v4.0.0

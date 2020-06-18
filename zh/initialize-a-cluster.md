@@ -75,7 +75,7 @@ kubectl apply -f ${cluster_name}/tidb-initializer.yaml --namespace=${namespace}
 
 如果服务器没有外网，需要在有外网的机器上将集群初始化用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-集群初始化用到的 Docker 镜像有：
+初始化一套 TiDB 集群会用到下面这些 Docker 镜像：
 
 {{< copyable "shell-regular" >}}
 
