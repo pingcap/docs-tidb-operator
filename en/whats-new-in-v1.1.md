@@ -6,9 +6,9 @@ category: introduction
 
 # What's New in v1.1
 
-Based on 1.0, TiDB Operator 1.1 adds many new features, including TiDB 4.0 support, TiKV data encryption, TLS certificate configuration. It also support deploying new components such as TiFlash and TiCDC.
+Based on v1.0, TiDB Operator v1.1 has several new features, including TiDB 4.0 support, TiKV data encryption, and TLS certificate configuration. TiDB Operator v1.1 also supports deploying new components such as TiFlash and TiCDC.
 
-TiDB Operator 1.1 also makes improvements in usability, providing user experience consistent with the Kubernetes native resources.
+TiDB Operator 1.1 also makes improvements in usability, providing the user experience that is consistent with the Kubernetes native resources.
 
 ## Extensibility
 
@@ -16,7 +16,7 @@ TiDB Operator 1.1 also makes improvements in usability, providing user experienc
 
 - TidbCluster CR adds support for Pump, TiFlash, TiCDC, and TiDB Dashboard.
 
-- Add the [Admission Controller](enable-admission-webhook.md) (optional) to improve the experience of upgrade and scaling and to provide the gated release feature.
+- Add the [Admission Controller](enable-admission-webhook.md) (optional) to improve the user experience of upgrade and scaling, and to provide the gated release feature.
 
 - `tidb-scheduler` supports high availability (HA) scheduling at any dimension and scheduler preemption.
 
@@ -28,7 +28,7 @@ TiDB Operator 1.1 also makes improvements in usability, providing user experienc
 
 - Add TidbInitializer CR to initialize the cluster.
 
-- Add Backup, BackupSchedule, and Restore CR to back up and restore the cluster, which supports using Amazon S3 and GCS as remote storage.
+- Add Backup, BackupSchedule, and Restore CR to back up and restore the cluster, which supports using Amazon S3 or GCS as the remote storage.
 
 - Support gracefully restart a component in the TiDB cluster.
 
@@ -40,7 +40,7 @@ TiDB Operator 1.1 also makes improvements in usability, providing user experienc
 
 ## Experimental features
 
-- Add `TidbClusterAutoScaler` to implement [automatic scaling](enable-tidb-cluster-auto-scaling.md). You can enable this feature by turning on the `AutoScaling` switch.
+- Add `TidbClusterAutoScaler` to implement [auto-scaling](enable-tidb-cluster-auto-scaling.md). You can enable this feature by turning on the `AutoScaling` switch.
 
 - Add the optional [Advanced StatefulSet Controller](advanced-statefulset.md), which supports deleting a specified Pod. You can enable this feature by turning on the `AdvancedStatefulSet` switch.
 
