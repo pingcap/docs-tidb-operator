@@ -321,8 +321,8 @@ Before proceeding, make sure the following requirements are satisfied:
 
             ```
             helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.0 \
-              --set operatorImage=uhub.ucloud.cn/pingcap/tidb-operator:v1.1.0 \
-              --set tidbBackupManagerImage=uhub.ucloud.cn/pingcap/tidb-backup-manager:v1.1.0
+              --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.0 \
+              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.0
             ```
 
             Expected output:
@@ -388,8 +388,8 @@ Before proceeding, make sure the following requirements are satisfied:
 
             ```
             helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.0 \
-              --set operatorImage=uhub.ucloud.cn/pingcap/tidb-operator:v1.1.0 \
-              --set tidbBackupManagerImage=uhub.ucloud.cn/pingcap/tidb-backup-manager:v1.1.0
+              --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.0 \
+              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.0
             ```
 
             Expected output:
