@@ -304,7 +304,7 @@ helm repo update
 
 ### Helm 常用操作
 
-Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，我们在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
+Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
 
 执行部署、升级、销毁等操作前，可以使用 `helm ls` 查看集群中已部署的应用：
 
@@ -344,7 +344,7 @@ helm del --purge ${release_name}
 
 ### 离线情况下使用 Helm chart
 
-如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，我们需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
+如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
 通过以下命令，下载集群安装时需要的 chart 文件：
 
