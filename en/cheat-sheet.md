@@ -1,10 +1,10 @@
 ---
-title: Cheat Sheet for TiDB Cluster Management
+title: Command Cheat Sheet for TiDB Cluster Management
 summary: Learn the commonly used commands for managing TiDB clusters.
 category: reference
 ---
 
-# Cheat Sheet for TiDB Cluster Management
+# Command Cheat Sheet for TiDB Cluster Management
 
 This document is an overview of the commands used for TiDB cluster management.
 
