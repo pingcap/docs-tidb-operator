@@ -1,12 +1,13 @@
 ---
-title: Collect TiDB Logs in Kubernetes
-summary: Learn how to collect TiDB logs in Kubernetes.
+title: View TiDB Logs in Kubernetes
+summary: Learn how to view TiDB logs in Kubernetes.
 category: how-to
+aliases: ['docs/tidb-in-kubernetes/dev/collect-tidb-logs/']
 ---
 
-# Collect TiDB Logs in Kubernetes
+# View TiDB Logs in Kubernetes
 
-Runtime logs of the system and program can be very useful for troubleshooting problems and automating some operations. This document introduces the methods to collect logs of TiDB and its related components.
+This document introduces the methods to view logs of TiDB components and TiDB slow log.
 
 ## Collect logs of TiDB components in Kubernetes
 
