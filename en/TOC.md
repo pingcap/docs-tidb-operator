@@ -62,7 +62,12 @@
     - [Advanced StatefulSet Controller](advanced-statefulset.md)
     - [Admission Controller](enable-admission-webhook.md)
   - [Sysbench Performance Test](benchmark-sysbench.md)
+<<<<<<< HEAD
   - [API References](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md)
+=======
+  - [API References](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
+  - [Cheat Sheet](cheat-sheet.md)
+>>>>>>> b8490a6... en: add cheat sheet (#430)
   + Tools
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
