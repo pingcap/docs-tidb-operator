@@ -63,7 +63,11 @@
   - [恢复 PD 集群](pd-recover.md)
   - [恢复误删的集群](recover-deleted-cluster.md)
 - [导入集群数据](restore-data-using-tidb-lightning.md)
-- [故障诊断](troubleshoot.md)
++ 故障诊断
+  - [使用技巧](tips.md)
+  - [部署错误](deploy-failures.md)
+  - [集群异常](exceptions.md)
+  - [网络问题](network-issues.md)
 - [常见问题](faq.md)
 + 参考
   + 架构
@@ -71,7 +75,7 @@
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
   - [Sysbench 性能测试](benchmark-sysbench.md)
-  - [API 参考文档](https://github.com/pingcap/docs-tidb-operator/blob/master/zh/api-references.md)
+  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
   + 工具
     - [tkctl](use-tkctl.md)
