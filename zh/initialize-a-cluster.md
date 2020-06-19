@@ -15,7 +15,7 @@ category: how-to
 
 ## 配置 TidbInitializer
 
-请参考 TidbInitializer [示例](https://github.com/pingcap/tidb-operator/blob/master/manifests/initializer/tidb-initializer.yaml)和 [API 文档](api-references.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）以及下面的步骤，完成 TidbInitializer CR，保存到文件 `${cluster_name}/tidb-initializer.yaml`。
+请参考 TidbInitializer [示例](https://github.com/pingcap/tidb-operator/blob/master/manifests/initializer/tidb-initializer.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）以及下面的步骤，完成 TidbInitializer CR，保存到文件 `${cluster_name}/tidb-initializer.yaml`。
 
 ### 初始化账号和密码设置
 
@@ -72,3 +72,30 @@ kubectl apply -f ${cluster_name}/tidb-initializer.yaml --namespace=${namespace}
 ```
 
 以上命令会自动创建一个初始化的 Job，该 Job 会尝试利用提供的 secret 给 root 账号创建初始密码，并且创建其它账号和密码（如果指定了的话）。初始化完成后 Pod 状态会变成 Completed，之后通过 MySQL 客户端登录时需要指定这里设置的密码。
+
+如果服务器没有外网，需要在有外网的机器上将集群初始化用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
+
+初始化一套 TiDB 集群会用到下面这些 Docker 镜像：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tnir/mysqlclient:latest
+```
+
+接下来通过下面的命令将所有这些镜像下载下来：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+docker pull tnir/mysqlclient:latest
+docker save -o mysqlclient-latest.tar tnir/mysqlclient:latest
+```
+
+接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+docker load -i mysqlclient-latest.tar
+```
