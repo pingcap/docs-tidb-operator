@@ -14,7 +14,7 @@ This document describes how to access TiDB Dashboard in Kubernetes.
 
 To access TiDB Dashboard smoothly in Kubernetes, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster (v4.0.1 or later versions).
 
-You can configure the `TidbCluster` object file as follows to enable quick access to TiDB Dashboard:
+You need to configure the `TidbCluster` object file as follows to enable quick access to TiDB Dashboard:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
