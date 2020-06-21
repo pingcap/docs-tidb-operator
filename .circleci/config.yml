@@ -41,8 +41,8 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "release-1.0" ]; then
-              python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-manual-en-v1.0.pdf;
-              python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-manual-cn-v1.0.pdf;
+              python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-v1.0-en-manual.pdf;
+              python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-v1.0-zh-manual.pdf;
             fi
 workflows:
   version: 2
