@@ -54,7 +54,11 @@
   - [Recover the PD Cluster](pd-recover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
 - [Import Data](restore-data-using-tidb-lightning.md)
-- [Troubleshoot](troubleshoot.md)
++ Troubleshoot
+  - [Tips](tips.md)
+  - [Deployment Failures](deploy-failures.md)
+  - [Cluster Exceptions](exceptions.md)
+  - [Network Issues](network-issues.md)
 - [FAQs](faq.md)
 + Reference
   + Architecture
