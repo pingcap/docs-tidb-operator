@@ -91,7 +91,15 @@ If you cannot access the TiDB service, first check whether the TiDB service is d
     kubectl get po -n ${namespace}
     ```
 
-2. Check the log of TiDB components to see whether errors are reported.
+2. Check whether the TiDB service correctly generates the endpoint object:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get endpoints -n ${namespaces} ${cluster_name}-tidb
+    ```
+
+3. Check the log of TiDB components to see whether errors are reported.
 
     {{< copyable "shell-regular" >}}
 
