@@ -19,11 +19,11 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get endpoints ${release_name}-pd
-    kubectl -n ${namespace} get endpoints ${release_name}-tidb
-    kubectl -n ${namespace} get endpoints ${release_name}-pd-peer
-    kubectl -n ${namespace} get endpoints ${release_name}-tikv-peer
-    kubectl -n ${namespace} get endpoints ${release_name}-tidb-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-pd
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb
+    kubectl -n ${namespace} get endpoints ${cluster_name}-pd-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tikv-peer
+    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
     ```
 
     The `ENDPOINTS` field shown in the above command should be a comma-separated list of `cluster_ip:port`. If the field is empty or incorrect, check the health of the Pod and whether `kube-controller-manager` is working properly.
@@ -44,7 +44,7 @@ When you find some network connection issues between Pods from the log or monito
     dig ${HOSTNAME}
     ```
 
-    Use the `ping` command to diagnose the connection with the destination IP (the ClusterIP resolved using `dig`):
+    Use the `ping` command to diagnose the connection with the destination IP (the Pod IP resolved using `dig`):
 
     {{< copyable "shell-regular" >}}
 
@@ -62,7 +62,7 @@ When you find some network connection issues between Pods from the log or monito
         telnet ${target_ip} ${target_port}
         ```
 
-        If the `telnet` check fails, check whether the port corresponding to the Pod is correctly exposed and whether the applied port is correctly configured:
+        If the `telnet` check fails, check whether the port corresponding to the Pod is correctly exposed and whether the port of the application is correctly configured:
 
         {{< copyable "shell-regular" >}}
 
