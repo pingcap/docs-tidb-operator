@@ -12,7 +12,7 @@ This document describes the commonly used tips for troubleshooting TiDB in Kuber
 
 When a Pod is in the `CrashLoopBackoff` state, the containers in the Pod exit continually. As a result, you cannot use `kubectl exec` or `tkctl debug` normally, making it inconvenient to diagnose issues.
 
-To solve this problem, TiDB in Kubernetes provides the Pod diagnostic mode for PD, TiKV, and TiDB components. In this mode, the containers in the Pod hang directly after they are started, and will not repeatedly crash. Then you can use `kubectl exec` or `tkctl debug` to connect to the Pod containers for diagnosis.
+To solve this problem, TiDB Operator provides the Pod diagnostic mode for PD, TiKV, and TiDB components. In this mode, the containers in the Pod hang directly after they are started, and will not repeatedly crash. Then you can use `kubectl exec` or `tkctl debug` to connect to the Pod containers for diagnosis.
 
 To use the diagnostic mode for troubleshooting:
 
@@ -24,7 +24,7 @@ To use the diagnostic mode for troubleshooting:
     kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
     ```
 
-    The next time the container in the Pod is restarted, it detects this annotation and enters the diagnostic mode.
+    When the container in the Pod is restarted again, it will detect this annotation and enter the diagnostic mode.
 
 2. Wait for the Pod to enter the Running state.
 

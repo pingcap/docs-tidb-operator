@@ -60,7 +60,7 @@ If the `StorageClass` of the PVC cannot be found, take the following steps:
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     kubectl delete pvc -n ${namespace} ${pvc_name} && \
     kubectl delete sts -n ${namespace} ${statefulset_name}
     ```
@@ -103,9 +103,9 @@ When the "cluster id mismatch" message appears in the TiKV Pod log, the TiKV Pod
 
 If you confirm that the TiKV should join the cluster as a new node and that the data on the PV should be deleted, you can delete the TiKV Pod and the corresponding PVC. The TiKV Pod automatically rebuilds and binds the new PV for use. When configuring local storage, delete local storage on the machine to avoid Kubernetes using old data. In cluster operation and maintenance, manage PV using the local volume provisioner and do not delete it forcibly. You can manage the lifecycle of PV by creating, deleting PVCs, and setting `reclaimPolicy` for the PV.
 
-### `ulimit` is insufficient
+### `ulimit` is not big enough
 
-TiKV might fail to start when `ulimit` is insufficient. In this case, you can modify the `/etc/security/limits.conf` file of the Kubernetes node to increase the `ulimit`:
+TiKV might fail to start when `ulimit` is not big enough. In this case, you can modify the `/etc/security/limits.conf` file of the Kubernetes node to increase the `ulimit`:
 
 ```
 root soft nofile 1000000
