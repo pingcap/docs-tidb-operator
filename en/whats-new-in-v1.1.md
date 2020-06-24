@@ -6,7 +6,7 @@ category: introduction
 
 # What's New in v1.1
 
-Based on v1.0, TiDB Operator v1.1 has several new features, including TiDB 4.0 support, TiKV data encryption, and TLS certificate configuration, etc. TiDB Operator v1.1 also supports deploying new components such as TiFlash and TiCDC.
+Based on v1.0, TiDB Operator v1.1 has several new features, including TiDB 4.0 support, TiKV data encryption, and TLS certificate configuration. TiDB Operator v1.1 also supports deploying new components such as TiFlash and TiCDC.
 
 TiDB Operator 1.1 also makes improvements in usability, providing the user experience that is consistent with the Kubernetes native resources.
 
