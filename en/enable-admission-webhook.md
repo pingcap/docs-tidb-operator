@@ -2,6 +2,7 @@
 title: Enable Admission Controller in TiDB Operator
 summary: Learn how to enable the admission controller in TiDB Operator and the functionality of the admission controller.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/v1.1/enable-admission-webhook/']
 ---
 
 # Enable Admission Controller in TiDB Operator
