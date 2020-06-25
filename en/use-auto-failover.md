@@ -2,7 +2,7 @@
 title: Automatic Failover
 summary: Learn the automatic failover policies of TiDB cluster components on Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/maintain/auto-failover/','/docs/v3.1/tidb-in-kubernetes/maintain/auto-failover/','/docs/v3.0/tidb-in-kubernetes/maintain/auto-failover/']
+aliases: ['/docs/tidb-in-kubernetes/v1.0/use-auto-failover/','/docs/dev/tidb-in-kubernetes/maintain/auto-failover/','/docs/v3.1/tidb-in-kubernetes/maintain/auto-failover/','/docs/v3.0/tidb-in-kubernetes/maintain/auto-failover/']
 ---
 
 # Automatic Failover
