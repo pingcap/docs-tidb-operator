@@ -2,7 +2,7 @@
 title: Restore Data from GCS
 summary: Learn how to restore the backup data from GCS.
 category: how-to
-aliases: ['/docs/tidb-in-kubernetes/v1.1/restore-from-gcs/']
+aliases: ['/docs/tidb-in-kubernetes/stable/restore-from-gcs/','/docs/tidb-in-kubernetes/v1.1/restore-from-gcs/']
 ---
 
 # Restore Data from GCS
