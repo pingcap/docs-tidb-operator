@@ -2,7 +2,7 @@
 title: Tools in Kubernetes
 summary: Learn about operation tools for TiDB in Kubernetes.
 category: reference
-aliases: ['/docs/tidb-in-kubernetes/v1.1/tidb-toolkit/']
+aliases: ['/docs/tidb-in-kubernetes/stable/tidb-toolkit/','/docs/tidb-in-kubernetes/v1.1/tidb-toolkit/']
 ---
 
 # Tools in Kubernetes

@@ -2,7 +2,7 @@
 title: TiDB Kubernetes Control User Guide
 summary: Learn how to use the tkctl (TiDB Kubernetes Control) tool.
 category: reference
-aliases: ['/docs/tidb-in-kubernetes/v1.1/use-tkctl/']
+aliases: ['/docs/tidb-in-kubernetes/stable/use-tkctl/','/docs/tidb-in-kubernetes/v1.1/use-tkctl/']
 ---
 
 # TiDB Kubernetes Control User Guide
