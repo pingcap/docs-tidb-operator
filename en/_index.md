@@ -1,6 +1,7 @@
 ---
 title: TiDB in Kubernetes Documentation
 summary: Learn about TiDB in Kubernetes documentation.
+aliases: ['/docs/tidb-in-kubernetes/v1.1/_index/']
 ---
 
 # TiDB in Kubernetes Documentation
