@@ -2,7 +2,7 @@
 title: Collect TiDB Logs in Kubernetes
 summary: Learn how to collect TiDB logs in Kubernetes.
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/maintain/log-collecting/','/docs/v3.1/tidb-in-kubernetes/maintain/log-collecting/','/docs/v3.0/tidb-in-kubernetes/maintain/log-collecting/']
+aliases: ['/docs/tidb-in-kubernetes/v1.0/collect-tidb-logs/','/docs/dev/tidb-in-kubernetes/maintain/log-collecting/','/docs/v3.1/tidb-in-kubernetes/maintain/log-collecting/','/docs/v3.0/tidb-in-kubernetes/maintain/log-collecting/']
 ---
 
 # Collect TiDB Logs in Kubernetes
