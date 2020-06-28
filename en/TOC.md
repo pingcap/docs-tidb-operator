@@ -71,4 +71,4 @@
     - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
     - [Configure tidb-cluster Chart](tidb-cluster-chart-config.md)
     - [Configure tidb-backup Chart](configure-backup.md)
-  - [Log Collection](log-collection.md)
+  - [Log Collection](logs-collection.md)
