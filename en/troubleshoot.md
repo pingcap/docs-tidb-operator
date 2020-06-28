@@ -2,6 +2,7 @@
 title: Troubleshoot TiDB in Kubernetes
 summary: Learn how to diagnose and resolve issues when you use TiDB in Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/troubleshoot/']
 ---
 
 # Troubleshoot TiDB in Kubernetes
@@ -52,18 +53,6 @@ To use the diagnostic mode for troubleshooting:
 
     After the Pod is rebuilt, it automatically returns to the normal mode.
 
-## Recover the cluster after accidental deletion
-
-TiDB Operator uses PV (Persistent Volume) and PVC (Persistent Volume Claim) to store persistent data. If you accidentally delete a cluster using `helm delete`, the PV/PVC objects and data are still retained to ensure data safety.
-
-To restore the cluster at this time, use the `helm install` command to create a cluster with the same name. The retained PV/PVC and data are reused.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-helm install pingcap/tidb-cluster -n ${release_name} --namespace=${namespace} --version=${version} -f values.yaml
-```
-
 ## Pod is not created normally
 
 After creating a cluster using `helm install`, if the Pod is not created, you can diagnose it using the following commands:
@@ -104,7 +93,7 @@ When you find some network connection issues between Pods from the log or monito
     tkctl debug -n ${namespace} ${pod_name}
     ```
 
-    After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
+    After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://v1-18.docs.kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
 
     {{< copyable "shell-regular" >}}
 

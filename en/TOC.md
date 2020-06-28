@@ -7,6 +7,7 @@
 
 + Introduction
   - [Overview](tidb-operator-overview.md)
+  - [What's New in v1.1](whats-new-in-v1.1.md)
   - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
 - [Get Started](get-started.md)
 + Deploy
@@ -14,7 +15,7 @@
     - [On AWS EKS](deploy-on-aws-eks.md)
     - [On GCP GKE](deploy-on-gcp-gke.md)
     - [On Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
-    + On Self-managed Kubernetes
+    + In Self-managed Kubernetes
       - [Prerequisites](prerequisites.md)
       - [Configure Storage Class](configure-storage-class.md)
       - [Deploy TiDB Operator](deploy-tidb-operator.md)
@@ -51,8 +52,10 @@
   - [Maintain a Kubernetes Node](maintain-a-kubernetes-node.md)
   - [View TiDB Logs](view-logs.md)
   - [Enable Automatic Failover](use-auto-failover.md)
-  - [Recover the PD Cluster](pd-recover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
++ Disaster Recovery
+  - [Recover PD Cluster](pd-recover.md)
+  - [Recover Deleted Cluster](recover-deleted-cluster.md)
 - [Import Data](restore-data-using-tidb-lightning.md)
 - [Troubleshoot](troubleshoot.md)
 - [FAQs](faq.md)
