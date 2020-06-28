@@ -320,7 +320,9 @@ tidb-ctl schema in mysql
         helm upgrade ${release_name} ${chart_name} --version=${chart_version} -f ${values_file}
         ```
 
-    * To delete the application deployed by Helm, run the following command:
+    * Delete:
+    
+        To delete the application deployed by Helm, run the following command:
 
         {{< copyable "shell-regular" >}}
 
