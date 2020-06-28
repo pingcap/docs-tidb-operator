@@ -16,9 +16,9 @@ This document introduces the hardware and software prerequisites for deploying a
 | Kubernetes | v1.12.5+ |
 | CentOS | 7.6 and kernel 3.10.0-957 or later |
 
-## Configure firewall
+## Configure the firewall
 
-It is recommended that you close the firewall. 
+It is recommended that you disable the firewall. 
 
 {{< copyable "shell-regular" >}}
 
@@ -29,7 +29,7 @@ systemctl disable firewalld
 
 If you cannot stop the firewalld service, to ensure the normal operation of Kubernetes, take the following steps:
 
-1. Open the following ports on the master, and then restart the service:
+1. Enable the following ports on the master, and then restart the service:
 
     {{< copyable "shell-regular" >}}
     
@@ -43,12 +43,12 @@ If you cannot stop the firewalld service, to ensure the normal operation of Kube
     firewall-cmd --permanent --add-port=8472/udp
     firewall-cmd --add-masquerade --permanent
     
-    # Set when you need to expose NodePort on the master
+    # Set it when you need to expose NodePort on the master node.
     firewall-cmd --permanent --add-port=30000-32767/tcp
     systemctl restart firewalld
     ```
 
-2. Open the following ports on the nodes, and then restart the service:
+2. Enable the following ports on the nodes, and then restart the service:
 
     {{< copyable "shell-regular" >}}
 
@@ -81,9 +81,9 @@ setenforce 0
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 ```
 
-## Close swap 
+## Disable swap 
 
-For kubelet to work normally, you need to close swap and comment out the swap-related entry in `/etc/fstab`.
+To make kubelet work, you need to turn off swap and comment out the swap-related line in the `/etc/fstab` file.
 
 {{< copyable "shell-regular" >}}
 
@@ -94,7 +94,7 @@ sed -i 's/^\(.*swap.*\)$/#\1/' /etc/fstab
 
 ## Configure kernel parameters
 
-Configure the kernel parameter as follows. You can also make adjustments according to your environment:
+Configure the kernel parameters as follows. You can also adjust them according to your environment:
 
 {{< copyable "shell-regular" >}}
 
@@ -121,9 +121,9 @@ EOF
 sysctl --system
 ```
 
-## Configure Irqbalance service
+## Configure the Irqbalance service
 
-The [Irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) service binds the interrupts of each equipment with different CPUs respectively. This avoids the performance bottleneck when all interrupt requests are sent to the same CPU.
+The [Irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) service binds the interrupts of each equipment to different CPUs respectively. This avoids the performance bottleneck when all interrupt requests are sent to the same CPU.
 
 {{< copyable "shell-regular" >}}
 
@@ -132,9 +132,9 @@ systemctl enable irqbalance
 systemctl start irqbalance
 ```
 
-## Configure CPUfreq governor mode
+## Configure the CPUfreq governor mode
 
-To make full use of CPU performance, set the CPUfreq governor mode to `performance`. For details, see [Configure the CPUfreq governor mode on the target machine](https://pingcap.com/docs/stable/online-deployment-using-ansible/#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
+To make full use of CPU performance, set the CPUfreq governor mode to `performance`. For details, see [Configure the CPUfreq governor mode on the target machine](https://docs.pingcap.com/tidb/v4.0/online-deployment-using-ansible#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
 
 {{< copyable "shell-regular" >}}
 
@@ -182,7 +182,7 @@ After the installation, take the following steps:
 
     The above command sets the data directory of Docker to `/data1/docker`.
 
-2. Set ulimit for Docker daemon:
+2. Set `ulimit` for the Docker daemon:
 
     {{< copyable "shell-regular" >}}
 
@@ -201,7 +201,7 @@ After the installation, take the following steps:
 
 To deploy a multi-master, highly available cluster, see [Kubernetes documentation](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/).
 
-The configuration of the Kubernetes master depends on the number of nodes. The more nodes there are, the more resources are needed. The number of nodes can be adjusted according to your needs.
+The configuration of the Kubernetes master depends on the number of nodes. More nodes consumes more resources. You can adjust the number of nodes as needed.
 
 | Nodes in a Kubernetes cluster | Kubernetes master configuration |
 | :--- | :--- |
@@ -214,7 +214,7 @@ The configuration of the Kubernetes master depends on the number of nodes. The m
 
 After Kubelet is installed, take the following steps:
 
-1. Save the Kubelet data to a separate disk (it can share a disk with Docker). The data mainly contains the data used by [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir). To implement this, set the `--root-dir` parameter:
+1. Save the Kubelet data to a separate disk (it can share the same disk with Docker). The data mainly contains the data used by [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir). To implement this, set the `--root-dir` parameter:
 
     {{< copyable "shell-regular" >}}
     
@@ -225,10 +225,10 @@ After Kubelet is installed, take the following steps:
 
     The above command sets the data directory of Kubelet to `/data1/kubelet`.
 
-2. [Reserve compute resources](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) by using Kubelet, to ensure that the system process of the machine and the kernel process of Kubernetes have enough resources for operation in heavy workload. This maintains the stability of the entire system.
+2. [Reserve compute resources](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) by using Kubelet, to ensure that the system process of the machine and the kernel process of Kubernetes have enough resources for operation in heavy workloads. This maintains the stability of the entire system.
 
 ## TiDB cluster's requirements for resources
 
-To determine the machine configuration, see [Server recommendations](https://pingcap.com/docs/stable/hardware-and-software-requirements/#production-environment).
+To determine the machine configuration, see [Server recommendations](https://docs.pingcap.com/tidb/v4.0/hardware-and-software-requirements#production-environment).
 
 In a production environment, avoid deploying TiDB instances on a kubernetes master, or deploy as few TiDB instances as possible. Due to the NIC bandwidth, if the NIC of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.
