@@ -2,7 +2,7 @@
 title: TiDB Operator API Document
 summary: Reference of TiDB Operator API
 category: how-to
-aliases: ['/docs/tidb-in-kubernetes/v1.1/api-references/']
+aliases: ['/docs/tidb-in-kubernetes/stable/api-references/','/docs/tidb-in-kubernetes/v1.1/api-references/']
 ---
 <h1>API Document</h1>
 <h2 id="pingcap.com/v1alpha1">pingcap.com/v1alpha1</h2>
