@@ -9,10 +9,6 @@ category: how-to
 
 ## 快速上手
 
-> **注意：**
->
-> 快速上手只是用来作为演示或是测试，请勿将以下配置部署在关键、生产环境。
-
 ### 前置条件
 
 1. 已经安装了 Operator `v1.1.0-beta.1` 及以上版本，并且已经更新了相关版本的 CRD 文件
@@ -64,6 +60,8 @@ spec:
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n ${namespace}
 ```
+
+如果服务器没有外网，请参考 [部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群) 在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
 
 然后我们通过 kubectl get pod 命令来检查 TidbMonitor 启动完毕:
 
