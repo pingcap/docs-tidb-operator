@@ -6,7 +6,7 @@ category: how-to
 
 # TiDB Dashboard 指南
 
-TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://docs.pingcap.com/zh/tidb/v4.0/dashboard-intro) 了解详情。本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
+TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://docs.pingcap.com/zh/tidb/stable/dashboard-intro) 了解详情。本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
 
 ## 前置条件
 
