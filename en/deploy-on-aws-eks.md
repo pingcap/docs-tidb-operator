@@ -193,7 +193,7 @@ You can use the `terraform output` command to get the output again.
 
         > **Warning:**
         >
-        > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, please make sure to only append the new item to the **end** of the original items, and **DO NOT** modify the order of the original items.
+        > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
 
     * To deploy TiCDC, configure `spec.ticdc` in `db.yaml` as follows:
 
