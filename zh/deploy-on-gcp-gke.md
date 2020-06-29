@@ -239,6 +239,10 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
     > 通过 MySQL 连接 TiDB 前，需要先安装 MySQL 客户端。CentOS 系统可通过 `sudo yum install -y mysql` 安装。
     > `${tidb_ilb_ip}` 为前面获取的 Internal LoadBalancer IP 地址。
 
+> **注意：**
+>
+> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/v4.0/telemetry)章节。
+
 ## 与 GKE 集群交互
 
 你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_${gke_cluster_name}` 和 GKE 集群交互。交互方式主要有以下两种。

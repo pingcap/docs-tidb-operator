@@ -184,6 +184,10 @@ kubectl -n pingcap get pods
     >
     > 然后，在浏览器中打开 `http://<远程主机 IP>:3000` 访问 Grafana 监控面板。
 
+> **注意：**
+>
+> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/v4.0/telemetry)章节。
+
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
 要删除 TiDB 集群，执行以下命令：
