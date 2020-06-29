@@ -257,7 +257,7 @@ mysql -h ${tidb_lb_ip} -P 4000 -u root
 
 > **注意：**
 >
-> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/v4.0/telemetry)章节。
+> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/v4.0/telemetry)章节。
 
 ## 监控
 
