@@ -52,7 +52,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | `pd.resources.requests.cpu` | The CPU resource requests of each PD Pod | `nil` |
 | `pd.resources.requests.memory` | The memory resource requests of each PD Pod | `nil` |
 | `pd.resources.requests.storage` | The storage requests of each PD Pod | `1Gi` |
-| `pd.affinity` | Defines PD's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-affinity) | `{}` |
+| `pd.affinity` | Defines PD's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 | `pd.nodeSelector` | Ensures that PD Pods are only scheduled to the node with the specific key-value pair as the label. Detailed reference: [nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `pd.tolerations` | Applies to PD Pods, allowing the Pods to be scheduled to the nodes with specified taints. Detailed reference: [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `pd.annotations` | Adds a specific `annotations` for PD Pods. | `{}` |
