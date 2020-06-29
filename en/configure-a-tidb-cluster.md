@@ -2,6 +2,7 @@
 title: Configure a TiDB Cluster in Kubernetes
 summary: Learn how to configure a TiDB cluster in Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/configure-a-tidb-cluster/']
 ---
 
 # Configure a TiDB Cluster in Kubernetes
@@ -155,7 +156,7 @@ spec:
       cpu: 1
 ```
 
-For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/v3.1/reference/configuration/tidb-server/configuration-file/).
+For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
 
 > **Note:**
 >

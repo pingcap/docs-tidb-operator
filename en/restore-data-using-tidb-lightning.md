@@ -2,6 +2,7 @@
 title: Restore Data into TiDB in Kubernetes
 summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Restore Data into TiDB in Kubernetes
@@ -112,28 +113,28 @@ TiDB Lightning Helm chart supports both local and remote data sources.
             type: Opaque
             stringData:
               rclone.conf: |
-              [s3]
-              type = s3
-              provider = AWS
-              env_auth = false
-              access_key_id = ${access_key}
-              secret_access_key = ${secret_key}
-              region = us-east-1
+                [s3]
+                type = s3
+                provider = AWS
+                env_auth = false
+                access_key_id = ${access_key}
+                secret_access_key = ${secret_key}
+                region = us-east-1
 
-              [ceph]
-              type = s3
-              provider = Ceph
-              env_auth = false
-              access_key_id = ${access_key}
-              secret_access_key = ${secret_key}
-              endpoint = ${endpoint}
-              region = :default-placement
+                [ceph]
+                type = s3
+                provider = Ceph
+                env_auth = false
+                access_key_id = ${access_key}
+                secret_access_key = ${secret_key}
+                endpoint = ${endpoint}
+                region = :default-placement
 
-              [gcs]
-              type = google cloud storage
-              # The service account must include Storage Object Viewer role
-              # The content can be retrieved by `cat ${service-account-file} | jq -c .`
-              service_account_credentials = ${service_account_json_file_content}
+                [gcs]
+                type = google cloud storage
+                # The service account must include Storage Object Viewer role
+                # The content can be retrieved by `cat ${service-account-file} | jq -c .`
+                service_account_credentials = ${service_account_json_file_content}
             ```
 
         * If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`:
@@ -148,13 +149,13 @@ TiDB Lightning Helm chart supports both local and remote data sources.
             type: Opaque
             stringData:
               rclone.conf: |
-              [s3]
-              type = s3
-              provider = AWS
-              env_auth = true
-              access_key_id =
-              secret_access_key =
-              region = us-east-1
+                [s3]
+                type = s3
+                provider = AWS
+                env_auth = true
+                access_key_id =
+                secret_access_key =
+                region = us-east-1
             ```
 
             Fill in the placeholders with your configurations and save it as `secret.yaml`, and then create the `Secret` via `kubectl apply -f secret.yaml -n ${namespace}`.
@@ -236,7 +237,7 @@ If the lightning fails to restore data, follow the steps below to do manual inte
 
 4. Get the startup script by running `cat /proc/1/cmdline`.
 
-5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/v3.0/how-to/troubleshoot/tidb-lightning#tidb-lightning-troubleshooting).
+5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/stable/troubleshoot-tidb-lightning/).
 
 ## Destroy TiDB Lightning
 
