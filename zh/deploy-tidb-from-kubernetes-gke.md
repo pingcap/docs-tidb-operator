@@ -247,6 +247,10 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 
 恭喜，你已经启动并运行一个兼容 MySQL 的分布式 TiDB 数据库！
 
+> **注意：**
+>
+> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)章节。
+
 ## 扩容 TiDB 集群
 
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值进行水平扩容。
@@ -311,7 +315,3 @@ gcloud container clusters delete tidb
 ## 更多信息
 
 我们还提供[基于 Terraform 的部署方案](deploy-on-gcp-gke.md)。
-
-> **注意：**
->
-> TiDB (v4.0.2 版本起) 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/v4.0/telemetry)章节。
