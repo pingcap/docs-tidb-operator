@@ -249,7 +249,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 
 > **注意：**
 >
-> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将其分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)章节。
+> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
 ## 扩容 TiDB 集群
 
