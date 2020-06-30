@@ -2,6 +2,7 @@
 title: Deploy TiDB on Alibaba Cloud Kubernetes
 summary: Learn how to deploy a TiDB cluster on Alibaba Cloud Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
 ---
 
 # Deploy TiDB on Alibaba Cloud Kubernetes
@@ -169,7 +170,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](api-references.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
 
     * To deploy TiFlash, configure `spec.tiflash` in `db.yaml` as follows:
 
@@ -195,6 +196,10 @@ All the instances except ACK mandatory workers are deployed across availability 
         ```
 
         Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
+
+        > **Warning:**
+        >
+        > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
 
     * To deploy TiCDC, configure `spec.ticdc` in `db.yaml` as follows:
 
@@ -318,7 +323,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-See [TiDB Operator API Documentation](api-references.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Manage multiple TiDB clusters
 

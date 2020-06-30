@@ -2,6 +2,7 @@
 title: Monitor a TiDB Cluster Using TidbMonitor
 summary: This document introduces how to monitor a TiDB cluster using TidbMonitor.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
 ---
 
 # Monitor a TiDB Cluster Using TidbMonitor
@@ -293,4 +294,4 @@ type: kubernetes.io/tls
 
 ## References
 
-For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](api-references.md).
+For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md).
