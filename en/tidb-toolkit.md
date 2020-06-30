@@ -301,7 +301,8 @@ tidb-ctl schema in mysql
     ```
 
     Common Helm operations include `helm install`, `helm upgrade`, `helm del`, and `helm ls`. The Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure these parameters using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
-    Before the operations of installation, upgrade, or deletion, etc., you can execute `helm ls` to view the applications that have been installed in the cluster:
+
+    Before the operations of installation, upgrade, deletion, and so on, you can execute `helm ls` to view the applications that have been installed in the cluster:
 
     {{< copyable "shell-regular" >}}
 
