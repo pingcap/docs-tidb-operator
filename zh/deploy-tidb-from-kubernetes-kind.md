@@ -2,7 +2,7 @@
 title: 使用 kind 在 Kubernetes 上部署 TiDB 集群
 summary: 介绍如何使用 kind 在 Kubernetes 上部署 TiDB 集群。
 category: how-to
-aliases: ['/docs-cn/devget-started/deploy-tidb-from-kubernetes-dind/']
+aliases: ['/docs-cn/devget-started/deploy-tidb-from-kubernetes-dind/','/docs-cn/stable/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/']
 ---
 
 # 使用 kind 在 Kubernetes 上部署 TiDB 集群
