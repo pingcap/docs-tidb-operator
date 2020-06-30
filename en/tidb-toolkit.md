@@ -141,7 +141,6 @@ tidb-ctl schema in mysql
 
 [Helm](https://helm.sh/) is a package management tool for Kubernetes. Make sure your Helm version >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797). The installation steps are as follows:
 
-
 ### Install Helm Client
 
 Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install Helm client.
@@ -181,7 +180,7 @@ Client: &version.Version{SemVer:"v2.16.7", GitCommit:"5f2584fd3d35552c4af26036f0
 
 ### Install Helm Server
 
-#### Install RBAC.
+#### Install RBAC
 
 If `RBAC` is not enabled in the Kubernetes cluster, please skip this section and install Tiller directly.
 
@@ -244,7 +243,6 @@ Copy the file `tiller-v2.16.7.tar` to the server，and use the command `docker l
 docker load -i tiller-v2.16.7.tar
 ```
 
-
 Finally install `tiller` with the following command and confirm that `tiller` Pod enters Running state:
 
 {{< copyable "shell-regular" >}}
@@ -275,7 +273,7 @@ helm repo add pingcap https://charts.pingcap.org/
 
 After adding, use `helm search` to search for the charts provided by PingCAP:
 
-    - If the Helm version < 2.16.0:
+- If the Helm version < 2.16.0:
 
     {{< copyable "shell-regular" >}}
 

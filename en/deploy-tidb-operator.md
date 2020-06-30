@@ -123,7 +123,6 @@ After various custom resource types mentioned above are created, the you can ins
 
 #### TiDB Operator Offline Installation
 
-
 You need to install TiDB Operator offline by the following steps if your server cannot access the network:
 
 1. Download `tidb-operator` chart
