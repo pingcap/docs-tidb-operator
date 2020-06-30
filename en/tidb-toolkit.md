@@ -249,16 +249,16 @@ tidb-ctl schema in mysql
 
 3. Configure the Helm Repository
 
-    Kubernetes applications are packed as chart in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
+    Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
 
     * `tidb-operator`: used to deploy TiDB Operator;
     * `tidb-cluster`: used to deploy TiDB clusters;
-    * `tidb-backup`: used to backup or restore TiDB clusters;
+    * `tidb-backup`: used to back up or restore TiDB clusters;
     * `tidb-lightning`: used to import data into a TiDB cluster;
     * `tidb-drainer`: used to deploy TiDB Drainer;
     * `tikv-importer`: used to deploy TiKV Importer.
 
-    These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local using the following command:
+    These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -266,7 +266,7 @@ tidb-ctl schema in mysql
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-    After adding, use `helm search` to search for the charts provided by PingCAP:
+    After adding the repository, use `helm search` to search for the charts provided by PingCAP:
 
     - If the Helm version < 2.16.0:
 
@@ -300,9 +300,16 @@ tidb-ctl schema in mysql
     helm repo update
     ```
 
-    Common Helm operations include `helm install`, `helm upgrade`, and `helm del`. Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
+    Common Helm operations include `helm install`, `helm upgrade`, `helm del`, and `helm ls`. The Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure these parameters using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
+    Before the operations of installation, upgrade, or deletion, etc., you can execute `helm ls` to view the applications that have been installed in the cluster:
 
-    When performing a deployment or upgrade, you must specify the chart name (`chart-name`) and the name for the deployed application (`release-name`). You can also specify one or multiple `values.yaml` files to configure charts. In addition, you can use `chart-version` to specify the chart version (by default the latest GA is used). The steps in command line are as follows:
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm ls
+    ```
+
+    When performing a deployment or upgrade, you must specify the chart name (`chart-name`) and the name for the deployed application (`release-name`). You can also specify one or multiple `values.yaml` files to configure charts. In addition, you can specify `chart-version` by using the `--version` flag to choose a specific chart version (by default the latest GA is used). The steps in command line are as follows:
 
     * Install:
 
@@ -312,7 +319,7 @@ tidb-ctl schema in mysql
         helm install ${chart_name} --name=${release_name} --namespace=${namespace} --version=${chart_version} -f ${values_file}
         ```
 
-    * Upgrade (upgrade can be done by modifying the `chart-version` to upgrade to the latest chart version or the `values.yaml` file to update the configuration):
+    * Upgrade (the upgrade can be either modifying the `chart-version` to upgrade to the latest chart version, or editing the `values.yaml` file to update the configuration):
 
         {{< copyable "shell-regular" >}}
 
@@ -334,7 +341,7 @@ tidb-ctl schema in mysql
 
 4. Use Helm chart offline
 
-    If the server cannot access the Internet, you cannot install the TiDB Operator or other applications through configuring the Helm repository. In this case, you have to download the Helm charts required during the cluster installation on a server or computer that has Internet access, and then upload them to the server.
+    If the server cannot access the Internet, you cannot install TiDB Operator or other applications through configuring the Helm repository. In this case, you have to download the Helm charts required during the cluster installation on a server or computer that has Internet access, and then upload them to the server.
     
     Execute the following commands to download the charts required during the cluster installation:
 
