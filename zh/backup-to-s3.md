@@ -58,7 +58,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       namespace: test1
     spec:
       from:
-        host: ${tidb_host}
+        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -103,7 +103,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       namespace: test1
     spec:
       from:
-        host: ${tidb_host}
+        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -148,7 +148,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     spec:
       backupType: full
       from:
-        host: ${tidb_host}
+        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -194,7 +194,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       backupType: full
       serviceAccount: tidb-backup-manager
       from:
-        host: ${tidb_host}
+        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -337,7 +337,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       schedule: "*/2 * * * *"
       backupTemplate:
         from:
-          host: ${tidb_host}
+          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret
@@ -387,7 +387,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       schedule: "*/2 * * * *"
       backupTemplate:
         from:
-          host: ${tidb_host}
+          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret
@@ -436,7 +436,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       schedule: "*/2 * * * *"
       backupTemplate:
         from:
-          host: ${tidb_host}
+          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret
@@ -486,7 +486,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       serviceAccount: tidb-backup-manager
       backupTemplate:
         from:
-          host: ${tidb_host}
+          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret

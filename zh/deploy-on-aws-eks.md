@@ -269,6 +269,14 @@ region = us-west-21
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
     ```
 
+4. 查看 TiDB 集群启动状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} get pods -n ${namespace}
+    ```
+
 ### 为 TiDB 服务 LoadBalancer 开启 Cross-Zone Load Balancing
 
 由于 AWS Network Load Balancer (NLB) [问题](https://github.com/kubernetes/kubernetes/issues/82595)，为 TiDB 服务创建的 NLB 无法自动开启 Cross-Zone Load Balancing，请参考以下步骤手动开启：
