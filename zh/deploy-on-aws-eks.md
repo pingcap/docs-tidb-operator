@@ -276,6 +276,22 @@ region = us-west-21
     ```shell
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} get pods -n ${namespace}
     ```
+   
+    当所有 pods 都处于 Running 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
+    
+    ```
+    NAME                              READY   STATUS    RESTARTS   AGE
+    tidb-discovery-5cb8474d89-n8cxk   1/1     Running   0          47h
+    tidb-monitor-6fbcc68669-dsjlc     3/3     Running   0          47h
+    tidb-pd-0                         1/1     Running   0          47h
+    tidb-pd-1                         1/1     Running   0          46h
+    tidb-tidb-0                       2/2     Running   0          47h
+    tidb-tidb-1                       2/2     Running   0          46h
+    tidb-tikv-0                       1/1     Running   0          47h
+    tidb-tikv-1                       1/1     Running   0          47h
+    tidb-tikv-2                       1/1     Running   0          47h
+    tidb-tikv-3                       1/1     Running   0          46h
+    ```
 
 ### 为 TiDB 服务 LoadBalancer 开启 Cross-Zone Load Balancing
 
