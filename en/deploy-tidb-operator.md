@@ -19,7 +19,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
 * [Helm](https://helm.sh) version >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797)
 
-## Deploy Kubernetes Cluster
+## Deploy Kubernetes cluster
 
 TiDB Operator runs in Kubernetes cluster. You can refer to [the document of how to set up Kubernetes](https://kubernetes.io/docs/setup/) to set up a Kubernetes cluster. Make sure that the Kubernetes version is v1.12 or higher. If you want to deploy a very simple Kubernetes cluster for testing purposes, consult the [Get Started](get-started.md) document.
 
@@ -49,7 +49,7 @@ TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/crd.yaml
 ```
 
-If the server cannot access the network, you need to download the `crd.yaml` file on the the machine which can access network before installing:
+If the server cannot access the Internet, you need to download the `crd.yaml` file on a machine with Internet access before installing:
 
 {{< copyable "shell-regular" >}}
 
@@ -79,9 +79,9 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 ### Installation
 
-After various custom resource types mentioned above are created, the you can install TiDB Operator on your Kubernetes cluster. There are two installation methods: online and offline installation of TiDB Operator.
+After the various CRDs above are created, you can install TiDB Operator on your Kubernetes cluster. There are two installation methods: online and offline.
 
-#### TiDB Operator Online Installation
+#### Online installation
 
 1. Get the `values.yaml` file of the `tidb-operator` chart you want to install.
 
@@ -100,7 +100,7 @@ After various custom resource types mentioned above are created, the you can ins
 
     TiDB Operator will use the `k8s.gcr.io/kube-scheduler` image. If you cannot download the image, you can modify the `scheduler.kubeSchedulerImageName` in the `${HOME}/tidb-operator/values-tidb-operator.yaml` file to `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`.
 
-    Other items such as `limits`, `requests` and `replicas`, please modify as needed.
+    You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
 3. Install TiDB Operator.
 
@@ -113,7 +113,7 @@ After various custom resource types mentioned above are created, the you can ins
 
 4. Upgrade TiDB Operator
 
-    If you need to upgrade the TiDB Operator, please modify the `${HOME}/tidb-operator/values-tidb-operator.yaml` file, and then execute the following command to upgrade:
+    If you need to upgrade the TiDB Operator, modify the `${HOME}/tidb-operator/values-tidb-operator.yaml` file, and then execute the following command to upgrade:
 
     {{< copyable "shell-regular" >}}
 
@@ -121,13 +121,13 @@ After various custom resource types mentioned above are created, the you can ins
     helm upgrade tidb-operator pingcap/tidb-operator -f  ${HOME}/tidb-operator/values-tidb-operator.yaml
     ```
 
-#### TiDB Operator Offline Installation
+#### Offline installation
 
-You need to install TiDB Operator offline by the following steps if your server cannot access the network:
+If your server cannot access the Internet, install TiDB Operator offline by the following steps:
 
-1. Download `tidb-operator` chart
+1. Download the `tidb-operator` chart
 
-    If there is no external network on the server, you cannot configure the Helm repo to install TiDB Operator components and other applications. At this time, you need to download the chart file needed for cluster installation on a machine with an external network, and then copy it to the server.
+    If the server has no access to the Internet, you cannot configure the Helm repository to install the TiDB Operator component and other applications. At this time, you need to download the chart file needed for cluster installation on a machine with Internet access, and then copy it to the server.
 
     Use the following command to download the `tidb-operator` chart file:
 
@@ -145,9 +145,9 @@ You need to install TiDB Operator offline by the following steps if your server 
     tar zxvf tidb-operator.v1.1.0.tgz
     ```
 
-2. Download Docker Images Used by TiDB Operator
+2. Download the Docker images used by TiDB Operator
 
-    If the server does not have an external network, you need to download and upload all Docker images used by TiDB Operator on the machine with an external network to the server, and then use `docker load` to install the Docker image on the server.
+    If the server has no access to the Internet, you need to download all Docker images used by TiDB Operator on a machine with Internet access and upload them to the server, and then use `docker load` to install the Docker image on the server.
 
     The Docker images used by TiDB Operator are:
 
@@ -161,9 +161,9 @@ You need to install TiDB Operator offline by the following steps if your server 
     k8s.gcr.io/kube-scheduler:v1.16.9
     ```
 
-    Among them, `k8s.gcr.io/kube-scheduler:v1.16.9` should be consistent with the version of your Kubernetes cluster, you don’t need to download it separately.
+    Among them, `k8s.gcr.io/kube-scheduler:v1.16.9` should be consistent with the version of your Kubernetes cluster. You do not need to download it separately.
 
-    Next download all these images with the following command:
+    Next, download all these images using the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -192,7 +192,7 @@ You need to install TiDB Operator offline by the following steps if your server 
 
 3. Configure TiDB Operator
 
-    TiDB Operator embeds a `kube-scheduler` to implement a custom scheduler. Please modify the `./tidb-operator/values.yaml` file to configure the Docker image name and version of this built-in `kube-scheduler` component, For example, the image used by `kube-scheduler` in your Kubernetes cluster is `k8s.gcr.io/kube-scheduler:v1.16.9`, please set `./tidb-operator/values.yaml` like this:
+    TiDB Operator embeds a `kube-scheduler` to implement a custom scheduler. To configure the Docker image's name and version of this built-in `kube-scheduler` component, modify the `./tidb-operator/values.yaml` file. For example, if `kube-scheduler` in your Kubernetes cluster uses the image `k8s.gcr.io/kube-scheduler:v1.16.9`, set `./tidb-operator/values.yaml` as follows:
 
     ```shell
     ...
@@ -213,11 +213,11 @@ You need to install TiDB Operator offline by the following steps if your server 
     ...
     ```
 
-    Other items such as `limits`, `requests` and `replicas`, please modify as needed.
+    You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
 4. Install TiDB Operator
 
-    Install TiDB Operator via the following instruction:
+    Install TiDB Operator using the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -227,7 +227,7 @@ You need to install TiDB Operator offline by the following steps if your server 
 
 5. Upgrade TiDB Operator
 
-    If you need to upgrade the TiDB Operator, please modify the `./tidb-operator/values.yaml` file, and then execute the following command to upgrade:
+    If you need to upgrade TiDB Operator, modify the `./tidb-operator/values.yaml` file, and then execute the following command to upgrade:
 
     {{< copyable "shell-regular" >}}
 
