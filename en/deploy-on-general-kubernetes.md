@@ -44,9 +44,9 @@ After you configure TiDB cluster, deploy the TiDB cluster by the following steps
     >
     > It is recommended to organize configurations for a TiDB cluster under a directory of `cluster_name` and save it as `${cluster_name}/tidb-cluster.yaml`.
 
-    If the server does not have an external network, you need to download and upload the Docker image used by the TiDB cluster to the server on a machine with an external network, and then use `docker load` to install the Docker image on the server.
+    If the server does not have an external network, you need to download the Docker image used by the TiDB cluster on a machine with Internet access and upload it to the server, and then use `docker load` to install the Docker image on the server.
 
-    Deploying a TiDB cluster will use the following Docker images (assuming the version of the TiDB cluster is v4.0.0):
+    To deploy a TiDB cluster, you need the following Docker images (assuming the version of the TiDB cluster is v4.0.0):
 
     ```shell
     pingcap/pd:v4.0.0
@@ -62,7 +62,7 @@ After you configure TiDB cluster, deploy the TiDB cluster by the following steps
     busybox:1.26.2
     ```
 
-    Next download all these images with the following command:
+    Next, download all these images with the following command:
 
     {{< copyable "shell-regular" >}}
 

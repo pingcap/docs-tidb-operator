@@ -76,7 +76,7 @@ The above command automatically creates an initialized Job. This Job tries to se
 
 After the initialization, the Pod state becomes `Completed`. If you log in via MySQL client later, you need to specify the password created by the Job.
 
-If the server does not have an external network, you need to download and upload the Docker image used for cluster initialization on a machine with an external network and upload it to the server, and then use `docker load` to install the Docker image on the server.
+If the server does not have an external network, you need to download the Docker image used for cluster initialization on a machine with an external network and upload it to the server, and then use `docker load` to install the Docker image on the server.
 
 The following Docker images are used to initialize a TiDB cluster:
 
@@ -86,7 +86,7 @@ The following Docker images are used to initialize a TiDB cluster:
 tnir/mysqlclient:latest
 ```
 
-Next download all these images with the following command:
+Next, download all these images with the following command:
 
 {{< copyable "shell-regular" >}}
 

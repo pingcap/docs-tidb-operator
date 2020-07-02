@@ -66,4 +66,4 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 
 To [add TiFlash component to an existing TiDB cluster](https://pingcap.com/docs/stable/tiflash/deploy-tiflash/#add-tiflash-component-to-an-existing-tidb-cluster), `replication.enable-placement-rules` should be set to `true` in PD. After you add the TiFlash configuration in TidbCluster by taking the above steps, TiDB Operator will automatically configure `replication.enable-placement-rules: "true"` in PD.
 
-If the server does not have an external network, please refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) download and upload the used Docker image on the machine with an external network and upload it to the server.
+If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
