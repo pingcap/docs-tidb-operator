@@ -220,6 +220,10 @@ You can use the `terraform output` command to get the output again.
 
         Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
 
+        > **Warning:**
+        >
+        > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
+
     * To deploy TiCDC, configure `spec.ticdc` in `db.yaml` as follows:
 
         ```yaml
@@ -488,6 +492,10 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
     ```shell
     helm ls
     ```
+
+> **Note:**
+>
+> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Monitor
 
