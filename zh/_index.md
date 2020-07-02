@@ -29,9 +29,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 <NavColumn>
 <ColumnTitle>快速上手</ColumnTitle>
 
-- [kind](deploy-tidb-from-kubernetes-kind.md)
-- [GKE](deploy-tidb-from-kubernetes-gke.md)
-- [Minikube](deploy-tidb-from-kubernetes-minikube.md)
+- [快速上手](get-started.md) 使用 kind, Minikube 和 Google Cloud Shell
 
 </NavColumn>
 
