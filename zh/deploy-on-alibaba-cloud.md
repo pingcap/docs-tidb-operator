@@ -214,7 +214,7 @@ category: how-to
 
     根据实际情况修改 `replicas`。
 
-    值得注意的是，如果需要部署企业版的 tidb/pd/tikv/tiflash/ticdc，需要将 db.yaml 中 spec 下面的 `spec.<tidb/pd/tikv/tiflash/ticdc>` 的 baseImage 项加上 "-enterprise"
+    值得注意的是，如果需要部署企业版的 TiDB/PD/TiKV/TiFlash/TiCDC，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`。
 
     例如:
 

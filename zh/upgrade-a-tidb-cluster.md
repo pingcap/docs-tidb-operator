@@ -47,7 +47,7 @@ category: how-to
 
 > **注意：**
 >
-> 如果需要升级到企业版，需要在 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` 末尾加上 `-enterprise`
+> 如果需要升级到企业版，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`。
 >
 > 例如将 `spec.pd.baseImage` 从 `pingcap/pd` 修改为 `pingcap/pd-enterprise`
 
@@ -103,7 +103,7 @@ kubectl annotate --overwrite tc ${cluster_name} -n ${namespace} tidb.pingcap.com
 
 > **注意：**
 >
-> 如果需要升级到企业版，需要在 `<tidb/tikv/pd>.image` 的值改为企业版镜像
+> 如果需要升级到企业版，需要把 `<tidb/tikv/pd>.image` 的值改为企业版镜像
 >
 > 例如将 `pd.image` 从 `pingcap/pd:v4.0.0` 修改为 `pingcap/pd-enterprise:v4.0.0`
 

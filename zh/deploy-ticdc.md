@@ -35,7 +35,7 @@ category: how-to
         replicas: 3
     ```
 
-   值得注意的是，如果需要部署企业版的 ticdc，需要将 db.yaml 中 spec 下面的 `spec.ticdc` 的 baseImage 项加上 "-enterprise" 
+   值得注意的是，如果需要部署企业版的 TiCDC，需要将 db.yaml 中 `spec.ticdc.baseImage` 配置为企业版镜像，格式为 `pingcap/ticdc-enterprise`。
 
    例如:
 

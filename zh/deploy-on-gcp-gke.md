@@ -180,7 +180,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
     参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-cluster-using-tidbcluster.md)完成 CR 文件配置。
 
-    值得注意的是，如果需要部署企业版的 tidb/pd/tikv，需要将 db.yaml 中 spec 下面的 tidb/pd/tikv 的 baseImage 项加上 "-enterprise"
+    值得注意的是，如果需要部署企业版的 TiDB/PD/TiKV，需要将 db.yaml 中 `spec.<tidb/pd/tikv>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv>-enterprise`。
 
     例如:
 
