@@ -219,20 +219,6 @@ region = us-west-21
 
     根据实际情况修改 `replicas`、`storageClaims[].resources.requests.storage`、`storageClassName`。
 
-    值得注意的是，如果需要部署企业版的 tidb/pd/tikv/tiflash，需要将 db.yaml 中 spec 下面的 tidb/pd/tikv/tiflash 的 baseImage 项加上 "-enterprise" 
-
-    例如:
-
-    ```yaml
-    spec:
-      ...
-      pd:
-        baseImage: pingcap/pd-enterprise
-      ...
-      tikv:
-        baseImage: pingcap/tikv-enterprise
-    ```
-
     > **警告：**
     >
     > 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
@@ -242,7 +228,7 @@ region = us-west-21
     ```yaml
     spec:
       ...
-      tiflash:
+      ticdc:
         baseImage: pingcap/ticdc
         nodeSelector:
           dedicated: CLUSTER_NAME-cdc
@@ -255,6 +241,20 @@ region = us-west-21
     ```
 
     根据实际情况修改 `replicas`。
+
+    值得注意的是，如果需要部署企业版的 tidb/pd/tikv/tiflash/ticdc，需要将 db.yaml 中 spec 下面的 `spec.<tidb/pd/tikv/tiflash/ticdc>` 的 baseImage 项加上 "-enterprise"
+
+    例如:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
 
     > **注意：**
     >
