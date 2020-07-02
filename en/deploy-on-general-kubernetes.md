@@ -2,6 +2,7 @@
 title: Deploy TiDB on General Kubernetes
 summary: Learn how to deploy a TiDB cluster on general Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/']
 ---
 
 # Deploy TiDB on General Kubernetes
@@ -58,3 +59,7 @@ Different clusters can be in the same or different `namespace`, which is based o
 ## Initialize TiDB cluster
 
 If you want to initialize your cluster after deployment, refer to [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md).
+
+> **Note:**
+>
+> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).

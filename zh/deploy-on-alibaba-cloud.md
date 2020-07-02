@@ -191,6 +191,10 @@ category: how-to
 
     根据实际情况修改 `replicas`、`storageClaims[].resources.requests.storage`、`storageClassName`。
 
+    > **警告：**
+    >
+    > 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
+
     如果要部署 TiCDC，可以在 db.yaml 中配置 `spec.ticdc`，例如：
 
     ```yaml
@@ -254,6 +258,10 @@ mysql -h ${tidb_lb_ip} -P 4000 -u root
 ```
 
 `tidb_lb_ip` 为 TiDB Service 的 LoadBalancer IP。
+
+> **注意：**
+>
+> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
 ## 监控
 

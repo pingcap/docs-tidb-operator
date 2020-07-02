@@ -2,6 +2,7 @@
 title: Restore Data into TiDB in Kubernetes
 summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Restore Data into TiDB in Kubernetes
@@ -236,7 +237,7 @@ If the lightning fails to restore data, follow the steps below to do manual inte
 
 4. Get the startup script by running `cat /proc/1/cmdline`.
 
-5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/v3.0/how-to/troubleshoot/tidb-lightning#tidb-lightning-troubleshooting).
+5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/stable/troubleshoot-tidb-lightning/).
 
 ## Destroy TiDB Lightning
 
