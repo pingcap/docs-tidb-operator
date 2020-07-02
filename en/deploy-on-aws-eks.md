@@ -122,7 +122,7 @@ The EKS deployment scripts provide two options:
     cp prod.tfvars terraform.tfvars
     ```
 
-Besides the setups mentioned above, you can modify `terraform.tfvars` to set the value of variables and configure the cluster as needed. See the configurable variables and their descriptions in `variables.tf`.
+In addition to the setups mentioned above, you can also modify `terraform.tfvars` to set the value of variables and configure the cluster as needed. See the configurable variables and their descriptions in `variables.tf`.
 
 The following is an example of how to configure the EKS cluster name, the TiDB cluster name, the TiDB Operator version, and the number of PD, TiKV and TiDB nodes:
 
