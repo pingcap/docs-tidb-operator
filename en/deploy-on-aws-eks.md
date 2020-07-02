@@ -89,41 +89,40 @@ cd tidb-operator/deploy/aws
 The EKS deployment scripts provide two options:
 
 * Deploy a cluster for demo or quick experience
-  
 
-  The demo deployment creates a new VPC, a t2.micro instance as the bastion host and an EKS cluster with the following Amazon EC2 instances as worker nodes:
+    The demo deployment creates a new VPC, a t2.micro instance as the bastion host and an EKS cluster with the following Amazon EC2 instances as worker nodes:
+    
+    * 1 c5.large instance for PD
+    * 3 c5d.large instances for TiKV
+    * 1 c5.large instance for TiDB
+    * 1 c5.large instance for monitor
 
-  * 1 c5.large instance for PD
-  * 3 c5d.large instances for TiKV
-  * 1 c5.large instance for TiDB
-  * 1 c5.large instance for monitor
+    To use the demo setup, run the following command:
 
-  To use the demo setup, plesae use the following command:
+    {{< copyable "shell-regular" >}}
 
-  {{< copyable "shell-regular" >}}
+    ``` shell
+    cp demo.tfvars terraform.tfvars
+    ```
 
-  ``` shell
-  cp demo.tfvars terraform.tfvars
-  ```
+* Deploy a cluster for the production environment
 
-* Deploy a cluster for production environment
+    The production setup creates a new VPC, a t2.micro instance as the bastion host and an EKS cluster with the following Amazon EC2 instances as worker nodes:
 
-  The production setup creates a new VPC, a t2.micro instance as the bastion host and an EKS cluster with the following Amazon EC2 instances as worker nodes:
+    * 3 c5.xlarge instances for PD
+    * 3 i3.4xlarge instances for TiKV
+    * 2 c5.2xlarge instances for TiDB
+    * 1 c5.2xlarge instances for monitor
 
-  * 3 c5.xlarge instances for PD
-  * 3 i3.4xlarge instances for TiKV
-  * 2 c5.2xlarge instances for TiDB
-  * 1 c5.2xlarge instances for monitor
+    To use the production setup, run the following command:
 
-  To use the production setup, plesae use the following command:
+    {{< copyable "shell-regular" >}}
 
-  {{< copyable "shell-regular" >}}
+    ``` shell
+    cp prod.tfvars terraform.tfvars
+    ```
 
-  ``` shell
-  cp prod.tfvars terraform.tfvars
-  ```
-
-Beside the setups mentioned above, you can modify `terraform.tfvars` to set the value of variables and configure the cluster as needed. See the variables that can be set and their descriptions in `variables.tf`.
+Besides the setups mentioned above, you can modify `terraform.tfvars` to set the value of variables and configure the cluster as needed. See the configurable variables and their descriptions in `variables.tf`.
 
 The following is an example of how to configure the EKS cluster name, the TiDB cluster name, the TiDB Operator version, and the number of PD, TiKV and TiDB nodes:
 
