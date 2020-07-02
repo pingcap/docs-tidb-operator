@@ -41,6 +41,16 @@ spec:
       storageClassName: local-storage
 ```
 
+值得注意的是，如果需要部署企业版的 tiflash，需要将 db.yaml 中 spec 下面的 tiflash 的 baseImage 项加上 "-enterprise" 
+
+例如:
+
+```yaml
+spec:
+  tiflash:
+    baseImage: pingcap/tiflash-enterprise
+```
+
 TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多项，每一项可以分别配置 `storage reqeust` 和 `storageClassName`，例如：
 
 ```yaml
