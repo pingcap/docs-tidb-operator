@@ -141,11 +141,11 @@ tidb-ctl schema in mysql
 
 [Helm](https://helm.sh/) is a package management tool for Kubernetes. Make sure your Helm version >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797). The installation steps are as follows:
 
-### Install Helm Client
+### Install the Helm client
 
-Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install Helm client.
+Refer to [Helm official documentation](https://v2.helm.sh/docs/using_helm/#installing-helm) to install the Helm client.
 
-If the server does not have an external network, you need to download the Helm client on a machine with an external network, and then copy it to the server. Here is an example of installing the Helm client `2.16.7`:
+If the server does not have access to the Internet, you need to download the Helm client on a machine with Internet access, and then copy it to the server. Here is an example of installing the Helm client `2.16.7`:
 
 {{< copyable "shell-regular" >}}
 
@@ -154,7 +154,7 @@ wget https://get.helm.sh/helm-v2.16.7-linux-amd64.tar.gz
 tar zxvf helm-v2.16.7-linux-amd64.tar.gz
 ```
 
-After decompression, there are the following files:
+After decompression, you can see the following files:
 
 ```shell
 linux-amd64/
@@ -164,9 +164,9 @@ linux-amd64/helm
 linux-amd64/LICENSE
 ```
 
-Please copy the `linux-amd64/helm` file to the server and place it under the `/usr/local/bin/` directory.
+Copy the `linux-amd64/helm` file to the server and place it under the `/usr/local/bin/` directory.
 
-Then execute `helm verison -c`, if the normal output indicates that the Helm client installation is successful:
+Then execute `helm verison -c`. If the command outputs normally, the Helm client installation is successful:
 
 {{< copyable "shell-regular" >}}
 
@@ -178,13 +178,13 @@ helm version -c
 Client: &version.Version{SemVer:"v2.16.7", GitCommit:"5f2584fd3d35552c4af26036f0c464191287986b", GitTreeState:"clean"}
 ```
 
-### Install Helm Server
+### Install the Helm server
 
 #### Install RBAC
 
-If `RBAC` is not enabled in the Kubernetes cluster, please skip this section and install Tiller directly.
+If `RBAC` is not enabled in the Kubernetes cluster, skip this section and [install Tiller](#install-tiller) directly.
 
-The Helm server is a service called `tiller`, please first install the `RBAC` rules required by `tiller`:
+The Helm server is a service called `tiller`, first install the `RBAC` rules required by `tiller`:
 
 {{< copyable "shell-regular" >}}
 
@@ -192,7 +192,7 @@ The Helm server is a service called `tiller`, please first install the `RBAC` ru
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/tiller-rbac.yaml
 ```
 
-If the server cannot access the network, please download the file `tiller-rbac.yaml` on the machine which can access network:
+If the server cannot access the Internet, download the `tiller-rbac.yaml` file on a machine with Internet access:
 
 {{< copyable "shell-regular" >}}
 
@@ -210,7 +210,7 @@ kubectl apply -f tiller-rbac.yaml
 
 #### Install Tiller
 
-The Helm server is a service called `tiller`, which runs as a pod in the Kubernetes cluster. Use the following command to install `tiller`:
+The Helm server is a service called `tiller`, which runs as a pod in the Kubernetes cluster. To install `tiller`, run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -218,7 +218,7 @@ The Helm server is a service called `tiller`, which runs as a pod in the Kuberne
 helm init --service-account=tiller --upgrade
 ```
 
-The image which is used by Pod `tiller` is `gcr.io/kubernetes-helm/tiller:v2.16.7`. If your server cannot access the gcr.io, you can try to use mirror registry:
+The image used by Pod `tiller` is `gcr.io/kubernetes-helm/tiller:v2.16.7`. If your server cannot access `gcr.io`, you can try to use the mirror registry:
 
 {{< copyable "shell-regular" >}}
 
@@ -226,7 +226,7 @@ The image which is used by Pod `tiller` is `gcr.io/kubernetes-helm/tiller:v2.16.
 helm init --service-account=tiller --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -Eo 'v[0-9]\.[0-9]+\.[0-9]+')
 ```
 
-If the server cannot access network, you need to download the Docker image `tiller` firstly on the machine which can access the network:
+If the server cannot access the Internet, you need to download the Docker image used by `tiller` on a machine which can access the Internet:
 
 {{< copyable "shell-regular" >}}
 
@@ -235,7 +235,7 @@ docker pull gcr.io/kubernetes-helm/tiller:v2.16.7
 docker save -o tiller-v2.16.7.tar gcr.io/kubernetes-helm/tiller:v2.16.7
 ```
 
-Copy the file `tiller-v2.16.7.tar` to the server，and use the command `docker load` to load the image:
+Copy the file `tiller-v2.16.7.tar` to the server, and use the command `docker load` to load the image:
 
 {{< copyable "shell-regular" >}}
 
@@ -243,7 +243,7 @@ Copy the file `tiller-v2.16.7.tar` to the server，and use the command `docker l
 docker load -i tiller-v2.16.7.tar
 ```
 
-Finally install `tiller` with the following command and confirm that `tiller` Pod enters Running state:
+Finally, install `tiller` with the following command and confirm that the `tiller` Pod is in the running state:
 
 {{< copyable "shell-regular" >}}
 
@@ -252,7 +252,7 @@ helm init --service-account=tiller --skip-refresh
 kubectl get po -n kube-system -l name=tiller
 ```
 
-#### Configure Helm repo
+#### Configure the Helm repo
 
 3. Configure the Helm Repository
 
@@ -309,7 +309,7 @@ kubectl get po -n kube-system -l name=tiller
 
     {{< copyable "shell-regular" >}}
 
-#### Helm Common Operations
+#### Helm common operations
 
 Common Helm operations include `helm install`, `helm upgrade`, and `helm del`. Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
 
@@ -385,9 +385,9 @@ helm del --purge ${release_name}
 
 For more information on Helm, refer to [Helm Documentation](https://helm.sh/docs/).
 
-#### Use Helm chart Offline
+#### Use Helm chart offline
 
-If there is no external network on the server, you cannot configure the Helm repo to install TiDB Operator components and other applications. At this time, you need to download the chart file needed for cluster installation on a machine with an external network, and then copy it to the server.
+If the server has no Internet access, you cannot configure the Helm repo to install the TiDB Operator component and other applications. At this time, you need to download the chart file needed for cluster installation on a machine with Internet access, and then copy it to the server.
 
 Use the following command to download the chart file required for cluster installation:
 
@@ -399,7 +399,7 @@ wget http://charts.pingcap.org/tidb-drainer-v1.1.0.tgz
 wget http://charts.pingcap.org/tidb-lightning-v1.1.0.tgz
 ```
 
-Copy these chart files to the server and decompress them, you can use these charts to install the corresponding components through the `helm install` command, taking `tidb-operator` as an example:
+Copy these chart files to the server and decompress them. You can use these charts to install the corresponding components by running the `helm install` command. Take `tidb-operator` as an example:
 
 {{< copyable "shell-regular" >}}
 
