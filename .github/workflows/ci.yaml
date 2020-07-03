@@ -12,12 +12,12 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '12'
-    - name: Verify links
-      run: ./hack/verify-links.sh
-    - name: Verify link anchors
-      run: ./hack/verify-link-anchors.sh
     - name: Markdown lint
       uses: avto-dev/markdown-lint@v1
       with:
         config: './.markdownlint.yaml'
         args: '.'
+    - name: Verify links
+      run: ./hack/verify-links.sh
+    - name: Verify link anchors
+      run: ./hack/verify-link-anchors.sh 
