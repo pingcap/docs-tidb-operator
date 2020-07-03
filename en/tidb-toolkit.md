@@ -254,24 +254,22 @@ kubectl get po -n kube-system -l name=tiller
 
 #### Configure the Helm repo
 
-3. Configure the Helm Repository
+Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
 
-    Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
+* `tidb-operator`: used to deploy TiDB Operator;
+* `tidb-cluster`: used to deploy TiDB clusters;
+* `tidb-backup`: used to back up or restore TiDB clusters;
+* `tidb-lightning`: used to import data into a TiDB cluster;
+* `tidb-drainer`: used to deploy TiDB Drainer;
+* `tikv-importer`: used to deploy TiKV Importer.
 
-    * `tidb-operator`: used to deploy TiDB Operator;
-    * `tidb-cluster`: used to deploy TiDB clusters;
-    * `tidb-backup`: used to back up or restore TiDB clusters;
-    * `tidb-lightning`: used to import data into a TiDB cluster;
-    * `tidb-drainer`: used to deploy TiDB Drainer;
-    * `tikv-importer`: used to deploy TiKV Importer.
+These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
 
-    These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm repo add pingcap https://charts.pingcap.org/
-    ```
+```shell
+helm repo add pingcap https://charts.pingcap.org/
+```
 
 - If the Helm version < 2.16.0:
 
@@ -323,65 +321,31 @@ helm ls
 
 When performing a deployment or upgrade, you must specify the chart name (`chart-name`) and the name for the deployed application (`release-name`). You can also specify one or multiple `values.yaml` files to configure charts. In addition, you can use `chart-version` to specify the chart version (by default the latest GA is used). The steps in command line are as follows:
 
-    Before the operations of installation, upgrade, deletion, and so on, you can execute `helm ls` to view the applications that have been installed in the cluster:
+* Install:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm ls
+    helm install ${chart_name} --name=${release_name} --namespace=${namespace} --version=${chart_version} -f ${values_file}
     ```
 
-    When performing a deployment or upgrade, you must specify the chart name (`chart-name`) and the name for the deployed application (`release-name`). You can also specify one or multiple `values.yaml` files to configure charts. In addition, you can specify `chart-version` by using the `--version` flag to choose a specific chart version (by default the latest GA is used). The steps in command line are as follows:
-
-    * Install:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        helm install ${chart_name} --name=${release_name} --namespace=${namespace} --version=${chart_version} -f ${values_file}
-        ```
-
-    * Upgrade (the upgrade can be either modifying the `chart-version` to upgrade to the latest chart version, or editing the `values.yaml` file to update the configuration):
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        helm upgrade ${release_name} ${chart_name} --version=${chart_version} -f ${values_file}
-        ```
-
-    * Delete:
-    
-        To delete the application deployed by Helm, run the following command:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        helm del --purge ${release_name}
-        ```
-
-    For more information on Helm, refer to [Helm Documentation](https://helm.sh/docs/).
-
-4. Use Helm chart offline
-
-    If the server cannot access the Internet, you cannot install TiDB Operator or other applications through configuring the Helm repository. In this case, you have to download the Helm charts required during the cluster installation on a server or computer that has Internet access, and then upload them to the server.
-    
-    Execute the following commands to download the charts required during the cluster installation:
+* Upgrade (the upgrade can be either modifying the `chart-version` to upgrade to the latest chart version, or editing the `values.yaml` file to update the configuration):
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.1.0.tgz && \
-    wget http://charts.pingcap.org/tidb-drainer-v1.1.0.tgz && \
-    wget http://charts.pingcap.org/tidb-lightning-v1.1.0.tgz
+    helm upgrade ${release_name} ${chart_name} --version=${chart_version} -f ${values_file}
     ```
 
-Finally, to delete the application deployed by Helm, run the following command:
+* Delete:
 
-{{< copyable "shell-regular" >}}
+    To delete the application deployed by Helm, run the following command:
 
-```shell
-helm del --purge ${release_name}
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm del --purge ${release_name}
+    ```
 
 For more information on Helm, refer to [Helm Documentation](https://helm.sh/docs/).
 
