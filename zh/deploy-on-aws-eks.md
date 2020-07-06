@@ -346,14 +346,10 @@ module example-cluster {
 
 你可以通过 `kubectl` 获取新集群的监控系统地址与 TiDB 地址。假如你希望让 Terraform 脚本输出这些地址，可以通过在 `outputs.tf` 中增加相关的输出项实现：
 
-<<<<<<< HEAD
 ```hcl
 output "example-cluster_tidb-hostname" {
   value = module.example-cluster.tidb_hostname
 }
-=======
-最后，参考[部署 TiDB 集群和监控](#部署-tidb-集群和监控) 部署新集群及其监控。
->>>>>>> 384922e... Add scripts to verify link anchors (#530)
 
 output "example-cluster_monitor-hostname" {
   value = module.example-cluster.monitor_hostname

@@ -72,16 +72,9 @@ After the deployment is complete, see the following documents to use, operate, a
 
 + [Access the TiDB Cluster](access-tidb.md)
 + [Scale TiDB Cluster](scale-a-tidb-cluster.md)
-<<<<<<< HEAD
 + [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-cluster)
 + [Change the Configuration of TiDB Cluster](upgrade-a-tidb-cluster.md#change-the-configuration-of-tidb-cluster)
 + [Backup and Restore using Helm Charts](backup-and-restore-using-helm-charts.md)
-=======
-+ [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-using-tidbcluster-cr)
-+ [Change the Configuration of TiDB Cluster](configure-a-tidb-cluster.md)
-+ [Back up a TiDB Cluster](backup-to-aws-s3-using-br.md)
-+ [Restore a TiDB Cluster](restore-from-aws-s3-using-br.md)
->>>>>>> 384922e... Add scripts to verify link anchors (#530)
 + [Automatic Failover](use-auto-failover.md)
 + [Monitor a TiDB Cluster in Kubernetes](monitor-a-tidb-cluster.md)
 + [Collect TiDB Logs in Kubernetes](collect-tidb-logs.md)
