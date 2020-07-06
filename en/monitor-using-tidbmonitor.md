@@ -2,6 +2,7 @@
 title: Monitor a TiDB Cluster Using TidbMonitor
 summary: This document introduces how to monitor a TiDB cluster using TidbMonitor.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
 ---
 
 # Monitor a TiDB Cluster Using TidbMonitor
@@ -67,6 +68,8 @@ You can also quickly deploy TidbMonitor using the following command:
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n ${namespace}
 ```
+
+If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
 
 After the deployment is finished, you can check whether TidbMonitor is started by executing the `kubectl get pod` command:
 
@@ -289,4 +292,4 @@ type: kubernetes.io/tls
 
 ## References
 
-For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](api-references.md).
+For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md).

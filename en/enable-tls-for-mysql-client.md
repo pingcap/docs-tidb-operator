@@ -2,6 +2,7 @@
 title: Enable TLS for the MySQL Client
 summary: Learn how to enable TLS for MySQL client of the TiDB cluster on Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 ---
 
 # Enable TLS for the MySQL Client
@@ -645,4 +646,4 @@ kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpat
 mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
-Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/v3.1/how-to/secure/enable-tls-clients/#check-whether-the-current-connection-uses-encryption).
+Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/stable/enable-tls-between-clients-and-servers/#check-whether-the-current-connection-uses-encryption).

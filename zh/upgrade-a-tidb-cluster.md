@@ -47,7 +47,7 @@ category: how-to
 
 ### 强制升级 TiDB 集群
 
-如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和[更新 TiDB 集群配置](#更新-tidb-集群配置)这三种操作都无法成功执行。
+如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和更新 TiDB 集群配置这三种操作都无法成功执行。
 
 这种情况下，可使用 `force-upgrade` 强制升级集群以恢复集群功能。
 首先为集群设置 `annotation`：
@@ -97,7 +97,7 @@ kubectl annotate --overwrite tc ${cluster_name} -n ${namespace} tidb.pingcap.com
 
 ### 强制升级 TiDB 集群
 
-如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和[更新 TiDB 集群配置](#更新-tidb-集群配置)这三种操作都无法成功执行。
+如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和更新 TiDB 集群配置这三种操作都无法成功执行。
 
 这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。
 首先为集群设置 `annotation`：
@@ -125,3 +125,7 @@ helm upgrade ${release_name} pingcap/tidb-cluster -f values.yaml --version=${cha
 > ```shell
 > kubectl annotate tc ${release_name} -n ${namespace} tidb.pingcap.com/force-upgrade-
 > ```
+
+> **注意：**
+>
+> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。

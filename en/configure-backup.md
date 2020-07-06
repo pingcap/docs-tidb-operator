@@ -2,6 +2,7 @@
 title: Configuration of tidb-backup Chart
 summary: Learn the configurations of the tidb-backup chart.
 category: reference
+aliases: ['/docs/tidb-in-kubernetes/dev/configure-backup/']
 ---
 
 # Configuration of tidb-backup Chart
@@ -61,7 +62,7 @@ category: reference
 
 ### `restoreOptions`
 
-- The optional parameter specified to [`loader`](https://pingcap.com/docs/v3.0/reference/tools/loader) used when backing up data
+- The optional parameter specified to [`loader`](https://pingcap.com/docs/stable/reference/tools/loader) used when backing up data
 - Default: "-t 16"
 
 ### `gcp.bucket`

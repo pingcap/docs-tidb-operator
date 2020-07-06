@@ -1,5 +1,5 @@
 ---
-title: 在 AWS EKS 上部署 TiDB 
+title: 在 AWS EKS 上部署 TiDB
 summary: 介绍如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集群。
 category: how-to
 ---
@@ -218,6 +218,10 @@ region = us-west-21
     ```
 
     根据实际情况修改 `replicas`、`storageClaims[].resources.requests.storage`、`storageClassName`。
+
+    > **警告：**
+    >
+    > 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
 
     如果要部署 TiCDC，可以在 db.yaml 中配置 `spec.ticdc`，例如：
 
@@ -490,6 +494,10 @@ mysql -h ${tidb_lb} -P 4000 -u root
     helm ls
     ```
 
+> **注意：**
+>
+> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
+
 ## Grafana 监控
 
 你可以通过浏览器访问 `<monitor-lb>:3000` 地址查看 Grafana 监控指标。
@@ -567,7 +575,7 @@ module example-cluster {
 
 修改完成后，执行 `terraform init` 和 `terraform apply` 为集群创建节点池。
 
-最后，参考[部署 TiDB 集群和监控](#部署-TiDB-集群和监控) 部署新集群及其监控。
+最后，参考[部署 TiDB 集群和监控](#部署-tidb-集群和监控) 部署新集群及其监控。
 
 ## 销毁集群
 
@@ -688,7 +696,7 @@ module "tidb-cluster-b" {
   providers = {
     helm = "helm.eks"
   }
-  
+
   cluster_name = "tidb-cluster-b"
   eks          = module.tidb-operator.eks
   ssh_key_name = module.key-pair.key_name

@@ -2,6 +2,7 @@
 title: Configure a TiDB Cluster in Kubernetes
 summary: Learn how to configure a TiDB cluster in Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/configure-a-tidb-cluster/']
 ---
 
 # Configure a TiDB Cluster in Kubernetes
@@ -24,7 +25,7 @@ If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management 
 
 ## Configure TiDB deployment
 
-To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/tiflash/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md).
+To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/tiflash/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md).
 
 > **Note:**
 >
@@ -112,6 +113,10 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
+> **Warning:**
+>
+> Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
+
 #### Enable TiCDC
 
 If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBCluster` CR. For example:
@@ -155,7 +160,7 @@ spec:
       cpu: 1
 ```
 
-For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/v3.1/reference/configuration/tidb-server/configuration-file/).
+For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
 
 > **Note:**
 >
@@ -177,8 +182,8 @@ spec:
   tikv:
     image: pingcap.com/tikv:v4.0.0
     config:
-      grpc-concurrenc: 4
-      sync-log: true
+      log-level: "info"
+      slow-log-threshold: "1s"
     replicas: 1
     requests:
       cpu: 2
@@ -206,8 +211,8 @@ spec:
   pd:
     image: pingcap.com/pd:v4.0.0
     config:
-      format: "format"
-      disable-timestamp: false
+      lease: 3
+      enable-prevote: true
 ```
 
 For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
