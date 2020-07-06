@@ -35,7 +35,11 @@ When you perform a rolling update to a TiDB cluster in Kubernetes, the Pod is sh
 
 By default, changes to the configuration files are applied to the TiDB cluster automatically through a rolling update. You can disable this feature by setting the `enableConfigMapRollout` variable to `false` in the `values.yaml` file, if so, the change of configuration will be loaded until the server being restarted.
 
+<<<<<<< HEAD
 You can change the configuration of TiDB cluster through the following steps:
+=======
+If the PD cluster is unavailable due to factors such as PD configuration error, PD image tag error and NodeAffinity, then [scaling the TiDB cluster](scale-a-tidb-cluster.md), [upgrading the TiDB cluster](#upgrade-the-version-of-tidb-using-tidbcluster-cr) and changing the TiDB cluster configuration cannot be done successfully.
+>>>>>>> 384922e... Add scripts to verify link anchors (#530)
 
 1. Make sure the `enableConfigMapRollout` feature is not disabled explicitly in the `values.yaml` file.
 2. Change the configurations in the `values.yaml` file as needed.
@@ -61,7 +65,7 @@ You can change the configuration of TiDB cluster through the following steps:
 
 ## Force an upgrade of TiDB cluster
 
-If the PD cluster is unavailable due to factors such as PD configuration error, PD image tag error and NodeAffinity, then [scaling the TiDB cluster](scale-a-tidb-cluster.md), [upgrading the TiDB cluster](#upgrade-the-version-of-tidb-cluster) and [changing the TiDB cluster configuration](#change-the-configuration-of-tidb-cluster) cannot be done successfully.
+If the PD cluster is unavailable due to factors such as PD configuration error, PD image tag error and NodeAffinity, then [scaling the TiDB cluster](scale-a-tidb-cluster.md), [upgrading the TiDB cluster](#upgrade-the-version-of-tidb-using-helm) and changing the TiDB cluster configuration cannot be done successfully.
 
 In this case, you can use `force-upgrade` (the version of TiDB Operator must be later than v1.0.0-beta.3) to force an upgrade of the cluster to recover cluster functionality.
 

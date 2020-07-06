@@ -38,7 +38,11 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs-cn/v3.1
 
 ## 更新 TiDB 集群配置
 
+<<<<<<< HEAD
 默认条件下，修改配置文件不会自动应用到 TiDB 集群中，只有在实例重启时，才会重新加载新的配置文件。
+=======
+如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和更新 TiDB 集群配置这三种操作都无法成功执行。
+>>>>>>> 384922e... Add scripts to verify link anchors (#530)
 
 您可以开启配置文件自动更新特性，在每次配置文件更新时，自动执行滚动更新，将修改后的配置应用到集群中。操作步骤如下：
 
@@ -68,7 +72,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/upgrade/tidb-cluster/','/docs-cn/v3.1
 
 ## 强制升级 TiDB 集群
 
-如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和[更新 TiDB 集群配置](#更新-tidb-集群配置)这三种操作都无法成功执行。
+如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和更新 TiDB 集群配置这三种操作都无法成功执行。
 
 这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。
 首先为集群设置 `annotation`：
