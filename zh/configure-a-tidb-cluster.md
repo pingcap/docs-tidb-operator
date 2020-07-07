@@ -267,6 +267,7 @@ spec:
       gcTTL: 86400
       logLevel: info
 ```
+
 获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://pingcap.com/docs-cn/stable/ticdc/deploy-ticdc/#手动在原有-tidb-集群上新增-ticdc-组件)。
 
 ## 高可用配置
