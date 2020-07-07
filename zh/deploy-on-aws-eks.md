@@ -228,7 +228,7 @@ region = us-west-21
     ```yaml
     spec:
       ...
-      tiflash:
+      ticdc:
         baseImage: pingcap/ticdc
         nodeSelector:
           dedicated: CLUSTER_NAME-cdc
@@ -241,6 +241,20 @@ region = us-west-21
     ```
 
     根据实际情况修改 `replicas`。
+
+    值得注意的是，如果需要部署企业版的 TiDB/PD/TiKV/TiFlash/TiCDC，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`。
+
+    例如:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
 
     > **注意：**
     >
@@ -267,6 +281,30 @@ region = us-west-21
     ```shell
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db.yaml -n ${namespace} &&
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} create -f db-monitor.yaml -n ${namespace}
+    ```
+
+4. 查看 TiDB 集群启动状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_${eks_name} get pods -n ${namespace}
+    ```
+   
+    当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
+    
+    ```
+    NAME                              READY   STATUS    RESTARTS   AGE
+    tidb-discovery-5cb8474d89-n8cxk   1/1     Running   0          47h
+    tidb-monitor-6fbcc68669-dsjlc     3/3     Running   0          47h
+    tidb-pd-0                         1/1     Running   0          47h
+    tidb-pd-1                         1/1     Running   0          46h
+    tidb-tidb-0                       2/2     Running   0          47h
+    tidb-tidb-1                       2/2     Running   0          46h
+    tidb-tikv-0                       1/1     Running   0          47h
+    tidb-tikv-1                       1/1     Running   0          47h
+    tidb-tikv-2                       1/1     Running   0          47h
+    tidb-tikv-3                       1/1     Running   0          46h
     ```
 
 ### 为 TiDB 服务 LoadBalancer 开启 Cross-Zone Load Balancing
@@ -575,7 +613,7 @@ module example-cluster {
 
 修改完成后，执行 `terraform init` 和 `terraform apply` 为集群创建节点池。
 
-最后，参考[部署 TiDB 集群和监控](#部署-TiDB-集群和监控) 部署新集群及其监控。
+最后，参考[部署 TiDB 集群和监控](#部署-tidb-集群和监控) 部署新集群及其监控。
 
 ## 销毁集群
 
