@@ -17,10 +17,10 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '
 
 1. [创建 Kubernetes 集群](#创建-kubernetes-集群)
 2. [部署 TiDB Operator](#部署-tidb-operator)
-3. [部署 TiDB Cluster](#部署-tidb-cluster)
+3. [部署 TiDB Cluster](#部署-tidb-集群)
 4. [连接 TiDB](#连接-tidb)
 
-如果你已经有一个 Kubernetes 集群，可直接[部署 TiDB Operator](#deploy-tidb-operator)。
+如果你已经有一个 Kubernetes 集群，可直接[部署 TiDB Operator](#部署-tidb-operator)。
 
 如果你想做生产部署，参考以下文档：
 
@@ -30,7 +30,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '
     - [阿里云部署文档](deploy-on-alibaba-cloud.md)
 - 其他 Kubernetes 集群
     - 熟悉[集群环境要求](prerequisites.md)
-    - 参考[本地 PV 配置](configure-storage-class.md#local-pv-configuration) 配置本地存储，以便让 TiKV 使用低延迟本地存储
+    - 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置) 配置本地存储，以便让 TiKV 使用低延迟本地存储
     - 参考[在 Kubernetes 部署 TiDB Operator](deploy-tidb-operator.md) 部署 TiDB Operator 
     - 参考[在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md) 部署 TiDB 集群
 
@@ -776,7 +776,7 @@ Kubernetes 可以直接编辑已部署的资源，或给已部署的资源应用
     Check Table Before Drop: false
     ```
 
-## 销毁 TiDB Cluster
+## 销毁 TiDB 集群
 
 完成测试后，您可能希望销毁 TiDB 集群：
 
@@ -829,4 +829,4 @@ Kubernetes 可以直接编辑已部署的资源，或给已部署的资源应用
     pgrep -lfa kubectl
     ```
 
-查看更多关于销毁由 TiDB Operator 管理的 TiDB 集群，可以查阅[销毁 TiDB 集群](#destroy-a-tidb-cluster.md)。
+查看更多关于销毁由 TiDB Operator 管理的 TiDB 集群，可以查阅[销毁 TiDB 集群](#销毁-tidb-集群)。
