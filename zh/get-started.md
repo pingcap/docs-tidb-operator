@@ -2,12 +2,12 @@
 title: Kubernetes 上使用 TiDB Operator 快速上手
 summary: 介绍如何在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群
 category: how-to
-aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/zh/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/zh/tidb-in-kubernetes/v1.1/deploy-tidb-from-kubernetes-gke/','/zh/tidb-in-kubernetes/v1.1/deploy-tidb-from-kubernetes-minikube']
 ---
 
 # Kubernetes 上使用 TiDB Operator 快速上手
 
-本文档介绍了如何创建一个简单的 Kubernetes 集群，并部署 TiDB Operator 对 TiDB Cluster 部署和监控。
+本文档介绍了如何创建一个简单的 Kubernetes 集群，部署 TiDB Operator，并使用 TiDB Operator 部署 TiDB 集群。
 
 > **警告：**
 > 
@@ -17,12 +17,12 @@ aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/do
 
 1. [创建 Kubernetes 集群](#创建-kubernetes-集群)
 2. [部署 TiDB Operator](#部署-tidb-operator)
-3. [部署 TiDB Cluster](#部署-tidB-cluster)
+3. [部署 TiDB Cluster](#部署-tidb-cluster)
 4. [连接 TiDB](#连接-tidb)
 
 如果你已经有一个 Kubernetes 集群，可直接[部署 TiDB Operator](#deploy-tidb-operator)。
 
-如果你想做生成部署，参考一下文档：
+如果你想做生产部署，参考以下文档：
 
 - 公有云
     - [AWS 部署文档](deploy-on-aws-eks.md)
@@ -36,12 +36,12 @@ aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/do
 
 ## 创建 Kubernetes 集群
 
-本节介绍了两种创建简单 Kubernetes 集群的方法，可用于测试在 TiDB Operator 下运行的 TiDB 集群。 选择最适合您的环境的方案。
+本节介绍了两种创建简单 Kubernetes 集群的方法，可用于测试在 TiDB Operator 下运行的 TiDB 集群。选择最适合你的环境的方案。
 
-- [使用 kind](#使用-kind-创建-Kubernetes-集群) (在 Docker 中运行 Kubernetes)
-- [使用 minikube](#使用-minikube-创建-Kubernetes-集群) (在虚拟机中运行 Kubernetes)
+- [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes)
+- [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
-您也可以使用 Google Cloud Shell 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB Cluster ：
+你也可以使用 Google Cloud Shell 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群：
 
 - [打开 Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
 
@@ -49,7 +49,7 @@ aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/do
 
 本节介绍如何使用 kind 部署 Kubernetes 集群。
 
-[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具。它是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，您可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags 。默认使用当前 kind 支持的最新版本。
+[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具。它是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，你可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
 > **警告：**
 > 
@@ -66,7 +66,7 @@ aliases: ['/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/do
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 kind create cluster
 ```
 
@@ -119,8 +119,7 @@ kind delete cluster
 
 本节介绍如何使用 minikube 部署 Kubernetes 集群。
 
-[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以在虚拟机中创建一个
-Kubernetes 集群。它可工作在 macOS, Linux 和 Windows 。
+[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以在虚拟机中创建一个 Kubernetes 集群，可在 macOS, Linux 和 Windows 上运行。
 
 > **警告：**
 > 
@@ -128,8 +127,8 @@ Kubernetes 集群。它可工作在 macOS, Linux 和 Windows 。
 
 部署前，请确保满足以下要求：
 
-- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/): 版本 1.0.0+
-    - minikube 需要安装一个兼容的 hypervisor, 可在其官方安装教程了解更多。
+- [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)：版本 1.0.0+
+    - Minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): 版本 >= 1.12
 
 > **注意：**
@@ -192,7 +191,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 > **注意：**
 >
-> 由于 Minikube 通过虚拟机（默认）运行，`127.0.0.1` 是虚拟机本身，有些情况下你可能想要使用你的主机的实际 IP。
+> 由于 Minikube（默认）通过虚拟机运行，`127.0.0.1` 是虚拟机本身，因此，有些情况下可能需要将其修改为你的主机的实际 IP。
 
 参考 [Minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
@@ -228,11 +227,11 @@ minikube delete
 开始之前，确保以下要求已满足：
 
 - 可以使用 `kubectl` 访问的 Kubernetes 集群
-- [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= Helm 2.16.5) or 最新的 Helm 3 稳定版
+- [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= Helm 2.16.5) 或者最新的 Helm 3 稳定版
 
 1. 安装 TiDB Operator CRDs
 
-    TiDB Operator 包含许多实现 TiDB 群集不同组件的自定义资源定义（CRD），执行以下命令安装：
+    TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型 (CRD)。执行以下命令安装 CRD 到集群中：
 
     {{< copyable "shell-regular" >}}
 
@@ -296,6 +295,7 @@ minikube delete
 
         ```
         "pingcap" has been added to your repositories  
+        ```
 
      3. 为 TiDB Operator 创建一个命名空间
 
@@ -309,6 +309,7 @@ minikube delete
 
         ```
         namespace/tidb-admin created
+        ```
 
      4. 安装 TiDB Operator
 
@@ -430,9 +431,9 @@ minikube delete
 
         当所有的 pods 都处于 Running 状态时，可进行下一步操作。
     
-## 部署 TiDB Cluster
+## 部署 TiDB 集群
 
-1. 部署 TiDB Cluster
+1. 部署 TiDB 集群
 
     {{< copyable "shell-regular" >}}
 
@@ -459,7 +460,7 @@ minikube delete
     tidbcluster.pingcap.com/basic created
     ```
 
-2. 部署 TiDB Cluster 监控
+2. 部署 TiDB 集群监控
 
     {{< copyable "shell-regular" >}}
 
@@ -500,7 +501,7 @@ minikube delete
     basic-pd-0                        1/1     Running           0          29s
     ```
 
-    等待所有组件 pods 都启动，看到每种类型（`-pd`，`-tikv` 和 `-tidb`）都处于 Running 状态时，您可以按 Ctrl-C 返回命令行，然后开始[连接到 TiDB 集群](#连接-tidb)
+    等待所有组件 pods 都启动，看到每种类型（`-pd`，`-tikv` 和 `-tidb`）都处于 Running 状态时，您可以按 Ctrl-C 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb)。
 
     期望输出：
 
@@ -521,7 +522,7 @@ minikube delete
 
     > **注意：**
     >
-    > + 当使用 MySQL Client 8.0 时，必须显示指定 `--default-auth=mysql_native_password` 参数如果用户账户有配置密码，因为 `mysql_native_password` [不在是默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
+    > + 当使用 MySQL Client 8.0 时，如果用户账户有配置密码，必须显示指定 `--default-auth=mysql_native_password` 参数，因为 `mysql_native_password` [不再是默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
 
 2. 转发 4000 端口
 
@@ -689,19 +690,19 @@ minikube delete
     kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
     ```
 
-    Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果你是非本机（比如远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。
+    Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。
 
     默认用户名和密码都是 "admin" 。
 
-    了解更多对 TiDB Operator 部署 TiDB 集群监控，可以查阅[使用 TidbMonitor 监控 TiDB 集群](monitor-using-tidbmonitor.md)文档。
+    了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅[使用 TidbMonitor 监控 TiDB 集群](monitor-using-tidbmonitor.md)。
 
-## 升级 TiDB Cluster
+## 升级 TiDB 集群
 
 TiDB Operator 还可简化 TiDB Cluster 的滚动升级。在此示例中，我们更新 TiDB 版本到 "nightly" 版本。
 
-Kubernetes 直接直接编辑或给已部署的资源应用补丁。
+Kubernetes 可以直接编辑已部署的资源，或给已部署的资源应用补丁。
 
-`kubectl edit` 在交互式文本编辑器中打开资源，管理员可以在其中进行更改并保存。 如果更改有效，它们将被提交到集群。如果它们无效，它们将会被拒绝并显示一条错误消息。 请注意，目前尚不对所有字段进行验证。 可以保存即使被接受也不一定会生效。
+`kubectl edit` 在交互式文本编辑器中打开资源，管理员可以在其中进行更改并保存。如果更改有效，它们将被提交到集群。如果更改无效，它们将会被拒绝并显示一条错误消息。请注意，目前尚不对所有字段进行验证。保存某些更改后，即使更改被接受也不一定会对集群生效。
 
 `kubectl patch` 可直接应用补丁。Kubernetes 支持几种不同的补丁策略，每种策略有不同的功能、格式等。可参考 [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) 了解更多细节。
 
@@ -721,7 +722,7 @@ Kubernetes 直接直接编辑或给已部署的资源应用补丁。
 
 2. 等待所有 pods 重启
 
-    执行此命令以了解集群升级组件时的进度。会看到 pods 进入 Terminating 然后 ContainerCreating 最后重新进入 Running 状态。
+    执行此命令以了解集群升级组件时的进度。你可以看到某些 pods 进入 Terminating 状态后，又回到 ContainerCreating，最后重新进入 Running 状态。
 
     {{< copyable "shell-regular" >}}
 

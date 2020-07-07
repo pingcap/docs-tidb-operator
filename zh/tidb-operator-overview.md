@@ -26,7 +26,9 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + 测试环境：
 
-    - [快速上手](get-started.md) 使用 kind, Minikube 或 Google Cloud Shell
+    - [kind](get-started.md#使用-kind-创建-Kubernetes-集群)
+    - [Minikube](get-started.md#使用-minikube-创建-Kubernetes-集群)
+    - [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
 
 + 生产环境：
 
