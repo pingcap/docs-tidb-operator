@@ -186,7 +186,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # checksum: true
         # sendCredToTikv: true
       from:
-        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+        host: ${tidb_host}
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -230,7 +230,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # timeAgo: ${time}
         # checksum: true
       from:
-        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+        host: ${tidb_host}
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -272,7 +272,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # timeAgo: ${time}
         # checksum: true
       from:
-        host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+        host: ${tidb_host}
         port: ${tidb_port}
         user: ${tidb_user}
         secretName: backup-demo1-tidb-secret
@@ -318,7 +318,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
@@ -388,7 +388,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           # checksum: true
           # sendCredToTikv: true
         from:
-          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+          host: ${tidb_host}
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret
@@ -437,7 +437,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           # timeAgo: ${time}
           # checksum: true
         from:
-          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+          host: ${tidb_host}
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret
@@ -484,7 +484,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
           # timeAgo: ${time}
           # checksum: true
         from:
-          host: ${tidb_host} # ${tidb_host} 为需要导出的 TiDB 的 service name，例如 basic-tidb
+          host: ${tidb_host}
           port: ${tidb_port}
           user: ${tidb_user}
           secretName: backup-demo1-tidb-secret

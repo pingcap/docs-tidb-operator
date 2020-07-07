@@ -277,7 +277,7 @@ region = us-west-21
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} get pods -n ${namespace}
     ```
    
-    当所有 pods 都处于 Running 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
+    当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
     
     ```
     NAME                              READY   STATUS    RESTARTS   AGE
