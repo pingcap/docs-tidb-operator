@@ -47,7 +47,7 @@ category: how-to
 
 > **注意：**
 >
-> 如果需要升级到企业版，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`。
+> 如果需要升级到企业版，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`。
 >
 > 例如将 `spec.pd.baseImage` 从 `pingcap/pd` 修改为 `pingcap/pd-enterprise`。
 
