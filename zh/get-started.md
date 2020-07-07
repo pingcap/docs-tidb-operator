@@ -133,7 +133,7 @@ kind delete cluster
 
 > **注意：**
 >
-> - 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [kind](deploy-tidb-from-kubernetes-kind.md)。
+> - 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [kind](get-started.md#使用-kind-创建-kubernetes-集群)。
 
 安装完 Minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
 
