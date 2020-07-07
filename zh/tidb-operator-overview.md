@@ -36,7 +36,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
     - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](deploy-tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](deploy-on-general-kubernetes.md)来部署你的 TiDB 集群。对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](prerequisites.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](configure-storage-class.md#本地-pv-配置)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
 
-在任何环境上部署前，都可以参考 [TiDB 集群配置](configure-cluster-using-tidbcluster.md)来自定义 TiDB 配置。
+在任何环境上部署前，都可以参考 [TiDB 集群配置](configure-a-tidb-cluster.md)来自定义 TiDB 配置。
 
 部署完成后，你可以参考下面的文档进行 Kubernetes 上 TiDB 集群的使用和运维：
 
