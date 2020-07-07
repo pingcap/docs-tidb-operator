@@ -684,7 +684,7 @@ minikube delete
 
 4. 载入 Grafana 面板
 
-    像上面对 TiDB 4000 端口转发一样，我们可以转发 Grafana 端口，以便本地访问 Grafana 面板。
+    像上面对 TiDB 4000 端口转发一样，可以转发 Grafana 端口，以便本地访问 Grafana 面板。
 
     {{< copyable "shell-regular" >}}
 
@@ -700,7 +700,7 @@ minikube delete
 
 ## 升级 TiDB 集群
 
-TiDB Operator 还可简化 TiDB Cluster 的滚动升级。在此示例中，我们更新 TiDB 版本到 "nightly" 版本。
+TiDB Operator 还可简化 TiDB 集群的滚动升级。以下示例更新 TiDB 版本到 "nightly" 版本。
 
 Kubernetes 可以直接编辑已部署的资源，或给已部署的资源应用补丁。
 
@@ -831,4 +831,4 @@ Kubernetes 可以直接编辑已部署的资源，或给已部署的资源应用
     pgrep -lfa kubectl
     ```
 
-查看更多关于销毁由 TiDB Operator 管理的 TiDB 集群，可以查阅[销毁 TiDB 集群](#销毁-tidb-集群)。
+查看更多相关信息，可以查阅[销毁 TiDB 集群](#销毁-tidb-集群)。
