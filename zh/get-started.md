@@ -296,7 +296,6 @@ minikube delete
         ```
         "pingcap" has been added to your repositories  
         ```
-        ```
 
      3. 为 TiDB Operator 创建一个命名空间
 
@@ -310,7 +309,6 @@ minikube delete
 
         ```
         namespace/tidb-admin created
-        ```
         ```
 
      4. 安装 TiDB Operator
