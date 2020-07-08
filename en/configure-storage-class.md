@@ -2,7 +2,7 @@
 title: Persistent Storage Class Configuration in Kubernetes
 summary: Learn how to configure local PVs and network PVs.
 category: reference
-aliases: ['/docs/dev/tidb-in-kubernetes/reference/configuration/local-pv/']
+aliases: ['/docs/tidb-in-kubernetes/dev/configure-storage-class/','/docs/dev/tidb-in-kubernetes/reference/configuration/local-pv/']
 ---
 
 # Persistent Storage Class Configuration in Kubernetes
@@ -21,7 +21,7 @@ PVs are created automatically by the system administrator or volume provisioner.
 
 > **Warning:**
 >
-> Do not delete a PV in any case unless you are familiar with the underlying volume provisioner. Deleting a volume can cause orphaned volumes and unexpected behavior.
+> Do not delete a PV in any case unless you are familiar with the underlying volume provisioner. Deleting a PV manually can cause orphaned volumes and unexpected behavior.
 
 ## Recommended storage classes for TiDB clusters
 

@@ -2,11 +2,12 @@
 title: Deploy TiDB Binlog
 summary: Learn how to deploy TiDB Binlog for a TiDB cluster in Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 ---
 
 # Deploy TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/v3.0/reference/tidb-binlog/overview) of a TiDB cluster in Kubernetes.
+This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/stable/tidb-binlog/tidb-binlog-overview/) of a TiDB cluster in Kubernetes.
 
 ## Prerequisites
 
@@ -199,6 +200,8 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     ```shell
     helm install pingcap/tidb-drainer --name=${cluster_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
+
+    If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
 
     > **Note:**
     >

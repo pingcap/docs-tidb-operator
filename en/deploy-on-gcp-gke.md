@@ -2,6 +2,7 @@
 title: Deploy TiDB on GCP GKE
 summary: Learn how to deploy a TiDB cluster on GCP GKE.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 ---
 
 # Deploy TiDB on GCP GKE
@@ -178,7 +179,7 @@ This section describes how to deploy a TiDB cluster.
     sed 's/CLUSTER_NAME/${cluster_name}/g' db-monitor.yaml.example > db-monitor.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](api-references.md) and [Configure Cluster using TidbCluster](configure-a-tidb-cluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure Cluster using TidbCluster](configure-a-tidb-cluster.md).
 
     > **Note:**
     >
@@ -205,6 +206,10 @@ This section describes how to deploy a TiDB cluster.
     kubectl --kubeconfig credentials/kubeconfig_${gke_name} create -f db.yaml -n ${namespace}
     kubectl --kubeconfig credentials/kubeconfig_${gke_name} create -f db-monitor.yaml -n ${namespace}
     ```
+
+> **Note:**
+>
+> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Access the TiDB database
 

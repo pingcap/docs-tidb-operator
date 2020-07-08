@@ -2,6 +2,7 @@
 title: Deploy TiDB on Google Cloud
 summary: Learn how to quickly deploy a TiDB cluster on Google Cloud using Kubernetes.
 category: how-to
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 ---
 
 # Deploy TiDB on Google Cloud
@@ -185,6 +186,10 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 > This command contains some special characters which cannot be auto-populated in the google cloud shell tutorial, so you might need to copy and paste it into your console manually.
 
 Congratulations, you are now up and running with a distributed TiDB database compatible with MySQL!
+
+> **Note:**
+>
+> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Scale out the TiDB cluster
 

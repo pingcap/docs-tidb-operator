@@ -41,6 +41,16 @@ spec:
       storageClassName: local-storage
 ```
 
+值得注意的是，如果需要部署企业版的 TiFlash，需要将 db.yaml 中 `spec.tiflash.baseImage` 配置为企业版镜像，格式为 `pingcap/tiflash-enterprise`。
+
+例如:
+
+```yaml
+spec:
+  tiflash:
+    baseImage: pingcap/tiflash-enterprise
+```
+
 TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多项，每一项可以分别配置 `storage reqeust` 和 `storageClassName`，例如：
 
 ```yaml
@@ -58,6 +68,10 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
           storage: 100Gi
       storageClassName: local-storage
 ```
+
+> **警告：**
+>
+> 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
 
 [新增部署 TiFlash](https://pingcap.com/docs-cn/stable/reference/tiflash/deploy/#%E5%9C%A8%E5%8E%9F%E6%9C%89-tidb-%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%96%B0%E5%A2%9E-tiflash-%E7%BB%84%E4%BB%B6) 需要 PD 配置 `replication.enable-placement-rules: "true"`，通过上述步骤在 TidbCluster 中增加 TiFlash 配置后，TiDB Operator 会自动为 PD 配置 `replication.enable-placement-rules: "true"`。
 
