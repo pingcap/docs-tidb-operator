@@ -247,4 +247,4 @@ From the above example, you can see that the `backupSchedule` configuration cons
 
 > **Note:**
 >
-> TiDB Operator will create a PVC. This PVC is used for both Ad-hoc full backup and scheduled full backup. The backup data will be stored in PV first, and then uploaded to remote storage. If you want to delete this PVC after the backup is completed, you can refer to [Delete Resource](cheat-sheet.md#delete-resources) to delete the backup Pod first, and then delete the PVC.
+> TiDB Operator creates a PVC. This PVC is used for both ad-hoc full backup and scheduled full backup. The backup data is stored in PV first, and then uploaded to remote storage. If you want to delete this PVC after the backup is completed, you can refer to [Delete Resource](cheat-sheet.md#delete-resources) to delete the backup Pod first, and then delete the PVC.
