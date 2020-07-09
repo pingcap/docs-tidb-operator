@@ -332,7 +332,8 @@ Before proceeding, make sure the following requirements are satisfied:
             ```
             helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.2 \
               --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.2 \
-              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.2
+              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.2 \
+              --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
             ```
 
             Expected output:
@@ -375,7 +376,6 @@ Before proceeding, make sure the following requirements are satisfied:
             tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
             tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
 
-
             NOTES:
             Make sure tidb-operator components are running:
 
@@ -397,7 +397,8 @@ Before proceeding, make sure the following requirements are satisfied:
             ```
             helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.2 \
               --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.2 \
-              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.2
+              --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.2 \
+              --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
             ```
 
             Expected output:
