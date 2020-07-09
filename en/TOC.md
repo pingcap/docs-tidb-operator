@@ -58,7 +58,7 @@
   - [Recover Deleted Cluster](recover-deleted-cluster.md)
 - [Import Data](restore-data-using-tidb-lightning.md)
 + Troubleshoot
-  - [Tips](tips.md)
+  - [Troubleshooting Tips](tips.md)
   - [Deployment Failures](deploy-failures.md)
   - [Cluster Exceptions](exceptions.md)
   - [Network Issues](network-issues.md)

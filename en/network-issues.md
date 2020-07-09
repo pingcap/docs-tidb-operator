@@ -12,7 +12,7 @@ This document describes the common network issues of TiDB in Kubernetes and thei
 
 In a TiDB cluster, you can access most Pods by using the Pod's domain name (allocated by the Headless Service). The exception is when TiDB Operator collects the cluster information or issues control commands, it accesses the PD (Placement Driver) cluster using the `service-name` of the PD service.
 
-When you find some network connection issues between Pods from the log or monitoring metrics, or when you find the network connection between Pods might be abnormal according to the problematic condition, you can follow the following process to diagnose and narrow down the problem:
+When you find some network connection issues among Pods from the log or monitoring metrics, or when you find the network connection among Pods might be abnormal according to the problematic condition, follow the following process to diagnose and narrow down the problem:
 
 1. Confirm that the endpoints of the Service and Headless Service are normal:
 
@@ -26,7 +26,7 @@ When you find some network connection issues between Pods from the log or monito
     kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
     ```
 
-    The `ENDPOINTS` field shown in the above command should be a comma-separated list of `cluster_ip:port`. If the field is empty or incorrect, check the health of the Pod and whether `kube-controller-manager` is working properly.
+    The `ENDPOINTS` field shown in the above command must be a comma-separated list of `cluster_ip:port`. If the field is empty or incorrect, check the health of the Pod and whether `kube-controller-manager` is working properly.
 
 2. Enter the Pod's Network Namespace to diagnose network problems:
 
