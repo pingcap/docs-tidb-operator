@@ -79,7 +79,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/local-dind/local-volume-provisioner.yaml
      ```
 
-    If the server have no access to the Internet, you need to download the `local-volume-provisioner.yaml` file on a machine with Internet access and then install it.
+    If the server have no access to the Internet, download the `local-volume-provisioner.yaml` file on a machine with Internet access and then install it.
 
     {{< copyable "shell-regular" >}}
 
@@ -88,7 +88,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
-    `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.3.4` image. If the server does not have access to the Internet, you need to download this Docker image on a machine with Internet access:
+    `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.3.4` image. If the server does not have access to the Internet, download this Docker image on a machine with Internet access:
 
     {{< copyable "shell-regular" >}}
 
@@ -288,7 +288,7 @@ In general, after a PVC is no longer used and deleted, the PV bound to it is rec
 
 ### Delete PV and data
 
-When the reclaim policy of PVs is set to `Retain`, if the data of a PV can be deleted, you can delete this PV and the corresponding data. Strictly take the following steps:
+When the reclaim policy of PVs is set to `Retain`, if you have confirmed that the data of a PV can be deleted, you can delete this PV and the corresponding data by strictly take the following steps:
 
 1. Delete the PVC object corresponding to the PV:
 
