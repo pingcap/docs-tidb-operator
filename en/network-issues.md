@@ -36,7 +36,7 @@ When you find some network connection issues among Pods from the log or monitori
     tkctl debug -n ${namespace} ${pod_name}
     ```
 
-    After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://v1-18.docs.kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
+    After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
 
     {{< copyable "shell-regular" >}}
 
@@ -59,7 +59,7 @@ When you find some network connection issues among Pods from the log or monitori
         {{< copyable "shell-regular" >}}
 
         ```shell
-        telnet ${target_ip} ${target_port}
+        telnet ${TARGET_IP} ${TARGET_PORT}
         ```
 
         If the `telnet` check fails, check whether the port corresponding to the Pod is correctly exposed and whether the port of the application is correctly configured:
@@ -109,21 +109,12 @@ If you cannot access the TiDB service, first check whether the TiDB service is d
 
 If the cluster is successfully deployed, check the network using the following steps:
 
-1. If you cannot access the TiDB service using `NodePort`, try to access the TiDB service using the service domain or `clusterIP` on the node. If the `serviceName` or `clusterIP` works, the network within the Kubernetes cluster is normal. Then the possible issues are as follows:
+1. If you cannot access the TiDB service using `NodePort`, try to access the TiDB service using the `clusterIP` on the node. If the `clusterIP` works, the network within the Kubernetes cluster is normal. Then the possible issues are as follows:
 
     - Network failure exists between the client and the node.
     - Check whether the `externalTrafficPolicy` attribute of the TiDB service is `Local`. If it is `Local`, you must access the client using the IP of the node where the TiDB Pod is located.
 
-2. If you still cannot access the TiDB service using the service domain or `clusterIP`, connect using `<PodIP>:4000` on the TiDB service backend. If the `PodIP` works, you can confirm that the problem is in the connection between the service domain and `PodIP` or between `clusterIP` and `PodIP`. Check the following items:
-
-    - Check whether the DNS service works well.
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get po -n kube-system -l k8s-app=kube-dns
-        dig ${tidb_service_domain}
-        ```
+2. If you still cannot access the TiDB service using the `clusterIP`, connect using `<PodIP>:4000` on the TiDB service backend. If the `PodIP` works, you can confirm that the problem is in the connection between `clusterIP` and `PodIP`. Check the following items:
 
     - Check whether `kube-proxy` on each node is working.
 
@@ -141,7 +132,13 @@ If the cluster is successfully deployed, check the network using the following s
         iptables-save -t nat |grep ${clusterIP}
         ```
 
-    - Check whether the corresponding endpoint is correct.
+    - Check whether the corresponding endpoint is correct:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get endpoints -n ${namespaces} ${cluster_name}-tidb
+        ```
 
 3. If you cannot access the TiDB service even using `PodIP`, the problem is on the Pod level network. Check the following items:
 
