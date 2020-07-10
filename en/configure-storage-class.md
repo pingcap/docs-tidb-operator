@@ -288,7 +288,7 @@ In general, after a PVC is no longer used and deleted, the PV bound to it is rec
 
 ### Delete PV and data
 
-When the reclaim policy of PVs is set to `Retain`, if you have confirmed that the data of a PV can be deleted, you can delete this PV and the corresponding data by strictly take the following steps:
+When the reclaim policy of PVs is set to `Retain`, if you have confirmed that the data of a PV can be deleted, you can delete this PV and the corresponding data by strictly taking the following steps:
 
 1. Delete the PVC object corresponding to the PV:
 
