@@ -9,10 +9,7 @@
   - [简介](tidb-operator-overview.md)
   - [What's New in v1.1](whats-new-in-v1.1.md)
   - [TiDB Operator v1.1 重要注意事项](notes-tidb-operator-v1.1.md)
-+ 快速上手
-  - [kind](deploy-tidb-from-kubernetes-kind.md)
-  - [GKE](deploy-tidb-from-kubernetes-gke.md)
-  - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
++ [快速上手](get-started.md)
 + 部署
   - 部署 TiDB 集群
     - [部署到 AWS EKS](deploy-on-aws-eks.md)
@@ -71,6 +68,7 @@
 - [常见问题](faq.md)
 + 参考
   + 架构
+    - [TiDB Operator 架构](architecture.md)
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)

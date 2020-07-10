@@ -2,6 +2,7 @@
 title: TiDB FAQs in Kubernetes
 summary: Learn about TiDB FAQs in Kubernetes.
 category: FAQ
+aliases: ['/docs/tidb-in-kubernetes/dev/faq/']
 ---
 
 # TiDB FAQs in Kubernetes
@@ -12,14 +13,39 @@ This document collects frequently asked questions (FAQs) about the TiDB cluster 
 
 The default time zone setting for each component container of a TiDB cluster in Kubernetes is UTC. To modify this setting, take the steps below based on your cluster status:
 
-* If it is the first time you deploy the cluster:
+### For the first deployment
 
-    In the `values.yaml` file of the TiDB cluster, modify the `timezone` setting. For example, you can set it to `timezone: Asia/Shanghai` before you deploy the TiDB cluster.
+Configure the `.spec.timezone` attribute in the TidbCluster CR. For example:
 
-* If the cluster is running:
+```shell
+...
+spec:
+  timezone: Asia/Shanghai
+...
+```
 
-    * In the `values.yaml` file of the TiDB cluster, modify `timezone` settings in the `values.yaml` file of the TiDB cluster. For example, you can set it to `timezone: Asia/Shanghai` and then upgrade the TiDB cluster.
-    * Refer to [Time Zone Support](https://pingcap.com/docs/v3.0/how-to/configure/time-zone) to modify TiDB service time zone settings.
+Then deploy the TiDB cluster.
+
+### For a running cluster
+
+If the TiDB cluster is already running, first upgrade the cluster, and then configure it to support the new time zone.
+
+1. Upgrade the TiDB cluster:
+
+    Configure the `.spec.timezone` attribute in the TidbCluster CR. For example:
+
+    ```shell
+    ...
+    spec:
+      timezone: Asia/Shanghai
+    ...
+    ```
+
+    Then upgrade the TiDB cluster.
+
+2. Configure TiDB to support the new time zone:
+    
+    Refer to [Time Zone Support](https://docs.pingcap.com/tidb/v4.0/configure-time-zone) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
 
@@ -46,7 +72,7 @@ In terms of the deployment topology relationship between the TiDB cluster and Ti
 
 TiDB Operator does not yet support automatically orchestrating TiSpark.
 
-If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://pingcap.com/docs/v3.0/reference/tispark/#deploy-tispark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
+If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://pingcap.com/docs/stable/tispark-overview/#deploy-tispark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
 
 To maintain Spark in Kubernetes, refer to [Spark on Kubernetes](http://spark.apache.org/docs/latest/running-on-kubernetes.html).
 
