@@ -26,9 +26,9 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + 测试环境：
 
-    - [kind](deploy-tidb-from-kubernetes-kind.md)：采用 [kind](https://kind.sigs.k8s.io/) 方式在本地 Kubernetes 集群上部署 TiDB 集群；
-    - [Minikube](deploy-tidb-from-kubernetes-minikube.md)：使用 TiDB Operator 在本地 Minikube 环境部署 TiDB 集群；
-    - [GKE](deploy-tidb-from-kubernetes-gke.md)：使用 TiDB Operator 在 GKE 上部署 TiDB 集群。
+    - [kind](get-started.md#使用-kind-创建-kubernetes-集群)
+    - [Minikube](get-started.md#使用-minikube-创建-kubernetes-集群)
+    - [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
 
 + 生产环境：
 
@@ -44,7 +44,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + [访问 TiDB 集群](access-tidb.md)
 + [TiDB 集群扩缩容](scale-a-tidb-cluster.md)
 + [TiDB 集群升级](upgrade-a-tidb-cluster.md#升级-tidb-版本)
-+ [TiDB 集群配置变更](upgrade-a-tidb-cluster.md#更新-tidb-集群配置)
++ [TiDB 集群配置变更](configure-cluster-using-tidbcluster.md)
 + [TiDB 集群备份](backup-to-aws-s3-using-br.md)
 + [TiDB 集群备份恢复](restore-from-aws-s3-using-br.md)
 + [配置 TiDB 集群故障自动转移](use-auto-failover.md)
