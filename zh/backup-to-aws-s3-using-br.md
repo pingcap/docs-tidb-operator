@@ -343,6 +343,12 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 * `wasabi`：Wasabi Object Storage
 * `other`：Any other S3 compatible provider
 
+> **注意：**
+>
+> 在备份开始之前，为了保证 dump 的数据不被 TiKV GC 掉，backup CR 会在备份前[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)到一个较大值 720h。
+>
+> 假如备份过程失败，backup CR 不会自动恢复 `tikv_gc_lifetime`。如果导出失败且希望恢复集群至平时状态，需要参考上文将 `tikv_gc_lifetime` 调回原样（默认是 10m）。
+
 ## 定时全量备份
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
