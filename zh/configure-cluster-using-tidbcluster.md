@@ -54,8 +54,6 @@ spec:
   tikv:
     image: pingcap.com/tikv:v3.1.0
     config:
-      log-level: "info"
-      slow-log-threshold: "1s"
     replicas: 1
     requests:
       cpu: 2
