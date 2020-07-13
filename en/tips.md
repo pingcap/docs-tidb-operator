@@ -1,7 +1,6 @@
 ---
 title: Tips for troubleshooting TiDB in Kubernetes
 summary: Learn the commonly used tips for troubleshooting TiDB in Kubernetes.
-category: troubleshoot
 aliases: ['/tidb-in-kubernetes/stable/troubleshoot','/docs/tidb-in-kubernetes/stable/troubleshoot/','/docs/tidb-in-kubernetes/v1.1/troubleshoot/']
 ---
 
