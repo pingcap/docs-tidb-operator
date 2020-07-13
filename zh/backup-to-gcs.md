@@ -140,6 +140,7 @@ GCS 支持以下几种 bucket ACL 策略：
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
 * `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
 * `.spec.dumpling`：Dumpling 相关的配置，主要有两个字段：一个是 [`options`](https://pingcap.com/docs-cn/stable/dumpling-overview/) 字段，里面可以指定 Dumpling 需要的一些参数；一个是 `tableFilter` 字段，可以指定让 Dumpling 备份符合 [table-filter 规则](https://pingcap.com/docs-cn/stable/table-filter/) 的表。默认情况下 dumpling 这个字段可以不用配置。当不指定 dumpling 的配置时，`options` 和 `tableFilter` 字段的默认值如下：
+* `.spec.storageSize`：备份时存储导出的临时文件的 PVC 的大小，默认为 100 Gi。当 k8s 中 backup 一一对应的 PVC 的 storageSize 小于 spec 设置的 PVC storageSize 时，backup 会报错退出。这时需要删除备份该 PV 的数据，删除该 PVC 再跑 backup job。
 
     ```
     options:

@@ -324,6 +324,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
 * `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
+* `.spec.storageSize`：备份时存储导出的临时文件的 PVC 的大小，默认为 100 Gi。当 k8s 中 backup 一一对应的 PVC 的 storageSize 小于 spec 设置的 PVC storageSize 时，backup 会报错退出。这时需要删除备份该 PV 的数据，删除该 PVC 再跑 backup job。
 
     如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
 
