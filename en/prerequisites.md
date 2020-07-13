@@ -1,7 +1,6 @@
 ---
 title: Prerequisites for TiDB in Kubernetes
 summary: Learn the prerequisites for TiDB in Kubernetes.
-category: how-to
 aliases: ['/docs/tidb-in-kubernetes/v1.0/prerequisites/','/docs/dev/tidb-in-kubernetes/deploy/prerequisites/','/docs/v3.1/tidb-in-kubernetes/deploy/prerequisites/','/docs/v3.0/tidb-in-kubernetes/deploy/prerequisites/']
 ---
 

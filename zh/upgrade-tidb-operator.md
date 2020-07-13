@@ -1,7 +1,6 @@
 ---
 title: 升级 TiDB Operator
 summary: 介绍如何升级 TiDB Operator。
-category: how-to
 aliases: ['/docs-cn/dev/tidb-in-kubernetes/upgrade/tidb-operator/','/docs-cn/v3.1/tidb-in-kubernetes/upgrade/tidb-operator/','/docs-cn/v3.0/tidb-in-kubernetes/upgrade/tidb-operator/']
 ---
 
