@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的 TiDB 集群故障诊断
 summary: 介绍 Kubernetes 上 TiDB 集群的常见故障以及诊断解决方案。
-category: how-to
 aliases: ['/docs-cn/dev/tidb-in-kubernetes/troubleshoot/','/docs-cn/v3.1/tidb-in-kubernetes/troubleshoot/','/docs-cn/v3.0/tidb-in-kubernetes/troubleshoot/']
 ---
 
