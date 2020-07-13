@@ -57,7 +57,7 @@ category: reference
 
 + 备份参数
 + 默认："--chunk-filesize=100"
-+ 为备份数据时使用的 [Mydumper](https://github.com/maxbube/mydumper/blob/master/docs/mydumper_usage.rst#options) 指定额外的运行参数
++ 为备份数据时使用的 [Dumpling](https://pingcap.com/docs-cn/stable/dumpling-overview#dumpling-%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E8%A1%A8) 指定额外的运行参数
 
 ## `restoreOptions`
 
