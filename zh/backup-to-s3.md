@@ -536,3 +536,19 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 > **注意：**
 >
 > TiDB Operator 会创建一个 PVC，这个 PVC 同时用于 Ad-hoc 全量备份和定时全量备份，备份数据会先存储到 PV，然后再上传到远端存储。如果备份完成后想要删掉这个 PVC，可以参考[删除资源](cheat-sheet.md#删除资源)先把备份 Pod 删掉，然后再把 PVC 删掉。
+
+## 删除备份的 backup CR
+
+用户可以通过 `kubectl delete backup ${name} -n ${namespace}` 或 `kubectl delete backupschedule ${name} -n ${namespace}` 来删除对应的全量备份 CR 或定时全量备份 CR。
+
+tidb-operator v1.1.2 及以前版本或者在 v1.1.3 后版本将 `spec.cleanData` 设置为 true 时，operator 在删除 CR 时会同时删除备份出的文件。
+
+如果删除备份出的文件之前用户已手动将其删除，v1.1.2 版之前删除时可能会卡在 `Terminating` 状态。这时需要通过以前指令编辑对应的 backup/backupschedule CR 配置：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl edit backup ${name} -n ${namespace}
+```
+
+在配置项项中删去所有的 `finalizer` 项，再次检查即可发现正常删除。

@@ -517,3 +517,19 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
 + `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
+
+## 删除备份的 backup CR
+
+用户可以通过 `kubectl delete backup ${name} -n ${namespace}` 或 `kubectl delete backupschedule ${name} -n ${namespace}` 来删除对应的全量备份 CR 或定时全量备份 CR。
+
+tidb-operator v1.1.2 及以前版本或者在 v1.1.3 后版本将 `spec.cleanData` 设置为 true 时，operator 在删除 CR 时会同时删除备份出的文件。
+
+如果删除备份出的文件之前用户已手动将其删除，v1.1.2 版之前删除时可能会卡在 `Terminating` 状态。这时需要通过以前指令编辑对应的 backup/backupschedule CR 配置：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl edit backup ${name} -n ${namespace}
+```
+
+在配置项项中删去所有的 `finalizer` 项，再次检查即可发现正常删除。
