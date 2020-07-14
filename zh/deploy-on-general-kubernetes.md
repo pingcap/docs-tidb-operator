@@ -13,7 +13,7 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
 
 ## 部署 TiDB 集群
 
-在部署 TiDB 集群之前，需要先配置 TiDB 集群。 请参阅 [在Kubernetes 中配置 TiDB 群集](configure-a-tidb-cluster.md)。
+在部署 TiDB 集群之前，需要先配置 TiDB 集群。请参阅[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md)。
 
 配置 TiDB 群集后，请按照以下步骤部署 TiDB 群集：
 
