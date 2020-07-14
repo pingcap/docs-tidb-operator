@@ -11,6 +11,7 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
 
 * TiDB Operator [部署](deploy-tidb-operator.md)完成。
 
+<<<<<<< HEAD
 ## 配置 TiDB 集群
 
 参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/basic/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/release-1.1/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)，并保存到文件 `${cluster_name}/tidb-cluster.yaml`。
@@ -115,9 +116,13 @@ spec:
 
 Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD 和 TiKV Pod 个数都减小到 1 个。
 
+=======
+>>>>>>> 76c08b1... zh: refine TiDB cluster configuration (#544)
 ## 部署 TiDB 集群
 
-TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
+在部署 TiDB 集群之前，需要先配置 TiDB 集群。请参阅[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md)。
+
+配置 TiDB 集群后，请按照以下步骤部署 TiDB 集群：
 
 1. 创建 `Namespace`：
 
@@ -129,7 +134,7 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
 
     > **注意：**
     >
-    > `namespace` 是[命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)，可以起一个方便记忆的名字，比如和 `cluster-name` 相同的名称。
+    > `namespace` 是[命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)，可以起一个方便记忆的名字，比如和 `cluster_name` 相同的名称。
 
 2. 部署 TiDB 集群：
     {{< copyable "shell-regular" >}}
@@ -137,6 +142,10 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
     ``` shell
     kubectl apply -f ${cluster_name} -n ${namespace}
     ```
+
+    > **注意：**
+    >
+    > 建议在 `cluster_name` 目录下组织 TiDB 集群的配置，并将其另存为 `${cluster_name}/tidb-cluster.yaml`。默认条件下，修改配置不会自动应用到 TiDB 集群中，只有在 Pod 重启时，才会重新加载新的配置文件。
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
@@ -212,9 +221,9 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
     kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${cluster_name}
     ```
 
-单个 Kubernetes 集群中可以利用 TiDB Operator 部署管理多套 TiDB 集群，重复以上步骤并将 `cluster-name` 替换成不同名字即可。不同集群既可以在相同 `namespace` 中，也可以在不同 `namespace` 中，可根据实际需求进行选择。
+单个 Kubernetes 集群中可以利用 TiDB Operator 部署管理多套 TiDB 集群，重复以上步骤并将 `cluster_name` 替换成不同名字即可。不同集群既可以在相同 `namespace` 中，也可以在不同 `namespace` 中，可根据实际需求进行选择。
 
-### 初始化 TiDB 集群
+## 初始化 TiDB 集群
 
 如果要在部署完 TiDB 集群后做一些初始化工作，参考 [Kubernetes 上的集群初始化配置](initialize-a-cluster.md)进行配置。
 
