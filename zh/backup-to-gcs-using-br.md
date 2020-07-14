@@ -149,7 +149,6 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 * `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
 * `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
-* `.spec.storageSize`：备份时存储导出的临时文件的 PVC 的大小，默认为 100 Gi。当 k8s 中 backup 一一对应的 PVC 的 storageSize 小于 spec 设置的 PVC storageSize 时，backup 会报错退出。这时需要删除备份该 PV 的数据，删除该 PVC 再跑 backup job。
 
     如果 TiDB 集群[已开启 TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
 

@@ -85,11 +85,11 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 * 本地模式：
 
-    本地模式要求 Dumpling 备份数据位于其中一个 Kubernetes 节点上。要启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Dumpling 备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
+    本地模式要求备份工具导出的备份数据位于其中一个 Kubernetes 节点上。要启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
 
 * 远程模式：
 
-    与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将 Dumpling 备份 tarball 文件从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[Amazon S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
+    与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将备份工具备份的 tarball 文件从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[Amazon S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
 
     使用远程模式恢复备份数据的步骤如下：
 
