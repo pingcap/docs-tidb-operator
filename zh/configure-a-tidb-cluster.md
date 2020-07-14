@@ -41,7 +41,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 正常情况下，集群内的各组件应该使用相同版本，所以一般建议配置 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` + `spec.version` 即可。如果需要为不同的组件配置不同的版本，则可以配置 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`。
 
-这些参数的格式：
+相关参数的格式如下：
 
 - `spec.version`，格式为 `imageTag`，例如 `v4.0.0`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
