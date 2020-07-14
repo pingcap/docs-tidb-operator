@@ -15,8 +15,6 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
 
 在部署 TiDB 集群之前，需要先配置 TiDB 集群。请参阅[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md)。
 
-如果要部署 TiDB 集群监控，请参考 TidbMonitor [示例](https://github.com/pingcap/tidb-operator/blob/master/manifests/monitor/tidb-monitor.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbMonitor CR，并保存到文件 `${cluster_name}/tidb-monitor.yaml`。
-
 配置 TiDB 集群后，请按照以下步骤部署 TiDB 集群：
 
 1. 创建 `Namespace`：
