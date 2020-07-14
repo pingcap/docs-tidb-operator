@@ -55,7 +55,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。
 
-演示环境或功能性验证：可以使用网络存储，例如 `ebs`，`nfs` 等。
+对于演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。
 
 > **注意：**
 >
