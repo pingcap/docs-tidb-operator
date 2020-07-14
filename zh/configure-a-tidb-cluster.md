@@ -33,7 +33,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 建议设置 `spec.configUpdateStrategy` 为 `RollingUpdate` 开启配置自动更新特性，在每次配置更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
 
-### Cluster name
+### 集群名称
 
 通过更改 `TiDBCuster` CR 中的 `metadata.name` 来配置集群名称。
 
