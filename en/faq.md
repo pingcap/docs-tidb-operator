@@ -1,7 +1,6 @@
 ---
 title: TiDB FAQs in Kubernetes
 summary: Learn about TiDB FAQs in Kubernetes.
-category: FAQ
 aliases: ['/docs/tidb-in-kubernetes/dev/faq/']
 ---
 
@@ -108,7 +107,7 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
 
 Three possible reasons:
 
-* Insufficient resource or HA Policy causes the Pod stuck in the `Pending` state. Refer to [Troubleshoot TiDB in Kubernetes](troubleshoot.md#the-pod-is-in-the-pending-state) for more details.
+* Insufficient resource or HA Policy causes the Pod stuck in the `Pending` state. Refer to [Deployment Failures](deploy-failures.md#the-pod-is-in-the-pending-state) for more details.
 
 * `taint` is applied to some nodes, which prevents the Pod from being scheduled to these nodes unless the Pod has the matching `toleration`. Refer to [taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) for more details.
 

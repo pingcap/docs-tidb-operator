@@ -1,7 +1,6 @@
 ---
 title: 部署 TiDB Binlog
 summary: 了解如何在 Kubernetes 上部署 TiDB 集群的 TiDB Binlog。
-category: how-to
 ---
 
 # 部署 TiDB Binlog
@@ -39,6 +38,16 @@ spec
 ```
 
 按照集群实际情况修改 `version`、`replicas`、`storageClassName`、`requests.storage` 等配置。
+
+值得注意的是，如果需要部署企业版的 Pump，需要将 上述 yaml 中 `spec.pump.baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
+
+例如:
+
+```yaml
+spec:
+ pump:
+   baseImage: pingcap/tidb-binlog-enterprise
+```
 
 如果在生产环境中开启 TiDB Binlog，建议为 TiDB 与 Pump 组件设置亲和性和反亲和性。如果在内网测试环境中尝试使用开启 TiDB Binlog，可以跳过此步。
 
@@ -164,6 +173,7 @@ spec
     ```yaml
     clusterName: example-tidb
     clusterVersion: v3.0.0
+    baseImage: pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
     config: |
@@ -185,6 +195,17 @@ spec
     `clusterName` 和 `clusterVersion` 必须匹配所需的源 TiDB 集群。
 
     有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](configure-tidb-binlog-drainer.md)。
+
+    值得注意的是，如果需要部署企业版的 Drainer，需要将 上述 yaml 中 `baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
+
+    例如:
+
+    ```yaml
+    ...
+    clusterVersion: v4.0.2
+    baseImage: pingcap/tidb-binlog-enterprise
+    ...
+    ```
 
 4. 部署 drainer：
 

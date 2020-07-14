@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 工具备份 TiDB 集群到 GCS
 summary: 介绍如何使用 BR 工具备份 TiDB 集群到 Google Cloud Storage (GCS)。
-category: how-to
 ---
 
 # 使用 BR 工具备份 TiDB 集群到 GCS
@@ -142,7 +141,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 更多 `Backup` CR 字段的详细解释：
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。

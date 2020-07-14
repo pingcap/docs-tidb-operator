@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 BR 工具备份 TiDB 集群数据到兼容 Amazon S3 的存储。
-category: how-to
 ---
 
 <!-- markdownlint-disable MD007 -->
@@ -318,7 +317,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。

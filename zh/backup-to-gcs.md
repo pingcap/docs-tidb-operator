@@ -1,7 +1,6 @@
 ---
 title: 使用 Mydumper 备份 TiDB 集群数据到 GCS
 summary: 介绍如何使用 Mydumper 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
-category: how-to
 ---
 
 # 使用 Mydumper 备份 TiDB 集群数据到 GCS
@@ -135,7 +134,7 @@ GCS 支持以下几种 bucket ACL 策略：
 更多 `Backup` CR 字段的详细解释：
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
@@ -239,3 +238,7 @@ kubectl get bks -n test1 -owide
 + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
 + `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 [Garbage Collection (GC)](https://pingcap.com/docs-cn/v3.0/reference/garbage-collection/overview/) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
+
+> **注意：**
+>
+> TiDB Operator 会创建一个 PVC，这个 PVC 同时用于 Ad-hoc 全量备份和定时全量备份，备份数据会先存储到 PV，然后再上传到远端存储。如果备份完成后想要删掉这个 PVC，可以参考[删除资源](cheat-sheet.md#删除资源)先把备份 Pod 删掉，然后再把 PVC 删掉。

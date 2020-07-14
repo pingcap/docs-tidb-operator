@@ -1,7 +1,6 @@
 ---
 title: 在 Kubernetes 上部署 TiCDC
 summary: 了解如何在 Kubernetes 上部署 TiCDC。
-category: how-to
 ---
 
 # 在 Kubernetes 上部署 TiCDC
@@ -34,6 +33,16 @@ category: how-to
         baseImage: pingcap/ticdc
         replicas: 3
     ```
+
+   值得注意的是，如果需要部署企业版的 TiCDC，需要将 db.yaml 中 `spec.ticdc.baseImage` 配置为企业版镜像，格式为 `pingcap/ticdc-enterprise`。
+
+   例如:
+
+   ```yaml
+   spec:
+     ticdc:
+       baseImage: pingcap/ticdc-enterprise
+   ```
 
 3. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
 
