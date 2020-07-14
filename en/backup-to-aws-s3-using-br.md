@@ -1,7 +1,6 @@
 ---
 title: Back up Data to S3-Compatible Storage Using BR
 summary: Learn how to back up data to Amazon S3 using BR.
-category: how-to
 aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 ---
 
@@ -522,7 +521,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 From the above two examples, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
 
-`backupTemple` specifies the configuration related to the S3 storage, which is the same as the configuration of the ad-hoc full backup to S3 (refer to [S3 backup process](#process-of-ad-hoc-full-backup) for details). The following are the unique configuration items of `backupSchedule`:
+`backupTemplate` specifies the configuration related to the S3 storage, which is the same as the configuration of the ad-hoc full backup to S3 (refer to [S3 backup process](#process-of-ad-hoc-full-backup) for details). The following are the unique configuration items of `backupSchedule`:
 
 - `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 

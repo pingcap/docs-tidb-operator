@@ -1,7 +1,6 @@
 ---
 title: TiDB Scheduler
 summary: Learn what is TiDB Scheduler and how it works.
-category: reference
 aliases: ['/docs/tidb-in-kubernetes/dev/tidb-scheduler/']
 ---
 
@@ -94,4 +93,4 @@ The scheduling process of a Pod is as follows:
 - Then, `kube-scheduler` sends a request to the `tidb-scheduler` service. Then `tidb-scheduler` filters the sent nodes through the customized scheduling rules (as mentioned above), and returns schedulable nodes to `kube-scheduler`.
 - Finally, `kube-scheduler` determines the nodes to be scheduled.
 
-If a Pod cannot be scheduled, see the [troubleshooting document](troubleshoot.md#the-pod-is-in-the-pending-state) to diagnose and solve the issue.
+If a Pod cannot be scheduled, see the [troubleshooting document](deploy-failures.md#the-pod-is-in-the-pending-state) to diagnose and solve the issue.
