@@ -145,7 +145,7 @@ spec:
 
 ### 配置 TiDB 组件
 
-本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 Operator 1.1 版本支持了 TiDB 集群 v4.0 版本参数。
+本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 TiDB Operator 1.1 版本支持了 TiDB 集群 4.0 版本参数。
 
 #### 配置 TiDB 配置参数
 
