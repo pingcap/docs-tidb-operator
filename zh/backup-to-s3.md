@@ -250,7 +250,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 * `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
 * `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
 * `.spec.s3.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
-* `.spec.dumpling`：Dumpling 相关的配置，主要有两个字段：一个是 `options` 字段，里面可以指定 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 需要的一些参数；一个是 `tableFilter` 字段，可以指定让 Dumpling 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下 dumpling 这个字段可以不用配置。当不指定 dumpling 的配置时，`options` 和 `tableFilter` 字段的默认值如下：
+* `.spec.dumpling`：Dumpling 相关的配置，主要有两个字段：一个是 `options` 字段，里面可以指定 Dumpling 的运行参数，详情见 [Dumpling 使用文档](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview#dumpling-主要参数表)；一个是 `tableFilter` 字段，可以指定让 Dumpling 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下 dumpling 这个字段可以不用配置。当不指定 dumpling 的配置时，`options` 和 `tableFilter` 字段的默认值如下：
 
     ```
     options:
