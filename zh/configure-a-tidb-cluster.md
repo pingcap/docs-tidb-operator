@@ -49,7 +49,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 ### Storage class
 
-通过修改 `${cluster_name}/tidb-cluster.yaml` 和 `${cluster_name}/tidb-monitor.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
+通过修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
 
 另外 TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，
 
@@ -141,8 +141,6 @@ spec:
     baseImage: pingcap/tikv-enterprise
 ```
 
-如果要部署 TiDB 集群监控，请参考 TidbMonitor [示例](https://github.com/pingcap/tidb-operator/blob/master/manifests/monitor/tidb-monitor.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbMonitor CR，并保存到文件 `${cluster_name}/tidb-monitor.yaml`。
-
 ### 配置 TiDB 组件
 
 本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 Operator 1.1 版本支持了 TiDB 集群 v4.0 版本参数。
@@ -189,10 +187,8 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap.com/tikv:v3.1.0
-    config:
-      log-level: "info"
-      slow-log-threshold: "1s"
+    image: pingcap.com/tikv:v4.0.2
+    config: {}
     replicas: 1
     requests:
       cpu: 2
