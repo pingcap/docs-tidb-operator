@@ -29,19 +29,19 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 > **注意：**
 >
-> 建议在 `cluster_name` 目录下组织 TiDB 集群的配置，并将其另存为 `${cluster_name}/tidb-cluster.yaml`。默认条件下，修改配置不会自动应用到 TiDB 集群中，只有在 Pod 重启时，才会重新加载新的配置文件。
+> 建议在 `${cluster_name}` 目录下组织 TiDB 集群的配置，并将其另存为 `${cluster_name}/tidb-cluster.yaml`。默认条件下，修改配置不会自动应用到 TiDB 集群中，只有在 Pod 重启时，才会重新加载新的配置文件。
 
 建议设置 `spec.configUpdateStrategy` 为 `RollingUpdate` 开启配置自动更新特性，在每次配置更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
 
-### Cluster name
+### 集群名称
 
 通过更改 `TiDBCuster` CR 中的 `metadata.name` 来配置集群名称。
 
-### Version
+### 版本
 
 正常情况下，集群内的各组件应该使用相同版本，所以一般建议配置 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` + `spec.version` 即可。如果需要为不同的组件配置不同的版本，则可以配置 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`。
 
-这些参数的格式：
+相关参数的格式如下：
 
 - `spec.version`，格式为 `imageTag`，例如 `v4.0.0`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
@@ -49,13 +49,13 @@ aliases: ['/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/do
 
 ### Storage class
 
-通过修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
+如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
 
-另外 TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，
+另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，为 TiDB 集群各组件选择合适的存储类型，
 
 生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。
 
-演示环境或功能性验证：可以使用网络存储，例如 `ebs`，`nfs` 等。
+对于演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。
 
 > **注意：**
 >
@@ -143,7 +143,7 @@ spec:
 
 ### 配置 TiDB 组件
 
-本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 Operator 1.1 版本支持了 TiDB 集群 v4.0 版本参数。
+本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 TiDB Operator 1.1 版本支持了 TiDB 集群 4.0 版本参数。
 
 #### 配置 TiDB 配置参数
 
@@ -269,7 +269,7 @@ spec:
 
 > **注意：**
 >
-> TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的高可用，而且目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是上述列表中的 `schedulerName` 配置项。本节重点介绍如何配置 TiDB 群集以容忍其他级别的故障，例如：机架，可用去或区域。本部分是可选的。
+> TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面保证 TiDB 服务的高可用。目前，TiDB 集群使用该调度器作为默认调度器，可通过 `spec.schedulerName` 配置项进行设置。本节重点介绍如何配置 TiDB 集群以容忍其他级别的故障，例如机架、可用区或 region。本部分可根据使用需求配置，不是必选。
 
 TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑节点发生故障时，不仅服务不受影响，还要保证数据也是完整和可用。下面分别具体说明这两种高可用的配置。
 
