@@ -136,11 +136,17 @@ GCS 支持以下几种 bucket ACL 策略：
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_lifetime` 时间设置，默认为 72h。
 
-    在备份开始之前，为了保证备份的 tso 的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)为 `spec.tikvGCLifeTime`，并在备份成功后将 `tikv_gc_lifetime` 设置回原来的值。
+    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的 tso 的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)为 `spec.tikvGCLifeTime`，并在备份成功后将 `tikv_gc_lifetime` 设置回原来的值。
 
-    备份结束后不论成败，只要老的 `tikv_gc_lifetime` 比设置的备份 `.spec.tikvGCLifeTime` 小，backup CR 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，backup CR 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为 backup 失败。
+    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的备份 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为 backup 失败。
 
-    此时，如果查看 `tikv_gc_lifetime` 值发现过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)将 `tikv_gc_lifetime` 调回原样。
+    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_lifetime`：
+
+    ```sql
+    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    ```
+
+    如果发现 `tikv_gc_lifetime` 值发现过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)将 `tikv_gc_lifetime` 调回原样。
 
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
@@ -261,7 +267,7 @@ tidb-operator v1.1.2 及以前版本或者在 v1.1.3 及以后版本将 `spec.cl
 
 建议用户在满足上述条件时如果需要删除 namespace，则首先删除所有的 backup/backupSchedule CR，再删除 namespace。
 
-如果直接删除存在 backup/backupSchedule 的 namespace，backup/backupSchedule 会持续尝试创建 finalizer 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
+如果直接删除存在 backup/backupSchedule 的 namespace，backup/backupSchedule 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
 
 同时，tidb-operator v1.1.2 及以前版本如果删除 backup/backupSchedule CR 时备份文件已被手动清除，也会出现卡 `Terminating` 的情况。
 
