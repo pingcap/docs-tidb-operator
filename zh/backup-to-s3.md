@@ -257,13 +257,16 @@ Amazon S3 支持以下几种 `storageClass` 类型：
     - --threads=16
     - --rows=10000
     tableFilter:
-    # 注意：如果要写排除规则 "!db.table" 必须先添加 *.* 规则来包括所有表
     - "*.*"
     - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
     ```
 
+> **注意：**
+>
+> tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 "\*.\*" 规则来导出所有表，如上面例子所示。
+
 * `.spec.storageClassName`：备份时所需的 persistent volume (PV) 类型。
-* `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 backup CR 对应的 PVC name 是确定的，当 Kubernetes 中已存在该 PVC 且 storageSize 小于 spec 设置的 PVC storageSize 时，这时需要删除备份该 PV 的数据，删除该 PVC 再运行 backup job。
+* `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
 
 更多支持的兼容 S3 的 `provider` 如下：
 
