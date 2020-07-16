@@ -279,7 +279,7 @@ kubectl delete backupschedule ${name} -n ${namespace}
 
 如果直接删除存在 Backup/BackupSchedule CR 的 namespace，TiDB Operator 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
 
-同时 v1.1.2 及以前版本如果删除 Backup/BackupSchedule CR 时备份文件已被手动清除，也会出现卡 `Terminating` 的情况。
+同时 v1.1.2 及以前版本如果删除 Backup/BackupSchedule CR 时备份文件已被手动清除，也会出现卡在 `Terminating` 的情况。
 
 这时需要通过下述命令删除 `finalizers`：
 
