@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 BR 工具备份 TiDB 集群数据到兼容 Amazon S3 的存储。
-category: how-to
 ---
 
 <!-- markdownlint-disable MD007 -->
@@ -318,6 +317,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
+* `.spec.cleanData`：设置为 true 时删除该 Backup CR 时会同时清除该 CR 备份出的数据，默认为 false。值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 true。
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
