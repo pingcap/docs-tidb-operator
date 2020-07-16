@@ -281,7 +281,7 @@ kubectl delete backupschedule ${name} -n ${namespace}
 
 同时 v1.1.2 及以前版本如果删除 Backup/BackupSchedule CR 时备份文件已被手动清除，也会出现卡 `Terminating` 的情况。
 
-这时需要通过下述命令删除 `finalizer`：
+这时需要通过下述命令删除 `finalizers`：
 
 {{< copyable "shell-regular" >}}
 
