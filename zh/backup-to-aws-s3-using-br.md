@@ -310,18 +310,18 @@ Amazon S3 支持以下几种 `storageClass` 类型：
 
 {{< copyable "shell-regular" >}}
 
- ```shell
- kubectl get bk -n test1 -o wide
- ```
+```shell
+kubectl get bk -n test1 -o wide
+```
 
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_lifetime` 时间设置，默认为 72h。
 
-    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的 tso 的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)为 `spec.tikvGCLifeTime`，并在备份成功后将 `tikv_gc_lifetime` 设置回原来的值。
+    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
 
-    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的备份 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为 backup 失败。
+    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为备份失败。
 
     此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_lifetime`：
 
@@ -329,7 +329,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    如果发现 `tikv_gc_lifetime` 值发现过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://pingcap.com/docs-cn/stable/dumpling-overview/#%E5%AF%BC%E5%87%BA%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E6%97%B6%E7%9A%84-tidb-gc-%E8%AE%BE%E7%BD%AE)将 `tikv_gc_lifetime` 调回原样。
+    如果发现 `tikv_gc_lifetime` 值发现过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_lifetime` 调回原样。
 
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
@@ -533,13 +533,20 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 删除备份的 backup CR
 
-用户可以通过 `kubectl delete backup ${name} -n ${namespace}` 或 `kubectl delete backupschedule ${name} -n ${namespace}` 来删除对应的全量备份 CR 或定时全量备份 CR。
+用户可以通过下述语句来删除对应的全量备份 CR 或定时全量备份 CR。
 
-tidb-operator v1.1.2 及以前版本或者在 v1.1.3 及以后版本将 `spec.cleanData` 设置为 true 时，TiDB Operator 在删除 CR 时会同时删除备份文件。
+{{< copyable "shell-regular" >}}
 
-建议用户在满足上述条件时如果需要删除 namespace，则首先删除所有的 backup/backupSchedule CR，再删除 namespace。
+```shell
+kubectl delete backup ${name} -n ${namespace}
+kubectl delete backupschedule ${name} -n ${namespace}
+```
 
-如果直接删除存在 backup/backupSchedule 的 namespace，backup/backupSchedule 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
+如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanData` 设置为 true 时，TiDB Operator 在删除 CR 时会同时删除备份文件。
+
+在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。
+
+如果直接删除存在 Backup/BackupSchedule CR 的 namespace，TiDB Operator 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
 
 这时需要通过下述命令删除 `finalizer`：
 
@@ -549,4 +556,4 @@ tidb-operator v1.1.2 及以前版本或者在 v1.1.3 及以后版本将 `spec.cl
 kubectl edit backup ${name} -n ${namespace}
 ```
 
-在配置项项中删去所有的 `finalizer` 项，再次检查即可发现正常删除。
+删除 `metadata.finalizers` 配置，即可正常删除 CR。
