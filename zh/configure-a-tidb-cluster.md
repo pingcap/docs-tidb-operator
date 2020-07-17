@@ -24,7 +24,7 @@ aliases: ['/zh/tidb-in-kubernetes/stable/configure-cluster-using-tidbcluster/','
 
 ## 部署配置
 
-通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/tiflash/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/docs-tidb-operator/blob/master/en/api-references.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)。
+通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/tiflash/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/release-1.1/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR (Custom Resource)。
 
 > **注意：**
 >
