@@ -93,7 +93,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `sendCredToTikv`.
 
     <details>
-    <summary>Click to see the description of parameters</summary>
+    <summary>More description of parameters</summary>
 
     - `spec.br.cluster`: The name of the cluster to be backed up.
     - `spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
@@ -246,7 +246,8 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
 From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to GCS, which is the same as the configuration of the ad-hoc full backup to GCS (refer to [Ad-hoc backup process](#process-of-ad-hoc-full-backup) for details).
 
 <details>
-<summary>The unique configuration items of <code>backupSchedule</code></summary>
+<summary>The unique configuration items of `backupSchedule`</summary>
+
 * `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 
 * `.spec.maxReservedTime`: A backup retention policy based on time. For example, if you set the value of this configuration to `24h`, only backup items within the recent 24 hours are retained. All backup items out of this time are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set the maximum number of backup items and the longest retention time of backup items at the same time, the latter setting takes effect.
