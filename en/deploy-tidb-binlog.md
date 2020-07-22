@@ -13,13 +13,13 @@ This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/s
 - [Deploy TiDB Operator](deploy-tidb-operator.md);
 - [Install Helm](tidb-toolkit.md#use-helm) and configure it with the official PingCAP chart.
 
-## Deploy TiDB Binlog of a TiDB cluster
+## Deploy TiDB Binlog in a TiDB cluster
 
 TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster with TiDB Binlog enabled, or enable TiDB Binlog in an existing TiDB cluster, take the following steps.
 
 ### Deploy Pump
 
-1. Modify the TidbCluster CR file to add the Pump configuration.
+1. Modify the `TidbCluster` CR file to add the Pump configuration.
 
     For example:
 
@@ -43,7 +43,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
     Edit `version`, `replicas`, `storageClassName`, and `requests.storage` according to your cluster.
 
 2. Set affinity and anti-affinity for TiDB and Pump.
-    
+
     If you enable TiDB Binlog in the production environment, it is recommended to set affinity and anti-affinity for TiDB and the Pump component; if you enable TiDB Binlog in a test environment on the internal network, you can skip this step.
 
     By default, the affinity of TiDB and Pump is set to `{}`. Currently, each TiDB instance does not have a corresponding Pump instance by default. When TiDB Binlog is enabled, if Pump and TiDB are separately deployed and network isolation occurs, and `ignore-error` is enabled in TiDB components, TiDB loses binlogs.

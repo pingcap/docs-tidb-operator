@@ -19,9 +19,9 @@ TiDB Operator is [deployed](deploy-tidb-operator.md).
 
 To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
 
-## Add TiCDC component to an existing TiDB cluster
+## Add TiCDC to an existing TiDB cluster
 
-1. Edit TidbCluster Custom Resource:
+1. Edit `TidbCluster` Custom Resource:
 
     {{< copyable "shell-regular" >}}
 
