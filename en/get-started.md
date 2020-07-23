@@ -49,7 +49,7 @@ You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in
 
 This section shows how to deploy a Kubernetes cluster using kind.
 
-[kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
+[kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
 
 > **Warning:**
 >
@@ -230,7 +230,7 @@ Before proceeding, make sure the following requirements are satisfied:
 
 1. Install TiDB Operator CRDs:
 
-    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of TiDB Cluster.
+    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of `TidbCluster`.
 
     Execute this command to install the CRDs into your cluster:
 
@@ -431,11 +431,11 @@ Before proceeding, make sure the following requirements are satisfied:
         tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
         ```
 
-        As soon as all pods are in "Running" state, proceed to the next step.
+        As soon as all pods are in the "Running" state, proceed to the next step.
 
-## Deploy TiDB Cluster
+## Deploy the TiDB cluster
 
-1. Deploy the TiDB Cluster:
+1. Deploy the TiDB cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -503,7 +503,7 @@ Before proceeding, make sure the following requirements are satisfied:
     basic-pd-0                        1/1     Running           0          29s
     ```
 
-    Wait until all pods for all services have been started. As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB Cluster](#connect-to-tidb)!
+    Wait until all pods for all services have been started. As soon as you see pods of each type (`-pd`, `-tikv`, and `-tidb`) and all are in the "Running" state, you can hit Ctrl-C to get back to the command line and go on to [connect to your TiDB cluster](#connect-to-tidb)!
 
     Expected output:
 
@@ -528,7 +528,8 @@ Before proceeding, make sure the following requirements are satisfied:
 
 2. Forward port 4000
 
-    We'll connect by first forwarding a port from the local host to the TiDB **service** in Kubernetes. First, get a list of services in the tidb-cluster namespace:
+    You can connect to TiDB by first forwarding a port from the local host to the TiDB **service** in Kubernetes.
+    First, get a list of services in the tidb-cluster namespace:
 
     {{< copyable "shell-regular" >}}
 
@@ -584,7 +585,7 @@ Before proceeding, make sure the following requirements are satisfied:
 
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-    mysql> 
+    mysql>
     ```
 
     Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade TiDB Cluster](#upgrade-tidb-cluster) section).
@@ -696,13 +697,13 @@ Before proceeding, make sure the following requirements are satisfied:
 
     The default username and password in Grafana are both "admin".
 
-    For more information about monitoring TiDB Cluster in TiDB Operator, consult [Monitor a TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
+    For more information about monitoring the TiDB cluster in TiDB Operator, consult [Monitor a TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
 
-## Upgrade TiDB Cluster
+## Upgrade the TiDB cluster
 
-TiDB Operator also makes it easy to perform a rolling upgrade of TiDB Cluster. If you've deployed TiDB 3.0 or TiDB 3.1 using TiDB Operator, you can perform an online upgrade to TiDB 4.0.
+TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. If you've deployed TiDB 3.0 or TiDB 3.1 using TiDB Operator, you can perform an online upgrade to TiDB 4.0.
 
-In this example, we'll upgrade TiDB Cluster to the "nightly" release.
+In this example, you will upgrade the TiDB cluster to the "nightly" release.
 
 Kubernetes makes it possible to both "edit" and "patch" deployed resources.
 
@@ -712,7 +713,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
 
 1. Patch the TidbCluster resource
 
-    In this case, we can use a JSON merge patch to update the version of the TiDB Cluster to "nightly":
+    In this case, we can use a JSON merge patch to update the version of the TiDB cluster to "nightly":
 
     {{< copyable "shell-regular" >}}
 
@@ -728,7 +729,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
 
 2. Wait for all pods to restart
 
-    Execute this command to follow the progress of the cluster as its components are upgrade. You should see some pods transition to "Terminating" and then back to "ContainerCreating" and back to "Running". Note the value in the "AGE" pod column to see which pods have restarted.
+    Execute this command to follow the progress of the cluster as its components are upgraded. You should see some pods transition to "Terminating" and then back to "ContainerCreating" and back to "Running". Note the value in the "AGE" pod column to see which pods have restarted.
 
     {{< copyable "shell-regular" >}}
 
@@ -756,7 +757,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
     kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
     ```
 
-4. Check version of TiDB Cluster
+4. Check the version of TiDB Cluster
 
     {{< copyable "shell-regular" >}}
 
@@ -779,15 +780,15 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
     Check Table Before Drop: false
     ```
 
-For more details about upgrading TiDB Cluster running in TiDB Operator, consult [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md).
+For more details about upgrading the TiDB cluster running in TiDB Operator, consult [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md).
 
-## Destroy TiDB Cluster
+## Destroy the TiDB cluster
 
-After you've finished testing, you may wish to destroy the TiDB Cluster.
+After you've finished testing, you may wish to destroy the TiDB cluster.
 
-Instructions for destroying the Kubernetes clusters depend on where the Kubernetes cluster is running and how it was created, so refer to those sections for more details. The following steps will destroy the TiDB Cluster, but will not affect the Kubernetes cluster itself.
+Instructions for destroying the Kubernetes clusters depend on where the Kubernetes cluster is running and how it was created, so refer to those sections for more details. The following steps will destroy the TiDB cluster, but will not affect the Kubernetes cluster itself.
 
-1. Delete TiDB Cluster:
+1. Delete the TiDB cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -805,7 +806,7 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
 
 3. Delete persistent data
 
-    If your deployment has persistent data storage, deleting TiDB Cluster will not remove the cluster's data. If you do not need the data anymore, you should run the following commands to clean the data and the dynamically created persistent disks:
+    If your deployment has persistent data storage, deleting the TiDB cluster will not remove the cluster's data. If you do not need the data anymore, you should run the following commands to clean the data and the dynamically created persistent disks:
 
     {{< copyable "shell-regular" >}}
 
@@ -816,7 +817,7 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
 
 4. Delete namespaces
 
-    To make sure there are no lingering resources, you can delete the namespace used for TiDB Cluster.
+    To make sure there are no lingering resources, you can delete the namespace used for your TiDB cluster.
 
     {{< copyable "shell-regular" >}}
 
