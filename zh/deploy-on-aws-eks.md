@@ -128,7 +128,7 @@ default_cluster_tikv_count = 3
 default_cluster_tidb_count = 2
 default_cluster_name = "tidb"
 eks_name = "my-cluster"
-operator_version = "v1.1.0"
+operator_version = "v1.1.2"
 ```
 
 如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `cluster_tiflash_count` 和 `cluster_tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`cluster_tiflash_count` 默认为 `2`，`cluster_tiflash_instance_type` 默认为 `i3.4xlarge`。
