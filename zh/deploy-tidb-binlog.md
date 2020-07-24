@@ -142,7 +142,7 @@ spec:
 >
 > 如果更新了 TiDB 组件的亲和性配置，将引起 TiDB 组件滚动更新。
 
-### 部署 drainer
+### 部署 Drainer
 
 可以通过 `tidb-drainer` Helm chart 来为 TiDB 集群部署多个 drainer，示例如下：
 
@@ -207,7 +207,7 @@ spec:
     ...
     ```
 
-4. 部署 drainer：
+4. 部署 Drainer：
 
     {{< copyable "shell-regular" >}}
 
@@ -223,4 +223,74 @@ spec:
 
 ## 开启 TLS
 
+### 为 TiDB 组件间开启 TLS
+
 如果要为 TiDB 集群及 TiDB Binlog 开启 TLS，请参考[为 TiDB 组件间开启 TLS](enable-tls-between-components.md) 进行配置。
+
+配置完成后，修改 `values.yaml` 将 `tlsCluster.enabled` 设置为 true，并配置相应的 `certAllowedCN`：
+
+```yaml
+...
+# Whether enable the TLS connection between TiDB server components
+tlsCluster:
+  # The steps to enable this feature:
+  #   1. Generate Drainer certificate.
+  #      There are multiple ways to generate these certificates:
+  #        - user-provided certificates: https://pingcap.com/docs/stable/how-to/secure/generate-self-signed-certificates/
+  #        - use the K8s built-in certificate signing system signed certificates: https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/
+  #        - or use cert-manager signed certificates: https://cert-manager.io/
+  #   2. Create one secret object for Drainer which contains the certificates created above.
+  #      The name of this Secret must be: <clusterName>-drainer-cluster-secret.
+  #        For Drainer: kubectl create secret generic <clusterName>-drainer-cluster-secret --namespace=<namespace> --from-file=tls.crt=<path/to/tls.crt> --from-file=tls.key=<path/to/tls.key> --from-file=ca.crt=<path/to/ca.crt>
+  #   3. Then create the Drainer cluster with `tlsCluster.enabled` set to `true`.
+  enabled: true
+
+  # certAllowedCN is the Common Name that allowed
+  certAllowedCN: []
+  #  - TiDB
+...
+```
+
+### 为 Drainer 和下游数据库间开启 TLS
+
+如果 `tidb-drainer` 的写入下游设置为 `mysql/tidb`，并且希望为 `drainer` 和下游数据库间开启 TLS。
+
+首先我们需要参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)配置下游数据库的 MySQL Client 的 TLS。假设创建的 secret 的名字记为 `downstream_database_secret_name`。
+
+如果我们需要将 `tidb-drainer` 的 checkpoint 保存到另一个**开启 TLS 的**数据库，则仍然是参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)进行配置。假设创建的 secret 的名字记为 `checkpoint_tidb_client_secret`。
+
+一般情况下我们不需要将 checkpoint 保存到另一个数据库，因此仅需配置 `tlsSyncer.tlsClientSecretName` 即可。`tidb-drainer` 会自动通过下游数据库的 TLS 参数将 checkpoint 保存到库中。
+
+配置完成后，修改 `values.yaml` 将 `tlsSyncer.tlsClientSecretName` 设置为 `downstream_database_secret_name`，并配置相应的 `certAllowedCN`, 
+
+同时修改 `values.yaml` 将 `tlsSyncer.checkpoint.tlsClientSecretName` 设置为 `checkpoint_tidb_client_secret`，并配置相应的 `certAllowedCN` 即可：
+
+```yaml
+...
+# The TLS config between drainer and the downstream database server (MySQL/TiDB)
+tlsSyncer: {}
+  # The steps to enable this feature:
+  #   1. Create one secret object which contains the certificates for the downstream database server.
+  #      For example: kubectl create secret generic ${downstream_database_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+  #   2. Then set `tlsSyncer.tlsClientSecretName` to `${downstream_database_secret_name}`.
+  tlsClientSecretName: ${downstream_database_secret_name}
+  # certAllowedCN is the Common Name that allowed
+  # certAllowedCN:
+  #  - TiDB
+
+  # checkpoint is the TLS config for the database you save binlog checkpoint.
+  # By default, Drainer will use downstream to save binlog checkpoint,
+  # so you do not need to configure [syncer.to.checkpoint.type] and
+  # you do not need to configure the `checkpoint` below.
+  # You have to configure this field only if you want to save binlog checkpoint
+  # to ** another database which has enabled TLS **.
+  # The steps to enable this feature is similar with those to enable tlsSyncer.tlsClientSecretName,
+  # which means you need to create one secret object containing the certificates for
+  # the checkpoint database and then set `checkpoint.tlsClientSecretName`.
+  checkpoint:
+    tlsClientSecretName: ${checkpoint_tidb_client_secret}
+  # certAllowedCN is the Common Name that allowed
+  # certAllowedCN:
+  #  - TiDB
+...
+```
