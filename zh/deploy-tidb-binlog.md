@@ -255,15 +255,23 @@ tlsCluster:
 
 如果 `tidb-drainer` 的写入下游设置为 `mysql/tidb`，并且希望为 `drainer` 和下游数据库间开启 TLS。
 
-首先我们需要参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)配置下游数据库的 MySQL Client 的 TLS。假设创建的 secret 的名字记为 `downstream_database_secret_name`。
+首先我们需要创建一个包含下游数据库 TLS 信息的 secret，创建方式如下：
 
-如果我们需要将 `tidb-drainer` 的 checkpoint 保存到另一个**开启 TLS 的**数据库，则仍然是参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)进行配置。假设创建的 secret 的名字记为 `checkpoint_tidb_client_secret`。
+```bash
+kubectl create secret generic ${downstream_database_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+```
 
-一般情况下我们不需要将 checkpoint 保存到另一个数据库，因此仅需配置 `tlsSyncer.tlsClientSecretName` 即可。`tidb-drainer` 会自动通过下游数据库的 TLS 参数将 checkpoint 保存到库中。
+一般情况下我们仅需配置 `tlsSyncer.tlsClientSecretName` 即可。`tidb-drainer` 会自动通过下游数据库的 TLS 参数将 checkpoint 保存到库中。
+
+如果我们需要将 `tidb-drainer` 的 checkpoint 保存到另一个**开启 TLS 的**数据库。则我们需要创建另一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
+
+```bash
+kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+```
 
 配置完成后，修改 `values.yaml` 将 `tlsSyncer.tlsClientSecretName` 设置为 `downstream_database_secret_name`，并配置相应的 `certAllowedCN`, 
 
-同时修改 `values.yaml` 将 `tlsSyncer.checkpoint.tlsClientSecretName` 设置为 `checkpoint_tidb_client_secret`，并配置相应的 `certAllowedCN` 即可：
+如果配置了 checkpoint 数据库的 TLS，则还需修改 `values.yaml` 将 `tlsSyncer.checkpoint.tlsClientSecretName` 设置为 `checkpoint_tidb_client_secret`，并配置相应的 `certAllowedCN`：
 
 ```yaml
 ...
