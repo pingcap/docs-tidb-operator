@@ -231,29 +231,16 @@ spec:
 
 ```yaml
 ...
-# Whether enable the TLS connection between TiDB server components
 tlsCluster:
-  # The steps to enable this feature:
-  #   1. Generate Drainer certificate.
-  #      There are multiple ways to generate these certificates:
-  #        - user-provided certificates: https://pingcap.com/docs/stable/how-to/secure/generate-self-signed-certificates/
-  #        - use the K8s built-in certificate signing system signed certificates: https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/
-  #        - or use cert-manager signed certificates: https://cert-manager.io/
-  #   2. Create one secret object for Drainer which contains the certificates created above.
-  #      The name of this Secret must be: <clusterName>-drainer-cluster-secret.
-  #        For Drainer: kubectl create secret generic <clusterName>-drainer-cluster-secret --namespace=<namespace> --from-file=tls.crt=<path/to/tls.crt> --from-file=tls.key=<path/to/tls.key> --from-file=ca.crt=<path/to/ca.crt>
-  #   3. Then create the Drainer cluster with `tlsCluster.enabled` set to `true`.
   enabled: true
-
-  # certAllowedCN is the Common Name that allowed
-  certAllowedCN: []
+  # certAllowedCN:
   #  - TiDB
 ...
 ```
 
 ### 为 Drainer 和下游数据库间开启 TLS
 
-如果 `tidb-drainer` 的写入下游设置为 `mysql/tidb`，并且希望为 `drainer` 和下游数据库间开启 TLS。
+如果 `tidb-drainer` 的写入下游设置为 `mysql/tidb`，并且希望为 `drainer` 和下游数据库间开启 TLS，可以参考下面步骤进行配置。
 
 首先我们需要创建一个包含下游数据库 TLS 信息的 secret，创建方式如下：
 
@@ -261,43 +248,31 @@ tlsCluster:
 kubectl create secret generic ${downstream_database_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
 ```
 
-一般情况下我们仅需配置 `tlsSyncer.tlsClientSecretName` 即可。`tidb-drainer` 会自动通过下游数据库的 TLS 参数将 checkpoint 保存到库中。
+默认情况下，`tidb-drainer` 会将 checkpoint 保存到下游数据库中，所以仅需配置 `tlsSyncer.tlsClientSecretName` 并配置相应的 `certAllowedCN` 即可。
 
-如果我们需要将 `tidb-drainer` 的 checkpoint 保存到另一个**开启 TLS 的**数据库。则我们需要创建另一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
+```yaml
+tlsSyncer:
+  tlsClientSecretName: ${downstream_database_secret_name}
+  # certAllowedCN:
+  #  - TiDB
+```
+
+如果需要将 `tidb-drainer` 的 checkpoint 保存到其他**开启 TLS 的**数据库。需要创建一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
 
 ```bash
 kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
 ```
 
-配置完成后，修改 `values.yaml` 将 `tlsSyncer.tlsClientSecretName` 设置为 `downstream_database_secret_name`，并配置相应的 `certAllowedCN`, 
-
-如果配置了 checkpoint 数据库的 TLS，则还需修改 `values.yaml` 将 `tlsSyncer.checkpoint.tlsClientSecretName` 设置为 `checkpoint_tidb_client_secret`，并配置相应的 `certAllowedCN`：
+修改 `values.yaml` 将 `tlsSyncer.checkpoint.tlsClientSecretName` 设置为 `${checkpoint_tidb_client_secret}`，并配置相应的 `certAllowedCN`：
 
 ```yaml
 ...
-# The TLS config between drainer and the downstream database server (MySQL/TiDB)
 tlsSyncer: {}
-  # The steps to enable this feature:
-  #   1. Create one secret object which contains the certificates for the downstream database server.
-  #      For example: kubectl create secret generic ${downstream_database_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
-  #   2. Then set `tlsSyncer.tlsClientSecretName` to `${downstream_database_secret_name}`.
   tlsClientSecretName: ${downstream_database_secret_name}
-  # certAllowedCN is the Common Name that allowed
   # certAllowedCN:
   #  - TiDB
-
-  # checkpoint is the TLS config for the database you save binlog checkpoint.
-  # By default, Drainer will use downstream to save binlog checkpoint,
-  # so you do not need to configure [syncer.to.checkpoint.type] and
-  # you do not need to configure the `checkpoint` below.
-  # You have to configure this field only if you want to save binlog checkpoint
-  # to ** another database which has enabled TLS **.
-  # The steps to enable this feature is similar with those to enable tlsSyncer.tlsClientSecretName,
-  # which means you need to create one secret object containing the certificates for
-  # the checkpoint database and then set `checkpoint.tlsClientSecretName`.
   checkpoint:
     tlsClientSecretName: ${checkpoint_tidb_client_secret}
-  # certAllowedCN is the Common Name that allowed
   # certAllowedCN:
   #  - TiDB
 ...
