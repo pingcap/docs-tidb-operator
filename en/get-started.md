@@ -16,7 +16,7 @@ These are the steps this document follows:
 
 1. [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
-3. [Deploy TiDB Cluster](#deploy-tidb-cluster)
+3. [Deploy a TiDB Cluster](#deploy-the-tidb-cluster)
 4. [Connect to TiDB Cluster](#connect-to-tidb)
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
@@ -588,7 +588,7 @@ Before proceeding, make sure the following requirements are satisfied:
     mysql>
     ```
 
-    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade TiDB Cluster](#upgrade-tidb-cluster) section).
+    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade TiDB Cluster](#upgrade-the-tidb-cluster) section).
 
     ```
     mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
