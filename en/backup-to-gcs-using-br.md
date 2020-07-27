@@ -149,7 +149,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
 
 <details>
 
-<summary>More descriptions of fields in `Backup` CR</summary>
+<summary>More descriptions of fields in the `Backup` CR</summary>
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.from.host`: The address of the TiDB cluster to be backed up.
