@@ -227,7 +227,7 @@ spec:
 
 如果要为 TiDB 集群及 TiDB Binlog 开启 TLS，请参考[为 TiDB 组件间开启 TLS](enable-tls-between-components.md) 进行配置。
 
-配置完成后，修改 `values.yaml` 将 `tlsCluster.enabled` 设置为 true，并配置相应的 `certAllowedCN`：
+创建 secret 并启动包含 Pump 的 TiDB 集群后，修改 `values.yaml` 将 `tlsCluster.enabled` 设置为 true，并配置相应的 `certAllowedCN`：
 
 ```yaml
 ...
@@ -237,6 +237,8 @@ tlsCluster:
   #  - TiDB
 ...
 ```
+
+随后启动 Drainer 即可完成开启组件间 TLS。
 
 ### 为 Drainer 和下游数据库间开启 TLS
 
@@ -257,7 +259,7 @@ tlsSyncer:
   #  - TiDB
 ```
 
-如果需要将 `tidb-drainer` 的 checkpoint 保存到其他**开启 TLS 的**数据库。需要创建一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
+如果需要将 `tidb-drainer` 的 checkpoint 保存到其他 **开启 TLS 的** 数据库。需要创建一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
 
 ```bash
 kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
@@ -273,7 +275,7 @@ tlsSyncer: {}
   #  - TiDB
   checkpoint:
     tlsClientSecretName: ${checkpoint_tidb_client_secret}
-  # certAllowedCN:
-  #  - TiDB
+    # certAllowedCN:
+    #  - TiDB
 ...
 ```
