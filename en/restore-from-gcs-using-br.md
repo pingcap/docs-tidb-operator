@@ -96,7 +96,7 @@ This example restores the backup data stored in the `spec.gcs.prefix` folder of 
 
 <details>
 
-<summary>More descriptions of fields in the `Restore` CR</summary>
+<summary>More descriptions of fields in the <code>Restore<code> CR</summary>
 
 * `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.

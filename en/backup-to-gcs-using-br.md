@@ -149,7 +149,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
 
 <details>
 
-<summary>More descriptions of fields in the `Backup` CR</summary>
+<summary>More descriptions of fields in the <code>Backup</code> CR</summary>
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.from.host`: The address of the TiDB cluster to be backed up.
@@ -246,7 +246,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
 From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to GCS, which is the same as the configuration of the ad-hoc full backup to GCS (refer to [Ad-hoc backup process](#process-of-ad-hoc-full-backup) for details).
 
 <details>
-<summary>The unique configuration items of `backupSchedule`</summary>
+<summary>The unique configuration items of <code>backupSchedule</code></summary>
 
 * `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 
