@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kuberne
 
 # Get Started with TiDB Operator in Kubernetes
 
-This document explains how to create a simple Kubernetes cluster and use it to do a basic test deployment of TiDB Cluster using TiDB Operator.
+This document explains how to create a simple Kubernetes cluster and use it to do a basic test deployment of a TiDB cluster using TiDB Operator.
 
 > **Warning:**
 >
@@ -14,10 +14,10 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 These are the steps this document follows:
 
-1. [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
+1. [Create a Kubernetes cluster](#create-a-kubernetes-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
-3. [Deploy a TiDB Cluster](#deploy-the-tidb-cluster)
-4. [Connect to TiDB Cluster](#connect-to-tidb)
+3. [Deploy a TiDB cluster](#deploy-the-tidb-cluster)
+4. [Connect to a TiDB cluster](#connect-to-tidb)
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
 
@@ -34,18 +34,18 @@ If you want to do a production-quality deployment, use one of these resources:
     3. Install TiDB Operator in a Kubernetes cluster according to [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
     4. Deploy your TiDB cluster according to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
 
-## Create a Kubernetes Cluster
+## Create a Kubernetes cluster
 
-This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test TiDB Cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
+This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
 - [Using kind](#create-a-kubernetes-cluster-using-kind) (Kubernetes in Docker)
 - [Using minikube](#create-a-kubernetes-cluster-using-minikube) (Kubernetes running locally in a VM)
 
-You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the Google Cloud Shell, and follow an integrated tutorial to deploy TiDB Operator and TiDB Cluster:
+You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the Google Cloud Shell, and follow an integrated tutorial to deploy TiDB Operator and the TiDB cluster:
 
 - [Open in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md)
 
-### Create a Kubernetes Cluster Using kind
+### Create a Kubernetes cluster using kind
 
 This section shows how to deploy a Kubernetes cluster using kind.
 
@@ -115,7 +115,7 @@ To destroy the Kubernetes cluster, run the following command:
 kind delete cluster
 ```
 
-### Create a Kubernetes Cluster Using minikube
+### Create a Kubernetes cluster using minikube
 
 This section describes how to deploy a Kubernetes cluster using minikube.
 
@@ -225,12 +225,12 @@ minikube delete
 
 Before proceeding, make sure the following requirements are satisfied:
 
-- A running Kubernetes Cluster that kubectl can connect to
+- A running Kubernetes cluster that kubectl can connect to
 - [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= Helm 2.16.5) or the latest stable version of Helm 3
 
 1. Install TiDB Operator CRDs:
 
-    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of `TidbCluster`.
+    TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of the TiDB cluster.
 
     Execute this command to install the CRDs into your cluster:
 
@@ -588,7 +588,7 @@ Before proceeding, make sure the following requirements are satisfied:
     mysql>
     ```
 
-    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade TiDB Cluster](#upgrade-the-tidb-cluster) section).
+    Here are some commands you can execute after connecting to the cluster to see some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#upgrade-the-tidb-cluster) section).
 
     ```
     mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -711,7 +711,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
 
 `kubectl patch` applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
 
-1. Patch the TidbCluster resource
+1. Patch the `TidbCluster` resource
 
     In this case, we can use a JSON merge patch to update the version of the TiDB cluster to "nightly":
 
@@ -757,7 +757,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
     kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
     ```
 
-4. Check the version of TiDB Cluster
+4. Check the version of the TiDB cluster
 
     {{< copyable "shell-regular" >}}
 
@@ -780,7 +780,7 @@ Kubernetes makes it possible to both "edit" and "patch" deployed resources.
     Check Table Before Drop: false
     ```
 
-For more details about upgrading the TiDB cluster running in TiDB Operator, consult [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md).
+For more details about upgrading the TiDB cluster running in TiDB Operator, refer to [Upgrade the TiDB cluster](upgrade-a-tidb-cluster.md).
 
 ## Destroy the TiDB cluster
 
@@ -835,4 +835,4 @@ Instructions for destroying the Kubernetes clusters depend on where the Kubernet
     pgrep -lfa kubectl
     ```
 
-For more information about destroying a TiDB Cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
+For more information about destroying a TiDB cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
