@@ -890,7 +890,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         其中 `${cluster_name}` 为集群的名字：
 
         - `spec.secretName` 请设置为 `${cluster_name}-ticdc-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
           - `${cluster_name}-ticdc`
           - `${cluster_name}-ticdc.${namespace}`
@@ -901,7 +901,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
           - `*.${cluster_name}-ticdc-peer`
           - `*.${cluster_name}-ticdc-peer.${namespace}`
           - `*.${cluster_name}-ticdc-peer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
+        - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；

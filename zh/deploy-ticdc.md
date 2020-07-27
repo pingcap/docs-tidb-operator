@@ -75,7 +75,7 @@ summary: 了解如何在 Kubernetes 上部署 TiCDC。
 
     TiCDC 从 v4.0.3 版本开始支持 TLS，TiDB Operator v1.1.3 版本同步支持 TiCDC 开启 TLS 功能。
 
-    如果在创建 TiDB 集群时候开启了 TLS，使用 cdc cli 请携带 TLS 证书相关参数：
+    如果在创建 TiDB 集群时开启了 TLS，使用 `cdc cli` 请携带 TLS 证书相关参数：
 
     {{< copyable "shell-regular" >}}
 
