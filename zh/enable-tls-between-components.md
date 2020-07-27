@@ -341,6 +341,47 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal drainer-server.json | cfssljson -bare drainer-server
         ```
 
+    - TiCDC Server 端证书
+
+        首先生成默认的 `ticdc-server.json` 文件：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        cfssl print-defaults csr > ticdc-server.json
+        ```
+
+        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+
+        ``` json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-ticdc",
+              "${cluster_name}-ticdc.${namespace}",
+              "${cluster_name}-ticdc.${namespace}.svc",
+              "${cluster_name}-ticdc-peer",
+              "${cluster_name}-ticdc-peer.${namespace}",
+              "${cluster_name}-ticdc-peer.${namespace}.svc",
+              "*.${cluster_name}-ticdc-peer",
+              "*.${cluster_name}-ticdc-peer.${namespace}",
+              "*.${cluster_name}-ticdc-peer.${namespace}.svc"
+            ],
+        ...
+        ```
+
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+
+        最后生成 TiCDC Server 端证书：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
+        ```
+
 6. 生成 Client 端证书。
 
     首先生成默认的 `client.json` 文件：
