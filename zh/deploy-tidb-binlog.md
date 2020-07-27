@@ -238,8 +238,6 @@ tlsCluster:
 ...
 ```
 
-随后启动 Drainer 即可完成开启组件间 TLS。
-
 ### 为 Drainer 和下游数据库间开启 TLS
 
 如果 `tidb-drainer` 的写入下游设置为 `mysql/tidb`，并且希望为 `drainer` 和下游数据库间开启 TLS，可以参考下面步骤进行配置。
@@ -259,7 +257,7 @@ tlsSyncer:
   #  - TiDB
 ```
 
-如果需要将 `tidb-drainer` 的 checkpoint 保存到其他 **开启 TLS 的** 数据库。需要创建一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
+如果需要将 `tidb-drainer` 的 checkpoint 保存到其他 **开启 TLS** 的数据库。需要创建一个包含 checkpoint 数据库的 TLS 信息的 secret，创建方式为：
 
 ```bash
 kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
