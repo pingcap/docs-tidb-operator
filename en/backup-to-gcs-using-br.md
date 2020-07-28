@@ -154,11 +154,11 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` in the TiDB cluster is smaller than the `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts `tikv_gc_lifetime` to `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage collected by TiKV.
+    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, whether the backup is successful or not, if the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and thinks the backup fails. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
 
     {{< copyable "sql" >}}
 
@@ -168,7 +168,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
     If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value.
 
-* `.spec.cleanPolicy`: The backup file clean policy when the backup CR is deleted after the backup is completed.
+* `.spec.cleanPolicy`: The clean policy of the backup file when the backup CR is deleted after the backup is completed.
 
     Three clean policies are supported:
 
