@@ -184,7 +184,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 * `.spec.from.port`: The port of the TiDB cluster to be backed up.
 * `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
 * `.spec.gcs.bucket`: The name of the bucket which stores data.
-* `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
+* `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
 * `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
 * `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
 
