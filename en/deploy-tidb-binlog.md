@@ -212,7 +212,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
 If you want to enable TLS for the TiDB cluster and TiDB Binlog, refer to [Enable TLS between Components](enable-tls-between-components.md).
 
-After you create a secret and start a TiDB cluster with Pump, edit the `values.yaml` file to set `tlsCluster.enabled` to `true`, and configure the corresponding `certAllowedCN`:
+After you have created a secret and started a TiDB cluster with Pump, edit the `values.yaml` file to set the `tlsCluster.enabled` value to `true`, and configure the corresponding `certAllowedCN`:
 
 ```yaml
 ...
@@ -248,7 +248,7 @@ If you set the downstream database of `tidb-drainer` to `mysql/tidb`, and if you
     kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    Edit the `values.yaml` file to set `tlsSyncer.checkpoint.tlsClientSecretName` to `${checkpoint_tidb_client_secret}`, and configure the corresponding `certAllowedCN`:
+    Edit the `values.yaml` file to set the `tlsSyncer.checkpoint.tlsClientSecretName` value to `${checkpoint_tidb_client_secret}`, and configure the corresponding `certAllowedCN`:
 
     ```yaml
     ...
