@@ -13,7 +13,7 @@ The backup method described in this document is implemented using Custom Resourc
 
 Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-Currently, the above three authorization methods are supported for the ad-hoc full backup. This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage and all the above methods are used in the examples.
+This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to GCS.
 
 ### Prerequisites for ad-hoc full backup
 
@@ -121,7 +121,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     * `DURABLE_REDUCED_AVAILABILITY`
 
     If you do not configure `storageClass`, the default type is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
-    
+
     </details>
 
     <details>
@@ -152,12 +152,40 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
 <summary>More descriptions of fields in the <code>Backup</code> CR</summary>
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.from.host`: The address of the TiDB cluster to be backed up.
+* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+
+    Before the backup begins, if the `tikv_gc_lifetime` in the TiDB cluster is smaller than the `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts `tikv_gc_lifetime` to `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage collected by TiKV.
+
+    After the backup, whether the backup is successful or not, if the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and thinks the backup fails. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    ```
+
+    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value.
+
+* `.spec.cleanPolicy`: The backup file clean policy when the backup CR is deleted after the backup is completed.
+
+    Three clean policies are supported:
+
+    * `Retain`: On any circumstances, retain the backup file when deleting the backup CR.
+    * `Delete`: On any circumstances, delete the backup file when deleting the backup CR.
+    * `OnFailure`: If the backup fails, delete the backup file when deleting the backup CR.
+
+    If this field is not configured, or if you configure a value other than the three policies above, the backup file is retained.
+
+    Note that in v1.1.2 and earlier versions, this field does not exist. The backup file is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+
+* `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
 * `.spec.from.port`: The port of the TiDB cluster to be backed up.
 * `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
 * `.spec.gcs.bucket`: The name of the bucket which stores data.
 * `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
-* `.spec.from.tidbSecretName`: The secret containg the password of the `.spec.from.user` in the TiDB cluster.
+* `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
 * `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
 
     If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:
