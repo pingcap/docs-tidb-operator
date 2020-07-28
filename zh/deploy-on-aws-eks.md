@@ -42,14 +42,14 @@ nodeGroups:
       role: admin
 
   - name: tidb
-    desiredCapacity: 1
+    desiredCapacity: 2
     labels:
       role: tidb
     taints:
       dedicated: tidb:NoSchedule
 
   - name: pd
-    desiredCapacity: 1
+    desiredCapacity: 3
     labels:
       role: pd
     taints:
