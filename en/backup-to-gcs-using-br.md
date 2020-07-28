@@ -5,7 +5,7 @@ summary: Learn how to back up data to Google Cloud Storage (GCS) using BR.
 
 # Back up Data to GCS Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS). "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to GCS.
+This document describes how to back up the data of a TiDB cluster in Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS). "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to GCS.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -93,21 +93,21 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `sendCredToTikv`.
 
     <details>
-    <summary>More description of parameters</summary>
+    <summary>Parameter description</summary>
 
     - `spec.br.cluster`: The name of the cluster to be backed up.
     - `spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
     - `spec.br.logLevel`: The log level (`info` by default).
-    - `spec.br.statusAddr`: The HTTP port used for listening a process status in BR to facilitate debugging. If not specified, BR does not listen the process status by default.
+    - `spec.br.statusAddr`: The listening address through which BR provides statistics. If not specified, BR does not listen on any status address by default.
     - `spec.br.concurrency`: The number of threads used by each TiKV process during backup. Defaults to `4` for backup and `128` for restore.
-    - `spec.br.rateLimit`: The speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The default is no limit.
+    - `spec.br.rateLimit`: The speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The speed limit is not set by default.
     - `spec.br.checksum`: Whether to verify the files after the backup is completed. Defaults to `true`.
     - `spec.br.sendCredToTikv`: Whether the BR process passes its GCP privileges to the TiKV process. Defaults to `true`.
     </details>
 
     This example backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, and `storageClass`.
 
-    The `projectId` in the configuration is the unique identifier for the user project on GCP. For how to obtain the identifier, see [GCP Documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+    The `projectId` in the configuration is the unique identifier of a user project on GCP. For how to obtain the identifier, see [GCP Documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 
     <details>
     <summary>Configure <code>storageClass</code>.</summary>
@@ -120,14 +120,14 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     * `COLDLINE`
     * `DURABLE_REDUCED_AVAILABILITY`
 
-    If you do not configure `storageClass`, the default is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
+    If you do not configure `storageClass`, the default type is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
     
     </details>
 
     <details>
     <summary>Configure the object access-control list (ACL) strategy</summary>
 
-    CS supports the following ACL strategies:
+    GCS supports the following ACL strategies:
 
     * `authenticatedRead`
     * `bucketOwnerFullControl`
@@ -136,7 +136,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
     * `projectPrivate`
     * `publicRead`
 
-    If you do not configure `storageClass`, the default is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
+    If you do not configure the object ACL strategy, the default strategy is `private`. See [GCS Documentation](https://cloud.google.com/storage/docs/access-control/lists) for details.
     </details>
 
 2. After creating the `Backup` CR, use the following command to check the backup status:
@@ -157,7 +157,7 @@ Currently, the above three authorization methods are supported for the ad-hoc fu
 * `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
 * `.spec.gcs.bucket`: The name of the bucket which stores data.
 * `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
-* `.spec.from.tidbSecretName`: The secret of the user password of the `.spec.from.user` TiDB cluster.
+* `.spec.from.tidbSecretName`: The secret containg the password of the `.spec.from.user` in the TiDB cluster.
 * `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
 
     If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:

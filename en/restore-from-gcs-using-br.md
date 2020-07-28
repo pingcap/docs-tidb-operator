@@ -5,9 +5,9 @@ summary: Learn how to restore data from Google Cloud Storage (GCS) using BR.
 
 # Restore Data from GCS Using BR
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://docs.pingcap.com/tidb/dev/backup-and-restore-tool) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://docs.pingcap.com/tidb/dev/backup-and-restore-tool) is used to perform the restore.
 
-The restoration method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
+The restore method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
 This document shows an example in which the backup data stored in the specified path on Google Cloud Storage (GCS) is restored to the TiDB cluster.
 
@@ -84,7 +84,7 @@ This document shows an example in which the backup data stored in the specified 
         # objectAcl: private
     ```
 
-2. After creating the `Restore` CR, execute the following command to check the restoration status:
+2. After creating the `Restore` CR, execute the following command to check the restore status:
 
     {{< copyable "shell-regular" >}}
 
@@ -96,16 +96,16 @@ This example restores the backup data stored in the `spec.gcs.prefix` folder of 
 
 <details>
 
-<summary>More descriptions of fields in the <code>Restore<code> CR</summary>
+<summary>More descriptions of fields in the <code>Restore</code> CR</summary>
 
 * `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.
 * `.spec.to.port`: The port of the TiDB cluster to be restored.
 * `.spec.to.user`: The accessing user of the TiDB cluster to be restored.
-* `.spec.to.tidbSecretName`: The secret of the user password of the `.spec.to.user` TiDB cluster.
+* `.spec.to.tidbSecretName`: The secret containg the password of the `.spec.to.user` in the TiDB cluster.
 * `.spec.to.tlsClientSecretName`: The secret of the certificate used during the restore.
 
-    If TLS is enabled for the TiDB cluster, but you do not want to restore data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.to.tlsClientSecretName` parameter to specify a secret for the restore. To generate the secret, run the following command:
+    If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to restore data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.to.tlsClientSecretName` parameter to specify a secret for the restore. To generate the secret, run the following command:
  
     {{< copyable "shell-regular" >}}
 
