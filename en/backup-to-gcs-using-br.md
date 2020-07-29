@@ -154,7 +154,13 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+    ```
 
     After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
 
@@ -166,19 +172,25 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value.
+    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value:
 
-* `.spec.cleanPolicy`: The clean policy of the backup file when the backup CR is deleted after the backup is completed.
+    {{< copyable "sql" >}}
+
+    ```sql
+    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    ```
+
+* `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
 
     Three clean policies are supported:
 
-    * `Retain`: On any circumstances, retain the backup file when deleting the backup CR.
-    * `Delete`: On any circumstances, delete the backup file when deleting the backup CR.
-    * `OnFailure`: If the backup fails, delete the backup file when deleting the backup CR.
+    * `Retain`: On any circumstances, retain the backup data when deleting the backup CR.
+    * `Delete`: On any circumstances, delete the backup data when deleting the backup CR.
+    * `OnFailure`: If the backup fails, delete the backup data when deleting the backup CR.
 
-    If this field is not configured, or if you configure a value other than the three policies above, the backup file is retained.
+    If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
 
-    Note that in v1.1.2 and earlier versions, this field does not exist. The backup file is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+    Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
 
 * `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
 * `.spec.from.port`: The port of the TiDB cluster to be backed up.
