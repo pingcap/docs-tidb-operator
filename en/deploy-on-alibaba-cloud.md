@@ -116,7 +116,7 @@ All the instances except ACK mandatory workers are deployed across availability 
 
     If you get an error while running `terraform apply`, fix the error (for example, lack of permission) according to the error description and run `terraform apply` again.
 
-    It takes 5 to 10 minutes to create the whole stack using `terraform apply`. Once installation is complete, the basic cluster information is printed:
+    It takes 5 to 10 minutes to create the whole stack using `terraform apply`. Once the installation is complete, the basic cluster information is printed:
 
     ```
     Apply complete! Resources: 3 added, 0 changed, 1 destroyed.
@@ -219,6 +219,20 @@ All the instances except ACK mandatory workers are deployed across availability 
 
         Modify `replicas` according to your needs.
 
+    To deploy the enterprise version of TiDB/PD/TiKV/TiFlash/TiCDC, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`).
+
+    For example:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
+
     > **Note:**
     >
     > * Replace all the `TIDB_CLUSTER_NAME` in the `db.yaml` and `db-monitor.yaml` files with `tidb_cluster_name` configured in the deployment of ACK.
@@ -293,7 +307,7 @@ This may take a while to complete. You can watch the process using the following
 kubectl get pods --namespace ${namespace} -o wide --watch
 ```
 
-## Scale out TiDB cluster
+## Scale out the TiDB cluster
 
 To scale out the TiDB cluster, modify `tikv_count`, `tiflash_count`, `cdc_count`, or `tidb_count` in the `terraform.tfvars` file, and then run `terraform apply` to scale out the number of nodes for the corresponding components.
 
@@ -494,4 +508,4 @@ It may take a long time to finish destroying the cluster.
 
 ## Limitation
 
-You cannot change `pod cidr`, `service cidr` and worker instance types once the cluster is created.
+You cannot change `pod cidr`, `service cidr`, and worker instance types once the cluster is created.

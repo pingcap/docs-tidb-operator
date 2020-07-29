@@ -13,13 +13,13 @@ This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/s
 - [Deploy TiDB Operator](deploy-tidb-operator.md);
 - [Install Helm](tidb-toolkit.md#use-helm) and configure it with the official PingCAP chart.
 
-## Deploy TiDB Binlog of a TiDB cluster
+## Deploy TiDB Binlog in a TiDB cluster
 
 TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster with TiDB Binlog enabled, or enable TiDB Binlog in an existing TiDB cluster, take the following steps.
 
 ### Deploy Pump
 
-1. Modify the TidbCluster CR file to add the Pump configuration.
+1. Modify the `TidbCluster` CR file to add the Pump configuration.
 
     For example:
 
@@ -42,8 +42,18 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
 
     Edit `version`, `replicas`, `storageClassName`, and `requests.storage` according to your cluster.
 
+    To deploy the enterprise version of Pump, edit the YAML file above to set `spec.pump.baseImage` to the enterprise image (`pingcap/tidb-binlog-enterprise`).
+
+    For example:
+
+    ```yaml
+    spec:
+      pump:
+        baseImage: pingcap/tidb-binlog-enterprise
+    ```
+
 2. Set affinity and anti-affinity for TiDB and Pump.
-    
+
     If you enable TiDB Binlog in the production environment, it is recommended to set affinity and anti-affinity for TiDB and the Pump component; if you enable TiDB Binlog in a test environment on the internal network, you can skip this step.
 
     By default, the affinity of TiDB and Pump is set to `{}`. Currently, each TiDB instance does not have a corresponding Pump instance by default. When TiDB Binlog is enabled, if Pump and TiDB are separately deployed and network isolation occurs, and `ignore-error` is enabled in TiDB components, TiDB loses binlogs.
@@ -139,7 +149,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
     >
     > If you update the affinity configuration of the TiDB components, it will cause rolling updates of the TiDB components in the cluster.
 
-## Deploy drainer
+## Deploy Drainer
 
 To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB cluster, take the following steps:
 
@@ -170,6 +180,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     ```yaml
     clusterName: example-tidb
     clusterVersion: v3.0.0
+    baseImage:pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
     config: |
@@ -192,7 +203,18 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](configure-tidb-binlog-drainer.md).
 
-4. Deploy the drainer:
+    To deploy the enterprise version of Drainer, edit the YAML file above to set `baseImage` to the enterprise image (`pingcap/tidb-binlog-enterprise`).
+
+    For example:
+
+    ```yaml
+    ...
+    clusterVersion: v4.0.2
+    baseImage: pingcap/tidb-binlog-enterprise
+    ...
+    ```
+
+4. Deploy Drainer:
 
     {{< copyable "shell-regular" >}}
 
@@ -200,7 +222,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     helm install pingcap/tidb-drainer --name=${cluster_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
 
-    If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
+    If the server does not have an external network, refer to [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
 
     > **Note:**
     >
@@ -208,4 +230,57 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
 ## Enable TLS
 
+### Enable TLS between TiDB components
+
 If you want to enable TLS for the TiDB cluster and TiDB Binlog, refer to [Enable TLS between Components](enable-tls-between-components.md).
+
+After you have created a secret and started a TiDB cluster with Pump, edit the `values.yaml` file to set the `tlsCluster.enabled` value to `true`, and configure the corresponding `certAllowedCN`:
+
+```yaml
+...
+tlsCluster:
+  enabled: true
+  # certAllowedCN:
+  #  - TiDB
+...
+```
+
+### Enable TLS between Drainer and the downstream database
+
+If you set the downstream database of `tidb-drainer` to `mysql/tidb`, and if you want to enable TLS between Drainer and the downstream database, take the following steps.
+
+1. Create a secret that contains the TLS information of the downstream database.
+
+    ```bash
+    kubectl create secret generic ${downstream_database_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    `tidb-drainer` saves the checkpoint in the downstream database by default, so you only need to configure `tlsSyncer.tlsClientSecretName` and the corresponding `cerAllowedCN`:
+
+    ```yaml
+    tlsSyncer:
+      tlsClientSecretName: ${downstream_database_secret_name}
+      # certAllowedCN:
+      #  - TiDB
+    ```
+
+2. To save the checkpoint of `tidb-drainer` to **other databases that have enabled TLS**, create a secret that contains the TLS information of the checkpoint database:
+
+    ```bash
+    kubectl create secret generic ${checkpoint_tidb_client_secret} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    Edit the `values.yaml` file to set the `tlsSyncer.checkpoint.tlsClientSecretName` value to `${checkpoint_tidb_client_secret}`, and configure the corresponding `certAllowedCN`:
+
+    ```yaml
+    ...
+    tlsSyncer: {}
+      tlsClientSecretName: ${downstream_database_secret_name}
+      # certAllowedCN:
+      #  - TiDB
+      checkpoint:
+        tlsClientSecretName: ${checkpoint_tidb_client_secret}
+        # certAllowedCN:
+        #  - TiDB
+    ...
+    ```
