@@ -13,13 +13,13 @@ This document describes how to maintain [TiDB Binlog](https://pingcap.com/docs/s
 - [Deploy TiDB Operator](deploy-tidb-operator.md);
 - [Install Helm](tidb-toolkit.md#use-helm) and configure it with the official PingCAP chart.
 
-## Deploy TiDB Binlog of a TiDB cluster
+## Deploy TiDB Binlog in a TiDB cluster
 
 TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster with TiDB Binlog enabled, or enable TiDB Binlog in an existing TiDB cluster, take the following steps.
 
 ### Deploy Pump
 
-1. Modify the TidbCluster CR file to add the Pump configuration.
+1. Modify the `TidbCluster` CR file to add the Pump configuration.
 
     For example:
 
@@ -222,7 +222,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     helm install pingcap/tidb-drainer --name=${cluster_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
 
-    If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
+    If the server does not have an external network, refer to [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
 
     > **Note:**
     >
