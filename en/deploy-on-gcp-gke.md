@@ -130,7 +130,7 @@ This section describes how to deploy a TiDB cluster.
         * 3 n1-standard-16 instances for TiDB
         * 3 n1-standard-2 instances for monitor
 
-        The production setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow these [instructions](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
+        The production setup, as listed above, requires at least 91 CPUs, which exceed the default CPU quota of a GCP project. To increase your project's quota, follow these [instructions](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
 
     > **Note:**
     >
@@ -180,10 +180,25 @@ This section describes how to deploy a TiDB cluster.
 
     To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure Cluster using TidbCluster](configure-a-tidb-cluster.md).
 
+    To deploy the enterprise version of TiDB/PD/TiKV, edit the `db.yaml` file to set `spec.<tidb/pd/tikv>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv>-enterprise`).
+
+    For example:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
+
     > **Note:**
     >
     > * Make sure the number of PD nodes, TiKV nodes, or TiDB nodes is the same as the value of the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes to actually create is `pd_count` * `3`, `tikv_count` * `3`, or `tidb_count` * `3`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
+    > * As the data on the local SSDs on the node [does not persist](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd#limitations) during the GKE upgrade, it is not recommended to use local SSDs as TiKV storage in the production environment. It is recommended to use the SSD persistent disks. You can refer to [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#gce-pd) to create the `StorageClass` as needed and modify the `spec.tikv.storageClassName` in `db.yaml`.
 
 2. Create `Namespace`:
 
@@ -212,7 +227,7 @@ This section describes how to deploy a TiDB cluster.
 
 ## Access the TiDB database
 
-After `terraform apply` is successful executed, perform the following steps to access the TiDB cluster. Replace the `${}` section with the output of running `terraform apply` above.
+After `terraform apply` is successfully executed, perform the following steps to access the TiDB cluster. Replace the `${}` section with the output of running `terraform apply` above.
 
 1. Get the IP address of the TiDB Internal LoadBalancer:
 
@@ -455,7 +470,7 @@ operator_helm_values_file = "./test-operator.yaml"
 ### Customize logging
 
 GKE uses Fluentd as its default log collector, which then forwards logs to Stackdriver. The Fluentd process can be quite resource hungry and consume a non-trivial share of CPU and RAM.
-Fluent Bit is a more performant and less resource intensive alternative. It is recommended to use Fluent Bit over Fluentd for a production set up. See [this repository](https://github.com/pingcap/k8s-fluent-bit-stackdriver) for an example of how to set up Fluent Bit on a GKE cluster.
+Fluent Bit is a more performant and less resource-intensive alternative. It is recommended to use Fluent Bit over Fluentd for a production set up. See [this repository](https://github.com/pingcap/k8s-fluent-bit-stackdriver) for an example of how to set up Fluent Bit on a GKE cluster.
 
 ### Customize node pools
 
