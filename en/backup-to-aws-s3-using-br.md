@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 # Back up Data to S3-Compatible Storage Using BR
 
-This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
+This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -293,7 +293,10 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
 
 The above three examples uses three methods to grant permissions to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored.
 
-Amazon S3 supports the following access-control list (ACL) policies:
+<details>
+<summary>Configure the access-control list (ACL) policy</summary>
+
+Amazon S3 supports the following ACL policies:
 
 - `private`
 - `public-read`
@@ -303,6 +306,11 @@ Amazon S3 supports the following access-control list (ACL) policies:
 - `bucket-owner-full-control`
 
 If the ACL policy is not configured, the `private` policy is used by default. For the detailed description of these access control policies, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html).
+
+</details>
+
+<details>
+<summary>Configure <code>storageClass</code></summary>
 
 Amazon S3 supports the following `storageClass` types:
 
@@ -315,6 +323,8 @@ Amazon S3 supports the following `storageClass` types:
 
 If `storageClass` is not configured, `STANDARD_IA` is used by default. For the detailed description of these storage types, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html).
 
+</details>
+
 After creating the `Backup` CR, use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
@@ -323,14 +333,43 @@ After creating the `Backup` CR, use the following command to check the backup st
  kubectl get bk -n test1 -o wide
  ```
 
-More `Backup` CR fields are described as follows:
+<details>
+<summary>More <code>Backup</code> CR parameter description</summary>
 
 - `.spec.metadata.namespace`: the namespace where the `Backup` CR is located.
+- `.spec.tikvGCLifeTime`: the temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+
+    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+
+    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    ```
+
+    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value.
+
+- `.spec.cleanPolicy`: The clean policy of the backup file when the backup CR is deleted after the backup is completed.
+
+    Three clean policies are supported:
+
+    * `Retain`: On any circumstances, retain the backup file when deleting the backup CR.
+    * `Delete`: On any circumstances, delete the backup file when deleting the backup CR.
+    * `OnFailure`: If the backup fails, delete the backup file when deleting the backup CR.
+
+    If this field is not configured, or if you configure a value other than the three policies above, the backup file is retained.
+
+    Note that in v1.1.2 and earlier versions, this field does not exist. The backup file is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+
 - `.spec.from.host`: the address of the TiDB cluster to be backed up.
 - `.spec.from.port`: the port of the TiDB cluster to be backed up.
 - `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
 - `.spec.from.tidbSecretName`: the secret of the user password of the `.spec.from.user` TiDB cluster.
-- `.spec.from.tlsClient.tlsSecret`: the secret of the certificate used during the backup.
+- `.spec.from.tlsClientSecretName`: the secret of the certificate used during the backup.
 
     If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClient.tlsSecret` parameter to specify a secret for the backup. To generate the secret, run the following command:
 
@@ -340,7 +379,10 @@ More `Backup` CR fields are described as follows:
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
 
-More S3-compatible `provider`s are described as follows:
+</details>
+
+<details>
+<summary>Supported S3-compatible <code>provider</code></summary>
 
 - `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
 - `digitalocean`：Digital Ocean Spaces
@@ -350,6 +392,8 @@ More S3-compatible `provider`s are described as follows:
 - `netease`：Netease Object Storage (NOS)
 - `wasabi`：Wasabi Object Storage
 - `other`：Any other S3 compatible provider
+
+</details>
 
 ## Scheduled full backup
 
