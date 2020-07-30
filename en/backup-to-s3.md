@@ -272,19 +272,24 @@ After creating the `Backup` CR, you can use the following command to check the b
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value.
+    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
 
-* `.spec.cleanPolicy`: The clean policy of the backup file when the backup CR is deleted after the backup is completed.
+    {{< copyable "sql" >}}
+
+    ```sql
+    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+
+* `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
 
     Three clean policies are supported:
 
-    * `Retain`: On any circumstances, retain the backup file when deleting the backup CR.
-    * `Delete`: On any circumstances, delete the backup file when deleting the backup CR.
-    * `OnFailure`: If the backup fails, delete the backup file when deleting the backup CR.
+    * `Retain`: On any circumstances, retain the backup data when deleting the backup CR.
+    * `Delete`: On any circumstances, delete the backup data when deleting the backup CR.
+    * `OnFailure`: If the backup fails, delete the backup data when deleting the backup CR.
 
-    If this field is not configured, or if you configure a value other than the three policies above, the backup file is retained.
+    If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
 
-    Note that in v1.1.2 and earlier versions, this field does not exist. The backup file is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+    Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
 
 * `.spec.from.host`: the address of the TiDB cluster to be backed up.
 * `.spec.from.port`: the port of the TiDB cluster to be backed up.
