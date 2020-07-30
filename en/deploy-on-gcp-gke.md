@@ -180,10 +180,25 @@ This section describes how to deploy a TiDB cluster.
 
     To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure Cluster using TidbCluster](configure-a-tidb-cluster.md).
 
+    To deploy the enterprise version of TiDB/PD/TiKV, edit the `db.yaml` file to set `spec.<tidb/pd/tikv>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv>-enterprise`).
+
+    For example:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
+
     > **Note:**
     >
     > * Make sure the number of PD nodes, TiKV nodes, or TiDB nodes is the same as the value of the `replicas` field in `db.yaml`. Note that in the Regional cluster, the number of nodes to actually create is `pd_count` * `3`, `tikv_count` * `3`, or `tidb_count` * `3`.
     > * Make sure `spec.initializer.version` in `db-monitor.yaml` is the same as `spec.version` in `db.yaml`. Otherwise, the monitor might not display correctly.
+    > * As the data on the local SSDs on the node [does not persist](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd#limitations) during the GKE upgrade, it is not recommended to use local SSDs as TiKV storage in the production environment. It is recommended to use the SSD persistent disks. You can refer to [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#gce-pd) to create the `StorageClass` as needed and modify the `spec.tikv.storageClassName` in `db.yaml`.
 
 2. Create `Namespace`:
 

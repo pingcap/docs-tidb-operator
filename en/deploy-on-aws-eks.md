@@ -228,7 +228,7 @@ You can use the `terraform output` command to get the output again.
         ```yaml
         spec:
           ...
-          tiflash:
+          ticdc:
             baseImage: pingcap/ticdc
             nodeSelector:
               dedicated: CLUSTER_NAME-cdc
@@ -242,11 +242,26 @@ You can use the `terraform output` command to get the output again.
 
         Modify `replicas` according to your needs.
 
+    To deploy the enterprise version of TiDB/PD/TiKV/TiFlash/TiCDC, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`).
+
+    For example:
+
+    ```yaml
+    spec:
+      ...
+      pd:
+        baseImage: pingcap/pd-enterprise
+      ...
+      tikv:
+        baseImage: pingcap/tikv-enterprise
+    ```
+
     > **Note:**
     >
     > * Replace all `CLUSTER_NAME` in `db.yaml` and `db-monitor.yaml` files with `default_cluster_name` configured during EKS deployment.
     > * Make sure that during EKS deployment, the number of PD, TiKV, TiFlash, TiCDC, or TiDB nodes is >= the value of the `replicas` field of the corresponding component in `db.yaml`.
     > * Make sure that `spec.initializer.version` in `db-monitor.yaml` and `spec.version` in `db.yaml` are the same to ensure normal monitor display.
+    > * As the data on the instance stores on the node [does not persist](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime) during the EKS upgrade, it is not recommended to use instance stores as TiKV storage in the production environment. It is recommended to use the EBS. You can refer to [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#aws-ebs) to create the `StorageClass` as needed and modify the `spec.tikv.storageClassName` in `db.yaml`.
 
 2. Create `Namespace`:
 
