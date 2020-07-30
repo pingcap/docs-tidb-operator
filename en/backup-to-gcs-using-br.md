@@ -154,13 +154,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
+    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
     After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
 
@@ -172,7 +166,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    If the value of `tikv_gc_lifetime` is set too large (usually 10m), you need to set it back to the previous value:
+    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (usually 10m), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
 
     {{< copyable "sql" >}}
 
