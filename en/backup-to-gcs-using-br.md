@@ -94,7 +94,6 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
     <details>
     <summary>Parameter description</summary>
-
     - `spec.br.cluster`: The name of the cluster to be backed up.
     - `spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
     - `spec.br.logLevel`: The log level (`info` by default).
@@ -147,62 +146,62 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl get bk -n test1 -owide
     ```
 
-<details>
+    <details>
 
-<summary>More descriptions of fields in the <code>Backup</code> CR</summary>
+    <summary>More descriptions of fields in the <code>Backup</code> CR</summary>
 
-* `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+    * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
+    * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+        Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+        After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+        In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
 
-    {{< copyable "sql" >}}
+        {{< copyable "sql" >}}
 
-    ```sql
-    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
-    ```
+        ```sql
+        select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+        ```
 
-    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
+        In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
 
-    {{< copyable "sql" >}}
+        {{< copyable "sql" >}}
 
-    ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
+        ```sql
+        update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+        ```
 
-* `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
+    * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
 
-    Three clean policies are supported:
+        Three clean policies are supported:
 
-    * `Retain`: On any circumstances, retain the backup data when deleting the backup CR.
-    * `Delete`: On any circumstances, delete the backup data when deleting the backup CR.
-    * `OnFailure`: If the backup fails, delete the backup data when deleting the backup CR.
+        * `Retain`: On any circumstances, retain the backup data when deleting the backup CR.
+        * `Delete`: On any circumstances, delete the backup data when deleting the backup CR.
+        * `OnFailure`: If the backup fails, delete the backup data when deleting the backup CR.
 
-    If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
+        If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
 
-    Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+        Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
 
-* `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
-* `.spec.from.port`: The port of the TiDB cluster to be backed up.
-* `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
-* `.spec.gcs.bucket`: The name of the bucket which stores data.
-* `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
-* `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
-* `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
+    * `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
+    * `.spec.from.port`: The port of the TiDB cluster to be backed up.
+    * `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
+    * `.spec.gcs.bucket`: The name of the bucket which stores data.
+    * `.spec.gcs.prefix`: This field is used to make up the path of the remote storage: `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`. This field can be ignored.
+    * `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
+    * `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
 
-    If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:
+        If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
-    ```
+        ```shell
+        kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
+        ```
 
-</details>
+    </details>
 
 ## Scheduled full backup
 
