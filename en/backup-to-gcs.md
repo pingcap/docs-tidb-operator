@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: Back up Data to GCS
-summary: Learn how to back up the TiDB cluster to GCS.
-aliases: ['/docs/tidb-in-kubernetes/stable/backup-to-gcs/','/docs/tidb-in-kubernetes/v1.1/backup-to-gcs/']
-=======
 title: Back up Data to GCS Using Dumpling
 summary: Learn how to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
-aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-gcs/']
->>>>>>> f34bae0... en: replace Mydumper with Dumpling (#599)
+aliases: ['/docs/tidb-in-kubernetes/stable/backup-to-gcs/','/docs/tidb-in-kubernetes/v1.1/backup-to-gcs/']
 ---
 
 # Back up Data to GCS Using Dumpling

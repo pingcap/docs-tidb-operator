@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: Back up Data to S3-Compatible Storage Using Mydumper
-summary: Learn how to back up the TiDB cluster to the S3-compatible storage.
-aliases: ['/docs/tidb-in-kubernetes/stable/backup-to-s3/','/docs/tidb-in-kubernetes/v1.1/backup-to-s3/']
-=======
 title: Back up Data to S3-Compatible Storage Using Dumpling
 summary: Learn how to back up the TiDB cluster to the S3-compatible storage using Dumpling.
-aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-s3/']
->>>>>>> f34bae0... en: replace Mydumper with Dumpling (#599)
+aliases: ['/docs/tidb-in-kubernetes/stable/backup-to-s3/','/docs/tidb-in-kubernetes/v1.1/backup-to-s3/']
 ---
 
 # Back up Data to S3-Compatible Storage Using Dumpling
