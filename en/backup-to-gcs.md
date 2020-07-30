@@ -178,7 +178,7 @@ kubectl get bk -n test1 -owide
 
     Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
 
-* `.spec.from.host`: the address of the TiDB cluster to be backed up.
+* `.spec.from.host`: the address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
 * `.spec.from.port`: the port of the TiDB cluster to be backed up.
 * `.spec.from.user`: the accessing user of the TiDB cluster to be backed up.
 * `.spec.from.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be backed up.
