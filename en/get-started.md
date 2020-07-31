@@ -1,7 +1,11 @@
 ---
 title: Get Started With TiDB Operator in Kubernetes
 summary: Learn how to deploy TiDB Cluster in TiDB Operator in a Kubernetes cluster.
+<<<<<<< HEAD
 aliases: ['/docs/tidb-in-kubernetes/stable/get-started/','/docs/tidb-in-kubernetes/v1.1/get-started/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/','docs/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/']
+=======
+aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube']
+>>>>>>> 08c6d62... en: fix aliases in get-started (#607)
 ---
 
 # Get Started with TiDB Operator in Kubernetes
