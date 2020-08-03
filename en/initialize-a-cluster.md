@@ -1,7 +1,11 @@
 ---
 title: Initialize a TiDB Cluster in Kubernetes
 summary: Learn how to initialize a TiDB cluster in K8s.
+<<<<<<< HEAD
 aliases: ['/docs/tidb-in-kubernetes/stable/initialize-a-cluster/','/docs/tidb-in-kubernetes/v1.1/initialize-a-cluster/']
+=======
+aliases: ['/docs/tidb-in-kubernetes/dev/initialize-a-cluster/','/dev/tidb-in-kubernetes/initialize-cluster/']
+>>>>>>> f5259f9... Fix a broken link (#614)
 ---
 
 # Initialize a TiDB Cluster in Kubernetes
