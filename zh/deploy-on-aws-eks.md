@@ -14,13 +14,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 * [helm](https://helm.sh/docs/intro/install/) is required to install TiDB Operator (the latest helm 3 is recommended)
 
-并完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作。
+* 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作。
 
-该教程会指导安装并配置好 AWS 的命令行工具 awscli 以及用来创建 Kubernetes 集群的 eksctl 工具。同时 Kubernetes 命令行 kubectl 也会下载并安装好。
+该教程包含以下内容：
+
+* 安装并配置 AWS 的命令行工具 awscli
+* 安装并配置创建 Kubernetes 集群的命令行工具 eksctl
+* 安装 Kubernetes 命令行工具 kubectl
 
 > **注意：**
 >
-> 本文档操作，需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/) 和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/) 和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
 ## 部署
 
@@ -258,11 +262,9 @@ eksctl create cluster -f cluster.yaml
 
 ### 准备一台可以访问集群的机器
 
-我们为 TiDB 集群创建的是内网 LoadBalancer 。我们可在集群 VPC 内创建一台 [堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 访问数据库。
+我们为 TiDB 集群创建的是内网 LoadBalancer。我们可在集群 VPC 内创建一台[堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/)访问数据库，参考 [AWS Linux 堡垒机文档](https://aws.amazon.com/quickstart/architecture/linux-bastion/)在 AWS Console 上创建即可。
 
-参考 AWS [Linux 堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 文档在 AWS Console 上创建即可。
-
-VPC 和 Subnet 需选择集群的 VPC 和 Subnet ，在下拉框通过集群名字确认是否正确。并可通过以下命令查看集群的 VPC 和 Subnet 来验证：
+VPC 和 Subnet 需选择集群的 VPC 和 Subnet，在下拉框通过集群名字确认是否正确。可以通过以下命令查看集群的 VPC 和 Subnet 来验证：
 
 {{< copyable "shell-regular" >}}
 
@@ -274,12 +276,14 @@ eksctl get cluster -n <clusterName>
 
 > **注意：**
 >
-> 也可以使用 [VPC Peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) 连接现有机器到集群 VPC。
-> 若 EKS 是在已经存在的 VPC 中创建的，可使用 VPC 内现有机器。
+> - 除使用堡垒机以外，也可以使用 [VPC Peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) 连接现有机器到集群 VPC。
+> - 若 EKS 创建于已经存在的 VPC 中，可使用 VPC 内现有机器。
 
 ### 安装 MySQL 客户端并连接
 
 待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端 来访问 TiDB 集群。
+
+用 SSH 连接到堡垒机：
 
 {{< copyable "shell-regular" >}}
 
@@ -294,6 +298,8 @@ ssh [-i /path/to/your/private-key.pem] ec2-user@<bastion-public-dns-name>
 ```shell
 sudo yum install mysql -y
 ```
+
+连接到 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -370,7 +376,7 @@ Grafana 默认登录信息：
 
 要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas`。
 
-注意扩容前需要多相应的节点组进行扩容，以便新的实例有足够的资源运行。
+注意扩容前需要对相应的节点组进行扩容，以便新的实例有足够的资源运行。
 
 下面是将集群 `<clusterName>` 的 `tikv` 组扩容到 4 节点的示例：
 
@@ -426,7 +432,7 @@ spec:
 
 > **警告：**
 >
-> 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
+> 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**末尾添加**，并且**不能**修改列表中原有配置的顺序。
 
 如果要部署 TiCDC，可以在 tidb-cluster.yaml 中配置 `spec.ticdc`，例如：
 
@@ -469,11 +475,11 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 
 > **注意：**
 > 
-> 由于 EKS 升级过程中节点重建，本地盘数据会[丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。若无法接受 EKS 升级或其他原因导致节点重建，需要迁移 TiKV 数据，不建议在生产环境中使用本地盘。
+> 由于 EKS 升级过程中节点重建，本地盘数据会[丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
 
 了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例： 
 
-1, 为 TiKV 创建附带本地存储的节点组
+1. 为 TiKV 创建附带本地存储的节点组。
 
 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
@@ -497,7 +503,7 @@ eksctl create nodegroups -f cluster.yaml
 
 若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
 
-2, 部署 local volume provisioner
+2. 部署 local volume provisioner。
 
 本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
 
@@ -507,8 +513,8 @@ eksctl create nodegroups -f cluster.yaml
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
 ```
 
-3, 使用本地存储
+3. 使用本地存储。
 
 完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。修改 tidb-cluster.yaml 中 `tikv.storageClassName` 为 `local-storage` 即可。
 
-运行中的 TiDB 集群不能动态更换 storage class ，可创建一个新的 TiDB 集群测试。
+运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
