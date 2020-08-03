@@ -292,7 +292,7 @@ You can use the `terraform output` command to get the output again.
     kubectl --kubeconfig credentials/kubeconfig_${eks_name} get pods -n ${namespace}
     ```
 
-    When all the Pods are in the `Running` and `Ready` states, the TiDB cluster is successfully started. For example:
+    When all the Pods are in the `Running` or `Ready` state, the TiDB cluster is successfully started. For example:
 
     ```
     NAME                              READY   STATUS    RESTARTS   AGE
