@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 部署前，请确认已安装以下软件：
 
-* [helm](https://helm.sh/docs/intro/install/) is required to install TiDB Operator (the latest helm 3 is recommended)
+* [helm](https://helm.sh/docs/intro/install/) 用于安装 TiDB Operator 。
 
 * 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作。
 
@@ -79,7 +79,7 @@ eksctl create cluster -f cluster.yaml
 
 ### 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](#部署-tidb-operator)，将 TiDB Operator 部署进 Kubernetes 集群。
+参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，将 TiDB Operator 部署进 Kubernetes 集群。
 
 ### 部署 TiDB 集群和监控
 
