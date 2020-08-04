@@ -129,134 +129,13 @@ eksctl create cluster -f cluster.yaml
     tidb-monitor-6fbcc68669-dsjlc     3/3     Running   0          47h
     tidb-pd-0                         1/1     Running   0          47h
     tidb-pd-1                         1/1     Running   0          46h
+    tidb-pd-2                         1/1     Running   0          46h
     tidb-tidb-0                       2/2     Running   0          47h
     tidb-tidb-1                       2/2     Running   0          46h
     tidb-tikv-0                       1/1     Running   0          47h
     tidb-tikv-1                       1/1     Running   0          47h
     tidb-tikv-2                       1/1     Running   0          47h
-    tidb-tikv-3                       1/1     Running   0          46h
     ```
-
-### 为 TiDB 服务 LoadBalancer 开启 Cross-Zone Load Balancing
-
-由于 AWS Network Load Balancer (NLB) [问题](https://github.com/kubernetes/kubernetes/issues/82595)，为 TiDB 服务创建的 NLB 无法自动开启 Cross-Zone Load Balancing，请参考以下步骤手动开启：
-
-1. 获取 TiDB 服务 NLB 名字：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get svc basic-tidb -n tidb-cluster
-    ```
-
-    示例：
-
-    ```
-    NAME        TYPE           CLUSTER-IP      EXTERNAL-IP                                                                     PORT(S)                          AGE
-    tidb-tidb   LoadBalancer   172.20.39.180   a7aa544c49f914930b3b0532022e7d3c-83c0c97d8b659075.elb.us-west-2.amazonaws.com   4000:32387/TCP,10080:31486/TCP   3m46s
-    ```
-
-    `EXTERNAL-IP` 字段值中以 `-` 分隔的第一个字段即为 NLB 名字，上述示例中 `a7aa544c49f914930b3b0532022e7d3c` 即为 NLB 名字。
-
-2. 获取 NLB LoadBalancerArn：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    aws elbv2 describe-load-balancers --name ${LoadBalancerName} --query 'LoadBalancers[*].LoadBalancerArn' --output text
-    ```
-
-    示例：
-
-    ```
-    $ aws elbv2 describe-load-balancers --name abfc623004ccb4cc3b363f3f37475af1 --query 'LoadBalancers[*].LoadBalancerArn' --output text
-    arn:aws:elasticloadbalancing:us-west-2:385595570414:loadbalancer/net/abfc623004ccb4cc3b363f3f37475af1/9774d22c27310bc1
-    ```
-
-3. 查看 NLB 属性：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
-    ```
-
-    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
-
-    示例：
-
-    ```
-    $ aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:385595570414:loadbalancer/net/abfc623004ccb4cc3b363f3f37475af1/9774d22c27310bc1" --output yaml
-    Attributes:
-    - Key: access_logs.s3.enabled
-      Value: 'false'
-    - Key: load_balancing.cross_zone.enabled
-      Value: 'false'
-    - Key: access_logs.s3.prefix
-      Value: ''
-    - Key: deletion_protection.enabled
-      Value: 'false'
-    - Key: access_logs.s3.bucket
-      Value: ''
-    ```
-
-    如果 `load_balancing.cross_zone.enabled` 的值为 `false`，继续下一步，为 NLB 开启 Cross-Zone Load Balancing。
-
-4. 为 NLB 开启 Cross-Zone Load Balancing：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    aws elbv2 modify-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn} --attributes Key=load_balancing.cross_zone.enabled,Value=true
-    ```
-
-    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
-
-    示例：
-
-    ```
-    $ aws elbv2 modify-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:385595570414:loadbalancer/net/abfc623004ccb4cc3b363f3f37475af1/9774d22c27310bc1" --attributes Key=load_balancing.cross_zone.enabled,Value=true --output yaml
-    Attributes:
-    - Key: access_logs.s3.enabled
-      Value: 'false'
-    - Key: load_balancing.cross_zone.enabled
-      Value: 'true'
-    - Key: access_logs.s3.prefix
-      Value: ''
-    - Key: deletion_protection.enabled
-      Value: 'false'
-    - Key: access_logs.s3.bucket
-      Value: ''
-    ```
-
-5. 确认 NLB Cross-Zone Load Balancing 属性已经开启：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    aws elbv2 describe-load-balancer-attributes --load-balancer-arn ${LoadBalancerArn}
-    ```
-
-    `${LoadBalancerArn}` 为第二步获取的 NLB LoadBalancerArn。
-
-    示例：
-
-    ```
-    $ aws elbv2 describe-load-balancer-attributes --load-balancer-arn "arn:aws:elasticloadbalancing:us-west-2:385595570414:loadbalancer/net/abfc623004ccb4cc3b363f3f37475af1/9774d22c27310bc1" --output yaml
-    Attributes:
-    - Key: access_logs.s3.enabled
-      Value: 'false'
-    - Key: load_balancing.cross_zone.enabled
-      Value: 'true'
-    - Key: access_logs.s3.prefix
-      Value: ''
-    - Key: deletion_protection.enabled
-      Value: 'false'
-    - Key: access_logs.s3.bucket
-      Value: ''
-    ```
-
-    确认 `load_balancing.cross_zone.enabled` 的值为 `true`。
 
 ## 访问数据库
 
