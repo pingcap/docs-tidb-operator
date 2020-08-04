@@ -1,6 +1,7 @@
 ---
 title: 在 Kubernetes 上部署 TiCDC
 summary: 了解如何在 Kubernetes 上部署 TiCDC。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-ticdc/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-ticdc/']
 ---
 
 # 在 Kubernetes 上部署 TiCDC

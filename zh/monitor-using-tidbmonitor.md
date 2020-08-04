@@ -1,5 +1,6 @@
 ---
 title: 通过 TidbMonitor 监控 TiDB 集群
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/monitor-using-tidbmonitor/','/docs-cn/tidb-in-kubernetes/v1.1/monitor-using-tidbmonitor/']
 ---
 
 # 通过 TidbMonitor 监控 TiDB 集群

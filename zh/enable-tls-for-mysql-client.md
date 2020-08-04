@@ -1,6 +1,7 @@
 ---
 title: 为 MySQL 客户端开启 TLS
 summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-for-mysql-client/','/docs-cn/tidb-in-kubernetes/v1.1/enable-tls-for-mysql-client/']
 ---
 
 # 为 MySQL 客户端开启 TLS
