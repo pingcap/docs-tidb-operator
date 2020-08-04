@@ -1,6 +1,7 @@
 ---
 title: 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-s3/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-s3/']
 ---
 
 # 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储

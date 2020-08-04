@@ -1,6 +1,7 @@
 ---
 title: 使用 BR 工具备份 TiDB 集群到 GCS
 summary: 介绍如何使用 BR 工具备份 TiDB 集群到 Google Cloud Storage (GCS)。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-gcs-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-gcs-using-br/']
 ---
 
 # 使用 BR 工具备份 TiDB 集群到 GCS

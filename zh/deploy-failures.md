@@ -1,6 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 常见部署错误
 summary: 介绍 Kubernetes 上 TiDB 部署的常见错误以及处理办法。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-failures/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-failures/']
 ---
 
 # Kubernetes 上的 TiDB 常见部署错误

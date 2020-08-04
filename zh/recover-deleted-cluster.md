@@ -1,6 +1,7 @@
 ---
 title: 恢复误删的 TiDB 集群
 summary: 介绍如何恢复误删的 TiDB 集群。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/recover-deleted-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/recover-deleted-cluster/']
 ---
 
 # 恢复误删的 TiDB 集群

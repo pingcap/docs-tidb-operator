@@ -1,6 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 工具指南
 summary: 详细介绍 Kubernetes 上的 TiDB 相关的工具及其使用方法。
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/tidb-toolkit/','/docs-cn/tidb-in-kubernetes/v1.1/tidb-toolkit/']
 ---
 
 # Kubernetes 上的 TiDB 工具指南
