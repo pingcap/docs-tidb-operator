@@ -1,7 +1,7 @@
 ---
 title: 日志收集
 summary: 介绍收集 TiDB 及相关组件日志的方法。
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/log-collecting/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/log-collecting/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/log-collecting/']
+aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/collect-tidb-logs/','/docs-cn/dev/tidb-in-kubernetes/maintain/log-collecting/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/log-collecting/','/docs-cn/v3.0/tidb-in-kubernetes/maintain/log-collecting/']
 ---
 
 # 日志收集

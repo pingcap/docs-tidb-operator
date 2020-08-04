@@ -1,7 +1,7 @@
 ---
 title: 在 Minikube 集群上部署 TiDB 集群
 summary: 介绍如何在 Minikube 集群上部署 TiDB 集群。
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/','/docs-cn/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/','/docs-cn/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/']
+aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-minikube/','/docs-cn/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/','/docs-cn/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/','/docs-cn/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube/']
 ---
 
 # 在 Minikube 集群上部署 TiDB 集群

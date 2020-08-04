@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群常见问题
 summary: 介绍 Kubernetes 上的 TiDB 集群常见问题以及解决方案。
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/faq/','/docs-cn/v3.1/tidb-in-kubernetes/faq/','/docs-cn/v3.0/tidb-in-kubernetes/faq/']
+aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/faq/','/docs-cn/dev/tidb-in-kubernetes/faq/','/docs-cn/v3.1/tidb-in-kubernetes/faq/','/docs-cn/v3.0/tidb-in-kubernetes/faq/']
 ---
 
 # Kubernetes 上的 TiDB 集群常见问题
