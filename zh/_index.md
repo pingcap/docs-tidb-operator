@@ -1,7 +1,7 @@
 ---
 title: TiDB in Kubernetes 用户文档
 summary: 了解 TiDB in Kubernetes 的用户文档。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/_index/','/docs-cn/tidb-in-kubernetes/v1.1/_index/']
+aliases: ['/docs-cn/tidb-in-kubernetes/','/docs-cn/tidb-in-kubernetes/stable/','/docs-cn/tidb-in-kubernetes/v1.1/']
 ---
 
 <!-- markdownlint-disable MD046 -->
