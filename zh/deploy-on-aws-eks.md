@@ -360,40 +360,40 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
-修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
+    修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
-```
-  - name: tikv
-    instanceType: c5d.4xlarge
-    labels:
-      role: tikv
-    taints:
-      dedicated: tikv:NoSchedule
-    ...
-```
+    ```
+      - name: tikv
+        instanceType: c5d.4xlarge
+        labels:
+          role: tikv
+        taints:
+          dedicated: tikv:NoSchedule
+        ...
+    ```
 
-创建节点组：
+    创建节点组：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-eksctl create nodegroups -f cluster.yaml
-```
+    ```shell
+    eksctl create nodegroups -f cluster.yaml
+    ```
 
-若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
+    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
 
 2. 部署 local volume provisioner。
 
-本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+    本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
-```
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    ```
 
 3. 使用本地存储。
 
-完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。修改 tidb-cluster.yaml 中 `tikv.storageClassName` 为 `local-storage` 即可。
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。修改 tidb-cluster.yaml 中 `tikv.storageClassName` 为 `local-storage` 即可。
 
-运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
+    运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
