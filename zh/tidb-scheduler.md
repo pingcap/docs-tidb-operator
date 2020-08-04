@@ -1,7 +1,7 @@
 ---
 title: TiDB Scheduler 扩展调度器
 summary: 了解 TiDB Scheduler 扩展调度器及其工作原理。
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/reference/components/tidb-scheduler/','/docs-cn/v3.1/tidb-in-kubernetes/reference/components/tidb-scheduler/','/docs-cn/v3.0/tidb-in-kubernetes/reference/components/tidb-scheduler/']
+aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/tidb-scheduler/','/docs-cn/dev/tidb-in-kubernetes/reference/components/tidb-scheduler/','/docs-cn/v3.1/tidb-in-kubernetes/reference/components/tidb-scheduler/','/docs-cn/v3.0/tidb-in-kubernetes/reference/components/tidb-scheduler/']
 ---
 
 # TiDB Scheduler 扩展调度器

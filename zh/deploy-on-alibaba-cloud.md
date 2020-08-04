@@ -1,7 +1,7 @@
 ---
 title: 在阿里云上部署 TiDB 集群
 summary: 介绍如何在阿里云上部署 TiDB 集群。
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs-cn/v3.1/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs-cn/v3.0/tidb-in-kubernetes/deploy/alibaba-cloud/']
+aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/deploy-on-alibaba-cloud/','/docs-cn/dev/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs-cn/v3.1/tidb-in-kubernetes/deploy/alibaba-cloud/','/docs-cn/v3.0/tidb-in-kubernetes/deploy/alibaba-cloud/']
 ---
 
 # 在阿里云上部署 TiDB 集群
