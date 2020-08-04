@@ -12,9 +12,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 部署前，请确认已安装以下软件：
 
-* [helm](https://helm.sh/docs/intro/install/) 用于安装 TiDB Operator 。
+* [helm](https://helm.sh/docs/intro/install/) 用于安装 TiDB Operator
 
-* 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作。
+* 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作
 
 该教程包含以下内容：
 
@@ -43,26 +43,26 @@ nodeGroups:
   - name: admin
     desiredCapacity: 1
     labels:
-      role: admin
+      dedicated: admin
 
   - name: tidb
     desiredCapacity: 2
     labels:
-      role: tidb
+      dedicated: tidb
     taints:
       dedicated: tidb:NoSchedule
 
   - name: pd
     desiredCapacity: 3
     labels:
-      role: pd
+      dedicated: pd
     taints:
       dedicated: pd:NoSchedule
 
   - name: tikv
     desiredCapacity: 3
     labels:
-      role: tikv
+      dedicated: tikv
     taints:
       dedicated: tikv:NoSchedule
 ```
