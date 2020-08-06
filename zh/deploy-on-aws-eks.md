@@ -288,8 +288,8 @@ eksctl scale nodegroup --cluster <clusterName> --name tikv --nodes 4 --nodes-min
       dedicated: ticdc:NoSchedule
 ```
 
-若集群还未创建，使用 `eksctl create cluster -f cluster.yaml` 命令创建集群和节点组。
-若集群已经创建，使用 `eksctl create nodegroup -f cluster.yaml` 命令只创建节点组（已经存在的节点组会忽略，不会重复创建）。
+- 若集群还未创建，使用 `eksctl create cluster -f cluster.yaml` 命令创建集群和节点组。
+- 若集群已经创建，使用 `eksctl create nodegroup -f cluster.yaml` 命令只创建节点组（已经存在的节点组会忽略，不会重复创建）。
 
 ### 配置并部署
 
