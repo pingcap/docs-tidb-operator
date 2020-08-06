@@ -271,9 +271,11 @@ eksctl scale nodegroup --cluster <clusterName> --name tikv --nodes 4 --nodes-min
 
 ### 新增节点组
 
+在 eksctl 的配置文件 cluster.yaml 中新增以下两项，为 TiFlash/TiCDC 各自新增一个节点组。`desiredCapacity` 决定期望的节点数，根据实际需求而定。
+
 ```
   - name: tiflash
-    desiredCapacity: 1
+    desiredCapacity: 3
     labels:
       role: tiflash
     taints:
@@ -286,7 +288,8 @@ eksctl scale nodegroup --cluster <clusterName> --name tikv --nodes 4 --nodes-min
       dedicated: ticdc:NoSchedule
 ```
 
-注：`desiredCapacity` 决定期望的节点数，根据实际需求而定。
+若集群还未创建，使用 `eksctl create cluster -f cluster.yaml` 命令创建集群和节点组。
+若集群已经创建，使用 `eksctl create nodegroup -f cluster.yaml` 命令只创建节点组（已经存在的节点组会忽略，不会重复创建）。
 
 ### 配置并部署
 
@@ -329,6 +332,8 @@ spec:
 ```
 
 根据实际情况修改 `replicas` 等参数。
+
+最后使用 `kubectl apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
 更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
