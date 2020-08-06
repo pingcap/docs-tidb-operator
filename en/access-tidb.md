@@ -69,12 +69,12 @@ See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/servi
 
 ## Gracefully upgrade the TiDB cluster
 
-During the process of rolling update the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcefully closes all the connections and exits the process.
+When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
 
 Starting from v1.1.2, TiDB Operator supports gracefully upgrading the TiDB cluster. You can enable this feature by configuring the following items:
 
-- `spec.tidb.terminationGracePeriodSeconds`: The longest duration to delete the old TiDB pod during the rolling upgrade. If this duration is exceeded, the TiDB pod will be deleted forcefully.
-- `spec.tidb.lifecycle`: Sets the `preStop` hook for the TiDB pod, which is the operation executed before the TiDB server stops.
+- `spec.tidb.terminationGracePeriodSeconds`: The longest tolerable duration to delete the old TiDB Pod during the rolling upgrade. If this duration is exceeded, the TiDB Pod will be deleted forcibly.
+- `spec.tidb.lifecycle`: Sets the `preStop` hook for the TiDB Pod, which is the operation executed before the TiDB server stops.
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -115,7 +115,7 @@ spec:
 
 The YAML file above:
 
-- Sets the longest duration to delete the TiDB pod to 60 seconds. If the client does not close the connections after 60 seconds, these connections will be closed forcefully. You can adjust the value according to your needs.
-- Sets the `preStop` hook to `sleep 10 && kill -QUIT 1`. Here Pid 1 refers to the Pid of the TiDB server process in the TiDB pod. When the TiDB server process receives the signal, it exits only after all the connections are closed by the client.
+- Sets the longest tolerable duration to delete the TiDB Pod to 60 seconds. If the client does not close the connections after 60 seconds, these connections will be closed forcibly. You can adjust the value according to your needs.
+- Sets the value of `preStop` hook to `sleep 10 && kill -QUIT 1`. Here `PID 1` refers to the PID of the TiDB server process in the TiDB Pod. When the TiDB server process receives the signal, it exits only after all the connections are closed by the client.
 
-When Kubernetes deletes the TiDB pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection does not connect to this TiDB node. However, since this process is asynchronous, you can make the system sleep for a few seconds before you send the kill signal, which makes sure that the TiDB node is removed from the endpoints.
+When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection is not established to this TiDB node. However, because this process is asynchronous, you can make the system sleep for a few seconds before you send the `kill` signal, which makes sure that the TiDB node is removed from the endpoints.
