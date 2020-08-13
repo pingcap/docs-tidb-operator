@@ -381,7 +381,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
             `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
 
-        3. Generate the Drainer server-side certificate:
+        3. Generate the TiCDC server-side certificate:
 
             {{< copyable "shell-regular" >}}
 
