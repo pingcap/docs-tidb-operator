@@ -72,7 +72,7 @@ nodeGroups:
 {{< copyable "shell-regular" >}}
 
 ```shell
-eksctl create cluster -f cluster.yaml 
+eksctl create cluster -f cluster.yaml
 ```
 
 可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
@@ -120,9 +120,9 @@ eksctl create cluster -f cluster.yaml
     ```shell
     kubectl get pods -n tidb-cluster
     ```
-   
+
     当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
-    
+
     ```
     NAME                              READY   STATUS    RESTARTS   AGE
     tidb-discovery-5cb8474d89-n8cxk   1/1     Running   0          47h
@@ -353,15 +353,34 @@ spec:
     baseImage: pingcap/tikv-enterprise
 ```
 
+## 使用其他 EBS 存储类型
+
+AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 创建一个存储类 (Storage Class)：
+
+```
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: io1
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: io1
+  fsType: ext4
+```
+
+然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。
+
+更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/) 和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
+
 ## 使用本地存储
 
 AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
 
 > **注意：**
-> 
+>
 > 由于 EKS 升级过程中节点重建，本地盘数据会[丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
 
-了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例： 
+了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
