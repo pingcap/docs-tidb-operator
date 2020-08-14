@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 ## 故障诊断
 
-在使用过程中如果遇到问题，可以参考[故障诊断](#deploy-failures.md)。
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
 
 ## AWS 账号权限授予的三种方式
 

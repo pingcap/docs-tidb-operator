@@ -13,7 +13,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-s3/']
 
 ## 故障诊断
 
-在使用过程中如果遇到问题，可以参考[故障诊断](#deploy-failures.md)。
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
 
 ## Ad-hoc 全量备份
 
