@@ -38,4 +38,37 @@ spec:
     baseImage: pingcap/ticdc-enterprise
 ```
 
-按照上述配置文件进行部署，即可部署 TiDB 企业版集群及企业版周边工具。
+如果是部署全新集群，运行 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` apply 上述配置即可部署 TiDB 企业版集群及企业版周边工具。
+
+如果是需要将已有集群切换为企业版，只需将已有集群的配置文件按上述格式在 `baseImage` 后添加 "-enterprise" 后缀并使用 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` 更新集群配置即可。
+
+tidb-operator 会自动通过滚动升级的方式将集群镜像更新为企业版镜像。
+
+## 切换回社区版本
+
+如果需要将集群切换回社区版本，只需要将配置文件中的 "-enterprise" 后缀去除。
+
+```yaml
+spec:
+  version: v4.0.2
+  ...
+  pd:
+    baseImage: pingcap/pd
+  ...
+  tikv:
+    baseImage: pingcap/tikv
+  ...
+  tidb:
+    baseImage: pingcap/tidb
+  ...
+  tiflash:
+    baseImage: pingcap/tiflash
+  ...
+  pump:
+    baseImage: pingcap/tidb-binlog
+  ...
+  ticdc:
+    baseImage: pingcap/ticdc
+```
+
+使用 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` 更新集群配置后，tidb-operator 会自动通过滚动升级的方式将集群镜像切换为社区版镜像。
