@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: What's New in v1.1
-summary: Learn the new features in TiDB Operator v1.1.
-aliases: ['/docs/tidb-in-kubernetes/stable/whats-new-in-v1.1/','/docs/tidb-in-kubernetes/v1.1/whats-new-in-v1.1/']
-=======
 title: What's New in TiDB Operator 1.1
 summary: Learn the new features in TiDB Operator 1.1.
-aliases: ['/docs/tidb-in-kubernetes/dev/whats-new-in-v1.1/']
->>>>>>> 227b335... en,zh: update what's new title (#636)
+aliases: ['/docs/tidb-in-kubernetes/stable/whats-new-in-v1.1/','/docs/tidb-in-kubernetes/v1.1/whats-new-in-v1.1/']
 ---
 
 # What's New in TiDB Operator 1.1
