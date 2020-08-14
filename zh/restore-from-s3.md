@@ -70,7 +70,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
             endpoint: ${endpoint}
             secretName: s3-secret
             path: s3://${backup_path}
-          storageClassName: local-storage
+          # storageClassName: local-storage
           storageSize: 1Gi
         ```
 
@@ -103,7 +103,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
             region: ${region}
             secretName: s3-secret
             path: s3://${backup_path}
-          storageClassName: local-storage
+          # storageClassName: local-storage
           storageSize: 1Gi
         ```
 
@@ -137,7 +137,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
               provider: aws
               region: ${region}
               path: s3://${backup_path}
-            storageClassName: local-storage
+            # storageClassName: local-storage
             storageSize: 1Gi
         ```
 
@@ -170,7 +170,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
               provider: aws
               region: ${region}
               path: s3://${backup_path}
-            storageClassName: local-storage
+            # storageClassName: local-storage
             storageSize: 1Gi
         ```
 

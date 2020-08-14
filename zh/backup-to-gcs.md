@@ -241,7 +241,7 @@ spec:
   #  - --rows=10000
   #  tableFilter:
   #  - "test.*"
-    storageClassName: local-storage
+    # storageClassName: local-storage
     storageSize: 10Gi
 ```
 

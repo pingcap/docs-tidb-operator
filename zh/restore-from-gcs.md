@@ -63,7 +63,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/']
         projectId: ${project_id}
         secretName: gcs-secret
         path: gcs://${backup_path}
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 1Gi
     ```
 

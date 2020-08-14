@@ -82,7 +82,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -121,7 +121,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -165,7 +165,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -208,7 +208,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -379,7 +379,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -423,7 +423,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -471,7 +471,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -518,7 +518,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
 
 定时全量备份创建完成后，可以通过以下命令查看定时全量备份的状态：
