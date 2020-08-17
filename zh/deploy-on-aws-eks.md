@@ -75,7 +75,10 @@ nodeGroups:
 eksctl create cluster -f cluster.yaml
 ```
 
-可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
+> **注意：**
+>
+> - 该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时 5 到 10 分钟不等。
+> - 可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
 
 ### 部署 TiDB Operator
 
@@ -225,7 +228,7 @@ MySQL [(none)]> show status;
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get svc basic-grafana
+kubectl -n tidb-cluster get svc basic-grafana
 ```
 
 示例：
@@ -253,8 +256,6 @@ Grafana 默认登录信息：
 
 ## 扩容 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas`。
-
 注意扩容前需要对相应的节点组进行扩容，以便新的实例有足够的资源运行。
 
 下面是将集群 `<clusterName>` 的 `tikv` 组扩容到 4 节点的示例：
@@ -265,7 +266,9 @@ Grafana 默认登录信息：
 eksctl scale nodegroup --cluster <clusterName> --name tikv --nodes 4 --nodes-min 4 --nodes-max 4
 ```
 
-更多可参考 eksctl [节点组管理](https://eksctl.io/usage/managing-nodegroups/)文档。
+然后通过 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas` 为期望的新副本数进行扩容。
+
+更多节点组管理可参考 [eksctl 文档](https://eksctl.io/usage/managing-nodegroups/)。
 
 ## 部署 TiFlash/TiCDC
 
@@ -333,7 +336,7 @@ spec:
 
 根据实际情况修改 `replicas` 等参数。
 
-最后使用 `kubectl apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
+最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
 更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
@@ -355,7 +358,7 @@ spec:
 
 ## 使用其他 EBS 存储类型
 
-AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 创建一个存储类 (Storage Class)：
+AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 新建一个存储类 (Storage Class)：
 
 ```
 kind: StorageClass
