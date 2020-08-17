@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上使用 TiDB Operator 快速上手
 summary: 介绍如何在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/get-started/','/docs-cn/tidb-in-kubernetes/v1.1/get-started/','/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/','/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-gke/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube','/docs-cn/v2.1/how-to/get-started/local-cluster/install-from-kubernetes-minikube/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/get-started/','/docs-cn/tidb-in-kubernetes/v1.1/get-started/','/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs-cn/stable/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/','/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-gke/','/zh/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube','/docs-cn/v2.1/how-to/get-started/local-cluster/install-from-kubernetes-minikube/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-tidb-from-kubernetes-minikube/']
 ---
 
 # Kubernetes 上使用 TiDB Operator 快速上手
