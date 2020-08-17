@@ -5,7 +5,11 @@ summary: 了解如何在 Kubernetes 上部署 TiDB 企业版。
 
 # 部署 TiDB 企业版
 
-本文档介绍如何在 Kubernetes 上部署 TiDB 集群企业版及相应的企业版工具。
+本文档介绍如何在 Kubernetes 上部署 TiDB 集群企业版及相应的企业版工具。TiDB 企业版具有以下特性：
+
+* 企业级最佳实践
+* 企业级别服务支持
+* 全面加强的安全特性
 
 ## 前置条件
 
@@ -42,7 +46,7 @@ spec:
 
 如果是需要将已有集群切换为企业版，只需将已有集群的配置文件按上述格式在 `baseImage` 后添加 "-enterprise" 后缀并使用 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` 更新集群配置即可。
 
-tidb-operator 会自动通过滚动升级的方式将集群镜像更新为企业版镜像。
+TiDB Operator 会自动通过滚动升级的方式将集群镜像更新为企业版镜像。
 
 ## 切换回社区版本
 
@@ -71,4 +75,4 @@ spec:
     baseImage: pingcap/ticdc
 ```
 
-使用 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` 更新集群配置后，tidb-operator 会自动通过滚动升级的方式将集群镜像切换为社区版镜像。
+使用 `kubectl apply -f tidb-cluster.yaml -n ${namespace}` 更新集群配置后，TiDB Operator 会自动通过滚动升级的方式将集群镜像切换为社区版镜像。
