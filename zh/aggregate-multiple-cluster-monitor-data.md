@@ -20,9 +20,11 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 Thanos Sidecar 安装好之后,我们会安装 Thanos Query 容器。在 Thanos Query 中，一个Prometheus 对应一个Store,也就对应一个TiDBMonitor。部署完Thanos Query，我们就可以通过Thanos Query的API 提供监控数据的统一查询接口。
 
 ## 配置 Grafana
+
 安装完 Thanos Query , grafana 只需要将 DataSource 更改成 Thanos 源，就可以查询到多个TiDBMonitor的监控数据。
 
 ## 增加或者减少TiDBMonitor
+
 当需要更新或者下线 TiDBMonitor 时，我们需要将 Thanos Query Store 配置 更新并重启。
 
 
