@@ -26,6 +26,3 @@ Thanos Sidecar 安装好之后,我们会安装 Thanos Query 容器。在 Thanos 
 ## 增加或者减少TiDBMonitor
 
 当需要更新或者下线 TiDBMonitor 时，我们需要将 Thanos Query Store 配置 更新并重启。
-
-
-
