@@ -12,10 +12,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 以下示例将存储在 GCS 上指定路径的集群备份数据恢复到 TiDB 集群。
 
-## 故障诊断
-
-在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
-
 ## 环境准备
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
@@ -113,3 +109,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```  
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

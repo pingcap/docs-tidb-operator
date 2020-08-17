@@ -10,10 +10,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
 
-## 故障诊断
-
-在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
-
 ## Ad-hoc 全量备份
 
 Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
@@ -290,3 +286,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

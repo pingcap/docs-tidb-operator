@@ -10,10 +10,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 
 本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 实现的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份恢复](backup-and-restore-using-helm-charts.md)。
 
-## 故障诊断
-
-在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
-
 ## AWS 账号的三种权限授予方式
 
 如果使用 Amazon S3 来备份恢复集群，可以使用三种权限授予方式授予权限，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)，使用 Ceph 作为后端存储测试备份恢复时，是通过 AccessKey 和 SecretKey 模式授权。
@@ -197,3 +193,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 > **注意：**
 >
 > TiDB Operator 会创建一个 PVC，用于数据恢复，备份数据会先从远端存储下载到 PV，然后再进行恢复。如果恢复完成后想要删掉这个 PVC，可以参考[删除资源](cheat-sheet.md#删除资源)先把恢复 Pod 删掉，然后再把 PVC 删掉。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

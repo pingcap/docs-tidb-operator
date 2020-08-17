@@ -12,10 +12,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现。
 
-## 故障诊断
-
-在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
-
 ## AWS 账号权限授予的三种方式
 
 在 AWS 云环境中，不同的类型的 Kubernetes 集群提供了不同的权限授予方式。本文测试了以下三种权限授予方式:
@@ -570,3 +566,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

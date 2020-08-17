@@ -66,7 +66,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 2. 将 `storageClassName` 修改为集群中可用的 StorageClass 名字。
 
-3. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新或者运行 `kubectl apply -f backup.yaml` 更新备份/恢复任务。
+3. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新，或运行 `kubectl apply -f backup.yaml` 更新备份/恢复任务。
 
 4. 将 Statefulset 删除，并且将对应的 PVC 也都删除。
 
