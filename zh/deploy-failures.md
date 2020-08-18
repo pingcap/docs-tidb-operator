@@ -27,8 +27,10 @@ kubectl describe statefulsets -n ${namespace} ${cluster_name}-pd
 
 ```shell
 kubectl get backups -n ${namespace}
+kubectl get jobs -n ${namespace}
 kubectl describe backups -n ${namespace} ${backup_name}
-kubectl describe backupschedules  -n ${namespace} ${backupschedule_name}
+kubectl describe backupschedules -n ${namespace} ${backupschedule_name}
+kubectl describe jobs -n ${namespace} ${backupjob_name}
 kubectl describe restores -n ${namespace} ${restore_name}
 ```
 
@@ -36,7 +38,7 @@ kubectl describe restores -n ${namespace} ${restore_name}
 
 Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 
-* 使用持久化存储的 PD、TiKV、Monitor、Backup、Restore Pod 使用的 PVC 的 StorageClass 不存在或 PV 不足
+* 使用持久化存储的 PD、TiKV、TiFlash、Pump、Monitor、Backup、Restore Pod 使用的 PVC 的 StorageClass 不存在或 PV 不足
 * Kubernetes 集群中没有节点能满足 Pod 申请的 CPU 或内存
 * PD 或者 TiKV Replicas 数量和集群内节点数量不满足 tidb-scheduler 高可用调度策略
 
@@ -66,7 +68,11 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 2. 将 `storageClassName` 修改为集群中可用的 StorageClass 名字。
 
-3. 运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新，或运行 `kubectl apply -f backup.yaml` 更新备份/恢复任务。
+3. 使用下述方式更新配置文件：
+
+   * 如果是启动 tidbcluster 集群，运行 `kubectl apply -f tidb-cluster.yaml` 进行集群更新。
+   * 如果是运行 backup/restore 的备份/恢复任务，首先需要运行 `kubectl delete -f backup.yaml` 删掉老的备份/恢复任务，
+     再运行 `kubectl apply -f backup.yaml` 重新创建新的备份/恢复任务。
 
 4. 将 Statefulset 删除，并且将对应的 PVC 也都删除。
 
