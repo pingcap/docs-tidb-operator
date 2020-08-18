@@ -42,7 +42,9 @@ spec:
     baseImage: pingcap/ticdc-enterprise
 ```
 
-+ If you are deploying a new cluster, refer to [Configure a TiDB Cluster in Kubernetes](configure-a-tidb-cluster.md) to configure `tidb-cluster.yaml` and the enterprise edition image as described above, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to deploy the TiDB Enterprise Edition cluster and related tools.
++ If you are deploying a new cluster:
+
+    Refer to [Configure a TiDB Cluster in Kubernetes](configure-a-tidb-cluster.md) to configure `tidb-cluster.yaml` and the enterprise edition image as described above, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to deploy the TiDB Enterprise Edition cluster and related tools.
 
 + If you want to switch an existing Community Edition cluster to Enterprise Edition:
 
@@ -78,7 +80,7 @@ spec:
 
 If you need to switch an existing Enterprise Edition cluster back to Community Edition:
 
-- **Method #1**: Remove the "-enterprise" suffix from the `baseImage` item in the configuration file of the existing cluster in the above format, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration.
-- **Method #2**: Run the `kubectl edit tc ${name} -n ${namespace}` command to remove the suffix "-enterprise" from each component's `baseImage` in the above format, and then update the cluster configuration.
+- Method #1: Remove the "-enterprise" suffix from the `baseImage` item in the configuration file of the existing cluster in the above format, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration.
+- Method #2: Run the `kubectl edit tc ${name} -n ${namespace}` command to remove the suffix "-enterprise" from each component's `baseImage` in the above format, and then update the cluster configuration.
 
 After updating the configuration, TiDB Operator will automatically switch the cluster image to Community Edition image through a rolling upgrade.
