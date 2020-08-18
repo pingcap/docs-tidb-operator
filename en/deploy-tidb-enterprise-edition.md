@@ -46,7 +46,7 @@ If you are deploying a new cluster, refer to [Configure a TiDB Cluster in Kubern
 
 If you need to switch an existing cluster to Enterprise Edition:
 
-**Method #1**: Add the "-enterprise" suffix to the `baseImage` item of the configuration file of the existing cluster in the above format and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration. 
+**Method #1**: Add the "-enterprise" suffix to the `baseImage` item of the configuration file of the existing cluster in the above format and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration.
 **Method #2**: Add the suffix "-enterprise" to each component `baseImage` in the above format and run the `kubectl edit tc ${name} -n ${namespace}` command to update the cluster configuration.
 
 TiDB Operator will automatically update the cluster image to the enterprise image through a rolling upgrade.
