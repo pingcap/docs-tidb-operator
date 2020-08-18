@@ -90,7 +90,7 @@ EKS 部署脚本中提供两种部署方式：
     Demo 部署会创建一个新的 VPC、一个 t2.micro 实例作为堡垒机，并包含以下 ec2 实例作为工作节点的 EKS 集群：
 
     * 1 台 c5.large 实例，部署 PD
-    * 3 台 c5d.large 实例，部署 TiKV
+    * 3 台 m5.large 实例，部署 TiKV
     * 1 台 c5.large 实例，部署 TiDB
     * 1 台 c5.large 实例，部署监控组件
 
@@ -107,7 +107,7 @@ EKS 部署脚本中提供两种部署方式：
     生产环境集群部署会创建一个新的 VPC、一个 t2.micro 实例作为堡垒机，并包含以下 ec2 实例作为工作节点的 EKS 集群：
 
     * 3 台 c5.xlarge 实例，部署 PD
-    * 3 台 i3.4xlarge 实例，部署 TiKV
+    * 3 台 m5.2xlarge 实例，部署 TiKV
     * 2 台 c5.2xlarge 实例，部署 TiDB
     * 1 台 c5.2xlarge 实例，部署监控组件
 
@@ -209,7 +209,7 @@ region = us-west-21
         - resources:
             requests:
               storage: 100Gi
-          storageClassName: local-storage
+          storageClassName: ebs-gp2
         tolerations:
         - effect: NoSchedule
           key: dedicated
