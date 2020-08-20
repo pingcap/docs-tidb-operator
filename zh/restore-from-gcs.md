@@ -30,7 +30,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/']
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=${password} --namespace=test2
     ```
 
-### 数据库账户权限
+## 数据库账户权限
 
 | 权限 | 作用域 |
 |:----|:------|

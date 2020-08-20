@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 以下示例将存储在 GCS 上指定路径的集群备份数据恢复到 TiDB 集群。
 
-### 数据库账户权限
+## 数据库账户权限
 
 * SELECT,UPDATE on mysql.tidb 恢复前后会使用该数据库账户调整 GC 时间所需
 

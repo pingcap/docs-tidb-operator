@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs/']
 
 本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](backup-and-restore-using-helm-charts.md)。
 
-### 数据库账户权限
+## 数据库账户权限
 
 * SELECT,UPDATE on mysql.tidb 备份前后会使用该数据库账户调整 GC 时间所需
 * SELECT
