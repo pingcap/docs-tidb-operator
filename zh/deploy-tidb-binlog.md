@@ -281,13 +281,13 @@ tlsSyncer: {}
 
 ## 缩容/移除 Pump/Drainer 节点
 
-如需详细了解如何维护 binlog 集群节点状态信息，可以参考 [这里](https://docs.pingcap.com/zh/tidb/stable/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
+如需详细了解如何维护 TiDB Binlog 集群节点状态信息，可以参考 [Pump/Drainer 的启动、退出流程](https://docs.pingcap.com/zh/tidb/stable/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
 
-如果需要完整移除 binlog 组件，最好是先移除 Pump 节点，再移除 Drainer 节点。
+如果需要完整移除 TiDB Binlog 组件，最好是先移除 Pump 节点，再移除 Drainer 节点。
 
 ### 缩容 Pump 节点
 
-缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 命令将 Pump 对应的 replica 数量减 1，并对每个节点重复上述步骤。
+缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 命令将 Pump 对应的 replica 数量减 1，并对每个节点重复上述步骤。具体操作步骤如下：
 
 1. 下线 Pump 节点：
 
@@ -309,11 +309,13 @@ tlsSyncer: {}
 
 2. 删除对应的 Pump Pod：
 
-    运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 修改文件中 `spec.pump.replicas` 为 `2`，然后等待 pump pod 自动下线被删除。
+    运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 修改文件中 `spec.pump.replicas` 为 `2`，然后等待 Pump Pod 自动下线被删除。
 
 > **注意：**
 >
-> 如果在下线 pump 节点遇到下线 pump 节点失败的情况，可以先进行步骤 2 调小 replicas 等待 pump pod 被完全删除后，运行下述指令标注 pump 状态为 offline：
+> 如果在下线 Pump 节点时遇到下线失败的情况，可以先进行步骤 2 调小 replicas 等待 Pump Pod 被完全删除后，运行下述指令标注 Pump 状态为 offline：
+>
+> {{< copyable "shell-regular" >}}
 >
 > ```shell
 > kubectl run update-pump-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline
@@ -327,9 +329,9 @@ tlsSyncer: {}
 
 1. 下线 Drainer 节点：
 
-    使用下述指令下线 Drainer 节点，${drainer_node_id} 为需要下线的 drainer 的 node id。
-    如果在 helm 的 values.yaml 中配置了 drainerName 选项则为 ${drainer_name}，
-    否则为 ${cluster_name}-${release_name}-drainer。
+    使用下述指令下线 Drainer 节点，`${drainer_node_id}` 为需要下线的 Drainer 的 node ID。
+    
+    如果在 Helm 的 `values.yaml` 中配置了 `drainerName` 选项则为 `${drainer_name}`，否则为 `${cluster_name}-${release_name}-drainer`。
 
     ```shell
     kubectl run offline-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8250
@@ -341,7 +343,9 @@ tlsSyncer: {}
 
 > **注意：**
 >
-> 如果在下线 drainer 节点遇到下线 drainer 节点失败的情况，可以先进行步骤 2 删除 drainer pod 后，运行下述指令标注 drainer 状态为 offline：
+> 如果在下线 Drainer 节点时遇到下线失败的情况，可以先进行步骤 2 删除 Drainer Pod 后，运行下述指令标注 Drainer 状态为 offline：
+>
+> {{< copyable "shell-regular" >}}
 >
 > ```shell
 > kubectl run update-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8250 --state offline
