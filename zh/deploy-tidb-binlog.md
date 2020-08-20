@@ -213,7 +213,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-drainer --name=${cluster_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
+    helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
  
     如果服务器没有外网，请参考 [部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群) 在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
@@ -278,3 +278,69 @@ tlsSyncer: {}
     #  - TiDB
 ...
 ```
+
+## 缩容/移除 Pump/Drainer 节点
+
+如需详细了解如何维护 binlog 集群节点状态信息，可以参考 [这里](https://docs.pingcap.com/zh/tidb/stable/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
+
+### 缩容 Pump 节点
+
+缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 命令将 Pump 对应的 replica 数量减 1，并对每个节点重复上述步骤。
+
+1. 下线 Pump 节点：
+
+    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `${ordinal_id}` 替换成 `2`，操作方式如下（`${version}` 为当前 TiDB 的版本）。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl run offline-pump-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250
+    ```
+
+    然后查看 Pump 的日志输出，输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl logs -f -n ${namespace} ${release_name}-pump-${ordinal_id}
+    ```
+
+2. 删除对应的 Pump Pod：
+
+    运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 修改文件中 `spec.pump.replicas` 为 `2`，然后等待 pump pod 自动下线被删除。
+
+> **注意：**
+>
+> 如果在下线 pump 节点遇到下线 pump 节点失败的情况，可以先进行步骤 2 调小 replicas 等待 pump pod 被完全删除后，运行下述指令标注 pump 状态为 offline：
+>
+> ```shell
+> kubectl run update-pump-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline
+> ```
+
+### 完全移除 Pump 节点
+
+与上述缩容 Pump 节点基本一致，不同的是在删除最后一个节点 Pod 时将整个 `spec.pump` 部分配置项全部删除即可。
+
+### 移除 Drainer 节点
+
+1. 下线 Drainer 节点：
+
+    使用下述指令下线 Drainer 节点，${drainer_node_id} 为需要下线的 drainer 的 node id。
+    如果在 helm 的 values.yaml 中配置了 drainerName 选项则为 ${drainer_name}，
+    否则为 ${cluster_name}-${release_name}-drainer。
+
+    ```shell
+    kubectl run offline-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8250
+    ```
+
+2. 删除对应的 Drainer Pod：
+
+    运行 `helm del --purge ${release_name}` 指令即可删除 Drainer Pod。
+
+> **注意：**
+>
+> 如果在下线 drainer 节点遇到下线 drainer 节点失败的情况，可以先进行步骤 2 删除 drainer pod 后，运行下述指令标注 drainer 状态为 offline：
+>
+> ```shell
+> kubectl run update-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8250 --state offline
+> ```
