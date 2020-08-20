@@ -130,6 +130,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 >
 > `arn:aws:iam::123456789012:role/user` 为步骤 4 中创建的 IAM 角色。
 
+### 数据库账户权限
+
+* SELECT,UPDATE on mysql.tidb 恢复前后会使用该数据库账户调整 GC 时间所需
+
 ## 将指定备份数据恢复到 TiDB 集群
 
 + 创建 `Restore` CR，通过 accessKey 和 secretKey 授权的方式恢复集群：

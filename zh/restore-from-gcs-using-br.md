@@ -12,6 +12,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 以下示例将存储在 GCS 上指定路径的集群备份数据恢复到 TiDB 集群。
 
+### 数据库账户权限
+
+* SELECT,UPDATE on mysql.tidb 恢复前后会使用该数据库账户调整 GC 时间所需
+
 ## 环境准备
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：

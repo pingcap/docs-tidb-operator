@@ -42,6 +42,10 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
+### 数据库账户权限
+
+* SELECT,UPDATE on mysql.tidb 备份前后会使用该数据库账户调整 GC 时间所需
+
 ### Ad-hoc 全量备份过程
 
 1. 创建 `Backup` CR，并将数据备份到 GCS：

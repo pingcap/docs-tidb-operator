@@ -25,6 +25,14 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 参考 [Ad-hoc 全量备份环境准备](backup-to-aws-s3-using-br.md#ad-hoc-全量备份环境准备)
 
+### 数据库账户权限
+
+* SELECT,UPDATE on mysql.tidb 备份前后会使用该数据库账户调整 GC 时间所需
+* SELECT
+* RELOAD
+* LOCK TABLES
+* REPLICATION CLIENT
+
 ### 备份数据到兼容 S3 的存储
 
 > **注意：**
