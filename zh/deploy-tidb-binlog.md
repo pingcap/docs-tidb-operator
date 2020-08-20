@@ -283,6 +283,8 @@ tlsSyncer: {}
 
 如需详细了解如何维护 binlog 集群节点状态信息，可以参考 [这里](https://docs.pingcap.com/zh/tidb/stable/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
 
+如果需要完整移除 binlog 组件，最好是先移除 Pump 节点，再移除 Drainer 节点。
+
 ### 缩容 Pump 节点
 
 缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 命令将 Pump 对应的 replica 数量减 1，并对每个节点重复上述步骤。
