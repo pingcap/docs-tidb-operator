@@ -45,7 +45,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
 2. 生成 `ca-config.json` 配置文件：
 
-    ``` shell
+    ```shell
     cat << EOF > ca-config.json
     {
         "signing": {
@@ -78,7 +78,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
 3. 生成 `ca-csr.json` 配置文件：
 
-    ``` shell
+    ```shell
     cat << EOF > ca-csr.json
     {
         "CN": "TiDB",
@@ -392,11 +392,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         {{< copyable "shell-regular" >}}
 
-        ``` shell
+        ```shell
         cfssl print-defaults csr > tiflash-server.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN`、`hosts` 属性：
 
         ```json
         ...
@@ -972,7 +972,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     - TiFlash 组件的 Server 端证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
