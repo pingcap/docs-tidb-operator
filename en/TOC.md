@@ -26,6 +26,7 @@
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
+  - [Deploy TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   + Deploy Monitoring
     - [Monitor Kubernetes and TiDB Cluster](monitor-a-tidb-cluster.md)
     - [Monitor TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md)
@@ -42,10 +43,12 @@
   + Backup and Restore
     - [Use Helm Charts](backup-and-restore-using-helm-charts.md)
     + Use CRDs
-      - [Back up Data to GCS Using Mydumper](backup-to-gcs.md)
+      - [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
       - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
-      - [Back up Data to S3-Compatible Storage Using Mydumper](backup-to-s3.md)
+      - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
       - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
+      - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
+      - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
       - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
       - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)

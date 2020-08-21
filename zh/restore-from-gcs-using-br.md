@@ -1,6 +1,7 @@
 ---
 title: 使用 BR 工具恢复 GCS 上的备份数据
 summary: 介绍如何使用 BR 工具将存储在 GCS 上的备份数据恢复到 TiDB 集群。
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 ---
 
 # 使用 BR 工具恢复 GCS 上的备份数据
@@ -108,3 +109,7 @@ summary: 介绍如何使用 BR 工具将存储在 GCS 上的备份数据恢复�
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```  
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

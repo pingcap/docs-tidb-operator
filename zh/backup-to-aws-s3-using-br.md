@@ -1,6 +1,7 @@
 ---
 title: 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 BR 工具备份 TiDB 集群数据到兼容 Amazon S3 的存储。
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 ---
 
 <!-- markdownlint-disable MD007 -->
@@ -565,3 +566,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

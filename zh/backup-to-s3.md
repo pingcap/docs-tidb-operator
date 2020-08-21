@@ -2,6 +2,7 @@
 title: 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储。
 category: how-to
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-s3/']
 ---
 
 # 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
@@ -77,7 +78,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -116,7 +117,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -160,7 +161,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -203,7 +204,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -374,7 +375,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -418,7 +419,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -466,7 +467,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -513,7 +514,7 @@ Amazon S3 支持以下几种 `storageClass` 类型：
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
 
 定时全量备份创建完成后，可以通过以下命令查看定时全量备份的状态：
@@ -573,3 +574,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
