@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs/']
 
 ## 数据库账户权限
 
-* SELECT,UPDATE on mysql.tidb 备份前后会使用该数据库账户调整 GC 时间所需
+* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 * SELECT
 * RELOAD
 * LOCK TABLES
