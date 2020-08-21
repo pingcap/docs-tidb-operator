@@ -34,7 +34,7 @@ This section describes how to deploy EKS, TiDB operator, the TiDB cluster, and t
 {{< copyable "shell-regular" >}}
 
 ```yaml
-terraform init	apiVersion: eksctl.io/v1alpha5
+apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
   name: <clusterName>
