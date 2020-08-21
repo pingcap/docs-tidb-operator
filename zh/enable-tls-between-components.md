@@ -16,8 +16,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
 > **注意：**
 >
-> * TiDB v4.0.5, TiDB Operator v1.1.4 支持 TiFlash 开启 TLS。
-> * TiDB v4.0.3, TiDB Operator v1.1.3 支持 TiCDC 开启 TLS。
+> * TiDB v4.0.5, TiDB Operator v1.1.4 及以上版本支持 TiFlash 开启 TLS。
+> * TiDB v4.0.3, TiDB Operator v1.1.3 及以上版本支持 TiCDC 开启 TLS。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
 
@@ -398,7 +398,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         然后编辑这个文件，修改 `CN`，`hosts` 属性：
 
-        ``` json
+        ```json
         ...
             "CN": "TiDB",
             "hosts": [
@@ -1010,20 +1010,20 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         其中 `${cluster_name}` 为集群的名字：
 
         - `spec.secretName` 请设置为 `${cluster_name}-tiflash-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
-          - `${cluster_name}-tiflash`
-          - `${cluster_name}-tiflash.${namespace}`
-          - `${cluster_name}-tiflash.${namespace}.svc`
-          - `${cluster_name}-tiflash-peer`
-          - `${cluster_name}-tiflash-peer.${namespace}`
-          - `${cluster_name}-tiflash-peer.${namespace}.svc`
-          - `*.${cluster_name}-tiflash-peer`
-          - `*.${cluster_name}-tiflash-peer.${namespace}`
-          - `*.${cluster_name}-tiflash-peer.${namespace}.svc`
+            - `${cluster_name}-tiflash`
+            - `${cluster_name}-tiflash.${namespace}`
+            - `${cluster_name}-tiflash.${namespace}.svc`
+            - `${cluster_name}-tiflash-peer`
+            - `${cluster_name}-tiflash-peer.${namespace}`
+            - `${cluster_name}-tiflash-peer.${namespace}.svc`
+            - `*.${cluster_name}-tiflash-peer`
+            - `*.${cluster_name}-tiflash-peer.${namespace}`
+            - `*.${cluster_name}-tiflash-peer.${namespace}.svc`
         - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-          - `127.0.0.1`
-          - `::1`
+            - `127.0.0.1`
+            - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
