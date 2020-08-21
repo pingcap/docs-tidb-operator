@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/restart-a-tidb-cluster/','/docs-cn
     metadata:
       name: basic
     spec:
-      version: v3.0.8
+      version: v4.0.4
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
