@@ -347,7 +347,9 @@ spec:
 
 > **注意：**
 >
-> 如果在下线 Pump 节点时遇到下线失败的情况，可以先进行步骤 2 调小 replicas 等待 Pump Pod 被完全删除后，随后标注 Pump 状态为 offline。
+> 如果在下线 Pump 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Pump pod 输出可以删除 pod 的日志，
+>
+> 可以先进行步骤 2 调小 replicas 等待 Pump Pod 被完全删除后，随后标注 Pump 状态为 offline。
 >
 > 没有开启 TLS 时，使用下述指令标注状态为 offline。
 >
@@ -413,7 +415,9 @@ spec:
 
 > **注意：**
 >
-> 如果在下线 Drainer 节点时遇到下线失败的情况，可以先进行步骤 2 删除 Drainer Pod 后，运行下述指令标注 Drainer 状态为 offline：
+> 如果在下线 Drainer 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Drainer pod 输出可以删除 pod 的日志，
+>
+> 可以先进行步骤 2 删除 Drainer Pod 后，运行下述指令标注 Drainer 状态为 offline：
 >
 > 没有开启 TLS 时，使用下述指令标注状态为 offline。
 >
