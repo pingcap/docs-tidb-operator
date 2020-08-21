@@ -327,8 +327,10 @@ spec:
 
     如果 Pump 开启了 TLS，通过下述指令使用前面开启的 pod 来下线 Pump。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    kubectl exec binlogctl -n ${namespace} -- ./binlogctl -pd-urls "https://basic-pd:2379" -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
+    kubectl exec binlogctl -n ${namespace} -- ./binlogctl -pd-urls "https://${cluster_name}-pd:2379" -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
     ```
 
     然后查看 Pump 的日志输出，输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
@@ -360,7 +362,7 @@ spec:
 > {{< copyable "shell-regular" >}}
 >
 > ```shell
-> kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
+> kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
 > ```
 
 ### 完全移除 Pump 节点
@@ -377,18 +379,22 @@ spec:
 
     使用下述指令下线 Drainer 节点，`${drainer_node_id}` 为需要下线的 Drainer 的 node ID。
     
-    如果在 Helm 的 `values.yaml` 中配置了 `drainerName` 选项则为 `${drainer_name}`，否则为 `${cluster_name}-${release_name}-drainer`。
+    如果在 Helm 的 `values.yaml` 中配置了 `drainerName` 选项则为 `${drainer_name}-0`，否则为 `${cluster_name}-${release_name}-drainer-0`。
 
     如果 Drainer 没有开启 TLS，使用下述指令新建 pod 下线 Drainer。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    kubectl run offline-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8249
+    kubectl run offline-drainer-0 --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8249
     ```
 
     如果 Drainer 开启了 TLS，通过下述指令使用前面开启的 pod 来下线 Drainer。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    kubectl exec binlogctl -n ${namespace} -- ./binlogctl -pd-urls "https://basic-pd:2379" -cmd offline-drainer -node-id ${drainer_node_id}:8249 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
+    kubectl exec binlogctl -n ${namespace} -- ./binlogctl -pd-urls "https://${cluster_name}-pd:2379" -cmd offline-drainer -node-id ${drainer_node_id}:8249 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
     ```
 
     然后查看 Drainer 的日志输出，输出 `drainer offline, please delete my pod` 后即可确认该节点已经成功下线。
@@ -402,6 +408,8 @@ spec:
 2. 删除对应的 Drainer Pod：
 
     运行 `helm del --purge ${release_name}` 指令即可删除 Drainer Pod。
+
+    如果不再使用 Drainer，使用 `kubectl delete pvc data-${drainer_node_id} -n ${namespace}` 指令删除 Drainer 的 pvc 资源。
 
 > **注意：**
 >
@@ -420,5 +428,5 @@ spec:
 > {{< copyable "shell-regular" >}}
 >
 > ```shell
-> kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
+> kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
 > ```
