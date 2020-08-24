@@ -347,7 +347,7 @@ spec:
 
 3. (可选项) 强制下线 Pump
 
-    如果在下线 Pump 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Pump pod 输出可以删除 pod 的日志，可以先进行步骤 2 调小 replicas 等待 Pump Pod 被完全删除后，随后标注 Pump 状态为 offline。
+    如果在下线 Pump 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Pump pod 输出可以删除 pod 的日志，可以先进行步骤 2 调小 `replicas`， 等待 Pump Pod 被完全删除后，标注 Pump 状态为 offline。
     
     没有开启 TLS 时，使用下述指令标注状态为 offline。
     
@@ -376,7 +376,7 @@ spec:
 
 1. 下线 Drainer 节点：
 
-    使用下述指令下线 Drainer 节点，`${drainer_node_id}` 为需要下线的 Drainer 的 node ID。如果在 Helm 的 `values.yaml` 中配置了 `drainerName` 选项则为 `${drainer_name}-0`，否则为 `${cluster_name}-${release_name}-drainer-0`。
+    使用下述指令下线 Drainer 节点，`${drainer_node_id}` 为需要下线的 Drainer 的 node ID。如果在 Helm 的 `values.yaml` 中配置了 `drainerName` 选项，则 `${drainer_node_id}` 为 `${drainer_name}-0`，否则 `${drainer_node_id}` 为 `${cluster_name}-${release_name}-drainer-0`。
 
     如果 Drainer 没有开启 TLS，使用下述指令新建 pod 下线 Drainer。
 
@@ -410,9 +410,7 @@ spec:
 
 3. (可选项) 强制下线 Drainer
     
-    如果在下线 Drainer 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Drainer pod 输出可以删除 pod 的日志，
-    
-    可以先进行步骤 2 删除 Drainer Pod 后，运行下述指令标注 Drainer 状态为 offline：
+    如果在下线 Drainer 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Drainer pod 输出可以删除 pod 的日志，可以先进行步骤 2 删除 Drainer Pod 后，再运行下述指令标注 Drainer 状态为 offline：
     
     没有开启 TLS 时，使用下述指令标注状态为 offline。
     
