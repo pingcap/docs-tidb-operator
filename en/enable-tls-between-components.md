@@ -20,8 +20,8 @@ To enable TLS between TiDB components, perform the following steps:
 
 > **Note:**
 >
-> TiDB 4.0.5 (or later versions) and TiDB Operator 1.1.4 (or later versions) support enabling TLS for TiFLash.
-> TiDB 4.0.3 (or later versions) and TiDB Operator 1.1.3 (or later versions) support enabling TLS for TiCDC.
+> * TiDB 4.0.5 (or later versions) and TiDB Operator 1.1.4 (or later versions) support enabling TLS for TiFlash.
+> * TiDB 4.0.3 (or later versions) and TiDB Operator 1.1.3 (or later versions) support enabling TLS for TiCDC.
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
@@ -1040,7 +1040,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `*.${cluster_name}-tiflash-peer.${namespace}`
             - `*.${cluster_name}-tiflash-peer.${namespace}.svc`
 
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
+        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
