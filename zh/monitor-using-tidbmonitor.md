@@ -11,7 +11,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
 
 ### 前置条件
 
-1. 已经安装了 Operator `v1.1.0-beta.1` 及以上版本，并且已经更新了相关版本的 CRD 文件
+1. 已经安装了 Operator `v1.1.0` 及以上版本，并且已经更新了相关版本的 CRD 文件
 2. 已经设置了默认的 storageClass，并保证其有足够的 PV（默认情况下需要 6 个 PV）。这可以通过以下指令来验证：
 
 ```shell
@@ -46,7 +46,7 @@ spec:
     version: 6.0.1
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v3.1.0
+    version: v4.0.4
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -119,7 +119,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v3.1.0
+    version: v4.0.4
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -162,7 +162,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v3.1.0
+    version: v4.0.4
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -212,7 +212,7 @@ spec:
         foo: "bar"
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v3.0.5
+    version: v4.0.4
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -249,7 +249,7 @@ spec:
       type: ClusterIP
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v3.0.5
+    version: v4.0.4
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
