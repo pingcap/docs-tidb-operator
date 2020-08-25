@@ -17,10 +17,10 @@ After creating a cluster, if the Pod is not created, you can diagnose it using t
 kubectl get tidbclusters -n ${namespace} && \
 kubectl describe tidbclusters -n ${namespace} ${cluster_name} && \
 kubectl get statefulsets -n ${namespace} && \
-kubectl describe statefulsets -n ${namespace} ${release_name}-pd
+kubectl describe statefulsets -n ${namespace} ${cluster_name}-pd
 ```
 
-After creating a backup/restore task, if the Pod is not created, you can run a diagnosis by executing the following commands:
+After creating a backup/restore task, if the Pod is not created, you can perform a diagnostic operation by executing the following commands:
 
 {{< copyable "shell-regular" >}}
 
