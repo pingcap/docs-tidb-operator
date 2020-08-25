@@ -367,7 +367,7 @@ spec:
 
 ### 完全移除 Pump 节点
 
-* 参考缩容 Pump 节点步骤缩容 Pump 到 0。
+* 参考 [缩容 Pump 节点步骤](#缩容-pump-节点) 缩容 Pump 到 0。
 * `kubectl edit tc ${cluster_name} -n ${namespace}` 将 `spec.pump` 部分配置项全部删除。
 * `kubectl delete sts ${cluster_name}-pump -n ${namespace}` 删除 Pump StatefulSet 资源。
 * 通过 `kubectl get pvc -n ${namespace} -l app.kubernetes.io/component=pump` 查看 Pump 集群使用过的 PVC，随后使用 `kubectl delete pvc -l app.kubernetes.io/component=pump -n ${namespace}` 指令删除 Pump 的所有 PVC 资源。
