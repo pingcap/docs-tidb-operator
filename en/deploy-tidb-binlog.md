@@ -285,13 +285,13 @@ If you set the downstream database of `tidb-drainer` to `mysql/tidb`, and if you
     ...
     ```
 
-## Scale in or remove Pump/Drainer nodes
+## Remove Pump/Drainer nodes
 
-For details on how to maintain the node states of the TiDB Binlog cluster, refer to [Starting and exiting a Pump or Drainer process](https://docs.pingcap.com/tidb/stable/maintain-tidb-binlog-cluster#starting-and-exiting-a-pump-or-drainer-process).
+For details on how to maintain the node state of the TiDB Binlog cluster, refer to [Starting and exiting a Pump or Drainer process](https://docs.pingcap.com/tidb/stable/maintain-tidb-binlog-cluster#starting-and-exiting-a-pump-or-drainer-process).
 
 If you want to remove the TiDB Binlog component completely, it is recommended that you first remove Pump nodes and then remove Drainer nodes.
 
-If TLS is enabled for the TiDB Binlog component to be removed, write the following content into `binlog.yaml` and execute `kubectl apply -f binlog.yaml` to start a Pod that is amounted with the TLS file and the `binlogctl` tool.
+If TLS is enabled for the TiDB Binlog component to be removed, write the following content into `binlog.yaml` and execute `kubectl apply -f binlog.yaml` to start a Pod that is mounted with the TLS file and the `binlogctl` tool.
 
 ```yaml
 apiVersion: v1
@@ -349,7 +349,7 @@ The steps are as follows:
     kubectl logs -f -n ${namespace} ${release_name}-pump-${ordinal_id}
     ```
 
-    If `pump offline, please delete my pod` is printed, this node is successfully taken offline.
+    If `pump offline, please delete my pod` is output, this node is successfully taken offline.
 
 2. Delete the corresponding Pump Pod:
 
@@ -357,7 +357,7 @@ The steps are as follows:
 
 3. (Optional) Force Pump to go offline:
 
-    If the offline operation fails, the Pump Pod will not output `pump offline, please delete my pod`. At this time, you can force Pump to go offline, that is, taking Step 2 to reduce `spec.pump.replicas` and mark Pump as `offline` after the Pump Pod is deleted completely.
+    If the offline operation fails, the Pump Pod will not output `pump offline, please delete my pod`. At this time, you can force Pump to go offline, that is, taking Step 2 to reduce the value of `spec.pump.replicas` and mark Pump as `offline` after the Pump Pod is deleted completely.
 
     - If TLS is not enabled for Pump, mark Pump as `offline`:
 
@@ -415,7 +415,7 @@ The steps are as follows:
     kubectl logs -f -n ${namespace} ${drainer_node_id}
     ```
 
-    If `drainer offline, please delete my pod` is printed, this node is successfully taken offline.
+    If `drainer offline, please delete my pod` is output, this node is successfully taken offline.
 
 2. Delete the corresponding Drainer Pod:
 
