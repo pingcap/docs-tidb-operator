@@ -1,7 +1,7 @@
 ---
 title: 使用 BR 工具恢复 S3 兼容存储上的备份数据
 summary: 介绍如何使用 BR 工具恢复 Amazon S3 兼容存储上的备份数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3']
 ---
 
 # 使用 BR 工具恢复 S3 兼容存储上的备份数据
