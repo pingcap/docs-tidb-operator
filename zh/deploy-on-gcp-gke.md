@@ -1,7 +1,7 @@
 ---
 title: 在 GCP GKE 上部署 TiDB 集群
 summary: 了解如何在 GCP GKE 上部署 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke/','/docs-cn/dev/how-to/get-started/deploy-tidb-from-kubernetes-gke/','/docs-cn/tidb-in-kubernetes/gcp-gke-tutorial']
 ---
 
 # 在 GCP GKE 上部署 TiDB 集群
