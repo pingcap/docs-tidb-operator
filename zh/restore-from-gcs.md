@@ -1,7 +1,7 @@
 ---
 title: 使用 TiDB Lightning 恢复 GCS 上的备份数据
 summary: 介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份数据恢复到 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-gcs/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-gcs/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-gcs/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-gcs/','/docs-cn/stable/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs/']
 ---
 
 # 使用 TiDB Lightning 恢复 GCS 上的备份数据
