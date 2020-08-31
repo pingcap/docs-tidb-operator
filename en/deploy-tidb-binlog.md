@@ -317,7 +317,7 @@ spec:
 
 ### Scale in Pump
 
-To Scale in Pump, you need to take a single Pump node offline, and execute `kubectl edit tc ${cluster_name} -n ${namespace}` to reduce the value of `replicas` of Pump by 1. Repeat the operations on each node.
+To scale in Pump, you need to take a single Pump node offline, and execute `kubectl edit tc ${cluster_name} -n ${namespace}` to reduce the value of `replicas` of Pump by 1. Repeat the operations on each node.
 
 The steps are as follows:
 
