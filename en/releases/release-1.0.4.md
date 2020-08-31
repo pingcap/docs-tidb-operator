@@ -12,7 +12,7 @@ TiDB Operator version: 1.0.4
 
 ### Action Required
 
-There is no action required if you are upgrading from [v1.0.3](#tidb-operator-v103-release-notes).
+There is no action required if you are upgrading from [v1.0.3](release-1.0.3.md).
 
 ### Highlights
 

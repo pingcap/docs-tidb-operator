@@ -10,7 +10,7 @@ TiDB Operator version: 1.0.5
 
 ## v1.0.5 What's New
 
-There is no action required if you are upgrading from [v1.0.4](#tidb-operator-v104-release-notes).
+There is no action required if you are upgrading from [v1.0.4](release-1.0.4.md).
 
 ### Scheduled Backup
 
