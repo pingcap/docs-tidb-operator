@@ -46,7 +46,7 @@ gcloud config set compute/region <gcp-region>
 gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
 ```
 
-该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会分别创建在该区域中三个可用去 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考[该文档](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
+该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会分别创建在该区域中三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考[该文档](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
 
 以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
