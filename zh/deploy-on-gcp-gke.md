@@ -29,7 +29,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 gcloud config set core/project <gcp-project>
 gcloud config set compute/region <gcp-region>
 ```
@@ -40,28 +40,28 @@ gcloud config set compute/region <gcp-region>
 
 1. 创建 GKE 集群和一个默认节点池：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
-```
+    ```shell
+    gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
+    ```
 
-该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会分别创建在该区域中三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考[该文档](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
+    该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会分别创建在该区域中三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考[该文档](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
 
-以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
+    以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
 2. 分别为 PD、TiKV 和 TiDB 创建独立的节点池：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
-  --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
-gcloud container node-pools create tikv --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
-  --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
-gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
-  --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
-```
+    ```shell
+    gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+      --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
+    gcloud container node-pools create tikv --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+      --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
+    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+      --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
+    ```
 
 ### 部署 TiDB Operator
 
@@ -147,61 +147,61 @@ gcloud compute instances create bastion \
 
 待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端来访问 TiDB 集群。
 
-用 SSH 连接到堡垒机：
+1. 用 SSH 连接到堡垒机：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud compuete ssh bastion
-```
+    ```shell
+    gcloud compuete ssh bastion
+    ```
 
-安装 MySQL 客户端：
+2. 安装 MySQL 客户端：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-sudo yum install mysql -y
-```
+    ```shell
+    sudo yum install mysql -y
+    ```
 
-连接到 TiDB 集群：
+3. 连接到 TiDB 集群：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-mysql -h <tidb-nlb-dnsname> -P 4000 -u root
-```
+    ```shell
+    mysql -h <tidb-nlb-dnsname> -P 4000 -u root
+    ```
 
-`<tidb-nlb-dnsname>` 为 TiDB Service 的 LoadBalancer IP，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
+    `<tidb-nlb-dnsname>` 为 TiDB Service 的 LoadBalancer IP，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
 
-示例：
+    示例：
 
-```shell
-$ mysql -h 10.128.15.243 -P 4000 -u root
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MySQL connection id is 7823
-Server version: 5.7.25-TiDB-v4.0.4 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    ```shell
+    $ mysql -h 10.128.15.243 -P 4000 -u root
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 7823
+    Server version: 5.7.25-TiDB-v4.0.4 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MySQL [(none)]> show status;
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher         |                                      |
-| Ssl_cipher_list    |                                      |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| ddl_schema_version | 22                                   |
-| server_id          | 717420dc-0eeb-4d4a-951d-0d393aff295a |
-+--------------------+--------------------------------------+
-6 rows in set (0.01 sec)
-```
+    MySQL [(none)]> show status;
+    +--------------------+--------------------------------------+
+    | Variable_name      | Value                                |
+    +--------------------+--------------------------------------+
+    | Ssl_cipher         |                                      |
+    | Ssl_cipher_list    |                                      |
+    | Ssl_verify_mode    | 0                                    |
+    | Ssl_version        |                                      |
+    | ddl_schema_version | 22                                   |
+    | server_id          | 717420dc-0eeb-4d4a-951d-0d393aff295a |
+    +--------------------+--------------------------------------+
+    6 rows in set (0.01 sec)
+    ```
 
-> **注意：**
->
-> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
+    > **注意：**
+    >
+    > TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
 ## Grafana 监控
 
@@ -260,13 +260,20 @@ gcloud container clusters resize tidb --node-pool tikv --num-nodes 2
 
 ### 新增节点组
 
-为 TiFlash/TiCDC 各自新增一个节点组。
+为 TiFlash 新增节点组：
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 gcloud container node-pools create tiflash --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
     --node-labels dedicated=tiflash --node-taints dedicated=tiflash:NoSchedule
+```
+
+为 TiCDC 新增节点组：
+
+{{< copyable "shell-regular" >}}
+
+```shell
 gcloud container node-pools create ticdc --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
     --node-labels dedicated=ticdc --node-taints dedicated=ticdc:NoSchedule
 ```
@@ -323,7 +330,7 @@ spec:
 
 ## 使用本地存储
 
-GCP 可以实例类型提供额外的 [本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
+GCP 可以实例类型提供额外的 [本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
@@ -338,7 +345,7 @@ GCP 可以实例类型提供额外的 [本地存储卷](https://docs.aws.amazon.
 
 2. 部署 local volume provisioner。
 
-    本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+    本地存储需要使用 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
 
     {{< copyable "shell-regular" >}}
 
