@@ -240,7 +240,7 @@ Grafana 默认登录信息：
 
 注意扩容前需要对相应的节点池进行扩容，以便新的实例有足够的资源运行。
 
-下面是将集群 `<clusterName>` 的 `tikv` 组扩容到 4 节点的示例：
+下面是将 GKE 集群 `tidb` 的 `tikv` 节点池扩容到 6 节点的示例：
 
 {{< copyable "shell-regular" >}}
 
