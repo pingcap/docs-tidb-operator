@@ -14,18 +14,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 部署前，请确认已安装以下软件：
 
-* [helm](https://helm.sh/docs/intro/install/) 用于安装 TiDB Operator
-* [gcloud](https://cloud.google.com/sdk/gcloud) 用于命令行下创造和管理 GCP 服务
-* 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart) 中"准备工作"
+* [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
+* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创造和管理 GCP 服务的命令行工具
+* 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
 该教程包含以下内容：
 
 * 启用 Kubernetes API
 * 配置足够的配额等
 
-## 部署
+## 部署集群
 
-### 配置
+### 配置 GCP 服务
 
 {{< copyable "shell-regular" >}}
 
@@ -38,7 +38,7 @@ gcloud config set compute/region <gcp-region>
 
 ### 创建 GKE 集群
 
-1, 创建 GKE 集群和一个默认节点池
+1. 创建 GKE 集群和一个默认节点池：
 
 {{< copyable "shell-regular" >}}
 
@@ -50,7 +50,7 @@ gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
 
 以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
-2, 分别为 PD, TiKV 和 TiDB 创建独立的节点池
+2. 分别为 PD、TiKV 和 TiDB 创建独立的节点池：
 
 {{< copyable "shell-regular" >}}
 
@@ -141,11 +141,11 @@ gcloud compute instances create bastion \
 
 > **注意：**
 >
-> `<your-region>-a` 为集群所在的区域的 a 可用区，比如 us-central1-a 。也可在同区域下的其他可用区创建堡垒机。
+> `<your-region>-a` 为集群所在的区域的 a 可用区，比如 us-central1-a。也可在同区域下的其他可用区创建堡垒机。
 
 ### 安装 MySQL 客户端并连接
 
-待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端 来访问 TiDB 集群。
+待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端来访问 TiDB 集群。
 
 用 SSH 连接到堡垒机：
 
