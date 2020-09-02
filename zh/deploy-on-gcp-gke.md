@@ -285,6 +285,8 @@ spec:
     - resources:
         requests:
           storage: 100Gi
+    nodeSelector:
+      dedicated: tiflash
     tolerations:
     - effect: NoSchedule
       key: dedicated
@@ -304,6 +306,8 @@ spec:
   ticdc:
     baseImage: pingcap/ticdc
     replicas: 1
+    nodeSelector:
+      dedicated: ticdc
     tolerations:
     - effect: NoSchedule
       key: dedicated
