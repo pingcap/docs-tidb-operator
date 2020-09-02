@@ -15,7 +15,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 部署前，请确认已安装以下软件：
 
 * [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
-* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创造和管理 GCP 服务的命令行工具
+* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
 该教程包含以下内容：
@@ -57,9 +57,9 @@ gcloud config set compute/region <gcp-region>
     ```shell
     gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
       --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
-    gcloud container node-pools create tikv --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+    gcloud container node-pools create tikv --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
       --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
-    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-8 --num-nodes=1 \
       --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
@@ -265,7 +265,7 @@ gcloud container clusters resize tidb --node-pool tikv --num-nodes 2
 {{< copyable "shell-regular" >}}
 
 ```shell
-gcloud container node-pools create tiflash --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+gcloud container node-pools create tiflash --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
     --node-labels dedicated=tiflash --node-taints dedicated=tiflash:NoSchedule
 ```
 
