@@ -11,7 +11,7 @@ TiDB Operator version: 1.0.0-beta.1-p2
 ## Notable Changes
 
 - New algorithm for scheduler HA predicate ([#260](https://github.com/pingcap/tidb-operator/pull/260))
-- Add tidb discovery service ([#262](https://github.com/pingcap/tidb-operator/pull/262))
+- Add TiDB discovery service ([#262](https://github.com/pingcap/tidb-operator/pull/262))
 - Serial scheduling ([#266](https://github.com/pingcap/tidb-operator/pull/266))
 - Change tolerations type to an array ([#271](https://github.com/pingcap/tidb-operator/pull/271))
 - Start directly when where is join file ([#275](https://github.com/pingcap/tidb-operator/pull/275))

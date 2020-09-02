@@ -62,7 +62,7 @@ We strongly recommend you to upgrade to `v1.0.4` if you are using any version un
 - Set the default `externalTrafficPolicy` to be Local for TiDB services ([#960](https://github.com/pingcap/tidb-operator/pull/960))
 - Fix tidb-operator crash when users modify sts upgrade strategy improperly ([#969](https://github.com/pingcap/tidb-operator/pull/969))
 - Add the `maxFailoverCount` limit to TiKV ([#976](https://github.com/pingcap/tidb-operator/pull/976))
-- Fix values file customization for tidb-operator on aliyun ([#983](https://github.com/pingcap/tidb-operator/pull/983))
+- Fix values file customization for tidb-operator on Aliyun ([#983](https://github.com/pingcap/tidb-operator/pull/983))
 - Do not limit failover count when maxFailoverCount = 0 ([#978](https://github.com/pingcap/tidb-operator/pull/978))
 - Suspend the `ReplaceUnhealthy` process for TiKV auto-scaling-group on AWS ([#1027](https://github.com/pingcap/tidb-operator/pull/1027))
 - Fix the issue that the `create_tidb_cluster_release` variable does not work ([#1066](https://github.com/pingcap/tidb-operator/pull/1066)))

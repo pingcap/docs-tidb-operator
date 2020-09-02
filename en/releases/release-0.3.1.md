@@ -11,7 +11,7 @@ TiDB Operator version: 0.3.1
 ## Minor Changes
 
 - Paramertize the serviceAccount ([#116](https://github.com/pingcap/tidb-operator/pull/116) [#111](https://github.com/pingcap/tidb-operator/pull/111)) 
-- Bump tidb to v2.0.7 & allow user specified config files ([#121](https://github.com/pingcap/tidb-operator/pull/))
+- Bump TiDB to v2.0.7 & allow user specified config files ([#121](https://github.com/pingcap/tidb-operator/pull/))
 - Remove binding mode for GKE pd-ssd storageclass ([#130](https://github.com/pingcap/tidb-operator/pull/130))
 - Modified placement of tidb_version ([#125](https://github.com/pingcap/tidb-operator/pull/125)) 
 - Update google-kubernetes-tutorial.md ([#105](https://github.com/pingcap/tidb-operator/pull/105)) 
@@ -21,7 +21,7 @@ TiDB Operator version: 0.3.1
 - Marketplace ([#123](https://github.com/pingcap/tidb-operator/pull/123) [#135](https://github.com/pingcap/tidb-operator/pull/135)) 
 - Change monitor/backup/binlog pvc labels ([#143](https://github.com/pingcap/tidb-operator/pull/143)) 
 - TiDB readiness probes ([#147](https://github.com/pingcap/tidb-operator/pull/147)) 
-- Add doc on how to provision kubernetes on aws ([#71](https://github.com/pingcap/tidb-operator/pull/71)) 
+- Add doc on how to provision kubernetes on AWS ([#71](https://github.com/pingcap/tidb-operator/pull/71)) 
 - Add imagePullPolicy support ([#152](https://github.com/pingcap/tidb-operator/pull/152)) 
 - Separation startup scripts and application config from yaml files ([#149](https://github.com/pingcap/tidb-operator/pull/149)) 
 - Update marketplace for our open source offering ([#151](https://github.com/pingcap/tidb-operator/pull/151)) 

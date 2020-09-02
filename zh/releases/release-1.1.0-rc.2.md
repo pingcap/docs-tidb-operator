@@ -10,7 +10,7 @@ TiDB Operator version: 1.1.0-rc.2
 
 ## Action Required
 
-- Change TiDB pod `readiness` probe from `HTTPGet` to `TCPSocket` 4000 port. This will trigger rolling-upgrade for the `tidb-server` component. You can set `spec.paused` to `true` before upgrading tidb-operator to avoid the rolling upgrade, and set it back to `false` when you are ready to upgrade your tidb server ([#2139](https://github.com/pingcap/tidb-operator/pull/2139), [@weekface](https://github.com/weekface))
+- Change TiDB pod `readiness` probe from `HTTPGet` to `TCPSocket` 4000 port. This will trigger rolling-upgrade for the `tidb-server` component. You can set `spec.paused` to `true` before upgrading tidb-operator to avoid the rolling upgrade, and set it back to `false` when you are ready to upgrade your TiDB server ([#2139](https://github.com/pingcap/tidb-operator/pull/2139), [@weekface](https://github.com/weekface))
 
 ## Notable Changes
 

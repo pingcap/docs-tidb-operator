@@ -59,7 +59,7 @@ TiDB Operator version: 1.0.0-rc.1
 - Fix pull request template grammar ([#607](https://github.com/pingcap/tidb-operator/pull/607))
 - Local SSD provision: reduce network traffic ([#601](https://github.com/pingcap/tidb-operator/pull/601))
 - Add operator upgrade case ([#579](https://github.com/pingcap/tidb-operator/pull/579))
-- Fix bug that TiKV status is always upgrade ([#598](https://github.com/pingcap/tidb-operator/pull/598))
+- Fix a bug that TiKV status is always upgrade ([#598](https://github.com/pingcap/tidb-operator/pull/598))
 - Build without debugger symbols ([#592](https://github.com/pingcap/tidb-operator/pull/592))
 - Improve error messages ([#591](https://github.com/pingcap/tidb-operator/pull/591))
 - Fix tidb user of scheduled backup script ([#594](https://github.com/pingcap/tidb-operator/pull/594))

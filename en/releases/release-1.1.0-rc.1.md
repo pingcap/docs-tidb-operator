@@ -10,7 +10,7 @@ TiDB Operator version: 1.1.0-rc.1
 
 ## Action Required
 
-- `--advertise-address` will be configured for `tidb-server`, which would trigger rolling-upgrade for the `tidb-server` component. You can set `spec.paused` to `true` before upgrading tidb-operator to avoid the rolling upgrade, and set it back to `false` when you are ready to upgrade your tidb server ([#2076](https://github.com/pingcap/tidb-operator/pull/2076), [@cofyc](https://github.com/cofyc))
+- `--advertise-address` will be configured for `tidb-server`, which would trigger rolling-upgrade for the `tidb-server` component. You can set `spec.paused` to `true` before upgrading tidb-operator to avoid the rolling upgrade, and set it back to `false` when you are ready to upgrade your TiDB server ([#2076](https://github.com/pingcap/tidb-operator/pull/2076), [@cofyc](https://github.com/cofyc))
 - Add the `tlsClient.tlsSecret` field in the backup and restore spec, which supports specifying a secret name that includes the cert ([#2003](https://github.com/pingcap/tidb-operator/pull/2003), [@shuijing198799](https://github.com/shuijing198799))
 - Remove `spec.br.pd`, `spec.br.ca`, `spec.br.cert`, `spec.br.key` and add `spec.br.cluster`, `spec.br.clusterNamespace` for the `Backup`, `Restore` and `BackupSchedule` custom resources, which makes the BR configuration more reasonable ([#1836](https://github.com/pingcap/tidb-operator/pull/1836), [@shuijing198799](https://github.com/shuijing198799))
 
@@ -19,7 +19,7 @@ TiDB Operator version: 1.1.0-rc.1
 - Use `tidb-lightning` in `Restore` instead of `loader` ([#2068](https://github.com/pingcap/tidb-operator/pull/2068), [@Yisaer](https://github.com/Yisaer))
 - Add `cert-allowed-cn` support to TiDB components ([#2061](https://github.com/pingcap/tidb-operator/pull/2061), [@weekface](https://github.com/weekface))
 - Fix the PD `location-labels` configuration ([#1941](https://github.com/pingcap/tidb-operator/pull/1941), [@aylei](https://github.com/aylei))
-- Able to pause and unpause tidb cluster deployment via `spec.paused` ([#2013](https://github.com/pingcap/tidb-operator/pull/2013), [@cofyc](https://github.com/cofyc))
+- Able to pause and unpause TiDB cluster deployment via `spec.paused` ([#2013](https://github.com/pingcap/tidb-operator/pull/2013), [@cofyc](https://github.com/cofyc))
 - Default the `max-backups` for TiDB server configuration to `3` if the TiDB cluster is deployed by CR ([#2045](https://github.com/pingcap/tidb-operator/pull/2045), [@Yisaer](https://github.com/Yisaer))
 - Able to configure custom environments for components ([#2052](https://github.com/pingcap/tidb-operator/pull/2052), [@cofyc](https://github.com/cofyc))
 - Fix the error that `kubectl get tc` cannot show correct images ([#2031](https://github.com/pingcap/tidb-operator/pull/2031), [@Yisaer](https://github.com/Yisaer))

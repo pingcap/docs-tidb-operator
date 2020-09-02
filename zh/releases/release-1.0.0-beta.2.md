@@ -33,7 +33,7 @@ TiDB Operator version: 1.0.0-beta.2
 - Fix PD ha when replcias is less than 3
 - Fix a tidb-scheduler acquireLock bug and emit event when scheduled failed
 - Fix scheduler ha bug with defer deleting pods
-- Fix bug when using shareinformer without deepcopy
+- Fix a bug when using shareinformer without deepcopy
 
 ### Other improvements
 
@@ -101,7 +101,7 @@ TiDB Operator version: 1.0.0-beta.2
 - Update Jenkins links in `README.md` ([#395](https://github.com/pingcap/tidb-operator/pull/395))
 - Fix e2e workflow in `CONTRIBUTING.md` ([#392](https://github.com/pingcap/tidb-operator/pull/392))
 - Support running stability test out of cluster ([#397](https://github.com/pingcap/tidb-operator/pull/397))
-- Update tidb secret docs and charts ([#398](https://github.com/pingcap/tidb-operator/pull/398))
+- Update TiDB secret docs and charts ([#398](https://github.com/pingcap/tidb-operator/pull/398))
 - Enable blockWriter write pressure in stability test ([#399](https://github.com/pingcap/tidb-operator/pull/399))
 - Support debug and ctop commands in CLI ([#387](https://github.com/pingcap/tidb-operator/pull/387))
 - Marketplace update ([#380](https://github.com/pingcap/tidb-operator/pull/380))
@@ -109,7 +109,7 @@ TiDB Operator version: 1.0.0-beta.2
 - Add fault inject for kube proxy ([#384](https://github.com/pingcap/tidb-operator/pull/384))
 - Use `ioutil.TempDir()` create charts and operator repo's directories ([#405](https://github.com/pingcap/tidb-operator/pull/405))
 - Improve workflow in docs/google-kubernetes-tutorial.md ([#400](https://github.com/pingcap/tidb-operator/pull/400))
-- Support plugin start argument for tidb instance ([#412](https://github.com/pingcap/tidb-operator/pull/412))
+- Support plugin start argument for TiDB instance ([#412](https://github.com/pingcap/tidb-operator/pull/412))
 - Replace govet with official vet tool ([#416](https://github.com/pingcap/tidb-operator/pull/416))
 - Allocate 24 PVs by default (after 2 clusters are scaled to ([#407](https://github.com/pingcap/tidb-operator/pull/407))
 - Refine stability ([#422](https://github.com/pingcap/tidb-operator/pull/422))
@@ -129,14 +129,14 @@ TiDB Operator version: 1.0.0-beta.2
 - Add instructions to access Grafana in GKE tutorial ([#448](https://github.com/pingcap/tidb-operator/pull/448))
 - Fix label selector ([#437](https://github.com/pingcap/tidb-operator/pull/437))
 - No need to set ClusterIP when syncing headless service ([#432](https://github.com/pingcap/tidb-operator/pull/432))
-- Document how to deploy tidb cluster with tidb-operator in minikube ([#451](https://github.com/pingcap/tidb-operator/pull/451))
+- Document how to deploy TiDB cluster with tidb-operator in minikube ([#451](https://github.com/pingcap/tidb-operator/pull/451))
 - Add slack notify ([#439](https://github.com/pingcap/tidb-operator/pull/439))
 - Fix local dind env ([#440](https://github.com/pingcap/tidb-operator/pull/440))
 - Add terraform scripts to support alibaba cloud ACK deployment ([#436](https://github.com/pingcap/tidb-operator/pull/436))
 - Fix backup data compare logic ([#454](https://github.com/pingcap/tidb-operator/pull/454))
 - Async emit annotations ([#438](https://github.com/pingcap/tidb-operator/pull/438))
 - Use TiDB v2.1.8 by default & remove pushgateway ([#435](https://github.com/pingcap/tidb-operator/pull/435))
-- Fix bug use shareinformer without copy ([#462](https://github.com/pingcap/tidb-operator/pull/462))
+- Fix a bug that uses shareinformer without copy ([#462](https://github.com/pingcap/tidb-operator/pull/462))
 - Add version command for tkctl ([#456](https://github.com/pingcap/tidb-operator/pull/456))
 - Add tkctl user manual ([#452](https://github.com/pingcap/tidb-operator/pull/452))
 - Fix binlog problem on large scale ([#460](https://github.com/pingcap/tidb-operator/pull/460))
@@ -146,6 +146,6 @@ TiDB Operator version: 1.0.0-beta.2
 - Update documentation of DinD installation ([#458](https://github.com/pingcap/tidb-operator/pull/458))
 - Add instructions to access Grafana ([#476](https://github.com/pingcap/tidb-operator/pull/476))
 - Support-multi-version-dashboard ([#473](https://github.com/pingcap/tidb-operator/pull/473))
-- Update aliyun deploy docs after testing ([#474](https://github.com/pingcap/tidb-operator/pull/474))
+- Update Aliyun deploy docs after testing ([#474](https://github.com/pingcap/tidb-operator/pull/474))
 - GKE local SSD size warning ([#467](https://github.com/pingcap/tidb-operator/pull/467))
 - Update roadmap ([#376](https://github.com/pingcap/tidb-operator/pull/376))
