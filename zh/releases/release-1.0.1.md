@@ -35,7 +35,7 @@ TiDB Operator version: 1.0.1
 - Add the zone label and reserved resources arguments to kubelet
 - Update the default backup image to `pingcap/tidb-cloud-backup:20190828`
 
-### Bug fixes
+### Bug Fixes
 
 - Fix the TiKV scale-in failure in some cases after the TiKV failover
 - Fix error handling for UpdateService

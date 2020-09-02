@@ -28,7 +28,7 @@ Auto-scaling-group scaling process can also be suspended according to its [docum
 - Set the default `externalTrafficPolicy` to be `Local` for TiDB service in AWS/GCP/Aliyun
 - Add provider and module versions for AWS
 
-### Bug fixes
+### Bug Fixes
 
 - Fix the issue that tkctl version does not work when the release name is un-wanted
 - Migrate statefulsets apiVersion to `app/v1` which fixes compatibility with Kubernetes 1.16 and above versions

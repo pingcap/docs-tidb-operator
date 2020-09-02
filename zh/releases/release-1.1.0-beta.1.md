@@ -69,7 +69,7 @@ TiDB Operator version: 1.1.0-beta.1
 - Support tidb-operator to spec nodeSelector, affinity and tolerations ([#855](https://github.com/pingcap/tidb-operator/pull/855), [@shonge](https://github.com/shonge))
 - Support configuring resources requests and limits for all containers of the TiDB cluster ([#853](https://github.com/pingcap/tidb-operator/pull/853), [@aylei](https://github.com/aylei))
 - Support using Kind (Kubernetes IN Docker) to set up a testing environment ([#791](https://github.com/pingcap/tidb-operator/pull/791), [@xiaojingchen](https://github.com/xiaojingchen))
-- Support add-hoc data source to be restored with the tidb-lightning chart ([#827](https://github.com/pingcap/tidb-operator/pull/827), [@tennix](https://github.com/tennix))
+- Support ad-hoc data source to be restored with the tidb-lightning chart ([#827](https://github.com/pingcap/tidb-operator/pull/827), [@tennix](https://github.com/tennix))
 - Add the `tikvGCLifeTime` option ([#835](https://github.com/pingcap/tidb-operator/pull/835), [@weekface](https://github.com/weekface))
 - Update the default backup image to pingcap/tidb-cloud-backup:20190828 ([#846](https://github.com/pingcap/tidb-operator/pull/846), [@aylei](https://github.com/aylei))
 - Fix the Pump/Drainer data directory to avoid potential data loss ([#826](https://github.com/pingcap/tidb-operator/pull/826), [@aylei](https://github.com/aylei))

@@ -141,7 +141,7 @@ monitor:
 
 Please check [cluster configuration](https://pingcap.com/docs/v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster/) for detailed configuration.
 
-### Stability test cases added
+### Stability Test Cases Added
 
 - Stop all etcds and kubelets
 
@@ -155,7 +155,7 @@ Please check [cluster configuration](https://pingcap.com/docs/v3.0/tidb-in-kuber
 - Support multiple TiDB clusters management in Alibaba Cloud
 - Enable AWS NLB cross zone load balancing by default
 
-### Bug fixes
+### Bug Fixes
 
 - Fix sysbench installation on bastion machine of AWS deployment
 - Fix TiKV metrics monitoring in default setup
