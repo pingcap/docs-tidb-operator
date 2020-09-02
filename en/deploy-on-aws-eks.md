@@ -242,7 +242,7 @@ NAME            TYPE           CLUSTER-IP      EXTERNAL-IP                      
 basic-grafana   LoadBalancer   10.100.199.42   a806cfe84c12a4831aa3313e792e3eed-1964630135.us-west-2.elb.amazonaws.com 3000:30761/TCP   121m
 ```
 
-In the output above, `EXTERNAL-IP` is the LoadBalancer domain name.
+In the output above, the `EXTERNAL-IP` column is the LoadBalancer domain name.
 
 You can access the `<grafana-lb>:3000` address using your web browser to view monitoring metrics. Replace `<grafana-lb>` with the LoadBalancer domain name.
 
@@ -255,7 +255,7 @@ The initial Grafana login credentials are:
 
 To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
 
-The upgrading doesn't finish immediately. You can watch the upgrading progress by `kubectl get pods -n tidb-cluster --watch`.
+The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 
 ## Scale out
 
@@ -320,7 +320,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
 
     > **Warning:**
     >
-    > TiDB Operator automatically mount PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. Besides, you must **not** alter the order of the original configuration.
+    > TiDB Operator automatically mount PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
 
 + If you want to deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`:
 
@@ -382,11 +382,11 @@ For more information about the storage class configuration and EBS volume types,
 
 ## Use local storage
 
-Some AWS instance types provides additional [NVMe SSD local store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+Some AWS instance types provide additional [NVMe SSD local store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
-> During the EKS upgrade, data in the local storage will be [lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime) due to the node reconstruction. when the node reconstruction happens, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
+> During the EKS upgrade, data in the local storage will be [lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
 
 For instance types that provide local volumes, see [AWS Instance Types](https://aws.amazon.com/ec2/instance-types/). Take `c5d.4xlarge` as an example:
 
@@ -412,11 +412,11 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
     eksctl create nodegroups -f cluster.yaml
     ```
 
-    If the tikv node group already exists, you can either delete the old group and then create a new one, or change the group name to avoid conflict.
+    If the TiKV node group already exists, you can either delete the old group and then create a new one, or change the group name to avoid conflict.
 
 2. Deploy the local volume provisioner.
 
-    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. The following command deploys and creates a `local-storage` storage class:
+    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. Executing the following command deploys and creates a `local-storage` storage class:
 
     {{< copyable "shell-regular" >}}
 
@@ -430,4 +430,4 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
 
     Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
 
-    A running TiDB cluster cannot dynamically change its storage class. You can create a new cluster for testing.
+    You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
