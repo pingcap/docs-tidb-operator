@@ -18,10 +18,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 * [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
-该教程包含以下内容：
+    该教程包含以下内容：
 
-* 启用 Kubernetes API
-* 配置足够的配额等
+    * 启用 Kubernetes API
+    * 配置足够的配额等
 
 ## 部署集群
 
@@ -46,7 +46,7 @@ gcloud config set compute/region <gcp-region>
     gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
     ```
 
-    该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会分别创建在该区域中三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考[该文档](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
+    该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会在该区域中分别创建三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考 [GKE 集群的类型](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
 
     以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
@@ -107,7 +107,7 @@ gcloud config set compute/region <gcp-region>
     kubectl get pods -n tidb-cluster
     ```
 
-    当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
+    当所有 Pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群状态如下：
 
     ```
     NAME                              READY   STATUS    RESTARTS   AGE
@@ -254,7 +254,7 @@ gcloud container clusters resize tidb --node-pool tikv --num-nodes 2
 
 然后通过 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas` 为期望的新副本数进行扩容。
 
-更多节点池管理可参考 [node pools 文档](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)。
+更多节点池管理可参考 [Node Pools 文档](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)。
 
 ## 部署 TiFlash/TiCDC
 
