@@ -73,8 +73,11 @@ def filter_frontmatter(content):
             meta_pos = i.span()[1]
             collect.append(meta_pos)
 
-        filter_point = collect[1]
-        content = content[filter_point:]
+        # if the number of "---" >= 2
+        if len(collect) >= 2:
+            filter_point = collect[1]
+            content = content[filter_point:]
+            
     return content
 
 def filter_backticks(content, filename):
@@ -90,7 +93,7 @@ def filter_backticks(content, filename):
         if len(backticks) % 2 != 0:
             print(len(content_findall))
             print(backticks)
-            # print(backticks[0][0], backticks[0][1])
+            print(backticks[0][0], backticks[0][1])
             # print(content[backticks[0][0]-10:backticks[0][1]+10])
             print(filename, ": Your inline code ``` ```  is not closed. Please close it.")
         elif len(backticks) != 0:
@@ -147,5 +150,5 @@ for filename in sys.argv[1:]:
                 status_code = 1
 
 if status_code:
-    # print("HINT: Unclosed tags will cause website build failure. Please fix the reported unclosed tags. You can use backticks `` to wrap them or close them. Thanks.")
+    print("HINT: Unclosed tags will cause website build failure. Please fix the reported unclosed tags. You can use backticks `` to wrap them or close them. Thanks.")
     exit(1)
