@@ -96,7 +96,7 @@ def filter_backticks(content, filename):
             print(backticks[0][0], backticks[0][1])
             # print(content[backticks[0][0]-10:backticks[0][1]+10])
             print(filename, ": Some of your code blocks ``` ```  are not closed. Please close them.")
-            exit(0)
+            exit(1)
         elif len(backticks) != 0:
             backticks_start = backticks[0][0]
             backticks_end = backticks[1][1]
