@@ -91,10 +91,9 @@ def filter_backticks(content, filename):
             backticks.append(pos)
         # e.g. backticks = [[23, 26],[37, 40],[123, 126],[147, 150]]
         if len(backticks) % 2 != 0:
-            print(len(content_findall))
-            print(backticks)
-            print(backticks[0][0], backticks[0][1])
-            # print(content[backticks[0][0]-10:backticks[0][1]+10])
+            # print(len(content_findall))
+            # print(backticks)
+            # print(backticks[0][0], backticks[0][1])
             print(filename, ": Some of your code blocks ``` ```  are not closed. Please close them.")
             exit(1)
         elif len(backticks) != 0:
