@@ -26,8 +26,8 @@ standard (default)   rancher.io/local-path   Delete          WaitForFirstConsume
 
 > **注意：**
 >
-> * 一个 TidbMonitor 只支持监控一个 TidbCluster
-> * `spec.clusters[0].name` 需要配置为 TiDB 集群 TidbCluster 的名字
+> * 一个 TidbMonitor 只支持监控一个 TidbCluster。
+> * `spec.clusters[0].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
