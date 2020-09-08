@@ -1,7 +1,7 @@
 ---
 title: 在 GCP 上通过 Kubernetes 部署 TiDB 集群
 summary: 在 GCP 上通过 Kubernetes 部署 TiDB 集群教程。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-gke/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-tidb-from-kubernetes-gke/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-gke/','/docs-cn/tidb-in-kubernetes/v1.1/deploy-tidb-from-kubernetes-gke/','/docs-cn/stable/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke/']
 ---
 
 # 在 GCP 上通过 Kubernetes 部署 TiDB 集群
