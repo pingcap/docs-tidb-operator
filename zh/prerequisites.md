@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群环境需求
 summary: 介绍在 Kubernetes 上部署 TiDB 集群的软硬件环境需求。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/prerequisites/','/docs-cn/tidb-in-kubernetes/v1.1/prerequisites/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/prerequisites/','/docs-cn/tidb-in-kubernetes/v1.1/prerequisites/','/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes-prerequisites/']
 ---
 
 # Kubernetes 上的 TiDB 集群环境需求
