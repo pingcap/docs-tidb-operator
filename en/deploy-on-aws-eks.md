@@ -145,7 +145,7 @@ To deploy TiDB Operator in the Kubernetes cluster, refer to the [*Deploy TiDB Op
 
 After you deploy a TiDB cluster, you can access the TiDB database via MySQL client.
 
-### Prepare a machine that can access the cluster
+### Prepare a host that can access the cluster
 
 The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You can create a [bastion host](https://aws.amazon.com/quickstart/architecture/linux-bastion/) in the cluster VPC to access the database. To create a bastion host on AWS console, refer to [AWS documentation](https://aws.amazon.com/quickstart/architecture/linux-bastion/).
 
@@ -157,7 +157,7 @@ Select the cluster's VPC and Subnet, and verify whether the cluster name is corr
 eksctl get cluster -n <clusterName>
 ```
 
-Allow the local machine to access the Internet. Select the correct key pair so that you can log in the machine via SSH.
+Allow the bastion host to access the Internet. Select the correct key pair so that you can log in to the host via SSH.
 
 > **Note:**
 >
@@ -277,7 +277,7 @@ For more information on managing node groups, refer to [`eksctl` documentation](
 
 ### Add node groups
 
-In the configuration file of eksctl (`cluster.yaml`), add the following two items to add a node group for TiFlash/TiCDC respectively. `desiredCapacity` is the number of nodes your desire.
+In the configuration file of eksctl (`cluster.yaml`), add the following two items to add a node group for TiFlash/TiCDC respectively. `desiredCapacity` is the number of nodes you desire.
 
 ```
 - name: tiflash
