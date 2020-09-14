@@ -83,8 +83,8 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 
 * 如果 TiDB Operator 版本小于等于 v1.1.4
     * 如果 TiFlash 版本小于等于 v4.0.4，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
-    * 如果 TiFlash 版本大于等于 v4.0.5，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr: 0.0.0.0:3930`。
+    * 如果 TiFlash 版本大于等于 v4.0.5，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr` 为 `0.0.0.0:3930`。
 * 如果 TiDB Operator 版本大于等于 v1.1.5
-    * 如果 TiFlash 版本小于等于 v4.0.4，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr: ${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930`，`${clusterName}` 和 `${namespace}` 需要根据实际情况替换。
+    * 如果 TiFlash 版本小于等于 v4.0.4，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr` 为 `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930`。其中，`${clusterName}` 和 `${namespace}` 需要根据实际情况替换。
     * 如果 TiFlash 版本大于等于 v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
     * 如果从小于等于 v4.0.4 的 TiFlash 版本升级到大于等于 v4.0.5 TiFlash 版本，需要删除 TidbCluster CR 中 `spec.tiflash.config.config.flash.service_addr` 的配置。

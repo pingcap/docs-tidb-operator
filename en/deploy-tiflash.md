@@ -77,14 +77,16 @@ To [add TiFlash component to an existing TiDB cluster](https://pingcap.com/docs/
 
 If the server does not have an external network, refer to [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
 
-## Configuration Notes
+## Configuration notes for different versions
 
-Starting from TiDB Operator v1.1.5, the default configuration of `spec.tiflash.config.config.flash.service_addr` is changed from `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` to `0.0.0.0:3930`, and TiFlash needs to configure `spec.tiflash.config.config.flash.service_addr` to `0.0.0.0:3930` from v4.0.5, so for different TiFlash and TiDB Operator versions, you have to pay attention to the following configurations:
+Starting from TiDB Operator v1.1.5, the default configuration of `spec.tiflash.config.config.flash.service_addr` is changed from `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` to `0.0.0.0:3930`, and TiFlash needs to configure `spec.tiflash.config.config.flash.service_addr` to `0.0.0.0:3930` since v4.0.5.
 
-* If TiDB Operator version is lower than or equal to v1.1.4
-    * If TiFlash version is lower than or equal to v4.0.4, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
-    * If TiFlash version is greater than or equal to v4.0.5, you need to set `spec.tiflash.config.config.flash.service_addr: 0.0.0.0:3930` in the TidbCluster CR.
-* If TiDB Operator version is greater than or equal to v1.1.5
-    * If TiFlash version is lower than or equal to v4.0.4, you need to set `spec.tiflash.config.config.flash.service_addr: ${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` in the TidbCluster CR, `${clusterName}` and `${namespace}` need to be replaced according to the real case.
-    * If TiFlash version is greater than or equal to v4.0.5, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
-    * If you upgrade from TiFlash v4.0.4 or lower to TiFlash v4.0.5 or higher version, you need to delete the configuration of `spec.tiflash.config.config.flash.service_addr` in the TidbCluster CR.
+Therefore, for different TiFlash and TiDB Operator versions, you need to pay attention to the following configurations:
+
+* If the TiDB Operator version <= v1.1.4
+    * If the TiFlash version <= v4.0.4, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
+    * If the TiFlash version >= v4.0.5, you need to set `spec.tiflash.config.config.flash.service_addr` to `0.0.0.0:3930` in the `TidbCluster` CR.
+* If the TiDB Operator version >= v1.1.5
+    * If the TiFlash version <= v4.0.4, you need to set `spec.tiflash.config.config.flash.service_addr` to `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` in the `TidbCluster` CR. `${clusterName}` and `${namespace}` need to be replaced according to the real case.
+    * If the TiFlash version >= v4.0.5, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
+    * If you upgrade from TiFlash v4.0.4 or lower versions to TiFlash v4.0.5 or higher versions, you need to delete the configuration of `spec.tiflash.config.config.flash.service_addr` in the `TidbCluster` CR.
