@@ -176,7 +176,7 @@ GCS 支持以下几种 bucket ACL 策略：
     - --rows=10000
     ```
 
-* `.spec.storageClassName`：备份时指定所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
+* `.spec.storageClassName`：备份时指定所需的 persistent volume (PV) 类型。
 * `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
 * `.spec.tableFilter`：备份时指定让 Dumpling 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，`tableFilter` 字段的默认值如下：
 
