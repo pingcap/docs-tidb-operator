@@ -289,7 +289,7 @@ kubectl get rt -n test2 -o wide
 
     > **注意：**
     >
-    > tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+    > `tableFilter` 如果要写排除规则导出除 `db.table` 的所有表，`"!db.table"` 前必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
 
     ```
     tableFilter:

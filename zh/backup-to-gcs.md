@@ -168,7 +168,7 @@ GCS 支持以下几种 bucket ACL 策略：
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
 * `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
-* `.spec.dumpling`：Dumpling 相关的配置，可以在 `options` 字段指定 Dumpling 的运行参数，详情见 [Dumpling 使用文档](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview#dumpling-主要参数表)；默认情况下该字段可以不用配置。当不指定 dumpling 的配置时，`options` 字段的默认值如下：
+* `.spec.dumpling`：Dumpling 相关的配置，可以在 `options` 字段指定 Dumpling 的运行参数，详情见 [Dumpling 使用文档](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview#dumpling-主要参数表)；默认情况下该字段可以不用配置。当不指定 Dumpling 的配置时，`options` 字段的默认值如下：
 
     ```
     options:
