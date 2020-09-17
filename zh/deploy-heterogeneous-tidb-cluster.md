@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 
 ## 部署异构集群
 
-### 创建一个异构集群 示例:
+### 创建一个异构集群
 
 {{< copyable "shell-regular" >}}
 
