@@ -61,7 +61,6 @@ spec:
 kubectl create cluster -f cluster.yaml
 ```
 
-
 ### 部署 监控
 
 {{< copyable "shell-regular" >}}
