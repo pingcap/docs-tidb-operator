@@ -99,6 +99,7 @@ kubectl create cluster -f tidbmonitor.yaml
 ```
 
 ## 部署 TLS 异构集群
+
 异构集群 TLS 需要重新颁发证书创建，需要保证目标集群和异构集群使用相同的CA (Certification Authority)。
 
 参考:
@@ -107,4 +108,3 @@ kubectl create cluster -f tidbmonitor.yaml
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
 我们在项目 Example 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例
-
