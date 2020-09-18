@@ -48,9 +48,11 @@ Assume that there are 3 nodes in a PD cluster. If a PD node is down for over 5 m
 
 ### Failover with TiKV
 
-When a TiKV Pod fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying [`max-store-down-time`](https://pingcap.com/docs/stable/pd-configuration-file/#max-store-down-time) in PD's [configuration file](https://github.com/pingcap/pd/blob/master/conf/config.toml)), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tikvFailoverPeriod`), TiDB Operator creates a new TiKV Pod if this TiKV Pod is still down. If the failed TiKV Pod gets back online, considering that scaling in the TiKV Pods will trigger data transfer, TiDB Operator does not automatically delete the newly created Pod.
+When a TiKV Pod fails, its status turns to `Disconnected`. After 30 minutes (configurable by setting [`max-store-down-time`](https://pingcap.com/docs/stable/pd-configuration-file/#max-store-down-time) to `"30m"` in PD's configuration file), the status becomes `Down`. After waiting for another 5 minutes (configurable by modifying `tikvFailoverPeriod`), if this TiKV Pod is still down, TiDB Operator creates a new TiKV Pod.
 
-If **all** of the failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the below procedure:
+If the failed TiKV Pod gets back online, TiDB Operator does not automatically delete the newly created Pod. This is because scaling in the TiKV Pods will trigger data transfer.
+
+If **all** of the failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the procedure below:
 
 Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
 
@@ -60,7 +62,7 @@ Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.
 kubectl edit tc -n ${namespace} ${cluster_name}
 ```
 
-TiDB Operator will scale in the newly created Pods automatically, when the scaling in is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+TiDB Operator will scale in the newly created Pods automatically. When the scaling in is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
 
 ### Failover with TiDB
 
@@ -68,9 +70,11 @@ The TiDB automatic failover policy works the same way as `Deployment` does in Ku
 
 ### Failover with TiFlash
 
-When a TiFlash Pod fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying [`max-store-down-time`](https://pingcap.com/docs/stable/pd-configuration-file/#max-store-down-time) in PD's [configuration file](https://github.com/pingcap/pd/blob/master/conf/config.toml)), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tiflashFailoverPeriod`), TiDB Operator creates a new TiFlash Pod if this TiFlash Pod is still down. If the failed TiFlash Pod gets back online, considering that scaling in the TiFlash Pods will trigger data transfer, TiDB Operator does not automatically delete the newly created Pod.
+When a TiFlash Pod fails, its status turns to `Disconnected`. After 30 minutes (configurable by setting [`max-store-down-time`](https://pingcap.com/docs/stable/pd-configuration-file/#max-store-down-time) to `"30m"` in PD's configuration file), the status becomes `Down`. After waiting for another 5 minutes (configurable by modifying `tiflashFailoverPeriod`), if this TiFlash Pod is still down, TiDB Operator creates a new TiFlash Pod.
 
-If **all** of the failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the below procedure:
+If the failed TiFlash Pod gets back online, TiDB Operator does not automatically delete the newly created Pod. This is because scaling in the TiFlash Pods will trigger data transfer.
+
+If **all** of the failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the procedure below:
 
 Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
 
@@ -80,4 +84,4 @@ Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1
 kubectl edit tc -n ${namespace} ${cluster_name}
 ```
 
-TiDB Operator will scale in the newly created Pods automatically, when the scaling in is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+TiDB Operator will scale in the newly created Pods automatically. When the scaling in is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
