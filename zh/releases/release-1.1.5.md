@@ -24,7 +24,7 @@ TiDB Operator 版本：1.1.5
 
 - 支持 TiDB/PD/TiKV 的 v4.0.6 配置 ([#3180](https://github.com/pingcap/tidb-operator/pull/3180), [@lichunzhu](https://github.com/lichunzhu))
 - 挂载集群客户端证书到 PD Pod ([#3248](https://github.com/pingcap/tidb-operator/pull/3248), [@weekface](https://github.com/weekface))
-- 对于 TiFlash/PD/TiDB，使伸缩实例优先于升级，避免升级失败时无法缩容 Pod ([#3187](https://github.com/pingcap/tidb-operator/pull/3187), [@lichunzhu](https://github.com/lichunzhu))
+- 对于 TiFlash/PD/TiDB，使伸缩实例优先于升级，避免升级失败时无法扩缩容 Pod ([#3187](https://github.com/pingcap/tidb-operator/pull/3187), [@lichunzhu](https://github.com/lichunzhu))
 - Pump 支持 imagePullSecrets 配置 ([#3214](https://github.com/pingcap/tidb-operator/pull/3214), [@weekface](https://github.com/weekface))
 - 更新 TiFlash 的默认配置项 ([#3191](https://github.com/pingcap/tidb-operator/pull/3191), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - 移除 TidbMonitor CR 的 ClusterRole 资源 ([#3190](https://github.com/pingcap/tidb-operator/pull/3190), [@weekface](https://github.com/weekface))
