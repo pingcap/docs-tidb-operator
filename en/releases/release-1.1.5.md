@@ -29,3 +29,8 @@ TiDB Operator version: 1.1.5
 - Update the default configuration for TiFlash ([#3191](https://github.com/pingcap/tidb-operator/pull/3191), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - Remove `ClusterRole` from TidbMonitor CR ([#3190](https://github.com/pingcap/tidb-operator/pull/3190), [@weekface](https://github.com/weekface))
 - Drainer that are deployed by Helm and exits normally will no longer be restarted ([#3151](https://github.com/pingcap/tidb-operator/pull/3151), [@lichunzhu](https://github.com/lichunzhu))
+- Use the real desired replicas in HA predicate for scheduler ([#3171](https://github.com/pingcap/tidb-operator/pull/3171), [@cofyc](https://github.com/cofyc))
+
+## Bug Fixes
+
+- Fix the problem that the `Env` settings are ignored for the Grafana container in the TidbMonitor CR ([#3237](https://github.com/pingcap/tidb-operator/pull/3237), [@tirsen](https://github.com/tirsen))
