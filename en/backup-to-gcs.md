@@ -182,7 +182,7 @@ More parameter description:
 * `.spec.from.tidbSecretName`: the secret of the credential needed by the TiDB cluster to be backed up.
 * `.spec.gcs.bucket`: the name of the bucket that stores data.
 * `.spec.gcs.prefix`: this field can be ignored. If you set this field, it will be used to make up the remote storage path `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`.
-* `.spec.dumpling`: Dumpling-related configurations. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/dev/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When not specified, the default value of `options` is as follows:
+* `.spec.dumpling`: Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/dev/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
 
     ```
     options:
@@ -195,7 +195,7 @@ More parameter description:
 
     The PVC name corresponding to the `Backup` CR of a TiDB cluster is fixed. If the PVC already exists in the cluster namespace and the size is smaller than `spec.storageSize`, you need to delete this PVC and then run the Backup job.
 
-* `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If not configured, the default value of `tableFilter` is as follows:
+* `.spec.tableFilter`: Dumpling only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, the default value of `tableFilter` is as follows:
 
     ```bash
     tableFilter:

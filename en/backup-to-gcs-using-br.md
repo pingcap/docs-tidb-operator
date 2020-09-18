@@ -96,7 +96,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
     In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `sendCredToTikv`.
 
-    More `br` parameters description<:
+    More `br` parameter descriptions:
 
     * `spec.br.cluster`: The name of the cluster to be backed up.
     * `spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
@@ -193,7 +193,7 @@ More descriptions of fields in the `Backup` CR:
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
 
-* `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If not configured, BR backs up all schemas except the system schemas.
+* `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
     > **Note:**
     >
