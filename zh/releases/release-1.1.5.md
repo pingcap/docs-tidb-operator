@@ -29,7 +29,7 @@ TiDB Operator 版本：1.1.5
 - 更新 TiFlash 的默认配置项 ([#3191](https://github.com/pingcap/tidb-operator/pull/3191), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - 移除 TidbMonitor CR 的 ClusterRole 资源 ([#3190](https://github.com/pingcap/tidb-operator/pull/3190), [@weekface](https://github.com/weekface))
 - 不再重启 Helm 部署的正常退出的 Drainer ([#3151](https://github.com/pingcap/tidb-operator/pull/3151), [@lichunzhu](https://github.com/lichunzhu))
-- 高可用调度器将 failover pod 纳入考虑 ([#3171](https://github.com/pingcap/tidb-operator/pull/3171), [@cofyc](https://github.com/cofyc))
+- tidb-scheduler 高可用策略将 failover pod 纳入考虑 ([#3171](https://github.com/pingcap/tidb-operator/pull/3171), [@cofyc](https://github.com/cofyc))
 
 ## Bug 修复
 
