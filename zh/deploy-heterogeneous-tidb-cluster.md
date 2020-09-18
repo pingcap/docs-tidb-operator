@@ -4,7 +4,7 @@ summary: 介绍如何给已有集群部署一个异构集群,集群内的资源�
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 ---
 
-## 前置条件
+## 前置条件 
 
 * 已经存在一个 TiDB 集群,可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
 
@@ -99,11 +99,11 @@ kubectl create cluster -f tidbmonitor.yaml
 
 ## 部署 TLS 异构集群
 
-异构集群 TLS 需要重新颁发证书创建，需要保证目标集群和异构集群使用相同的CA (Certification Authority)。
+异构集群 TLS 需要重新颁发证书创建，需要保证目标集群和异构集群使用相同的CA (Certification Authority)。如果使用 `cert-manager` 方式,需要使用相同的 `Issuer`。
 
 参考:
 
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
-我们在项目 Example 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例
+在项目 ['Example'](https://github.com/pingcap/tidb-operator/tree/master/examples/) 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例
