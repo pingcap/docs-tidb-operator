@@ -14,8 +14,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
 - 待迁移集群的 PD 节点间不使用 TLS 加密通信
 
 ## 第一步：在 Kubernetes 中创建 TiDB 集群
+
 1. 记录待迁移集群 PD 节点地址及端口号，例如: `pd1_addr:2379, pd2_addr:2379, pd3_addr:2379`
+
 2. 在 Kubernetes 中创建目的 TiDB 集群（TiKV节点个数不少于3个），并在`spec.PDAddresses`字段中指定源 TiDB 集群的PD节点地址（以`http://`开头），例如：
+
 ``` yaml
 spec
   ...
@@ -26,15 +29,19 @@ spec
 ```
 
 ## 第二步：缩容源集群 TiDB 节点
+
 1. 若通过负载均衡或访问层中间件接入源 TiDB 集群，则先修改配置，将业务流量迁移至目的 TiDB 集群。
+
 2. 将源集群 TiDB 节点缩容至0
 
 ## 第三步：缩容源集群 TiKV 节点
+
 将源集群 TiKV 节点个数缩容至0，raft 协议会自动将所有 region 转移至目的集群。
 
 ## 第四步：缩容源集群 PD 节点
+
 将源集群 PD leader 驱逐至目的集群 PD 节点后，将源集群 PD 节点缩容至0。
 
 ## 第五步：销毁源集群
-销毁源集群，回收资源。
 
+销毁源集群，回收资源。
