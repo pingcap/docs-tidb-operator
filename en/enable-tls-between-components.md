@@ -1308,9 +1308,9 @@ In this step, you need to perform the following operations:
     > **Note:**
     >
     > * The above configuration will trigger the rolling update of PD and TiKV cluster.
-    > * The above configurations are supported from TiDB Operator v1.1.5.
+    > * The above configurations are supported since TiDB Operator v1.1.5.
 
-2. Use `pd-ctl` to connect to PD cluster.
+2. Use `pd-ctl` to connect to the PD cluster.
 
     Get into the PD Pod:
 
@@ -1329,7 +1329,7 @@ In this step, you need to perform the following operations:
     /pd-ctl --cacert=ca.crt --cert=tls.crt --key=tls.key -u https://127.0.0.1:2379 member
     ```
 
-3. Use `tikv-ctl` to connect to TiKV cluster.
+3. Use `tikv-ctl` to connect to the TiKV cluster.
 
     Get into the TiKV Pod:
 
