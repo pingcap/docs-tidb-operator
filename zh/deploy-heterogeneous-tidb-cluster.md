@@ -63,6 +63,7 @@ spec:
 ```shell
 kubectl create cluster -f cluster.yaml
 ```
+
 异构集群除了使用 `spec.cluster.name` 字段加入到目标集群，其它字段和正常的 TiDB 集群一样。
 
 ### 部署 监控
