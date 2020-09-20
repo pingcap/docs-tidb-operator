@@ -1,6 +1,6 @@
 ---
 title: 给已有集群部署异构集群
-summary: 介绍如何给已有集群部署一个异构集群,集群内的资源可以差异化部署，适配物理环境或者资源需求。
+summary: 介绍如何给已有集群部署一个异构集群，集群内的资源可以差异化部署，适配物理环境或者资源需求。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 ---
 
@@ -10,6 +10,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 
 ## 部署异构集群
 
+### 什么是异构集群
+
+异构集群是给已经存在的 TiDB 集群创建差异化的实例节点。除了创建集群的方式和原有集群不一样，其它都保证一致。
+
 ### 创建一个异构集群
 
 {{< copyable "shell-regular" >}}
@@ -18,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: ${cluster_name}
+  name: ${heterogeneous_cluster_name}
 spec:
   configUpdateStrategy: RollingUpdate
   version: v4.0.6
@@ -43,7 +47,6 @@ spec:
     config: {}
   tiflash:
     baseImage: pingcap/tiflash
-    version: v4.0.6
     maxFailoverCount: 1
     replicas: 1
     storageClaims:
@@ -53,13 +56,14 @@ spec:
         storageClassName: standard
 ```
 
-将以上配置存为 cluster.yaml 文件，并替换 `<clusterName>` 为自己想命名的集群名字,`<origin_cluster_name>`替换为目标集群，执行以下命令创建集群：
+将以上配置存为 cluster.yaml 文件，并替换 `<heterogeneous_cluster_name>` 为自己想命名的异构集群名字,`<origin_cluster_name>`替换为想要加入的已有集群名称，执行以下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl create cluster -f cluster.yaml
 ```
+异构集群除了使用 `spec.cluster.name` 字段加入到目标集群，其它字段和正常的 TiDB 集群一样。
 
 ### 部署 监控
 
@@ -82,14 +86,14 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.4
+    version: v4.0.6
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
   imagePullPolicy: IfNotPresent
 ```
 
-将以上配置存为 tidbmonitor.yaml 文件，并替换 `<origin_cluster_name>` 为目标集群,`<heterogeneous_cluster_name>`替换为异构集群名称，执行以下命令创建集群：
+将以上配置存为 tidbmonitor.yaml 文件，并替换 `<origin_cluster_name>` 为想要加入的集群名称,`<heterogeneous_cluster_name>`替换为异构集群名称，执行以下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -99,11 +103,62 @@ kubectl create cluster -f tidbmonitor.yaml
 
 ## 部署 TLS 异构集群
 
-异构集群 TLS 需要重新颁发证书创建，需要保证目标集群和异构集群使用相同的CA (Certification Authority)。如果使用 `cert-manager` 方式,需要使用相同的 `Issuer`。
+异构集群 TLS 开启需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的CA (Certification Authority)颁发。如果使用 `cert-manager` 方式,`Certificate` 创建需要使用和目标集群相同的 `Issuer`。
 
-参考:
+### 创建一个异构 TLS 集群
+
+{{< copyable "shell-regular" >}}
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: heterogeneous
+spec:
+  tlsCluster:
+    enabled: true
+  configUpdateStrategy: RollingUpdate
+  version: v4.0.6
+  timezone: UTC
+  pvReclaimPolicy: Delete
+  discovery: {}
+  cluster:
+    name: basic
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    # storageClassName: local-storage
+    requests:
+      storage: "1Gi"
+    config:
+      storage:
+        # In basic examples, we set this to avoid using too much storage.
+        reserve-space: "0MB"
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: {}
+    tlsClient:
+      enabled: true
+  tiflash:
+    baseImage: pingcap/tiflash
+    maxFailoverCount: 1
+    replicas: 1
+    storageClaims:
+      - resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+```
+
+`spec.tlsCluster.enabled` 代表组件间是否开启 TLS ，`spec.tidb.tlsClient.enabled` 代表 MySQL 客户端开启 TLS。
+
+TLS 详情参考:
 
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
-在项目 ['Example'](https://github.com/pingcap/tidb-operator/tree/master/examples/) 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例
+在项目 ['Example'](https://github.com/pingcap/tidb-operator/tree/master/examples/) 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例。
