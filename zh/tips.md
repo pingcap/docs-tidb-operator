@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群管理常用使用技巧
 summary: 介绍 Kubernetes 上 TiDB 集群管理常用使用技巧。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/tips/','/docs-cn/tidb-in-kubernetes/v1.1/tips/','/zh/tidb-in-kubernetes/stable/troubleshoot','/docs-cn/tidb-in-kubernetes/stable/troubleshoot/','/docs-cn/v3.0/how-to/troubleshoot/tidb-in-kubernetes/','/docs-cn/dev/how-to/troubleshoot/tidb-in-kubernetes/','/docs-cn/stable/how-to/troubleshoot/tidb-in-kubernetes/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/tips/','/docs-cn/tidb-in-kubernetes/v1.1/tips/','/zh/tidb-in-kubernetes/stable/troubleshoot','/docs-cn/tidb-in-kubernetes/stable/troubleshoot/','/docs-cn/v3.0/how-to/troubleshoot/tidb-in-kubernetes/','/docs-cn/dev/how-to/troubleshoot/tidb-in-kubernetes/','/docs-cn/stable/how-to/troubleshoot/tidb-in-kubernetes/','/docs-cn/stable/tidb-in-kubernetes/troubleshoot']
 ---
 
 # Kubernetes 上的 TiDB 集群管理常用使用技巧

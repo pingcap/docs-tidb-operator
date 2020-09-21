@@ -1,7 +1,7 @@
 ---
 title: Prerequisites for TiDB in Kubernetes
 summary: Learn the prerequisites for TiDB in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/stable/prerequisites/','/docs/tidb-in-kubernetes/v1.1/prerequisites/']
+aliases: ['/docs/tidb-in-kubernetes/stable/prerequisites/','/docs/tidb-in-kubernetes/v1.1/prerequisites/','/docs/stable/tidb-in-kubernetes/deploy/prerequisites/']
 ---
 
 # Prerequisites for TiDB in Kubernetes
@@ -18,7 +18,7 @@ This document introduces the hardware and software prerequisites for deploying a
 
 ## Configure the firewall
 
-It is recommended that you disable the firewall. 
+It is recommended that you disable the firewall.
 
 {{< copyable "shell-regular" >}}
 
