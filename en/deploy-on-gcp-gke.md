@@ -1,7 +1,7 @@
 ---
 title: Deploy TiDB on GCP GKE
 summary: Learn how to deploy a TiDB cluster on GCP GKE.
-aliases: ['/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/','/docs/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke/']
+aliases: ['/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/','/docs/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke/','/docs/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke/']
 ---
 
 # Deploy TiDB on GCP GKE
