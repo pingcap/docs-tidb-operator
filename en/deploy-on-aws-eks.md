@@ -85,7 +85,7 @@ eksctl create cluster -f cluster.yaml
 
 To deploy TiDB Operator in the Kubernetes cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
 
-### Deploy a TiDB cluster and monitoring
+### Deploy a TiDB cluster and the monitoring component
 
 1. Prepare the TidbCluster and TidbMonitor CR files:
 

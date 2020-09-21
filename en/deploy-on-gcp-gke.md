@@ -13,7 +13,7 @@ This document describes how to deploy a TiDB cluster on GCP Google Kubernetes En
 
 ## Prerequisites
 
-Before deploying a TiDB cluster on AWS EKS, make sure the following requirements are satisfied:
+Before deploying a TiDB cluster on GCP GKE, make sure the following requirements are satisfied:
 
 * Install [Helm](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
 * Install [gcloud](https://cloud.google.com/sdk/gcloud): a command-line tool used for creating and managing GCP services.
@@ -47,8 +47,8 @@ gcloud config set compute/region <gcp-region>
     gcloud container clusters create tidb --machine-type n1-standard-4 --num-nodes=1
     ```
 
-    * The command above creates a regional cluster. In the regional cluster, the node will create three zones in the region to ensure high availability.
-    * The `--num-nodes=1` option indicates that one node is created in each zone, so there are three nodes in total.
+    * The command above creates a regional cluster.
+    * The `--num-nodes=1` option indicates that one node is created in each zone. So if there are three zones in the region, there are three nodes in total, which ensures high availability.
     * It is recommended to use regional clusters in production environments. For other types of clusters, refer to [Types of GKE clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters).
     * The command above creates a cluster in the default network. If you want to specify a network, use the `--network/subnet` option. For more information, refer to [Creating a regional cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster).
 
@@ -69,7 +69,7 @@ gcloud config set compute/region <gcp-region>
 
 To deploy TiDB Operator in the Kubernetes cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator).
 
-### Deploy a TiDB cluster and monitoring
+### Deploy a TiDB cluster and the monitoring component
 
 1. Prepare the `TidbCluster` and `TidbMonitor` CR files:
 
@@ -175,7 +175,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     mysql -h <tidb-nlb-dnsname> -P 4000 -u root
     ```
 
-    `<tidb-nlb-dnsname>` is the LoadBalancer IP of the TiDB service. You can view the IP in the `EXTERNAL-IP` field by executing `kubectl get svc basic-tidb -n tidb-cluster`.
+    `<tidb-nlb-dnsname>` is the LoadBalancer IP of the TiDB service. You can view the IP in the `EXTERNAL-IP` field of the `kubectl get svc basic-tidb -n tidb-cluster` execution result.
 
     For example:
 
@@ -207,9 +207,9 @@ After the bastion host is created, you can connect to the bastion host via SSH a
 >
 > By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
-## Monitor the cluster
+## Monitor
 
-Obtain the LoadBalancer domain name of Grafana:
+Obtain the LoadBalancer IP of Grafana:
 
 {{< copyable "shell-regular" >}}
 
@@ -225,9 +225,9 @@ NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)
 basic-grafana            LoadBalancer   10.15.255.169   34.123.168.114   3000:30657/TCP        35m
 ```
 
-In the output above, the `EXTERNAL-IP` column is the LoadBalancer domain name.
+In the output above, the `EXTERNAL-IP` column is the LoadBalancer IP.
 
-You can access the `<grafana-lb>:3000` address using your web browser to view monitoring metrics. Replace `<grafana-lb>` with the LoadBalancer domain name.
+You can access the `<grafana-lb>:3000` address using your web browser to view monitoring metrics. Replace `<grafana-lb>` with the LoadBalancer IP.
 
 The initial Grafana login credentials are:
 
@@ -244,7 +244,7 @@ The upgrade process does not finish immediately. You can watch the upgrade progr
 
 Before scaling out the cluster, you need to scale out the corresponding node pool so that the new instances have enough resources for operation.
 
-The following example shows how to scale out the `tikv` node pool of the `tidb` cluster to 6 nodes:
+The following example shows how to scale out the `tikv` node pool of the `tidb` cluster to have 6 nodes:
 
 {{< copyable "shell-regular" >}}
 
@@ -254,9 +254,9 @@ gcloud container clusters resize tidb --node-pool tikv --num-nodes 2
 
 > **Note:**
 >
-> In the regional cluster, the nodes are created in 3 zones. Therefore, after scaling out, the number of nodes is 2 * 3 = 6.
+> In the regional cluster, the nodes are created in 3 zones. Therefore, after scaling out, the number of nodes is `2 * 3 = 6`.
 
-After that, execute `kubectl edit tc basic -n tidb-cluster`, and modify each component's `replicas` to the desired number of replicas. The scaling-out process is then completed.
+After that, execute `kubectl edit tc basic -n tidb-cluster` and modify each component's `replicas` to the desired number of replicas. The scaling-out process is then completed.
 
 For more information on managing node pools, refer to [GKE Node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools).
 
@@ -307,7 +307,7 @@ For more information on managing node pools, refer to [GKE Node pools](https://c
 
     > **Warning:**
     >
-    > TiDB Operator automatically mount PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
+    > TiDB Operator automatically mounts PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
 
 * To deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`. For example:
 
