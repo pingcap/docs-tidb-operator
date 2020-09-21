@@ -93,7 +93,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
         # objectAcl: private
     ```
 
-    以上示例中，`spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`sendCredToTikv`。
+    以上示例中，`spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。
 
     部分参数的含义如下：
 
@@ -104,6 +104,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     - `spec.br.concurrency`：备份时每一个 TiKV 进程使用的线程数。备份时默认为 4，恢复时默认为 128。
     - `spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
     - `spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
+    - `spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
     - `spec.br.sendCredToTikv`：BR 进程是否将自己的 GCP 权限传输给 TiKV 进程。默认为 `true`。
 
     该示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的一些参数项均可省略，如 `location`、`objectAcl`、`storageClass`。
@@ -182,6 +183,18 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
+    ```
+
+* `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
+
+    > **注意：**
+    >
+    > tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+
+    ```
+    tableFilter:
+    - "*.*"
+    - "!db.table"
     ```
 
 ## 定时全量备份
