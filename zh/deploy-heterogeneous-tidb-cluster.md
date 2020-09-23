@@ -1,12 +1,12 @@
 ---
-title: 给已有集群部署异构集群
-summary: 介绍如何给已有集群部署一个异构集群，集群内的资源可以差异化部署，适配物理环境或者资源需求。
+title: 为已有 TiDB 集群部署异构集群
+summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 ---
 
 ## 前置条件 
 
-* 已经存在一个 TiDB 集群,可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
+* 已经存在一个 TiDB 集群，可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
 
 ## 部署异构集群
 
@@ -56,7 +56,7 @@ spec:
         storageClassName: standard
 ```
 
-将以上配置存为 cluster.yaml 文件，并替换 `<heterogeneous_cluster_name>` 为自己想命名的异构集群名字,`<origin_cluster_name>`替换为想要加入的已有集群名称，执行以下命令创建集群：
+将以上配置存为 cluster.yaml 文件，并替换 `<heterogeneous_cluster_name>` 为自己想命名的异构集群名字，`<origin_cluster_name>` 替换为想要加入的已有集群名称，执行以下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -66,7 +66,7 @@ kubectl create cluster -f cluster.yaml
 
 异构集群除了使用 `spec.cluster.name` 字段加入到目标集群，其它字段和正常的 TiDB 集群一样。
 
-### 部署 监控
+### 部署集群监控
 
 {{< copyable "shell-regular" >}}
 
@@ -94,7 +94,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-将以上配置存为 tidbmonitor.yaml 文件，并替换 `<origin_cluster_name>` 为想要加入的集群名称,`<heterogeneous_cluster_name>`替换为异构集群名称，执行以下命令创建集群：
+将以上配置存为 tidbmonitor.yaml 文件，并替换 `<origin_cluster_name>` 为想要加入的集群名称，`<heterogeneous_cluster_name>` 替换为异构集群名称，执行以下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -104,7 +104,7 @@ kubectl create cluster -f tidbmonitor.yaml
 
 ## 部署 TLS 异构集群
 
-异构集群 TLS 开启需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的CA (Certification Authority)颁发。如果使用 `cert-manager` 方式,`Certificate` 创建需要使用和目标集群相同的 `Issuer`。
+异构集群 TLS 开启需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
 
 ### 创建一个异构 TLS 集群
 
@@ -155,7 +155,7 @@ spec:
         storageClassName: standard
 ```
 
-`spec.tlsCluster.enabled` 代表组件间是否开启 TLS ，`spec.tidb.tlsClient.enabled` 代表 MySQL 客户端开启 TLS。
+`spec.tlsCluster.enabled` 代表组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 代表 MySQL 客户端开启 TLS。
 
 TLS 详情参考:
 
