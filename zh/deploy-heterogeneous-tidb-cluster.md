@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 
 ### 什么是异构集群
 
-异构集群是给已经存在的 TiDB 集群创建差异化的实例节点。除了创建集群的方式和原有集群不一样，其它都保证一致。
+异构集群是给已经存在的 TiDB 集群创建差异化的实例节点，比如创建不同配置不同 Label 的 TiKV 集群用于热点调度或者创建不同配置的 TiDB 集群分别用于 TP 和 AP 查询。
 
 ### 创建一个异构集群
 
@@ -61,7 +61,7 @@ spec:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create cluster -f cluster.yaml
+kubectl create -f cluster.yaml -n ${namespace}
 ```
 
 异构集群除了使用 `spec.cluster.name` 字段加入到目标集群，其它字段和正常的 TiDB 集群一样。
@@ -99,7 +99,7 @@ spec:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create cluster -f tidbmonitor.yaml
+kubectl create -f tidbmonitor.yaml -n ${namespace}
 ```
 
 ## 部署 TLS 异构集群
