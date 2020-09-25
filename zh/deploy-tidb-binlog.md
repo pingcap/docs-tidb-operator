@@ -369,7 +369,7 @@ spec:
 
 > **注意：**
 >
-> 移除 Pump 节点前，首先需要 `kubectl edit tc ${cluster_name} -n ${namespace}` **填写**文件中 `spec.tidb.binlogEnabled` 为 `false`，等待 tidb pod 完成重启更新后再移除 Pump 节点。
+> 移除 Pump 节点前，必须首先需要执行 `kubectl edit tc ${cluster_name} -n ${namespace}` **设置**其中的 `spec.tidb.binlogEnabled` 为 `false`，等待 tidb pod 完成重启更新后再移除 Pump 节点。
 >
 > 如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
 
