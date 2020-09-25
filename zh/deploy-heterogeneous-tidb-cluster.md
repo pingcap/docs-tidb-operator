@@ -155,7 +155,7 @@ spec:
         storageClassName: standard
 ```
 
-`spec.tlsCluster.enabled` 代表组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 代表 MySQL 客户端开启 TLS。
+`spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。
 
 TLS 详情参考:
 
