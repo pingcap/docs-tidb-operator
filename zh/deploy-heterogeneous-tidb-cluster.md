@@ -1,8 +1,11 @@
 ---
 title: 为已有 TiDB 集群部署异构集群
 summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-heterogeneous-tidb-cluster/']
 ---
+
+# 为已有 TiDB 集群部署异构集群
+
+本文档介绍如何为已有的 TiDB 集群部署一个异构集群。
 
 ## 前置条件 
 
@@ -162,4 +165,4 @@ TLS 详情参考:
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
-在项目 ['Example'](https://github.com/pingcap/tidb-operator/tree/master/examples/) 中提供了 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) 示例。
+详细的异构 TLS 集群配置示例，请参阅 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
