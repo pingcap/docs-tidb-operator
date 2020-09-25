@@ -131,14 +131,7 @@ After you deploy a TiDB cluster, you can access the TiDB database via MySQL clie
 
 ### Prepare a host that can access the cluster
 
-<<<<<<< HEAD
-    > **Note:**
-    >
-    > You need to install the MySQL client before you connect to TiDB via MySQL. If you use CentOS, install the client by executing `sudo yum install -y mysql`.
-    > `${tidb_ilb_ip} is the IP address of the Internal LoadBalancer acquired in step 1.
-=======
 The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You can create a [bastion host](https://cloud.google.com/solutions/connecting-securely#bastion) in the cluster VPC to access the database.
->>>>>>> fe22698... en: simplify gke deployment doc (#701)
 
 {{< copyable "shell-regular" >}}
 
