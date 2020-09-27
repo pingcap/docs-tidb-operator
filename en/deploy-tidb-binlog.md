@@ -379,7 +379,7 @@ The steps are as follows:
 
 1. Before removing Pump nodes, execute `kubectl edit tc ${cluster_name} -n ${namespace}` and set `spec.tidb.binlogEnabled` to `false`. After the TiDB Pods are rolling updated, you can remove the Pump nodes.
 
-    * If you directly remove Pump nodes, it might cause TiDB failure because TiDB has no Pump nodes to write into.
+    If you directly remove Pump nodes, it might cause TiDB failure because TiDB has no Pump nodes to write into.
 
 2. Refer to [Scale in Pump](#scale-in-pump) to scale in Pump to `0`.
 
