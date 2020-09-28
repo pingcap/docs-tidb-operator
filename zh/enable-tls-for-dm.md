@@ -554,36 +554,36 @@ spec:
 
 1. 填写[数据源配置](deploy-tidb-dm.md#创建数据源) `source1.yaml` 的 `from.security` 选项：
 
-```yaml
-source-id: mysql-replica-01
-from:
-  host: ${mysql_host1}
-  user: dm
-  password: ""
-  port: 3306
-  security:
-    ssl-ca: /var/lib/source-tls/${mysql_secret_name1}/ca.crt
-    ssl-cert: /var/lib/source-tls/${mysql_secret_name1}/tls.crt
-    ssl-key: /var/lib/source-tls/${mysql_secret_name1}/tls.key
-```
+    ``` yaml
+    source-id: mysql-replica-01
+    from:
+      host: ${mysql_host1}
+      user: dm
+      password: ""
+      port: 3306
+      security:
+        ssl-ca: /var/lib/source-tls/${mysql_secret_name1}/ca.crt
+        ssl-cert: /var/lib/source-tls/${mysql_secret_name1}/tls.crt
+        ssl-key: /var/lib/source-tls/${mysql_secret_name1}/tls.key
+    ```
 
 2. 填写[同步任务配置](deploy-tidb-dm.md#配置同步任务) `task.yaml` 的 `target-database.security` 选项：
 
-```yaml
-name: test
-task-mode: all
-is-sharding: false
-
-target-database:
-  host: ${tidb_host}
-  port: 4000
-  user: "root"
-  password: ""
-  security:
-    ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
-    ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
-    ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
-```
+    ``` yaml
+    name: test
+    task-mode: all
+    is-sharding: false
+    
+    target-database:
+      host: ${tidb_host}
+      port: 4000
+      user: "root"
+      password: ""
+      security:
+        ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
+        ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
+        ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
+    ```
 
 ### 第四步：启动同步任务
 

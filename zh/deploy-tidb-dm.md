@@ -184,31 +184,31 @@ spec:
 
 2. 填写 `source1.yaml` 的 `from.host` 为 Kubernetes 集群内部可以访问的 MySQL host 地址。
 
-如果需要同步的 MySQL 部署在物理机上，则可以通过下述方式在 Kubernetes 集群中创建该 MySQL 服务：
-
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: ${custom_source_host}
-spec:
-  clusterIP: None
-  type: ClusterIP
-
----
-
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: ${custom_source_host}
-subsets:
-  - addresses:
-      - ip: ${mysql_server_ip}
-```
-
-在 `${custom_source_host}` 处填写自定义的 host 名，在 `${mysql_server_ip}` 处填写 MySQL 物理机的 ip。`source1.yaml` 中的 `from.host` 也填写为 `${custom_source_host}` 即可。
-
-`source1.yaml` 文件准备好后，通过 `/dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml` 将 MySQL-1 的数据源加载到 DM 集群中。
+    如果需要同步的 MySQL 部署在物理机上，则可以通过下述方式在 Kubernetes 集群中创建该 MySQL 服务：
+    
+    ``` yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${custom_source_host}
+    spec:
+      clusterIP: None
+      type: ClusterIP
+    
+    ---
+    
+    apiVersion: v1
+    kind: Endpoints
+    metadata:
+      name: ${custom_source_host}
+    subsets:
+      - addresses:
+          - ip: ${mysql_server_ip}
+    ```
+    
+    在 `${custom_source_host}` 处填写自定义的 host 名，在 `${mysql_server_ip}` 处填写 MySQL 物理机的 ip。`source1.yaml` 中的 `from.host` 也填写为 `${custom_source_host}` 即可。
+    
+    `source1.yaml` 文件准备好后，通过 `/dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml` 将 MySQL-1 的数据源加载到 DM 集群中。
 
 3. 对 MySQL-2 及其他数据源，采取同样方式修改配置文件中的相关信息，并执行相同的 dmctl 命令。
 
@@ -221,4 +221,3 @@ subsets:
 ### 启动/查询/停止同步任务
 
 参考 [使用 DM 迁移数据](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-5-步启动任务) 中的 5,6,7 步即可，注意将 master-addr 填写为 `${dm_cluster_name}-dm-master:8261`。
-
