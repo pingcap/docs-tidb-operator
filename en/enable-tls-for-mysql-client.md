@@ -645,4 +645,8 @@ kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpat
 mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
+> **Note:**
+>
+> [The default authentication plugin of MySQL 8.0 is updated from `mysql_native_password` to `caching_sha2_password`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin), so if you use MySQL client from MySQL 8.0 to accesses the TiDB service and the user account has a password, you needs to explicitly specify the `--default-auth=mysql_native_password` parameter.
+
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/stable/enable-tls-between-clients-and-servers/#check-whether-the-current-connection-uses-encryption).

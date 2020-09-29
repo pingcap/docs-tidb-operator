@@ -24,6 +24,10 @@ This document describes how to access the TiDB cluster in Kubernetes.
           #   cloud.google.com/load-balancer-type: Internal
     ```
 
+> **Note:**
+>
+> [The default authentication plugin of MySQL 8.0 is updated from `mysql_native_password` to `caching_sha2_password`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin), so if you use MySQL client from MySQL 8.0 to accesses the TiDB service and the user account has a password, you needs to explicitly specify the `--default-auth=mysql_native_password` parameter.
+
 ## NodePort
 
 If there is no LoadBalancer, expose the TiDB service port in the following two modes of NodePort:
