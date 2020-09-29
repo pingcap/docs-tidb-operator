@@ -9,7 +9,7 @@ This document describes how to deploy a heterogeneous cluster for an existing Ti
 
 ## Prerequisites
 
-* You already have a TiDB cluster. If not, refer to [Deploy TiDB in General Kubernetes](/deploy-on-general-kubernetes.md).
+* You already have a TiDB cluster. If not, refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Deploy a heterogeneous cluster
 
