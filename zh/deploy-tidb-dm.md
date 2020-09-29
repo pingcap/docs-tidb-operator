@@ -56,7 +56,8 @@ spec:
     imagePullPolicy: IfNotPresent
     service:
       type: NodePort
-      masterNodePort: 30020
+      # 需要将 dm-master service 暴露在一个固定的 NodePort 时配置
+      # masterNodePort: 30020
     replicas: 1
     storageSize: "1Gi"
     requests:
@@ -101,8 +102,6 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 ```shell
 pingcap/dm:v2.0.0-rc.2
-pingcap/tidb-monitor-reloader:v1.0.1
-pingcap/tidb-monitor-initializer:v4.0.6
 grafana/grafana:6.0.1
 prom/prometheus:v2.18.1
 ```
@@ -113,14 +112,10 @@ prom/prometheus:v2.18.1
 
 ```shell
 docker pull pingcap/dm:v2.0.0-rc.2
-docker pull pingcap/tidb-monitor-reloader:v1.0.1
-docker pull pingcap/tidb-monitor-initializer:v4.0.6
 docker pull grafana/grafana:6.0.1
 docker pull prom/prometheus:v2.18.1
 
 docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
-docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-docker save -o tidb-monitor-initializer-v4.0.6.tar pingcap/tidb-monitor-initializer:v4.0.6
 docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
 docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
 ```
@@ -147,7 +142,7 @@ kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${dm_cluster_name}
 
 ## 访问 Kubernetes 上的 DM 集群
 
-在 Kubernetes 集群内访问 dm-master 时，使用 dm-master service 域名 `${cluster_name}-dm-master.${namespace}` 即可。
+在 Kubernetes 集群的 Pod 内访问 dm-master 时，使用 dm-master service 域名 `${cluster_name}-dm-master.${namespace}` 即可。
 
 若需要在集群外访问，则需将 dm-master 服务端口暴露出去。在 `DMCluster` CR 中，通过 `spec.master.service` 字段进行配置：
 
@@ -157,10 +152,9 @@ spec:
   master:
     service:
       type: NodePort
-      masterNodePort: 30020
 ```
 
-即可通过 `${kubernetes_node_ip}:${masterNodePort}` 的地址访问 dm-master 服务。
+即可通过 `${kubernetes_node_ip}:${node_port}` 的地址访问 dm-master 服务。
 
 更多服务暴露方式可参考 [访问 TiDB 集群](access-tidb.md)
 

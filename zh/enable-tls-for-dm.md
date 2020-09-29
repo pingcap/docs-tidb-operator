@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
 ## 为 DM 组件间开启 TLS
 
-TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 DM 集群组件间开启 TLS。开启步骤为：
+TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 DM 集群的每个组件生成证书：
     - 为 dm-master/dm-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
