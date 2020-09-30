@@ -13,7 +13,7 @@ This document describes how to deploy a heterogeneous cluster for an existing Ti
 
 ## Deploy a heterogeneous cluster
 
-A heterogeneous cluster is a differentiated instance node for an existing TiDB cluster. You can create a heterogeneous TiKV cluster with different configurations and labels to facilitate hotspot scheduling, or create a heterogeneous TiDB cluster for OLTP and OLAP workloads respectively.
+A heterogeneous cluster creates differentiated instances for an existing TiDB cluster. You can create a heterogeneous TiKV cluster with different configurations and labels to facilitate hotspot scheduling, or create a heterogeneous TiDB cluster for OLTP and OLAP workloads respectively.
 
 ### Create a heterogeneous cluster
 
@@ -109,7 +109,7 @@ kubectl create -f tidbmonitor.yaml -n ${namespace}
 
 ## Deploy a TLS-enabled heterogeneous cluster
 
-To enable TLS for a heterogeneous cluster, you need to explicitly declare TLS configuration, create a new `Secret` certificate, and issue the certificate using the same certification authority (CA) as the target cluster.
+To enable TLS for a heterogeneous cluster, you need to explicitly declare the TLS configuration, issue the certificates using the same certification authority (CA) as the target cluster and create new secrets with the certificates.
 
 If you want to issue the certificate using `cert-manager`, choose the same `Issuer` as the target cluster to create your `Certificate`.
 
@@ -170,4 +170,4 @@ spec:
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 
-For the detailed configuration of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls).
+For the detailed configuration of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
