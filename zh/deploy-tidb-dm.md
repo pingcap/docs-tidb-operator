@@ -102,8 +102,6 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 ```shell
 pingcap/dm:v2.0.0-rc.2
-grafana/grafana:6.0.1
-prom/prometheus:v2.18.1
 ```
 
 接下来通过下面的命令将所有这些镜像下载下来：
@@ -112,12 +110,8 @@ prom/prometheus:v2.18.1
 
 ```shell
 docker pull pingcap/dm:v2.0.0-rc.2
-docker pull grafana/grafana:6.0.1
-docker pull prom/prometheus:v2.18.1
 
 docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
-docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
-docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
 ```
 
 接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
@@ -126,10 +120,6 @@ docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
 
 ```shell
 docker load -i dm-v2.0.0-rc.2.tar
-docker load -i tidb-monitor-reloader-v1.0.1.tar
-docker load -i tidb-monitor-initializer-v4.0.6.tar
-docker load -i grafana-6.0.1.tar
-docker load -i prometheus-v2.18.1.tar
 ```
 
 部署完成后，通过下面命令查看 Pod 状态：
