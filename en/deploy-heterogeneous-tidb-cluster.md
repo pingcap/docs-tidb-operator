@@ -136,7 +136,7 @@ spec:
   pvReclaimPolicy: Delete
   discovery: {}
   cluster:
-    name: basic
+    name: ${origin_cluster_name}
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
