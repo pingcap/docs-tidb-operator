@@ -17,7 +17,7 @@ A heterogeneous cluster creates differentiated instances for an existing TiDB cl
 
 ### Create a heterogeneous cluster
 
-Save the following configuration as the `cluster.yaml` file. Replace `<heterogeneous_cluster_name>` with the desired name of your heterogeneous cluster, and replace `<origin_cluster_name>` with the name of the existing cluster.
+Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -71,7 +71,7 @@ The configuration of a heterogeneous cluster is mostly the same as a normal TiDB
 
 ### Deploy the cluster monitoring component
 
-Save the following configuration as the `tidbmonitor.yaml` file. Replace `<heterogeneous_cluster_name>` with the desired name of your heterogeneous cluster, and replace `<origin_cluster_name>` with the name of the existing cluster.
+Save the following configuration as the `tidbmonitor.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -120,13 +120,15 @@ For detailed procedures to create certificates for the heterogeneous cluster, re
 
 ### Create a TLS-enabled heterogeneous cluster
 
+Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
+
 {{< copyable "shell-regular" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: heterogeneous
+  name: ${heterogeneous_cluster_name}
 spec:
   tlsCluster:
     enabled: true
@@ -169,5 +171,13 @@ spec:
 
 `spec.tlsCluster.enabled`: Determines whether to enable TLS between the components.
 `spec.tidb.tlsClient.enabled`: Determines whether to enable TLS for MySQL client.
+
+Execute the following command to create the TLS-enabled heterogeneous cluster:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl create -f cluster.yaml -n ${namespace}
+```
 
 For the detailed configuration of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
