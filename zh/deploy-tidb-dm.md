@@ -1,6 +1,6 @@
 ---
 title: 部署 TiDB DM
-summary: 了解如何在 Kubernetes 上部署 TiDB 集群的 TiDB DM。
+summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 ---
 
 # 在 Kubernetes 上部署使用 DM
@@ -98,7 +98,7 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 如果服务器没有外网，需要在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-部署一套 DM 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v2.0.0-rc.2：
+部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v2.0.0-rc.2）：
 
 ```shell
 pingcap/dm:v2.0.0-rc.2
