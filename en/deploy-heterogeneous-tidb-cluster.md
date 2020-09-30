@@ -111,7 +111,12 @@ kubectl create -f tidbmonitor.yaml -n ${namespace}
 
 To enable TLS for a heterogeneous cluster, you need to explicitly declare the TLS configuration, issue the certificates using the same certification authority (CA) as the target cluster and create new secrets with the certificates.
 
-If you want to issue the certificate using `cert-manager`, choose the same `Issuer` as the target cluster to create your `Certificate`.
+If you want to issue the certificate using `cert-manager`, choose the same `Issuer` as that of the target cluster to create your `Certificate`.
+
+For detailed procedures to create certificates for the heterogeneous cluster, refer to the following two documents:
+
+- [Enable TLS between TiDB Components](enable-tls-between-components.md)
+- [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 
 ### Create a TLS-enabled heterogeneous cluster
 
@@ -164,10 +169,5 @@ spec:
 
 `spec.tlsCluster.enabled`: Determines whether to enable TLS between the components.
 `spec.tidb.tlsClient.enabled`: Determines whether to enable TLS for MySQL client.
-
-## See also
-
-- [Enable TLS between TiDB Components](enable-tls-between-components.md)
-- [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 
 For the detailed configuration of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
