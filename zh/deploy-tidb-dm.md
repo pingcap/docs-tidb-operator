@@ -36,7 +36,7 @@ TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
 DMCluster 部署时需要使用 TidbCluster 的 Discovery 服务，必须填写 `spec.discovery.address`，格式为 `http://${tidb_cluster_name}-discovery.${namespace}:10261`。
 
-#### dm-master 拓扑配置
+#### dm-master 配置
 
 dm-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 dm-master Pod。可以通过 DMCluster CR 的 `spec.master.config` 来配置 dm-master 配置参数。
 
@@ -66,7 +66,7 @@ spec:
       rpc-timeout: 40s
 ```
 
-#### dm-worker 拓扑配置
+#### dm-worker 配置
 
 可以通过 DMCluster CR 的 `spec.worker.config` 来配置 dm-worker 配置参数。
 
@@ -168,9 +168,9 @@ spec:
 
 2. 填写 `source1.yaml` 的 `from.host` 为 Kubernetes 集群内部可以访问的 MySQL host 地址。
 
-    `source1.yaml` 文件准备好后，通过 `/dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml` 将 MySQL-1 的数据源加载到 DM 集群中。
+3. `source1.yaml` 文件准备好后，通过 `/dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml` 将 MySQL-1 的数据源加载到 DM 集群中。
 
-3. 对 MySQL-2 及其他数据源，采取同样方式修改配置文件中的相关信息，并执行相同的 dmctl 命令。
+4. 对 MySQL-2 及其他数据源，采取同样方式修改配置文件中的相关信息，并执行相同的 dmctl 命令。
 
 ### 配置同步任务
 
