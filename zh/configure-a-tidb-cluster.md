@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.4`
+- `spec.version`，格式为 `imageTag`，例如 `v4.0.6`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.4`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.6`
 
 ### 推荐配置
 
@@ -73,6 +73,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 > **注意：**
 >
 > 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](destroy-a-tidb-cluster.md)。
+
+### mountClusterClientSecret
+
+PD 和 TiKV 支持配置 `mountClusterClientSecret`，建议配置 `spec.pd.mountClusterClientSecret: true` 和 `spec.tikv.mountClusterClientSecret: true`，这样 TiDB Operator 会自动将 `${cluster_name}-cluster-client-secret` 证书挂载到 PD 和 TiKV 容器，方便[使用 `pd-ctl` 和 `tikv-ctl`](enable-tls-between-components.md#第三步配置-pd-ctltikv-ctl-连接集群)。
 
 ### 集群拓扑
 
@@ -170,7 +174,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.4
+    image: pingcap/tidb:v4.0.6
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -200,7 +204,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.4
+    image: pingcap/tikv:v4.0.6
     config: {}
     replicas: 1
     requests:
@@ -225,7 +229,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.4
+    image: pingcap/pd:v4.0.6
     config:
       lease: 3
       enable-prevote: true

@@ -20,9 +20,10 @@
       - [配置 Storage Class](configure-storage-class.md)
       - [部署 TiDB Operator](deploy-tidb-operator.md)
       - [配置 TiDB 集群](configure-a-tidb-cluster.md)
-      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)
+      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)    
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
+  - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiFlash](deploy-tiflash.md)
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
@@ -85,6 +86,7 @@
   - [日志收集](logs-collection.md)
 + 版本发布历史
   + v1.1
+    - [1.1.5](releases/release-1.1.5.md)
     - [1.1.4](releases/release-1.1.4.md)
     - [1.1.3](releases/release-1.1.3.md)
     - [1.1.2](releases/release-1.1.2.md)

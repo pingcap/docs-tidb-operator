@@ -85,7 +85,7 @@ eksctl create cluster -f cluster.yaml
 
 To deploy TiDB Operator in the Kubernetes cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
 
-### Deploy TiDB cluster and monitor
+### Deploy a TiDB cluster and the monitoring component
 
 1. Prepare the TidbCluster and TidbMonitor CR files:
 
@@ -222,7 +222,8 @@ After the bastion host is created, you can connect to the bastion host via SSH a
 
 > **Note:**
 >
-> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
+> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
+> * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Monitor
 
@@ -386,6 +387,8 @@ Some AWS instance types provide additional [NVMe SSD local store volumes](https:
 
 > **Note:**
 >
+> You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
+> 
 > During the EKS upgrade, data in the local storage will be [lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
 
 For instance types that provide local volumes, see [AWS Instance Types](https://aws.amazon.com/ec2/instance-types/). Take `c5d.4xlarge` as an example:
@@ -429,5 +432,3 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
     After the steps above, the local volume provisioner can discover all the local NVMe SSD disks in the cluster.
 
     Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
-
-    You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.

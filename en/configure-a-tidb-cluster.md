@@ -40,11 +40,11 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.4`
+- `spec.version`: the format is `imageTag`, such as `v4.0.6`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.4`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.6`
 
 ### Recommended configuration
 
@@ -78,6 +78,10 @@ For the demonstration environment or functional verification, you can use networ
 > **Note:**
 >
 > If you set a storage class that does not exist in the TiDB cluster that you are creating, then the cluster creation goes to the Pending state. In this situation, you must [destroy the TiDB cluster in Kubernetes](destroy-a-tidb-cluster.md).
+
+### mountClusterClientSecret
+
+It is recommended that you configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`, so that TiDB Operator can mount the `${cluster_name}-cluster-client-secret` certificates to the PD and TiKV containers automatically, which can make the [use of `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster) easier.
 
 ### Cluster topology
 
@@ -180,7 +184,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.4
+    image: pingcap/tidb:v4.0.6
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -212,7 +216,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.4
+    image: pingcap/tikv:v4.0.6
     config:
       log-level: "info"
       slow-log-threshold: "1s"
@@ -241,7 +245,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.4
+    image: pingcap/pd:v4.0.6
     config:
       lease: 3
       enable-prevote: true
