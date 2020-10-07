@@ -8,7 +8,7 @@ title: TiDB Operator 1.1.1 Release Notes
 
 TiDB Operator 版本：1.1.1
 
-# 重大变化
+## 重大变化
 
 - 添加 `additionalContainers` 和 `additionalVolumes` 字段，以便 TiDB Operator 添加 `sidecar` 到 `TiDB`，`TiKV`，`PD` 等([#2229](https://github.com/pingcap/tidb-operator/pull/2229), [@yeya24](https://github.com/yeya24))
 - 添加交叉检查以确保 `TiKV` 不会同时被缩放和升级([#2705](https://github.com/pingcap/tidb-operator/pull/2705), [@DanielZhangQD](https://github.com/DanielZhangQD))
