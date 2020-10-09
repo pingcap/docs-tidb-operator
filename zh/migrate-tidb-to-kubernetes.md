@@ -71,7 +71,7 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
         pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'   
         ```
       
-    - 通过mysql客户端[访问Kubernetes上的TiDB集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/access-tidb)
+    - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/access-tidb)：
 
 ## 第三步：缩容待迁移集群 TiDB 节点
 
