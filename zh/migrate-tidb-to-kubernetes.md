@@ -93,6 +93,6 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 
 参考[缩容 PD 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#%E7%BC%A9%E5%AE%B9-pd-%E8%8A%82%E7%82%B9)一节，将待迁移集群的 PD 节点缩容至 0 个。
 
-## 第六步：删除"spec.PDAddresses"字段
+## 第六步：删除 `spec.PDAddresses` 字段
 
 为避免后续对集群进行操作时产生困惑，迁移成功后，建议将新集群的 manifest 中的 `spec.PDAddresses` 字段删除（虽然保留该字段也不会产生任何影响）。
