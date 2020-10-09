@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
 
 ## 第一步：在待迁移集群的所有节点中配置 DNS 服务
 
-1. 获取 Kubernetes 集群 CoreDNS 或 kube-dns 服务的 endpoints 的 Pod ip 地址列表
+1. 获取 Kubernetes 集群 CoreDNS 或 kube-dns 服务的 endpoints 的 Pod ip 地址列表：
 
     ```shell script
     kubectl describe svc/kube-dns -n kube-system
