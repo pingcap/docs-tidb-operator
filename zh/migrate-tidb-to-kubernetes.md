@@ -61,7 +61,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
       - http://pd3_addr:port
     ```
    
-3. 确认部署在Kubernetes内的TiDB集群与待迁移TiDB集群组成的新集群正常运行。
+3. 确认部署在 Kubernetes 内的 TiDB 集群与待迁移 TiDB 集群组成的新集群正常运行。
     - 获取新集群store个数、状态
     
         ```shell script
