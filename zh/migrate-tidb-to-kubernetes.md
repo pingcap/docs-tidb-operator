@@ -61,7 +61,8 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
     ```
    
 3. 确认部署在 Kubernetes 内的 TiDB 集群与待迁移 TiDB 集群组成的新集群正常运行。
-    - 获取新集群store个数、状态
+
+    - 获取新集群 store 个数、状态：
     
         ```shell script
         # store个数
