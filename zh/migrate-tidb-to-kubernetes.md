@@ -75,7 +75,7 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 
 ## 第三步：缩容待迁移集群 TiDB 节点
 
-[缩容 TiDB 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#%E7%BC%A9%E5%AE%B9-tidb-%E8%8A%82%E7%82%B9) 至0。
+参考[缩容 TiDB 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#%E7%BC%A9%E5%AE%B9-tidb-%E8%8A%82%E7%82%B9)一节，将待迁移集群的 TiDB 节点缩容至 0 个。
 
 > **注意：**
 >
