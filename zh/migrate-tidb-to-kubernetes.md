@@ -1,7 +1,6 @@
 ---
 title: 将 TiDB 迁移至 Kubernetes
 summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kubernetes 集群中
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
 ---
 
 # 将 TiDB 迁移至 Kubernetes
