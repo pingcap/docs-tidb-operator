@@ -50,7 +50,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
     pd-ctl -u http://<address>:<port> member | jq '.members | .[] | .client_urls'
     ```
 
-2. 在 Kubernetes 中创建目的 TiDB 集群（TiKV节点个数不少于3个），并在`spec.PDAddresses`字段中指定待迁移 TiDB 集群的PD节点地址（以`http://`开头）：
+2. 在 Kubernetes 中创建目标 TiDB 集群（TiKV 节点个数不少于 3 个），并在 `spec.PDAddresses` 字段中指定待迁移 TiDB 集群的 PD 节点地址（以 `http://` 开头）：
 
     ``` yaml
     spec
