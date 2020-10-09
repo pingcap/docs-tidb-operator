@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/migrate-tidb-to-kubernetes/']
 - Kubernetes 集群外物理机或虚拟机节点必须能够解析 Kubernetes 集群内部 Pod 域名（具体配置方法见第一步）
 - 待迁移集群没有开启[组件间 TLS 加密通信](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components)
 
-## 第一步：在待迁移集群的所有节点中配置DNS服务
+## 第一步：在待迁移集群的所有节点中配置 DNS 服务
 
 1. 获取 Kubernetes 集群 CoreDNS 或 kube-dns 服务的 endpoints 的 Pod ip 地址列表
 
