@@ -19,7 +19,7 @@ title: TiDB Operator Roadmap
 
 ## New features
 
-- [x] Deploy Heterogeneous clusters [#2240](https://github.com/pingcap/tidb-operator/issues/2240)
+- [x] Deploy heterogeneous clusters [#2240](https://github.com/pingcap/tidb-operator/issues/2240)
 - [ ] Auto scaling with PD API [#1651](https://github.com/pingcap/tidb-operator/issues/1651)
 - [ ] Deploy one TiDB cluster accross multiple Kubernetes clusters [#2816](https://github.com/pingcap/tidb-operator/issues/2816)
 - [ ] Support managing DM 2.0 [#2868](https://github.com/pingcap/tidb-operator/issues/2868)
