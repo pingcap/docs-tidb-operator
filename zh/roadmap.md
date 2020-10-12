@@ -15,7 +15,7 @@ title: TiDB Operator Roadmap
 
 ## 提高系统安全性
 
-- [ ] 为 tidb-lightning 集成 TLS 支持 [#1631](https://github.com/pingcap/tidb-operator/issues/1631)
+- [ ] 为 TiDB Lightning 集成 TLS 支持 [#1631](https://github.com/pingcap/tidb-operator/issues/1631)
 
 ## 新功能
 
