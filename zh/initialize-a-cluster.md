@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的集群初始化配置
 summary: 介绍如何初始化配置 Kubernetes 上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/initialize-a-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/initialize-a-cluster/','/docs-cn/stable/tidb-in-kubernetes/initialize-cluster/','/docs-cn/v3.0/how-to/configure/initialize-cluster/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/initialize-a-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/initialize-a-cluster/','/docs-cn/stable/tidb-in-kubernetes/initialize-cluster/','/docs-cn/v3.0/how-to/configure/initialize-cluster/','/docs-cn/stable/how-to/configure/initialize-cluster/']
 ---
 
 # Kubernetes 上的集群初始化配置
