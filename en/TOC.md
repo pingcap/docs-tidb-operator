@@ -23,6 +23,7 @@
       - [Deploy TiDB Cluster](deploy-on-general-kubernetes.md)
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
+  - [Deploy Heterogeneous Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
@@ -84,6 +85,7 @@
     - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
 + Release Notes
+  + [TiDB Operator Roadmap](roadmap.md)
   + v1.1
     - [1.1.5](releases/release-1.1.5.md)
     - [1.1.4](releases/release-1.1.4.md)
