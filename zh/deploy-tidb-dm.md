@@ -32,13 +32,29 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 
 TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
-### 集群拓扑
+### 集群配置
+
+#### discovery 配置
 
 DMCluster 部署时需要使用 TidbCluster 的 Discovery 服务，必须填写 `spec.discovery.address`，格式为 `http://${tidb_cluster_name}-discovery.${namespace}:10261`。
 
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: DMCluster
+metadata:
+  name: ${dm_cluster_name}
+  namespace: ${namespace}
+spec:
+  ...
+  discovery:
+    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+```
+
 #### dm-master 配置
 
-dm-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 dm-master Pod。可以通过 DMCluster CR 的 `spec.master.config` 来配置 dm-master 配置参数。
+dm-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 dm-master Pod。
+
+可以通过 DMCluster CR 的 `spec.master.config` 来配置 dm-master 配置参数，[完整 dm-master 配置参数参考](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-master-configuration-file)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -68,7 +84,7 @@ spec:
 
 #### dm-worker 配置
 
-可以通过 DMCluster CR 的 `spec.worker.config` 来配置 dm-worker 配置参数。
+可以通过 DMCluster CR 的 `spec.worker.config` 来配置 dm-worker 配置参数。[完整 dm-worker 配置参数参考](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-worker-configuration-file)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
