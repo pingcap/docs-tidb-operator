@@ -96,33 +96,33 @@ spec:
 kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 ```
 
-如果服务器没有外网，需要在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
+如果服务器没有外网，需要按下述步骤在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v2.0.0-rc.2）：
+1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v2.0.0-rc.2）：
 
-```shell
-pingcap/dm:v2.0.0-rc.2
-```
+    ```shell
+    pingcap/dm:v2.0.0-rc.2
+    ```
 
-接下来通过下面的命令将所有这些镜像下载下来：
+2. 接下来通过下面的命令将所有这些镜像下载下来：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-docker pull pingcap/dm:v2.0.0-rc.2
+    ```shell
+    docker pull pingcap/dm:v2.0.0-rc.2
 
-docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
-```
+    docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
+    ```
 
-接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
+3. 接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-docker load -i dm-v2.0.0-rc.2.tar
-```
+    ```shell
+    docker load -i dm-v2.0.0-rc.2.tar
+    ```
 
-部署完成后，通过下面命令查看 Pod 状态：
+部署 DM 集群完成后，通过下面命令查看 Pod 状态：
 
 ``` shell
 kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${dm_cluster_name}

@@ -1,12 +1,11 @@
 ---
 title: 为 DM 开启 TLS
 summary: 在 Kubernetes 上如何为 DM 开启 TLS。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 ---
 
 # 为 DM 开启 TLS
 
-本文主要描述了在 Kubernetes 上如何为 DM 集群组件间开启 TLS 以及如何用 DM 集群同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库。
+本文主要描述了在 Kubernetes 上如何为 DM 集群组件间开启 TLS，以及如何用 DM 集群同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库。
 
 ## 为 DM 组件间开启 TLS
 
@@ -221,29 +220,29 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     假设你已经按照上述文档为每个组件创建了一套 Server 端证书，并为各个客户端创建了一套 Client 端证书。通过下面的命令为 DM 集群创建这些 Secret 对象：
 
-    dm-master 集群证书 Secret：
+    * dm-master 集群证书 Secret：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ``` shell
-    kubectl create secret generic ${cluster_name}-dm-master-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-master-server.pem --from-file=tls.key=dm-master-server-key.pem --from-file=ca.crt=ca.pem
-    ```
+        ``` shell
+        kubectl create secret generic ${cluster_name}-dm-master-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-master-server.pem --from-file=tls.key=dm-master-server-key.pem --from-file=ca.crt=ca.pem
+        ```
 
-    dm-worker 集群证书 Secret：
+    * dm-worker 集群证书 Secret：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ``` shell
-    kubectl create secret generic ${cluster_name}-dm-worker-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-worker-server.pem --from-file=tls.key=dm-worker-server-key.pem --from-file=ca.crt=ca.pem
-    ```
+        ``` shell
+        kubectl create secret generic ${cluster_name}-dm-worker-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-worker-server.pem --from-file=tls.key=dm-worker-server-key.pem --from-file=ca.crt=ca.pem
+        ```
 
-    Client 证书 Secret：
+    * Client 证书 Secret：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ``` shell
-    kubectl create secret generic ${cluster_name}-dm-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
-    ```
+        ``` shell
+        kubectl create secret generic ${cluster_name}-dm-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+        ```
 
     这里给 dm-master/dm-worker 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
@@ -318,7 +317,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
 
-    我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
+    我们需要为每个组件创建一个 Server 端证书，并且为它们的 Client 创建一套公用的 Client 端证书。
 
     - dm-master 组件的 Server 端证书。
 
@@ -363,8 +362,8 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         - `usages` 请添加上  `server auth` 和 `client auth`；
         - `dnsNames` 需要填写上面 yaml 中的 DNS，根据需要可以填写其他 DNS；
         - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-          - `127.0.0.1`
-          - `::1`
+            - `127.0.0.1`
+            - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
@@ -413,8 +412,8 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         - `usages` 请添加上  `server auth` 和 `client auth`；
         - `dnsNames` 需要填写上面 yaml 中的 DNS，根据需要可以填写其他 DNS；
         - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-          - `127.0.0.1`
-          - `::1`
+            - `127.0.0.1`
+            - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
