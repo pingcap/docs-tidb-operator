@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 # 使用 BR 工具备份 TiDB 集群到 GCS
 
-本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。[`BR`](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
+本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
 
 本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
 

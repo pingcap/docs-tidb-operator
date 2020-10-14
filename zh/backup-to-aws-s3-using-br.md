@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 # 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
 
-本文详细描述了如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。[`BR`](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
+本文详细描述了如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
 
 本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现。
 

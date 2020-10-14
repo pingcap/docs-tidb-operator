@@ -242,7 +242,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         # concurrency: 4
         # rateLimit: 0
         # timeAgo: ${time}
-        # checksum: true'
+        # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
       from:
