@@ -271,6 +271,7 @@ data:
 type: kubernetes.io/tls
  ```
 ## 监控多集群
+
 TidbMonitor 支持监控多个非 TLS 集群，TLS 集群建议采用一个集群一个 TidbMonitor 的方式，监控数据统一查询推荐使用 ['Thanos'](https://thanos.io/tip/thanos/getting-started.md/) 方案。
 
 监控多个非 TLS 集群示例：
