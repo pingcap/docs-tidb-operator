@@ -23,7 +23,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
 ### Prerequisites for ad-hoc backup
 
-Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequisites-for-ad-hoc-full-backup).
+Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequisites-for-ad-hoc-backup).
 
 ### Required database account privileges
 
