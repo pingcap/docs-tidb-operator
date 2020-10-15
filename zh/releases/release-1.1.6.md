@@ -27,4 +27,5 @@ TiDB Operator 版本：1.1.6
 - 删除 PodRestarter controller 相关的支持 ([#3296](https://github.com/pingcap/tidb-operator/pull/3296), [@lonng](https://github.com/lonng))
 
 ## Bug 修复
+
 - 修复 discovery 可能导致启动多个 pd cluster 的 bug ([#3365](https://github.com/pingcap/tidb-operator/pull/3365), [@lichunzhu](https://github.com/lichunzhu))
