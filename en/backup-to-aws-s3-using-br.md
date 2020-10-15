@@ -415,7 +415,7 @@ If you want to back up incrementally, you only need to specify the last backup t
 * `.spec.br.checksum`: Whether to verify the files after the backup is completed. Defaults to `true`.
 * `.spec.br.timeAgo`: Backs up the data before `timeAgo`. If the parameter value is not specified (empty by default), it means backing up the current data. It supports data formats such as "1.5h" and "2h45m". See [ParseDuration](https://golang.org/pkg/time/#ParseDuration) for more information.
 * `.spec.br.sendCredToTikv`: Whether the BR process passes its GCP privileges to the TiKV process. Defaults to `true`.
-* `.spec.br.options`: The extra arguments that BR supported, it accepts an array of strings. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
+* `.spec.br.options`: The extra arguments that BR supports. It accepts an array of strings. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
 
 #### Configure S3-compatible providers
 
