@@ -11,13 +11,12 @@ TiDB Operator version: 1.1.6
 ## New Features
 
 - Add `spec.br.options` to the Backup and Restore CR to support customizing arguments for BR ([#3360](https://github.com/pingcap/tidb-operator/pull/3360), [@lichunzhu](https://github.com/lichunzhu))
-- Make tikv evict leader timeout configurable ([#3344](https://github.com/pingcap/tidb-operator/pull/3344), [@lichunzhu](https://github.com/lichunzhu))
+- Add `spec.tikv.evictLeaderTimeout` to TidbCluster CR to make tikv evict leader timeout configurable ([#3344](https://github.com/pingcap/tidb-operator/pull/3344), [@lichunzhu](https://github.com/lichunzhu))
 - Support monitoring multiple TiDB clusters with one TidbMonitor with TLS disabled. `spec.clusterScoped` is added to the TidbMonitor CR and needs to be set to `true` to monitor multiple clusters ([#3308](https://github.com/pingcap/tidb-operator/pull/3308), [@mikechengwei](https://github.com/mikechengwei))
-- Support to specify spec.helper.requests and  spec.helper.limits for all initcontainers ([#3305](https://github.com/pingcap/tidb-operator/pull/3305), [@shonge](https://github.com/shonge))
+- Support to specify resources for all initcontainers ([#3305](https://github.com/pingcap/tidb-operator/pull/3305), [@shonge](https://github.com/shonge))
 
 ## Improvements
 
-- Use failover desired replicas instead of replicas for discovery service ([#3365](https://github.com/pingcap/tidb-operator/pull/3365), [@lichunzhu](https://github.com/lichunzhu))
 - Support passing raw toml config for tiflash ([#3355](https://github.com/pingcap/tidb-operator/pull/3355), [@july2993](https://github.com/july2993))
 - Support passing raw toml config for tikv/pd ([#3342](https://github.com/pingcap/tidb-operator/pull/3342), [@july2993](https://github.com/july2993))
 - Support passing raw toml config for tidb ([#3327](https://github.com/pingcap/tidb-operator/pull/3327), [@july2993](https://github.com/july2993))
