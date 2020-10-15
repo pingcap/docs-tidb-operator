@@ -53,7 +53,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
         requests:
           storage: 30Gi
         schedulerName: default-scheduler
-        config:
+        config: |
           addr = "0.0.0.0:8250"
           gc = 7
           heartbeat-interval = 2
