@@ -98,7 +98,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
     In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`.
 
-    If you want to back up incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. You can refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data) for the limitations of incremental backup.
+    If you want to back up incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
 
     More `br` parameter descriptions:
 
