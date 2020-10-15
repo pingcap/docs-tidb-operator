@@ -196,7 +196,7 @@ spec:
       cpu: 1
 ```
 
-Since TiDB Operator v1.1.6, support passing raw TOML config for the component:
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -247,7 +247,7 @@ spec:
       cpu: 2
 ```
 
-Since TiDB Operator v1.1.6, support passing raw TOML config for the component:
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -292,7 +292,7 @@ spec:
       enable-prevote: true
 ```
 
-Since TiDB Operator v1.1.6, support passing raw TOML config for the component:
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -335,7 +335,7 @@ spec:
           level: information
 ```
 
-Since TiDB Operator v1.1.6, support passing raw TOML config for the component:
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
