@@ -22,7 +22,7 @@ TiDB Operator 版本：1.1.6
 - 支持透传 tidb 的 toml 格式配置 ([#3327](https://github.com/pingcap/tidb-operator/pull/3327), [@july2993](https://github.com/july2993))
 - 支持透传 pump 的 toml 格式配置 ([#3312](https://github.com/pingcap/tidb-operator/pull/3312), [@july2993](https://github.com/july2993))
 - TiFlash proxy 的日志输出到 stdout ([#3345](https://github.com/pingcap/tidb-operator/pull/3345), [@lichunzhu](https://github.com/lichunzhu))
-- 备份到 GCS 时目录名称添加相应备份时间  ([#3340](https://github.com/pingcap/tidb-operator/pull/3340), [@lichunzhu](https://github.com/lichunzhu))
+- 定时备份到 GCS 时目录名称添加相应备份时间  ([#3340](https://github.com/pingcap/tidb-operator/pull/3340), [@lichunzhu](https://github.com/lichunzhu))
 - 删除 apiserver 跟相关的 packages ([#3298](https://github.com/pingcap/tidb-operator/pull/3298), [@lonng](https://github.com/lonng))
 - 删除 PodRestarter controller 相关的支持 ([#3296](https://github.com/pingcap/tidb-operator/pull/3296), [@lonng](https://github.com/lonng))
 
