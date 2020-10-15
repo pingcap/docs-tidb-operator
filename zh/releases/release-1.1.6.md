@@ -17,7 +17,6 @@ TiDB Operator 版本：1.1.6
 
 ## 优化提升
 
-- Use failover desired replicas instead of replicas for discovery service ([#3365](https://github.com/pingcap/tidb-operator/pull/3365), [@lichunzhu](https://github.com/lichunzhu))
 - 支持透传 tiflash 的 toml 格式配置 ([#3355](https://github.com/pingcap/tidb-operator/pull/3355), [@july2993](https://github.com/july2993))
 - 支持透传 tikv/pd 的 toml 格式配置 ([#3342](https://github.com/pingcap/tidb-operator/pull/3342), [@july2993](https://github.com/july2993))
 - 支持透传 tidb 的 toml 格式配置 ([#3327](https://github.com/pingcap/tidb-operator/pull/3327), [@july2993](https://github.com/july2993))
@@ -26,3 +25,6 @@ TiDB Operator 版本：1.1.6
 - 备份到 GCS 时目录名称添加相应备份时间  ([#3340](https://github.com/pingcap/tidb-operator/pull/3340), [@lichunzhu](https://github.com/lichunzhu))
 - 删除 apiserver 跟相关的 packages ([#3298](https://github.com/pingcap/tidb-operator/pull/3298), [@lonng](https://github.com/lonng))
 - 删除 PodRestarter controller 相关的支持 ([#3296](https://github.com/pingcap/tidb-operator/pull/3296), [@lonng](https://github.com/lonng))
+
+## Bug 修复
+- 修复 discovery 可能导致启动多个 pd cluster 的 bug ([#3365](https://github.com/pingcap/tidb-operator/pull/3365), [@lichunzhu](https://github.com/lichunzhu))
