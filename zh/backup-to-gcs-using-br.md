@@ -97,7 +97,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     以上示例中，`spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。
 
-    如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考 [使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+    自 v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考 [使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
 
     部分参数的含义如下：
 
@@ -110,7 +110,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     - `spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
     - `spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
     - `spec.br.sendCredToTikv`：BR 进程是否将自己的 GCP 权限传输给 TiKV 进程。默认为 `true`。
-    - `spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。可用于指定 `lastbackupts` 以进行增量备份。
+    - `spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
     该示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的一些参数项均可省略，如 `location`、`objectAcl`、`storageClass`。
 
