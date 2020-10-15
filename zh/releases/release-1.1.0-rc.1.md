@@ -48,7 +48,7 @@ TiDB Operator version: 1.1.0-rc.1
 - 添加 tikv-importer 图表 ([#1910](https://github.com/pingcap/tidb-operator/pull/1910), [@shonge](https://github.com/shonge))
 - 修复当开启 TLS 时 Prometheus 的 scrape 配置问题 ([#1919](https://github.com/pingcap/tidb-operator/pull/1919), [@weekface](https://github.com/weekface))
 - 为 TiDB 组件间的通信开启 TLS ([#1870](https://github.com/pingcap/tidb-operator/pull/1870), [@weekface](https://github.com/weekface))
-- 修复在 TiKV 升级过程中当 `Values.admission.validation.pods `设为 true 时的超时错误 ([#1875](https://github.com/pingcap/tidb-operator/pull/1875), [@Yisaer](https://github.com/Yisaer))
+- 修复在 TiKV 升级过程中当 `Values.admission.validation.pods` 设为 true 时的超时错误 ([#1875](https://github.com/pingcap/tidb-operator/pull/1875), [@Yisaer](https://github.com/Yisaer))
 - 为 MySQL 客户端的通信开启 TLS ([#1878](https://github.com/pingcap/tidb-operator/pull/1878), [@weekface](https://github.com/weekface))
 - 修复某个会破坏 TiDB 镜像属性的错误 ([#1860](https://github.com/pingcap/tidb-operator/pull/1860), [@Yisaer](https://github.com/Yisaer))
 - 如果 targetRef 没定义则使用 TidbMonitor 的 namespace 作为 targetRef ([#1834](https://github.com/pingcap/tidb-operator/pull/1834), [@Yisaer](https://github.com/Yisaer))
