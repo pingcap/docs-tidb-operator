@@ -11,7 +11,7 @@ TiDB Operator 版本：1.1.6
 ## 新功能
 
 - 添加 `spec.br.options` 支持 Backup 跟 Restore CR 自定义 BR 命令行参数 ([#3360](https://github.com/pingcap/tidb-operator/pull/3360), [@lichunzhu](https://github.com/lichunzhu))
-- 支持配置 tikv evict leader 超时时间 ([#3344](https://github.com/pingcap/tidb-operator/pull/3344), [@lichunzhu](https://github.com/lichunzhu))
+- 添加 `spec.tikv.evictLeaderTimeout` 支持配置 tikv evict leader 超时时间 ([#3344](https://github.com/pingcap/tidb-operator/pull/3344), [@lichunzhu](https://github.com/lichunzhu))
 - TLS 没开启时支持使用一个 TidbMonitor 监控多个 TiDB clusters.  TidbMonitor CR 添加`spec.clusterScoped` ，监控多个集群时需要设置为 `true` ([#3308](https://github.com/pingcap/tidb-operator/pull/3308), [@mikechengwei](https://github.com/mikechengwei))
 - 所有 initcontainers 支持配置 `spec.helper.requests` and  `spec.helper.limits`  ([#3305](https://github.com/pingcap/tidb-operator/pull/3305), [@shonge](https://github.com/shonge))
 
