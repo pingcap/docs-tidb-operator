@@ -51,7 +51,7 @@ spec
     requests:
       storage: 30Gi
     schedulerName: default-scheduler
-    config |
+    config: |
       addr = "0.0.0.0:8250"
       gc = 7
       heartbeat-interval = 2
