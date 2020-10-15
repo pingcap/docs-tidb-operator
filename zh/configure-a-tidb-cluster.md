@@ -289,7 +289,7 @@ spec:
 .....
   pd:
     image: pingcap/pd:v4.0.6
-    config |
+    config: |
       lease = 3
       enable-prevote = true
 ```
@@ -335,7 +335,7 @@ spec:
   ...
   tiflash:
     config:
-      config |
+      config: |
         [flash]
           [flash.flash_cluster]
             log = "/data0/logs/flash_cluster_manager.log"
