@@ -40,7 +40,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
           heartbeat-interval: 2
     ```
 
-    Since TiDB Operator v1.1.6, support passing raw TOML config for the component:
+    Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
     ```yaml
     spec:
