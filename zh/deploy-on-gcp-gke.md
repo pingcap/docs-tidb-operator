@@ -179,7 +179,7 @@ gcloud compute instances create bastion \
     $ mysql -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v4.0.6 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v4.0.7 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -301,6 +301,8 @@ spec:
       operator: Equal
       value: tiflash
 ```
+
+其他参数可以参考[集群配置文档](configure-a-tidb-cluster.md)进行配置。
 
 > **警告：**
 >
