@@ -25,6 +25,7 @@ TiDB Operator 版本：1.1.6
 - 备份到 GCS 时目录名称添加相应备份时间  ([#3340](https://github.com/pingcap/tidb-operator/pull/3340), [@lichunzhu](https://github.com/lichunzhu))
 - 删除 apiserver 跟相关的 packages ([#3298](https://github.com/pingcap/tidb-operator/pull/3298), [@lonng](https://github.com/lonng))
 - 删除 PodRestarter controller 相关的支持 ([#3296](https://github.com/pingcap/tidb-operator/pull/3296), [@lonng](https://github.com/lonng))
+- 使用 BR metadata 获取备份大小 ([#3274](https://github.com/pingcap/tidb-operator/pull/3274), [@lichunzhu](https://github.com/lichunzhu))
 
 ## Bug 修复
 

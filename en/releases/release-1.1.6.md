@@ -25,6 +25,7 @@ TiDB Operator version: 1.1.6
 - Add timestamp to the prefix of scheduled backup on GCS ([#3340](https://github.com/pingcap/tidb-operator/pull/3340), [@lichunzhu](https://github.com/lichunzhu))
 - Remove the apiserver and related packages ([#3298](https://github.com/pingcap/tidb-operator/pull/3298), [@lonng](https://github.com/lonng))
 - Remove the PodRestarter controller and `tidb.pingcap.com/pod-defer-deleting` annotation ([#3296](https://github.com/pingcap/tidb-operator/pull/3296), [@lonng](https://github.com/lonng))
+- Use BR metadata to get total backup size ([#3274](https://github.com/pingcap/tidb-operator/pull/3274), [@lichunzhu](https://github.com/lichunzhu))
 
 ## Bug Fixes
 
