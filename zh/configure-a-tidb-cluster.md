@@ -128,6 +128,8 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
       storageClassName: local-storage
 ```
 
+所有 PV 按照配置先后顺序分别挂载到容器内的 `/data0`、`/data1` 等目录。TiFlash 有 4 个日志文件，其中 Proxy 日志打印到容器标准输出，另外 3 个日志存储在硬盘中，默认存储在 `/data0` 目录下，分别为 `/data0/logs/flash_cluster_manager.log`、`/data0/logs/error.log`、`/data0/logs/server.log`，如果要修改日志存储路径，可以参考[配置 TiFlash 配置参数](#配置-tiflash-配置参数)进行修改。
+
 > **警告：**
 >
 > 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
@@ -186,6 +188,28 @@ spec:
       cpu: 1
 ```
 
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.6
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: |
+      split-table = true
+      oom-action = "log"
+    requests:
+      cpu: 1
+```
+
 获取所有可以配置的 TiDB 配置参数，请参考 [TiDB 配置文档](https://pingcap.com/docs-cn/stable/tidb-configuration-file/)。
 
 > **注意：**
@@ -206,6 +230,25 @@ spec:
   tikv:
     image: pingcap/tikv:v4.0.6
     config: {}
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.6
+    config: |
+      #  [storage]
+      #    reserve-space = "2MB"
     replicas: 1
     requests:
       cpu: 2
@@ -235,6 +278,22 @@ spec:
       enable-prevote: true
 ```
 
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.6
+    config: |
+      lease = 3
+      enable-prevote = true
+```
+
 获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
 
 > **注意：**
@@ -255,9 +314,36 @@ spec:
   tiflash:
     config:
       config:
+        flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
         logger:
-          count: 5
+          count: 10
           level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
 ```
 
 获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)
