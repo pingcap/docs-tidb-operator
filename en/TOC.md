@@ -85,7 +85,9 @@
     - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
 + Release Notes
+  + [TiDB Operator Roadmap](roadmap.md)
   + v1.1
+    - [1.1.6](releases/release-1.1.6.md)
     - [1.1.5](releases/release-1.1.5.md)
     - [1.1.4](releases/release-1.1.4.md)
     - [1.1.3](releases/release-1.1.3.md)

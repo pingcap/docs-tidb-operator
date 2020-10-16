@@ -40,11 +40,11 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.6`
+- `spec.version`: the format is `imageTag`, such as `v4.0.7`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.6`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.7`
 
 ### Recommended configuration
 
@@ -184,7 +184,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.6
+    image: pingcap/tidb:v4.0.7
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -192,6 +192,28 @@ spec:
     config:
       split-table: true
       oom-action: "log"
+    requests:
+      cpu: 1
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.7
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: |
+      split-table = true
+      oom-action = "log"
     requests:
       cpu: 1
 ```
@@ -216,10 +238,29 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.6
+    image: pingcap/tikv:v4.0.7
     config:
       log-level: "info"
       slow-log-threshold: "1s"
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.7
+    config: |
+      #  [storage]
+      #    reserve-space = "2MB"
     replicas: 1
     requests:
       cpu: 2
@@ -245,10 +286,26 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.6
+    image: pingcap/pd:v4.0.7
     config:
       lease: 3
       enable-prevote: true
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.7
+    config: |
+      lease = 3
+      enable-prevote = true
 ```
 
 For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
@@ -276,6 +333,28 @@ spec:
         logger:
           count: 5
           level: information
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
 ```
 
 For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
