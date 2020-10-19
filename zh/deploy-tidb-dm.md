@@ -5,7 +5,7 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 
 # 在 Kubernetes 上部署使用 DM
 
-[DM](https://docs.pingcap.com/zh/tidb-data-migration/v2.0) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台，本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 DM。
+[TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 DM，以及如何使用 DM 迁移数据到 TiDB 集群。
 
 ## 前置条件
 
@@ -34,9 +34,9 @@ TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
 ### 集群配置
 
-#### discovery 配置
+#### Discovery 配置
 
-DMCluster 部署时需要使用 TidbCluster 的 Discovery 服务，必须填写 `spec.discovery.address`，格式为 `http://${tidb_cluster_name}-discovery.${namespace}:10261`。
+DMCluster 部署时需要使用 TidbCluster 的 Discovery 服务，必须填写 `spec.discovery.address`，格式为 `http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261`。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -50,11 +50,11 @@ spec:
     address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
 ```
 
-#### dm-master 配置
+#### DM-master 配置
 
-dm-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 dm-master Pod。
+DM-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 DM-master Pod。
 
-可以通过 DMCluster CR 的 `spec.master.config` 来配置 dm-master 配置参数，[完整 dm-master 配置参数参考](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-master-configuration-file)。
+可以通过 DMCluster CR 的 `spec.master.config` 来配置 DM-master 配置参数。完整的 DM-master 配置参数，参考[DM-master 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-master-configuration-file)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -72,7 +72,7 @@ spec:
     imagePullPolicy: IfNotPresent
     service:
       type: NodePort
-      # 需要将 dm-master service 暴露在一个固定的 NodePort 时配置
+      # 需要将 DM-master service 暴露在一个固定的 NodePort 时配置
       # masterNodePort: 30020
     replicas: 1
     storageSize: "1Gi"
@@ -82,9 +82,9 @@ spec:
       rpc-timeout: 40s
 ```
 
-#### dm-worker 配置
+#### DM-worker 配置
 
-可以通过 DMCluster CR 的 `spec.worker.config` 来配置 dm-worker 配置参数。[完整 dm-worker 配置参数参考](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-worker-configuration-file)。
+可以通过 DMCluster CR 的 `spec.worker.config` 来配置 DM-worker 配置参数。完整的 DM-worker 配置参数，参考[DM-worker 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-worker-configuration-file)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -112,7 +112,7 @@ spec:
 kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 ```
 
-如果服务器没有外网，需要按下述步骤在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
+如果服务器没有外网，需要按下述步骤在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上：
 
 1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v2.0.0-rc.2）：
 
@@ -120,7 +120,7 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     pingcap/dm:v2.0.0-rc.2
     ```
 
-2. 接下来通过下面的命令将所有这些镜像下载下来：
+2. 通过下面的命令将所有这些镜像下载下来：
 
     {{< copyable "shell-regular" >}}
 
@@ -130,7 +130,7 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
     ```
 
-3. 接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
+3. 将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
 
     {{< copyable "shell-regular" >}}
 
@@ -148,9 +148,9 @@ kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${dm_cluster_name}
 
 ## 访问 Kubernetes 上的 DM 集群
 
-在 Kubernetes 集群的 Pod 内访问 dm-master 时，使用 dm-master service 域名 `${cluster_name}-dm-master.${namespace}` 即可。
+在 Kubernetes 集群的 Pod 内访问 DM-master 时，使用 DM-master service 域名 `${cluster_name}-dm-master.${namespace}` 即可。
 
-若需要在集群外访问，则需将 dm-master 服务端口暴露出去。在 `DMCluster` CR 中，通过 `spec.master.service` 字段进行配置：
+若需要在集群外访问，则需将 DM-master 服务端口暴露出去。在 `DMCluster` CR 中，通过 `spec.master.service` 字段进行配置：
 
 ```yaml
 spec:
@@ -160,23 +160,23 @@ spec:
       type: NodePort
 ```
 
-即可通过 `${kubernetes_node_ip}:${node_port}` 的地址访问 dm-master 服务。
+即可通过 `${kubernetes_node_ip}:${node_port}` 的地址访问 DM-master 服务。
 
 更多服务暴露方式可参考 [访问 TiDB 集群](access-tidb.md)
 
 ## 启动 DM 同步任务
 
-有两种方式使用 dmctl 访问 dm-master 服务：
+有两种方式使用 dmctl 访问 DM-master 服务：
 
-1. 通过进入 dm-master 或 dm-worker pod 使用 image 内置 dmctl 进行操作。
+1. 通过进入 DM-master 或 DM-worker pod 使用 image 内置 dmctl 进行操作。
 
-2. 通过 [访问 Kubernetes 上的 DM 集群](#访问-kubernetes-上的-dm-集群) 暴露 dm-master 服务，在外部使用 dmctl 访问暴露的 dm-master 服务进行操作。
+2. 通过[访问 Kubernetes 上的 DM 集群](#访问-kubernetes-上的-dm-集群) 暴露 DM-master 服务，在外部使用 dmctl 访问暴露的 DM-master 服务进行操作。
 
-建议使用方式 1 进行迁移。下文将以方式 1 为例介绍如何启动 DM 同步任务，方式 2 与其区别为 `source.yaml` 与 `task.yaml` 文件位置不同以及 dmctl 的 `master-addr` 配置项需要填写暴露出来的 dm-master 服务地址。
+建议使用方式 1 进行迁移。下文将以方式 1 为例介绍如何启动 DM 同步任务，方式 2 与其区别为 `source.yaml` 与 `task.yaml` 文件位置不同以及 dmctl 的 `master-addr` 配置项需要填写暴露出来的 DM-master 服务地址。
 
 ### 进入 Pod
 
-通过 `kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh` 命令 attach 到 dm-master Pod。
+通过 `kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh` 命令 attach 到 DM-master Pod。
 
 ### 创建数据源
 
@@ -190,10 +190,10 @@ spec:
 
 ### 配置同步任务
 
-1. 参考 [配置同步任务](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-4-步配置任务) 编辑任务配置文件 `task.yaml`。
+1. 参考[配置同步任务](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-4-步配置任务)编辑任务配置文件 `task.yaml`。
 
 2. 填写 `task.yaml` 中的 `target-database.host` 为 Kubernetes 集群内部可以访问的 TiDB host 地址。如果是 TiDB Operator 部署的集群，填写 `${tidb_cluster_name}-tidb.${namespace}` 即可。
 
 ### 启动/查询/停止同步任务
 
-参考 [使用 DM 迁移数据](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-5-步启动任务) 中的 5,6,7 步即可，注意将 master-addr 填写为 `${dm_cluster_name}-dm-master:8261`。
+参考[使用 DM 迁移数据](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-5-步启动任务) 中的 5、6、7 步即可，注意将 master-addr 填写为 `${dm_cluster_name}-dm-master:8261`。

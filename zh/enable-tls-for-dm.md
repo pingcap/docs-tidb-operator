@@ -12,15 +12,15 @@ summary: 在 Kubernetes 上如何为 DM 开启 TLS。
 TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 DM 集群的每个组件生成证书：
-    - 为 dm-master/dm-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 DM-master/DM-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-dm-client-secret`
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
 3. 配置 `dmctl` 连接集群。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 DM 集群颁发证书，这两种方式分别为：
 
-- 使用 `cfssl` 系统颁发证书；
-- 使用 `cert-manager` 系统颁发证书；
+- [使用 `cfssl` 系统颁发证书](#使用-cfssl-系统颁发证书)；
+- [使用 `cert-manager` 系统颁发证书](#使用-cert-manager-系统颁发证书)；
 
 ### 第一步：为 DM 集群各个组件生成证书
 
@@ -109,7 +109,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     这里需要为每个 DM 集群的组件生成一套 Server 端证书。
 
-    - dm-master Server 端证书
+    - DM-master Server 端证书
 
         首先生成默认的 `dm-master-server.json` 文件：
 
@@ -142,7 +142,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
         其中 `${cluster_name}` 为 DM 集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 dm-master Server 端证书：
+        最后生成 DM-master Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
@@ -150,7 +150,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal dm-master-server.json | cfssljson -bare dm-master-server
         ```
 
-    - dm-worker Server 端证书
+    - DM-worker Server 端证书
 
         首先生成默认的 `dm-worker-server.json` 文件：
 
@@ -183,7 +183,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 dm-worker Server 端证书：
+        最后生成 DM-worker Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
@@ -220,7 +220,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     假设你已经按照上述文档为每个组件创建了一套 Server 端证书，并为各个客户端创建了一套 Client 端证书。通过下面的命令为 DM 集群创建这些 Secret 对象：
 
-    * dm-master 集群证书 Secret：
+    * DM-master 集群证书 Secret：
 
         {{< copyable "shell-regular" >}}
 
@@ -228,7 +228,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         kubectl create secret generic ${cluster_name}-dm-master-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-master-server.pem --from-file=tls.key=dm-master-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    * dm-worker 集群证书 Secret：
+    * DM-worker 集群证书 Secret：
 
         {{< copyable "shell-regular" >}}
 
@@ -244,7 +244,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         kubectl create secret generic ${cluster_name}-dm-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    这里给 dm-master/dm-worker 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
+    这里给 DM-master/DM-worker 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
 #### 使用 `cert-manager` 系统颁发证书
 
@@ -319,7 +319,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     我们需要为每个组件创建一个 Server 端证书，并且为它们的 Client 创建一套公用的 Client 端证书。
 
-    - dm-master 组件的 Server 端证书。
+    - DM-master 组件的 Server 端证书。
 
         ``` yaml
         apiVersion: cert-manager.io/v1alpha2
@@ -367,9 +367,9 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-master-cluster-secret` 的 Secret 对象供 DM 集群的 dm-master 组件使用。
+        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-master-cluster-secret` 的 Secret 对象供 DM 集群的 DM-master 组件使用。
 
-    - dm-worker 组件的 Server 端证书。
+    - DM-worker 组件的 Server 端证书。
 
         ``` yaml
         apiVersion: cert-manager.io/v1alpha2
@@ -417,7 +417,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-cluster-secret` 的 Secret 对象供 DM 集群的 dm-worker 组件使用。
+        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-cluster-secret` 的 Secret 对象供 DM 集群的 DM-worker 组件使用。
 
     - 一套 DM 集群组件的 Client 端证书。
 
@@ -458,7 +458,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 > **注意：**
 >
-> 目前 dm-master 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有 `Certificate` 对象的 `commonName` 都要设置成同样一个值。
+> 目前 DM-master 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有 `Certificate` 对象的 `commonName` 都要设置成同样一个值。
 
 创建 `dm-cluster.yaml` 文件：
 
@@ -495,7 +495,7 @@ spec:
 
 ### 第三步：配置 `dmctl` 连接集群
 
-进入 dm-master Pod：
+进入 DM-master Pod：
 
 {{< copyable "shell-regular" >}}
 
@@ -514,20 +514,22 @@ cd /var/lib/dm-master-tls
 
 ## 用 DM 集群同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库
 
-下面部分主要介绍如何配置 DM 同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库。如需了解如何为 TiDB 的 MySQL 客户端开启 TLS，可以参考[这里](enable-tls-for-mysql-client.md)
+下面部分主要介绍如何配置 DM 同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库。如需了解如何为 TiDB 的 MySQL 客户端开启 TLS，可以参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
 ### 第一步：创建各 MySQL 客户端 TLS 的 Kubernetes Secret 对象 
 
 到这里假设你已经部署了开启 MySQL 客户端 TLS 的 MySQL/TiDB 数据库。通过下面的命令为 TiDB 集群创建 Secret 对象：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 kubectl create secret generic ${mysql_secret_name1} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
 kubectl create secret generic ${tidb_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
 ```
 
 ### 第二步：挂载 Secret 对象到 DM 集群
 
-创建好上下游数据库的 Kubernetes Secret 对象后，我们需要设置 `spec.tlsClientSecretNames` 使得 Secret 对象被挂载到 dm-master/dm-worker 的 Pod。
+创建好上下游数据库的 Kubernetes Secret 对象后，我们需要设置 `spec.tlsClientSecretNames` 使得 Secret 对象被挂载到 DM-master/DM-worker 的 Pod。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -586,4 +588,4 @@ spec:
 
 ### 第四步：启动同步任务
 
-参考 [启动同步任务](deploy-tidb-dm.md#启动查询停止同步任务) 启动同步任务即可。
+参考[启动同步任务](deploy-tidb-dm.md#启动查询停止同步任务)。
