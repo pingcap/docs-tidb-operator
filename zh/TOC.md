@@ -20,9 +20,10 @@
       - [配置 Storage Class](configure-storage-class.md)
       - [部署 TiDB Operator](deploy-tidb-operator.md)
       - [配置 TiDB 集群](configure-a-tidb-cluster.md)
-      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)
+      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)    
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
+  - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiFlash](deploy-tiflash.md)
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
@@ -35,6 +36,7 @@
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 + 运维
+  - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
   + TiDB 集群伸缩
@@ -54,7 +56,7 @@
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
-  - [集群故障自动转移](use-auto-failover.md)  
+  - [集群故障自动转移](use-auto-failover.md)
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
 + 灾难恢复
   - [恢复 PD 集群](pd-recover.md)
@@ -84,7 +86,9 @@
     - [tidb-backup chart 配置](configure-backup.md)
   - [日志收集](logs-collection.md)
 + 版本发布历史
+  + [TiDB Operator Roadmap](roadmap.md)
   + v1.1
+    - [1.1.6](releases/release-1.1.6.md)
     - [1.1.5](releases/release-1.1.5.md)
     - [1.1.4](releases/release-1.1.4.md)
     - [1.1.3](releases/release-1.1.3.md)

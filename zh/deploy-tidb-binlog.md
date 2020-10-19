@@ -26,7 +26,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v4.0.6
+    version: v4.0.7
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -36,6 +36,25 @@ spec
       addr: 0.0.0.0:8250
       gc: 7
       heartbeat-interval: 2
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+spec
+  ...
+  pump:
+    baseImage: pingcap/tidb-binlog
+    version: v4.0.7
+    replicas: 1
+    storageClassName: local-storage
+    requests:
+      storage: 30Gi
+    schedulerName: default-scheduler
+    config: |
+      addr = "0.0.0.0:8250"
+      gc = 7
+      heartbeat-interval = 2
 ```
 
 按照集群实际情况修改 `version`、`replicas`、`storageClassName`、`requests.storage` 等配置。
@@ -173,7 +192,7 @@ spec:
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v4.0.6
+    clusterVersion: v4.0.7
     baseImage: pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
@@ -203,7 +222,7 @@ spec:
 
     ```yaml
     ...
-    clusterVersion: v4.0.6
+    clusterVersion: v4.0.7
     baseImage: pingcap/tidb-binlog-enterprise
     ...
     ```
@@ -215,7 +234,7 @@ spec:
     ```shell
     helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
- 
+
     如果服务器没有外网，请参考 [部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群) 在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
 
     > **注意：**
@@ -367,10 +386,11 @@ spec:
 
 ### 完全移除 Pump 节点
 
-* 参考 [缩容 Pump 节点步骤](#缩容-pump-节点) 缩容 Pump 到 0。
-* `kubectl edit tc ${cluster_name} -n ${namespace}` 将 `spec.pump` 部分配置项全部删除。
-* `kubectl delete sts ${cluster_name}-pump -n ${namespace}` 删除 Pump StatefulSet 资源。
-* 通过 `kubectl get pvc -n ${namespace} -l app.kubernetes.io/component=pump` 查看 Pump 集群使用过的 PVC，随后使用 `kubectl delete pvc -l app.kubernetes.io/component=pump -n ${namespace}` 指令删除 Pump 的所有 PVC 资源。
+1. 移除 Pump 节点前，必须首先需要执行 `kubectl edit tc ${cluster_name} -n ${namespace}` 设置其中的 `spec.tidb.binlogEnabled` 为 `false`，等待 TiDB Pod 完成重启更新后再移除 Pump 节点。如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
+2. 参考[缩容 Pump 节点步骤](#缩容-pump-节点)缩容 Pump 到 0。
+3. `kubectl edit tc ${cluster_name} -n ${namespace}` 将 `spec.pump` 部分配置项全部删除。
+4. `kubectl delete sts ${cluster_name}-pump -n ${namespace}` 删除 Pump StatefulSet 资源。
+5. 通过 `kubectl get pvc -n ${namespace} -l app.kubernetes.io/component=pump` 查看 Pump 集群使用过的 PVC，随后使用 `kubectl delete pvc -l app.kubernetes.io/component=pump -n ${namespace}` 指令删除 Pump 的所有 PVC 资源。
 
 ### 移除 Drainer 节点
 
@@ -409,7 +429,7 @@ spec:
     如果不再使用 Drainer，使用 `kubectl delete pvc data-${drainer_node_id} -n ${namespace}` 指令删除该 Drainer 的 PVC 资源。
 
 3. (可选项) 强制下线 Drainer
-    
+
     如果在下线 Drainer 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Drainer pod 输出可以删除 pod 的日志，可以先进行步骤 2 删除 Drainer Pod 后，再运行下述指令标注 Drainer 状态为 offline：
     
     没有开启 TLS 时，使用下述指令标注状态为 offline。
