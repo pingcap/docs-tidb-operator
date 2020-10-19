@@ -32,7 +32,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
           storage: "1Gi"
         config: {}
         annotations:
-          tidb.pingcap.com/restartedAt: 2020-04-20 12:00
+          tidb.pingcap.com/restartedAt: 2020-04-20T12:00
       tikv:
         baseImage: pingcap/tikv
         replicas: 3
@@ -40,7 +40,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
           storage: "1Gi"
         config: {}
         annotations:
-          tidb.pingcap.com/restartedAt: 2020-04-20 12:00
+          tidb.pingcap.com/restartedAt: 2020-04-20T12:00
       tidb:
         baseImage: pingcap/tidb
         replicas: 2
@@ -48,7 +48,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
           type: ClusterIP
         config: {}
         annotations:
-          tidb.pingcap.com/restartedAt: 2020-04-20 12:00
+          tidb.pingcap.com/restartedAt: 2020-04-20T12:00
     ```
 
 2. 应用更新
@@ -58,24 +58,3 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
     ``` shell
     kubectl apply -f ${cluster_name} -n ${namespace}
     ```
-
-## 优雅重启 TiDB 集群组件的单个 Pod
-
-### 开启相关设置
-
-开启优雅下线功能，需要打开 Webhook 相关设置。默认情况下 Webhook 相关配置是关闭的，你需要手动开启:
-    
-1. 修改 Operator 的 `values.yaml`
-
-    开启 Operator Webhook 特性:
-
-    ```yaml
-    admissionWebhook:
-      create: true
-    ```
-
-    关于 Operator Webhook 详情，请参考[开启 TiDB Operator 准入控制器](enable-admission-webhook.md)
-
-2. 安装/更新 TiDB Operator
-
-    修改完 `values.yaml` 文件中的上述配置项以后，进行 TiDB Operator 部署或者更新。安装与更新 TiDB Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)。 
