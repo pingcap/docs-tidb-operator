@@ -37,6 +37,7 @@
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
   - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
 + 运维
+  - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
   + TiDB 集群伸缩
@@ -57,7 +58,7 @@
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
-  - [集群故障自动转移](use-auto-failover.md)  
+  - [集群故障自动转移](use-auto-failover.md)
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
 + 灾难恢复
   - [恢复 PD 集群](pd-recover.md)
