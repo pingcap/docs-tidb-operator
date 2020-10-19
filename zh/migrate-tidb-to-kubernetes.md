@@ -17,19 +17,23 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 
 1. 获取 Kubernetes 集群 CoreDNS 或 kube-dns 服务的 endpoints 的 Pod ip 地址列表：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     kubectl describe svc/kube-dns -n kube-system
     ```
    
 2. 修改待迁移集群节点 `/etc/resolv.conf` 配置，向该配置文件中添加如下内容：
 
-   ```shell
-   search default.svc.cluster.local svc.cluster.local cluster.local  
-   nameserver <CoreDNS Pod_ip_1>
-   nameserver <CoreDNS Pod_ip_2>
-   nameserver <CoreDNS Pod_ip_n>
-   ```    
-   
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    search default.svc.cluster.local svc.cluster.local cluster.local
+    nameserver <CoreDNS Pod_ip_1>
+    nameserver <CoreDNS Pod_ip_2>
+    nameserver <CoreDNS Pod_ip_n>
+    ```
+
 3. 测试解析 Kubernetes 集群内部域名是否成功：
 
     ```shell
@@ -40,10 +44,12 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
     64 bytes from basic-pd-2.basic-pd-peer.blade.svc (10.24.66.178): icmp_seq=3 ttl=61 time=0.188 ms
     64 bytes from basic-pd-2.basic-pd-peer.blade.svc (10.24.66.178): icmp_seq=4 ttl=61 time=0.157 ms
     ```
-   
+
 ## 第二步：在 Kubernetes 中创建 TiDB 集群
 
 1. 通过 [PD Control](https://docs.pingcap.com/zh/tidb/stable/pd-control) 获取待迁移集群 PD 节点地址及端口号：
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     pd-ctl -u http://<address>:<port> member | jq '.members | .[] | .client_urls'
@@ -59,19 +65,21 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
       - http://pd2_addr:port
       - http://pd3_addr:port
     ```
-   
+
 3. 确认部署在 Kubernetes 内的 TiDB 集群与待迁移 TiDB 集群组成的新集群正常运行。
 
     - 获取新集群 store 个数、状态：
-    
+
+        {{< copyable "shell-regular" >}}
+
         ```shell
-        # store个数
+        # store 个数
         pd-ctl -u http://<address>:<port> store | jq '.count'
-        # store状态
-        pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'   
+        # store 状态
+        pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'
         ```
-      
-    - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](access-tidb.md)：
+
+    - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](access-tidb.md)。
 
 ## 第三步：缩容待迁移集群 TiDB 节点
 

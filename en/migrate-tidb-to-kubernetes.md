@@ -70,6 +70,8 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
 
     - Get the the number and state of stores in the new cluster:
 
+        {{< copyable "shell-regular" >}}
+        
         ```shell
         # Get the number of stores
         pd-ctl -u http://<address>:<port> store | jq '.count'
