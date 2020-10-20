@@ -9,8 +9,8 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
 
 ## Prerequisites
 
-- The physical or virtual machine's node outside Kubernetes has network access to the Pods in Kubernetes.
-- The physical or virtual machine's node outside Kubernetes can parse the IP address of the Pods in Kubernetes. (See [Step 1](#step-1-configure-dns-service-in-all-nodes-of-the-cluster-to-be-migrated) for configuration details.)
+- The physical or virtual machines outside Kubernetes have network access to the Pods in Kubernetes.
+- The physical or virtual machines outside Kubernetes can resolve the domain name of the Pods in Kubernetes. (See [Step 1](#step-1-configure-dns-service-in-all-nodes-of-the-cluster-to-be-migrated) for configuration details.)
 - The cluster to be migrated (that is, the source cluster) does not [enable TLS between components](enable-tls-between-components.md).
 
 ## Step 1: Configure DNS service in all nodes of the cluster to be migrated
@@ -34,7 +34,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
     nameserver <CoreDNS Pod_ip_n>
     ```
 
-3. Test whether the node can successfully parse the internal IP address in Kubernetes:
+3. Test whether the node can successfully resolve the domain name of the Pods in Kubernetes:
 
     ```shell
     $ ping basic-pd-2.basic-pd-peer.blade.svc
@@ -68,7 +68,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
 
 3. Confirm that the source cluster and the target cluster compose of a new cluster that runs normally:
 
-    - Get the the number and state of stores in the new cluster:
+    - Get the number and state of stores in the new cluster:
 
         {{< copyable "shell-regular" >}}
         
@@ -91,7 +91,7 @@ Remove all TiDB nodes of the source cluster:
 
 > **Note:**
 >
-> If you access the source TiDB cluster via load balancing or database middleware, you need to first modify the configuration to route your application traffic to the target TiDB cluster. Otherwise, your application might be affected.
+> If you access the source TiDB cluster via load balancer or database middleware, you need to first modify the configuration to route your application traffic to the target TiDB cluster. Otherwise, your application might be affected.
 
 ## Step 4: Scale in the TiKV nodes of the source cluster
 
@@ -103,7 +103,7 @@ Remove all TiKV nodes of the source cluster:
 
 > **Note:**
 >
-> * When you scale in the TiKV nodes one by one, wait until the store state of a TiKV node becomes "tombstone" and then scale in the next TiKV node.
+> * You need to scale in the TiKV nodes one by one. Wait until the store state of one TiKV node becomes "tombstone" and then scale in the next TiKV node.
 > * You can view the store state using PD Control.
 
 ## Step 5: Scale in the PD nodes of the source cluster
@@ -116,4 +116,4 @@ Remove all PD nodes of the source cluster:
 
 ## Step 6: Delete the `spec.PDAddresses` field
 
-To avoid confusion for further operations on the cluster, it is recommended that you delete the `spec.PDAddresses` field in the new cluster after the migration. However, simply keeping the field does not have any impact on the cluster.
+To avoid confusion for further operations on the cluster, it is recommended that you delete the `spec.PDAddresses` field in the new cluster after the migration.
