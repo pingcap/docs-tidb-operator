@@ -29,9 +29,9 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
 
     ```shell
     search default.svc.cluster.local svc.cluster.local cluster.local  
-    nameserver <CoreDNS Pod_ip_1>
-    nameserver <CoreDNS Pod_ip_2>
-    nameserver <CoreDNS Pod_ip_n>
+    nameserver <CoreDNS Pod_IP_1>
+    nameserver <CoreDNS Pod_IP_2>
+    nameserver <CoreDNS Pod_IP_n>
     ```
 
 3. Test whether the node can successfully resolve the domain name of the Pods in Kubernetes:
@@ -85,7 +85,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
 
 Remove all TiDB nodes of the source cluster:
 
-- If the source cluster is deployed using TiUP, refer to [Scale in a TiDB cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
+- If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
 - If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiDB node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-tidb-node).
 
@@ -97,7 +97,7 @@ Remove all TiDB nodes of the source cluster:
 
 Remove all TiKV nodes of the source cluster:
 
-- If the source cluster is deployed using TiUP, refer to [Scale in a TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
+- If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
 - If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiKV node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-tikv-node).
 
@@ -110,7 +110,7 @@ Remove all TiKV nodes of the source cluster:
 
 Remove all PD nodes of the source cluster:
 
-- If the source cluster is deployed using TiUP, refer to [Scale in a PD cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
+- If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
 - If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a PD node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-pd-node).
 

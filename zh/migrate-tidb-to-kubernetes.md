@@ -29,9 +29,9 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 
     ```shell
     search default.svc.cluster.local svc.cluster.local cluster.local
-    nameserver <CoreDNS Pod_ip_1>
-    nameserver <CoreDNS Pod_ip_2>
-    nameserver <CoreDNS Pod_ip_n>
+    nameserver <CoreDNS Pod_IP_1>
+    nameserver <CoreDNS Pod_IP_2>
+    nameserver <CoreDNS Pod_IP_n>
     ```
 
 3. 测试解析 Kubernetes 集群内部域名是否成功：
@@ -113,4 +113,4 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 
 ## 第六步：删除 `spec.PDAddresses` 字段
 
-为避免后续对集群进行操作时产生困惑，迁移成功后，建议将新集群的 manifest 中的 `spec.PDAddresses` 字段删除（虽然保留该字段也不会产生任何影响）。
+为避免后续对集群进行操作时产生困惑，迁移成功后，建议将新集群的 manifest 中的 `spec.PDAddresses` 字段删除。
