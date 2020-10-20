@@ -290,6 +290,44 @@ data:
 type: kubernetes.io/tls
  ```
 
+## Monitor multiple TiDB clusters
+
+TidbMonitor supports monitoring multiple non-TLS clusters. It is suggested that you use a separate TidbMonitor to monitor each TLS cluster. [`Thanos`](https://thanos.io/tip/thanos/getting-started.md/) solution is recommended to query all the monitoring data.
+
+TidbMonitor monitor multiple non-TLS clusters as follows:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: basic
+spec:
+  clusters:
+    - name: ns1
+      namespace: ns1
+    - name: ns2
+      namespace: ns2
+  kubePrometheusURL: "your-kube-prometheus-url"
+  alertmanagerURL: "your-alert-manager-url"
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.11.1
+    service:
+      type: NodePort
+  grafana:
+    baseImage: grafana/grafana
+    version: 6.0.1
+    service:
+      type: NodePort
+  initializer:
+    baseImage: pingcap/tidb-monitor-initializer
+    version: v4.0.6
+  reloader:
+    baseImage: pingcap/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
 ## References
 
 For more detailed API information of TidbMonitor, see [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md).
