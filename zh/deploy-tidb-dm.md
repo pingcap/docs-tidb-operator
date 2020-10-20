@@ -1,5 +1,5 @@
 ---
-title: 部署 TiDB DM
+title: 在 Kubernetes 上部署使用 DM
 summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 ---
 
