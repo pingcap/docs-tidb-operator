@@ -55,7 +55,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
     pd-ctl -u http://<address>:<port> member | jq '.members | .[] | .client_urls'
     ```
 
-2. Create the target TiDB cluster in Kubernetes, which should have at least 3 TiKV nodes. Specify the PD node address of the source cluster in the `spec.PDAddresses` field (starting with `http://`):
+2. Create the target TiDB cluster in Kubernetes, which must have at least 3 TiKV nodes. Specify the PD node address of the source cluster in the `spec.PDAddresses` field (starting with `http://`):
 
     ```yaml
     spec
