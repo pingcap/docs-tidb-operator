@@ -333,7 +333,7 @@ For more information on managing node pools, refer to [GKE Node pools](https://c
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Use local storage
 
@@ -342,7 +342,7 @@ Some GCP instance types provide additional [local store volumes](https://cloud.g
 > **Note:**
 >
 > You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
-> 
+>
 > During the GKE upgrade, data in the local storage will be [lost](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
 
 1. Create a node pool with local storage for TiKV:
