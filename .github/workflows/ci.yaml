@@ -16,7 +16,7 @@ jobs:
       run:
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
         git fetch upstream;
-        python3 ./hack/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
+        python3 ./hack/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.0...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
     - name: Markdown lint
       uses: avto-dev/markdown-lint@v1
       with:
@@ -26,10 +26,3 @@ jobs:
       run: ./hack/verify-links.sh
     - name: Verify link anchors
       run: ./hack/verify-link-anchors.sh 
-<<<<<<< HEAD
-=======
-    - name: "Check unclosed tags"
-      run: 
-        echo "checked files are $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')";
-        python3 ./hack/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
->>>>>>> ee3768d... CI: Add conflicts check and test files (#786)
