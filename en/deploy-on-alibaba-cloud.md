@@ -194,6 +194,8 @@ All the instances except ACK mandatory workers are deployed across availability 
               value: TIDB_CLUSTER_NAME-tiflash
         ```
 
+        To configure other parameters, refer to [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+
         Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
 
         > **Warning:**

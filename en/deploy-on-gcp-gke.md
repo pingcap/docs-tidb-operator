@@ -306,6 +306,8 @@ For more information on managing node pools, refer to [GKE Node pools](https://c
           value: tiflash
     ```
 
+    To configure other parameters, refer to [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+
     > **Warning:**
     >
     > TiDB Operator automatically mounts PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.

@@ -133,6 +133,8 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
+TiFlash mounts all PVs to directories such as `/data0` and `/data1` in the container in the order of configuration. TiFlash has 4 log files. Print proxy log to the standard output of the container. The other 3 logs stored on the disk, which are `/data0/logs/flash_cluster_manager.log`, `/ data0/logs/error.log`, `/data0/logs/server.log` are in the `/data0` directory by default. If you want to modify the log storage path, refer to [Configure TiFlash parameters](#configure-tiflash- parameters).
+
 > **Warning:**
 >
 > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
@@ -330,9 +332,14 @@ spec:
   tiflash:
     config:
       config:
+       flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
         logger:
-          count: 5
+          count: 10
           level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
 ```
 
 Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
