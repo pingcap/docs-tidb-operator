@@ -290,11 +290,11 @@ data:
 type: kubernetes.io/tls
  ```
 
-## Monitor multiple TiDB clusters using TidbMonitor
+## Monitor multiple TiDB clusters
 
-TidbMonitor supports monitoring multiple non-TLS clusters. It is suggested that you use a separate TidbMonitor to monitor each TLS cluster. [`Thanos`](https://thanos.io/tip/thanos/getting-started.md/) solution is recommended to query all the monitoring data.
+TidbMonitor supports monitoring multiple non-TLS clusters. As for TLS-enabled clusters, it is recommended that you monitor each cluster with a separate TidbMonitor. You can use [`Thanos`](https://thanos.io/tip/thanos/getting-started.md/) to query all the monitoring data.
 
-TidbMonitor monitor multiple non-TLS clusters as follows:
+To monitor multiple non-TLS clusters, configure the TidbMonitor CR as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
