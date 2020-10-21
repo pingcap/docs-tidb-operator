@@ -169,7 +169,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure TiDB Cluster](configure-a-tidb-cluster.md).
 
     * To deploy TiFlash, configure `spec.tiflash` in `db.yaml` as follows:
 
@@ -194,7 +194,7 @@ All the instances except ACK mandatory workers are deployed across availability 
               value: TIDB_CLUSTER_NAME-tiflash
         ```
 
-        To configure other parameters, refer to [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+        To configure other parameters, refer to [Configure TiDB Cluster](configure-a-tidb-cluster.md).
 
         Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
 

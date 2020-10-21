@@ -306,7 +306,7 @@ For more information on managing node pools, refer to [GKE Node pools](https://c
           value: tiflash
     ```
 
-    To configure other parameters, refer to [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+    To configure other parameters, refer to [Configure TiDB Cluster](configure-a-tidb-cluster.md).
 
     > **Warning:**
     >

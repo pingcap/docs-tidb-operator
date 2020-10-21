@@ -133,7 +133,7 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
       storageClassName: local-storage
 ```
 
-TiFlash mounts all PVs to directories such as `/data0` and `/data1` in the container in the order of configuration. TiFlash has 4 log files. Print proxy log to the standard output of the container. The other 3 logs stored on the disk, which are `/data0/logs/flash_cluster_manager.log`, `/ data0/logs/error.log`, `/data0/logs/server.log` are in the `/data0` directory by default. If you want to modify the log storage path, refer to [Configure TiFlash parameters](#configure-tiflash- parameters).
+TiFlash mounts all PVs to directories such as `/data0` and `/data1` in the container in the order of configuration. TiFlash has 4 log files. Print proxy log to the standard output of the container. The other 3 logs stored on the disk, which are `/data0/logs/flash_cluster_manager.log`, `/ data0/logs/error.log`, `/data0/logs/server.log`, are in the `/data0` directory by default. To modify the log storage path, refer to [Configure TiFlash parameters](#configure-tiflash-parameters).
 
 > **Warning:**
 >
