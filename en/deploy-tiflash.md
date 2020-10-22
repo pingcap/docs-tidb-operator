@@ -41,7 +41,7 @@ spec:
       storageClassName: local-storage
 ```
 
-To configure other parameters, refer to [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+To configure other parameters, refer to [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 To deploy Enterprise Edition of TiFlash, edit the `dm.yaml` file above to set `spec.tiflash.baseImage` to the enterprise image (`pingcap/tiflash-enterprise`).
 

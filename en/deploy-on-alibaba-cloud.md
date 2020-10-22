@@ -343,7 +343,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Manage multiple TiDB clusters
 
