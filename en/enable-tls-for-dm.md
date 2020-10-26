@@ -600,4 +600,4 @@ After setting the `spec.tlsClientSecretNames` option, TiDB Operator will mount t
 
 ### Step 4: Start the migration tasks
 
-Refer to [Start the migration tasks](deploy-tidb-dm.md#start-the-migration-tasks).
+Refer to [Start the migration tasks](deploy-tidb-dm.md#startcheckstop-the-migration-tasks).
