@@ -5,16 +5,16 @@ summary: Learn how to deploy and use TiDB DM cluster in Kubernetes.
 
 # Deploy and Use DM in Kubernetes
 
-[TiDB Data Migration](https://github.com/pingcap/dm) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. This document describes how to deploy DM in Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
+[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. This document describes how to deploy DM in Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
 
 ## Prerequisites
 
 * Complete [deploying TiDB Operator](deploy-tidb-operator.md).
-* Complete deploying a TidbCluster.
+* Complete deploying a TiDB Cluster.
 
 ## Configure DM deployment
 
-To configure the DM deployment, you need to configure the `DMCluster` CR. Refer to the [DMCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/dm/dm-cluster.yaml) for an example. For the complete configurations of `DMCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#dmcluster).
+To configure the DM deployment, you need to configure the `DMCluster` CR. Refer to the [DM Cluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/dm/dm-cluster.yaml) for an example. For the complete configurations of `DMCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#dmcluster).
 
 ### Cluster name
 
@@ -165,7 +165,7 @@ spec:
 
 You can access the DM-master service via the address of `${kubernetes_node_ip}:${node_port}`.
 
-For more service exposure methods, refer to [Access the TiDB Cluster](access-tidb.md)
+For more service exposure methods, refer to [Access the TiDB Cluster](access-tidb.md).
 
 ## Enable DM data migration tasks
 
@@ -195,7 +195,7 @@ Attach to the DM-master Pod using the `kubectl exec -ti ${dm_cluster_name}-dm-ma
 
 1. To edit task configuration file `task.yaml`, refer to [Configure the data migration task](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-4-configure-the-data-migration-task).
 
-2. Fill in the `target-database.host` in `task.yaml` file as the TiDB host address that the Kubernetes cluster can access. If it is a cluster deployed by TiDB Operator, fill in the `${tidb_cluster_name}-tidb.${namespace}`.
+2. Fill in the `target-database.host` in `task.yaml` as the TiDB host address that the Kubernetes cluster can access. If it is a cluster deployed by TiDB Operator, fill in the `${tidb_cluster_name}-tidb.${namespace}`.
 
 ### Start/Check/Stop the migration tasks
 

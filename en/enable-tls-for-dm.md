@@ -379,7 +379,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${cluster_name}-dm-master-cluster-secret` Secret object to be used by the DM-master component of the DM cluster.
 
-    - The DM-worker component server-side certificate
+    - The DM-worker server-side certificate
 
         ``` yaml
         apiVersion: cert-manager.io/v1alpha2
