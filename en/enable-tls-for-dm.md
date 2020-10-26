@@ -212,7 +212,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         "CN": "TiDB",
         "hosts": [],
     ...
-    ``
+    ```
 
     Finally, generate the client-side certificate:
 
