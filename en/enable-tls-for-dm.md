@@ -420,7 +420,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         - Set `spec.secretName` to `${cluster_name}-dm-worker-cluster-secret`.
         - Add `server auth` and `client auth` in `usages`.
-        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs.
         - Add the following two IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
@@ -522,7 +522,7 @@ cd /var/lib/dm-master-tls
 /dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr https://127.0.0.1:8261 list-member
 ```
 
-## Enable TLS-authenticated MySQL/TiDB database of MySQL client synchronously using the DM cluster
+## Enable TLS-authenticated MySQL/TiDB database of MySQL client
 
 The following section describes how to configure DM to enable synchronously TLS-authenticated MySQL/TiDB database of MySQL client.
 
