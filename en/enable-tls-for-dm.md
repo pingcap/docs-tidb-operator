@@ -541,13 +541,13 @@ cd /var/lib/dm-master-tls
 
 ## Use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client
 
-The following section describes how to configure DM to enable synchronously TLS-authenticated MySQL/TiDB database of MySQL client.
+This section describes how to configure DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client.
 
 To learn how to enable TLS for the MySQL client of TiDB, refer to [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md).
 
-### Step 1: Create the Kubernetes Secret object of TLS of each MySQL client
+### Step 1: Create the Kubernetes Secret object for each TLS-enabled MySQL client
 
-Suppose you deployed a MySQL/TiDB database with MySQL client TLS enabled. To create a Secret object for the TiDB cluster using the following command:
+Suppose you have deployed a MySQL/TiDB database with TLS-enabled for the MySQL client. To create Secret objects for the TiDB cluster, execute the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -556,9 +556,9 @@ kubectl create secret generic ${mysql_secret_name1} --namespace=${namespace} --f
 kubectl create secret generic ${tidb_secret_name} --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
 ```
 
-### Step 2: Mount secret objects to DM cluster
+### Step 2: Mount the Secret objects to the DM cluster
 
-After creating the Kubernetes Secret object of the upstream and downstream databases, you need to set `spec.tlsClientSecretNames` so that you can mount the Secret object to the Pod of DM-master/DM-worker.
+After creating the Kubernetes Secret objects for the upstream and downstream databases, you need to set `spec.tlsClientSecretNames` so that you can mount the Secret objects to the Pod of DM-master/DM-worker.
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -580,9 +580,9 @@ spec:
 
 ### Step 3: Modify the data source and migration task configuration
 
-After setting the `spec.tlsClientSecretNames` option, TiDB Operator will mount the Secret object ${secret_name} to the path `/var/lib/source-tls/${secret_name}`.
+After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secret objects `${secret_name}` to the path `/var/lib/source-tls/${secret_name}`.
 
-1. Fill in the [data source configuration](deploy-tidb-dm.md#create-data-source) `from.security` option of `source1.yaml` file:
+1. Configure `from.security` in the `source1.yaml` file as described in the [data source configuration](deploy-tidb-dm.md#create-data-source):
 
     ``` yaml
     source-id: mysql-replica-01
@@ -597,7 +597,7 @@ After setting the `spec.tlsClientSecretNames` option, TiDB Operator will mount t
         ssl-key: /var/lib/source-tls/${mysql_secret_name1}/tls.key
     ```
 
-2. Fill in the `target-database.security` option of the `task.yaml` file in the [Configure Migration Tasks](deploy-tidb-dm.md#configure-migration-tasks):
+2. Configure `target-database.security` in the `task.yaml` file as described in the [Configure Migration Tasks](deploy-tidb-dm.md#configure-migration-tasks):
 
     ``` yaml
     name: test
