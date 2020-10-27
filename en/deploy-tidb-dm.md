@@ -5,7 +5,7 @@ summary: Learn how to deploy and use TiDB DM cluster in Kubernetes.
 
 # Deploy and Use DM in Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. This document describes how to deploy DM in Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
+[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to deploy DM in Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ summary: Learn how to deploy and use TiDB DM cluster in Kubernetes.
 
 ## Configure DM deployment
 
-To configure the DM deployment, you need to configure the `DMCluster` CR. Refer to the [DM Cluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/dm/dm-cluster.yaml) for an example. For the complete configurations of `DMCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#dmcluster).
+To configure the DM deployment, you need to configure the `DMCluster` Custom Resource (CR). For the complete configurations of the `DMCluster` CR, refer to the [DMCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/dm/dm-cluster.yaml) and [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#dmcluster). Note that you need to choose the example and API of the current TiDB Operator version.
 
 ### Cluster name
 
@@ -22,17 +22,17 @@ Configure the cluster name by changing the `metadata.name` in the `DMCluster` CR
 
 ### Version
 
-Usually, components in a cluster are in the same version. It is recommended to configure `spec.<master/worker>.baseImage` and `spec.version`. If you need to configure different versions for different components, you can configure `spec.<master/worker>.version`.
+Usually, components in a cluster are in the same version. It is recommended to configure only `spec.<master/worker>.baseImage` and `spec.version`. If you need to deploy different versions for different components, configure `spec.<master/worker>.version`.
 
-Here are the formats of the related parameters:
+The formats of the related parameters are as follows:
 
 - `spec.version`: the format is `imageTag`, such as `v2.0.0-rc.2`.
 - `spec.<master/worker>.baseImage`: the format is `imageName`, such as `pingcap/tidb`.
 - `spec.<master/worker>.version`: the format is `imageTag`, such as `v2.0.0-rc.2`.
 
-TiDB Operator only supports the deployment of DM 2.0 and later versions.
+TiDB Operator only supports deploying DM 2.0 and later versions.
 
-### Configure the DM cluster
+### Cluster
 
 #### Configure Discovery
 
@@ -52,7 +52,7 @@ spec:
 
 #### Configure DM-master
 
-DM-master is an indispensible component for the DM cluster. You need to deploy at least three DM-master Pods to provide high availability.
+DM-master is an indispensible component for the DM cluster. You need to deploy at least three DM-master Pods to achieve high availability.
 
 You can configure DM-master parameters using `spec.master.config` in `DMCluster` CR. For complete DM-master configuration parameters, refer to [DM-master Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-master-configuration-file).
 
@@ -72,7 +72,7 @@ spec:
     imagePullPolicy: IfNotPresent
     service:
       type: NodePort
-      # Configures DM-master service when it is exposed to a fixed NodePort
+      # Configures masterNodePort when you need to expose the DM-master service to a fixed NodePort
       # masterNodePort: 30020
     replicas: 1
     storageSize: "1Gi"
@@ -114,15 +114,15 @@ After configuring the yaml file of the DM cluster in the above steps, execute th
 kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 ```
 
-If the server does not have an external network, you need to download and upload the docker image used by the DM cluster to the server by the following steps, and then execute `docker load` to install the Docker image on the server:
+If the server does not have an external network, you need to download the Docker image used by the DM cluster and upload the image to the server, and then execute `docker load` to install the Docker image on the server:
 
-1. To deploy a DM cluster, use the following Docker images (assuming the version of the DM cluster is v2.0.0-rc.2):
+1. Deploy a DM cluster requires the following Docker image (assuming the version of the DM cluster is v2.0.0-rc.2):
 
     ```shell
     pingcap/dm:v2.0.0-rc.2
     ```
 
-2. To download all the images, execute the following command:
+2. To download the image, execute the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -131,7 +131,7 @@ If the server does not have an external network, you need to download and upload
     docker save -o dm-v2.0.0-rc.2.tar pingcap/dm:v2.0.0-rc.2
     ```
 
-3. Upload Docker images to the server, and execute `docker load` to install them on the server:
+3. Upload the Docker image to the server, and execute `docker load` to install the image on the server:
 
     {{< copyable "shell-regular" >}}
 
@@ -141,13 +141,13 @@ If the server does not have an external network, you need to download and upload
 
 After deploying the DM cluster, execute the following command to view the Pod status:
 
-``` shell
+```shell
 kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${dm_cluster_name}
 ```
 
-You can use TiDB Operator to deploy and manage multiple DM clusters in a single Kubernetes cluster. Repeat the above steps and replace `${dm_cluster_name}` with different names.
+You can use TiDB Operator to deploy and manage multiple DM clusters in a single Kubernetes cluster. To deploy multiple DM clusters, repeat the above steps and replace `${dm_cluster_name}` with different names.
 
-Different clusters can be in the same `namespace` or in different `namespace`. You can select them according to your needs.
+Different clusters can be in the same `namespace` or in different `namespace`s. You can select `namespace`s according to your needs.
 
 ## Access the DM cluster in Kubernetes
 
@@ -171,23 +171,36 @@ For more service exposure methods, refer to [Access the TiDB Cluster](access-tid
 
 The following are two methods to access the DM-master service using dmctl:
 
-**Method #1**: To access DM-master or DM-worker Pod, use image built-in dmctl for operations.
+**Method #1**: Enter the DM-master or DM-worker Pod to use the built-in `dmctl` in the image.
 
-**Method #2**: To expose DM-master service, refer to [Access the DM cluster in Kubernetes](#access-the-dm-cluster-in-kubernetes) and use demctl to access the exposed DM-master service for operations.
+**Method #2**: Expose the DM-master service by [accessing the DM cluster in Kubernetes](#access-the-dm-cluster-in-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
 
-It is recommended to use Method 1 for migration. The following takes Method one as an example to introduce how to start a DM data migration task. The difference between Method 2 is that the file location of `source.yaml` and `task.yaml` are different, and the configuration item of `master-addr` of dmctl needs to fill in the exposed DM-master service address.
+It is recommended to use **Method #1** for migration. The following steps take Method #1 as an example to introduce how to start a DM data migration task.
+
+The differences between Method #1 and Method #2 are that the file locations of `source.yaml` and `task.yaml` are different, and that in Method #2 you need to configure the exposed DM-master service address in the `master-addr` configuration item of `dmctl`.
 
 ### Get into the Pod
 
-Attach to the DM-master Pod using the `kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh` command.
+Attach to the DM-master Pod by executing the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh` command.
 
 ### Create data source
 
 1. To write MySQL-1 related information to `source1.yaml` file, refer to [Create data source](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-3-create-data-source).
 
-2. Fill in the `from.host` of `source1.yaml` file as the MySQL host address that the Kubernetes cluster can access.
+2. Configure the `from.host` in the `source1.yaml` file as the MySQL host address that the Kubernetes cluster can access internally.
 
-3. After you prepare the `source1.yaml` file, load the MySQL-1 data source into the DM cluster via `/dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml`.
+3. After you prepare the `source1.yaml` file, load the MySQL-1 data source into the DM cluster by executing the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    /dmctl --master-addr ${dm_cluster_name}-dm-master:8261 operate-source create source1.yaml`.
+    ```
 
 4. For MySQL-2 and other data sources, use the same method to modify the relevant information in the configuration file and execute the same dmctl command.
 
@@ -195,7 +208,7 @@ Attach to the DM-master Pod using the `kubectl exec -ti ${dm_cluster_name}-dm-ma
 
 1. To edit task configuration file `task.yaml`, refer to [Configure the data migration task](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-4-configure-the-data-migration-task).
 
-2. Fill in the `target-database.host` in `task.yaml` as the TiDB host address that the Kubernetes cluster can access. If it is a cluster deployed by TiDB Operator, fill in the `${tidb_cluster_name}-tidb.${namespace}`.
+2. Configure the `target-database.host` in `task.yaml` as the TiDB host address that the Kubernetes cluster can access internally. If the cluster is deployed by TiDB Operator, configure the host as `${tidb_cluster_name}-tidb.${namespace}`.
 
 ### Start/Check/Stop the migration tasks
 
