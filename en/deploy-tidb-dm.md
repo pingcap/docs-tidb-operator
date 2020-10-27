@@ -187,6 +187,7 @@ Attach to the DM-master Pod by executing the following command:
 
 ```shell
 kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh` command.
+```
 
 ### Create data source
 
