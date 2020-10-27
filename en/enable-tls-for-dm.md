@@ -5,11 +5,11 @@ summary: Learn how to enable TLS for DM in Kubernetes.
 
 # Enable TLS for DM
 
-This document describes how to enable TLS between components of the DM cluster in Kubernetes and how to synchronously enable TLS-authenticated MySQL/TiDB database of MySQL client using the DM cluster.
+This document describes how to enable TLS between components of the DM cluster in Kubernetes and how to use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client.
 
 ## Enable TLS between DM components
 
-TiDB Operator supported enabling TLS between components of the DM cluster in Kubernetes since v1.2.
+Starting from v1.2, TiDB Operator supports enabling TLS between components of the DM cluster in Kubernetes.
 
 To enable TLS between components of the DM cluster, perform the following steps:
 
@@ -113,7 +113,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In this step, a set of server-side certificate is created for each component of the DM cluster.
 
-    - The DM-master server-side certificate
+    - DM-master
 
         First, generate the default `dm-master-server.json` file:
 
@@ -144,7 +144,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         ...
         ```
 
-        `${cluster_name}` is the name of the DM cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+        `${cluster_name}` is the name of the DM cluster. `${namespace}` is the namespace in which the DM cluster is deployed. You can also add your customized `hosts`.
 
         Finally, generate the DM-master server-side certificate:
 
@@ -154,7 +154,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal dm-master-server.json | cfssljson -bare dm-master-server
         ```
 
-    - The DM-worker server-side certificate
+    - DM-worker
 
         First, generate the default `dm-worker-server.json` file:
 
@@ -185,7 +185,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         ...
         ```
 
-        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the DM cluster is deployed. You can also add your customized `hosts`.
 
         Finally, generate the DM-worker server-side certificate:
 
@@ -216,6 +216,8 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     Finally, generate the client-side certificate:
 
+    {{< copyable "shell-regular" >}}
+
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
     ```
@@ -229,7 +231,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         {{< copyable "shell-regular" >}}
 
         ``` shell
-
         kubectl create secret generic ${cluster_name}-dm-master-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-master-server.pem --from-file=tls.key=dm-master-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
@@ -238,7 +239,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         {{< copyable "shell-regular" >}}
 
         ``` shell
-
         kubectl create secret generic ${cluster_name}-dm-worker-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-worker-server.pem --from-file=tls.key=dm-worker-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
@@ -247,7 +247,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         {{< copyable "shell-regular" >}}
 
         ``` shell
-
         kubectl create secret generic ${cluster_name}-dm-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
         ```
 
@@ -371,6 +370,15 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - Set `spec.secretName` to `${cluster_name}-dm-master-cluster-secret`.
         - Add `server auth` and `client auth` in `usages`.
         - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+            - "${cluster_name}-dm-master"
+            - "${cluster_name}-dm-master.${namespace}"
+            - "${cluster_name}-dm-master.${namespace}.svc"
+            - "${cluster_name}-dm-master-peer"
+            - "${cluster_name}-dm-master-peer.${namespace}"
+            - "${cluster_name}-dm-master-peer.${namespace}.svc"
+            - "*.${cluster_name}-dm-master-peer"
+            - "*.${cluster_name}-dm-master-peer.${namespace}"
+            - "*.${cluster_name}-dm-master-peer.${namespace}.svc"
         - Add the following two IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
@@ -420,7 +428,16 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         - Set `spec.secretName` to `${cluster_name}-dm-worker-cluster-secret`.
         - Add `server auth` and `client auth` in `usages`.
-        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs.
+        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+            - "${cluster_name}-dm-worker"
+            - "${cluster_name}-dm-worker.${namespace}"
+            - "${cluster_name}-dm-worker.${namespace}.svc"
+            - "${cluster_name}-dm-worker-peer"
+            - "${cluster_name}-dm-worker-peer.${namespace}"
+            - "${cluster_name}-dm-worker-peer.${namespace}.svc"
+            - "*.${cluster_name}-dm-worker-peer"
+            - "*.${cluster_name}-dm-worker-peer.${namespace}"
+            - "*.${cluster_name}-dm-worker-peer.${namespace}.svc"
         - Add the following two IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`
@@ -522,7 +539,7 @@ cd /var/lib/dm-master-tls
 /dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr https://127.0.0.1:8261 list-member
 ```
 
-## Enable TLS-authenticated MySQL/TiDB database of MySQL client
+## Use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client
 
 The following section describes how to configure DM to enable synchronously TLS-authenticated MySQL/TiDB database of MySQL client.
 
