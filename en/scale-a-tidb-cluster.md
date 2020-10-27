@@ -26,7 +26,7 @@ Modify `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` in the
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-Check whether the TiDB cluster in Kubernetes has updated to your desired definition, by running the following command:
+Check whether the TiDB cluster in Kubernetes has updated to your desired definition by running the following command:
 
 {{< copyable "shell-regular" >}}
 
