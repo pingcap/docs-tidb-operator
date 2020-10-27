@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog Drainer Configurations in Kubernetes
 summary: Learn the configurations of a TiDB Binlog Drainer in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/','/docs/tidb-in-kubernetes/v1.1/configure-tidb-binlog-drainer/']
+aliases: ['/docs/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/','/docs/tidb-in-kubernetes/v1.1/configure-tidb-binlog-drainer/','/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-drainer/']
 ---
 
 # TiDB Binlog Drainer Configurations in Kubernetes
