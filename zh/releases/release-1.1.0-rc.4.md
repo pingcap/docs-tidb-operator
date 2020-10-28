@@ -1,8 +1,8 @@
 ---
-title: TiDB Operator 1.1 RC.4 发布说明
+title: TiDB Operator 1.1 RC.4 Release Notes
 ---
 
-# TiDB Operator 1.1 RC.4 发布说明
+# TiDB Operator 1.1 RC.4 Release Notes
 
 发布日期：2020 年 5 月 15 日
 
