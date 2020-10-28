@@ -535,7 +535,7 @@ basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
 basic-pd-0                        1/1     Running           0          29s
 ```
 
-等待所有组件 pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 Ctrl-C 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb)。
+等待所有组件 pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 Ctrl-C 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
 
 期望输出：
 
