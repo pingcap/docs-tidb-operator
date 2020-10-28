@@ -473,7 +473,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 ``` shell
 kubectl create namespace tidb-cluster && \
-    curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml && \
+    curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml && \
     kubectl -n tidb-cluster apply -f tidb-cluster.yaml
 ```
 
@@ -483,7 +483,7 @@ kubectl create namespace tidb-cluster && \
 
 ```
 kubectl create namespace tidb-cluster && \
-    curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml && \
+    curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml && \
     kubectl -n tidb-cluster apply -f tidb-cluster.yaml
 ```
 
@@ -499,7 +499,7 @@ tidbcluster.pingcap.com/basic created
 {{< copyable "shell-regular" >}}
 
 ``` shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
+curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
     kubectl -n tidb-cluster apply -f tidb-monitor.yaml
 ```
 
@@ -508,7 +508,7 @@ curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples
 {{< copyable "shell-regular" >}}
 
 ```
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml && \
+curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml && \
     kubectl -n tidb-cluster apply -f tidb-monitor.yaml
 ```
 
