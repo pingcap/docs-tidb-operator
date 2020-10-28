@@ -829,7 +829,7 @@ Check Table Before Drop: false
 
 {{< copyable "shell-regular" >}}
 
-    ```shell
+```shell
 kubectl delete tc basic -n tidb-cluster
 ```
 
@@ -845,7 +845,7 @@ kubectl delete tidbmonitor basic -n tidb-cluster
 
 如果您的部署具有持久性数据存储，则删除 TiDB 群集将不会删除群集的数据。 如果不再需要数据，可以运行以下命令来清理数据：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl delete pvc -n tidb-cluster -l app.kubernetes.io/instance=basic,app.kubernetes.io/managed-by=tidb-operator && \
