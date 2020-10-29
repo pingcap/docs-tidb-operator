@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 本文介绍了如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集群。
 
-## 环境配置准备
+## 环境准备
 
 部署前，请确认已完成以下环境准备：
 
@@ -26,9 +26,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 >
 > 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/) 和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
-## 部署
+## 创建 EKS 集群和节点池
 
-### 创建 EKS 和节点池
+将以下配置存为 cluster.yaml 文件，并替换 `${clusterName}` 为自己想命名的集群名字：
 
 {{< copyable "shell-regular" >}}
 
@@ -67,7 +67,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
 ```
 
-将以上配置存为 cluster.yaml 文件，并替换 `${clusterName}` 为自己想命名的集群名字后，执行以下命令创建集群：
+执行以下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -77,73 +77,87 @@ eksctl create cluster -f cluster.yaml
 
 > **注意：**
 >
-> 该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时 5 到 10 分钟不等。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files) 了解更多集群配置选项。
+> 该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~10 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files) 了解更多集群配置选项。
 
-### 部署 TiDB Operator
+## 部署 TiDB Operator
 
-参考快速上手中 [部署 TiDB Operator](get-started.md#部署-tidb-operator)，将 TiDB Operator 部署进 Kubernetes 集群。
+参考快速上手中 [部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
 
-### 部署 TiDB 集群和监控
+## 部署 TiDB 集群和监控
 
-1. 准备 TidbCluster 和 TidbMonitor CR 文件：
+下面介绍如何在 AWS EKS 上部署 TiDB 集群和监控组件。
 
-    {{< copyable "shell-regular" >}}
+### 部署 CRDs
 
-    ```shell
-    curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml &&
-    curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
-    ```
+执行以下命令，在 EKS 集群中部署 TidbCluster 和 TidbMonitor CR：
 
-2. 创建 `Namespace`：
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+```shell
+curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml &&
+curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
+```
 
-    ```shell
-    kubectl create namespace tidb-cluster
-    ```
+### 创建 namespace
 
-    > **注意：**
-    >
-    > 这里创建的 `namespace` 是指 [Kubernetes 命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)。本文档使用 `tidb-cluster` 为例，若使用了其他名字，修改相应的 `-n` 或 `--namespace` 参数为对应的名字即可。
+执行以下命令，创建 TiDB 集群安装的 namespace：
 
-3. 部署 TiDB 集群：
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+```shell
+kubectl create namespace tidb-cluster
+```
 
-    ```shell
-    kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
-    kubectl create -f tidb-monitor.yaml -n tidb-cluster
-    ```
+> **注意：**
+>
+> 这里创建的 namespace 是指 [Kubernetes 命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)。本文档使用 `tidb-cluster` 为例，若使用了其他名字，修改相应的 `-n` 或 `--namespace` 参数为对应的名字即可。
 
-4. 查看 TiDB 集群启动状态：
+### 部署 TiDB 集群
 
-    {{< copyable "shell-regular" >}}
+执行以下命令，创建 TiDB 集群。
 
-    ```shell
-    kubectl get pods -n tidb-cluster
-    ```
+{{< copyable "shell-regular" >}}
 
-    当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。一个正常运行的 TiDB 集群的案例：
+```shell
+kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
+kubectl create -f tidb-monitor.yaml -n tidb-cluster
+```
 
-    ```
-    NAME                              READY   STATUS    RESTARTS   AGE
-    tidb-discovery-5cb8474d89-n8cxk   1/1     Running   0          47h
-    tidb-monitor-6fbcc68669-dsjlc     3/3     Running   0          47h
-    tidb-pd-0                         1/1     Running   0          47h
-    tidb-pd-1                         1/1     Running   0          46h
-    tidb-pd-2                         1/1     Running   0          46h
-    tidb-tidb-0                       2/2     Running   0          47h
-    tidb-tidb-1                       2/2     Running   0          46h
-    tidb-tikv-0                       1/1     Running   0          47h
-    tidb-tikv-1                       1/1     Running   0          47h
-    tidb-tikv-2                       1/1     Running   0          47h
-    ```
+当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
+
+### 查看 TiDB 集群启动状态
+
+使用以下命令查看 TiDB 集群启动状态：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get pods -n tidb-cluster
+```
+
+当所有 pods 都处于 Running & Ready 状态时，则可以认为 TiDB 集群已经成功启动。如下是一个正常运行的 TiDB 集群的示例输出：
+
+```
+NAME                              READY   STATUS    RESTARTS   AGE
+tidb-discovery-5cb8474d89-n8cxk   1/1     Running   0          47h
+tidb-monitor-6fbcc68669-dsjlc     3/3     Running   0          47h
+tidb-pd-0                         1/1     Running   0          47h
+tidb-pd-1                         1/1     Running   0          46h
+tidb-pd-2                         1/1     Running   0          46h
+tidb-tidb-0                       2/2     Running   0          47h
+tidb-tidb-1                       2/2     Running   0          46h
+tidb-tikv-0                       1/1     Running   0          47h
+tidb-tikv-1                       1/1     Running   0          47h
+tidb-tikv-2                       1/1     Running   0          47h
+```
 
 ## 访问数据库
 
-### 准备一台可以访问集群的机器
+创建好 TiDB 集群后，我们就可以访问数据库，进行测试和开发了。
 
-我们为 TiDB 集群创建的是内网 LoadBalancer。我们可在集群 VPC 内创建一台 [堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 访问数据库，参考 [AWS Linux 堡垒机文档](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 在 AWS Console 上创建即可。
+### 准备一台堡垒机
+
+我们为 TiDB 集群创建的是内网 LoadBalancer，因此可以在集群 VPC 内创建一台 [堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 来访问数据库。具体参考 [AWS Linux 堡垒机文档](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 在 AWS Console 上创建即可。
 
 VPC 和 Subnet 需选择集群的 VPC 和 Subnet，在下拉框通过集群名字确认是否正确。可以通过以下命令查看集群的 VPC 和 Subnet 来验证：
 
@@ -161,9 +175,9 @@ eksctl get cluster -n ${clusterName}
 
 ### 安装 MySQL 客户端并连接
 
-待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端 来访问 TiDB 集群。
+创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端来访问 TiDB 集群。
 
-用 SSH 连接到堡垒机：
+使用 SSH 登录堡垒机：
 
 {{< copyable "shell-regular" >}}
 
@@ -171,7 +185,7 @@ eksctl get cluster -n ${clusterName}
 ssh [-i /path/to/your/private-key.pem] ec2-user@<bastion-public-dns-name>
 ```
 
-安装 MySQL 客户端：
+在堡垒机上安装 MySQL 客户端：
 
 {{< copyable "shell-regular" >}}
 
@@ -187,9 +201,9 @@ sudo yum install mysql -y
 mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
 ```
 
-`${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer 域名，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
+其中 `${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer 域名，可以通过命令 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
 
-示例：
+以下为一个连接 TiDB 集群的示例：
 
 ```shell
 $ mysql -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
@@ -220,7 +234,7 @@ MySQL [(none)]> show status;
 > - [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) 从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本*小于* v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 > - TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见 [TiDB 遥测功能使用文档](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
-## Grafana 监控
+### 访问 Grafana 监控
 
 先获取 Grafana 的 LoadBalancer 域名：
 
@@ -230,7 +244,7 @@ MySQL [(none)]> show status;
 kubectl -n tidb-cluster get svc basic-grafana
 ```
 
-示例：
+示例输出：
 
 ```
 $ kubectl get svc basic-grafana
@@ -242,22 +256,23 @@ basic-grafana   LoadBalancer   10.100.199.42   a806cfe84c12a4831aa3313e792e3eed-
 
 你可以通过浏览器访问 `${grafana-lb}:3000` 地址查看 Grafana 监控指标。其中 `${grafana-lb}` 替换成前面获取的域名。
 
-Grafana 默认登录信息：
-
-- 用户名：admin
-- 密码：admin
+> **注意：**
+>
+> Grafana 默认用户名和密码均为 admin。
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
 
 升级过程会持续一段时间，你可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 
 ## 扩容 TiDB 集群
 
-注意扩容前需要对相应的节点组进行扩容，以便新的实例有足够的资源运行。
+扩容前需要对相应的节点组进行扩容，以便新的实例有足够的资源运行。以下展示扩容 EKS 节点组和 TiDB 集群组件的操作。
 
-下面是将集群 `${clusterName}` 的 `tikv` 组扩容到 4 节点的示例：
+### 扩容 EKS 节点组
+
+以下是将集群 `${clusterName}` 的 `tikv` 节点组扩容到 4 节点的示例：
 
 {{< copyable "shell-regular" >}}
 
@@ -265,11 +280,15 @@ Grafana 默认登录信息：
 eksctl scale nodegroup --cluster ${clusterName} --name tikv --nodes 4 --nodes-min 4 --nodes-max 4
 ```
 
-然后通过 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas` 为期望的新副本数进行扩容。
-
 更多节点组管理可参考 [eksctl 文档](https://eksctl.io/usage/managing-nodegroups/)。
 
+### 扩容 TiDB 组件
+
+扩容 EKS 节点组后，可以使用命令 `kubectl edit tc basic -n tidb-cluster` 修改各组件的 `replicas` 为期望的新副本数进行扩容。
+
 ## 部署 TiFlash/TiCDC
+
+[TiFlash](https://docs.pingcap.com/zh/tidb/stable/tiflash-overview) 是 TiKV 的列存扩展，[TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具。这两个组件不是必选安装项，这里提供一个快速安装上手示例。
 
 ### 新增节点组
 
@@ -290,10 +309,12 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv --nodes 4 --nodes-mi
       dedicated: ticdc:NoSchedule
 ```
 
+具体命令根据 EKS 集群创建情况而定：
+
 - 若集群还未创建，使用 `eksctl create cluster -f cluster.yaml` 命令创建集群和节点组。
 - 若集群已经创建，使用 `eksctl create nodegroup -f cluster.yaml` 命令只创建节点组（已经存在的节点组会忽略，不会重复创建）。
 
-### 配置并部署
+### 配置并部署 TiFlash/TiCDC
 
 如果要部署 TiFlash，可以在 tidb-cluster.yaml 中配置 `spec.tiflash`，例如：
 
@@ -314,7 +335,7 @@ spec:
       value: tiflash
 ```
 
-其他参数可以参考 [集群配置文档](configure-a-tidb-cluster.md) 进行配置。
+其他参数可以参考 [TiDB 集群配置文档](configure-a-tidb-cluster.md) 进行配置。
 
 > **警告：**
 >
@@ -343,7 +364,7 @@ spec:
 
 ## 使用企业版
 
-值得注意的是，如果需要部署企业版的 TiDB/PD/TiKV/TiFlash/TiCDC，需要将 tidb-cluster.yaml 中 `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` 配置为企业版镜像，格式为 `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`。
+部署企业版 TiDB/PD/TiKV/TiFlash/TiCDC 时，只需要将 tidb-cluster.yaml 中 `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` 配置为企业版镜像，格式为 `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`。
 
 例如:
 
@@ -372,7 +393,7 @@ parameters:
   fsType: ext4
 ```
 
-然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。
+然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考 [Tiflash 部署文档](deploy-tiflash.md)。
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/) 和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
@@ -424,4 +445,4 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 
 3. 使用本地存储。
 
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可。
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文 [部署 TiDB 集群和监控](#部署-tidb-集群和监控) 部分。
