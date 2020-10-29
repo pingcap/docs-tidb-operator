@@ -191,7 +191,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
 
 ### Create data source
 
-1. To write MySQL-1 related information to `source1.yaml` file, refer to [Create data source](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-3-create-data-source).
+1. Write MySQL-1 related information to `source1.yaml` file, which can refer to [Create data source](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-3-create-data-source).
 
 2. Configure the `from.host` in the `source1.yaml` file as the MySQL host address that the Kubernetes cluster can access internally.
 
@@ -207,7 +207,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
 
 ### Configure migration tasks
 
-1. To edit task configuration file `task.yaml`, refer to [Configure the data migration task](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-4-configure-the-data-migration-task).
+1. Edit task configuration file `task.yaml`, which can refer to [Configure the data migration task](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-4-configure-the-data-migration-task).
 
 2. Configure the `target-database.host` in `task.yaml` as the TiDB host address that the Kubernetes cluster can access internally. If the cluster is deployed by TiDB Operator, configure the host as `${tidb_cluster_name}-tidb.${namespace}`.
 
