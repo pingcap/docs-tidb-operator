@@ -251,6 +251,10 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/
 
 后续创建 TiDB 集群或备份等组件的时候，再配置相应的 `StorageClass` 供其使用。
 
+> **注意：**
+>
+> 测试时，可直接创建空文件夹，并 bind mount 到 `local-volume-provisioner` 来创建本地 PV，例如命令 `mount --bind /tmp/disks/1 /mnt/disks/1`。
+
 ## 数据安全
 
 一般情况下 PVC 在使用完删除后，与其绑定的 PV 会被 provisioner 清理回收再放入资源池中被调度使用。为避免数据意外丢失，可在全局配置 `StorageClass` 的回收策略 (reclaim policy) 为 `Retain` 或者只将某个 PV 的回收策略修改为 `Retain`。`Retain` 模式下，PV 不会自动被回收。
