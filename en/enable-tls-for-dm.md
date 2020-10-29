@@ -545,7 +545,7 @@ This section describes how to configure DM to migrate data between MySQL/TiDB da
 
 To learn how to enable TLS for the MySQL client of TiDB, refer to [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md).
 
-### Step 1: Create the Kubernetes Secret object for each TLS-enabled MySQL client
+### Step 1: Create the Kubernetes Secret object for each TLS-enabled MySQL
 
 Suppose you have deployed a MySQL/TiDB database with TLS-enabled for the MySQL client. To create Secret objects for the TiDB cluster, execute the following command:
 
