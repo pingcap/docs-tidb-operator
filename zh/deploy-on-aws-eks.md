@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 - 安装 [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator。
 
-- 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html) 中所有操作。
+- 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html)中所有操作。
 
 该教程包含以下内容：
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 > **注意：**
 >
-> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/) 和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
 ## 创建 EKS 集群和节点池
 
@@ -77,11 +77,11 @@ eksctl create cluster -f cluster.yaml
 
 > **注意：**
 >
-> 该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~10 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files) 了解更多集群配置选项。
+> 该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~10 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
 
 ## 部署 TiDB Operator
 
-参考快速上手中 [部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -157,7 +157,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 ### 准备一台堡垒机
 
-我们为 TiDB 集群创建的是内网 LoadBalancer，因此可以在集群 VPC 内创建一台 [堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 来访问数据库。具体参考 [AWS Linux 堡垒机文档](https://aws.amazon.com/quickstart/architecture/linux-bastion/) 在 AWS Console 上创建即可。
+我们为 TiDB 集群创建的是内网 LoadBalancer，因此可以在集群 VPC 内创建一台[堡垒机](https://aws.amazon.com/quickstart/architecture/linux-bastion/)来访问数据库。具体参考 [AWS Linux 堡垒机文档](https://aws.amazon.com/quickstart/architecture/linux-bastion/)在 AWS Console 上创建即可。
 
 VPC 和 Subnet 需选择集群的 VPC 和 Subnet，在下拉框通过集群名字确认是否正确。可以通过以下命令查看集群的 VPC 和 Subnet 来验证：
 
@@ -231,7 +231,7 @@ MySQL [(none)]> show status;
 
 > **注意：**
 >
-> - [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) 从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本*小于* v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
+> - [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本*小于* v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 > - TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见 [TiDB 遥测功能使用文档](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
 ### 访问 Grafana 监控
@@ -335,7 +335,7 @@ spec:
       value: tiflash
 ```
 
-其他参数可以参考 [TiDB 集群配置文档](configure-a-tidb-cluster.md) 进行配置。
+其他参数可以参考 [TiDB 集群配置文档](configure-a-tidb-cluster.md)进行配置。
 
 > **警告：**
 >
@@ -360,7 +360,7 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) 和 [集群配置文档](configure-a-tidb-cluster.md) 完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
 ## 使用企业版
 
@@ -395,7 +395,7 @@ parameters:
 
 然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考 [Tiflash 部署文档](deploy-tiflash.md)。
 
-更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/) 和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
+更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
 ## 使用本地存储
 
@@ -445,4 +445,4 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 
 3. 使用本地存储。
 
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文 [部署 TiDB 集群和监控](#部署-tidb-集群和监控) 部分。
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
