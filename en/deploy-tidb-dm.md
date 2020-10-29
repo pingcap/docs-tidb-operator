@@ -52,9 +52,9 @@ spec:
 
 #### Configure DM-master
 
-DM-master is an indispensible component for the DM cluster. You need to deploy at least three DM-master Pods to achieve high availability.
+DM-master is an indispensable component of the DM cluster. You need to deploy at least three DM-master Pods if you want to achieve high availability.
 
-You can configure DM-master parameters using `spec.master.config` in `DMCluster` CR. For complete DM-master configuration parameters, refer to [DM-master Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-master-configuration-file).
+You can configure DM-master parameters by `spec.master.config` in `DMCluster` CR. For complete DM-master configuration parameters, refer to [DM-master Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-master-configuration-file).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -85,7 +85,7 @@ spec:
 
 #### Configure DM-worker
 
-You can configure DM-worker parameters using `spec.worker.config` in `DMCluster` CR. For complete DM-worker configuration parameters，refer to [DM-worker Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-worker-configuration-file).
+You can configure DM-worker parameters by `spec.worker.config` in `DMCluster` CR. For complete DM-worker configuration parameters，refer to [DM-worker Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-worker-configuration-file).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -145,9 +145,9 @@ After deploying the DM cluster, execute the following command to view the Pod st
 kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${dm_cluster_name}
 ```
 
-You can use TiDB Operator to deploy and manage multiple DM clusters in a single Kubernetes cluster. To deploy multiple DM clusters, repeat the above steps and replace `${dm_cluster_name}` with different names.
+You can use TiDB Operator to deploy and manage multiple DM clusters in a single Kubernetes cluster by repeating the above procedure and replacing `${dm_cluster_name}` with a different name.
 
-Different clusters can be in the same `namespace` or in different `namespace`s. You can select `namespace`s according to your needs.
+Different clusters can be in the same or different `namespace`, which is based on your actual needs.
 
 ## Access the DM cluster in Kubernetes
 
@@ -169,13 +169,13 @@ For more service exposure methods, refer to [Access the TiDB Cluster](access-tid
 
 ## Enable DM data migration tasks
 
-The following are two methods to access the DM-master service using dmctl:
+You can access the DM-master service using dmctl in the following two methods:
 
-**Method #1**: Enter the DM-master or DM-worker Pod to use the built-in `dmctl` in the image.
+**Method #1**: Attach to the DM-master or DM-worker Pod to use the built-in `dmctl` in the image.
 
 **Method #2**: Expose the DM-master service by [accessing the DM cluster in Kubernetes](#access-the-dm-cluster-in-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
 
-It is recommended to use **Method #1** for migration. The following steps take Method #1 as an example to introduce how to start a DM data migration task.
+It is recommended to use **Method #1** for migration. The following steps take **Method #1** as an example to introduce how to start a DM data migration task.
 
 The differences between Method #1 and Method #2 are that the file locations of `source.yaml` and `task.yaml` are different, and that in Method #2 you need to configure the exposed DM-master service address in the `master-addr` configuration item of `dmctl`.
 
