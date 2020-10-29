@@ -29,39 +29,39 @@ systemctl disable firewalld
 
 如果无法关闭 firewalld 服务，为了保证 Kubernetes 正常运行，需要打开以下端口：
 
-1. 在 Master 节点上，打开以下端口，然后重新启动服务：
+在 Master 节点上，打开以下端口，然后重新启动服务：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    firewall-cmd --permanent --add-port=6443/tcp
-    firewall-cmd --permanent --add-port=2379-2380/tcp
-    firewall-cmd --permanent --add-port=10250/tcp
-    firewall-cmd --permanent --add-port=10251/tcp
-    firewall-cmd --permanent --add-port=10252/tcp
-    firewall-cmd --permanent --add-port=10255/tcp
-    firewall-cmd --permanent --add-port=8472/udp
-    firewall-cmd --add-masquerade --permanent
+```shell
+firewall-cmd --permanent --add-port=6443/tcp
+firewall-cmd --permanent --add-port=2379-2380/tcp
+firewall-cmd --permanent --add-port=10250/tcp
+firewall-cmd --permanent --add-port=10251/tcp
+firewall-cmd --permanent --add-port=10252/tcp
+firewall-cmd --permanent --add-port=10255/tcp
+firewall-cmd --permanent --add-port=8472/udp
+firewall-cmd --add-masquerade --permanent
 
-    # 当需要在 Master 节点上暴露 NodePort 时候设置
-    firewall-cmd --permanent --add-port=30000-32767/tcp
+# 当需要在 Master 节点上暴露 NodePort 时候设置
+firewall-cmd --permanent --add-port=30000-32767/tcp
 
-    systemctl restart firewalld
-    ```
+systemctl restart firewalld
+```
 
-2. 在 Node 节点上，打开以下端口，然后重新启动服务：
+在 Node 节点上，打开以下端口，然后重新启动服务：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    firewall-cmd --permanent --add-port=10250/tcp
-    firewall-cmd --permanent --add-port=10255/tcp
-    firewall-cmd --permanent --add-port=8472/udp
-    firewall-cmd --permanent --add-port=30000-32767/tcp
-    firewall-cmd --add-masquerade --permanent
+```shell
+firewall-cmd --permanent --add-port=10250/tcp
+firewall-cmd --permanent --add-port=10255/tcp
+firewall-cmd --permanent --add-port=8472/udp
+firewall-cmd --permanent --add-port=30000-32767/tcp
+firewall-cmd --add-masquerade --permanent
 
-    systemctl restart firewalld
-    ```
+systemctl restart firewalld
+```
 
 ## 配置 Iptables
 
@@ -163,41 +163,41 @@ sysctl --system
 
 安装完 Docker 服务以后，执行以下步骤：
 
-1. 将 Docker 的数据保存到一块单独的盘上，Docker 的数据主要包括镜像和容器日志数据。通过设置 [`--data-root`](https://docs.docker.com/config/daemon/systemd/#runtime-directory-and-storage-driver) 参数来实现：
+将 Docker 的数据保存到一块单独的盘上，Docker 的数据主要包括镜像和容器日志数据。通过设置 [`--data-root`](https://docs.docker.com/config/daemon/systemd/#runtime-directory-and-storage-driver) 参数来实现：
 
-    ```shell
-    cat > /etc/docker/daemon.json <<EOF
-    {
-      "exec-opts": ["native.cgroupdriver=systemd"],
-      "log-driver": "json-file",
-      "log-opts": {
-        "max-size": "100m"
-      },
-      "storage-driver": "overlay2",
-      "storage-opts": [
-        "overlay2.override_kernel_check=true"
-      ],
-      "data-root": "/data1/docker"
-    }
-    EOF
-    ```
-   
-    上面会将 Docker 的数据目录设置为 `/data1/docker`。
+```shell
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ],
+  "data-root": "/data1/docker"
+}
+EOF
+```
 
-2. 设置 Docker daemon 的 ulimit： 
+上面会将 Docker 的数据目录设置为 `/data1/docker`。
 
-    {{< copyable "shell-regular" >}}
-    
-    ```shell
-    vim /etc/systemd/system/docker.service
-    LimitNOFILE=1048576
-    ```
-    
-    设置 `LimitNOFILE` 大于等于 `1048576`。
-    
-    > **注意：**
-    >
-    > `LimitNOFILE` 需要显式设置为 `1048576` 或者更大，而不是默认的 `infinity`，由于 `systemd` 的 [bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
+设置 Docker daemon 的 ulimit： 
+
+{{< copyable "shell-regular" >}}
+
+```shell
+vim /etc/systemd/system/docker.service
+LimitNOFILE=1048576
+```
+
+设置 `LimitNOFILE` 大于等于 `1048576`。
+
+> **注意：**
+>
+> `LimitNOFILE` 需要显式设置为 `1048576` 或者更大，而不是默认的 `infinity`，由于 `systemd` 的 [bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
 
 ## Kubernetes 服务
 
