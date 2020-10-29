@@ -31,7 +31,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
     - [阿里云部署文档](deploy-on-alibaba-cloud.md)
 - 其他 Kubernetes 集群
     - [集群环境要求](prerequisites.md)
-    - 参考 [本地 PV 配置](configure-storage-class.md#本地-pv-配置) 让 TiKV 使用高性能本地存储
+    - 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)让 TiKV 使用高性能本地存储
     - [在 Kubernetes 部署 TiDB Operator](deploy-tidb-operator.md)
     - [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
 
@@ -106,7 +106,7 @@ KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/serv
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-现在就可以开始 [部署 TiDB Operator](#部署-tidb-operator) 了！
+现在就可以开始[部署 TiDB Operator](#部署-tidb-operator)了！
 
 测试完成后，执行下面命令来销毁集群：
 
@@ -213,7 +213,7 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-现在就可以开始 [部署 TiDB Operator](#部署-tidb-operator) 了！
+现在就可以开始[部署 TiDB Operator](#部署-tidb-operator)了！
 
 测试完成后，执行下面命令来销毁集群：
 
@@ -228,9 +228,9 @@ minikube delete
 开始之前，确保以下要求已满足：
 
 - 可以使用 `kubectl` 访问的 Kubernetes 集群
-- [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= 2.16.5) 或者最新的 Helm 3 稳定版
+- 已安装 [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= 2.16.5) 或者最新的 Helm 3 稳定版
 
-部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。下面分别介绍这两个步骤。
+部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。
 
 ### 安装 TiDB Operator CRDs
 
@@ -581,7 +581,7 @@ basic-tidb-peer          ClusterIP   None             <none>        10080/TCP   
 basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
 ```
 
-这个例子中，TiDB **Service** 是 **basic-tidb** 。使用以下命令转发本地端口到集群：
+这个例子中，TiDB **Service** 是 **basic-tidb**。使用以下命令转发本地端口到集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -589,7 +589,7 @@ basic-tikv-peer          ClusterIP   None             <none>        20160/TCP   
 kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 ```
 
-命令会运行在后台，并将输出转发到文件 `pf4000.out` 。所以我们可以继续在当前 shell 会话中继续执行命令。
+命令会运行在后台，并将输出转发到文件 `pf4000.out`。所以我们可以继续在当前 shell 会话中执行命令。
 
 ### 连接 TiDB 服务
 
@@ -764,7 +764,7 @@ tidbcluster.pingcap.com/basic patched
 
 ### 等待 Pods 重启
 
-执行此命令以了解集群升级组件时的进度。您可以看到某些 pods 进入 Terminating 状态后，又回到 ContainerCreating，最后重新进入 Running 状态。
+执行以下命令以了解集群升级组件时的进度。您可以看到某些 Pods 进入 `Terminating` 状态后，又回到 `ContainerCreating`，最后重新进入 `Running` 状态。
 
 {{< copyable "shell-regular" >}}
 
@@ -784,7 +784,7 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 ### 转发 TiDB 服务端口
 
-当所有 pods 都重启后，将看到版本号已更改。现在可以重新运行 `kubeclt port-forward` 命令进行端口转发，以便访问集群中 TiDB 集群。
+当所有 Pods 都重启后，将看到版本号已更改。现在可以重新运行 `kubeclt port-forward` 命令进行端口转发，以便访问集群中 TiDB 集群。
 
 {{< copyable "shell-regular" >}}
 
@@ -843,7 +843,7 @@ kubectl delete tidbmonitor basic -n tidb-cluster
 
 ### 删除 PV 数据
 
-如果您的部署具有持久性数据存储，则删除 TiDB 群集将不会删除群集的数据。 如果不再需要数据，可以运行以下命令来清理数据：
+如果您的部署具有持久性数据存储，则删除 TiDB 群集将不会删除群集的数据。如果不再需要数据，可以运行以下命令来清理数据：
 
 {{< copyable "shell-regular" >}}
 
