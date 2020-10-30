@@ -106,7 +106,7 @@ KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/serv
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-现在就可以开始[部署 TiDB Operator](#部署-tidb-operator)了！
+现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
 
 测试完成后，执行下面命令来销毁集群：
 
@@ -134,7 +134,7 @@ kind delete cluster
 
 > **注意：**
 >
-> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果您想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑 [使用 kind](#使用-kind-创建-kubernetes-集群)。
+> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果您想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑[使用 kind](#使用-kind-创建-kubernetes-集群)。
 
 安装完 minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
 
@@ -213,7 +213,7 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-现在就可以开始[部署 TiDB Operator](#部署-tidb-operator)了！
+现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
 
 测试完成后，执行下面命令来销毁集群：
 
@@ -258,11 +258,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。可使用 `helm version --short` 命令查看安装的版本。
 
-#### 使用 Helm2
+#### 使用 Helm 2
 
-如果使用的是 Helm 2，您需要安装服务端组件 tiller 。若使用 Helm 3 可跳过此步。 
+如果使用的是 Helm 2，您需要安装服务端组件 tiller。若使用 Helm 3 可[跳过此步](#使用-helm-3)。
 
-1. 应用 tiller 组件 RBAC 规则并安装 tiller 。
+1. 应用 tiller 组件 RBAC 规则并安装 tiller：
 
     {{< copyable "shell-regular" >}}
 
@@ -271,7 +271,7 @@ TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。
         helm init --service-account=tiller --upgrade
     ```
 
-    执行以下命令，检查并确认 tiller 的 Pod 是否运行起来：
+    执行以下命令，检查并确认 tiller 的 Pod 是否已成功运行：
 
     {{< copyable "shell-regular" >}}
 
@@ -286,9 +286,9 @@ TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。
     tiller-deploy-b7b9488b5-j6m6p   1/1     Running   0          18s
     ```
 
-    当 Ready 栏显示 `1/1` 时表明已经运行起来，可进入下一步操作。
+    Ready 栏显示 `1/1` 表明 tiller Pod 已成功运行，可进入下一步操作。
 
-2. 添加 PingCAP 仓库
+2. 添加 PingCAP 仓库：
 
     {{< copyable "shell-regular" >}}
 
@@ -302,7 +302,7 @@ TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。
     "pingcap" has been added to your repositories  
     ```
 
-3. 为 TiDB Operator 创建一个命名空间
+3. 为 TiDB Operator 创建一个命名空间：
 
     {{< copyable "shell-regular" >}}
 
@@ -316,7 +316,7 @@ TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。
     namespace/tidb-admin created
     ```
 
-4. 安装 TiDB Operator
+4. 安装 TiDB Operator：
 
     {{< copyable "shell-regular" >}}
 
@@ -535,7 +535,7 @@ basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
 basic-pd-0                        1/1     Running           0          29s
 ```
 
-等待所有组件 pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 Ctrl-C 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
+等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
 
 期望输出：
 
