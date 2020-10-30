@@ -228,7 +228,7 @@ minikube delete
 开始之前，确保以下要求已满足：
 
 - 可以使用 `kubectl` 访问的 Kubernetes 集群
-- 已安装 [Helm](https://helm.sh/docs/intro/install/): Helm 2 (>= 2.16.5) 或者最新的 Helm 3 稳定版
+- 已安装 [Helm](https://helm.sh/docs/intro/install/)
 
 部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。
 
@@ -256,132 +256,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 ### 安装 TiDB Operator
 
-TiDB Operator 使用 Helm 安装，Helm 2 和 Helm 3 版本用法略有不同。可使用 `helm version --short` 命令查看安装的版本。
-
-#### 使用 Helm 2
-
-如果使用的是 Helm 2，您需要安装服务端组件 tiller。若使用 Helm 3 可[跳过此步](#使用-helm-3)。
-
-1. 应用 tiller 组件 RBAC 规则并安装 tiller：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
-        helm init --service-account=tiller --upgrade
-    ```
-
-    执行以下命令，检查并确认 tiller 的 Pod 是否已成功运行：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get po -n kube-system -l name=tiller
-    ```
-
-    期望输出：
-
-    ```
-    NAME                            READY   STATUS    RESTARTS   AGE
-    tiller-deploy-b7b9488b5-j6m6p   1/1     Running   0          18s
-    ```
-
-    Ready 栏显示 `1/1` 表明 tiller Pod 已成功运行，可进入下一步操作。
-
-2. 添加 PingCAP 仓库：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm repo add pingcap https://charts.pingcap.org/
-    ```
-
-    期望输出：
-
-    ```
-    "pingcap" has been added to your repositories  
-    ```
-
-3. 为 TiDB Operator 创建一个命名空间：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl create namespace tidb-admin
-    ```
-
-    期望输出：
-
-    ```
-    namespace/tidb-admin created
-    ```
-
-4. 安装 TiDB Operator：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.6
-    ```
-
-    如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
-
-    {{< copyable "shell-regular" >}}
-
-    ```
-    helm install --namespace tidb-admin --name tidb-operator pingcap/tidb-operator --version v1.1.6 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.6 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.6 \
-        --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
-    ```
-
-    期望输出：
-
-    ```
-    NAME:   tidb-operator
-    LAST DEPLOYED: Thu May 28 15:17:38 2020
-    NAMESPACE: tidb-admin
-    STATUS: DEPLOYED
-
-    RESOURCES:
-    ==> v1/ConfigMap
-    NAME                   DATA  AGE
-    tidb-scheduler-policy  1     0s
-
-    ==> v1/Deployment
-    NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-    tidb-controller-manager  0/1    1           0          0s
-    tidb-scheduler           0/1    1           0          0s
-
-    ==> v1/Pod(related)
-    NAME                                      READY  STATUS             RESTARTS  AGE
-    tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-    tidb-controller-manager-6d8d5c6d64-b8lv4  0/1    ContainerCreating  0         0s
-
-    ==> v1/ServiceAccount
-    NAME                     SECRETS  AGE
-    tidb-controller-manager  1        0s
-    tidb-scheduler           1        0s
-
-    ==> v1beta1/ClusterRole
-    NAME                                   CREATED AT
-    tidb-operator:tidb-controller-manager  2020-05-28T22:17:38Z
-    tidb-operator:tidb-scheduler           2020-05-28T22:17:38Z
-
-    ==> v1beta1/ClusterRoleBinding
-    NAME                                   ROLE                                               AGE
-    tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
-    tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
-    tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
-    tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
-
-    NOTES:
-    Make sure tidb-operator components are running:
-
-        kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-    ```
-
-#### 使用 Helm 3
+TiDB Operator 使用 Helm 3 安装。
 
 1. 添加 PingCAP 仓库
 
