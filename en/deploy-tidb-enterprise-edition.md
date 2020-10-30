@@ -21,7 +21,7 @@ Currently, the difference between the deployment of TiDB Operator Enterprise Edi
 
 ```yaml
 spec:
-  version: v4.0.6
+  version: v4.0.7
   ...
   pd:
     baseImage: pingcap/pd-enterprise
@@ -48,8 +48,7 @@ spec:
 
 + If you want to switch an existing Community Edition cluster to Enterprise Edition:
 
-    - Method #1: Add the "-enterprise" suffix to the `baseImage` item of the configuration file of the existing cluster in the above format and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration.
-    - Method #2: Run the `kubectl edit tc ${name} -n ${namespace}` command to add the suffix "-enterprise" to each component's `baseImage` in the above format, and then update the cluster configuration.
+    Run the `kubectl edit tc ${name} -n ${namespace}` command to add the suffix "-enterprise" to each component's `baseImage` in the above format, and then update the cluster configuration.
 
     TiDB Operator will automatically update the cluster image to the enterprise image through a rolling upgrade.
 
@@ -57,7 +56,7 @@ spec:
 
 ```yaml
 spec:
-  version: v4.0.6
+  version: v4.0.7
   ...
   pd:
     baseImage: pingcap/pd

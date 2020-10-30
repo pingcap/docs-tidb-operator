@@ -40,11 +40,11 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.6`
+- `spec.version`: the format is `imageTag`, such as `v4.0.7`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.6`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.7`
 
 ### Recommended configuration
 
@@ -87,11 +87,11 @@ It is recommended that you configure `spec.pd.mountClusterClientSecret: true` an
 
 #### PD/TiKV/TiDB
 
-The deployed cluster topology by default has 3 PD Pods, 3 TiKV Pods, and 2 TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least 3 nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
+The deployed cluster topology by default has three PD Pods, three TiKV Pods, and two TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least three nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
 
 > **Note:**
 >
-> If the number of Kubernetes cluster nodes is less than 3, 1 PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than 3, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
+> If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
 
 #### Enable TiFlash
 
@@ -132,6 +132,8 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
           storage: 100Gi
       storageClassName: local-storage
 ```
+
+TiFlash mounts all PVs to directories such as `/data0` and `/data1` in the container in the order of configuration. TiFlash has four log files. The proxy log is printed in the standard output of the container. The other three logs are stored in the disk under the `/data0` directory by default, which are `/data0/logs/flash_cluster_manager.log`, `/ data0/logs/error.log`, `/data0/logs/server.log`. To modify the log storage path, refer to [Configure TiFlash parameters](#configure-tiflash-parameters).
 
 > **Warning:**
 >
@@ -184,7 +186,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.6
+    image: pingcap/tidb:v4.0.7
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -192,6 +194,28 @@ spec:
     config:
       split-table: true
       oom-action: "log"
+    requests:
+      cpu: 1
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.7
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: |
+      split-table = true
+      oom-action = "log"
     requests:
       cpu: 1
 ```
@@ -216,10 +240,29 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.6
+    image: pingcap/tikv:v4.0.7
     config:
       log-level: "info"
       slow-log-threshold: "1s"
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.7
+    config: |
+      #  [storage]
+      #    reserve-space = "2MB"
     replicas: 1
     requests:
       cpu: 2
@@ -245,10 +288,26 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.6
+    image: pingcap/pd:v4.0.7
     config:
       lease: 3
       enable-prevote: true
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.7
+    config: |
+      lease = 3
+      enable-prevote = true
 ```
 
 For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
@@ -273,9 +332,36 @@ spec:
   tiflash:
     config:
       config:
+       flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
         logger:
-          count: 5
+          count: 10
           level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
 ```
 
 For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
