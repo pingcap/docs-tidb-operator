@@ -16,11 +16,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 - 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html)中所有操作。
 
-该教程包含以下内容：
+    该教程包含以下内容：
 
-- 安装并配置 AWS 的命令行工具 awscli
-- 安装并配置创建 Kubernetes 集群的命令行工具 eksctl
-- 安装 Kubernetes 命令行工具 kubectl
+    - 安装并配置 AWS 的命令行工具 awscli
+    - 安装并配置创建 Kubernetes 集群的命令行工具 eksctl
+    - 安装 Kubernetes 命令行工具 kubectl
 
 > **注意：**
 >
@@ -393,7 +393,19 @@ parameters:
   fsType: ext4
 ```
 
-然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考 [Tiflash 部署文档](deploy-tiflash.md)。
+然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
+
+```yaml
+spec:
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 3
+    storageClaims:
+    - resources:
+        requests:
+          storage: 100Gi
+      storageClassName: local-storage
+```
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
