@@ -198,7 +198,7 @@ spec:
     version: latest
     ingress:
       hosts:
-      - exmaple.com
+      - example.com
       annotations:
         foo: "bar"
   grafana:
@@ -208,7 +208,7 @@ spec:
       type: ClusterIP
     ingress:
       hosts:
-        - exmaple.com
+        - example.com
       annotations:
         foo: "bar"
   initializer:
@@ -238,10 +238,10 @@ spec:
     version: latest
     ingress:
       hosts:
-      - exmaple.com
+      - example.com
       tls:
       - hosts:
-        - exmaple.com
+        - example.com
         secretName: testsecret-tls
   grafana:
     baseImage: grafana/grafana
