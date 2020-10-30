@@ -257,9 +257,9 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
- TLS Secret 必须包含名为 tls.crt 和 tls.key 的密钥，这些密钥包含用于 TLS 的证书和私钥，例如：
+TLS Secret 必须包含名为 tls.crt 和 tls.key 的密钥，这些密钥包含用于 TLS 的证书和私钥，例如：
 
- ```yaml
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -269,7 +269,13 @@ data:
   tls.crt: base64 encoded cert
   tls.key: base64 encoded key
 type: kubernetes.io/tls
- ```
+```
+
+在公有云 Kubernetes 集群中，通常可以配置 Loadbalancer 通过域名访问 Ingress。如果无法配置 Loadbalancer 服务，比如使用了 NodePort 作为 Ingress 的服务类型，可通过与如下命令等价的方式访问服务：
+
+```shell
+curl -H "Host: example.com" ${node_ip}:${svc_port}
+```
 
 ## 监控多集群
 
