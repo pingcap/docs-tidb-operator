@@ -174,6 +174,16 @@ spec:
     helm repo update
     ```
 
+    helm 3:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm search repo tidb-drainer -l
+    ```
+
+    helm 2:
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -341,7 +351,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl run offline-pump-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250
+    kubectl run offline-pump-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250
     ```
 
     如果 Pump 开启了 TLS，通过下述指令使用前面开启的 Pod 来下线 Pump。
@@ -385,6 +395,10 @@ spec:
     ```
 
 ### 完全移除 Pump 节点
+
+> **注意：**
+>
+> 完全移除 Pump 节点前，需要至少存在一个 Pump 节点。如果此时 Pump 节点已经缩容到 0，需要先至少扩容到 1，再进行下面的移除操作。
 
 1. 移除 Pump 节点前，必须首先需要执行 `kubectl edit tc ${cluster_name} -n ${namespace}` 设置其中的 `spec.tidb.binlogEnabled` 为 `false`，等待 TiDB Pod 完成重启更新后再移除 Pump 节点。如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
 2. 参考[缩容 Pump 节点步骤](#缩容-pump-节点)缩容 Pump 到 0。
