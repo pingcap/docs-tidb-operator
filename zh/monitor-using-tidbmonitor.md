@@ -39,12 +39,12 @@ spec:
   - name: basic
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
     version: v4.0.7
@@ -110,12 +110,12 @@ spec:
   storage: 5G
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
     service:
       type: NodePort
   initializer:
@@ -153,12 +153,12 @@ spec:
   alertmanagerURL: "your-alert-manager-url"
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
     service:
       type: NodePort
   initializer:
@@ -195,7 +195,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     ingress:
       hosts:
       - exmaple.com
@@ -203,7 +203,7 @@ spec:
         foo: "bar"
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
     service:
       type: ClusterIP
     ingress:
@@ -235,7 +235,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     ingress:
       hosts:
       - exmaple.com
@@ -245,7 +245,7 @@ spec:
         secretName: testsecret-tls
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
     service:
       type: ClusterIP
   initializer:
@@ -292,12 +292,12 @@ spec:
   alertmanagerURL: "your-alert-manager-url"
   prometheus:
     baseImage: prom/prometheus
-    version: v2.11.1
+    version: latest
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.0.1
+    version: latest
     service:
       type: NodePort
   initializer:
