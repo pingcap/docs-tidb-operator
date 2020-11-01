@@ -42,6 +42,10 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
+    > **注意：**
+    >
+    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则可以省略该步骤。
+
 ### 数据库账户权限
 
 * `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
@@ -69,6 +73,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     namespace: test1
     spec:
       # backupType: full
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb-host}
         port: ${tidb-port}
@@ -166,6 +171,10 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     如果发现 `tikv_gc_lifetime` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_lifetime` 调回原样。
 
+    > **Note:**
+    >
+    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.tikvGCLifeTime`.
+
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
     * `Retain`：任何情况下，删除备份 CR 时会保留备份出的文件
@@ -189,6 +198,10 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
+
+    > **Note:**
+    >
+    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.from`.
 
 * `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
 
@@ -235,6 +248,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}

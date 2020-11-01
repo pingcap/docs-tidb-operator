@@ -43,6 +43,10 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
+    > **Note:**
+    >
+    > Since TiDB Operator v1.1.7 or TiDB v4.0.8, the `tikv_gc_lifetime` will be adjusted by BR automatically. If you are using TiDB Operator >= v1.1.7 or TiDB >= v4.0.8, you can omit this step.
+
 ### Required database account privileges
 
 * The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
@@ -171,6 +175,10 @@ More descriptions of fields in the `Backup` CR:
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
+    > **Note:**
+    >
+    > Since TiDB Operator v1.1.7 or TiDB v4.0.8, the `tikv_gc_lifetime` will be adjusted by BR automatically. If you are using TiDB Operator >= v1.1.7 or TiDB >= v4.0.8, you can omit the `spec.tikvGCLifeTime`.
+
 * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
 
     Three clean policies are supported:
@@ -198,6 +206,10 @@ More descriptions of fields in the `Backup` CR:
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
+
+    > **Note:**
+    >
+    > Since TiDB Operator v1.1.7 or TiDB v4.0.8, the `tikv_gc_lifetime` will be adjusted by BR automatically. If you are using TiDB Operator >= v1.1.7 or TiDB >= v4.0.8, you can omit the `spec.from`.
 
 * `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
@@ -244,6 +256,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}

@@ -42,6 +42,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
     ```
 
+    > **注意：**
+    >
+    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则可以省略该步骤。
+
 ## 恢复过程
 
 1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
@@ -113,6 +117,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
+
+    > **注意：**
+    >
+    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.to`.
 
 * `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
 
