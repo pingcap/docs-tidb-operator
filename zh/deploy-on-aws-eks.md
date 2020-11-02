@@ -94,8 +94,8 @@ eksctl create cluster -f cluster.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml &&
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml && \
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
 ```
 
 ### 创建 namespace
@@ -112,7 +112,7 @@ kubectl create namespace tidb-cluster
 >
 > 这里创建的 namespace 是指 [Kubernetes 命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)。本文档使用 `tidb-cluster` 为例，若使用了其他名字，修改相应的 `-n` 或 `--namespace` 参数为对应的名字即可。
 
-### 部署 TiDB 集群
+### 部署 TiDB 集群和监控
 
 执行以下命令，创建 TiDB 集群。
 
@@ -123,7 +123,7 @@ kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
 kubectl create -f tidb-monitor.yaml -n tidb-cluster
 ```
 
-当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
+当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群及其监控。
 
 ### 查看 TiDB 集群启动状态
 
@@ -404,7 +404,7 @@ spec:
     - resources:
         requests:
           storage: 100Gi
-      storageClassName: local-storage
+      storageClassName: io1
 ```
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
