@@ -18,6 +18,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 
 > **Note:**
 >
+<<<<<<< HEAD
 > In the following table, `values.yaml` refers to the TiDB cluster's configuration file to be modified.
 
 | Parameter | Description | Default Value |
@@ -139,6 +140,332 @@ The disaster recovery of TiDB service is essentially based on Kubernetes' schedu
 Disaster recovery at other levels (such as rack, zone, region) are guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical disaster recovery setup:
+=======
+> If you set a storage class that does not exist in the TiDB cluster that you are creating, then the cluster creation goes to the Pending state. In this situation, you must [destroy the TiDB cluster in Kubernetes](destroy-a-tidb-cluster.md).
+
+### mountClusterClientSecret
+
+It is recommended that you configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`, so that TiDB Operator can mount the `${cluster_name}-cluster-client-secret` certificates to the PD and TiKV containers automatically, which can make the [use of `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster) easier.
+
+### Cluster topology
+
+#### PD/TiKV/TiDB
+
+The deployed cluster topology by default has three PD Pods, three TiKV Pods, and two TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least three nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
+
+> **Note:**
+>
+> If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
+
+#### Enable TiFlash
+
+If you want to enable TiFlash in the cluster, configure `spec.pd.config.replication.enable-placement-rules` to `true` and configure `spec.tiflash` in the `${cluster_name}/tidb-cluster.yaml` file as follows:
+
+```yaml
+  pd:
+    config:
+      ...
+      replication:
+        enable-placement-rules: "true"
+        ...
+  tiflash:
+    baseImage: pingcap/tiflash
+    maxFailoverCount: 3
+    replicas: 1
+    storageClaims:
+    - resources:
+        requests:
+          storage: 100Gi
+      storageClassName: local-storage
+```
+
+TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
+
+```yaml
+  tiflash:
+    baseImage: pingcap/tiflash
+    maxFailoverCount: 3
+    replicas: 1
+    storageClaims:
+    - resources:
+        requests:
+          storage: 100Gi
+      storageClassName: local-storage
+    - resources:
+        requests:
+          storage: 100Gi
+      storageClassName: local-storage
+```
+
+TiFlash mounts all PVs to directories such as `/data0` and `/data1` in the container in the order of configuration. TiFlash has four log files. The proxy log is printed in the standard output of the container. The other three logs are stored in the disk under the `/data0` directory by default, which are `/data0/logs/flash_cluster_manager.log`, `/ data0/logs/error.log`, `/data0/logs/server.log`. To modify the log storage path, refer to [Configure TiFlash parameters](#configure-tiflash-parameters).
+
+> **Warning:**
+>
+> Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
+
+#### Enable TiCDC
+
+If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBCluster` CR. For example:
+
+```yaml
+  spec:
+    ticdc:
+      baseImage: pingcap/ticdc
+      replicas: 3
+```
+
+#### Deploy Enterprise Edition
+
+To deploy Enterprise Edition of TiDB/PD/TiKV/TiFlash/TiCDC, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`).
+
+For example:
+
+```yaml
+spec:
+  ...
+  pd:
+    baseImage: pingcap/pd-enterprise
+  ...
+  tikv:
+    baseImage: pingcap/tikv-enterprise
+```
+
+### Configure TiDB components
+
+This section introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash/TiCDC.
+
+The current TiDB Operator v1.1 supports all parameters of TiDB v4.0.
+
+#### Configure TiDB parameters
+
+TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.7
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config:
+      split-table: true
+      oom-action: "log"
+    requests:
+      cpu: 1
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.7
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: |
+      split-table = true
+      oom-action = "log"
+    requests:
+      cpu: 1
+```
+
+For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
+
+> **Note:**
+>
+> If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiDB components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
+
+#### Configure TiKV parameters
+
+TiKV parameters can be configured by `spec.tikv.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.7
+    config:
+      log-level: "info"
+      slow-log-threshold: "1s"
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.7
+    config: |
+      #  [storage]
+      #    reserve-space = "2MB"
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/).
+
+> **Note:**
+>
+> If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
+
+#### Configure PD parameters
+
+PD parameters can be configured by `spec.pd.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.7
+    config:
+      lease: 3
+      enable-prevote: true
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.7
+    config: |
+      lease = 3
+      enable-prevote = true
+```
+
+For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
+
+> **Note:**
+>
+> If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
+
+#### Configure TiFlash parameters
+
+TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config:
+       flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
+        logger:
+          count: 10
+          level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
+```
+
+Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
+```
+
+For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
+
+#### Configure TiCDC start parameters
+
+You can configure TiCDC start parameters through `spec.ticdc.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  ticdc:
+    config:
+      timezone: UTC
+      gcTTL: 86400
+      logLevel: info
+```
+
+For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
+
+## Configure high availability
+
+> **Note:**
+>
+> TiDB Operator provides a custom scheduler that guarantees TiDB service can tolerate host-level failures through the specified scheduling algorithm. Currently, the TiDB cluster uses this scheduler as the default scheduler, which is configured through the item `spec.schedulerName`. This section focuses on configuring a TiDB cluster to tolerate failures at other levels such as rack, zone, or region. This section is optional.
+
+TiDB is a distributed database and its high availability must ensure that when any physical topology node fails, not only the service is unaffected, but also the data is complete and available. The two configurations of high availability are described separately as follows.
+
+### High availability of TiDB service
+
+High availability at other levels (such as rack, zone, region) is guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+
+The following is an example of a typical service high availability setup:
+>>>>>>> 28e6883... .github: add external link check (#694)
 
 {{< copyable "" >}}
 
