@@ -29,7 +29,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
     - [AWS 部署文档](deploy-on-aws-eks.md)
     - [GKE 部署文档 (beta)](deploy-on-gcp-gke.md)
     - [阿里云部署文档](deploy-on-alibaba-cloud.md)
-- 其他 Kubernetes 集群
+- 自托管 Kubernetes 集群
     - [集群环境要求](prerequisites.md)
     - 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)让 TiKV 使用高性能本地存储
     - [在 Kubernetes 部署 TiDB Operator](deploy-tidb-operator.md)
@@ -228,7 +228,7 @@ minikube delete
 开始之前，确保以下要求已满足：
 
 - 可以使用 `kubectl` 访问的 Kubernetes 集群
-- 已安装 [Helm](https://helm.sh/docs/intro/install/)
+- 已安装 [Helm 3](https://helm.sh/docs/intro/install/)
 
 部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。
 
@@ -348,8 +348,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 ``` shell
 kubectl create namespace tidb-cluster && \
-    curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml && \
-    kubectl -n tidb-cluster apply -f tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
 ```
 
 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -358,8 +357,7 @@ kubectl create namespace tidb-cluster && \
 
 ```
 kubectl create namespace tidb-cluster && \
-    curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml && \
-    kubectl -n tidb-cluster apply -f tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
 ```
 
 期望输出：
@@ -374,8 +372,7 @@ tidbcluster.pingcap.com/basic created
 {{< copyable "shell-regular" >}}
 
 ``` shell
-curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
-    kubectl -n tidb-cluster apply -f tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
