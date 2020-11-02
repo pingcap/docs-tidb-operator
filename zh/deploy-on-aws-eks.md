@@ -294,7 +294,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv --nodes 4 --nodes-mi
 
 在 eksctl 的配置文件 cluster.yaml 中新增以下两项，为 TiFlash/TiCDC 各自新增一个节点组。`desiredCapacity` 决定期望的节点数，根据实际需求而定。
 
-```
+```yaml
   - name: tiflash
     desiredCapacity: 3
     labels:
@@ -382,7 +382,7 @@ spec:
 
 AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 新建一个存储类 (Storage Class)：
 
-```
+```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
@@ -391,6 +391,8 @@ provisioner: kubernetes.io/aws-ebs
 parameters:
   type: io1
   fsType: ext4
+  iopsPerGB: "10"
+  encrypted: "false"
 ```
 
 然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
@@ -425,7 +427,7 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 
     修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
-    ```
+    ```yaml
       - name: tikv
         instanceType: c5d.4xlarge
         labels:
