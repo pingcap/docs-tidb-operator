@@ -174,7 +174,7 @@ spec:
     helm repo update
     ```
 
-    helm 3:
+    Helm 3:
 
     {{< copyable "shell-regular" >}}
 
@@ -182,7 +182,7 @@ spec:
     helm search repo tidb-drainer -l
     ```
 
-    helm 2:
+    Helm 2:
 
     {{< copyable "shell-regular" >}}
 
