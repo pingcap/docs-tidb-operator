@@ -85,7 +85,7 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-prometheus 9090:9090 &>
 
 在随 TiDB 集群部署 Prometheus 时，会自动导入一些默认的告警规则，可以通过浏览器访问 Prometheus 的 Alerts 页面查看当前系统中的所有告警规则和状态。
 
-我们目前支持告警规则的自定义配置，可以参考下面步骤修改告警规则：
+目前支持自定义配置告警规则，可以参考下面步骤修改告警规则：
 
 1. 参考[TidbMonitor 配置](monitor-using-tidbmonitor.md)，在为 TiDB 集群部署监控的过程中，设置 `spec.reloader.service.type` 为 `NodePort` 或者 `LoadBalancer`。
 2. 通过 `NodePort` 或者 `LoadBalancer` 访问 reloader 服务，点击上方 `Files` 选择要修改的告警规则文件进行修改，修改完成后 `Save`。
