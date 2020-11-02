@@ -14,84 +14,49 @@ If you find that the memory leak occurs in a Pod during use, you need to restart
 
 ## Performing a graceful rolling restart to all Pods in a component
 
-1. Refer to [Deploy TiDB on general Kubernetes](deploy-on-general-kubernetes.md) and modify the `${cluster_name}/tidb-cluster.yaml` file.
-
-    Add `tidb.pingcap.com/restartedAt` in the annotation of the `spec` of the TiDB component you want to gracefully rolling restart, and set its value to be the current time.
-
-    In the following example, annotations of the `pd`, `tikv`, and `tidb` components are set, which means that all the Pods in these three components will be gracefully rolling restarted. You can set the annotation for a specific component according to your needs.
-
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      name: basic
-    spec:
-      version: v4.0.4
-      timezone: UTC
-      pvReclaimPolicy: Delete
-      pd:
-        baseImage: pingcap/pd
-        replicas: 3
-        requests:
-          storage: "1Gi"
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-      tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
-        requests:
-          storage: "1Gi"
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-      tidb:
-        baseImage: pingcap/tidb
-        replicas: 2
-        service:
-          type: ClusterIP
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-    ```
-
-2. Apply the update:
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl apply -f ${cluster_name} -n ${namespace}
-    ```
-
-## Gracefully restart a single Pod of the TiDB component
-
-This section describes how to gracefully restart a single Pod of the component in a TiDB cluster.
-
-### Enable the configurations
-
-To activate the graceful logoff feature, you need to enable some related configurations in TiDB Operator. These configurations are disabled by default. Take the following steps to manually turn them on.
-
-1. Edit the `values.yaml` file.
-
-    Enable the `Operator Webhook` feature:
-
-    ```yaml
-    admissionWebhook:
-      create: true
-    ```
-
-    For more information about `Operator Webhook`, see [Enable Admission Controller in TiDB Operator](enable-admission-webhook.md).
-
-2. Install or update TiDB Operator.
-
-    To install or update TiDB Operator, see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
-
-### Use annotate to mark the target Pod
-
-You can use `kubectl annotate` to mark the target Pod component of the TiDB cluster. After marking, the TiDB Operator automatically performs graceful logoff of the Pod and restarts the target Pod. To mark the target Pod, run the following command:
+Refer to [Deploy TiDB on general Kubernetes](deploy-on-general-kubernetes.md) and modify the cluster configuration by running the following command:
 
 {{< copyable "shell-regular" >}}
 
-```sh
-kubectl annotate ${pod_name} -n ${namespace} tidb.pingcap.com/pod-defer-deleting=true
+```shell
+kubectl edit tc ${name} -n ${namespace}
+```
+
+Add `tidb.pingcap.com/restartedAt` in the annotation of the `spec` of the TiDB component you want to gracefully rolling restart, and set its value to be the current time.
+
+In the following example, annotations of the `pd`, `tikv`, and `tidb` components are set, which means that all the Pods in these three components will be gracefully rolling restarted. You can set the annotation for a specific component according to your needs.
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.7
+  timezone: UTC
+  pvReclaimPolicy: Delete
+  pd:
+    baseImage: pingcap/pd
+    replicas: 3
+    requests:
+      storage: "1Gi"
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 3
+    requests:
+      storage: "1Gi"
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 2
+    service:
+      type: ClusterIP
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```

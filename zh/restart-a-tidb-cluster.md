@@ -14,78 +14,39 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
 
 ## 优雅滚动重启 TiDB 集群组件的所有 Pod 节点
 
-1. 参考[在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)，修改 `${cluster_name}/tidb-cluster.yaml` 文件，为期望优雅滚动重启的 TiDB 集群组件 Spec 添加 annotation `tidb.pingcap.com/restartedAt`，Value 设置为当前时间。以下示例中，为组件 `pd`，`tikv`，`tidb` 都设置了 annotation，表示将优雅滚动重启以上三个 TiDB 集群组件的所有 Pod。可以根据实际情况，只为某个组件设置 annotation。
+参考[在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)，通过 `kubectl edit tc ${name} -n ${namespace}` 修改集群配置，为期望优雅滚动重启的 TiDB 集群组件 Spec 添加 annotation `tidb.pingcap.com/restartedAt`，Value 设置为当前时间。以下示例中，为组件 `pd`、`tikv`、`tidb` 都设置了 annotation，表示将优雅滚动重启以上三个 TiDB 集群组件的所有 Pod。可以根据实际情况，只为某个组件设置 annotation。
 
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      name: basic
-    spec:
-      version: v4.0.4
-      timezone: UTC
-      pvReclaimPolicy: Delete
-      pd:
-        baseImage: pingcap/pd
-        replicas: 3
-        requests:
-          storage: "1Gi"
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-      tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
-        requests:
-          storage: "1Gi"
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-      tidb:
-        baseImage: pingcap/tidb
-        replicas: 2
-        service:
-          type: ClusterIP
-        config: {}
-        annotations:
-          tidb.pingcap.com/restartedAt: "202004201200"
-    ```
-
-2. 应用更新
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl apply -f ${cluster_name} -n ${namespace}
-    ```
-
-## 优雅重启 TiDB 集群组件的单个 Pod
-
-### 开启相关设置
-
-开启优雅下线功能，需要打开 Webhook 相关设置。默认情况下 Webhook 相关配置是关闭的，你需要手动开启:
-    
-1. 修改 Operator 的 `values.yaml`
-
-    开启 Operator Webhook 特性:
-
-    ```yaml
-    admissionWebhook:
-      create: true
-    ```
-
-    关于 Operator Webhook 详情，请参考[开启 TiDB Operator 准入控制器](enable-admission-webhook.md)
-
-2. 安装/更新 TiDB Operator
-
-    修改完 `values.yaml` 文件中的上述配置项以后，进行 TiDB Operator 部署或者更新。安装与更新 TiDB Operator 请参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md)。 
-
-### 使用 annotate 标记目标 Pod 节点
-
-我们通过 `kubectl annotate` 的方式来标记目标 TiDB 集群 Pod 节点组件，当 `annotate` 标记完成以后，TiDB Operator 会自动进行 Pod 节点的优雅下线并重启。你可以通过以下方式来进行标记:
-
-{{< copyable "shell-regular" >}}
-
-```sh
-kubectl annotate ${pod_name} -n ${namespace} tidb.pingcap.com/pod-defer-deleting=true
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.7
+  timezone: UTC
+  pvReclaimPolicy: Delete
+  pd:
+    baseImage: pingcap/pd
+    replicas: 3
+    requests:
+      storage: "1Gi"
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 3
+    requests:
+      storage: "1Gi"
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 2
+    service:
+      type: ClusterIP
+    config: {}
+    annotations:
+      tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```

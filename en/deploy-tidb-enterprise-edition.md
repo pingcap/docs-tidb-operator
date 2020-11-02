@@ -14,14 +14,14 @@ This document describes how to deploy TiDB Enterprise Edition and related tools 
 ## Prerequisites
 
 * TiDB Operator is [deployed](deploy-tidb-operator.md).
-  
+
 ## Deploy the Enterprise Edition
 
 Currently, the difference between the deployment of TiDB Operator Enterprise Edition and Community Edition mainly lies in image naming. Compared with that of Community Edition, the image of Enterprise Edition has an extra `-enterprise` suffix.
 
 ```yaml
 spec:
-  version: v4.0.4
+  version: v4.0.7
   ...
   pd:
     baseImage: pingcap/pd-enterprise
@@ -44,12 +44,11 @@ spec:
 
 + If you are deploying a new cluster:
 
-    Refer to [Configure a TiDB Cluster in Kubernetes](configure-a-tidb-cluster.md) to configure `tidb-cluster.yaml` and the enterprise edition image as described above, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to deploy the TiDB Enterprise Edition cluster and related tools.
+    Refer to [Configure a TiDB Cluster in Kubernetes](configure-a-tidb-cluster.md) to configure `tidb-cluster.yaml` and Enterprise Edition image as described above, and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to deploy the TiDB Enterprise Edition cluster and related tools.
 
 + If you want to switch an existing Community Edition cluster to Enterprise Edition:
 
-    - Method #1: Add the "-enterprise" suffix to the `baseImage` item of the configuration file of the existing cluster in the above format and run the `kubectl apply -f tidb-cluster.yaml -n ${namespace}` command to update the cluster configuration.
-    - Method #2: Run the `kubectl edit tc ${name} -n ${namespace}` command to add the suffix "-enterprise" to each component's `baseImage` in the above format, and then update the cluster configuration.
+    Run the `kubectl edit tc ${name} -n ${namespace}` command to add the suffix "-enterprise" to each component's `baseImage` in the above format, and then update the cluster configuration.
 
     TiDB Operator will automatically update the cluster image to the enterprise image through a rolling upgrade.
 
@@ -57,7 +56,7 @@ spec:
 
 ```yaml
 spec:
-  version: v4.0.4
+  version: v4.0.7
   ...
   pd:
     baseImage: pingcap/pd

@@ -87,7 +87,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.1.4"
+    operator_version = "v1.1.6"
     ```
 
     * To deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
@@ -169,7 +169,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
     * To deploy TiFlash, configure `spec.tiflash` in `db.yaml` as follows:
 
@@ -193,6 +193,8 @@ All the instances except ACK mandatory workers are deployed across availability 
               operator: Equal
               value: TIDB_CLUSTER_NAME-tiflash
         ```
+
+        To configure other parameters, refer to [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
         Modify `replicas`, `storageClaims[].resources.requests.storage`, and `storageClassName` according to your needs.
 
@@ -219,7 +221,7 @@ All the instances except ACK mandatory workers are deployed across availability 
 
         Modify `replicas` according to your needs.
 
-    To deploy the enterprise version of TiDB/PD/TiKV/TiFlash/TiCDC, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`).
+    To deploy Enterprise Edition of TiDB/PD/TiKV/TiFlash/TiCDC, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`).
 
     For example:
 
@@ -280,7 +282,8 @@ mysql -h ${tidb_lb_ip} -P 4000 -u root
 
 > **Note:**
 >
-> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
+> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
+> * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Monitor
 
@@ -340,7 +343,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configuring TiDB Cluster](configure-a-tidb-cluster.md).
+See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Manage multiple TiDB clusters
 

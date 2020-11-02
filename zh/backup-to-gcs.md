@@ -159,7 +159,7 @@ GCS 支持以下几种 bucket ACL 策略：
     * `Retain`：任何情况下，删除备份 CR 时会保留备份出的文件
     * `Delete`：任何情况下，删除备份 CR 时会删除备份出的文件
     * `OnFailure`：如果备份中失败，删除备份 CR 时会删除备份出的文件
-    
+
     如果不配置该字段，或者配置该字段的值为上述三种以外的值，均会保留备份出的文件。值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 `Delete`。
 
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
@@ -168,12 +168,19 @@ GCS 支持以下几种 bucket ACL 策略：
 * `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
 * `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
-* `.spec.dumpling`：Dumpling 相关的配置，主要有两个字段：一个是 `options` 字段，里面可以指定 Dumpling 的运行参数，详情见 [Dumpling 使用文档](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview#dumpling-主要参数表)；一个是 `tableFilter` 字段，可以指定让 Dumpling 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下 dumpling 这个字段可以不用配置。当不指定 dumpling 的配置时，`options` 和 `tableFilter` 字段的默认值如下：
+* `.spec.dumpling`：Dumpling 相关的配置，可以在 `options` 字段指定 Dumpling 的运行参数，详情见 [Dumpling 使用文档](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview#dumpling-主要参数表)；默认情况下该字段可以不用配置。当不指定 Dumpling 的配置时，`options` 字段的默认值如下：
 
     ```
     options:
     - --threads=16
     - --rows=10000
+    ```
+
+* `.spec.storageClassName`：备份时指定所需的 persistent volume (PV) 类型。
+* `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
+* `.spec.tableFilter`：备份时指定让 Dumpling 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，`tableFilter` 字段的默认值如下：
+
+    ```bash
     tableFilter:
     - "*.*"
     - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
@@ -188,9 +195,6 @@ GCS 支持以下几种 bucket ACL 策略：
     - "*.*"
     - "!db.table"
     ```
-
-* `.spec.storageClassName`：备份时指定所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
-* `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
 
 ## 定时全量备份
 
