@@ -1,7 +1,7 @@
 name: external-link-check
 
 on: [pull_request]
-
+  
 jobs:
   base:
     runs-on: ubuntu-18.04
