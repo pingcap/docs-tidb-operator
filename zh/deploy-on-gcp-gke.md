@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 <!-- markdownlint-disable MD029 -->
 
-本文介绍了如何部署 GCP GKE 集群，并在其中部署 TiDB 集群。
+本文介绍了如何部署 GCP Google Kubernetes Engine (GKE) 集群，并在其中部署 TiDB 集群。
 
 ## 环境准备
 
@@ -18,10 +18,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 * [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
-该教程包含以下内容：
+    该教程包含以下内容：
 
-* 启用 Kubernetes API
-* 配置足够的配额等
+    * 启用 Kubernetes API
+    * 配置足够的配额等
 
 ## 配置 GCP 服务
 
@@ -36,30 +36,30 @@ gcloud config set compute/region <gcp-region>
 
 ## 创建 GKE 集群和节点池
 
-使用以下命令，创建 GKE 集群和一个默认节点池：
+1. 创建 GKE 集群和一个默认节点池：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud container clusters create tidb --region us-east1 --machine-type n1-standard-4 --num-nodes=1
-```
+    ```shell
+    gcloud container clusters create tidb --region us-east1 --machine-type n1-standard-4 --num-nodes=1
+    ```
 
-该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会在该区域中分别创建三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考 [GKE 集群的类型](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
+    该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会在该区域中分别创建三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考 [GKE 集群的类型](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
 
-以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
+    以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
-使用以下命令，分别为 PD、TiKV 和 TiDB 创建独立的节点池：
+2. 分别为 PD、TiKV 和 TiDB 创建独立的节点池：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
-    --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
-gcloud container node-pools create tikv --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
-    --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
-gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-8 --num-nodes=1 \
-    --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
-```
+    ```shell
+    gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+        --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
+    gcloud container node-pools create tikv --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
+        --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
+    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-8 --num-nodes=1 \
+        --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
+    ```
 
 此过程可能需要几分钟。
 
@@ -78,8 +78,8 @@ gcloud container node-pools create tidb --cluster tidb --machine-type n1-standar
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml &&
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml &&
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
 ```
 
 ### 创建 namespace
@@ -145,10 +145,10 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 ```shell
 gcloud compute instances create bastion \
-  --machine-type=n1-standard-4 \
-  --image-project=centos-cloud \
-  --image-family=centos-7 \
-  --zone=${your-region}-a
+    --machine-type=n1-standard-4 \
+    --image-project=centos-cloud \
+    --image-family=centos-7 \
+    --zone=${your-region}-a
 ```
 
 > **注意：**
@@ -159,62 +159,62 @@ gcloud compute instances create bastion \
 
 待创建好堡垒机后，我们可以通过 SSH 远程连接到堡垒机，再通过 MySQL 客户端来访问 TiDB 集群。
 
-用 SSH 连接到堡垒机：
+1. 用 SSH 连接到堡垒机：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-gcloud compute ssh tidb@bastion
-```
+    ```shell
+    gcloud compute ssh tidb@bastion
+    ```
 
-安装 MySQL 客户端：
+2. 安装 MySQL 客户端：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-sudo yum install mysql -y
-```
+    ```shell
+    sudo yum install mysql -y
+    ```
 
-连接到 TiDB 集群：
+3. 连接到 TiDB 集群：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-mysql -h <tidb-nlb-dnsname> -P 4000 -u root
-```
+    ```shell
+    mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+    ```
 
-`<tidb-nlb-dnsname>` 为 TiDB Service 的 LoadBalancer IP，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
+    `${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer IP，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
 
-示例：
+    示例：
 
-```shell
-$ mysql -h 10.128.15.243 -P 4000 -u root
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MySQL connection id is 7823
-Server version: 5.7.25-TiDB-v4.0.7 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    ```shell
+    $ mysql -h 10.128.15.243 -P 4000 -u root
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 7823
+    Server version: 5.7.25-TiDB-v4.0.7 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MySQL [(none)]> show status;
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher         |                                      |
-| Ssl_cipher_list    |                                      |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| ddl_schema_version | 22                                   |
-| server_id          | 717420dc-0eeb-4d4a-951d-0d393aff295a |
-+--------------------+--------------------------------------+
-6 rows in set (0.01 sec)
-```
+    MySQL [(none)]> show status;
+    +--------------------+--------------------------------------+
+    | Variable_name      | Value                                |
+    +--------------------+--------------------------------------+
+    | Ssl_cipher         |                                      |
+    | Ssl_cipher_list    |                                      |
+    | Ssl_verify_mode    | 0                                    |
+    | Ssl_version        |                                      |
+    | ddl_schema_version | 22                                   |
+    | server_id          | 717420dc-0eeb-4d4a-951d-0d393aff295a |
+    +--------------------+--------------------------------------+
+    6 rows in set (0.01 sec)
+    ```
 
-> **注意：**
->
-> * [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显式指定 `--default-auth=mysql_native_password` 参数。
-> * TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
+    > **注意：**
+    >
+    > * [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显式指定 `--default-auth=mysql_native_password` 参数。
+    > * TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
 ### 访问 Grafana 监控
 
