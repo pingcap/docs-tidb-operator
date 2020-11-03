@@ -1,7 +1,7 @@
 ---
 title: Persistent Storage Class Configuration in Kubernetes
 summary: Learn how to configure local PVs and network PVs.
-aliases: ['/docs/tidb-in-kubernetes/stable/configure-storage-class/','/docs/tidb-in-kubernetes/v1.1/configure-storage-class/','/docs/dev/tidb-in-kubernetes/reference/configuration/local-pv/']
+aliases: ['/docs/tidb-in-kubernetes/stable/configure-storage-class/','/docs/tidb-in-kubernetes/v1.1/configure-storage-class/','/docs/dev/tidb-in-kubernetes/reference/configuration/local-pv/','/docs/stable/tidb-in-kubernetes/reference/configuration/storage-class/']
 ---
 
 # Persistent Storage Class Configuration in Kubernetes
