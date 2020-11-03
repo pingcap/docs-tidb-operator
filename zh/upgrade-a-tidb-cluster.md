@@ -1,7 +1,7 @@
 ---
 title: 滚动升级 Kubernetes 上的 TiDB 集群
 summary: 介绍如何滚动升级 Kubernetes 上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster/','/docs-cn/stable/tidb-in-kubernetes/upgrade/tidb-cluster/']
 ---
 
 # 滚动升级 Kubernetes 上的 TiDB 集群
