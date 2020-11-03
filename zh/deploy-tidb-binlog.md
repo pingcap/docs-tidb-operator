@@ -324,7 +324,7 @@ metadata:
 spec:
   containers:
   - name: binlogctl
-    image: pingcap/tidb-binlog:${version}
+    image: pingcap/tidb-binlog:${tidb_version}
     command: ['/bin/sh']
     stdin: true
     stdinOnce: true
@@ -344,7 +344,7 @@ spec:
 
 1. 下线 Pump 节点：
 
-    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `${ordinal_id}` 替换成 `2`，操作方式如下（`${version}` 为当前 TiDB 的版本）。
+    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `${ordinal_id}` 替换成 `2`，操作方式如下（`${tidb_version}` 为当前 TiDB 的版本）。
 
     如果 Pump 没有开启 TLS，使用下述指令新建 Pod 下线 Pump。
 
@@ -383,7 +383,7 @@ spec:
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl run update-pump-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline
+    kubectl run update-pump-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline
     ```
     
     如果开启了 TLS，通过下述指令使用前面开启的 pod 来标注状态为 offline。
@@ -398,7 +398,7 @@ spec:
 
 > **注意：**
 >
-> 完全移除 Pump 节点前，需要至少存在一个 Pump 节点。如果此时 Pump 节点已经缩容到 0，需要先至少扩容到 1，再进行下面的移除操作。如果需要扩容至 1，使用命令 `kubectl edit tc ${tidb-cluster}`，修改 `spec.pump.replicas` 为 1 即可。
+> 执行如下步骤之前，集群内需要至少存在一个 Pump 节点。如果此时 Pump 节点已经缩容到 0，需要先至少扩容到 1，再进行下面的移除操作。如果需要扩容至 1，使用命令 `kubectl edit tc ${tidb-cluster} -n ${namespace}`，修改 `spec.pump.replicas` 为 1 即可。
 
 1. 移除 Pump 节点前，必须首先需要执行 `kubectl edit tc ${cluster_name} -n ${namespace}` 设置其中的 `spec.tidb.binlogEnabled` 为 `false`，等待 TiDB Pod 完成重启更新后再移除 Pump 节点。如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
 2. 参考[缩容 Pump 节点步骤](#缩容-pump-节点)缩容 Pump 到 0。
@@ -417,7 +417,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl run offline-drainer-0 --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8249
+    kubectl run offline-drainer-0 --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-drainer -node-id ${drainer_node_id}:8249
     ```
 
     如果 Drainer 开启了 TLS，通过下述指令使用前面开启的 pod 来下线 Drainer。
@@ -451,7 +451,7 @@ spec:
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl run update-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline
+    kubectl run update-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline
     ```
     
     如果开启了 TLS，通过下述指令使用前面开启的 pod 来下线 Drainer。
