@@ -22,7 +22,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
 
 > **Note:**
 >
-> Since TiDB Operator v1.1.7 or TiDB v4.0.8, the `tikv_gc_lifetime` will be adjusted by BR automatically. If you are using TiDB Operator >= v1.1.7 or TiDB >= v4.0.8, you can omit the step that creating the secret stores the account and password needed to access the TiDB cluster.
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the step that creating the secret stores the account and password needed to access the TiDB cluster.
 
 ### Grant permissions by importing AccessKey and SecretKey
 
@@ -297,7 +297,7 @@ More `Restore` CR fields are described as follows:
 
     > **Note:**
     >
-    > Since TiDB Operator v1.1.7 or TiDB v4.0.8, the `tikv_gc_lifetime` will be adjusted by BR automatically. If you are using TiDB Operator >= v1.1.7 or TiDB >= v4.0.8, you can omit the `spec.to`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the `spec.to`.
 
 * `.spec.tableFilter`: BR only restores tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR restores all schemas except the system schemas.
 

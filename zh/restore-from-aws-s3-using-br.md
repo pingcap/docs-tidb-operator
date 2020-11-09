@@ -20,7 +20,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 
 > **注意：**
 >
-> 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤。
+> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，以下创建 `backup-demo1-tidb-secret` secret 的步骤可以省略。
 
 ### 通过 AccessKey 和 SecretKey 授权
 
@@ -294,7 +294,7 @@ kubectl get rt -n test2 -o wide
 
     > **注意：**
     >
-    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.to`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.to`.
 
 * `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
 

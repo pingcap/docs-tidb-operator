@@ -44,7 +44,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     > **注意：**
     >
-    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则可以省略该步骤。
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
 
 ### 数据库账户权限
 
@@ -157,23 +157,23 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 更多 `Backup` CR 字段的详细解释：
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_lifetime` 时间设置，默认为 72h。
+* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
-    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
+    在备份开始之前，若 TiDB 集群的 `tikv_gc_life_time` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
 
-    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为备份失败。
+    备份结束后不论成功或者失败，只要老的 `tikv_gc_life_time` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_life_time` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_life_time` 并认为备份失败。
 
-    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_lifetime`：
+    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_life_time`：
 
     ```sql
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    如果发现 `tikv_gc_lifetime` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_lifetime` 调回原样。
+    如果发现 `tikv_gc_life_time` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_life_time` 调回原样。
 
     > **Note:**
     >
-    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。 如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.tikvGCLifeTime`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
@@ -201,7 +201,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     > **Note:**
     >
-    > 自 TiDB Operator v1.1.7 或 TiDB v4.0.8 起, BR 会自动调整 `tikv_gc_lifetime` 参数。如果你使用了 TiDB Operator >= v1.1.7 或 TiDB >= v4.0.8 则无需配置 `spec.from`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
 
 * `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
 
