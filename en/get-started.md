@@ -16,7 +16,7 @@ These are the steps this document follows:
 
 1. [Create a Kubernetes test cluster](#create-a-kubernetes-test-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
-3. [Deploy a TiDB cluster and its monitoring services](#deploy-the-tidb-cluster-and-its-monitoring-services)
+3. [Deploy a TiDB cluster and its monitoring services](#deploy-a-tidb-cluster-and-its-monitoring-services)
 4. [Connect to a TiDB cluster](#connect-to-tidb)
 5. [Upgrade a TiDB cluster](#upgrade-a-tidb-cluster)
 6. [Destroy a TiDB cluster](#destroy-a-tidb-cluster)
@@ -500,7 +500,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-After connecting to the cluster, you can execute the following commands to verify some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#upgrade-the-tidb-cluster) section).
+After connecting to the cluster, you can execute the following commands to verify some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#upgrade-a-tidb-cluster) section).
 
 - Create a `hello_world` table:
 
