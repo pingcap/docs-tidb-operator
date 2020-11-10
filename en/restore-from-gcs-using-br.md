@@ -45,7 +45,7 @@ This document shows an example in which the backup data stored in the specified 
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit this step.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
 
 ## Process of restore
 
@@ -122,7 +122,7 @@ More descriptions of fields in the `Restore` CR are as follows:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the `spec.to`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.to`.
 
 * `.spec.tableFilter`: BR only restores tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR restores all schemas except the system schemas.
 

@@ -51,7 +51,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the step that creating the secret stores the account and password needed to access the TiDB cluster.
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
 
 #### Grant permissions by importing AccessKey and SecretKey
 
@@ -373,7 +373,7 @@ More `Backup` CR parameter description:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the `spec.tikvGCLifeTime`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
 
 - * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
 
@@ -403,7 +403,7 @@ More `Backup` CR parameter description:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, the `tikv_gc_life_time` will be adjusted by BR automatically, you can omit the `spec.from`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
 - `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
