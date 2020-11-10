@@ -198,7 +198,7 @@ sysctl --system
     vim /etc/systemd/system/docker.service
     ```
 
-    插入 `LimitNOFILE=1048576`，这里设置 `LimitNOFILE` 为大于等于 `1048576` 的数字即可。
+    设置 `LimitNOFILE=1048576`，这里设置 `LimitNOFILE` 为大于等于 `1048576` 的数字即可。
 
     > **注意：**
     >
