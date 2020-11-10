@@ -87,17 +87,6 @@ eksctl create cluster -f cluster.yaml
 
 下面介绍如何在 AWS EKS 上部署 TiDB 集群和监控组件。
 
-### 部署 CRDs
-
-执行以下命令，在 EKS 集群中部署 TidbCluster 和 TidbMonitor CR：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml && \
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
-```
-
 ### 创建 namespace
 
 执行以下命令，创建 TiDB 集群安装的 namespace：
@@ -114,13 +103,13 @@ kubectl create namespace tidb-cluster
 
 ### 部署 TiDB 集群和监控
 
-执行以下命令，创建 TiDB 集群。
+执行以下命令，在 EKS 集群中部署 TidbCluster 和 TidbMonitor CR。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
-kubectl create -f tidb-monitor.yaml -n tidb-cluster
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群及其监控。
