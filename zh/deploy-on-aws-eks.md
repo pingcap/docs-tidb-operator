@@ -108,8 +108,8 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群及其监控。
@@ -349,7 +349,7 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.1.6/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
 ## 使用企业版
 
@@ -443,7 +443,7 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/eks/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
 3. 使用本地存储。
