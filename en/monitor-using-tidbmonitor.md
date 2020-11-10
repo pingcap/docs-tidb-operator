@@ -290,7 +290,7 @@ data:
 type: kubernetes.io/tls
 ```
 
-In a public cloud Kubernetes cluster, you can usually [configure Loadbalancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) to access Ingress through a domain name. If you cannot configure the Loadbalancer service, for example, using NodePort as the service type of Ingress, you can access the service in a way equivalent to the following command:
+In a public cloud-deployed Kubernetes cluster, you can usually [configure Loadbalancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) to access Ingress through a domain name. If you cannot configure the Loadbalancer service (for example, when you use NodePort as the service type of Ingress), you can access the service in a way equivalent to the following command:
 
 ```shell
 curl -H "Host: example.com" ${node_ip}:${NodePort}
