@@ -71,17 +71,6 @@ gcloud config set compute/region <gcp-region>
 
 下面介绍如何在 GCP GKE 上部署 TiDB 集群和监控组件。
 
-### 部署 CRDs
-
-执行以下命令，在 GKE 集群中部署 TidbCluster 和 TidbMonitor CR：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml &&
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
-```
-
 ### 创建 namespace
 
 执行以下命令，创建 TiDB 集群安装的 namespace：
@@ -98,13 +87,13 @@ kubectl create namespace tidb-cluster
 
 ### 部署 TiDB 集群
 
-执行以下命令，创建 TiDB 集群。
+执行以下命令，在 GKE 集群中部署 TidbCluster 和 TidbMonitor CR。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
-kubectl create -f tidb-monitor.yaml -n tidb-cluster
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
@@ -346,7 +335,7 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.1.6/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
 ## 使用企业版
 
@@ -392,7 +381,7 @@ GCP 可以实例类型提供额外的[本地存储卷](https://cloud.google.com/
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. 使用本地存储。
