@@ -380,8 +380,7 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 {{< copyable "shell-regular" >}}
 
 ```
-curl -sLO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml && \
-    kubectl -n tidb-cluster apply -f tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
 ```
 
 期望输出：
@@ -715,7 +714,7 @@ kubectl delete tidbmonitor basic -n tidb-cluster
 
 ### 删除 PV 数据
 
-如果您的部署具有持久性数据存储，则删除 TiDB 群集将不会删除群集的数据。如果不再需要数据，可以运行以下命令来清理数据：
+如果您的部署使用持久性数据存储，则删除 TiDB 集群将不会删除集群的数据。如果不再需要数据，可以运行以下命令来清理数据：
 
 {{< copyable "shell-regular" >}}
 
