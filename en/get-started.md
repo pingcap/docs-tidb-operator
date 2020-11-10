@@ -16,10 +16,10 @@ These are the steps this document follows:
 
 1. [Create a Kubernetes test cluster](#create-a-kubernetes-test-cluster)
 2. [Deploy TiDB Operator](#deploy-tidb-operator)
-3. [Deploy a TiDB cluster and monitoring](#deploy-the-tidb-cluster-and-monitoring)
+3. [Deploy a TiDB cluster and its monitoring services](#deploy-the-tidb-cluster-and-its-monitoring-services)
 4. [Connect to a TiDB cluster](#connect-to-tidb)
-5. [Upgrade a TiDB cluster](#upgrade-tidb)
-6. [Destroy a TiDB cluster](#destroy-tidb)
+5. [Upgrade a TiDB cluster](#upgrade-a-tidb-cluster)
+6. [Destroy a TiDB cluster](#destroy-a-tidb-cluster)
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
 
@@ -36,7 +36,7 @@ If you want to do a production-grade deployment, refer to one of these resources
     - [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
     - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
 
-## Create a Kubernetes cluster
+## Create a Kubernetes test cluster
 
 This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
@@ -619,7 +619,7 @@ The default username and password in Grafana are both `admin`.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Monitor a TiDB Cluster Using TidbMonitor](monitor-using-tidbmonitor.md).
 
-## Upgrade the TiDB cluster
+## Upgrade a TiDB cluster
 
 TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
@@ -706,11 +706,11 @@ Check Table Before Drop: false
 
 For more details about upgrading the TiDB cluster running in TiDB Operator, refer to [Upgrade the TiDB cluster](upgrade-a-tidb-cluster.md).
 
-## Destroy the TiDB cluster
+## Destroy a TiDB cluster
 
 After you've finished testing, you may wish to destroy the TiDB cluster.
 
-Instructions for destroying the Kubernetes cluster depend on how the cluster is created. Refer to [Create a Kubernetes cluster](#create-a-kubernetes-cluster) for more details.
+Instructions for destroying the Kubernetes cluster depend on how the cluster is created. Refer to [Create a Kubernetes test cluster](#create-a-kubernetes-test-cluster) for more details.
 
 The following steps show how to destroy the TiDB cluster, but do not affect the Kubernetes cluster itself.
 
