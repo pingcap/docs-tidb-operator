@@ -82,7 +82,7 @@ After creating CRDs, there are two methods to deploy TiDB Operator on a Kubernet
 
 #### Online deployment
 
-1. Get the `values.yaml` file of the `tidb-operator` chart you want to deploy.
+1. Get the `values.yaml` file of the `tidb-operator` chart you want to deploy
 
     {{< copyable "shell-regular" >}}
 
@@ -101,7 +101,7 @@ After creating CRDs, there are two methods to deploy TiDB Operator on a Kubernet
 
     You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
-3. Deploy TiDB Operator.
+3. Deploy TiDB Operator
 
     {{< copyable "shell-regular" >}}
 
