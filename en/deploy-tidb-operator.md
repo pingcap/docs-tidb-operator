@@ -78,7 +78,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 To deploy TiDB Operator quickly, you can refer to [Deploy TiDB Operator](get-started.md#deploy-tidb-operator). This section describes how to customize the deployment of TiDB Operator.
 
-After creating CRDs, there are two methods to deploy TiDB Operator on a Kubernetes cluster: online and offline.
+After creating CRDs, there are two methods to deploy TiDB Operator on your Kubernetes cluster: online and offline.
 
 #### Online deployment
 
