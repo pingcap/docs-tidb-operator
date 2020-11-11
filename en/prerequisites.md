@@ -196,7 +196,7 @@ After the installation, take the following steps:
     vim /etc/systemd/system/docker.service
     ```
 
-    Set `LimitNOFILE` = `1048576`. Here, set `LimitNOFILE` to a number as equal to or greater than `1048576`.
+    Set `LimitNOFILE` = `1048576`. Here, you can set `LimitNOFILE` to a number as equal to or greater than `1048576`.
 
     > **Note:**
     >
