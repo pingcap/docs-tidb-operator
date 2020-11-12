@@ -78,11 +78,11 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 To deploy TiDB Operator quickly, you can refer to [Deploy TiDB Operator](get-started.md#deploy-tidb-operator). This section describes how to customize the deployment of TiDB Operator.
 
-After creating CRDs, there are two methods to deploy TiDB Operator on your Kubernetes cluster: online and offline.
+After creating CRDs in the step above, there are two methods to deploy TiDB Operator on your Kubernetes cluster: online and offline.
 
 #### Online deployment
 
-1. Get the `values.yaml` file of the `tidb-operator` chart you want to deploy
+1. Get the `values.yaml` file of the `tidb-operator` chart you want to deploy:
 
     {{< copyable "shell-regular" >}}
 
