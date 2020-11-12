@@ -372,3 +372,82 @@ affinity:
     ```
 
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
+
+### 多盘挂载
+Operator 支持 TiDBCluster 挂载多块PV，用于除数据目录的写入，提升性能。
+#### PD 节点类型
+PD 节点类型挂载日志PV，拆分日志读写的例子：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    # storageClassName: local-storage
+    requests:
+      storage: "1Gi"
+    config:
+      log:
+        file:
+          name: /var/log/pd
+        level: "warn"
+    storageVolumes:
+      - name: log
+        storageSize: "2Gi"
+        mountPath: "/var/log/pd"
+```
+
+#### TiDB 节点类型
+
+TiDB 节点类型挂载日志PV，拆分日志读写的例子：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config:
+      log:
+        file:
+          name: /var/log/tidb
+        level: "warn"
+    storageVolumes:
+      - name: log
+        storageSize: "2Gi"
+        mountPath: "/var/log/tidb"
+```
+
+#### TiKV 节点类型
+TiKV 节点类型拆分WAL日志写入和TiTan的目录例子：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    # storageClassName: local-storage
+    requests:
+      storage: "1Gi"
+    config:
+      storage:
+        # In basic examples, we set this to avoid using too much storage.
+        reserve-space: "0MB"
+      rocksdb:
+        wal-dir: "/data_sbi/tikv/wal"
+      titan:
+        dirname: "/data_sbj/titan/data"
+    storageVolumes:
+      - name: wal
+        storageSize: "2Gi"
+        mountPath: "/data_sbi/tikv/wal"
+      - name: titan
+        storageSize: "2Gi"
+        mountPath: "/data_sbj/titan/data"
+```
