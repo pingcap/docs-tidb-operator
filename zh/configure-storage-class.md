@@ -75,7 +75,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
     如果服务器没有外网，需要先用有外网的机器下载 `local-volume-provisioner.yaml` 文件，然后再进行安装：
@@ -83,7 +83,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/manifests/local-dind/local-volume-provisioner.yaml
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
@@ -151,7 +151,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 盘挂载完成后，需要根据上述磁盘挂载情况修改 [`local-volume-provisioner` yaml 文件](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml)，配置发现目录并创建必要的 `StorageClass`。以下是根据上述挂载修改的 yaml 文件示例：
 
-```
+```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -246,7 +246,7 @@ data:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/manifests/local-dind/local-volume-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml
 ```
 
 后续创建 TiDB 集群或备份等组件的时候，再配置相应的 `StorageClass` 供其使用。

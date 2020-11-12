@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### Ad-hoc 全量备份环境准备
 
-参考 [Ad-hoc 全量备份环境准备](backup-to-aws-s3-using-br.md#ad-hoc-全量备份环境准备)
+参考 [Ad-hoc 备份环境准备](backup-to-aws-s3-using-br.md#ad-hoc-备份环境准备)
 
 ### 数据库账户权限
 
@@ -251,26 +251,26 @@ kubectl get bk -n test1 -owide
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_lifetime` 时间设置，默认为 72h。
+* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
-    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
+    在备份开始之前，若 TiDB 集群的 `tikv_gc_life_time` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
 
-    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为备份失败。
+    备份结束后不论成功或者失败，只要老的 `tikv_gc_life_time` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_life_time` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_life_time` 并认为备份失败。
 
-    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_lifetime`：
+    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_life_time`：
 
     ```sql
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    如果发现 `tikv_gc_lifetime` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_lifetime` 调回原样。
+    如果发现 `tikv_gc_life_time` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_life_time` 调回原样。
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
     * `Retain`：任何情况下，删除备份 CR 时会保留备份出的文件
     * `Delete`：任何情况下，删除备份 CR 时会删除备份出的文件
     * `OnFailure`：如果备份中失败，删除备份 CR 时会删除备份出的文件
-    
+
     如果不配置该字段，或者配置该字段的值为上述三种以外的值，均会保留备份出的文件。值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 `Delete`。
 
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。

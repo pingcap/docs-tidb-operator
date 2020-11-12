@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.6`
+- `spec.version`，格式为 `imageTag`，例如 `v4.0.7`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.6`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.7`
 
 ### 推荐配置
 
@@ -72,7 +72,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 > **注意：**
 >
-> 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](destroy-a-tidb-cluster.md)。
+> 如果创建 TiDB 集群时设置了 Kubernetes 集群中不存在的存储类型，则会导致 TiDB 集群创建处于 Pending 状态，需要[将 TiDB 集群彻底销毁掉](destroy-a-tidb-cluster.md)，再进行重试。
 
 ### mountClusterClientSecret
 
@@ -128,6 +128,8 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
       storageClassName: local-storage
 ```
 
+所有 PV 按照配置先后顺序分别挂载到容器内的 `/data0`、`/data1` 等目录。TiFlash 有 4 个日志文件，其中 Proxy 日志打印到容器标准输出，另外 3 个日志存储在硬盘中，默认存储在 `/data0` 目录下，分别为 `/data0/logs/flash_cluster_manager.log`、`/data0/logs/error.log`、`/data0/logs/server.log`，如果要修改日志存储路径，可以参考[配置 TiFlash 配置参数](#配置-tiflash-配置参数)进行修改。
+
 > **警告：**
 >
 > 由于 TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加磁盘，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。
@@ -174,7 +176,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.6
+    image: pingcap/tidb:v4.0.7
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -182,6 +184,28 @@ spec:
     config:
       split-table: true
       oom-action: "log"
+    requests:
+      cpu: 1
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.7
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: |
+      split-table = true
+      oom-action = "log"
     requests:
       cpu: 1
 ```
@@ -204,8 +228,27 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.6
+    image: pingcap/tikv:v4.0.7
     config: {}
+    replicas: 1
+    requests:
+      cpu: 2
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tikv:
+    image: pingcap/tikv:v4.0.7
+    config: |
+      #  [storage]
+      #    reserve-space = "2MB"
     replicas: 1
     requests:
       cpu: 2
@@ -229,10 +272,26 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.6
+    image: pingcap/pd:v4.0.7
     config:
       lease: 3
       enable-prevote: true
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v4.0.7
+    config: |
+      lease = 3
+      enable-prevote = true
 ```
 
 获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
@@ -255,9 +314,36 @@ spec:
   tiflash:
     config:
       config:
+        flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
         logger:
-          count: 5
+          count: 10
           level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
+```
+
+自 v1.1.6 版本起支持透传 TOML 配置给组件:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
 ```
 
 获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)
@@ -280,7 +366,7 @@ spec:
       logLevel: info
 ```
 
-获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://pingcap.com/docs-cn/stable/ticdc/deploy-ticdc/#手动在原有-tidb-集群上新增-ticdc-组件)。
+获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig)。
 
 ## 高可用配置
 

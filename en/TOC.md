@@ -35,12 +35,15 @@
 + Secure
   - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
+  - [Enable TLS for DM](enable-tls-for-dm.md)
 + Operate
+  - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
   + Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
     - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
+  - [Migrate MySQL Data to TiDB Cluster Using DM](deploy-tidb-dm.md)
   + Backup and Restore
     - [Use Helm Charts](backup-and-restore-using-helm-charts.md)
     + Use CRDs
@@ -84,9 +87,10 @@
     - [Configure tidb-cluster Chart](tidb-cluster-chart-config.md)
     - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
++ [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
-  + [TiDB Operator Roadmap](roadmap.md)
   + v1.1
+    - [1.1.6](releases/release-1.1.6.md)
     - [1.1.5](releases/release-1.1.5.md)
     - [1.1.4](releases/release-1.1.4.md)
     - [1.1.3](releases/release-1.1.3.md)
