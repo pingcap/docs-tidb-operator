@@ -503,7 +503,7 @@ In this step, you create a TiDB cluster and perform the following operations:
           name: ${cluster_name}
           amespace: ${namespace}
         spec:
-          version: v4.0.7
+          version: v4.0.8
           timezone: UTC
           pvReclaimPolicy: Retain
           pd:
@@ -647,6 +647,6 @@ mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=clie
 
 > **Note:**
 >
-> [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
+> [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.8), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
 
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/stable/enable-tls-between-clients-and-servers/#check-whether-the-current-connection-uses-encryption).

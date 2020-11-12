@@ -562,7 +562,7 @@ Before proceeding, make sure the following requirements are satisfied:
 
     > **Note:**
     >
-    > + To connect to TiDB (TiDB version < v4.0.7) using a MySQL client from MySQL 8.0, you must explicitly specify `--default-auth=mysql_native_password` if the user account has a password, because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
+    > + To connect to TiDB (TiDB version < v4.0.8) using a MySQL client from MySQL 8.0, you must explicitly specify `--default-auth=mysql_native_password` if the user account has a password, because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
     
     {{< copyable "shell-regular" >}}
 
