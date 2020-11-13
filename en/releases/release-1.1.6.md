@@ -10,7 +10,7 @@ TiDB Operator version: 1.1.6
 
 ## Compatibility Changes
 
-- With [#3342](https://github.com/pingcap/tidb-operator/pull/3342), the `spec.pd.config` will be migrated from YAML format to TOML format automatically, however, if the following parameters are configured in the `spec.pd.config`, the migration cannot be done after upgrading TiDB Operator to v1.1.6, please edit the TidbCluster CR to change the value of the parameter from string format to bool fomat, for example, from `"true"` to `true`.
+- With [#3342](https://github.com/pingcap/tidb-operator/pull/3342), the `spec.pd.config` will be migrated from YAML format to TOML format automatically; however, if the following parameters are configured in the `spec.pd.config`, the migration cannot be done after upgrading TiDB Operator to v1.1.6. Therefore, please edit the `TidbCluster` CR to change the value of the parameter from string format to bool format, for example, from `"true"` to `true`.
 
     - `replication.strictly-match-label`
     - `replication.enable-placement-rules`

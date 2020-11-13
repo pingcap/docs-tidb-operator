@@ -8,7 +8,7 @@ title: TiDB Operator 1.1.6 Release Notes
 
 TiDB Operator 版本：1.1.6
 
-## 兼容性改动
+## 兼容性变化
 
 - 由于 [#3342](https://github.com/pingcap/tidb-operator/pull/3342) 的改动，`spec.pd.config` 会自动从现有的 YAML 格式转换成 TOML 格式，如果 `spec.pd.config` 中配置了如下参数，升级 TiDB Operator 到 v1.1.6 之后，这个转换无法自动完成，需要编辑 TidbCluster CR 把对应参数的值从 string 格式修改为 bool 格式，例如，从 `"true"` 改为 `true`。
 
