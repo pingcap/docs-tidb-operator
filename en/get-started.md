@@ -32,7 +32,7 @@ If you want to do a production-grade deployment, refer to one of these resources
 
 + In a self-managed Kubernetes cluster:
     - Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
-    - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve low latency for TiKV
+    - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
     - [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
     - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
 
@@ -55,7 +55,7 @@ This section shows how to deploy a Kubernetes cluster using kind.
 
 > **Warning:**
 >
-> The kind cluster is for demonstration purposes only. **Do not use** in production!
+> The kind cluster is for test purposes only. **Do not use** in production!
 
 Before deployment, make sure the following requirements are satisfied:
 
@@ -107,7 +107,7 @@ KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/serv
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-You're now ready to [deploy TiDB Operator](#deploy-tidb-operator)!
+You're now ready to [deploy TiDB Operator](#deploy-tidb-operator).
 
 To destroy the Kubernetes cluster, run the following command:
 
@@ -125,7 +125,7 @@ This section describes how to deploy a Kubernetes cluster using minikube.
 
 > **Warning:**
 >
-> The minikube cluster is for demonstration purposes only. **Do not use** it for production.
+> The minikube cluster is for test purposes only. **Do not use** it for production.
 
 Before deployment, make sure the following requirements are satisfied:
 
@@ -631,7 +631,7 @@ Before that, first you need to get familiar with two `kubectl` sub-commands:
 
 ### Modify the TiDB cluster version
 
-In this case, we can use a JSON merge patch to update the version of the TiDB cluster to "nightly":
+In this case, you can use a JSON merge patch to update the version of the TiDB cluster to "nightly":
 
 {{< copyable "shell-regular" >}}
 
