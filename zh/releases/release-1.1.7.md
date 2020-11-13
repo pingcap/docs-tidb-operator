@@ -10,7 +10,14 @@ TiDB Operator 版本：1.1.7
 
 ## 兼容性变化
 
-- 配置项 `prometheus.spec.config.commandOptions` 的行为发生了变化。该列表中不允许存在重复 flags，否则 Prometheus 无法启动。不能设置的 flags 有：`--web.enable-admin-api`，`--web.enable-lifecycle`，`--config.file`，`--storage.tsdb.path`，`--storage.tsdb.retention=${monitor.Spec.Prometheus.ReserveDays}` ([#3390](https://github.com/pingcap/tidb-operator/pull/3390), [@mightyguava](https://github.com/mightyguava))
+- 配置项 `prometheus.spec.config.commandOptions` 的行为发生了变化。该列表中不允许存在重复 flags，否则 Prometheus 无法启动。([#3390](https://github.com/pingcap/tidb-operator/pull/3390), [@mightyguava](https://github.com/mightyguava))
+    不能设置的 flags 有：
+    
+     - `--web.enable-admin-api`
+     - `--web.enable-lifecycle`
+     - `--config.file`
+     - `--storage.tsdb.path`
+     - `--storage.tsdb.retention` 
 
 ## 新功能
 
