@@ -11,13 +11,14 @@ TiDB Operator version: 1.1.7
 ## Compatibility Changes
 
 - The behavior of `prometheus.spec.config.commandOptions` has changed. Any duplicated flags must be removed, or Prometheus will fail to start. ([#3390](https://github.com/pingcap/tidb-operator/pull/3390), [@mightyguava](https://github.com/mightyguava))
+
     Flags that CANNOT be set are:
-    
-     - `--web.enable-admin-api`
-     - `--web.enable-lifecycle`
-     - `--config.file`
-     - `--storage.tsdb.path`
-     - `--storage.tsdb.retention` 
+
+    - `--web.enable-admin-api`
+    - `--web.enable-lifecycle`
+    - `--config.file`
+    - `--storage.tsdb.path`
+    - `--storage.tsdb.retention`
 
 ## New Features
 
