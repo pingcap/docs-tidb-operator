@@ -14,11 +14,10 @@ TiDB Operator version: 1.1.7
 
 ## New Features
 
-- Support `spec.toolImage` for Backup & Restore with BR to define the image used to provide the BR binary executables, use `pingcap/br:${tikv_version}` by default ([#3471](https://github.com/pingcap/tidb-operator/pull/3471), [@namco1992](https://github.com/namco1992))
-- Add `spec.pd.storageVolumes` and `spec.tidb.storageVolumes` to support mounting multiple PVs for PD and TiDB ([#3444](https://github.com/pingcap/tidb-operator/pull/3444), [@mikechengwei](https://github.com/mikechengwei))
-- Add `spec.tikv.storageVolumes` to support mounting multiple PVs for TiKV ([#3425](https://github.com/pingcap/tidb-operator/pull/3425), [@mikechengwei](https://github.com/mikechengwei))
+- Support `spec.toolImage` for the `Backup` and `Restore` CR with BR to define the image used to provide the BR binary executables. Defaults to `pingcap/br:${tikv_version}` ([#3471](https://github.com/pingcap/tidb-operator/pull/3471), [@namco1992](https://github.com/namco1992))
+- Add `spec.tidb.storageVolumes`, `spec.tikv.storageVolumes`, and `spec.pd.storageVolumes` to support mounting multiple PVs for TiDB, TiKV, and PD ([#3425](https://github.com/pingcap/tidb-operator/pull/3425) [#3444](https://github.com/pingcap/tidb-operator/pull/3444), [@mikechengwei](https://github.com/mikechengwei))
 - Add `spec.tidb.readinessProbe` config to support requesting `http://127.0.0.0:10080/status` for TiDB's readiness probe, TiDB version >= v4.0.9 required ([#3438](https://github.com/pingcap/tidb-operator/pull/3438), [@july2993](https://github.com/july2993))
-- Support the case where advanced statefulset controller is enabled during PD leader transfer ([#3395](https://github.com/pingcap/tidb-operator/pull/3395), [@tangwz](https://github.com/tangwz))
+- Support the case where the advanced StatefulSet controller is enabled during PD leader transfer ([#3395](https://github.com/pingcap/tidb-operator/pull/3395), [@tangwz](https://github.com/tangwz))
 - Support setting `OnDelete` update strategies for the StatefulSets via `spec.statefulSetUpdateStrategy` in the TidbCluster CR ([#3408](https://github.com/pingcap/tidb-operator/pull/3408), [@cvvz](https://github.com/cvvz))
 - Support HA scheduling when failover happens ([#3419](https://github.com/pingcap/tidb-operator/pull/3419), [@cvvz](https://github.com/cvvz))
 - Support smooth migration from TiDB clusters deployed with TiDB Ansible or TiUP or in the same Kubernetes cluster to a new TiDB cluster ([#3226](https://github.com/pingcap/tidb-operator/pull/3226), [@cvvz](https://github.com/cvvz))
