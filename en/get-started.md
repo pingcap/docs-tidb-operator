@@ -125,7 +125,7 @@ This section describes how to deploy a Kubernetes cluster using minikube.
 
 > **Warning:**
 >
-> The minikube cluster is for demonstration purposes only. **Do not use** in production!
+> The minikube cluster is for demonstration purposes only. **Do not use** it for production.
 
 Before deployment, make sure the following requirements are satisfied:
 
@@ -135,7 +135,7 @@ Before deployment, make sure the following requirements are satisfied:
 
 > **Note:**
 >
-> Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
+> Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and might not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
 After minikube is installed, execute the following command to start a minikube Kubernetes cluster:
 
@@ -172,7 +172,7 @@ You should see output like this, with some differences depending on your OS and 
 🏄  Done! kubectl is now configured to use "minikube"
 ```
 
-If you have trouble accessing Docker Hub, you may use local gcr.io mirrors such as `registry.cn-hangzhou.aliyuncs.com/google_containers`.
+If you have trouble accessing Docker Hub, you might use your local gcr.io mirrors such as `registry.cn-hangzhou.aliyuncs.com/google_containers`.
 
 {{< copyable "shell-regular" >}}
 
@@ -192,7 +192,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 > **Note:**
 >
-> As minikube is running with VMs (by default), `127.0.0.1` is the VM itself, you might want to use your real IP address of the host machine in some cases.
+> Because minikube is running on VMs (by default), `127.0.0.1` is the IP address of the VM itself. You might need to modify the proxy to use the real IP address of the host machine in some cases.
 
 See [minikube setup](https://kubernetes.io/docs/setup/minikube/) for more options to configure your virtual machine and Kubernetes cluster.
 
@@ -213,7 +213,7 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-You're now ready to [deploy TiDB Operator](#deploy-tidb-operator)!
+You are now ready to [deploy TiDB Operator](#deploy-tidb-operator).
 
 To destroy the Kubernetes cluster, run the following command:
 
@@ -412,7 +412,7 @@ basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
 basic-pd-0                        1/1     Running           0          29s
 ```
 
-Wait until all Pods for all services are started. As soon as you see Pods of each type (`-pd`, `-tikv`, and `-tidb`) are in the "Running" state, you can hit <kbd>Ctrl</kbd>+<kbd>C</kbd> to get back to the command line and go on to [connect to your TiDB cluster](#connect-to-tidb)!
+Wait until all Pods for all services are started. As soon as you see Pods of each type (`-pd`, `-tikv`, and `-tidb`) are in the "Running" state, you can press <kbd>Ctrl</kbd>+<kbd>C</kbd> to get back to the command line and go on to [connect to your TiDB cluster](#connect-to-tidb).
 
 Expected output:
 
@@ -468,7 +468,7 @@ In this case, the TiDB **service** is called **basic-tidb**. Run the following c
 kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 ```
 
-This command runs in the background and writes its output to a file called `pf4000.out` so we can continue working in the same shell session.
+This command runs in the background and writes its output to a file called `pf4000.out`, so you can continue working in the same shell session.
 
 ### Connect to the TiDB service
 
@@ -613,7 +613,7 @@ You can forward the port for Grafana so that you can access Grafana dashboard lo
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. Note that if you're not running `kubectl` on the same host (for example, in a Docker container or on a remote host), you cannot access Grafana dashboard at <http://localhost:3000> from your browser.
+You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. Note that if you are not running `kubectl` on the same host (for example, in a Docker container or on a remote host), you cannot access Grafana dashboard at <http://localhost:3000> from your browser.
 
 The default username and password in Grafana are both `admin`.
 
@@ -647,7 +647,7 @@ tidbcluster.pingcap.com/basic patched
 
 ### Wait for Pods to restart
 
-To follow the progress of the cluster as its components are upgraded, execute the following command. You should see some Pods transition to "Terminating" and then back to "ContainerCreating" and back to "Running". Note the value in the "AGE" pod column to see which pods have restarted.
+To follow the progress of the cluster as its components are upgraded, execute the following command. You should see some Pods transiting to "Terminating" and then back to "ContainerCreating" and then to "Running". Note that the value in the "AGE" pod column to see which pods have restarted.
 
 {{< copyable "shell-regular" >}}
 
