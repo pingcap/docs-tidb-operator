@@ -25,10 +25,10 @@ TiDB Operator 版本：1.1.7
 
 ## 优化提升
 
-- 当 UP 状态的 stores 数量小于等于 3 时，禁止 scale in TiKV 实例 ([#3367](https://github.com/pingcap/tidb-operator/pull/3367), [@cvvz](https://github.com/cvvz))
+- 当 UP 状态的 stores 数量小于等于 3 时，禁止缩容 TiKV 实例 ([#3367](https://github.com/pingcap/tidb-operator/pull/3367), [@cvvz](https://github.com/cvvz))
 - 在 `BackupStatus` 和 `RestoreStatus` 中新增 `phase` 状态，用于在 `kubectl get` 返回结果中显示当前最新状态 ([#3397](https://github.com/pingcap/tidb-operator/pull/3397), [@namco1992](https://github.com/namco1992))
 - BR 在备份和恢复前，跳过设置 `tikv_gc_life_time`，由 BR 自动设置，需要 BR & TiKV 版本 >= v4.0.8 ([#3443](https://github.com/pingcap/tidb-operator/pull/3443), [@namco1992](https://github.com/namco1992))
 
 ## Bug 修复
 
-- 修复在当前 TiDB Cluster 之外存在 PD member 的情况下，当前 TiDB Cluster 无法把 PD scale 到 0 的 bug ([#3456](https://github.com/pingcap/tidb-operator/pull/3456), [@dragonly](https://github.com/dragonly))
+- 修复在当前 `TidbCluster` 之外存在 PD member 的情况下，当前 TiDB Cluster 无法把 PD scale 到 0 的 bug ([#3456](https://github.com/pingcap/tidb-operator/pull/3456), [@dragonly](https://github.com/dragonly))
