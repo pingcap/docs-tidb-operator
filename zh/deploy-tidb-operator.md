@@ -32,11 +32,9 @@ Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorizat
 
 ## 配置本地持久化卷
 
-### 准备本地卷
-
 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
-## 安装 TiDB Operator
+## 部署 TiDB Operator
 
 ### 创建 CRD
 
@@ -45,7 +43,7 @@ TiDB Operator 使用 [Custom Resource Definition (CRD)](https://kubernetes.io/do
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/manifests/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/crd.yaml
 ```
 
 如果服务器没有外网，需要先用有外网的机器下载 `crd.yaml` 文件，然后再进行安装：
@@ -53,7 +51,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.5/manifests/crd.yaml
+wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/crd.yaml
 kubectl apply -f ./crd.yaml
 ```
 
@@ -76,13 +74,15 @@ tidbinitializers.pingcap.com         2020-06-11T07:59:42Z
 tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 ```
 
-### 安装 
+### 自定义部署 TiDB Operator
 
-创建以上各种自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator，有两种安装方式：在线和离线安装 TiDB Operator。
+若需要快速部署 TiDB Operator，可参考快速上手中[部署 TiDB Operator文档](get-started.md#部署-tidb-operator)。本节介绍自定义部署 TiDB Operator 的配置方式。
 
-#### 在线安装 TiDB Operator
+创建 CRDs 之后，在 Kubernetes 集群上部署 TiDB Operator有两种方式：在线和离线部署。
 
-1. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
+#### 在线部署 TiDB Operator
+
+1. 获取你要部署的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -93,7 +93,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.5`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
+    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.6`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
 
 2. 配置 TiDB Operator
 
@@ -101,7 +101,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     其他项目例如：`limits`、`requests` 和 `replicas`，请根据需要进行修改。
 
-3. 安装 TiDB Operator
+3. 部署 TiDB Operator
 
     {{< copyable "shell-regular" >}}
 
@@ -133,15 +133,15 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.1.5.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.1.6.tgz
     ```
 
-    将 `tidb-operator-v1.1.5.tgz` 文件拷贝到服务器上并解压到当前目录：
+    将 `tidb-operator-v1.1.6.tgz` 文件拷贝到服务器上并解压到当前目录：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.1.5.tgz
+    tar zxvf tidb-operator.v1.1.6.tgz
     ```
 
 2. 下载 TiDB Operator 运行所需的 Docker 镜像
@@ -153,8 +153,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.1.5
-    pingcap/tidb-backup-manager:v1.1.5
+    pingcap/tidb-operator:v1.1.6
+    pingcap/tidb-backup-manager:v1.1.6
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -167,13 +167,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.1.5
-    docker pull pingcap/tidb-backup-manager:v1.1.5
+    docker pull pingcap/tidb-operator:v1.1.6
+    docker pull pingcap/tidb-backup-manager:v1.1.6
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.1.5.tar pingcap/tidb-operator:v1.1.5
-    docker save -o tidb-backup-manager-v1.1.5.tar pingcap/tidb-backup-manager:v1.1.5
+    docker save -o tidb-operator-v1.1.6.tar pingcap/tidb-operator:v1.1.6
+    docker save -o tidb-backup-manager-v1.1.6.tar pingcap/tidb-backup-manager:v1.1.6
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -183,8 +183,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.1.5.tar
-    docker load -i tidb-backup-manager-v1.1.5.tar
+    docker load -i tidb-operator-v1.1.6.tar
+    docker load -i tidb-backup-manager-v1.1.6.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
