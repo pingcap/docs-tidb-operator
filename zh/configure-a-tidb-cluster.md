@@ -374,8 +374,11 @@ affinity:
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
 
 ### 多盘挂载
+
 Operator 支持 TiDBCluster 挂载多块PV，用于除数据目录的写入，提升性能。
+
 #### PD 节点类型
+
 PD 节点类型挂载日志PV，拆分日志读写的例子：
 
 {{< copyable "shell-regular" >}}
@@ -423,6 +426,7 @@ TiDB 节点类型挂载日志PV，拆分日志读写的例子：
 ```
 
 #### TiKV 节点类型
+
 TiKV 节点类型拆分WAL日志写入和TiTan的目录例子：
 
 {{< copyable "shell-regular" >}}
