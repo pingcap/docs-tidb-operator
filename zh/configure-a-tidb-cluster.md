@@ -60,7 +60,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 建议设置 `spec.pvReclaimPolicy: Retain`，确保 PVC 被删除后 PV 仍然保留，保证数据安全。
 
-### Storage class
+### Storage
 
 如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
 
@@ -73,6 +73,73 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 > **注意：**
 >
 > 如果创建 TiDB 集群时设置了 Kubernetes 集群中不存在的存储类型，则会导致 TiDB 集群创建处于 Pending 状态，需要[将 TiDB 集群彻底销毁掉](destroy-a-tidb-cluster.md)，再进行重试。
+
+### 多盘挂载
+
+TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块PV，可以用于不同用途的数据写入。
+
+每个节点类型下都有 `storageVolumes` 字段，用于描述用户自定义的多个PV，Operator 默认为 PD和TiKV 带一个存储数据的PV。
+
+用`StorageVolume`类描述自定义PV的信息，`storageVolume.name` 描述PV的名称，`storageVolume.storageClassName` 描述PV使用哪一个 storage class，如果不填会使用节点类型本身的 storage class，`storageVolume.storageSize` 描述申请PV存储容量的大小，`storageVolume.mountPath` 描述将PV挂载到容器的哪个目录。
+
+例子:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    # storageClassName: local-storage
+    requests:
+      storage: "1Gi"
+    config:
+      log:
+        file:
+          name: /var/log/pd
+        level: "warn"
+    storageVolumes:
+      - name: log
+        storageSize: "2Gi"
+        mountPath: "/var/log/pd"
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config:
+      log:
+        file:
+          name: /var/log/tidb
+        level: "warn"
+    storageVolumes:
+      - name: log
+        storageSize: "2Gi"
+        mountPath: "/var/log/tidb"
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    # storageClassName: local-storage
+    requests:
+      storage: "1Gi"
+    config:
+      storage:
+        # In basic examples, we set this to avoid using too much storage.
+        reserve-space: "0MB"
+      rocksdb:
+        wal-dir: "/data_sbi/tikv/wal"
+      titan:
+        dirname: "/data_sbj/titan/data"
+    storageVolumes:
+      - name: wal
+        storageSize: "2Gi"
+        mountPath: "/data_sbi/tikv/wal"
+      - name: titan
+        storageSize: "2Gi"
+        mountPath: "/data_sbj/titan/data"
+```
 
 ### mountClusterClientSecret
 
@@ -458,86 +525,3 @@ affinity:
     ```
 
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
-
-### 多盘挂载
-
-Operator 支持 TiDBCluster 挂载多块PV，用于除数据目录的写入，提升性能。
-
-#### PD 节点类型
-
-PD 节点类型挂载日志PV，拆分日志读写的例子：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      log:
-        file:
-          name: /var/log/pd
-        level: "warn"
-    storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/pd"
-```
-
-#### TiDB 节点类型
-
-TiDB 节点类型挂载日志PV，拆分日志读写的例子：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-  tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      log:
-        file:
-          name: /var/log/tidb
-        level: "warn"
-    storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/tidb"
-```
-
-#### TiKV 节点类型
-
-TiKV 节点类型拆分WAL日志写入和TiTan的目录例子：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      storage:
-        # In basic examples, we set this to avoid using too much storage.
-        reserve-space: "0MB"
-      rocksdb:
-        wal-dir: "/data_sbi/tikv/wal"
-      titan:
-        dirname: "/data_sbj/titan/data"
-    storageVolumes:
-      - name: wal
-        storageSize: "2Gi"
-        mountPath: "/data_sbi/tikv/wal"
-      - name: titan
-        storageSize: "2Gi"
-        mountPath: "/data_sbj/titan/data"
-```
