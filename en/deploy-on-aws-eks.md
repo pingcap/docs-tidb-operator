@@ -82,7 +82,7 @@ eksctl create cluster -f cluster.yaml
 
 To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
 
-## Deploy a TiDB cluster
+## Deploy a TiDB cluster and the monitoring component
 
 This section describes how to deploy a TiDB cluster and its monitoring component in AWS EKS.
 
@@ -100,7 +100,7 @@ kubectl create namespace tidb-cluster
 >
 > A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. This document takes `tidb-cluster` as an example. If you want to use other namespace, modify the corresponding arguments of `-n` or `--namespace`.
 
-### Deploy the cluster and its monitoring component
+### Deploy
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the following command:
 
@@ -108,14 +108,14 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the fol
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
 
-### View the cluster starting status
+### View the cluster status
 
-To view the starting status of the TiDB cluster, run the following command:
+To view the status of the starting TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -219,7 +219,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
 
 > **Note:**
 >
-> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (< v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
+> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (cluster version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
 > * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ### Access the Grafana monitoring dashboard
@@ -358,7 +358,7 @@ For detailed CR configuration, refer to [API references](https://github.com/ping
 
 ## Deploy TiDB Enterprise Edition
 
-To deploy TiDB/PD/TiKV/TiFlash/TiCDC Enterprise Edition, configure `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` in `tidb-cluster.yaml` as the enterprise image. The Enterprise image format is `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`.
+To deploy TiDB/PD/TiKV/TiFlash/TiCDC Enterprise Edition, configure `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` in `tidb-cluster.yaml` as the enterprise image. The enterprise image format is `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`.
 
 For example:
 
