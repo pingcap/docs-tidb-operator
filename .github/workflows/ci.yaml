@@ -16,11 +16,7 @@ jobs:
       run:
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
         git fetch upstream;
-<<<<<<< HEAD
-        python3 ./hack/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.1...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
-=======
-        python3 ./hack/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- '*.md' '*.yml' '*.yaml')
->>>>>>> 25938d0... CI: update conflicts check to support yml and yaml files (#854)
+        python3 ./hack/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.1...HEAD -- '*.md' '*.yml' '*.yaml')
     - name: Markdown lint
       uses: avto-dev/markdown-lint@v1
       with:
@@ -29,12 +25,4 @@ jobs:
     - name: Verify internal links
       run: ./hack/verify-links.sh
     - name: Verify internal link anchors
-<<<<<<< HEAD
-      run: ./hack/verify-link-anchors.sh 
-=======
       run: ./hack/verify-link-anchors.sh
-    - name: "Check unclosed tags"
-      run:
-        echo "checked files are $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')";
-        python3 ./hack/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
->>>>>>> 25938d0... CI: update conflicts check to support yml and yaml files (#854)
