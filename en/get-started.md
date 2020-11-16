@@ -504,7 +504,7 @@ After connecting to the cluster, you can execute the following commands to verif
 
 - Create a `hello_world` table:
 
-    ```
+    ```sql
     mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
     Query OK, 0 rows affected (0.17 sec)
 
@@ -530,7 +530,7 @@ After connecting to the cluster, you can execute the following commands to verif
 
 - Query the TiDB version:
 
-    ```
+    ```sql
     mysql> select tidb_version()\G
     *************************** 1. row ***************************
     tidb_version(): Release Version: v4.0.0
@@ -547,7 +547,7 @@ After connecting to the cluster, you can execute the following commands to verif
 
 - Query the TiKV store status:
 
-    ```
+    ```sql
     mysql> select * from information_schema.tikv_store_status\G
     *************************** 1. row ***************************
              STORE_ID: 4
@@ -574,7 +574,9 @@ After connecting to the cluster, you can execute the following commands to verif
 
 - Query the TiDB cluster information:
 
-    ```
+    (This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#upgrade-a-tidb-cluster).)
+
+    ```sql
     mysql> select * from information_schema.cluster_info\G
     *************************** 1. row ***************************
               TYPE: tidb

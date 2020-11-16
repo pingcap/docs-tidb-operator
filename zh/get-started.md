@@ -496,7 +496,7 @@ mysql>
 
 - 创建 `hello_world` 表：
 
-    ```
+    ```sql
     mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
     Query OK, 0 rows affected (0.17 sec)
 
@@ -522,7 +522,7 @@ mysql>
 
 - 查询 TiDB 版本号：
 
-    ```
+    ```sql
     mysql> select tidb_version()\G
     *************************** 1. row ***************************
     tidb_version(): Release Version: v4.0.0
@@ -539,7 +539,7 @@ mysql>
 
 - 查询 TiKV 存储状态：
 
-    ```
+    ```sql
     mysql> select * from information_schema.tikv_store_status\G
     *************************** 1. row ***************************
                 STORE_ID: 4
@@ -566,7 +566,9 @@ mysql>
 
 - 查询 TiDB 集群基本信息：
 
-    ```
+    （该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#升级-tidb-集群)。）
+
+    ```sql
     mysql> select * from information_schema.cluster_info\G
     *************************** 1. row ***************************
                 TYPE: tidb
