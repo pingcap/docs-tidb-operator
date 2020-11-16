@@ -461,4 +461,4 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
 
     Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
 
-    For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy-the-cluster-and-its-monitoring-component)
+    For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy)
