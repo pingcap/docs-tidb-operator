@@ -55,7 +55,7 @@ This section shows how to deploy a Kubernetes cluster using kind.
 
 > **Warning:**
 >
-> The kind cluster is for test purposes only. **Do not use** in production!
+> The kind cluster is for test purposes only. **Do not use** in production.
 
 Before deployment, make sure the following requirements are satisfied:
 
