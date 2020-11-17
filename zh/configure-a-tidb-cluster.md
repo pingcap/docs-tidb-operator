@@ -78,7 +78,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用途的数据写入。
 
-每个组件下都有 `storageVolumes` 字段，用于描述用户自定义的多个 PV。TiDB Operator 默认为 PD 和 TiKV 挂载一个存储数据的 PV。
+每个组件都可以配置 `storageVolumes` 字段，用于描述用户自定义的多个 PV。
 
 相关字段的含义如下：
 
