@@ -92,7 +92,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 {{< copyable "shell-regular" >}}
 
-```shell
+```yaml
   pd:
     baseImage: pingcap/pd
     replicas: 1
