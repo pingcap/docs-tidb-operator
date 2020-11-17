@@ -78,13 +78,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用途的数据写入。
 
-每个节点类型下都有 `storageVolumes` 字段，用于描述用户自定义的多个 PV。TiDB Operator 默认为 PD 和 TiKV 挂载一个存储数据的 PV。
+每个组件下都有 `storageVolumes` 字段，用于描述用户自定义的多个 PV。TiDB Operator 默认为 PD 和 TiKV 挂载一个存储数据的 PV。
 
 相关字段的含义如下：
 
 - `StorageVolume`：自定义 PV 的信息。
 - `storageVolume.name`：PV 的名称。
-- `storageVolume.storageClassName`：PV 使用哪一个 storage class。如果不填，会使用节点类型本身的 storage class。
+- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用spec.pd/tidb/tikv.storageClassName。
 - `storageVolume.storageSize`：申请PV存储容量的大小。
 - `storageVolume.mountPath`：将 PV 挂载到容器的哪个目录。
 
