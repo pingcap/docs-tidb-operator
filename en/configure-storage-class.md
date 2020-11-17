@@ -75,7 +75,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.7/manifests/local-dind/local-volume-provisioner.yaml
      ```
 
     If the server has no access to the Internet, download the `local-volume-provisioner.yaml` file on a machine with Internet access and then install it.
@@ -83,7 +83,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml &&
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.7/manifests/local-dind/local-volume-provisioner.yaml &&
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
@@ -151,7 +151,7 @@ If the components such as monitoring, TiDB Binlog, and `tidb-backup` use local d
 
 Based on the disk mounts above, you need to modify the [`local-volume-provisioner` YAML file](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml) accordingly, configure discovery directory and create the necessary `StorageClass`. Here is an example of a modified YAML file:
 
-```
+```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -246,7 +246,7 @@ Finally, execute the `kubectl apply` command to deploy `local-volume-provisioner
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/local-dind/local-volume-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.7/manifests/local-dind/local-volume-provisioner.yaml
 ```
 
 When you later deploy tidb clusters, deploy TiDB Binlog for incremental backups, or do full backups, configure the corresponding `StorageClass` for use.

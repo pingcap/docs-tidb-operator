@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.7`
+- `spec.version`，格式为 `imageTag`，例如 `v4.0.8`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.7`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.8`
 
 ### 推荐配置
 
@@ -72,7 +72,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 > **注意：**
 >
-> 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](destroy-a-tidb-cluster.md)。
+> 如果创建 TiDB 集群时设置了 Kubernetes 集群中不存在的存储类型，则会导致 TiDB 集群创建处于 Pending 状态，需要[将 TiDB 集群彻底销毁掉](destroy-a-tidb-cluster.md)，再进行重试。
 
 ### mountClusterClientSecret
 
@@ -176,7 +176,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.7
+    image: pingcap/tidb:v4.0.8
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -198,7 +198,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.7
+    image: pingcap/tidb:v4.0.8
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -228,7 +228,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.7
+    image: pingcap/tikv:v4.0.8
     config: {}
     replicas: 1
     requests:
@@ -245,7 +245,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.7
+    image: pingcap/tikv:v4.0.8
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -272,7 +272,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.7
+    image: pingcap/pd:v4.0.8
     config:
       lease: 3
       enable-prevote: true
@@ -288,7 +288,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.7
+    image: pingcap/pd:v4.0.8
     config: |
       lease = 3
       enable-prevote = true
