@@ -82,7 +82,6 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 相关字段的含义如下：
 
-- `StorageVolume`：自定义 PV 的信息。
 - `storageVolume.name`：PV 的名称。
 - `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用spec.pd/tidb/tikv.storageClassName。
 - `storageVolume.storageSize`：申请PV存储容量的大小。
