@@ -80,7 +80,13 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块PV，可以用于不同用�
 
 每个节点类型下都有 `storageVolumes` 字段，用于描述用户自定义的多个PV，Operator 默认为 PD和TiKV 带一个存储数据的PV。
 
-用`StorageVolume`类描述自定义PV的信息，`storageVolume.name` 描述PV的名称，`storageVolume.storageClassName` 描述PV使用哪一个 storage class，如果不填会使用节点类型本身的 storage class，`storageVolume.storageSize` 描述申请PV存储容量的大小，`storageVolume.mountPath` 描述将PV挂载到容器的哪个目录。
+相关字段的含义如下：
+
+- `StorageVolume`：自定义 PV 的信息。
+- `storageVolume.name`：PV 的名称。
+- `storageVolume.storageClassName`：PV 使用哪一个 storage class。如果不填，会使用节点类型本身的 storage class。
+- `storageVolume.storageSize`：申请PV存储容量的大小。
+- `storageVolume.mountPath`：将 PV 挂载到容器的哪个目录。
 
 例子:
 
