@@ -1,7 +1,7 @@
 ---
 title: 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
 summary: 使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/','/docs/stable/tidb-in-kubernetes/reference/tools/tkctl/']
 ---
 
 # 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
@@ -99,9 +99,9 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
     2. 新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。
 
        + 使用 Amazon S3 AccessKey 和 SecretKey 权限授予方式，或者使用 Ceph、GCS 作为存储后端时:
-    
+
             {{< copyable "" >}}
-    
+
             ```yaml
             apiVersion: v1
             kind: Secret
