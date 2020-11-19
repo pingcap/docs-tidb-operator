@@ -1,7 +1,7 @@
 ---
 title: TiDB Kubernetes Control User Guide
 summary: Learn how to use the tkctl (TiDB Kubernetes Control) tool.
-aliases: ['/docs/tidb-in-kubernetes/dev/use-tkctl/']
+aliases: ['/docs/tidb-in-kubernetes/dev/use-tkctl/','/docs/stable/tidb-in-kubernetes/reference/tools/tkctl/']
 ---
 
 # TiDB Kubernetes Control User Guide
@@ -98,7 +98,7 @@ For example:
 tkctl version
 ```
 
-```
+```shell
 Client Version: v1.0.0-beta.1-p2-93-g6598b4d3e75705-dirty
 TiDB Controller Manager Version: pingcap/tidb-operator:latest
 TiDB Scheduler Version: pingcap/tidb-operator:latest
