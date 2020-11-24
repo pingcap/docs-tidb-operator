@@ -83,13 +83,13 @@ For the demonstration environment or functional verification, you can use networ
 
 TiDB Operator supports mounting multiple PVs for PD, TiDB, and TiKV, which can be used for data writing for different purposes.
 
-You can configure each component with the `storageVolumes` field to describe multiple user-custom PVs.
+You can configure the `storageVolumes` field for each component to describe multiple user-customized PVs.
 
 The meanings of the related fields are as follows:
 
-- `storageVolume.name`: The name of PV.
-- `storageVolume.storageClassName`: The StorageClass that PV uses. If not configured, spec.pd/tidb/tikv.storageClassName will be used.
-- `storageVolume.storageSize`:The size of the requested PV storage capacity.
+- `storageVolume.name`: The name of the PV.
+- `storageVolume.storageClassName`: The StorageClass that the PV uses. If not configured, `spec.pd/tidb/tikv.storageClassName` will be used.
+- `storageVolume.storageSize`: The storage size of the requested PV.
 - `storageVolume.mountPath`: The path of the container to mount the PV to.
 
 For example:
