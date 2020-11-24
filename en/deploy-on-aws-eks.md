@@ -107,8 +107,8 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the fol
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
@@ -354,7 +354,7 @@ Depending on the EKS cluster status, use different commands:
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.1.6/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Deploy TiDB Enterprise Edition
 
@@ -452,7 +452,7 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/eks/local-volume-provisioner.yaml
     ```
 
 3. Use the local storage.

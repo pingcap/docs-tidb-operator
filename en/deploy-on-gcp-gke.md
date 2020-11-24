@@ -94,8 +94,8 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the GKE cluster, run the fol
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml -n tidb-cluster
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-monitor.yaml -n tidb-cluster
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
@@ -345,7 +345,7 @@ The two components are *not required* in the deployment. This section shows a qu
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.1.6/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Deploy TiDB Enterprise Edition
 
@@ -391,7 +391,7 @@ Some GCP instance types provide additional [local store volumes](https://cloud.g
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. Use the local storage.
