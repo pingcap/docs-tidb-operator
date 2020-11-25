@@ -14,7 +14,12 @@ jobs:
       - run:
           name: "Lint"
           command: |
+<<<<<<< HEAD
             markdownlint .
+=======
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+
+>>>>>>> 1532260... chore: remove copyable snippet code when generate PDF (#873)
   build:
     docker:
       - image: andelf/doc-build:0.1.9
