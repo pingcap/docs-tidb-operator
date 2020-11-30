@@ -4,7 +4,7 @@
 
 - [ ] I've signed [**Contributor License Agreement**](https://cla-assistant.io/pingcap/docs-tidb-operator) that's required for repo owners to accept my contribution.
 
-### What is changed, added or deleted? (Required)
+### What is changed, added, or deleted? (Required)
 
 <!--Tell us what you did and why.-->
 
