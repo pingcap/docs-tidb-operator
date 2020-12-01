@@ -16,6 +16,6 @@ TiDB Operator 版本：1.1.2
 
 - 抓取 TiCDC, TiDB Lightning 和 TiKV Importer 的监控指标 ([#2835](https://github.com/pingcap/tidb-operator/pull/2835)，[@weekface](https://github.com/weekface))
 - 更新 PD/TiDB/TiKV 配置为 v4.0.2 ([#2828](https://github.com/pingcap/tidb-operator/pull/2828), [@DanielZhangQD](https://github.com/DanielZhangQD))
-- 修复了缩容后 `PD` 成员可能仍然存在的错误 ([#2793](https://github.com/pingcap/tidb-operator/pull/2793)，[@Yisaer](https://github.com/Yisaer))
+- 修复了缩容后 PD 成员可能仍然存在的错误 ([#2793](https://github.com/pingcap/tidb-operator/pull/2793)，[@Yisaer](https://github.com/Yisaer))
 - 如果存在 `TidbClusterAutoScaler`，在 `TidbCluster` 状态下会支持自动伸缩功能参考 ([#2791](https://github.com/pingcap/tidb-operator/pull/2791)，[@Yisaer](https://github.com/Yisaer))
-- 支持在 TiDB 规范中配置容器生命周期钩子和 `terminationGracePeriodSeconds` ([#2810](https://github.com/pingcap/tidb-operator/pull/2810)，[@weekface](https://github.com/weekface))
+- 支持在 TiDB 参数中配置容器生命周期 hook 和 `terminationGracePeriodSeconds` ([#2810](https://github.com/pingcap/tidb-operator/pull/2810)，[@weekface](https://github.com/weekface))
