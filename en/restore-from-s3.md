@@ -146,7 +146,7 @@ Refer to [Prerequisites](restore-from-aws-s3-using-br.md#prerequisites).
         provider: aws
         region: ${region}
         path: s3://${backup_path}
-        # storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 1Gi
     ```
 
