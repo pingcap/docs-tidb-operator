@@ -158,7 +158,7 @@ metadata:
   namespace: ${namespace}
 spec:
   ports:
-  - name: ${cluster_name}-dashboard
+  - name: dashboard
     port: 10262
     protocol: TCP
     targetPort: 10262
@@ -169,9 +169,9 @@ spec:
     app.kubernetes.io/name: tidb-cluster
 ```
 
-当 `Service` 部署完成后，可以通过 <https://{host}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
+当 `Service` 部署完成后，可以通过 <https://{nodeIP}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
 
-需注意在使用了反向代理访问 TiDB Dashboard 的部署环境中，如果 PD Pod 数量超过 1 台，需要在 PD 配置中设置 `internal-proxy = true` 以保证重定向正确。
+需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
 
 ## 更新 TiDB 集群
 
