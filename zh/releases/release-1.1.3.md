@@ -19,10 +19,10 @@ TiDB Operator 版本：1.1.3
 
 - 将 backup manager 中的工具更新到 v4.0.3 ([#3019](https://github.com/pingcap/tidb-operator/pull/3019)，[@lichunzhu](https://github.com/lichunzhu))
 - 在 `Backup` CR 中添加 `cleanPolicy` 字段，表示从集群中删除 `Backup` CR 时对远端存储的备份数据采取的清理策略 ([#3002](https://github.com/pingcap/tidb-operator/pull/3002)，[@lichunzhu](https://github.com/lichunzhu))
-- 为 TiCDC 添加 TLS 支持 ([#3011](https://github.com/pingcap/tidb-operator/pull/3011), [@weekface](https://github.com/weekface))
+- 为 TiCDC 添加 TLS 支持 ([#3011](https://github.com/pingcap/tidb-operator/pull/3011)，[@weekface](https://github.com/weekface))
 - 在 Drainer 和下游数据库服务器之间添加 TLS 支持 ([#2993](https://github.com/pingcap/tidb-operator/pull/2993)，[@lichunzhu](https://github.com/lichunzhu))
-- 支持为 TiDB 服务规范指定 `mysqlNodePort` 和 `statusNodePort` ([#2941](https://github.com/pingcap/tidb-operator/pull/2941)，[@lichunzhu](https://github.com/lichunzhu))
-- 修复 Drainer `values.yaml` 文件中的 `initialCommitTs` 错误 ([#2857](https://github.com/pingcap/tidb-operator/pull/2857), [@weekface](https://github.com/weekface))
+- 支持为 TiDB Service 指定 `mysqlNodePort` 和 `statusNodePort` ([#2941](https://github.com/pingcap/tidb-operator/pull/2941)，[@lichunzhu](https://github.com/lichunzhu))
+- 修复 Drainer `values.yaml` 文件中的 `initialCommitTs` 错误 ([#2857](https://github.com/pingcap/tidb-operator/pull/2857)，[@weekface](https://github.com/weekface))
 - 为 TiKV 添加 `backup` 配置，为 PD 添加 `enable-telemetry` 并弃用 `disable-telemetry` 配置 ([#2964](https://github.com/pingcap/tidb-operator/pull/2964)，[@lichunzhu](https://github.com/lichunzhu))
 - 在 `get restore` 命令中添加 commitTS 列 ([#2926](https://github.com/pingcap/tidb-operator/pull/2926)，[@lichunzhu](https://github.com/lichunzhu))
 - 将 Grafana 版本从 v6.0.1 更新到 v6.1.6 ([#2923](https://github.com/pingcap/tidb-operator/pull/2923)， [@lichunzhu](https://github.com/lichunzhu))
