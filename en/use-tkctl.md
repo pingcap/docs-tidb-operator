@@ -223,7 +223,7 @@ This command is used to diagnose the Pods in a TiDB cluster. It launches a debug
 | Flag | Abbreviation | Description |
 | ----- | --------- | ----------- |
 | --image |    | Specify the docker image used by the debug container; default to `pingcap/tidb-debug:lastest` |
-| --launcher-image         |           | Specify the docker image for the debug launcher pod which is responsible to launch the debug container; default to `pingcap/debug-launcher:latest`                |
+| --launcher-image         |           | Specify the docker image for the debug launcher pod which is responsible for launching the debug container; default to `pingcap/debug-launcher:latest`                |
 | --container | -c | Select the container to be diagnosed; default to the first container of the target Pod |
 | --docker-socket |    | Specify the docker socket on the target node; default to `/var/run/docker.sock` |
 | --privileged |    | Whether to enable the [privileged](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) mode for the debug container |
