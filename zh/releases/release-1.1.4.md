@@ -14,8 +14,8 @@ TiDB Operator 版本：1.1.4
   从 v1.1.4 开始，已弃用 `BackupSpec.Dumpling.TableFilter`，请改为配置 `BackupSpec.TableFilter`。
   从 TiDB v4.0.3 开始，可以通过配置 `BackupSpec.TableFilter` 来替换 `BackupSpec.BR.DB` 和 `BackupSpec.BR.Table` 字段，并且通过配置 `RestoreSpec.TableFilter` 来替换 `RestoreSpec.BR.DB` 和 `RestoreSpec.BR.Table` 字段 ([#3134](https://github.com/pingcap/tidb-operator/pull/3134)，[@sstubbs](https://github.com/sstubbs))
 - 更新 TiDB 和配套工具的版本为 v4.0.4 ([#3135](https://github.com/pingcap/tidb-operator/pull/3135)，[@lichunzhu](https://github.com/lichunzhu))
-- 支持在 TidbMonitor CR 中为初始化程序容器自定义环境变量 ([#3109](https://github.com/pingcap/tidb-operator/pull/3109)，[@kolbe](https://github.com/kolbe))
-- 支持在存储请求增加时修补 PVC ([#3096](https://github.com/pingcap/tidb-operator/pull/3096)，[@cofyc](https://github.com/cofyc))
+- 支持在 TidbMonitor CR 中为初始化容器自定义环境变量 ([#3109](https://github.com/pingcap/tidb-operator/pull/3109)，[@kolbe](https://github.com/kolbe))
+- 支持增加存储请求 ([#3096](https://github.com/pingcap/tidb-operator/pull/3096)，[@cofyc](https://github.com/cofyc))
 - 为使用 Dumpling 和 TiDB Lightning 进行备份恢复添加 TLS 支持 ([#3100](https://github.com/pingcap/tidb-operator/pull/3100)，[@lichunzhu](https://github.com/lichunzhu))
 - 支持 TiFlash 中的 `cert-allowed-cn` 配置项 ([#3101](https://github.com/pingcap/tidb-operator/pull/3101)，[@DanielZhangQD](https://github.com/DanielZhangQD))
 - 在 TidbCluster CRD 中添加对 TiDB 配置项 [`max-index-length`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#max-index-length) 的支持 ([#3076](https://github.com/pingcap/tidb-operator/pull/3076)，[@kolbe](https://github.com/kolbe))
