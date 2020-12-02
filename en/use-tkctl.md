@@ -218,7 +218,7 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 
 ### tkctl debug [pod_name]
 
-This command is used to diagnose the Pods in a TiDB cluster. It launches a debug launcher Pod and then the Pod launches a container with the specified docker image on the host that holds the target Pod. The container has the necessary troubleshooting tools installed and shares the namespace with the container in the target Pod, so you can seamlessly diagnose the target container by using various tools in the debug container.
+This command is used to diagnose the Pods in a TiDB cluster. It launches a debug launcher Pod which then starts a debug container using the specified docker image on the same host of the target Pod. The container has necessary troubleshooting tools and shares the same namespaces with the container in the target Pod, so you can diagnose the target container by using various tools in the debug container.
 
 | Flag | Abbreviation | Description |
 | ----- | --------- | ----------- |
