@@ -158,9 +158,9 @@ After Ingress is deployed, visit <https://{host}/dashboard> to access TiDB Dashb
 
 ### Use NodePort Service
 
-Because you must access `ingress` via the domain name, and it might be difficult to use `ingress` in some scenarios. In this case, to access and use `TiDB Dashboard`, you can add the `Service` of `NodePort` type.
+Because you must access `ingress` via the domain name, it might be difficult to use `ingress` in some scenarios. In this case, to access and use `TiDB Dashboard`, you can add the `Service` of `NodePort` type.
 
-The following is an example of using the `Service` of `NodePort` type to access the yaml file of `TiDB Dashboard`. Run the `kubectl apply -f` command to deploy the following yaml file to the Kubernetes cluster.
+The following is an example of using the `Service` of `NodePort` type to access the yaml file of `TiDB Dashboard`. To deploy the following yaml file to the Kubernetes cluster, you can run the `kubectl apply -f` command:
 
 ```yaml
 apiVersion: v1
