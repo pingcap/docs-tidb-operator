@@ -28,7 +28,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 ## 创建 EKS 集群和节点池
 
-根据 AWS [官方博客](https://aws.amazon.com/cn/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/)推荐和 EKS 官方[最佳实践文档](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes)，由于 TiDB 集群大部分组件使用 EBS 卷作为存储，推荐在创建 EKS 的时候针对每个组件在每个可用区（至少 3 个可用区）创建一个节点池。
+根据 AWS [官方博客](https://aws.amazon.com/cn/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/)推荐和 EKS [最佳实践文档](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes)，由于 TiDB 集群大部分组件使用 EBS 卷作为存储，推荐在创建 EKS 的时候针对每个组件在每个可用区（至少 3 个可用区）创建一个节点池。
 
 将以下配置存为 cluster.yaml 文件，并替换 `${clusterName}` 为自己想命名的集群名字：
 
@@ -44,11 +44,13 @@ metadata:
 nodeGroups:
   - name: admin
     desiredCapacity: 1
+    privateNetworking: true
     labels:
       dedicated: admin
 
   - name: tidb-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tidb
@@ -56,6 +58,7 @@ nodeGroups:
       dedicated: tidb:NoSchedule
   - name: tidb-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tidb
@@ -63,6 +66,7 @@ nodeGroups:
       dedicated: tidb:NoSchedule
   - name: tidb-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tidb
@@ -71,6 +75,7 @@ nodeGroups:
 
   - name: pd-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: pd
@@ -78,6 +83,7 @@ nodeGroups:
       dedicated: pd:NoSchedule
   - name: pd-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: pd
@@ -85,6 +91,7 @@ nodeGroups:
       dedicated: pd:NoSchedule
   - name: pd-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: pd
@@ -93,6 +100,7 @@ nodeGroups:
 
   - name: tikv-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tikv
@@ -100,6 +108,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
   - name: tikv-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tikv
@@ -107,6 +116,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
   - name: tikv-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tikv
@@ -126,10 +136,10 @@ eksctl create cluster -f cluster.yaml
 
 > **警告：**
 >
-> 如果使用了 Regional ASG (Auto Scaling group)：
+> 如果使用了 Regional Auto Scaling Group (ASG)：
 >
-> * 参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) 对已经启动的 EC2 打开实例缩减保护，ASG 自身的实例缩减保护不需要打开。
-> * 参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)设置 ASG 终止策略为 `NewestInstance`。
+> * 为已经启动的 EC2 [开启实例缩减保护](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance)，ASG 自身的实例缩减保护不需要打开。
+> * [设置 ASG 终止策略](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)为 `NewestInstance`。
 
 ## 部署 TiDB Operator
 
@@ -342,6 +352,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
 ```yaml
   - name: tiflash-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tiflash
@@ -349,6 +360,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
       dedicated: tiflash:NoSchedule
   - name: tiflash-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tiflash
@@ -356,6 +368,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
       dedicated: tiflash:NoSchedule
   - name: tiflash-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tiflash
@@ -364,6 +377,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
 
   - name: ticdc-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: ticdc
@@ -371,6 +385,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
       dedicated: ticdc:NoSchedule
   - name: ticdc-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: ticdc
@@ -378,6 +393,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes
       dedicated: ticdc:NoSchedule
   - name: ticdc-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: ticdc
@@ -508,6 +524,7 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
     ```yaml
       - name: tikv-1a
         desiredCapacity: 1
+        privateNetworking: true
         availabilityZones: ["ap-northeast-1a"]
         instanceType: c5d.4xlarge
         labels:

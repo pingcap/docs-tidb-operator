@@ -27,7 +27,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
 
 ## Create a EKS cluster and a node pool
 
-According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS official [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 in total) for each component when creating an EKS.
+According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 in total) for each component when creating an EKS.
 
 Save the following configuration as the `cluster.yaml` file. Replace `${clusterName}` with your desired cluster name.
 
@@ -43,11 +43,13 @@ metadata:
 nodeGroups:
   - name: admin
     desiredCapacity: 1
+    privateNetworking: true
     labels:
       dedicated: admin
 
   - name: tidb-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tidb
@@ -55,6 +57,7 @@ nodeGroups:
       dedicated: tidb:NoSchedule
   - name: tidb-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tidb
@@ -62,6 +65,7 @@ nodeGroups:
       dedicated: tidb:NoSchedule
   - name: tidb-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tidb
@@ -70,6 +74,7 @@ nodeGroups:
 
   - name: pd-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: pd
@@ -77,6 +82,7 @@ nodeGroups:
       dedicated: pd:NoSchedule
   - name: pd-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: pd
@@ -84,6 +90,7 @@ nodeGroups:
       dedicated: pd:NoSchedule
   - name: pd-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: pd
@@ -92,6 +99,7 @@ nodeGroups:
 
   - name: tikv-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tikv
@@ -99,6 +107,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
   - name: tikv-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tikv
@@ -106,6 +115,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
   - name: tikv-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tikv
@@ -125,7 +135,7 @@ After executing the command above, you need to wait until the EKS cluster is suc
 
 > **Warning:**
 >
-> If the Regional Auto Scaling group (ASG) is used:
+> If the Regional Auto Scaling Group (ASG) is used:
 >
 > * [Enable the instance scale-in protection](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) for all the EC2s that have been started. The instance scale-in protection for the ASG is not required.
 > * [Set termination policy](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy) to `NewestInstance` for the ASG.
@@ -343,6 +353,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
 ```yaml
   - name: tiflash-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: tiflash
@@ -350,6 +361,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: tiflash:NoSchedule
   - name: tiflash-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: tiflash
@@ -357,6 +369,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: tiflash:NoSchedule
   - name: tiflash-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: tiflash
@@ -365,6 +378,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
 
   - name: ticdc-1a
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
     labels:
       dedicated: ticdc
@@ -372,6 +386,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: ticdc:NoSchedule
   - name: ticdc-1d
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
       dedicated: ticdc
@@ -379,6 +394,7 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: ticdc:NoSchedule
   - name: ticdc-1c
     desiredCapacity: 1
+    privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
     labels:
       dedicated: ticdc
@@ -502,7 +518,7 @@ Some AWS instance types provide additional [NVMe SSD local store volumes](https:
 >
 > During the EKS upgrade, [data in the local storage will be lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
 >
-> As the node reconstruction will cause the data loss of local storage, refer to AWS [document](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html) to suspend the `ReplaceUnhealthy` process for the TiKV node group.
+> As the node reconstruction will cause the data loss of local storage, refer to [AWS document](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html) to suspend the `ReplaceUnhealthy` process for the TiKV node group.
 
 For instance types that provide local volumes, see [AWS Instance Types](https://aws.amazon.com/ec2/instance-types/). Take `c5d.4xlarge` as an example:
 
@@ -513,6 +529,7 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
     ```yaml
       - name: tikv-1a
         desiredCapacity: 1
+        privateNetworking: true
         availabilityZones: ["ap-northeast-1a"]
         instanceType: c5d.4xlarge
         labels:
