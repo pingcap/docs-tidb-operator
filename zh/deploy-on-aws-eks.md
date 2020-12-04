@@ -128,8 +128,8 @@ eksctl create cluster -f cluster.yaml
 >
 > 如果使用了 Regional ASG (Auto Scaling group)：
 >
-> * 参考 AWS [文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) 对已经启动的 EC2 打开实例缩减保护，ASG 自身的实例缩减保护不需要打开。
-> * 参考 AWS [文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)设置 ASG 终止策略为 `NewestInstance`。
+> * 参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) 对已经启动的 EC2 打开实例缩减保护，ASG 自身的实例缩减保护不需要打开。
+> * 参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)设置 ASG 终止策略为 `NewestInstance`。
 
 ## 部署 TiDB Operator
 
@@ -497,7 +497,7 @@ AWS 部分实例类型提供额外的 [NVMe SSD 本地存储卷](https://docs.aw
 >
 > 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
 >
-> 由于节点重建会导致本地存储数据丢失，请参考 AWS [文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
+> 由于节点重建会导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
 
 了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
 

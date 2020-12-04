@@ -27,7 +27,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
 
 ## Create a EKS cluster and a node pool
 
-According to AWS [Official Blog](https://aws.amazon.com/cn/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS official [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 availability zones) for each component when creating an EKS.
+According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS official [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 in total) for each component when creating an EKS.
 
 Save the following configuration as the `cluster.yaml` file. Replace `${clusterName}` with your desired cluster name.
 
@@ -125,10 +125,10 @@ After executing the command above, you need to wait until the EKS cluster is suc
 
 > **Warning:**
 >
-> If Regional ASG (Auto Scaling group) is used:
+> If the Regional Auto Scaling group (ASG) is used:
 >
-> * Refer to AWS [document](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) to enable the instance scale-in protection for all the EC2s that have been started, no need to enable the instance scale-in protection for the ASG.
-> * Refer to AWS [document](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy) to set termination policy to `NewestInstance` for the ASG.
+> * [Enable the instance scale-in protection](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) for all the EC2s that have been started. The instance scale-in protection for the ASG is not required.
+> * [Set termination policy](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy) to `NewestInstance` for the ASG.
 
 ## Deploy TiDB Operator
 
