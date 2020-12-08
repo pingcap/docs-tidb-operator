@@ -148,7 +148,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 > **注意：**
 >
-> Operator 会创建挂载信息，比如 TiDB 会挂载 `EmptyDir`到 /var/log/tidb 目录。在拆分数据目录的时候要避免mountPath的重复。
+> TiDB Operator 默认会使用一些挂载路径，比如会为 TiDB Pod 挂载 `EmptyDir` 到 `/var/log/tidb` 目录。在配置 `storageVolumes` 的时候要避免配置重复的 `mountPath`。
 
 ### mountClusterClientSecret
 
