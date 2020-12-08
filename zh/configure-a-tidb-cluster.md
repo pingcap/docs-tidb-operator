@@ -116,12 +116,12 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
     config:
       log:
         file:
-          name: /var/log/tidb
+          name: /var/log/tidblog
         level: "warn"
     storageVolumes:
       - name: log
         storageSize: "2Gi"
-        mountPath: "/var/log/tidb"
+        mountPath: "/var/log/tidblog"
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
@@ -145,6 +145,10 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
         storageSize: "2Gi"
         mountPath: "/data_sbj/titan/data"
 ```
+
+> **注意：**
+>
+> Operator 会创建挂载信息，比如 TiDB 会挂载 `EmptyDir`到 /var/log/tidb 目录。在拆分数据目录的时候要避免mountPath的重复。
 
 ### mountClusterClientSecret
 
