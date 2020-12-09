@@ -40,6 +40,8 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 3. 修改 `values.yaml` 文件以指定目标 TiDB 集群。示例如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     clusterName: demo
     image: pingcap/tidb-lightning:v4.0.8
@@ -96,66 +98,102 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
     1. 确保 `values.yaml` 中的 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
 
-    2. 新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。
+    2. 公有云账号授权
 
-       + 使用 Amazon S3 AccessKey 和 SecretKey 权限授予方式，或者使用 Ceph、GCS 作为存储后端时:
-    
-            {{< copyable "" >}}
-    
-            ```yaml
-            apiVersion: v1
-            kind: Secret
-            metadata:
-              name: cloud-storage-secret
-            type: Opaque
-            stringData:
-              rclone.conf: |
-                [s3]
-                type = s3
-                provider = AWS
-                env_auth = false
-                access_key_id = ${access_key}
-                secret_access_key = ${secret_key}
-                region = us-east-1
-                [ceph]
-                type = s3
-                provider = Ceph
-                env_auth = false
-                access_key_id = ${access_key}
-                secret_access_key = ${secret_key}
-                endpoint = ${endpoint}
-                region = :default-placement
-                [gcs]
-                type = google cloud storage
-                # 该服务账号必须被授予 Storage Object Viewer 角色。
-                # 该内容可以通过 `cat ${service-account-file} | jq -c .` 命令获取。
-                service_account_credentials = ${service_account_json_file_content}
-            ```
-    
-        + 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可以省略 `s3.access_key_id` 以及 `s3.secret_access_key：
-    
-            {{< copyable "" >}}
-    
-            ```yaml
-            apiVersion: v1
-            kind: Secret
-            metadata:
-              name: cloud-storage-secret
-            type: Opaque
-            stringData:
-              rclone.conf: |
-                [s3]
-                type = s3
-                provider = AWS
-                env_auth = true
-                access_key_id =
-                secret_access_key =
-                region = us-east-1
-            ```
+        和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。
 
-            使用你的实际配置替换上述配置中的占位符，并将该文件存储为 `secret.yaml`。然后通过 `kubectl apply -f secret.yaml -n ${namespace}` 命令创建该 `Secret`。
+        * 通过 AccessKey 和 SecretKey 授权
 
-    3. 将 `dataSource.remote.storageClassName` 设置为 Kubernetes 集群中现有的一个存储类型。
+            1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `${namespace}` 这个 namespace 中创建备份需要的 RBAC 相 关资源：
+
+                {{< copyable "shell-regular" >}}
+
+                ```shell
+                kubectl apply -f backup-rbac.yaml -n ${namespace}
+                ```
+
+            2. 新建一个包含 rclone 配置的 `Secret`配置文件`secret.yaml`。rclone 配置示例如下。一般只需要配置一  种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
+
+                {{< copyable "" >}}
+
+                ```yaml
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: cloud-storage-secret
+                type: Opaque
+                stringData:
+                  rclone.conf: |
+                    [s3]
+                    type = s3
+                    provider = AWS
+                    env_auth = false
+                    access_key_id = ${access_key}
+                    secret_access_key = ${secret_key}
+                    region = us-east-1
+                    [ceph]
+                    type = s3
+                    provider = Ceph
+                    env_auth = false
+                    access_key_id = ${access_key}
+                    secret_access_key = ${secret_key}
+                    endpoint = ${endpoint}
+                    region = :default-placement
+                    [gcs]
+                    type = google cloud storage
+                    # 该服务账号必须被授予 Storage Object Viewer 角色。
+                    # 该内容可以通过 `cat ${service-account-file} | jq -c .` 命令获取。
+                    service_account_credentials = ${service_account_json_file_content}
+                ```
+
+                运行以下命令创建secret：
+
+                {{< copyable "shell-regular" >}}
+
+                ```yaml
+                kubectl apply -f secret.yaml -n ${namespace}
+                ```
+
+        * 通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权
+
+            1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `${namespace}` 这个 namespace 中创建备份需要的 RBAC 相 关资源：
+
+                {{< copyable "shell-regular" >}}
+
+                ```shell
+                kubectl apply -f backup-rbac.yaml -n ${namespace}
+                ```
+
+            2. 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可以    省略 `s3.access_key_id` 以及 `s3.secret_access_key`。使用你的实际配置替换上述配置中的占位符，并将该 文件存储为 `secret.yaml`。
+
+                {{< copyable "" >}}
+
+                ```yaml
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: cloud-storage-secret
+                type: Opaque
+                stringData:
+                  rclone.conf: |
+                    [s3]
+                    type = s3
+                    provider = AWS
+                    env_auth = true
+                    access_key_id =
+                    secret_access_key =
+                    region = us-east-1
+                ```
+
+                运行以下命令创建secret：
+
+                {{< copyable "shell-regular" >}}
+
+                ```shell
+                kubectl apply -f secret.yaml -n ${namespace}
+                ```
+
+    3. fdsaf 将 `dataSource.remote.storageClassName` 设置为 Kubernetes 集群中现有的一个存储类型。
 
 ### 部署 TiDB Lightning
 
@@ -234,7 +272,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 5. 参考[故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)，对 lightning 进行诊断。
 
-## 销毁 TiDB Lightning
+### 销毁 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 
