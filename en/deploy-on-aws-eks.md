@@ -56,7 +56,7 @@ nodeGroups:
     taints:
       dedicated: tidb:NoSchedule
   - name: tidb-1d
-    desiredCapacity: 1
+    desiredCapacity: 0
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
     labels:
@@ -122,6 +122,8 @@ nodeGroups:
     taints:
       dedicated: tikv:NoSchedule
 ```
+
+By default, we only need two TiDB nodes, so we set the `desiredCapacity` of the `tidb-1d` node group to `0`, and we can scale out this node group at any time if necessary.
 
 Execute the following command to create the cluster:
 
@@ -324,12 +326,14 @@ This section describes how to scale out the EKS node group and TiDB components.
 
 ### Scale out EKS node group
 
-The following example shows how to scale out the `tikv-1a` group of the `${clusterName}` cluster to 2 nodes:
+For TiKV, we need to scale out evenly among the different availability zones, and the following example shows how to scale out the `tikv-1a`, `tikv-1c`, and `tikv-1d` groups of the `${clusterName}` cluster to 2 nodes:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 eksctl scale nodegroup --cluster ${clusterName} --name tikv-1a --nodes 2 --nodes-min 2 --nodes-max 2
+eksctl scale nodegroup --cluster ${clusterName} --name tikv-1c --nodes 2 --nodes-min 2 --nodes-max 2
+eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes-min 2 --nodes-max 2
 ```
 
 For more information on managing node groups, refer to [`eksctl` documentation](https://eksctl.io/usage/managing-nodegroups/).
