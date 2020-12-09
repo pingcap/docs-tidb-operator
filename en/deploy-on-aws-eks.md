@@ -123,7 +123,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
 ```
 
-By default, we only need two TiDB nodes, so we set the `desiredCapacity` of the `tidb-1d` node group to `0`, and we can scale out this node group at any time if necessary.
+By default, only two TiDB nodes are required, so you can set the `desiredCapacity` of the `tidb-1d` node group to `0`. You can scale out this node group any time if necessary.
 
 Execute the following command to create the cluster:
 
@@ -326,7 +326,7 @@ This section describes how to scale out the EKS node group and TiDB components.
 
 ### Scale out EKS node group
 
-For TiKV, we need to scale out evenly among the different availability zones, and the following example shows how to scale out the `tikv-1a`, `tikv-1c`, and `tikv-1d` groups of the `${clusterName}` cluster to 2 nodes:
+When scaling out TiKV, the node groups must be scaled out evenly among the different availability zones. The following example shows how to scale out the `tikv-1a`, `tikv-1c`, and `tikv-1d` groups of the `${clusterName}` cluster to 2 nodes:
 
 {{< copyable "shell-regular" >}}
 

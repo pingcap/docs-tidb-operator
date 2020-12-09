@@ -124,7 +124,7 @@ nodeGroups:
       dedicated: tikv:NoSchedule
 ```
 
-默认我们只需要两个 TiDB 节点，因此我们设置 `tidb-1d` 节点组的 `desiredCapacity` 为 `0`，后面如果需要我们可以随时扩容这个节点组。
+默认只需要两个 TiDB 节点，因此可以设置 `tidb-1d` 节点组的 `desiredCapacity` 为 `0`，后面如果需要可以随时扩容这个节点组。
 
 执行以下命令创建集群：
 
@@ -325,7 +325,7 @@ basic-grafana   LoadBalancer   10.100.199.42   a806cfe84c12a4831aa3313e792e3eed-
 
 ### 扩容 EKS 节点组
 
-TiKV 扩容需要保证在各可用区均匀扩容，以下是将集群 `${clusterName}` 的 `tikv-1a`、`tikv-1c`、`tikv-1d` 节点组扩容到 2 节点的示例：
+TiKV 扩容需要保证在各可用区均匀扩容。以下是将集群 `${clusterName}` 的 `tikv-1a`、`tikv-1c`、`tikv-1d` 节点组扩容到 2 节点的示例：
 
 {{< copyable "shell-regular" >}}
 
