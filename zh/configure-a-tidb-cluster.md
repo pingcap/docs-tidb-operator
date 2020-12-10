@@ -102,7 +102,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
     config:
       log:
         file:
-          name: /var/log/pd
+          filename: /var/log/pd
         level: "warn"
     storageVolumes:
       - name: log
