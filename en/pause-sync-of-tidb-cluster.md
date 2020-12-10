@@ -1,31 +1,33 @@
 ---
-title: Pause Sync of TiDB Cluster in Kubernetes
-summary: Introduce how to pause sync of TiDB Cluster in Kubernetes
+title: Pause Sync of a TiDB Cluster in Kubernetes
+summary: Introduce how to pause sync of a TiDB cluster in Kubernetes
 ---
 
-# Pause Sync of TiDB Cluster in Kubernetes
+# Pause Sync of a TiDB Cluster in Kubernetes
 
-This document introduce how to pause sync of TiDB cluster in Kubernetes with config file.
+This document introduce how to pause sync of a TiDB cluster in Kubernetes using the configuration file.
 
-## What is Sync in TiDB Operator
+## What is sync in TiDB Operator
 
-In TiDB Operator, a non-terminating control loop (controller) regulates the state of TiDB cluster in Kubernetes. The controller constantly compares the desired state recorded in the `TidbCluster` object with the actual state of the TiDB cluster. This process is referred to as **sync** generally. More details in [TiDB Operator Architecture](architecture.md).
+In TiDB Operator, a non-terminating control loop (controller) regulates the state of the TiDB cluster in Kubernetes. The controller constantly compares the desired state recorded in the `TidbCluster` object with the actual state of the TiDB cluster. This process is referred to as **sync** generally. For more details, refer to [TiDB Operator Architecture](architecture.md).
 
-## Some Cases where Pausing Sync could be used
+## Use scenarios
 
-Here are some cases where you might need to pause sync of TiDB cluster in Kubernetes.
+Here are some cases where you might need to pause sync of a TiDB cluster in Kubernetes.
 
-- Avoiding unexpected rolling-update
-    Supposing you find a unexpected rolling-update of TiDB cluster caused by a compatible issue of new TiDB Operator version or an operation error (user fault), and want to pause this unexpected rolling-update. You can pause sync of TiDB cluster to avoid TiDB cluster being updated unexpectedly.
+- Avoiding unexpected rolling update
 
-- Maintenance Window
-    In some situations, the status of TiDB cluster is allowed to be configured only during maintenance window. When outside the maintenance window, you can pause sync of TiDB cluster, so that any modification to spec will not take effect. When inside the maintenance window, you can resume sync of TiDB cluster to allow changes to status of TiDB cluster.
+    Suppose the TiDB cluster is unexpectedly rolling updated due to a compatible issue of a new TiDB Operator version or an operation error (user fault), and you want to pause this unexpected rolling update. You can pause sync of the TiDB cluster to avoid TiDB cluster being updated unexpectedly.
 
-## Pausing Sync of TiDB Cluster
+- Maintenance window
 
-You could append `paused: true` to `spec` item in config file of TiDB cluster, and apply the config file. Sync of TiDB cluster's components (PD, TiKV, TiDB, Pump) will be paused. 
+    In some situations, you can configure the status of the TiDB cluster only during a maintenance window. When outside the maintenance window, you can pause sync of the TiDB cluster, so that any modification to spec does not take effect. When inside the maintenance window, you can resume sync of the TiDB cluster to allow changes to status of TiDB cluster.
 
-1. Edit the configuration file like below.
+## Pause sync
+
+You could append `paused: true` to `spec` item in the config file of the TiDB cluster, and apply the config file. Sync of TiDB cluster's components (PD, TiKV, TiDB, Pump) will be paused. 
+
+1. Edit the configuration file as follows:
 
     {{< copyable "" >}}
     
@@ -45,7 +47,7 @@ You could append `paused: true` to `spec` item in config file of TiDB cluster, a
         ...
     ```
 
-2. Execute following command to apply above config file. `${tidb-cluster-file}` represents config file of TiDB cluster, `${tidb-cluster-namespace}` refers to namespace of TiDB cluster.
+2. Execute the following command to apply the above config file. `${tidb-cluster-file}` represents the TiDB cluster config file, and `${tidb-cluster-namespace}` refers to the TiDB cluster namespace.
 
     {{< copyable "shell-regular" >}}
     
@@ -53,7 +55,7 @@ You could append `paused: true` to `spec` item in config file of TiDB cluster, a
     kubectl apply -f ${tidb-cluster-file} -n ${tidb-cluster-namespace}
     ```
 
-3. If sync of TiDB cluster has been paused, execute following command to confirm the sync status of TiDB cluster. `${controller-pod-name}` represemnts the name of Controller Pod, `${tidb-operator-namespace}` represents the namespace of TiDB Operator.
+3. Execute the following command to confirm the sync status of a TiDB cluster. `${controller-pod-name}` is the name of Controller Pod, and `${tidb-operator-namespace}` is the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     
@@ -61,7 +63,7 @@ You could append `paused: true` to `spec` item in config file of TiDB cluster, a
     kubectl logs ${controller-pod-name} -n `${tidb-operator-namespace}` | grep paused
     ```
     
-    The expected output is as follows, it shows that sync of components of TiDb cluster have been paused.
+    The expected output is as follows. The sync of all components in the TiDB cluster is paused.
     
     ```
     I1207 11:09:59.029949       1 pd_member_manager.go:92] tidb cluster default/basic is paused,     skip syncing for pd service
@@ -74,11 +76,11 @@ You could append `paused: true` to `spec` item in config file of TiDB cluster, a
     I1207 11:09:59.039358       1 tidb_member_manager.go:188] tidb cluster default/basic is paused,     skip syncing for tidb statefulset
     ```
 
-## Resuming Sync of TiDB Cluster
+## Resume sync
 
-After troubleshooting, if you want to resume the sync of TiDB cluster, you can change config item `spec.paused` of TiDB CLuster config file from `true` to `false`, and apply the config file. 
+After troubleshooting, if you want to resume the sync of the TiDB cluster, configure `spec.paused` to `false`, and apply the config file. 
 
-1. Edit the configuration file like below.
+1. Edit the configuration file as follows:
 
     {{< copyable "" >}}
     
@@ -98,7 +100,7 @@ After troubleshooting, if you want to resume the sync of TiDB cluster, you can c
         ...
     ```
 
-2. Execute following command to apply config file, `${tidb-cluster-file}` refers to config file name of TiDB cluster, `${tidb-cluster-namespace}` refers to namespace of TiDB cluster.
+2. Execute the following command to apply the above config file. `${tidb-cluster-file}` represents the TiDB cluster config file, and `${tidb-cluster-namespace}` refers to the TiDB cluster namespace.
 
     {{< copyable "shell-regular" >}}
     
@@ -106,7 +108,7 @@ After troubleshooting, if you want to resume the sync of TiDB cluster, you can c
     kubectl apply -f ${tidb-cluster-file} -n ${tidb-cluster-namespace}
     ```
 
-3. After resuming sync of TiDB cluster, execute following command to confirm sync status of TiDB cluster. `${controller-pod-name}` represemnts the name of Controller Pod, `${tidb-operator-namespace}` represents the namespace of TiDB Operator.
+3. After resuming sync of the TiDB cluster, execute the following command to confirm sync status of the TiDB cluster. `${controller-pod-name}` represents the name of Controller Pod, `${tidb-operator-namespace}` represents the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     
@@ -114,7 +116,7 @@ After troubleshooting, if you want to resume the sync of TiDB cluster, you can c
     kubectl logs ${controller-pod-name} -n `${tidb-operator-namespace}` | grep "Finished syncing TidbCluster"
     ```
     
-    We can see that the timestamp of finishd syncing is later than tiemstamp of pasuing, it indicates that sync of TiDB cluster has been resumed.
+    The expected output is as follows. The `finished syncing` timestamp is later than the `pausing` timestamp, which indicates that sync of the TiDB cluster has been resumed.
     
     ```
     I1207 11:14:59.361353       1 tidb_cluster_controller.go:136] Finished syncing TidbCluster     "default/basic" (368.816685ms)
