@@ -102,12 +102,12 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
     config:
       log:
         file:
-          name: /var/log/pd
+          filename: /var/log/pdlog/pd.log
         level: "warn"
     storageVolumes:
       - name: log
         storageSize: "2Gi"
-        mountPath: "/var/log/pd"
+        mountPath: "/var/log/pdlog"
   tidb:
     baseImage: pingcap/tidb
     replicas: 1
@@ -116,12 +116,12 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
     config:
       log:
         file:
-          name: /var/log/tidb
+          filename: /var/log/tidblog/tidb.log
         level: "warn"
     storageVolumes:
       - name: log
         storageSize: "2Gi"
-        mountPath: "/var/log/tidb"
+        mountPath: "/var/log/tidblog"
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
@@ -146,6 +146,10 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
         mountPath: "/data_sbj/titan/data"
 ```
 
+> **注意：**
+>
+> TiDB Operator 默认会使用一些挂载路径，比如会为 TiDB Pod 挂载 `EmptyDir` 到 `/var/log/tidb` 目录。在配置 `storageVolumes` 的时候要避免配置重复的 `mountPath`。
+
 ### mountClusterClientSecret
 
 PD 和 TiKV 支持配置 `mountClusterClientSecret`，建议配置 `spec.pd.mountClusterClientSecret: true` 和 `spec.tikv.mountClusterClientSecret: true`，这样 TiDB Operator 会自动将 `${cluster_name}-cluster-client-secret` 证书挂载到 PD 和 TiKV 容器，方便[使用 `pd-ctl` 和 `tikv-ctl`](enable-tls-between-components.md#第三步配置-pd-ctltikv-ctl-连接集群)。
@@ -162,14 +166,14 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`，建议配置 `spec.pd.moun
 
 #### 部署 TiFlash
 
-如果要在集群中开启 TiFlash，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config.replication.enable-placement-rules: "true"`，并配置 `spec.tiflash`：
+如果要在集群中开启 TiFlash，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config.replication.enable-placement-rules: true`，并配置 `spec.tiflash`：
 
 ```yaml
   pd:
     config:
       ...
       replication:
-        enable-placement-rules: "true"
+        enable-placement-rules: true
         ...
   tiflash:
     baseImage: pingcap/tiflash
