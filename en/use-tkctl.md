@@ -10,7 +10,7 @@ TiDB Kubernetes Control (`tkctl`) is a command line utility that is used for TiD
 
 > **Note:**
 >
-> PingCAP is no longer maintaining `tkctl` from v1.1.x, some of the following functions may not be usable, please use the equivalant `kubectl` commands directly.
+> PingCAP is no longer maintaining `tkctl` from v1.1.x, some of the following functions may not be usable, please use the equivalent `kubectl` commands directly.
 
 ## Installation
 
