@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/use-tkctl/','/docs-cn/tidb-in-kube
 
 > **注意：**
 >
-> PingCAP从v1.1.x开始不再维护`tkctl`，以下部分功能可能不可用，请直接使用等价的`kubectl`命令
+> PingCAP 从 v1.1.x 开始不再维护 `tkctl`，以下部分功能可能不可用，请直接使用对应的 `kubectl` 命令。
 
 ## 安装
 
