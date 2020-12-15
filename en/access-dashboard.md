@@ -158,9 +158,9 @@ After Ingress is deployed, visit <https://{host}/dashboard> to access TiDB Dashb
 
 ### Use NodePort Service
 
-Because `ingress` must be accessed via the domain name, it might be difficult to use `ingress` in some scenarios. In this case, to access and use TiDB Dashboard, you can add the `Service` of `NodePort` type.
+Because `ingress` can only be accessed with a domain name, it might be difficult to use `ingress` in some scenarios. In this case, to access and use TiDB Dashboard, you can add a `Service` of `NodePort` type.
 
-The following is an example of using the `Service` of `NodePort` type to access the `.yaml` file of TiDB Dashboard. To deploy the following `.yaml` file into the Kubernetes cluster, you can run the `kubectl apply -f` command:
+The following is an example `.yaml` using the `Service` of `NodePort` type to access the TiDB Dashboard. To deploy the following `.yaml` file into the Kubernetes cluster, you can run the `kubectl apply -f` command:
 
 ```yaml
 apiVersion: v1
@@ -183,7 +183,7 @@ spec:
 
 After deploying the `Service`, you can access TiDB Dashboard via <https://{nodeIP}:{nodePort}/dashboard>. By default, `nodePort` is randomly assigned by Kubernetes. You can also specify an available port in the `.yaml` file.
 
-Note that if the number of `PD Pod` exceeds `1`, you need to set `spec.pd.enableDashboardInternalProxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
+Note that if there is more than 1 PD `Pod`s in the cluster, you need to set `spec.pd.enableDashboardInternalProxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
 
 ## Update the TiDB cluster
 
