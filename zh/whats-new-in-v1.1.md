@@ -13,7 +13,7 @@ TiDB Operator 1.1 在 1.0 基础上新增 TiDB 4.0 功能特性支持，TiKV 数
 - TidbCluster CR 新增 Pump、TiFlash、TiCDC、Dashboard 支持
 - 新增可选的[准入控制器](enable-admission-webhook.md)改进升级、扩缩容体验，并提供灰度发布功能
 - tidb-scheduler 支持任意维度的 HA 调度和调度器 preemption
-- 使用 tikv-importer chart [部署、管理 TiKV Importer](restore-data-using-tidb-lightning.md#部署-tikv-importer)
+- 使用 tikv-importer chart [部署、管理 TiKV Importer](import-data.md#部署-tikv-importer)
 
 ## 易用性
 

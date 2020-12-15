@@ -1,7 +1,7 @@
 ---
-title: Restore Data into TiDB in Kubernetes
+title: Import Data into TiDB in Kubernetes
 summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
-aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
+aliases: ['/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Restore Data into TiDB in Kubernetes
@@ -40,7 +40,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
 
 3. Modify the `values.yaml` file to specify the target TiDB cluster. See the following example:
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```yaml
     clusterName: demo
@@ -86,116 +86,113 @@ helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lig
 
 TiDB Lightning Helm chart supports both local and remote data sources.
 
-* Local
+#### Local
 
-    In the local mode, the backup data must be on one of the Kubernetes node. To enable this mode, set `dataSource.local.nodeName` to the node name and `dataSource.local.hostPath` to the path of the backup data. The path should contain a file named `metadata`.
+In the local mode, the backup data must be on one of the Kubernetes node. To enable this mode, set `dataSource.local.nodeName` to the node name and `dataSource.local.hostPath` to the path of the backup data. The path should contain a file named `metadata`.
 
-* Remote
+#### Remote
 
-    Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download the backup tarball file from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
+Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download thebackup tarball file from a network storage to a PV. Any cloud storage supported by rclone shouldwork, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
 
-    To restore backup data from the remote source, take the following steps:
+To restore backup data from the remote source, take the following steps:
 
-    1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
+1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` arecommented out.
 
-    2. Public Cloud Account Grant Permissions
+2. Grant permissions to the public cloud account
 
-        There are three methods to grant permissions. The configuration varies with different methods. For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+    There are three methods to grant permissions. The configuration varies with different methods.For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+    * Grant permissions by importing AccessKey and SecretKey
+        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`:
 
-        * Grant permissions by importing AccessKey and SecretKey
+            {{< copyable "shell-regular" >}}
 
-            1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `${namespace}` namespace:
+            ```shell
+            kubectl apply -f backup-rbac.yaml -n ${namespace}
+            ```
 
-                {{< copyable "shell-regular" >}}
+        2. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. Asample configuration is listed below. Only one cloud storage configuration is required. Forother cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3as the storage is the same as restoring data using BR and Dumpling.
 
-                ```yaml
-                kubectl apply -f backup-rbac.yaml -n ${namespace}
-                ```
+            {{< copyable "" >}}
 
-            2. Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
-
-                {{< copyable "" >}}
-
-                ```yaml
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  name: cloud-storage-secret
-                type: Opaque
-                stringData:
-                  rclone.conf: |
-                    [s3]
-                    type = s3
-                    provider = AWS
-                    env_auth = false
-                    access_key_id = ${access_key}
-                    secret_access_key = ${secret_key}
-                    region = us-east-1
-                
-                    [ceph]
-                    type = s3
-                    provider = Ceph
-                    env_auth = false
-                    access_key_id = ${access_key}
-                    secret_access_key = ${secret_key}
-                    endpoint = ${endpoint}
-                    region = :default-placement
-                
-                    [gcs]
-                    type = google cloud storage
-                    # The service account must include Storage Object Viewer role
-                    # The content can be retrieved by `cat ${service-account-file} | jq -c .`
-                    service_account_credentials = ${service_account_json_file_content}
-                ```
-
-                Execute the following command to create secret:
-
-                {{< copyable "shell-regular" >}}
-
-                ```yaml
-                kubectl apply -f secret.yaml -n ${namespace}
-                ```
-
-        * Grant permissions by associating IAM with Pod or with ServiceAccount
-
-            1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
-
-                {{< copyable "shell-regular" >}}
+            ```yaml
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: cloud-storage-secret
+            type: Opaque
+            stringData:
+              rclone.conf: |
+                [s3]
+                type = s3
+                provider = AWS
+                env_auth = false
+                access_key_id = ${access_key}
+                secret_access_key = ${secret_key}
+                region = us-east-1
             
-                ```yaml
-                kubectl apply -f backup-rbac.yaml -n ${namespace}
-                ```
+                [ceph]
+                type = s3
+                provider = Ceph
+                env_auth = false
+                access_key_id = ${access_key}
+                secret_access_key = ${secret_key}
+                endpoint = ${endpoint}
+                region = :default-placement
             
-            2. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with your configurations and save it as `secret.yaml`.
-            
-                {{< copyable "" >}}
-            
-                ```yaml
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  name: cloud-storage-secret
-                type: Opaque
-                stringData:
-                  rclone.conf: |
-                    [s3]
-                    type = s3
-                    provider = AWS
-                    env_auth = true
-                    access_key_id =
-                    secret_access_key =
-                    region = us-east-1
-                ```
+                [gcs]
+                type = google cloud storage
+                # The service account must include Storage Object Viewer role
+                # The content can be retrieved by `cat ${service-account-file} | jq -c .`
+                service_account_credentials = ${service_account_json_file_content}
+            ```
 
-                Execute the following command to create secret:
-            
-                {{< copyable "shell-regular" >}}
-            
-                ```yaml
-                kubectl apply -f secret.yaml -n ${namespace}
-                ```
+            Execute the following command to create secret:
 
-    3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl apply -f secret.yaml -n ${namespace}
+            ```
+
+    * Grant permissions by associating IAM with Pod or with ServiceAccount
+        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`:
+
+            {{< copyable "shell-regular" >}}
+        
+            ```shell
+            kubectl apply -f backup-rbac.yaml -n ${namespace}
+            ```
+        
+        2. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, youcan ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with yourconfigurations and save it as `secret.yaml`.
+        
+            {{< copyable "" >}}
+        
+            ```yaml
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: cloud-storage-secret
+            type: Opaque
+            stringData:
+              rclone.conf: |
+                [s3]
+                type = s3
+                provider = AWS
+                env_auth = true
+                access_key_id =
+                secret_access_key =
+                region = us-east-1
+            ```
+            
+            Execute the following command to create secret:
+        
+            {{< copyable "shell-regular" >}}
+        
+            ```shell
+            kubectl apply -f secret.yaml -n ${namespace}
+            ```
+
+3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetescluster.
 
 ### Deploy
 

@@ -108,7 +108,7 @@ After TiDB Operator is upgraded to v1.1, you can configure the scheduled full ba
 
 ### TiKV Importer
 
-- If TiKV Importer is not deployed before TiDB Operator is upgraded to v1.1, you can deploy TiKV Importer as in [Deploy TiKV Importer](restore-data-using-tidb-lightning.md#deploy-tikv-importer).
+- If TiKV Importer is not deployed before TiDB Operator is upgraded to v1.1, you can deploy TiKV Importer as in [Deploy TiKV Importer](import-data.md#deploy-tikv-importer).
 - If TiKV Importer is already deployed before TiDB Operator is upgraded to v1.1, it is recommended to manage TiKV Importer using kubectl.
 
 ## Switch other components or features managed by chart to services supported by TiDB Operator v1.1

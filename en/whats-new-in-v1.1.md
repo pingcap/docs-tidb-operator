@@ -20,7 +20,7 @@ TiDB Operator 1.1 also makes improvements in usability, providing the user exper
 
 - `tidb-scheduler` supports high availability (HA) scheduling at any dimension and scheduler preemption.
 
-- Support using tikv-importer chart to [deploy and manage tikv-importer](restore-data-using-tidb-lightning.md#deploy-tikv-importer).
+- Support using tikv-importer chart to [deploy and manage tikv-importer](import-data.md#deploy-tikv-importer).
 
 ## Usability
 

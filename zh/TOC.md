@@ -63,7 +63,7 @@
 + 灾难恢复
   - [恢复 PD 集群](pd-recover.md)
   - [恢复误删的集群](recover-deleted-cluster.md)
-- [导入集群数据](restore-data-using-tidb-lightning.md)
+- [导入集群数据](import-data.md)
 + 故障诊断
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
