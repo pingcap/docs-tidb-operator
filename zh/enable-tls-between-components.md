@@ -427,7 +427,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
-    - TiKV-Importer Server 端证书      
+    - TiKV Importer Server 端证书
 
         如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV-Importer 组件生成如下的 Server 端证书。
 
