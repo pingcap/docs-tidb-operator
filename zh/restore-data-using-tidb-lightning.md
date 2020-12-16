@@ -86,7 +86,7 @@ helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lig
 
 如果目标 TiDB 集群组件间开启了 TLS (`spec.tlsCluster.enabled: true`)，则可以参考[为 TiDB 集群各个组件生成证书](enable-tls-between-components.md#第一步为-tidb-集群各个组件生成证书)为 tidb-lightning 组件生成 Server 端证书，并在 `values.yaml` 中通过配置 `tlsCluster.enabled: true` 开启集群内部的 TLS 支持。
 
-如果目标 TiDB 集群为 MySQL 客户端开启了 TLS (`spec.tidb.tlsClient.enabled: true`) 并配置了相应的 Client 端证书（对应的 K8s Secret 对象为 `${cluster_name}-tidb-client-secret`），则可以通过在 `values.yaml` 中配置 `tlsClient.enabled: true` 以使 tidb-lightning 通过 TLS 方式连接 TiDB Server。
+如果目标 TiDB 集群为 MySQL 客户端开启了 TLS (`spec.tidb.tlsClient.enabled: true`) 并配置了相应的 Client 端证书（对应的 Kubernetes Secret 对象为 `${cluster_name}-tidb-client-secret`），则可以通过在 `values.yaml` 中配置 `tlsClient.enabled: true` 以使 TiDB Lightning 通过 TLS 方式连接 TiDB Server。
 
 如果需要 tidb-lightning 使用不同的 Client 证书来连接 TiDB Server，则可以参考[为 TiDB 集群颁发两套证书](enable-tls-for-mysql-client.md#第一步为-tidb-集群颁发两套证书)为 tidb-lightning 组件生成 Client 端证书，并在 `values.yaml` 中通过 `tlsCluster.tlsClientSecretName` 指定对应的 K8s Sceret 对象。
 
