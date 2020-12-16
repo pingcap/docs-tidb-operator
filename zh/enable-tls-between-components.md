@@ -427,6 +427,80 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
+    - TiKV-Importer Server 端证书      
+
+        如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV-Importer 组件生成如下的 Server 端证书。
+
+        首先生成默认的 `importer-server.json` 文件：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        cfssl print-defaults csr > importer-server.json
+        ```
+
+        然后编辑这个文件，修改 `CN`、`hosts` 属性：
+
+        ```json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-importer",
+              "${cluster_name}-importer.${namespace}",
+              "${cluster_name}-importer.${namespace}.svc"
+            ],
+        ...
+        ```
+
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+
+        最后生成 TiKV-Importer Server 端证书：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
+        ```
+
+    - TiDB-Lightning Server 端证书      
+
+        如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB-Lightning 组件生成如下的 Server 端证书。
+
+        首先生成默认的 `lightning-server.json` 文件：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        cfssl print-defaults csr > lightning-server.json
+        ```
+
+        然后编辑这个文件，修改 `CN`、`hosts` 属性：
+
+        ```json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-lightning",
+              "${cluster_name}-lightning.${namespace}",
+              "${cluster_name}-lightning.${namespace}.svc"
+            ],
+        ...
+        ```
+
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+
+        最后生成 TiDB-Lightning Server 端证书：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal lightning-server.json | cfssljson -bare lightning-server
+        ```
+
 6. 生成 Client 端证书。
 
     首先生成默认的 `client.json` 文件：
@@ -510,6 +584,22 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     ``` shell
     kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    TiKV-Importer 集群证书 Secret：
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    TiDB-Lightning 集群证书 Secret：
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl create secret generic ${cluster_name}-lightning-cluster-secret --namespace=${namespace} --from-file=tls.crt=lightning-server.pem --from-file=tls.key=lightning-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
     Client 证书 Secret：
