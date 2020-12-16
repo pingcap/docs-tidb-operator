@@ -456,7 +456,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 TiKV-Importer Server 端证书：
+        最后生成 TiKV Importer Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
@@ -1168,7 +1168,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV Importer 组件使用。
 
-    - TiDB-Lightning 组件的 Server 端证书。
+    - TiDB Lightning 组件的 Server 端证书。
 
       如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
 
