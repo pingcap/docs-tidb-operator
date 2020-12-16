@@ -92,7 +92,7 @@ helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lig
 
 > **注意：**
 >
-> 如果通过 `tlsCluster.enabled: true` 开启了集群内部的 TLS 支持，但未通过 `tlsClient.enabled: true` 开启 tidb-lightning 到 TiDB Server 的 TLS 支持，则需要在 `values.yaml` 中的 `config` 内通过如下配置显式地禁用 tidb-lightning 到 TiDB Server 的 TLS 连接支持。
+> 如果通过 `tlsCluster.enabled: true` 开启了集群内部的 TLS 支持，但未通过 `tlsClient.enabled: true` 开启 TiDB Lightning 到 TiDB Server 的 TLS 支持，则需要在 `values.yaml` 中的 `config` 内通过如下配置显式地禁用 TiDB Lightning 到 TiDB Server 的 TLS 连接支持。
 > 
 > ```toml
 > [tidb]
