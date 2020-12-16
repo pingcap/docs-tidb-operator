@@ -493,7 +493,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 TiDB-Lightning Server 端证书：
+        最后生成 TiDB Lightning Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
