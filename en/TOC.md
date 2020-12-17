@@ -63,7 +63,7 @@
 + Disaster Recovery
   - [Recover PD Cluster](pd-recover.md)
   - [Recover Deleted Cluster](recover-deleted-cluster.md)
-- [Import Data](import-data.md)
+- [Import Data](restore-data-using-tidb-lightning.md)
 + Troubleshoot
   - [Troubleshooting Tips](tips.md)
   - [Deployment Failures](deploy-failures.md)

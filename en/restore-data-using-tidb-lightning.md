@@ -1,7 +1,7 @@
 ---
 title: Import Data into TiDB in Kubernetes
 summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
-aliases: ['/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
+aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Restore Data into TiDB in Kubernetes
@@ -100,9 +100,11 @@ To restore backup data from the remote source, take the following steps:
 
 2. Grant permissions to the public cloud account
 
-    There are three methods to grant permissions. The configuration varies with different methods.For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+    Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
+
     * Grant permissions by importing AccessKey and SecretKey
-        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`:
+
+        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`. This step could be skipped when using TiDB Lightning to restore.
 
             {{< copyable "shell-regular" >}}
 
@@ -155,7 +157,8 @@ To restore backup data from the remote source, take the following steps:
             ```
 
     * Grant permissions by associating IAM with Pod or with ServiceAccount
-        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`:
+
+        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`. This step could be skipped when using TiDB Lightning to restore.
 
             {{< copyable "shell-regular" >}}
         
