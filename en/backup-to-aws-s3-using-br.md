@@ -51,7 +51,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
 
 #### Grant permissions by importing AccessKey and SecretKey
 
@@ -203,7 +203,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         # sendCredToTikv: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -250,7 +250,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -295,7 +295,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -373,7 +373,7 @@ More `Backup` CR parameter description:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
 
 - * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
 
@@ -403,7 +403,7 @@ More `Backup` CR parameter description:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
 - `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
@@ -489,7 +489,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -539,7 +539,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -587,7 +587,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}

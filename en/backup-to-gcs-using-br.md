@@ -45,7 +45,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
 
 ### Required database account privileges
 
@@ -177,7 +177,7 @@ More descriptions of fields in the `Backup` CR:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
 
@@ -209,7 +209,7 @@ More descriptions of fields in the `Backup` CR:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
 * `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
@@ -256,7 +256,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}

@@ -22,7 +22,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
 
 ### Grant permissions by importing AccessKey and SecretKey
 
@@ -171,7 +171,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # timeAgo: ${time}
         # checksum: true
         # sendCredToTikv: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -215,7 +215,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -257,7 +257,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -297,7 +297,7 @@ More `Restore` CR fields are described as follows:
 
     > **Note:**
     >
-    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.to`.
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.to`.
 
 * `.spec.tableFilter`: BR only restores tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR restores all schemas except the system schemas.
 

@@ -45,7 +45,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 > **注意：**
 >
-> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤，并且不需要在 Backup CR 中配置 `spec. tikvGCLifeTime` 和 `spec.from` 字段。
+> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤，并且不需要在 Backup CR 中配置 `spec. tikvGCLifeTime` 和 `spec.from` 字段。
 
 #### 通过 AccessKey 和 SecretKey 授权
 
@@ -195,7 +195,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # sendCredToTikv: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -242,7 +242,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -287,7 +287,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -351,7 +351,7 @@ kubectl get bk -n test1 -o wide
 
     > **注意：**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
@@ -377,7 +377,7 @@ kubectl get bk -n test1 -o wide
 
     > **注意：**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
 
 * `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
 
@@ -461,7 +461,7 @@ kubectl get bk -n test1 -o wide
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -511,7 +511,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -559,7 +559,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
         from:
           host: ${tidb_host}
           port: ${tidb_port}
