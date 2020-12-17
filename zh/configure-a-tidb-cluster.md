@@ -59,7 +59,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/configure-a-tidb-cluster/','/docs-
 
 建议设置 `spec.pvReclaimPolicy: Retain`，确保 PVC 被删除后 PV 仍然保留，保证数据安全。
 
-
 ### Storage
 
 如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
