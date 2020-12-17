@@ -59,6 +59,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/configure-a-tidb-cluster/','/docs-
 
 建议设置 `spec.pvReclaimPolicy: Retain`，确保 PVC 被删除后 PV 仍然保留，保证数据安全。
 
+
 ### Storage
 
 如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
@@ -158,6 +159,19 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`，建议配置 `spec.pd.moun
 #### PD/TiKV/TiDB
 
 默认示例的集群拓扑是：3 个 PD Pod，3 个 TiKV Pod，2 个 TiDB Pod。在该部署拓扑下根据数据高可用原则，TiDB Operator 扩展调度器要求 Kubernetes 集群中至少有 3 个节点。可以修改 `replicas` 配置来更改每个组件的 Pod 数量。
+
+部署 TiDB 的时候，需要同时部署相关 `spec.tidb.service` 服务，便于在 Kubernetes 集群内访问 TiDB。设置 `spec.tidb.service` 之后可以使用 TiDB service `${cluster_name}-tidb.${namespace}` 访问 TiDB。
+
+```yaml
+spec: 
+  tidb:
+    ...
+    service:
+      externalTrafficPolicy: Local
+      type: LoadBalancer
+      mysqlNodePort: 30020
+      statusNodePort: 30040
+```
 
 > **注意：**
 >
