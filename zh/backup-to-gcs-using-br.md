@@ -44,7 +44,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     > **注意：**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
 
 ### 数据库账户权限
 
@@ -173,7 +173,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     > **Note:**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
@@ -201,7 +201,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     > **Note:**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.9, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
 
 * `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
 
