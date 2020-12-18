@@ -58,6 +58,8 @@ You can deploy tikv-importer using the Helm chart. See the following example:
 
     `clusterName` must match the target TiDB cluster.
 
+    If the target TiDB cluster has enabled TLS between components (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiKV Importer, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS.
+
 4. Deploy tikv-importer:
 
     {{< copyable "shell-regular" >}}
@@ -81,6 +83,21 @@ Use the following command to get the default configuration of TiDB Lightning:
 ```shell
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
+
+If the target TiDB cluster has enabled TLS between components (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiKV Importer, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
+
+If the target TiDB cluster has enabled TLS for the MySQL client (`spec.tidb.tlsClient.enabled: true`), configure `tlsClient.enabled: true` in `values.yaml` to enable TiDB Lightning to connect to the TiDB server using TLS.
+
+To use different client certificates to connect to the TiDB server, refer to [Issue two sets of certificates for the TiDB cluster](enable-tls-for-mysql-client.md#issue-two-sets-of-certificates-for-the-tidb-cluster) to generate the client-side certificate for TiDB Lightning, and configure the corresponding Kubernetes secret object in `tlsCluster.tlsClientSecretName` in `values.yaml`.
+
+> **Note:**
+>
+> If TLS is enabled between components via `tlsCluster.enabled: true` but not enabled between TiDB Lightning and the TiDB server via `tlsClient.enabled: true`, you need to explicitly disable TLS between TiDB Lightning and the TiDB server in `config` in `values.yaml`:
+>
+> ```toml
+> [tidb]
+> tls="false"
+> ```
 
 TiDB Lightning Helm chart supports both local and remote data sources.
 
@@ -139,7 +156,7 @@ TiDB Lightning Helm chart supports both local and remote data sources.
         * If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`:
 
             {{< copyable "" >}}
-    
+
             ```yaml
             apiVersion: v1
             kind: Secret
