@@ -20,13 +20,13 @@ TiDB Operator version: 1.1.8
 - Support tableFilters for restoring data using TiDB Lightning. ([#3521](https://github.com/pingcap/tidb-operator/pull/3521), [@sstubbs](https://github.com/sstubbs))
 - Support Prometheus to scrape metrics data from multiple TiDB clusters. ([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
-    ACTION REQUIRED: If `TidbMonitor` CRs are deployed, please update the `spec.initializer.version` to `v4.0.9` after upgrading TiDB Operator to v1.1.8, or some metrics will not be shown correctly in the Grafana dashboards. Scrape job names are changed from `${component}` to `${namespace}-${TidbCluster Name}-${component}`.
+    ACTION REQUIRED: If `TidbMonitor` CRs are deployed, update the `spec.initializer.version` to `v4.0.9` after upgrading TiDB Operator to v1.1.8, or some metrics will not be shown correctly in the Grafana dashboards. Prometheus crape job names are changed from `${component}` to `${namespace}-${TidbCluster Name}-${component}`.
 - `component` label is added to the scrape jobs of Prometheus in `TidbMonitor`. ([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug Fixes
 
 - Fix the issue that TiDB cluster fails to deploy if `spec.tikv.storageVolumes` is configured. ([#3586](https://github.com/pingcap/tidb-operator/pull/3586), [@mikechengwei](https://github.com/mikechengwei))
-- Fix codecs error for non-ASCII char password in `TidbInitializer` job. ([#3569](https://github.com/pingcap/tidb-operator/pull/3569), [@handlerww](https://github.com/handlerww))
-- Fix the issue that TiFlash pods are misrecognized as TiKV pods. The original issue can potentially cause TiDB Operator to scale in TiKV pods to a number smaller than `tikv.replicas`, when there are TiFlash pods in the `TidbCluster`. ([#3514](https://github.com/pingcap/tidb-operator/pull/3514), [@handlerww](https://github.com/handlerww))
-- Fix the issue that deploying `Backup` CR without `spec.from` configured will crash `tidb-controller-manager` pod when TLS client is enabled for TiDB. ([#3535](https://github.com/pingcap/tidb-operator/pull/3535), [@dragonly](https://github.com/dragonly))
+- Fix codecs error for non-ASCII character password in the `TidbInitializer` job. ([#3569](https://github.com/pingcap/tidb-operator/pull/3569), [@handlerww](https://github.com/handlerww))
+- Fix the issue that TiFlash Pods are misrecognized as TiKV Pods. The original issue can potentially cause TiDB Operator to scale in TiKV Pods to a number smaller than `tikv.replicas`, when there are TiFlash Pods in the `TidbCluster`. ([#3514](https://github.com/pingcap/tidb-operator/pull/3514), [@handlerww](https://github.com/handlerww))
+- Fix the issue that deploying `Backup` CR without `spec.from` configured will crash `tidb-controller-manager` Pod when TLS is enabled for TiDB client. ([#3535](https://github.com/pingcap/tidb-operator/pull/3535), [@dragonly](https://github.com/dragonly))
 - Fix the issue that TiDB Lightning doesn't log to stdout ([#3617](https://github.com/pingcap/tidb-operator/pull/3617), [@csuzhangxc](https://github.com/csuzhangxc))
