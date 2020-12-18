@@ -1,12 +1,12 @@
 ---
 title: 导入集群数据
-summary: 使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据。
+summary: 使用 TiDB Lightning 导入集群数据。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
-# 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
+# 导入集群数据
 
-本文介绍了如何使用 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) 快速恢复 Kubernetes 上的 TiDB 集群数据。
+本文介绍了如何使用 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) 导入集群数据。
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于单独的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
@@ -103,15 +103,8 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
     新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。
 
     * 通过 AccessKey 和 SecretKey 授权
-        1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `${namespace}` 这个 namespace 中创建备份需要的 RBAC 关资源。使用 TiDB Lightning 恢复时可跳过此步骤。
 
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl apply -f backup-rbac.yaml -n ${namespace}
-            ```
-
-        2. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
+        1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
 
             {{< copyable "" >}}
 
@@ -145,7 +138,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
                 service_account_credentials = ${service_account_json_file_content}
             ```
 
-            运行以下命令创建secret：
+        2. 运行以下命令创建 `Secret`：
 
             {{< copyable "shell-regular" >}}
 
@@ -154,15 +147,8 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
             ```
 
     * 通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权
-        1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `${namespace}` 这个 namespace 中创建备份需要的 RBAC相 关资源。使用 TiDB Lightning 恢复时可跳过此步骤。
 
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl apply -f backup-rbac.yaml -n ${namespace}
-            ```
-
-        2. 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。使用你的实际配置替换上述配置中的占位符，并将文件存储为 `secret.yaml`。
+        1. 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。使用你的实际配置替换下方配置中的占位符，并将文件存储为 `secret.yaml`。
 
             {{< copyable "" >}}
 
@@ -183,7 +169,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
                 region = us-east-1
             ```
 
-            运行以下命令创建 secret：
+        2. 运行以下命令创建 `Secret`：
 
             {{< copyable "shell-regular" >}}
 

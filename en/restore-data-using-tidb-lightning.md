@@ -1,12 +1,12 @@
 ---
-title: Import Data into TiDB in Kubernetes
-summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
+title: Import Data
+summary: Learn how to quickly import data with TiDB Lightning.
 aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
-# Restore Data into TiDB in Kubernetes
+# Import Data
 
-This document describes how to restore data into a TiDB cluster in Kubernetes using [TiDB Lightning](https://github.com/pingcap/tidb-lightning).
+This document describes how to import data into a TiDB cluster in Kubernetes using [TiDB Lightning](https://github.com/pingcap/tidb-lightning).
 
 TiDB Lightning contains two components: tidb-lightning and tikv-importer. In Kubernetes, the tikv-importer is inside the separate Helm chart of the TiDB cluster. And tikv-importer is deployed as a `StatefulSet` with `replicas=1` while tidb-lightning is in a separate Helm chart and deployed as a `Job`.
 
@@ -92,7 +92,7 @@ In the local mode, the backup data must be on one of the Kubernetes node. To ena
 
 #### Remote
 
-Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download thebackup tarball file from a network storage to a PV. Any cloud storage supported by rclone shouldwork, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
+Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download the backup tarball file from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
 
 To restore backup data from the remote source, take the following steps:
 
@@ -102,17 +102,11 @@ To restore backup data from the remote source, take the following steps:
 
     Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
 
+    There are three methods to grant permissions. The configuration varies with different methods. For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+
     * Grant permissions by importing AccessKey and SecretKey
 
-        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`. This step could be skipped when using TiDB Lightning to restore.
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl apply -f backup-rbac.yaml -n ${namespace}
-            ```
-
-        2. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. Asample configuration is listed below. Only one cloud storage configuration is required. Forother cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3as the storage is the same as restoring data using BR and Dumpling.
+        1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
 
             {{< copyable "" >}}
 
@@ -148,7 +142,7 @@ To restore backup data from the remote source, take the following steps:
                 service_account_credentials = ${service_account_json_file_content}
             ```
 
-            Execute the following command to create secret:
+        2. Execute the following command to create `Secret`:
 
             {{< copyable "shell-regular" >}}
 
@@ -157,16 +151,8 @@ To restore backup data from the remote source, take the following steps:
             ```
 
     * Grant permissions by associating IAM with Pod or with ServiceAccount
-
-        1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based accesscontrol (RBAC) resources in the `${namespace}`. This step could be skipped when using TiDB Lightning to restore.
-
-            {{< copyable "shell-regular" >}}
         
-            ```shell
-            kubectl apply -f backup-rbac.yaml -n ${namespace}
-            ```
-        
-        2. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, youcan ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with yourconfigurations and save it as `secret.yaml`.
+        1. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with your configurations and save it as `secret.yaml`.
         
             {{< copyable "" >}}
         
@@ -187,7 +173,7 @@ To restore backup data from the remote source, take the following steps:
                 region = us-east-1
             ```
             
-            Execute the following command to create secret:
+        2. Execute the following command to create `Secret`:
         
             {{< copyable "shell-regular" >}}
         
