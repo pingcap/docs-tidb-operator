@@ -17,7 +17,7 @@ TiDB Operator 版本：1.1.8
 - 支持在 `tidb-lightning` 和 `tikv-importer` helm charts 中为 TiDB 组件和客户端开启 TLS 的功能。([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 TiDB service 指定额外的端口。用户可以利用该功能实现自定义服务，如额外的健康检查机制。([#3599](https://github.com/pingcap/tidb-operator/pull/3599), [@handlerww](https://github.com/handlerww))
 - 支持在 `TidbInitializer` 连接 TiDB server 时不使用 TLS。([#3564](https://github.com/pingcap/tidb-operator/pull/3564), [@LinuxGit](https://github.com/LinuxGit))
-- 支持 TiDB-Lightning 恢复数据时使用 tableFilters 进行过滤。([#3521](https://github.com/pingcap/tidb-operator/pull/3521), [@sstubbs](https://github.com/sstubbs))
+- 支持 TiDB Lightning 恢复数据时使用 tableFilters 进行过滤。([#3521](https://github.com/pingcap/tidb-operator/pull/3521), [@sstubbs](https://github.com/sstubbs))
 - 支持监控多个 TiDB cluster。([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
     需要手动操作：如果已经部署了 `TidbMonitor` CR，在升级到 TiDB Operator v1.1.8 之后，请升级 `spec.initializer.version` 字段到 `v4.0.9`，否则有的 metric 在 Grafana 面板上将不会正确显示。
