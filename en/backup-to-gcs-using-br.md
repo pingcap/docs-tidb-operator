@@ -256,7 +256,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
