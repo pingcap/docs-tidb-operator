@@ -18,10 +18,10 @@ TiDB Operator version: 1.1.8
 - Support setting additional ports for the TiDB service. Users can utilize this feature to implement customized services, e.g. additional health check. ([#3599](https://github.com/pingcap/tidb-operator/pull/3599), [@handlerww](https://github.com/handlerww))
 - Support skipping TLS when connecting `TidbInitializer` to TiDB Server. ([#3564](https://github.com/pingcap/tidb-operator/pull/3564), [@LinuxGit](https://github.com/LinuxGit))
 - Support tableFilters for restoring with TiDB-Lightning. ([#3521](https://github.com/pingcap/tidb-operator/pull/3521), [@sstubbs](https://github.com/sstubbs))
-- Support monitor multiple TiDB clusters.
+- Support monitor multiple TiDB clusters. ([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
-    ACTION REQUIRED: If TidbMonitor CRs are deployed, please update the `spec.initializer.version` to `v4.0.9` after upgrading TiDB Operator to v1.1.8, or some metrics will not be shown correctly in the Grafana dashboards. Scrape job names are changed from `${component}` to `${namespace}-${TidbCluster Name}-${component}` ([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
-- `component` label is added to the scrape jobs of Prometheus in TiDBMonitor ([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
+    ACTION REQUIRED: If `TidbMonitor` CRs are deployed, please update the `spec.initializer.version` to `v4.0.9` after upgrading TiDB Operator to v1.1.8, or some metrics will not be shown correctly in the Grafana dashboards. Scrape job names are changed from `${component}` to `${namespace}-${TidbCluster Name}-${component}`.
+- `component` label is added to the scrape jobs of Prometheus in `TidbMonitor`. ([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug Fixes
 
