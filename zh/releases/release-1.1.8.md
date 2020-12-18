@@ -29,4 +29,4 @@ TiDB Operator 版本：1.1.8
 - 修复在 `TidbInitializer` 任务中使用包含非 ASCII 字符密码时的编码错误。([#3569](https://github.com/pingcap/tidb-operator/pull/3569), [@handlerww](https://github.com/handlerww))
 - 修复 TiFlash pods 会被误认为 TiKV pods 的问题。该问题会导致当同一个 `TidbCluster` 中部署了 TiFlash 实例时，TiDB Operator 可能将 TiKV 实例缩容到小于 `tikv.replicas` 的数字。([#3514](https://github.com/pingcap/tidb-operator/pull/3514), [@handlerww](https://github.com/handlerww))
 - 修复在开启 TiDB 客户端 TLS 功能的情况下，同步 `Backup` CR 会导致 `tidb-controller-manager` pod 崩溃的问题。([#3535](https://github.com/pingcap/tidb-operator/pull/3535), [@dragonly](https://github.com/dragonly))
-- 修复了 TiDB-Lighting 不打印日志到 stdout 的问题。([#3617](https://github.com/pingcap/tidb-operator/pull/3617), [@csuzhangxc](https://github.com/csuzhangxc))
+- 修复了 TiDB Lightning 不打印日志到 stdout 的问题。([#3617](https://github.com/pingcap/tidb-operator/pull/3617), [@csuzhangxc](https://github.com/csuzhangxc))

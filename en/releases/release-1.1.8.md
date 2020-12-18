@@ -29,4 +29,4 @@ TiDB Operator version: 1.1.8
 - Fix codecs error for non-ASCII char password in `TidbInitializer` job. ([#3569](https://github.com/pingcap/tidb-operator/pull/3569), [@handlerww](https://github.com/handlerww))
 - Fix the issue that TiFlash pods are misrecognized as TiKV pods. The original issue can potentially cause TiDB Operator to scale in TiKV pods to a number smaller than `tikv.replicas`, when there are TiFlash pods in the `TidbCluster`. ([#3514](https://github.com/pingcap/tidb-operator/pull/3514), [@handlerww](https://github.com/handlerww))
 - Fix the issue that syncing `Backup` CR will crash `tidb-controller-manager` pod when TLS client is enabled for TiDB. ([#3535](https://github.com/pingcap/tidb-operator/pull/3535), [@dragonly](https://github.com/dragonly))
-- Fix the issue that TiDB-Lighting doesn't log to stdout ([#3617](https://github.com/pingcap/tidb-operator/pull/3617), [@csuzhangxc](https://github.com/csuzhangxc))
+- Fix the issue that TiDB Lightning doesn't log to stdout ([#3617](https://github.com/pingcap/tidb-operator/pull/3617), [@csuzhangxc](https://github.com/csuzhangxc))
