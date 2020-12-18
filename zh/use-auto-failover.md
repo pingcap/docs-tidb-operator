@@ -12,11 +12,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/use-auto-failover/']
 
 ## 配置故障自动转移
 
-Auto Failover 功能在 TiDB Operator 中默认开启。
+故障自动转移功能在 TiDB Operator 中默认开启。
 
 > **注意：**
 > 
-> 如果集群中没有足够的资源以供 TiDB Operator 创建新节点，则 Auto Failover 功能不会生效。
+> 如果集群中没有足够的资源以供 TiDB Operator 创建新节点，则故障自动转移功能不会生效。
 
 ### 关闭故障自动转移
 
