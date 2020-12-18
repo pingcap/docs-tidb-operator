@@ -195,7 +195,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # sendCredToTikv: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -242,7 +242,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -287,7 +287,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -461,7 +461,7 @@ kubectl get bk -n test1 -o wide
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -511,7 +511,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -559,7 +559,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}

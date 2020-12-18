@@ -77,7 +77,7 @@ This document shows an example in which the backup data stored in the specified 
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}

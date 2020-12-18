@@ -73,7 +73,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
       namespace: test1
     spec:
       # backupType: full
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb-host}
         port: ${tidb-port}
@@ -248,7 +248,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
-        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}

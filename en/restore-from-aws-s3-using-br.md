@@ -171,7 +171,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # timeAgo: ${time}
         # checksum: true
         # sendCredToTikv: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -215,7 +215,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -257,7 +257,7 @@ Before you restore data from Amazon S3 storage, you need to grant AWS account pe
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
-      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.9
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
