@@ -34,7 +34,7 @@ Here are some cases where you might need to pause sync of a TiDB cluster in Kube
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit -f ${cluster_name} -n ${namespace}
+    kubectl edit tc/`${cluster_name}` -n ${namespace}
     ```
 
 2. Configure the TidbCluster CR with `spec.paused: true` as following, save changes and exit editor, sync of TiDB cluster's components (PD, TiKV, TiDB, TiFlash, TiCDC,Pump) will be paused. 
@@ -87,7 +87,7 @@ If you want to resume the sync of the TiDB cluster, configure the TidbCluster CR
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit -f ${cluster_name} -n ${namespace}
+    kubectl edit tc/`${cluster_name}` -n ${namespace}
     ```
 
 2. Configure the TidbCluster CR with `spec.paused: false` as following, save changes and exit editor, sync of TiDB cluster's components (PD, TiKV, TiDB, TiFlash, TiCDC,Pump) will be resumed. 
