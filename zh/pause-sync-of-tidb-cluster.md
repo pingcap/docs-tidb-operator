@@ -29,12 +29,12 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 ## 暂停同步 TiDB 集群
 
-1. 使用以下命令修改集群配置，其中 `${tidb-cluster-name}` 表示 TiDB 集群名称, `${tidb-cluster-namespace}` 表示 TiDB 集群所在的 namespace。
+1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称, `${namespace}` 表示 TiDB 集群所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc/${tidb-cluster-name} -n ${tidb-cluster-namespace} --save-config
+    kubectl edit tc/`${cluster_name}` -n ${namespace}
     ```
 
 2. 在 TidbCluster CR 中以如下方式配置 `spec.paused: true`，保存配置并退出编辑器。TiDB 集群各组件 (PD、TiKV、TiDB、TiFlash、TiCDC、Pump) 的同步过程将会被暂停。
@@ -57,15 +57,15 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
         ...
     ```
 
-3. TiDB 集群同步暂停后，可以使用以下命令查看 Controller Pod 日志确认 TiDB 集群同步状态。其中 `${controller-pod-name}` 表示 Controller Pod 的名称，`${tidb-operator-namespace}` 表示 TiDB Operator 所在的 namespace。
+3. TiDB 集群同步暂停后，可以使用以下命令查看 Controller Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 Controller Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl logs ${controller-pod-name} -n `${tidb-operator-namespace}` | grep paused
+    kubectl logs ${pod_name} -n `${namespace}` | grep paused
     ```
 
-    输出类似下方结果则表示 TiDB 集群同步已经暂停，可见 TiDB 集群各组件的同步已经被暂停。
+    输出类似下方结果则表示 TiDB 集群同步已经暂停。
     
     ```
     I1207 11:09:59.029949       1 pd_member_manager.go:92] tidb cluster default/basic is paused, skip syncing for pd service
@@ -82,12 +82,12 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 如果想要恢复 TiDB 集群的同步，可以在 TidbCluster CR 中配置 `spec.paused: false`，恢复同步 TiDB 集群。
 
-1. 使用以下命令修改集群配置，其中 `${tidb-cluster-name}` 表示 TiDB 集群名称, `${tidb-cluster-namespace}` 表示 TiDB 集群所在的 namespace。
+1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称, `${namespace}` 表示 TiDB 集群所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc/${tidb-cluster-name} -n ${tidb-cluster-namespace} --save-config
+    kubectl edit tc/${cluster_name} -n ${namespace}
     ```
 
 2. 在 TidbCluster CR 中以如下方式配置 `spec.paused: false`，保存配置并退出编辑器。TiDB 集群各组件 (PD、TiKV、TiDB、TiFlash、TiCDC、Pump) 的同步过程将会被恢复。
@@ -110,12 +110,12 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
         ...
     ```
 
-3. 恢复 TiDB 集群同步后，可以使用以下命令查看 Controller Pod 日志确认 TiDB 集群同步状态。其中 `${controller-pod-name}` 表示 Controller Pod 的名称，`${tidb-operator-namespace}` 表示 TiDB Operator 所在的 namespace。
+3. 恢复 TiDB 集群同步后，可以使用以下命令查看 Controller Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 Controller Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl logs ${controller-pod-name} -n `${tidb-operator-namespace}` | grep "Finished syncing TidbCluster"
+    kubectl logs ${pod_name} -n `${namespace}` | grep "Finished syncing TidbCluster"
     ```
     
     输出类似下方结果，可以看到同步成功时间戳大于暂停同步日志中显示的时间戳，表示 TiDB 集群同步已经被恢复。
