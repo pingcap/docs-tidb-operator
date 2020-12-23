@@ -22,6 +22,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-tidb-operator/','/docs-cn/
     > **注意：**
     >
     > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.1.8`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
+    >  如果未包含最新版本，可以通过 `helm repo update` 更新 repo。(Hem repo [参考文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/tidb-toolkit#%E9%85%8D%E7%BD%AE-helm-repo) )
+   
 
 2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
