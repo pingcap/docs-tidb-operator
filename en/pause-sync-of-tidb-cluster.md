@@ -34,7 +34,7 @@ Here are some cases where you might need to pause sync of a TiDB cluster in Kube
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc/`${cluster_name}` -n ${namespace}
+    kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
 2. Configure the TidbCluster CR with `spec.paused: true` as following, save changes and exit editor, sync of TiDB cluster's components (PD, TiKV, TiDB, TiFlash, TiCDC,Pump) will be paused. 
@@ -57,12 +57,12 @@ Here are some cases where you might need to pause sync of a TiDB cluster in Kube
         ...
     ```
 
-3. Execute the following command to confirm the sync status of a TiDB cluster. `${pod_name}` is the name of Controller Pod, and `${namespace}` is the namespace of TiDB Operator.
+3. Execute the following command to confirm the sync status of a TiDB cluster. `${pod_name}` is the name of tidb-controller-manager Pod, and `${namespace}` is the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl logs ${pod_name} -n `${namespace}` | grep paused
+    kubectl logs ${pod_name} -n ${namespace} | grep paused
     ```
     
     The expected output is as follows. The sync of all components in the TiDB cluster is paused.
@@ -87,7 +87,7 @@ If you want to resume the sync of the TiDB cluster, configure the TidbCluster CR
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc/`${cluster_name}` -n ${namespace}
+    kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
 2. Configure the TidbCluster CR with `spec.paused: false` as following, save changes and exit editor, sync of TiDB cluster's components (PD, TiKV, TiDB, TiFlash, TiCDC,Pump) will be resumed. 
@@ -110,12 +110,12 @@ If you want to resume the sync of the TiDB cluster, configure the TidbCluster CR
         ...
     ```
 
-3. After resuming sync of the TiDB cluster, execute the following command to confirm sync status of the TiDB cluster. `${pod_name}` represents the name of Controller Pod, `${namespace}` represents the namespace of TiDB Operator.
+3. After resuming sync of the TiDB cluster, execute the following command to confirm sync status of the TiDB cluster. `${pod_name}` represents the name of tidb-controller-manager Pod, `${namespace}` represents the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl logs ${pod_name} -n `${namespace}` | grep "Finished syncing TidbCluster"
+    kubectl logs ${pod_name} -n ${namespace} | grep "Finished syncing TidbCluster"
     ```
     
     The expected output is as follows. The `finished syncing` timestamp is later than the `pausing` timestamp, which indicates that sync of the TiDB cluster has been resumed.
