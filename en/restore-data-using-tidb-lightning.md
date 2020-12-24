@@ -96,13 +96,13 @@ Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org)
 
 To restore backup data from the remote source, take the following steps:
 
-1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` arecommented out.
+1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
 
 2. Grant permissions to the public cloud account
 
     Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
 
-    There are three methods to grant permissions. The configuration varies with different methods. For details, see [Backup the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+    There are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
 
     * Grant permissions by importing AccessKey and SecretKey
 
@@ -181,9 +181,9 @@ To restore backup data from the remote source, take the following steps:
             kubectl apply -f secret.yaml -n ${namespace}
             ```
 
-3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetescluster.
+3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
 
-### Deploy
+### Deploy TiDB Lightning
 
 The method of deploying TiDB Lightning varies with different methods of granting permissions and with different storages.
 
