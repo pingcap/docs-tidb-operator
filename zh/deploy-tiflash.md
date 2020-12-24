@@ -79,6 +79,44 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 
 如果服务器没有外网，请参考[部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群)在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
 
+## 移除 TiFlash
+
+1. 删除同步到 TiFlash 的数据表。
+
+    由于移除 TiFlash 后，TiFlash 集群剩余 Pod 数将为0，因此需要将 TiFlash 集群中所有同步数据表的副本数都置为0，才能完全移除 TiFlash。参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并使用以下命令删除 同步到 TiFlash 集群中的数据表。
+
+      {{< copyable "sql" >}}
+
+      ```sql
+      alter table <db-name>.<table-name> set tiflash replica 0;
+      ```
+
+2. 等待相关表的 TiFlash 副本被删除。
+
+    连接到 TiDB 服务，执行如下命令，查不到相关表的同步信息时即为副本被删除：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
+    ```
+
+3. 删除 TiFlash 同步数据表后，使用以下命令修改 `spec.tiflash.replicas` 为0来移除 TiFlash。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl edit tidbcluster ${cluster_name}
+    ```
+
+4. 你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群，检查以下命令输出内容，如果`spec.tiflash.replicas` 的值为0，则表示 TiFlash 已被成功移除。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tidbcluster ${cluster-name} -n ${namespace} -o yaml
+    ```
+
 ## 不同版本配置注意事项
 
 从 TiDB Operator v1.1.5 版本开始，`spec.tiflash.config.config.flash.service_addr` 的默认配置从 `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` 修改为 `0.0.0.0:3930`，而 TiFlash 从 v4.0.5 开始需要配置 `spec.tiflash.config.config.flash.service_addr` 为 `0.0.0.0:3930`，因此针对不同 TiFlash 和 TiDB Operator 版本，需要注意以下配置：
