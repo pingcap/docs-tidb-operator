@@ -40,11 +40,11 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.8`
+- `spec.version`: the format is `imageTag`, such as `v4.0.9`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.8`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.9`
 
 ### Recommended configuration
 
@@ -107,12 +107,12 @@ For example:
     config:
       log:
         file:
-          name: /var/log/pd
+          filename: /var/log/pdlog/pd.log
         level: "warn"
     storageVolumes:
       - name: log
         storageSize: "2Gi"
-        mountPath: "/var/log/pd"
+        mountPath: "/var/log/pdlog"
   tidb:
     baseImage: pingcap/tidb
     replicas: 1
@@ -121,12 +121,12 @@ For example:
     config:
       log:
         file:
-          name: /var/log/tidb
+          filename: /var/log/tidblog/tidb.log
         level: "warn"
     storageVolumes:
       - name: log
         storageSize: "2Gi"
-        mountPath: "/var/log/tidb"
+        mountPath: "/var/log/tidblog"
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
@@ -150,6 +150,10 @@ For example:
         storageSize: "2Gi"
         mountPath: "/data_sbj/titan/data"
 ```
+
+> **Note:**
+>
+> TiDB Operator uses some mount paths by default. For example, it mounts `EmptyDir` to the `/var/log/tidb` directory for the TiDB Pod. Therefore, avoid duplicate `mountPath` when you configure `storageVolumes`.
 
 ### mountClusterClientSecret
 
@@ -258,7 +262,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.8
+    image: pingcap/tidb:v4.0.9
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -280,7 +284,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.8
+    image: pingcap/tidb:v4.0.9
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -312,7 +316,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.8
+    image: pingcap/tikv:v4.0.9
     config:
       log-level: "info"
       slow-log-threshold: "1s"
@@ -331,7 +335,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.8
+    image: pingcap/tikv:v4.0.9
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -360,7 +364,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.8
+    image: pingcap/pd:v4.0.9
     config:
       lease: 3
       enable-prevote: true
@@ -376,7 +380,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.8
+    image: pingcap/pd:v4.0.9
     config: |
       lease = 3
       enable-prevote = true
