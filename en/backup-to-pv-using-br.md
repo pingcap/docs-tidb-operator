@@ -163,12 +163,12 @@ More descriptions of fields in the `Backup` CR:
 
     Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
 
-- `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
+- `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `demo1-tidb`.
 - `.spec.from.port`: The port of the TiDB cluster to be backed up.
 - `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
-- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. This field can be ignored.
 - `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
 - `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
+- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. This field can be ignored.
 
     If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:
 
@@ -272,7 +272,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
 From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to NFS, which is the same as the configuration of the ad-hoc backup to NFS (refer to [Ad-hoc backup process](#process-of-ad-hoc-backup) for details).
 
 <details>
-<summary>The unique configuration items of `backupSchedule`</summary>
+<summary>The unique configuration items of <code>backupSchedule</code></summary>
 
 - `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 

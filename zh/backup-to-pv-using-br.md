@@ -163,12 +163,12 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     
     值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 `Delete`。
 
-- `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
+- `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `demo1-tidb`。
 - `.spec.from.port`：待备份 TiDB 集群的访问端口。
 - `.spec.from.user`：待备份 TiDB 集群的访问用户。
-- `.spec.local.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
 - `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
 - `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
+- `.spec.local.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
 
     如果 TiDB 集群[已开启 TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
 
@@ -272,7 +272,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 从以上示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 NFS 存储相关的配置，该配置与 Ad-hoc 全量备份到 NFS 的配置完全一样，可参考[Ad-hoc 全量备份过程](#ad-hoc-备份过程)。
 
 <details>
-<summary>`backupSchedule` 独有的配置项</summary>
+<summary><code>backupSchedule</code> 独有的配置项</summary>
 
 - `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
