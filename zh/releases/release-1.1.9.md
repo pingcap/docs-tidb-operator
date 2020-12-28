@@ -14,5 +14,5 @@ TiDB Operator 版本：1.1.9
 
 ## Bug 修复
 
-- 修复 Prometheus 不能拉取 TiKV-Importer 的 metrics ([#3631](https://github.com/pingcap/tidb-operator/pull/3631), [@csuzhangxc](https://github.com/csuzhangxc))
-- 修复用 BR 和 gcs 进行备份与恢复时的兼容性问题 ([#3654](https://github.com/pingcap/tidb-operator/pull/3654), [@dragonly](https://github.com/dragonly))
+- 修复 Prometheus 不能拉取 TiKV Importer 的 metrics ([#3631](https://github.com/pingcap/tidb-operator/pull/3631), [@csuzhangxc](https://github.com/csuzhangxc))
+- 修复用 BR 和 GCS 进行备份与恢复时的兼容性问题 ([#3654](https://github.com/pingcap/tidb-operator/pull/3654), [@dragonly](https://github.com/dragonly))

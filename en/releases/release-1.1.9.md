@@ -14,6 +14,6 @@ TiDB Operator version: 1.1.9
 
 ## Bug Fixes
 
-- Fix the issue that Prometheus can't pull metrics for TiKV-Importer ([#3631](https://github.com/pingcap/tidb-operator/pull/3631), [@csuzhangxc](https://github.com/csuzhangxc))
+- Fix the issue that Prometheus can't pull metrics for TiKV Importer ([#3631](https://github.com/pingcap/tidb-operator/pull/3631), [@csuzhangxc](https://github.com/csuzhangxc))
 
-- Fix compatibility issue for using BR to backup/restore from/to gcs ([#3654](https://github.com/pingcap/tidb-operator/pull/3654), [@dragonly](https://github.com/dragonly))
+- Fix the compatibility issue for using BR to back up/restore from/to GCS ([#3654](https://github.com/pingcap/tidb-operator/pull/3654), [@dragonly](https://github.com/dragonly))
