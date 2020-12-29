@@ -5,9 +5,9 @@ summary: 介绍如何使用 BR 工具备份 TiDB 集群到持久卷。
 
 # 使用 BR 工具备份 TiDB 集群到持久卷
 
-本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到[持久卷](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/)上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到持久卷。
+本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到[持久卷](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/)上。
 
-本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
+本文使用的备份方式基于 TiDB Operator 新版（v1.1.8 及以上）的 CustomResourceDefinition (CRD) 实现。
 
 本文描述的持久卷指任何 [Kubernetes 支持的持久卷类型](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。本文将以 NFS 为例，介绍如何使用 BR 工具备份 TiDB 集群的数据到持久卷。
 
@@ -27,7 +27,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
+2. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的账号的密码。
 
     {{< copyable "shell-regular" >}}
 

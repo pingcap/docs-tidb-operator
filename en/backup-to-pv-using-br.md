@@ -5,7 +5,7 @@ summary: Learn how to back up data to Persistent Volume (PV) using BR.
 
 # Back up Data to PV Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PV). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to PV.
+This document describes how to back up the data of a TiDB cluster in Kubernetes to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVs). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to PVs.
 
 PVs in this documentation can be any [Kubernetes supported Persistent Volume types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document uses NFS as an example PV type.
 
@@ -39,7 +39,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     >
     > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
 
-3. Ensure that the NFS server is accessable from your Kubernetes cluster.
+3. Ensure that the NFS server is accessible from your Kubernetes cluster.
 
 ### Required database account privileges
 
@@ -110,7 +110,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     * `spec.br.rateLimit`: The speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The speed limit is not set by default.
     * `spec.br.checksum`: Whether to verify the files after the backup is completed. Defaults to `true`.
     * `spec.br.timeAgo`: Backs up the data before `timeAgo`. If the parameter value is not specified (empty by default), it means backing up the current data. It supports data formats such as "1.5h" and "2h45m". See [ParseDuration](https://golang.org/pkg/time/#ParseDuration) for more information.
-    * `spec.br.options`: The extra arguments that BR supports. It accepts an array of strings, supported since TiDB Operator v1.1.6. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
+    * `spec.br.options`: The extra BR argument supported since TiDB Operator v1.1.6. It accepts an array of strings. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
 
     This example backs up all data in the TiDB cluster to NFS.
 
@@ -212,7 +212,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
     kubectl apply -f backup-schedule-nfs.yaml
     ```
 
-    The content of `backup-scheduler-aws-s3.yaml` is as follows:
+    The content of `backup-schedule-nfs.yaml` is as follows:
 
    ```yaml
     ---
