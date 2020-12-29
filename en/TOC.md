@@ -38,6 +38,7 @@
 + Operate
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+  - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
   + Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
     - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
@@ -86,6 +87,7 @@
   - [Log Collection](logs-collection.md)
 + Release Notes
   + v1.1
+    - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)
     - [1.1.6](releases/release-1.1.6.md)
