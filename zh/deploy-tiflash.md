@@ -83,7 +83,11 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 
 1. 删除同步到 TiFlash 的数据表。
 
-    由于移除 TiFlash 后，TiFlash 集群剩余 Pod 数将为0，因此需要将 TiFlash 集群中所有同步数据表的副本数都置为0，才能完全移除 TiFlash。参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并使用以下命令删除 同步到 TiFlash 集群中的数据表。
+    由于移除 TiFlash 后，TiFlash 集群剩余 Pod 数将为0，因此需要将 TiFlash 集群中所有同步数据表的副本数都置为0，才能完全移除 TiFlash。
+    
+    1. 参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并使用以下命令删除 同步到 TiFlash 集群中的数据表。
+
+    2. 使用以下命令，删除同步到 TiFlash 集群中的数据表：
 
       {{< copyable "sql" >}}
 
@@ -101,7 +105,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-3. 删除 TiFlash 同步数据表后，使用以下命令修改 `spec.tiflash.replicas` 为0来移除 TiFlash。
+3. 删除 TiFlash 同步数据表后，使用以下命令修改 `spec.tiflash.replicas` 为 0 来移除 TiFlash。
 
     {{< copyable "shell-regular" >}}
 
@@ -109,12 +113,29 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl edit tidbcluster ${cluster_name}
     ```
 
-4. 你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群，检查以下命令输出内容，如果`spec.tiflash.replicas` 的值为0，则表示 TiFlash 已被成功移除。
+4. 通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群，检查输出内容，如果 `status.tiflash.statefulSet.replicas` 的值为 0，则表示 TiFlash 已被成功移除。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get tidbcluster ${cluster-name} -n ${namespace} -o yaml
+    ```
+
+    输出类似如下结果，可见`status.tiflash.statefulSet.replicas` 的值为 0，表示 TiFlash 已被成功移除。
+
+    ```yaml
+    status:
+      ...
+      tiflash:
+        image: pingcap/tiflash:v4.0.9
+        phase: Normal
+        statefulSet:
+          collisionCount: 0
+          currentRevision: basic-tiflash-5bc6586fbc
+          observedGeneration: 6
+          replicas: 0
+          updateRevision: basic-tiflash-5bc6586fbc
+      ...
     ```
 
 ## 不同版本配置注意事项
