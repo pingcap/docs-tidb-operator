@@ -14,7 +14,7 @@ TiDB Lightning supports [three backends](https://docs.pingcap.com/tidb/stable/ti
 
 - For the `importer` backend, both tikv-importer and tidb-lightning need to be deployed.
 - For the `local` or `tidb` backend, only tidb-lightning needs to be deployed.
-- For the `tidb` backend, it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions.
+- For the `tidb` backend, it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions. For details, refer to [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md) or [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 
 ## Deploy tikv-importer
 
