@@ -92,7 +92,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
       {{< copyable "sql" >}}
 
       ```sql
-      alter table <db-name>.<table-name> set tiflash replica 0;
+      alter table <db_name>.<table_name> set tiflash replica 0;
       ```
 
 2. 等待相关表的 TiFlash 副本被删除。
@@ -113,30 +113,70 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl edit tidbcluster ${cluster_name}
     ```
 
-4. 通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群，检查输出内容，如果 `status.tiflash.statefulSet.replicas` 的值为 0，则表示 TiFlash 已被成功移除。
+4. 检查是否成功移除 TiFlash
+
+    检查 TiFlash 集群的 statefulSet 和 Pod 是否被删除。
+
+    执行以下命令查看 TiFlash 集群的 statefulSet：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tidbcluster ${cluster-name} -n ${namespace} -o yaml
+    kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash
     ```
 
-    输出类似如下结果，可见`status.tiflash.statefulSet.replicas` 的值为 0，表示 TiFlash 已被成功移除。
+    输出类似如下结果，可见 TiFlash 集群的 statefulSet 数为 0，表示 TiFlash 集群的 statefulSet 已被成功移除。
 
-    ```yaml
-    status:
-      ...
-      tiflash:
-        image: pingcap/tiflash:v4.0.9
-        phase: Normal
-        statefulSet:
-          collisionCount: 0
-          currentRevision: basic-tiflash-5bc6586fbc
-          observedGeneration: 6
-          replicas: 0
-          updateRevision: basic-tiflash-5bc6586fbc
-      ...
     ```
+    NAME            READY   AGE
+    basic-tiflash   0/0     5d
+    ```
+
+    执行以下命令查看 Kubernetes 集群的 Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash
+    ```
+
+    如果输出为空，则表示 TiFlash 集群的 Pod 已经被成功删除。
+
+5. (可选项) 删除 PVC 和 PV
+
+    如果确认 TiFlash 中的数据不会被使用，想要删除数据。需要严格按照以下操作步骤来删除 TiFlash 中的数据。
+
+    1. 删除 PV 对应的 PVC 对象
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl delete pvc ${pvc_name} --namespace=${namespace}
+        ```
+
+        其中 `${pvc_name}` 表示 TiFlash 集群 PVC 的名称，可以执行以下命令查看：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get pvc --namespace=${namespace} -l app.kubernetes.io/component=tiflash
+        ```
+
+    2. PV 保留策略是 Retain 时，删除 PVC 对象后对应的 PV 仍将保留。如果想要删除 PV 中的数据，设置 PV 的保留策略为 Delete，PV 会被自动删除并回收。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+        ```
+
+        其中 `${pv_name}` 表示 TiFlash 集群 PV 的名称，可以执行以下命令查看：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get pv -l app.kubernetes.io/component=tiflash
+        ```
 
 ## 不同版本配置注意事项
 
