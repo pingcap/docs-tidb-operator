@@ -15,6 +15,10 @@ The restore method described in this document is implemented based on Custom Res
 
 - The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restoration, the `Restore` CR needs a database account with these privileges to adjust the GC time.
 
+> **Note:**
+>
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
+
 ## Prerequisites
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:

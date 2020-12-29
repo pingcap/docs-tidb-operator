@@ -45,6 +45,10 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 * `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 
+> **注意：**
+>
+> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
+
 ### Ad-hoc 备份过程
 
 1. 创建 `Backup` CR，并将数据备份到 NFS：
@@ -89,7 +93,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         volume:
           name: nfs
           nfs:
-            server: ${nfs_server_if}
+            server: ${nfs_server_ip}
             path: /nfs
         volumeMount:
           name: nfs
@@ -136,7 +140,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     {{< copyable "sql" >}}
 
     ```sql
-    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    SELECT VARIABLE_NAME, VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME LIKE "tikv_gc_life_time";
     ```
 
     如果发现 `tikv_gc_life_time` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_life_time` 调回原样：
@@ -144,7 +148,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
     > **Note:**
@@ -246,7 +250,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
           volume:
             name: nfs
             nfs:
-              server: ${nfs_server_if}
+              server: ${nfs_server_ip}
               path: /nfs
           volumeMount:
             name: nfs

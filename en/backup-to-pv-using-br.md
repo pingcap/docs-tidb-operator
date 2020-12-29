@@ -45,6 +45,10 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
 * The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
 
+> **Note:**
+>
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
+
 ### Process of ad-hoc backup
 
 1. Create the `Backup` CR, and back up cluster data to NFS as described below:
@@ -89,7 +93,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
         volume:
           name: nfs
           nfs:
-            server: ${nfs_server_if}
+            server: ${nfs_server_ip}
             path: /nfs
         volumeMount:
           name: nfs
@@ -136,7 +140,7 @@ More descriptions of fields in the `Backup` CR:
     {{< copyable "sql" >}}
 
     ```sql
-    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    SELECT VARIABLE_NAME, VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME LIKE "tikv_gc_life_time";
     ```
 
     In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
@@ -144,7 +148,7 @@ More descriptions of fields in the `Backup` CR:
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
     > **Note:**
@@ -246,7 +250,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
           volume:
             name: nfs
             nfs:
-              server: ${nfs_server_if}
+              server: ${nfs_server_ip}
               path: /nfs
           volumeMount:
             name: nfs
