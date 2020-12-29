@@ -259,20 +259,6 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
         > `arn:aws:iam::123456789012:role/user` 为步骤 1 中创建的 IAM 角色。
         > ${service-account} 为 tidb-lightning 使用的 ServiceAccount，默认为 default。
 
-当 TiDB Lightning 未能成功恢复数据时，不能简单地直接重启进程，必须进行**手动干预**，否则将很容易出现错误。因此，tidb-lightning 的 `Job` 重启策略被设置为 `Never`。
-
-如果 TiDB Lightning 未能成功恢复数据，需要采用以下步骤进行手动干预：
-
-1. 运行 `kubectl delete job -n ${namespace} ${release_name}-tidb-lightning`，删除 lightning `Job`。
-
-2. 运行 `helm template pingcap/tidb-lightning --name ${release_name} --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n ${namespace} -f -`，重新创建禁用 `failFast` 的 lightning `Job`。
-
-3. 当 lightning pod 重新运行时，在 lightning 容器中执行 `kubectl exec -it -n ${namespace} ${pod_name} sh` 命令。
-
-4. 运行 `cat /proc/1/cmdline`，获得启动脚本。
-
-5. 参考[故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)，对 lightning 进行诊断。
-
 ## 销毁 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
@@ -284,3 +270,55 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 删除 tidb-lightning 的方法：
 
 * 运行 `helm delete ${release_name} --purge`。
+
+## 故障诊断
+
+当 TiDB Lightning 未能成功恢复数据时，通常不能简单地直接重启进程，必须进行**手动干预**，否则将很容易出现错误。因此，tidb-lightning 的 `Job` 重启策略被设置为 `Never`。
+
+自 v1.1.10 版本起，tidb-lightning Helm chart 默认会将 [TiDB Lightning 的 checkpoint 信息](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)存储在源数据所在目录内。这样在运行新的 lightning job 时，可以根据 checkpoint 信息进行断点续传。
+
+> **注意：**
+> 
+> 对于 v1.1.10 之前的版本，可参考 [TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints) 在 `values.yaml` 中的 `config` 配置下设置将 checkpoint 信息保存到目标 TiDB 集群、其他 MySQL 协议兼容的数据库或共享存储目录中。否则发生故障后，需要清理目标集群中已恢复的部分数据并重新部署 tidb-lightning 进行数据恢复。
+
+如果 TiDB Lightning 未能成功恢复数据且已配置将 checkpoint 信息存储在源数据所在目录、其他用户配置的数据库或存储目录中，可采用以下步骤进行手动干预：
+
+1. 运行 `kubectl logs -n ${namespace} ${pod_name}` 查看 log。
+
+    如果使用远程模式进行数据恢复，且异常发生在从网络存储下载数据的过程中，则依据 log 信息进行处理后，直接重新部署 tidb-lightning 进行数据恢复。否则，继续按下述步骤进行处理。
+
+2. 依据 log 并参考[TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)了解各故障类型的处理方法。
+
+3. 对于不同的故障类型，分别进行处理：
+
+    - 如果需要使用 tidb-lightning-ctl 进行处理：
+
+        1. 设置 `values.yaml` 的 `dataSource` 以确保新 `Job` 将使用发生故障的 `Job` 已有的数据源及 checkpoint 信息：
+
+            - 如果使用本地模式或 Ad hoc 模式，则 `dataSource` 无需修改。
+
+            - 如果使用远程模式，则修改 `dataSource` 为 Ad hoc 模式。其中 `dataSource.adhoc.pvcName` 为原 Helm chart 创建的 PVC 名称，`dataSource.adhoc.backupName` 为待恢复数据的 backup 名称。
+        
+        2. 修改 `values.yaml` 中的 `failFast` 为 `false` 并创建用于使用 tidb-lightning-ctl 的 `Job`。
+
+        3. 当新 `Job` 对应的 pod 重启运行后，执行 `kubectl exec -it -n ${namespace} ${pod_name} -it -- sh` 命令进入容器。
+
+        4. 运行 `cat /proc/1/cmdline`，获得启动脚本。
+
+        5. 根据启动脚本中的命令行参数，参考[TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)并使用 tidb-lightning-ctl 进行故障处理。
+
+        6. 故障处理完成后，将 `values.yaml` 中的 `failFast` 设置为 `true` 并再次创建新的 `Job` 用于继续数据恢复。
+    
+    - 如果不需要使用 tidb-lightning-ctl 进行处理：
+
+        1. 参考[TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)进行故障处理。
+
+        2. 设置 `values.yaml` 的 `dataSource` 以确保新 `Job` 将使用发生故障的 `Job` 已有的数据源及 checkpoint 信息：
+
+            - 如果使用本地模式或 Ad hoc 模式，则 `dataSource` 无需修改。
+
+            - 如果使用远程模式，则修改 `dataSource` 为 Ad hoc 模式。其中 `dataSource.adhoc.pvcName` 为原 Helm chart 创建的 PVC 名称，`dataSource.adhoc.backupName` 为待恢复数据的 backup 名称。
+        
+        3. 根据新的 `values.yaml` 创建新的 `Job` 用于继续数据恢复。
+        
+4. 故障处理及数据恢复完成后，删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
