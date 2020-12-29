@@ -38,6 +38,7 @@
 + 运维
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
   + TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
     - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
