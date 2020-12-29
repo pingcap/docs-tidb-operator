@@ -19,6 +19,7 @@ TiDB Lightning supports [three backends](https://docs.pingcap.com/tidb/stable/ti
 ## Deploy tikv-importer
 
 > **Note:**
+>
 > If you use the `local` or `tidb` backend for data restoration, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
 
 You can deploy tikv-importer using the Helm chart. See the following example:
@@ -89,7 +90,7 @@ Use the following command to get the default configuration of TiDB Lightning:
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-Configure `backend` used by TiDB Lightning according to your needs. The options include `importer`, `local`, and `tidb`.
+Configure a `backend` used by TiDB Lightning according to your needs. The options include `importer`, `local`, and `tidb`.
 
 > **Note:**
 >
