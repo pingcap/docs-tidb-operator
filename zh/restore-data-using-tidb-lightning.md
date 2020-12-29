@@ -100,9 +100,11 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 2. 公有云账号授权
 
-    新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。
+    新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。使用 Ceph、GCS 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权。
 
     * 通过 AccessKey 和 SecretKey 授权
+
+        使用 Amazon S3、Ceph 或 GCS 作为存储后端时支持通过 AccessKey 和 SecretKey 授权。
 
         1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
 
@@ -147,6 +149,8 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
             ```
 
     * 通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权
+
+        使用 Amazon S3 作为存储后端时支持通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权。
 
         1. 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。使用你的实际配置替换下方配置中的占位符，并将文件存储为 `secret.yaml`。
 
@@ -256,7 +260,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 5. 参考[故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)，对 lightning 进行诊断。
 
-### 销毁 TiDB Lightning
+## 销毁 tikv-importer 和 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 

@@ -100,11 +100,11 @@ To restore backup data from the remote source, take the following steps:
 
 2. Grant permissions to the public cloud account
 
-    Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
-
-    There are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
+    Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). Using Ceph or GCS as the storage, only support grant permissions by importing AccessKey and SecretKey.
 
     * Grant permissions by importing AccessKey and SecretKey
+
+        Using Amazon S3, Ceph or GCS as the storage, support grant permissions by importing AccessKey and SecretKey.
 
         1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
 
@@ -151,6 +151,8 @@ To restore backup data from the remote source, take the following steps:
             ```
 
     * Grant permissions by associating IAM with Pod or with ServiceAccount
+
+        Using Amazon S3 as the storage, support grant permissions by associating IAM with Pod or with ServiceAccount.
         
         1. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with your configurations and save it as `secret.yaml`.
         
@@ -260,7 +262,7 @@ If the lightning fails to restore data, follow the steps below to do manual inte
 
 5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/stable/troubleshoot-tidb-lightning/).
 
-### Destroy TiDB Lightning
+## Destroy tikv-importer and TiDB Lightning
 
 Currently, TiDB Lightning can only restore data offline. When the restoration finishes and the TiDB cluster needs to provide service for applications, the TiDB Lightning should be deleted to save cost.
 
