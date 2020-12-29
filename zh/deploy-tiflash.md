@@ -83,17 +83,17 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 
 1. 删除同步到 TiFlash 的数据表。
 
-    由于移除 TiFlash 后，TiFlash 集群剩余 Pod 数将为0，因此需要将 TiFlash 集群中所有同步数据表的副本数都置为0，才能完全移除 TiFlash。
+    由于移除 TiFlash 后，TiFlash 集群剩余 Pod 数将为 0，因此需要将 TiFlash 集群中所有同步数据表的副本数都设置为 0，才能完全移除 TiFlash。
     
-    1. 参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并使用以下命令删除 同步到 TiFlash 集群中的数据表。
+    1. 参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务。
 
-    2. 使用以下命令，删除同步到 TiFlash 集群中的数据表：
+    2. 使用以下命令，调整同步到 TiFlash 集群中的数据表的副本数：
 
-      {{< copyable "sql" >}}
+        {{< copyable "sql" >}}
 
-      ```sql
-      alter table <db_name>.<table_name> set tiflash replica 0;
-      ```
+        ```sql
+        alter table <db_name>.<table_name> set tiflash replica 0;
+        ```
 
 2. 等待相关表的 TiFlash 副本被删除。
 
@@ -105,7 +105,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-3. 删除 TiFlash 同步数据表后，使用以下命令修改 `spec.tiflash.replicas` 为 0 来移除 TiFlash。
+3. 使用以下命令修改 `spec.tiflash.replicas` 为 0 来移除 TiFlash Pod。
 
     {{< copyable "shell-regular" >}}
 
@@ -113,56 +113,51 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl edit tidbcluster ${cluster_name}
     ```
 
-4. 检查是否成功移除 TiFlash
-
-    检查 TiFlash 集群的 statefulSet 和 Pod 是否被删除。
-
-    执行以下命令查看 TiFlash 集群的 statefulSet：
+4. 使用以下命令删除 TiFlash statefulSet。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash
+    kubectl delete statefulsets -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
     ```
 
-    输出类似如下结果，可见 TiFlash 集群的 statefulSet 数为 0，表示 TiFlash 集群的 statefulSet 已被成功移除。
+5. 检查是否成功移除 TiFlash。
 
-    ```
-    NAME            READY   AGE
-    basic-tiflash   0/0     5d
-    ```
+    检查 TiFlash 集群的 Pod 和 statefulSet 是否被删除。
 
     执行以下命令查看 Kubernetes 集群的 Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash
+    kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
     ```
 
     如果输出为空，则表示 TiFlash 集群的 Pod 已经被成功删除。
 
-5. (可选项) 删除 PVC 和 PV
+    执行以下命令查看 TiFlash 集群的 statefulSet：
 
-    如果确认 TiFlash 中的数据不会被使用，想要删除数据。需要严格按照以下操作步骤来删除 TiFlash 中的数据。
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+    ```
+
+    如果输出为空，则表示 TiFlash 集群的 statefulSet 已经被成功删除。
+
+6. (可选项) 删除 PVC 和 PV。
+
+    如果确认 TiFlash 中的数据不会被使用，想要删除数据，需要严格按照以下操作步骤来删除 TiFlash 中的数据。
 
     1. 删除 PV 对应的 PVC 对象
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl delete pvc ${pvc_name} --namespace=${namespace}
+        kubectl delete pvc --namespace=${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
         ```
 
-        其中 `${pvc_name}` 表示 TiFlash 集群 PVC 的名称，可以执行以下命令查看：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get pvc --namespace=${namespace} -l app.kubernetes.io/component=tiflash
-        ```
-
-    2. PV 保留策略是 Retain 时，删除 PVC 对象后对应的 PV 仍将保留。如果想要删除 PV 中的数据，设置 PV 的保留策略为 Delete，PV 会被自动删除并回收。
+    2. PV 保留策略是 Retain 时，删除 PVC 对象后对应的 PV 仍将保留。如果想要删除 PV，可以设置 PV 的保留策略为 Delete，PV 会被自动删除并回收。
 
         {{< copyable "shell-regular" >}}
 
@@ -175,7 +170,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl get pv -l app.kubernetes.io/component=tiflash
+        kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
         ```
 
 ## 不同版本配置注意事项
