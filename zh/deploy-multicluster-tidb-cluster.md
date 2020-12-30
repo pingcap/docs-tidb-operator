@@ -143,6 +143,31 @@ EOF
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
+### 签发证书
+
+相较于普通场景, 在跨 Kubernetes 集群的 TiDB 多集群场景下, 签发证书的 hosts 中多了`${cluster_name}-pd.${namespace}.svc.${cluster_domain}`此类格式的记录, 例如 PD 的证书
+
+```json
+"hosts": [
+    "127.0.0.1",
+    "::1",
+    "${cluster_name}-pd",
+    "${cluster_name}-pd.${namespace}",
+    "${cluster_name}-pd.${namespace}.svc",
+    "${cluster_name}-pd.${namespace}.svc.${cluster_domain}",
+    "${cluster_name}-pd-peer",
+    "${cluster_name}-pd-peer.${namespace}",
+    "${cluster_name}-pd-peer.${namespace}.svc",
+    "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
+    "*.${cluster_name}-pd-peer",
+    "*.${cluster_name}-pd-peer.${namespace}",
+    "*.${cluster_name}-pd-peer.${namespace}.svc",
+    "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
+],
+```
+
+在签发相关 TLS 证书时, 需要注意加上带有 clusterDomain 的格式 host 记录.
+
 ### 部署初始集群
 
 通过如下命令部署初始化集群, 实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容, 其中 `cluster1_name` 为集群1的集群名称, `cluster1_domain` 为集群1的 cluster domain, `cluster1_namespace` 为集群1的命名空间 
@@ -270,4 +295,4 @@ spec:
 EOF
 ```
 
-更多示例信息, 请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
+更多示例信息以及开发信息, 请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
