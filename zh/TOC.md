@@ -29,7 +29,6 @@
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   + 部署 TiDB 集群监控
-    - [监控 Kubernetes 和 TiDB 集群](monitor-a-tidb-cluster.md)
     - [使用 TidbMonitor 监控 TiDB 集群](monitor-using-tidbmonitor.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
 + 安全
@@ -78,6 +77,7 @@
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
   - [Sysbench 性能测试](benchmark-sysbench.md)
+  - [监控 Kubernetes 和 TiDB 集群](monitor-a-tidb-cluster.md)
   - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
   + 工具
