@@ -94,9 +94,9 @@ summary: 介绍如何使用 BR 工具将存储在持久卷上的备份数据恢�
 
     {{< copyable "shell-regular" >}}
 
-     ```shell
-     kubectl get rt -n test2 -owide
-     ```
+    ```shell
+    kubectl get rt -n test2 -owide
+    ```
 
 关于 BR 和持久卷的配置项可以参考 [backup-pv.yaml](backup-to-pv-using-br.md#ad-hoc-备份过程) 中的配置。
 
@@ -121,7 +121,7 @@ summary: 介绍如何使用 BR 工具将存储在持久卷上的备份数据恢�
     >
     > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.to`.
 
-- `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
+- `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [Table Filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/)的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
 
     > **注意：**
     >
