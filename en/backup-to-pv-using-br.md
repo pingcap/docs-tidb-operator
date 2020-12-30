@@ -143,7 +143,7 @@ More descriptions of fields in the `Backup` CR:
     SELECT VARIABLE_NAME, VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME LIKE "tikv_gc_life_time";
     ```
 
-    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
+    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to [set `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) back to the previous value manually:
 
     {{< copyable "sql" >}}
 
