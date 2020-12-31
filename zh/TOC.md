@@ -51,6 +51,8 @@
     - [使用 TiDB Lightning 恢复 TiDB 集群数据](restore-using-lightning.md)
     - [使用 BR 工具备份 TiDB 集群数据](backup-using-br.md)
     - [使用 BR 工具恢复备份数据到 TiDB 集群](restore-using-br.md)
+    - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+    - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
