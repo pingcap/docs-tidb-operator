@@ -185,7 +185,7 @@ More descriptions of fields in the `Backup` CR:
     >
     > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
-- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. This field is suggested.
+- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. It is recommended to configure this field.
 - `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
     > **Note:**
