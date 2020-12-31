@@ -449,7 +449,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-between-components/','/
               "::1",
               "${cluster_name}-importer",
               "${cluster_name}-importer.${namespace}",
-              "${cluster_name}-importer.${namespace}.svc"
+              "${cluster_name}-importer.${namespace}.svc",
+              "*.${cluster_name}-importer",
+              "*.${cluster_name}-importer.${namespace}",
+              "*.${cluster_name}-importer.${namespace}.svc"
             ],
         ...
         ```
@@ -1143,6 +1146,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-between-components/','/
           - "${cluster_name}-importer"
           - "${cluster_name}-importer.${namespace}"
           - "${cluster_name}-importer.${namespace}.svc"
+          - "*.${cluster_name}-importer"
+          - "*.${cluster_name}-importer.${namespace}"
+          - "*.${cluster_name}-importer.${namespace}.svc"
           ipAddresses:
           - 127.0.0.1
           - ::1
@@ -1278,7 +1284,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-between-components/','/
     spec:
      tlsCluster:
        enabled: true
-     version: v4.0.8
+     version: v4.0.9
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1334,7 +1340,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-between-components/','/
        version: 6.0.1
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v4.0.8
+       version: v4.0.9
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1

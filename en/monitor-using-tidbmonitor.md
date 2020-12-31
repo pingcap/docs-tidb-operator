@@ -49,7 +49,7 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.8
+    version: v4.0.9
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -130,7 +130,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.8
+    version: v4.0.9
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -178,7 +178,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.8
+    version: v4.0.9
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -232,7 +232,7 @@ spec:
         foo: "bar"
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.8
+    version: v4.0.9
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -269,7 +269,7 @@ spec:
       type: ClusterIP
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.8
+    version: v4.0.9
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -294,44 +294,6 @@ In a public cloud-deployed Kubernetes cluster, you can usually [configure Loadba
 
 ```shell
 curl -H "Host: example.com" ${node_ip}:${NodePort}
-```
-
-## Monitor multiple TiDB clusters
-
-TidbMonitor supports monitoring multiple non-TLS clusters. As for TLS-enabled clusters, it is recommended that you monitor each cluster with a separate TidbMonitor. You can use [`Thanos`](https://thanos.io/tip/thanos/getting-started.md/) to query all the monitoring data.
-
-To monitor multiple non-TLS clusters, configure the TidbMonitor CR as follows:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbMonitor
-metadata:
-  name: basic
-spec:
-  clusters:
-    - name: ns1
-      namespace: ns1
-    - name: ns2
-      namespace: ns2
-  kubePrometheusURL: "your-kube-prometheus-url"
-  alertmanagerURL: "your-alert-manager-url"
-  prometheus:
-    baseImage: prom/prometheus
-    version: v2.18.1
-    service:
-      type: NodePort
-  grafana:
-    baseImage: grafana/grafana
-    version: 6.1.6
-    service:
-      type: NodePort
-  initializer:
-    baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.6
-  reloader:
-    baseImage: pingcap/tidb-monitor-reloader
-    version: v1.0.1
-  imagePullPolicy: IfNotPresent
 ```
 
 ## References

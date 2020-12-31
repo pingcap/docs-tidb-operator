@@ -40,9 +40,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/configure-a-tidb-cluster/','/docs-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.8`
+- `spec.version`，格式为 `imageTag`，例如 `v4.0.9`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.8`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.9`
 
 ### 推荐配置
 
@@ -264,7 +264,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.8
+    image: pingcap/tidb:v4.0.9
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -286,7 +286,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.8
+    image: pingcap/tidb:v4.0.9
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -316,7 +316,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.8
+    image: pingcap/tikv:v4.0.9
     config: {}
     replicas: 1
     requests:
@@ -333,7 +333,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.8
+    image: pingcap/tikv:v4.0.9
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -360,7 +360,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.8
+    image: pingcap/pd:v4.0.9
     config:
       lease: 3
       enable-prevote: true
@@ -376,7 +376,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.8
+    image: pingcap/pd:v4.0.9
     config: |
       lease = 3
       enable-prevote = true
@@ -386,7 +386,8 @@ spec:
 
 > **注意：**
 >
-> 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
+> - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
+> - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
 
 #### 配置 TiFlash 配置参数
 

@@ -38,6 +38,7 @@
 + 运维
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
   + TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
     - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
@@ -86,6 +87,8 @@
   - [日志收集](logs-collection.md)
 + 版本发布历史
   + v1.1
+    - [1.1.9](releases/release-1.1.9.md)
+    - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)
     - [1.1.6](releases/release-1.1.6.md)
     - [1.1.5](releases/release-1.1.5.md)
