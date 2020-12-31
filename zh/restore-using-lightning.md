@@ -88,7 +88,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](backup-to-gcs.md#备份数据到-gcs) 中的配置。
+以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](backup-using-dumpling.md#备份数据到-GCS) 中的配置。
 
 更多 `Restore` CR 字段的详细解释如下：
 
@@ -300,7 +300,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
     kubectl get rt -n test2 -owide
     ```
 
-以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host`)。有关兼容 S3 的存储的配置项，可以参考 [backup-s3.yaml](backup-to-s3.md#备份数据到兼容-s3-的存储)。
+以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host`)。有关兼容 S3 的存储的配置项，可以参考 [备份数据到兼容 S3 的存储](backup-using-dumpling.md#备份数据到兼容-S3-的存储)。
 
 更多 `Restore` CR 字段的详细解释：
 
