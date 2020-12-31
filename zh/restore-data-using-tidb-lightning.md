@@ -307,7 +307,11 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
             
             - TiDB Lightning 会依据 checkpoint 信息来避免对已恢复数据的重复恢复，因此创建该 `Job` 不会影响数据正确性。
         
-        3. 当新 `Job` 对应的 pod 重启运行后，通过 `kubectl logs -n ${namespace} ${pod_name}` 查看 log 并确认新 `Job` 中的 tidb-lightning 已停止进行数据恢复。
+        3. 当新 `Job` 对应的 pod 运行后，使用 `kubectl logs -n ${namespace} ${pod_name}` 查看 log 并确认新 `Job` 中的 tidb-lightning 已停止进行数据恢复，即 log 中包含类似以下的任意信息：
+
+            - `tidb lightning encountered error`
+
+            - `tidb lightning exit`
 
         4. 执行 `kubectl exec -it -n ${namespace} ${pod_name} -it -- sh` 命令进入容器。
 
