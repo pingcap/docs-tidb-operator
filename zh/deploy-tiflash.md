@@ -175,7 +175,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
     ```
 
-    执行以下命令检查是否成功删除 TiFlash 集群的 statefulSet：
+    执行以下命令检查是否成功删除 TiFlash 集群的 StatefulSet：
 
     {{< copyable "shell-regular" >}}
 
@@ -183,7 +183,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
     ```
 
-    如果输出为空，则表示 TiFlash 集群的 statefulSet 已经被成功删除。
+    如果输出为空，则表示 TiFlash 集群的 StatefulSet 已经被成功删除。
 
 6. (可选项) 删除 PVC 和 PV。
 
