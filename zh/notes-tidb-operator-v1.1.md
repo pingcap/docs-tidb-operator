@@ -44,7 +44,7 @@ Discovery 服务直接由 TiDB Operator 内部生成，不再需要用户做任�
 
 ### Monitor
 
-可以参考 [部署 TiDB 集群监控](get-started.md#部署-tidb-集群监控) 创建 TidbMonitor CR，管理 Monitor 组件。
+可以参考 [部署 TiDB 集群监控](get-started.md#部署-tidb-集群监控)创建 TidbMonitor CR，管理 Monitor 组件。
 
 > **注意：**
 >
