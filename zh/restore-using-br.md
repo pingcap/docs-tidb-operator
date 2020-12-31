@@ -30,7 +30,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/', '/docs-c
 
 2. 存储访问授权
 
-    GCS 账号授权方式参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#GCS-账号授权)。
+    GCS 账号授权方式参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)。
 
 3. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 集群的 root 账号和密钥：
 
@@ -168,7 +168,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/', '/docs-c
 
 2. 存储访问授权
 
-    如果使用 Amazon S3 来恢复集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#AWS-账号授权) 授权访问兼容 S3 的远程存储。使用 Ceph 作为后端存储测试恢复时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-AccessKey-和-SecretKey-授权)。
+    如果使用 Amazon S3 来恢复集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权) 授权访问兼容 S3 的远程存储。使用 Ceph 作为后端存储测试恢复时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
 3. 创建 `restore-demo2-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
 

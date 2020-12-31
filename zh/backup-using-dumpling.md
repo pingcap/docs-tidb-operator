@@ -40,7 +40,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 2. 存储访问授权
 
-    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#GCS-账号授权) 授权访问 GCS 远程存储。
+    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权) 授权访问 GCS 远程存储。
 
 3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
 
@@ -202,7 +202,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 #### 定时全量备份环境准备
 
-同 [Ad-hoc 全量备份到 GCS 环境准备](#ad-hoc-全量备份到-GCS-环境准备)。
+同 [Ad-hoc 全量备份到 GCS 环境准备](#ad-hoc-全量备份到-gcs-环境准备)。
 
 #### 定时全量备份到 GCS
 
@@ -312,7 +312,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 2. 存储访问授权
 
-    如果使用 Amazon S3 来备份集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#AWS-账号授权) 授权访问兼容 S3 的远程存储；使用 Ceph 作为后端存储测试备份时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-AccessKey-和-SecretKey-授权)。
+    如果使用 Amazon S3 来备份集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权) 授权访问兼容 S3 的远程存储；使用 Ceph 作为后端存储测试备份时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
     
 3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的用户所对应的密码。
 
@@ -614,7 +614,7 @@ kubectl get bk -n test1 -owide
 
 #### 定时全量备份环境准备
 
-同 [Ad-hoc 全量备份到 S3 环境准备](#ad-hoc-全量备份到-S3-环境准备)。
+同 [Ad-hoc 全量备份到 S3 环境准备](#ad-hoc-全量备份到-s3-环境准备)。
 
 #### 定时全量备份到 S3 兼容存储
 

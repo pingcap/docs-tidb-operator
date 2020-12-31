@@ -25,7 +25,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
 
 2. 存储访问授权
 
-    如果使用 GCS 来备份恢复集群，可以使用服务账号密钥授予权限，参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#GCS-账号授权) 授权访问 GCS 远程存储；
+    如果使用 GCS 来备份恢复集群，可以使用服务账号密钥授予权限，参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权) 授权访问 GCS 远程存储；
 
 3. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 集群的 root 账号和密钥：
 
@@ -88,7 +88,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](backup-using-dumpling.md#备份数据到-GCS) 中的配置。
+以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](backup-using-dumpling.md#备份数据到-gcs) 中的配置。
 
 更多 `Restore` CR 字段的详细解释如下：
 
@@ -120,7 +120,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
 
 2. 存储访问授权
 
-    如果使用 Amazon S3 来恢复集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#AWS-账号授权) 授权访问兼容 S3 的远程存储；使用 Ceph 作为后端存储测试恢复时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-AccessKey-和-SecretKey-授权)。
+    如果使用 Amazon S3 来恢复集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权) 授权访问兼容 S3 的远程存储；使用 Ceph 作为后端存储测试恢复时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
 3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的用户所对应的密码。
 
@@ -300,7 +300,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/', '/docs-cn/tidb-in
     kubectl get rt -n test2 -owide
     ```
 
-以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host`)。有关兼容 S3 的存储的配置项，可以参考 [备份数据到兼容 S3 的存储](backup-using-dumpling.md#备份数据到兼容-S3-的存储)。
+以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host`)。有关兼容 S3 的存储的配置项，可以参考 [备份数据到兼容 S3 的存储](backup-using-dumpling.md#备份数据到兼容-s3-的存储)。
 
 更多 `Restore` CR 字段的详细解释：
 

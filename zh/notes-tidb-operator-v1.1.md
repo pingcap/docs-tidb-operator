@@ -123,8 +123,8 @@ spec
 
 升级到 TiDB Operator v1.1 之后，可以通过 Restore CR 进行备份恢复：
 
-- 如果 TiDB 集群版本 < v3.1，可以参考 [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-using-lightning.md#使用-TiDB-Lightning-恢复-S3-兼容存储上的备份数据)。
-- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 工具恢复 S3 兼容存储上的备份数据](restore-using-br.md#恢复-S3-兼容存储上的备份数据)。
+- 如果 TiDB 集群版本 < v3.1，可以参考 [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-using-lightning.md#使用-tidb-lightning-恢复-s3-兼容存储上的备份数据)。
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 工具恢复 S3 兼容存储上的备份数据](restore-using-br.md#恢复-s3-兼容存储上的备份数据)。
 
 > **注意：**
 >
