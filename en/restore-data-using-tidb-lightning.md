@@ -183,7 +183,7 @@ TiDB Lightning Helm chart supports both local and remote data sources.
 
     2. Configure `dataSource.adhoc.pvcName` in the `values.yaml` file to the name of the PVC created when using remote mode.
 
-    3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name corresponding to the original backup data. For example,  `backup-2020-12-17T10:12:51Z` (exclude the `.tgz` suffix of the compressed file name on the network storage).
+    3. Configure `dataSource.adhoc.backupName` in the `values.yaml` file to the name corresponding to the original backup data. For example,  `backup-2020-12-17T10:12:51Z` (exclude the `.tgz` suffix of the compressed file name on the network storage).
 
 ### Deploy
 
