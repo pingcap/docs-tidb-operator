@@ -147,17 +147,17 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
             state: Tombstone
         "89":
             id: "89"
-            ip: basic-tiflash-2.basic-tiflash-peer.default.svc
+            ip: basic-tiflash-1.basic-tiflash-peer.default.svc
             lastHeartbeatTime: "2020-12-31T04:41:50Z"
             lastTransitionTime: null
             leaderCount: 0
-            podName: basic-tiflash-2
+            podName: basic-tiflash-1
             state: Tombstone
     ```
 
-    只有 TiFlash 集群的 Pod 已经被成功删除并且 TiFlash 节点 store 状态变为 Tombstone 后，才能进行下一步操作。
+    只有 TiFlash 集群的所有 Pod 已经被成功删除并且所有 TiFlash 节点 store 状态都变为 Tombstone 后，才能进行下一步操作。
 
-5. 删除 TiFlash statefulSet。
+5. 删除 TiFlash StatefulSet。
 
     使用以下命令修改 TiDB Cluster CR，删除 `spec.tiflash` 字段。
 
@@ -167,7 +167,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-    使用以下命令删除 TiFlash statefulSet：
+    使用以下命令删除 TiFlash StatefulSet：
 
     {{< copyable "shell-regular" >}}
 
