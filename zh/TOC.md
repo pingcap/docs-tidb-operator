@@ -40,6 +40,7 @@
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
   + TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
     - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
@@ -55,6 +56,8 @@
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
       - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
       - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+      - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+      - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
@@ -90,6 +93,7 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + 版本发布历史
   + v1.1
+    - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)
     - [1.1.6](releases/release-1.1.6.md)

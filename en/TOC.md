@@ -40,6 +40,7 @@
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+  - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
   + Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
     - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
@@ -55,6 +56,8 @@
       - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
       - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
       - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
+      - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
+      - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
   - [Maintain a Kubernetes Node](maintain-a-kubernetes-node.md)
   - [View TiDB Logs](view-logs.md)
@@ -90,6 +93,7 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.1
+    - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)
     - [1.1.6](releases/release-1.1.6.md)

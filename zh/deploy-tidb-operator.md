@@ -22,6 +22,12 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。若想创建一个简单集群测试，可以参考[快速上手教程](get-started.md)。
 
+对于部分公有云环境，可以参考如下文档部署 TiDB Operator 及 TiDB 集群：
+
+- [部署到 AWS EKS](deploy-on-aws-eks.md)
+- [部署到 GCP GKE](deploy-on-gcp-gke.md)
+- [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
+
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化存储 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。为提高性能，建议使用本地 SSD 盘作为持久化卷。可以根据[这一步](#配置本地持久化卷)配置本地持久化卷。
 
 Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。
@@ -43,7 +49,7 @@ TiDB Operator 使用 [Custom Resource Definition (CRD)](https://kubernetes.io/do
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.8/manifests/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/crd.yaml
 ```
 
 如果服务器没有外网，需要先用有外网的机器下载 `crd.yaml` 文件，然后再进行安装：
@@ -51,7 +57,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.8/
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.8/manifests/crd.yaml
+wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/crd.yaml
 kubectl apply -f ./crd.yaml
 ```
 
@@ -93,7 +99,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.8`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
+    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.9`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
 
 2. 配置 TiDB Operator
 
@@ -133,15 +139,15 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.1.8.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.1.9.tgz
     ```
 
-    将 `tidb-operator-v1.1.8.tgz` 文件拷贝到服务器上并解压到当前目录：
+    将 `tidb-operator-v1.1.9.tgz` 文件拷贝到服务器上并解压到当前目录：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.1.8.tgz
+    tar zxvf tidb-operator.v1.1.9.tgz
     ```
 
 2. 下载 TiDB Operator 运行所需的 Docker 镜像
@@ -153,8 +159,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.1.8
-    pingcap/tidb-backup-manager:v1.1.8
+    pingcap/tidb-operator:v1.1.9
+    pingcap/tidb-backup-manager:v1.1.9
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -167,13 +173,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.1.8
-    docker pull pingcap/tidb-backup-manager:v1.1.8
+    docker pull pingcap/tidb-operator:v1.1.9
+    docker pull pingcap/tidb-backup-manager:v1.1.9
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.1.8.tar pingcap/tidb-operator:v1.1.8
-    docker save -o tidb-backup-manager-v1.1.8.tar pingcap/tidb-backup-manager:v1.1.8
+    docker save -o tidb-operator-v1.1.9.tar pingcap/tidb-operator:v1.1.9
+    docker save -o tidb-backup-manager-v1.1.9.tar pingcap/tidb-backup-manager:v1.1.9
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -183,8 +189,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.1.8.tar
-    docker load -i tidb-backup-manager-v1.1.8.tar
+    docker load -i tidb-operator-v1.1.9.tar
+    docker load -i tidb-backup-manager-v1.1.9.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
