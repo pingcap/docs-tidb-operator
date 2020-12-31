@@ -159,19 +159,6 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`，建议配置 `spec.pd.moun
 
 默认示例的集群拓扑是：3 个 PD Pod，3 个 TiKV Pod，2 个 TiDB Pod。在该部署拓扑下根据数据高可用原则，TiDB Operator 扩展调度器要求 Kubernetes 集群中至少有 3 个节点。可以修改 `replicas` 配置来更改每个组件的 Pod 数量。
 
-部署 TiDB 的时候，需要同时部署相关 `spec.tidb.service` 服务，便于在 Kubernetes 集群内访问 TiDB。设置 `spec.tidb.service` 之后可以使用 TiDB service `${cluster_name}-tidb.${namespace}` 访问 TiDB。
-
-```yaml
-spec: 
-  tidb:
-    ...
-    service:
-      externalTrafficPolicy: Local
-      type: LoadBalancer
-      mysqlNodePort: 30020
-      statusNodePort: 30040
-```
-
 > **注意：**
 >
 > 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD 和 TiKV Pod 个数都减小到 1 个。
@@ -457,6 +444,68 @@ spec:
 
 获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig)。
 
+## 配置 TiDB 服务
+
+部署 TiDB 的时候，需要同时部署相关 `spec.tidb.service` 服务，便于在 Kubernetes 集群内访问 TiDB。设置 `spec.tidb.service` 之后可以使用 TiDB service `${cluster_name}-tidb.${namespace}` 访问 TiDB。
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: NodePort
+      # externalTrafficPolicy: Cluster
+      # annotations:
+      #   cloud.google.com/load-balancer-type: Internal
+```
+
+### ClusterIP
+
+`ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问。
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: ClusterIP
+```
+
+### NodePort
+在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。 
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: NodePort
+      # externalTrafficPolicy: Cluster
+      # annotations:
+      #   cloud.google.com/load-balancer-type: Internal
+```
+
+NodePort 有两种模式：
+
+- `externalTrafficPolicy=Cluster`：集群所有的机器都会给 TiDB 分配 TCP 端口，此为默认值
+
+    使用 `Cluster` 模式时，可以通过任意一台机器的 IP 加同一个端口访问 TiDB 服务，如果该机器上没有 TiDB Pod，则相应请求会转发到有 TiDB Pod 的机器上。
+
+    > **注意：**
+    >
+    > 该模式下 TiDB 服务获取到的请求源 IP 是主机 IP，并不是真正的客户端源 IP，所以基于客户端源 IP 的访问权限控制在该模式下不可用。
+
+- `externalTrafficPolicy=Local`：只有运行 TiDB 的机器会分配 TCP 端口，用于访问本地的 TiDB 实例
+
+    使用 `Local` 模式时，建议打开 tidb-scheduler 的 `StableScheduling` 特性。tidb-scheduler 会尽可能在升级过程中将新 TiDB 实例调度到原机器，这样集群外的客户端便不需要在 TiDB 重启后更新配置。
+
+
+### LoadBalancer
+
+若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台的 LoadBalancer 特性。
+
+访问 [Kubernetes Service 文档](https://kubernetes.io/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。
+
 ## 高可用配置
 
 > **注意：**
@@ -547,3 +596,56 @@ affinity:
     ```
 
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
+
+## 配置平滑升级
+
+滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
+
+从 v1.1.2 版本开始，TiDB Operator 已经支持平滑升级 TiDB 集群。通过配置下面两个属性来实现平滑升级 TiDB 集群：
+
+- `spec.tidb.terminationGracePeriodSeconds`：滚动更新的时候，删除旧的 TiDB Pod 最多容忍的时间，即过了这个时间，TiDB Pod 会被强制删除；
+- `spec.tidb.lifecycle`：设置 TiDB Pod 的 `preStop` Hook，在 TiDB server 停止之前执行的操作。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.9
+  pvReclaimPolicy: Retain
+  discovery: {}
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: {}
+    terminationGracePeriodSeconds: 60
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /bin/sh
+          - -c
+          - "sleep 10 && kill -QUIT 1"
+```
+
+上述 YAML 文件中：
+
+- 设置了删除 TiDB Pod 的最多容忍时间为 60 秒，如果 60 秒之内客户端仍然没有关闭连接的话，那么这些连接将会强制关闭。这个时间可根据需要进行调整；
+- 设置 `preStop` Hook 为 `sleep 10 && kill -QUIT 1`，这里 Pid 1 为 TiDB Pod 内 TiDB server 进程的 Pid。TiDB server 进程收到这个信号之后，会等待所有连接被客户端关闭之后才会退出。
+
+Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
