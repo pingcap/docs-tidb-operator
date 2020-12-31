@@ -172,7 +172,6 @@ More descriptions of fields in the `Backup` CR:
 - `.spec.from.user`: The accessing user of the TiDB cluster to be backed up.
 - `.spec.from.tidbSecretName`: The secret containing the password of the `.spec.from.user` in the TiDB cluster.
 - `.spec.from.tlsClientSecretName`: The secret of the certificate used during the backup.
-- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. This field can be ignored.
 
     If [TLS](enable-tls-between-components.md) is enabled for the TiDB cluster, but you do not want to back up data using the `${cluster_name}-cluster-client-secret` as described in [Enable TLS between TiDB Components](enable-tls-between-components.md), you can use the `.spec.from.tlsClientSecretName` parameter to specify a secret for the backup. To generate the secret, run the following command:
 
@@ -186,6 +185,7 @@ More descriptions of fields in the `Backup` CR:
     >
     > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
+- `.spec.local.prefix`: This field is used to make up the path of the remote storage: `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`. This field is suggested.
 - `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
     > **Note:**

@@ -172,9 +172,8 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 - `.spec.from.user`：待备份 TiDB 集群的访问用户。
 - `.spec.from.tidbSecretName`：待备份 TiDB 集群 `.spec.from.user` 用户的密码所对应的 secret。
 - `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
-- `.spec.local.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
 
-    如果 TiDB 集群[已开启 TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
+    如果 TiDB 集群[已开启 TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过 `.spec.from.tlsClientSecretName` 参数为备份指定一个 secret。使用如下命令生成 secret：
 
     {{< copyable "shell-regular" >}}
 
@@ -186,6 +185,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     >
     > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
 
+- `.spec.local.prefix`：建议配置这个字段，如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
 - `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
 
     > **注意：**
