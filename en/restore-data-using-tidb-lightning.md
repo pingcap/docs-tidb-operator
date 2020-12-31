@@ -175,6 +175,16 @@ TiDB Lightning Helm chart supports both local and remote data sources.
 
     3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
 
+* Ad hoc mode
+
+    When using remote mode for recovery, if the recovery process is interrupted due to the exception, but you do not want to download backup data from the network storage repeatedly, you can use ad hoc mode to directly recover the data that has been downloaded and decompressed into PV through remote mode. The steps are as follows:
+
+    1. Make sure that both `dataSource.local` and `dataSource.remote` in the `values.yaml` file are empty configurations.
+
+    2. Configure `dataSource.adhoc.pvcName` in the `values.yaml` file to the name of the PVC created when using remote mode.
+
+    3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name corresponding to the original backup data. For example,  `backup-2020-12-17T10:12:51Z` (exclude the `.tgz` suffix of the compressed file name on the network storage).
+
 ### Deploy
 
 The method of deploying TiDB Lightning varies with different methods of granting permissions and with different storages.
