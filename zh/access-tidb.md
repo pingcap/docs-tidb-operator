@@ -43,7 +43,6 @@ spec:
 
 在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。 
 
-
 ```yaml
 spec:
   ...
