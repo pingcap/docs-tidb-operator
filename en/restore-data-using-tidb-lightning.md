@@ -114,11 +114,11 @@ To restore backup data from the remote source, take the following steps:
 
 2. Grant permissions to remote storage access
 
-    Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). Using Ceph or GCS as the storage, only support grant permissions by importing AccessKey and SecretKey.
+    Like restoring data using BR and Dumpling, when using Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). If you use Ceph or GCS as the storage, you can only grant permissions by importing AccessKey and SecretKey.
 
     * Grant permissions by importing AccessKey and SecretKey
 
-        Using Amazon S3, Ceph or GCS as the storage, support grant permissions by importing AccessKey and SecretKey.
+        If you use Amazon S3, Ceph, or GCS as the storage, grant permissions by importing AccessKey and SecretKey.
 
         1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required.
 
@@ -166,9 +166,9 @@ To restore backup data from the remote source, take the following steps:
 
     * Grant permissions by associating IAM with Pod or with ServiceAccount
 
-        Using Amazon S3 as the storage, support grant permissions by associating IAM with Pod or with ServiceAccount, in which `s3.access_key_id` and `s3.secret_access_key` can be ignored. 
+       If you use Amazon S3 as the storage, you can grant permissions by associating IAM with Pod or with ServiceAccount, in which `s3.access_key_id` and `s3.secret_access_key` can be ignored. 
         
-        1. Save following configurations as `secret.yaml`.
+        1. Save the following configurations as `secret.yaml`.
         
             {{< copyable "" >}}
 
@@ -201,13 +201,13 @@ To restore backup data from the remote source, take the following steps:
 
 #### Ad hoc 
 
-When restore data from remote storage, if the restore process is interrupted due to the exception, but you do not want to download backup data from the network storage repeatedly, you can use ad hoc mode to directly recover the data that has been downloaded and decompressed into PV through remote mode. The steps are as follows:
+When restoring data from remote storage, sometimes the restore process is interrupted due to the exception. In such cases, if you do not want to download backup data from the network storage repeatedly, you can use the ad hoc mode to directly recover the data that has been downloaded and decompressed into PV in the remote mode. The steps are as follows:
 
-1. Ensure `dataSource.local` and `dataSource.remote` in config file `values.yaml` are empty。
+1. Ensure `dataSource.local` and `dataSource.remote` in the config file `values.yaml` are empty。
 
-2. Configure `dataSource.adhoc.pvcName` in `values.yaml` to PVC name used in restoring data from remote storage.
+2. Configure `dataSource.adhoc.pvcName` in `values.yaml` to the PVC name used in restoring data from remote storage.
 
-3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name of original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain '. Tgz' suffix of compressed file name on network storage).
+3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name of the original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain the '. tgz' suffix of the compressed file name on network storage).
 
 ### Deploy TiDB Lightning
 
