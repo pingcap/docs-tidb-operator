@@ -359,4 +359,4 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
         
         3. 根据新的 `values.yaml` 创建新的 `Job` 用于继续数据恢复。
         
-4. 故障处理及数据恢复完成后，参考[销毁 TiDB Lightning](#销毁-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
+4. 故障处理及数据恢复完成后，参考[销毁 TiDB Lightning](#销毁-tikv-importer-和-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
