@@ -29,8 +29,7 @@
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   + 部署 TiDB 集群监控
-    - [监控 Kubernetes 和 TiDB 集群](monitor-a-tidb-cluster.md)
-    - [使用 TidbMonitor 监控 TiDB 集群](monitor-using-tidbmonitor.md)
+    - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
 + 安全
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
@@ -53,6 +52,8 @@
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
       - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
       - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+      - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+      - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [查看日志](view-logs.md)
@@ -85,6 +86,7 @@
     - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
     - [tidb-backup chart 配置](configure-backup.md)
   - [日志收集](logs-collection.md)
+  - [Kubernetes 监控与告警](monitor-kubernetes.md)
 + 版本发布历史
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
