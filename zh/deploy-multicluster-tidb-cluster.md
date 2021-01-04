@@ -10,7 +10,7 @@ summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部�
 ## 前置条件
 
 - 各集群上的 POD IP 可以在同一网络/VPC 内被互相访问
-- 集群上 Service 的 FQDN 记录可以在集群间解析和访问
+- 集群上使用了 Cluster Domain 的 FQDN 记录可以在集群间解析和访问
 
 ## 目前支持场景
 
