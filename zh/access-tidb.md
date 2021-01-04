@@ -27,9 +27,35 @@ spec:
 >
 > [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 
+## ClusterIP
+
+`ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 TiDB service 域名 `${cluster_name}-tidb.${namespace}`。
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: ClusterIP
+```
+
 ## NodePort
 
-在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 有两种模式：
+在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。 
+
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: NodePort
+      # externalTrafficPolicy: Cluster
+      # annotations:
+      #   cloud.google.com/load-balancer-type: Internal
+```
+
+NodePort 有两种模式：
 
 - `externalTrafficPolicy=Cluster`：集群所有的机器都会给 TiDB 分配 TCP 端口，此为默认值
 
