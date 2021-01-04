@@ -199,7 +199,7 @@ spec:
   clusterDomain: "${cluster1_domain}"
   discovery: {}
   pd:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/pd
+    baseImage: pingcap/pd
     replicas: 1
     requests:
       storage: "1Gi"
@@ -208,7 +208,7 @@ spec:
         cert-allowed-cn:
           - TiDB
   tikv:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tikv
+    baseImage: pingcap/tikv
     replicas: 1
     requests:
       storage: "1Gi"
@@ -217,7 +217,7 @@ spec:
        cert-allowed-cn:
          - TiDB
   tidb:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb
+    baseImage: pingcap/tidb
     replicas: 1
     service:
       type: ClusterIP
@@ -268,7 +268,7 @@ spec:
     clusterDomain: "${cluster1_clusterdomain}"
   discovery: {}
   pd:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/pd
+    baseImage: pingcap/pd
     replicas: 1
     requests:
       storage: "1Gi"
@@ -277,7 +277,7 @@ spec:
         cert-allowed-cn:
           - TiDB
   tikv:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tikv
+    baseImage: pingcap/tikv
     replicas: 1
     requests:
       storage: "1Gi"
@@ -286,7 +286,7 @@ spec:
        cert-allowed-cn:
          - TiDB
   tidb:
-    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb
+    baseImage: pingcap/tidb
     replicas: 1
     service:
       type: ClusterIP
@@ -303,13 +303,26 @@ EOF
 
 - 缩容后, 集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量, 默认情况下 TiKV 副本数量需要大于3
 
-我们以上面文档创建的 cluster2 集群为例, 先将 PD, TiKV, TiDB 的副本数设置为0
+我们以上面文档创建的 cluster2 集群为例, 先将 PD, TiKV, TiDB 的副本数设置为0, 如果开启了 TiFlash, TiCDC, Pump, Drainer 或其他组件, 也请一并将其副本数设为0
 
 ```bash
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-等待 cluster2 集群状态变为 Ready, 相关组件被缩容到 0 副本时, cluster2 已经退出集群, 此时我们可以删除该对象, 对相关资源进行回收.
+等待 cluster2 集群状态变为 Ready, 相关组件被缩容到 0 副本时, cluster2 已经退出集群, 
+
+```bash
+watch kubectl get tc cluster2
+```
+
+此时我们可以删除该对象, 对相关资源进行回收.
+
+```bash
+kubectl delete tc cluster2
+```
+
+通过上述步骤, 我们完成了已加入集群的退出和资源回收.
+
 ## 已有数据集群开启跨 Kubernetes 集群功能并作为初始集群
 
 *注意: 目前此场景属于实验性支持, 可能会造成数据丢失, 请谨慎使用
@@ -359,7 +372,5 @@ member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local
 curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
 -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
 ```
-
-更新后手动重启各个 PD POD, PD member 信息更新.
 
 更多示例信息以及开发信息, 请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
