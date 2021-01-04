@@ -70,8 +70,19 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 #### 增加额外的命令行参数
 
-1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
-2. 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
+设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
+
+> **注意：**
+>
+> 以下参数已由 TidbMounter 自动设置，不支持通过 `commandOptions` 重复指定：
+>
+> - `web.enable-admin-api`
+> - `web.enable-lifecycle`
+> - `config.file`
+> - `storage.tsdb.path`
+> - `log.level`
+> - `storage.tsdb.max-block-duration`
+> - `storage.tsdb.min-block-duration`
 
 ### 访问 Grafana 监控面板
 
