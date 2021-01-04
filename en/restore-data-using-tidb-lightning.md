@@ -16,7 +16,7 @@ TiDB Lightning supports [three backends](https://docs.pingcap.com/tidb/stable/ti
 - For the `local` or `tidb` backend, only tidb-lightning needs to be deployed.
 - For the `tidb` backend, it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions. For details, refer to [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md) or [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 
-## Deploy tikv-importer
+## Deploy TiKV Importer
 
 > **Note:**
 >
@@ -82,7 +82,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
 
 ## Deploy TiDB Lightning
 
-### Configure
+### Configure TiDB Lightning
 
 Use the following command to get the default configuration of TiDB Lightning:
 
@@ -112,15 +112,15 @@ To restore backup data from the remote source, take the following steps:
 
 1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
 
-2. Grant permissions to the public cloud account
+2. Grant permissions to remote storage access
 
-    Create a `Secret` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). Using Ceph or GCS as the storage, only support grant permissions by importing AccessKey and SecretKey.
+    Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). Using Ceph or GCS as the storage, only support grant permissions by importing AccessKey and SecretKey.
 
     * Grant permissions by importing AccessKey and SecretKey
 
         Using Amazon S3, Ceph or GCS as the storage, support grant permissions by importing AccessKey and SecretKey.
 
-        1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required. For other cloud storages, refer to [rclone documentation](https://rclone.org/). Using Amazon S3 as the storage is the same as restoring data using BR and Dumpling.
+        1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required.
 
             {{< copyable "" >}}
 
@@ -166,9 +166,9 @@ To restore backup data from the remote source, take the following steps:
 
     * Grant permissions by associating IAM with Pod or with ServiceAccount
 
-        Using Amazon S3 as the storage, support grant permissions by associating IAM with Pod or with ServiceAccount.
+        Using Amazon S3 as the storage, support grant permissions by associating IAM with Pod or with ServiceAccount, in which `s3.access_key_id` and `s3.secret_access_key` can be ignored. 
         
-        1. If you grant permissions by associating Amazon S3 IAM with Pod or with ServiceAccount, you can ignore `s3.access_key_id` and `s3.secret_access_key`. Fill in the placeholders with your configurations and save it as `secret.yaml`.
+        1. Save following configurations as `secret.yaml`.
         
             {{< copyable "" >}}
 
@@ -198,6 +198,16 @@ To restore backup data from the remote source, take the following steps:
             ```
 
 3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
+
+#### Ad hoc 
+
+When restore data from remote storage, if the restore process is interrupted due to the exception, but you do not want to download backup data from the network storage repeatedly, you can use ad hoc mode to directly recover the data that has been downloaded and decompressed into PV through remote mode. The steps are as follows:
+
+1. Ensure `dataSource.local` and `dataSource.remote` in config file `values.yaml` are empty。
+
+2. Configure `dataSource.adhoc.pvcName` in `values.yaml` to PVC name used in restoring data from remote storage.
+
+3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name of original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain '. Tgz' suffix of compressed file name on network storage).
 
 ### Deploy TiDB Lightning
 
@@ -276,7 +286,7 @@ If the lightning fails to restore data, follow the steps below to do manual inte
 
 5. Diagnose the lightning following the [troubleshooting guide](https://pingcap.com/docs/stable/troubleshoot-tidb-lightning/).
 
-## Destroy tikv-importer and TiDB Lightning
+## Destroy TiKV Importer and TiDB Lightning
 
 Currently, TiDB Lightning can only restore data offline. When the restoration finishes and the TiDB cluster needs to provide service for applications, the TiDB Lightning should be deleted to save cost.
 

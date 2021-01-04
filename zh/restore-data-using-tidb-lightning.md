@@ -14,7 +14,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 此外，对于 `tidb` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
-## 部署 tikv-importer
+## 部署 TiKV Importer
 
 > **注意：**
 >
@@ -80,7 +80,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
     >
     > tikv-importer 必须与目标 TiDB 集群安装在相同的命名空间中。
 
-## 部署 tidb-lightning
+## 部署 TiDB Lightning
 
 ### 配置 TiDB Lightning
 
@@ -127,15 +127,15 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 1. 确保 `values.yaml` 中的 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
 
-2. 公有云账号授权
+2. 存储访问授权
 
-    新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。使用 Ceph、GCS 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权。
+    和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考[使用 BR 工具备份 AWS 上的 TiDB 集群](backup-to-aws-s3-using-br.md#aws-账号权限授予的三种方式)。在使用不同的权限授予方式时，需要使用不用的配置。使用 Ceph、GCS 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权。
 
     * 通过 AccessKey 和 SecretKey 授权
 
         使用 Amazon S3、Ceph 或 GCS 作为存储后端时支持通过 AccessKey 和 SecretKey 授权。
 
-        1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
+        1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。
 
             {{< copyable "" >}}
 
@@ -179,9 +179,9 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
     * 通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权
 
-        使用 Amazon S3 作为存储后端时支持通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权。
+        使用 Amazon S3 作为存储后端时支持通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权。，此时可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。
 
-        1. 使用 Amazon S3 IAM 绑定 Pod 的授权方式或者 Amazon S3 IAM 绑定 ServiceAccount 授权方式时，可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。使用你的实际配置替换下方配置中的占位符，并将文件存储为 `secret.yaml`。
+        1. 将下面文件存储为 `secret.yaml`。
 
             {{< copyable "" >}}
 
@@ -212,15 +212,15 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 3. 将 `dataSource.remote.storageClassName` 设置为 Kubernetes 集群中现有的一个存储类型。
 
-* Ad hoc 模式
+#### Ad hoc 模式
 
-    当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。步骤如下：
+当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。步骤如下：
 
-    1. 确保 `values.yaml` 中的 `dataSource.local` 和 `dataSource.remote` 均为空配置。
+1. 确保 `values.yaml` 中的 `dataSource.local` 和 `dataSource.remote` 均为空配置。
 
-    2. 配置 `values.yaml` 中的 `dataSource.adhoc.pvcName` 为使用远程模式时创建的 PVC 名称。
+2. 配置 `values.yaml` 中的 `dataSource.adhoc.pvcName` 为使用远程模式时创建的 PVC 名称。
 
-    3. 配置 `values.yaml` 中的 `dataSource.adhoc.backupName` 为原备份数据对应的名称，如 `backup-2020-12-17T10:12:51Z`（不包含在网络存储上压缩文件名的 `.tgz` 后缀）。
+3. 配置 `values.yaml` 中的 `dataSource.adhoc.backupName` 为原备份数据对应的名称，如 `backup-2020-12-17T10:12:51Z` (不包含在网络存储上压缩文件名的 `.tgz` 后缀)。
 
 ### 部署 TiDB Lightning
 
@@ -299,7 +299,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 5. 参考[故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)，对 lightning 进行诊断。
 
-## 销毁 tikv-importer 和 TiDB Lightning
+## 销毁 TiKV Importer 和 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 
