@@ -5,7 +5,7 @@ summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部�
 
 ## 什么是跨 Kubernetes 集群的 TiDB 多集群部署
 
-跨 Kubernetes 集群的 TiDB 多集群部署是指在 VPC 原生 Kubernetes 集群上部署数据联通, 可以在集群间容灾, 扩缩容的 TiDB 多集群. 所谓 VPC 原生 Kubernetes 集群, 指部署的目标 Kubernetes 集群都处于同一网络环境下(如同一 VPC 下), POD IP 在任意集群上和集群间可互相访问, FQDN 记录是集群上和集群间均可被解析的. 满足上述条件的 Kubernetes 集群可以进行 TiDB 多集群部署. 您可以参考 GKE 上关于 [创建 VPC 原生集群](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) 相关章节了解更多细节.
+跨 Kubernetes 集群的 TiDB 多集群部署是指在多个互相联通的 Kubernetes 集群部署数据联通, 可以在集群间容灾, 扩缩容的 TiDB 多集群. 所谓 Kubernetes 集群互相连通, 指部署的目标 Kubernetes 集群都处于同一网络环境下(如同一 VPC 下), POD IP 在任意集群上和集群间可互相访问, FQDN 记录是集群上和集群间均可被解析的. 满足上述条件的 Kubernetes 集群可以进行 TiDB 多集群部署.
 
 ## 前置条件
 
@@ -23,7 +23,7 @@ summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部�
 
 ## 跨 Kubernetes 集群的 TiDB 多集群部署
 
-部署跨 Kubernetes 集群的 TiDB 多集群, 默认您已部署好此场景所需要的 VPC 原生 Kubernetes 集群, 在此基础上进行下面的部署工作. 如果还没有部署好相应的 Kubernetes 集群, 请通过各计算服务提供商的创建 VPC 原生集群的相关文档完成 Kubernetes 部署工作.
+部署跨 Kubernetes 集群的 TiDB 多集群, 默认您已部署好此场景所需要的 Kubernetes 集群, 在此基础上进行下面的部署工作.
 
 下面以部署两个集群为例进行介绍, 其中集群1为初始集群, 按照下面给出的配置进行创建, 先于集群2部署, 集群1正常运行后, 按照下面给出配置创建集群2, 等集群完成创建和部署工作后, 两集群正常运行.
 
@@ -294,5 +294,58 @@ spec:
          - TiDB
 EOF
 ```
+
+## 已加入集群的退出和回收
+## 已有数据集群开启跨 Kubernetes 集群功能并作为初始集群
+
+*注意: 目前此场景属于实验性支持, 可能会造成数据丢失, 请谨慎使用
+
+编辑已有集群的 tidbcluster 对象
+
+```bash
+kubectl edit tidbcluster cluster1
+```
+
+在 spec 字段里添加 clusterDomain 字段, 比如 .spec.clusterDomain: "cluster1.com", 可以参考上面初始集群的 YAML 文件修改此处. 修改完成后, TiDB 集群进入滚动更新状态.
+
+滚动更新结束后, 需要进入 PD 容器, 使用容器内的 /pd-ctl 更新 PD 的 `advertise-url` 信息, 具体操作如下:
+
+使用端口转发一个 PD 实例的端口
+
+```bash
+kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
+```
+
+获取集群信息
+
+> Note:
+>
+> 如果开启了 TLS, 则需要配置安全证书. 例如:
+> 
+> curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members
+>
+> 后面使用 curl 时都需要带上证书相关信息
+
+```bash
+curl http://127.0.0.1:2379/v2/members
+```
+
+执行后输出如下结果
+
+```output
+{"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]}]}
+```
+
+记录 member ID, 使用 member ID 更新 Peer URL
+
+```bash
+member_ID="6ed0312dc663b885"
+member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2380"
+
+curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
+-H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
+```
+
+更新后手动重启各个 PD POD, PD member 信息更新.
 
 更多示例信息以及开发信息, 请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
