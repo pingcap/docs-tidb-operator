@@ -74,7 +74,7 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
 
-如需了解完整的配置示例，可参考[tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
 
 > **注意：**
 >
