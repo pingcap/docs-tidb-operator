@@ -183,7 +183,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
     * 通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权
 
-        使用 Amazon S3 作为存储后端时支持通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权。，此时可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。
+        使用 Amazon S3 作为存储后端时支持通过 IAM 绑定 Pod 授权或者通过 IAM 绑定 ServiceAccount 授权，此时可省略 `s3.access_key_id` 以及 `s3.secret_access_key`。
 
         1. 将下面文件存储为 `secret.yaml`。
 
@@ -359,4 +359,4 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
         
         3. 根据新的 `values.yaml` 创建新的 `Job` 用于继续数据恢复。
         
-4. 故障处理及数据恢复完成后，参考[销毁 TiDB Lightning](#销毁-tikv-importer-和-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
+4. 故障处理及数据恢复完成后，参考[销毁 TiKV Importer 和 TiDB Lightning](#销毁-tikv-importer-和-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
