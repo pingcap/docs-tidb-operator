@@ -444,7 +444,7 @@ spec:
 
 获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig)。
 
-## 配置 TiDB 服务
+### 配置 TiDB 服务
 
 部署 TiDB 的时候，需要同时部署相关 `spec.tidb.service` 服务，便于在 Kubernetes 集群内访问 TiDB。设置 `spec.tidb.service` 之后可以使用 TiDB service `${cluster_name}-tidb.${namespace}` 访问 TiDB。
 
