@@ -80,7 +80,7 @@ kubectl annotate --overwrite tc ${cluster_name} -n ${namespace} tidb.pingcap.com
 
 > **注意：**
 >
-> - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
+> - 在首次启动成功后，PD 部分配置项会持久化到 etcd 中，且后续将以 etcd 中的配置为准。因此在 PD 首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
 > - 通过[在线修改集群配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config)进行修改的配置项可能在滚动升级后被 CR 中的配置项覆盖。
 
 1. 参考[配置 TiDB 集群](configure-a-tidb-cluster.md)修改集群的 TidbCluster CR 中各组件配置。
