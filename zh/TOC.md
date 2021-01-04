@@ -86,11 +86,7 @@
     - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
     - [tidb-backup chart 配置](configure-backup.md)
   - [日志收集](logs-collection.md)
-<<<<<<< HEAD
-=======
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
-+ [TiDB Operator Roadmap](roadmap.md)
->>>>>>> 548cce3... zh: refine docs about TidbMonitorand add contents about Prometheus config (#978)
 + 版本发布历史
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
