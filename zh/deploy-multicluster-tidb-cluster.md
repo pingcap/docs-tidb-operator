@@ -1,11 +1,11 @@
 ---
-title: 跨 Kubernetes 集群的 TiDB 多集群部署
-summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部署
+title: 跨多个 Kubernetes 集群的 TiDB 多集群部署
+summary: 本文档介绍如何实现跨多个 Kubernetes 集群的 TiDB 多集群部署
 ---
 
-## 什么是跨 Kubernetes 集群的 TiDB 多集群部署
+## 什么是跨多个 Kubernetes 集群的 TiDB 多集群部署
 
-跨 Kubernetes 集群的 TiDB 多集群部署是指在多个互相联通的 Kubernetes 集群部署数据联通, 可以在集群间容灾, 扩缩容的 TiDB 多集群. 所谓 Kubernetes 集群互相连通, 在此文档中指部署的目标 Kubernetes 集群都处于同一网络环境下(如同一 VPC 下), POD IP 在任意集群内和集群间可互相访问, FQDN 记录是集群内和集群间均可被解析的. 满足上述条件的 Kubernetes 集群可以进行 TiDB 多集群部署.
+跨多个 Kubernetes 集群的 TiDB 多集群部署是指在多个互相联通的 Kubernetes 集群部署数据联通, 可以在集群间容灾, 扩缩容的 TiDB 多集群. 所谓 Kubernetes 集群互相连通, 在此文档中指部署的目标 Kubernetes 集群都处于同一网络环境下(如同一 VPC 下), POD IP 在任意集群内和集群间可互相访问, FQDN 记录是集群内和集群间均可被解析的. 满足上述条件的 Kubernetes 集群可以进行 TiDB 多集群部署.
 
 ## 前置条件
 
@@ -14,7 +14,7 @@ summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部�
 
 ## 目前支持场景
 
-- 部署新的开启跨 Kubernetes 集群的 TiDB 多集群, 允许在其他 Kubernetes 集群上部署开启此功能的新集群加入同样开启此功能的集群
+- 部署新的开启跨多个 Kubernetes 集群的 TiDB 多集群, 允许在其他 Kubernetes 集群上部署开启此功能的新集群加入同样开启此功能的集群
 ## 实验性支持场景
 
 - 对已有数据的集群从未开启此功能状态变为开启此功能状态, 生产使用建议通过数据迁移完成此需求
@@ -23,9 +23,9 @@ summary: 本文档介绍如何实现跨 Kubernetes 集群的 TiDB 多集群部�
 
 - 两个已有数据集群互相连通, 对于这一场景应通过数据迁移完成
 
-## 跨 Kubernetes 集群的 TiDB 多集群部署
+## 跨多个 Kubernetes 集群的 TiDB 多集群部署
 
-部署跨 Kubernetes 集群的 TiDB 多集群, 默认您已部署好此场景所需要的 Kubernetes 集群, 在此基础上进行下面的部署工作.
+部署跨多个 Kubernetes 集群的 TiDB 多集群, 默认您已部署好此场景所需要的 Kubernetes 集群, 在此基础上进行下面的部署工作.
 
 下面以部署两个集群为例进行介绍, 其中集群1为初始集群, 按照下面给出的配置进行创建, 先于集群2部署, 集群1正常运行后, 按照下面给出配置创建集群2, 等集群完成创建和部署工作后, 两集群正常运行.
 
@@ -134,11 +134,11 @@ spec:
 EOF
 ```
 
-## 开启 TLS 的跨 Kubernetes 集群的 TiDB 多集群部署
+## 开启 TLS 的跨多个 Kubernetes 集群的 TiDB 多集群部署
 
-在部署跨 Kubernetes 集群的 TiDB 多集群过程中, TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
+在部署跨多个 Kubernetes 集群的 TiDB 多集群过程中, TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
 
-在为跨 Kubernetes 集群的 TiDB 多集群开启 TiDB 组件间 TLS 中, 需要注意证书授权对象是否包含了多集群上的各个组件
+在为跨多个 Kubernetes 集群的 TiDB 多集群开启 TiDB 组件间 TLS 中, 需要注意证书授权对象是否包含了多集群上的各个组件
 
 其他 TLS 相关信息，可参考以下文档：
 
@@ -147,7 +147,7 @@ EOF
 
 ### 签发证书
 
-相较于普通场景, 在跨 Kubernetes 集群的 TiDB 多集群场景下, 签发证书的 hosts 中多了`${cluster_name}-pd.${namespace}.svc.${cluster_domain}`此类格式的记录, 例如 PD 的证书
+相较于普通场景, 在跨多个 Kubernetes 集群的 TiDB 多集群场景下, 签发证书的 hosts 中多了`${cluster_name}-pd.${namespace}.svc.${cluster_domain}`此类格式的记录, 例如 PD 的证书
 
 ```json
 "hosts": [
@@ -323,7 +323,7 @@ kubectl delete tc cluster2
 
 通过上述步骤, 我们完成了已加入集群的退出和资源回收.
 
-## 已有数据集群开启跨 Kubernetes 集群功能并作为初始集群
+## 已有数据集群开启跨多个 Kubernetes 集群功能并作为 TiDB 多集群的初始集群
 
 *注意: 目前此场景属于实验性支持, 可能会造成数据丢失, 请谨慎使用
 
