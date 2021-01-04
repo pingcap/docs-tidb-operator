@@ -298,6 +298,18 @@ EOF
 ```
 
 ## 已加入集群的退出和回收
+
+当我们需要让一个集群从所加入跨 Kubernetes 部署的TiDB集群退出并回收空间时, 我们可以通过缩容流程来实现上述需求. 在此场景下, 我们需要满足缩容的一些限制, 限制如下:
+
+- 缩容后, 集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量, 默认情况下 TiKV 副本数量需要大于3
+
+我们以上面文档创建的 cluster2 集群为例, 先将 PD, TiKV, TiDB 的副本数设置为0
+
+```bash
+kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
+```
+
+等待 cluster2 集群状态变为 Ready, 相关组件被缩容到 0 副本时, cluster2 已经退出集群, 此时我们可以删除该对象, 对相关资源进行回收.
 ## 已有数据集群开启跨 Kubernetes 集群功能并作为初始集群
 
 *注意: 目前此场景属于实验性支持, 可能会造成数据丢失, 请谨慎使用
