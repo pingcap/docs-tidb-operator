@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: Kubernetes 与 TiDB 集群的监控与告警
-summary: 介绍如何在 Kubernetes 上部署 TiDB 集群监控。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/monitor-a-tidb-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/monitor-a-tidb-cluster/','/docs-cn/dev/how-to/monitor/tidb-in-kubernetes/']
-=======
 title: TiDB 集群的监控与告警
 summary: 介绍如何监控 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/monitor-a-tidb-cluster/', '/docs-cn/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/', '/zh/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
->>>>>>> 548cce3... zh: refine docs about TidbMonitorand add contents about Prometheus config (#978)
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/monitor-a-tidb-cluster/','/docs-cn/tidb-in-kubernetes/v1.1/monitor-a-tidb-cluster/','/docs-cn/dev/how-to/monitor/tidb-in-kubernetes/','/docs-cn/tidb-in-kubernetes/stable/monitor-using-tidbmonitor/','/docs-cn/tidb-in-kubernetes/v1.1/monitor-using-tidbmonitor/','/zh/tidb-in-kubernetes/v1.1/monitor-using-tidbmonitor/']
 ---
 
 # TiDB 集群的监控与告警
