@@ -63,12 +63,12 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 ### 自定义Prometheus 配置
 
-### 使用自定义配置文件
+#### 使用自定义配置文件
 
 1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
 2. 设置 `spec.prometheus.config.configMapRef.name` 与 `spec.prometheus.config.configMapRef.namespace` 为自定义 ConfigMap 的名称与所属的 namespace。
 
-### 增加额外的命令行参数
+#### 增加额外的命令行参数
 
 1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
 2. 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
