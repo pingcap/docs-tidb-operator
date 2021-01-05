@@ -141,11 +141,6 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
         1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。
 
-<<<<<<< HEAD
-       + 使用 Amazon S3 AccessKey 和 SecretKey 权限授予方式，或者使用 Ceph、GCS 作为存储后端时:
-
-=======
->>>>>>> e2e2aee... en,zh: optimize catalog structure of Restore Data into TiDB in Kubern… (#912)
             {{< copyable "" >}}
 
             ```yaml
