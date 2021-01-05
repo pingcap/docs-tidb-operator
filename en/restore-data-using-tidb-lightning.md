@@ -94,6 +94,7 @@ Use the following command to get the default configuration of TiDB Lightning:
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
+<<<<<<< HEAD
 Configure a `backend` used by TiDB Lightning according to your needs. The options include `importer`, `local`, and `tidb`.
 
 > **Note:**
@@ -104,6 +105,8 @@ Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning c
 
 For version earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
 
+=======
+>>>>>>> f47115e262aa6a1c6f2b8ed7175d401a84a967fe
 If the target TiDB cluster has enabled TLS between components (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiKV Importer, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 
 If the target TiDB cluster has enabled TLS for the MySQL client (`spec.tidb.tlsClient.enabled: true`), configure `tlsClient.enabled: true` in `values.yaml` to enable TiDB Lightning to connect to the TiDB server using TLS.
