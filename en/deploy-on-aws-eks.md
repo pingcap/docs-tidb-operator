@@ -174,6 +174,90 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the fol
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
 ```
+Sample tidb-cluster.yaml which deploys 2 TiDB instances, 3 TiKV instances and 3 PD instances.
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.7
+  timezone: UTC
+  configUpdateStrategy: RollingUpdate
+  pvReclaimPolicy: Retain
+  schedulerName: tidb-scheduler
+  enableDynamicConfiguration: true
+  pd:
+    baseImage: pingcap/pd
+    replicas: 3
+    requests:
+      storage: "10Gi"
+    config:
+      log:
+        level: info
+      replication:
+        location-labels:
+        - zone
+        max-replicas: 3
+    nodeSelector:
+      dedicated: pd
+    tolerations:
+    - effect: NoSchedule
+      key: dedicated
+      operator: Equal
+      value: pd
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 3
+    requests:
+      storage: "100Gi"
+    config: {}
+    nodeSelector:
+      dedicated: tikv
+    tolerations:
+    - effect: NoSchedule
+      key: dedicated
+      operator: Equal
+      value: tikv
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 2
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+        service.beta.kubernetes.io/aws-load-balancer-internal: '0.0.0.0/0'
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb 
+      exposeStatus: true
+      externalTrafficPolicy: Local
+      type: LoadBalancer
+    config:
+      log:
+        level: info
+      performance:
+        max-procs: 0
+        tcp-keep-alive: true
+    annotations:
+      tidb.pingcap.com/sysctl-init: "true"
+    podSecurityContext:
+      sysctls:
+      - name: net.ipv4.tcp_keepalive_time
+        value: "300"
+      - name: net.ipv4.tcp_keepalive_intvl
+        value: "75"
+      - name: net.core.somaxconn
+        value: "32768"
+    separateSlowLog: true
+    nodeSelector:
+      dedicated: tidb
+    tolerations:
+    - effect: NoSchedule
+      key: dedicated
+      operator: Equal
+      value: tidb
+```
+If more customizations are needed, please refer to https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml
+
+Detailed explanations of API for tidb cluster can be found here: https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#tidbcluster
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
 
