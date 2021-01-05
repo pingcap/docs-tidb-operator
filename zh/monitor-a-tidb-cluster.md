@@ -6,6 +6,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/monitor-a-tidb-cluster/', '/docs-cn/t
 
 # TiDB 集群的监控与告警
 
+在 v1.1 及更高版本的 TiDB Operator 中，可以通过简单的 CR 文件（即 TidbMonitor）来快速建立对 Kubernetes 集群上的 TiDB 集群的监控。
+
 本文介绍如何对通过 TiDB Operator 部署的 TiDB 集群进行监控及配置告警。
 
 ## TiDB 集群的监控
