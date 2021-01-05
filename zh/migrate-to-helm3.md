@@ -11,7 +11,7 @@ summary: 介绍如何将由 Helm2 管理的 TiDB Operator 迁移到由 Helm3 管
 
 ## 迁移步骤
 
-假设原来由 Helm2 管理的 TiDB Operator 安装在 `tidb-admin` namespace 下。
+假设原来由 Helm2 管理的 TiDB Operator 安装在 `tidb-admin` namespace 下，名称为 `tidb-operator`。
 
 {{< copyable "shell-regular" >}}
 
