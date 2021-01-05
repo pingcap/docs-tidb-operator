@@ -456,6 +456,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
                   "${cluster_name}-importer",
                   "${cluster_name}-importer.${namespace}",
                   "${cluster_name}-importer.${namespace}.svc"
+                  "${cluster_name}-importer.${namespace}.svc",
+                  "*.${cluster_name}-importer",
+                  "*.${cluster_name}-importer.${namespace}",
+                  "*.${cluster_name}-importer.${namespace}.svc"
                 ],
             ...
             ```
@@ -1162,6 +1166,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           - "${cluster_name}-importer"
           - "${cluster_name}-importer.${namespace}"
           - "${cluster_name}-importer.${namespace}.svc"
+          - "*.${cluster_name}-importer"
+          - "*.${cluster_name}-importer.${namespace}"
+          - "*.${cluster_name}-importer.${namespace}.svc"
           ipAddresses:
           - 127.0.0.1
           - ::1
