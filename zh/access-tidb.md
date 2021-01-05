@@ -4,7 +4,7 @@ summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
 aliases: ['/docs-cn/tidb-in-kubernetes/stable/access-tidb/','/docs-cn/tidb-in-kubernetes/v1.1/access-tidb/','/docs-cn/dev/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/','/docs-cn/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/']
 ---
 
-# 访问 Kubernetes 上的 TiDB 集群
+# 访问 TiDB 集群
 
 Service 可以根据场景配置不同的类型，比如 `ClusterIP`、`NodePort`、`LoadBalancer` 等，对于不同的类型可以有不同的访问方式。
 
@@ -61,6 +61,8 @@ kubectl -n ${namespace} get svc ${cluster_name}-tidb -ojsonpath="{.spec.ports[?(
     ```
 
 ## LoadBalancer
+
+若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台的 LoadBalancer 特性。
 
 参考 [EKS](deploy-on-aws-eks.md#安装-mysql-客户端并连接)、[GKE](deploy-on-gcp-gke.md#安装-mysql-客户端并连接) 和 [ACK](deploy-on-alibaba-cloud.md#连接数据库) 文档，通过 LoadBalancer 访问 TiDB 服务。
 
