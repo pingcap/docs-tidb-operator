@@ -39,7 +39,7 @@ basic-tidb   NodePort   10.233.6.240   <none>        4000:32498/TCP,10080:30171/
 
 ## NodePort
 
-在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。通过请求 <节点 IP>:<NodePort>，可以从集群的外部访问一个 NodePort 服务。 
+在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。通过请求 `NodeIP + NodePort`，可以从集群的外部访问一个 NodePort 服务。
 
 查看 Service 分配的 Node Port，可通过获取 TiDB 的 Service 对象来获知：
 

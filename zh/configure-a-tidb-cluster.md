@@ -446,7 +446,7 @@ spec:
 
 ### 配置 TiDB 平滑升级
 
-滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
+滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
 
 从 v1.1.2 版本开始，TiDB Operator 已经支持平滑升级 TiDB 集群。通过配置下面两个属性来实现平滑升级 TiDB 集群：
 
@@ -503,7 +503,7 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
 
 #### ClusterIP
 
-`ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 TiDB service 域名 `${cluster_name}-tidb.${namespace}`。
+`ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 ClusterIP 或者 Service 域名（`${cluster_name}-tidb.${namespace}`）访问。
 
 ```yaml
 spec:
@@ -515,7 +515,7 @@ spec:
 
 ### NodePort
 
-在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。通过请求 <节点 IP>:<NodePort>，你可以从集群的外部访问一个 NodePort 服务。
+在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。通过请求 `NodeIP + NodePort`，可以从集群的外部访问一个 NodePort 服务。
 
 ```yaml
 spec:
