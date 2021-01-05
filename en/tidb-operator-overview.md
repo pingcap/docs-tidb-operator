@@ -1,7 +1,7 @@
 ---
 title: TiDB Operator Overview
 summary: Learn the overview of TiDB Operator.
-aliases: ['/docs/tidb-in-kubernetes/stable/tidb-operator-overview/','/docs/tidb-in-kubernetes/v1.1/tidb-operator-overview/']
+aliases: ['/docs/tidb-in-kubernetes/stable/tidb-operator-overview/','/docs/tidb-in-kubernetes/v1.1/tidb-operator-overview/','/docs/stable/tidb-in-kubernetes/tidb-operator-overview/']
 ---
 
 # TiDB Operator Overview
