@@ -92,7 +92,7 @@ pd-ctl -u 127.0.0.1:${local_port} -d config show
         kubectl exec ${pod_name} -n ${namespace} -c tikv -- kill -s TERM 1
         ```
 
-    3. Wait for the TiKV container to restart and enter the container:
+    3. Wait for the TiKV container to restart, and enter the container:
 
         {{< copyable "shell-regular" >}}
 
