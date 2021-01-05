@@ -165,19 +165,6 @@ It is recommended that you configure `spec.pd.mountClusterClientSecret: true` an
 
 The deployed cluster topology by default has three PD Pods, three TiKV Pods, and two TiDB Pods. In this deployment topology, the scheduler extender of TiDB Operator requires at least three nodes in the Kubernetes cluster to provide high availability. You can modify the `replicas` configuration to change the number of pods for each component.
 
-It is necessary to config `spec.tidb.service` when deploy the TiDB cluster, so that you can access the TiDB cluster within a Kubernetes cluster. Configuing `spec.tidb.service` then you can access the TiDB cluster using the TiDB service domain name `${cluster_name}-tidb.${namespace}`.
-
-```yaml
-spec:
-  tidb:
-    ...
-    service:
-      externalTrafficPolicy: Local
-      type: LoadBalancer
-      mysqlNodePort: 30020
-      statusNodePort: 30040
-```
-
 > **Note:**
 >
 > If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
