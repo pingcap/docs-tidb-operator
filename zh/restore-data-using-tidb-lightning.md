@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: 使用 TiDB Lightning 恢复 Kubernetes 上的集群数据
-summary: 使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/','/docs-cn/stable/tidb-in-kubernetes/maintain/lightning/']
-=======
 title: 导入集群数据
 summary: 使用 TiDB Lightning 导入集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
->>>>>>> e2e2aee... en,zh: optimize catalog structure of Restore Data into TiDB in Kubern… (#912)
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/','/docs-cn/stable/tidb-in-kubernetes/maintain/lightning/']
 ---
 
 # 导入集群数据
