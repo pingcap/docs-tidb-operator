@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: Restore Data into TiDB in Kubernetes
-summary: Learn how to quickly restore data into a TiDB cluster in Kubernetes with TiDB Lightning.
-aliases: ['/docs/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/']
-=======
 title: Import Data
 summary: Learn how to quickly import data with TiDB Lightning.
-aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
->>>>>>> e2e2aee... en,zh: optimize catalog structure of Restore Data into TiDB in Kubern… (#912)
+aliases: ['/docs/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/']
 ---
 
 # Import Data
