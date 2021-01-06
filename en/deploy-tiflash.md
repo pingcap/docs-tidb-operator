@@ -105,17 +105,17 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-3. To remove TiFlash Pod, run the following command to modify `spec.tiflash.replicas` to `0`:
+3. To remove TiFlash Pod, run the following command to modify the `spec.tiflash.replicas` to `0`:
 
     {{< copyable "shell-regular" >}}
- 
+
     ```shell
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
 4. Check the store state of TiFlash Pod and TiFlash node.
 
-   First run the following command to check whether you delete the TiFlash Pod successfully:
+   First, run the following command to check whether you delete the TiFlash Pod successfully:
 
     {{< copyable "shell-regular" >}}
 
@@ -123,7 +123,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
     ```
 
-   If the output is empty, it means that you delete the Pod of the TiFlash cluster  successfully.
+   If the output is empty, it means that you delete the Pod of the TiFlash cluster successfully.
 
    To check whether the store of the TiFlash node is the `Tombstone` state, run the following command:
 
