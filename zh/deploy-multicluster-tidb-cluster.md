@@ -350,7 +350,7 @@ kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
 >
 > 如果开启了 TLS, 则需要配置安全证书. 例如:
 > 
-> curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members
+> `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 >
 > 后面使用 curl 时都需要带上证书相关信息
 
