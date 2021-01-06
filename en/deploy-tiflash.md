@@ -89,11 +89,11 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
     2. To adjust the number of replicas of the data tables migrated to the TiFlash cluster, run the following command:
 
-    {{< copyable "sql" >}}
+       {{< copyable "sql" >}}
 
-    ```sql
-    alter table <db_name>.<table_name> set tiflash replica 0;
-    ```
+        ```sql
+        alter table <db_name>.<table_name> set tiflash replica 0;
+        ```
 
 2. Wait for the TiFlash replicas of the related tables to be deleted.
 
@@ -161,27 +161,27 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
    To modify TiDB Cluster CR and delete the `spec.tiflash` field, run the following command:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   kubectl edit tidbcluster ${cluster_name} -n ${namespace}
-   ```
+    ```shell
+    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    ```
 
    To delete TiFlash StatefulSet, run the following command:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-   ```
+    ```shell
+    kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+    ```
 
    To check whether you delete the StatefulSet of the TiFlash cluster successfully, run the following command:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-   ```
+    ```shell
+    kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+    ```
 
    If the output is empty, it means that you delete the StatefulSet of the TiFlash cluster successfully.
 
