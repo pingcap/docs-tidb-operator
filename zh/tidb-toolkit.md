@@ -140,13 +140,13 @@ tidb-ctl schema in mysql
 
 参考[官方文档](https://helm.sh/docs/intro/install/)安装 Helm。
 
-如果服务器没有外网，需要先将 Helm 在有外网的机器上下载下来，然后再拷贝到服务器上，这里以安装 Helm `3.4.2` 为例：
+如果服务器没有外网，需要先将 Helm 在有外网的机器上下载下来，然后再拷贝到服务器上，这里以安装 Helm `3.4.1` 为例：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz
-tar zxvf helm-v3.4.2-linux-amd64.tar.gz
+wget https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz
+tar zxvf helm-v3.4.1-linux-amd64.tar.gz
 ```
 
 解压之后，有以下文件：
@@ -172,7 +172,7 @@ helm version
 version.BuildInfo{Version:"v3.4.1", GitCommit:"c4e74854886b2efe3321e185578e6db9be0a6e29", GitTreeState:"clean", GoVersion:"go1.14.11"}
 ```
 
-#### 配置 Helm repo
+### 配置 Helm repo
 
 Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
 
@@ -196,15 +196,18 @@ helm repo add pingcap https://charts.pingcap.org/
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm search repo pingcap -l
+helm search repo pingcap
 ```
 
 ```
-NAME                    CHART VERSION   APP VERSION DESCRIPTION
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 pingcap/tidb-backup     v1.1.7                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-backup     v1.1.6                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-backup     v1.1.5                          A Helm chart for TiDB Backup or Restore
-...
+pingcap/tidb-cluster    v1.1.7                          A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.1.7                          A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  release-1.1                     A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.1.7          v1.1.7          tidb-operator Helm chart for Kubernetes
+pingcap/tikv-importer   v1.1.7                          A Helm chart for TiKV Importer
+pingcap/tikv-operator   v0.1.0          v0.1.0          A Helm chart for Kubernetes
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -215,7 +218,7 @@ pingcap/tidb-backup     v1.1.5                          A Helm chart for TiDB Ba
 helm repo update
 ```
 
-#### Helm 常用操作
+### Helm 常用操作
 
 Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
 
@@ -255,7 +258,7 @@ helm del ${release_name}
 
 更多 helm 的相关文档，请参考 [Helm 官方文档](https://helm.sh/docs/)。
 
-#### 离线情况下使用 Helm chart
+### 离线情况下使用 Helm chart
 
 如果服务器上没有外网，就无法通过配置 Helm repo 来安装 TiDB Operator 组件以及其他应用。这时，需要在有外网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
