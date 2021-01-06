@@ -102,9 +102,9 @@ Configure a `backend` used by TiDB Lightning according to your needs. The option
 
 Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning checkpoint information](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints) in the directory of the source data. When the a new tidb-lightning job is running, it can resume the data import according to the checkpoint information.
 
-For version earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
+For versions earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
 
-If the target TiDB cluster has enabled TLS between components (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiKV Importer, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
+If TLS between components has been enabled on the target TiDB cluster (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiDB Lightning, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 
 If the target TiDB cluster has enabled TLS for the MySQL client (`spec.tidb.tlsClient.enabled: true`), configure `tlsClient.enabled: true` in `values.yaml` to enable TiDB Lightning to connect to the TiDB server using TLS.
 
@@ -321,7 +321,7 @@ When TiDB Lightning fails to restore data, you cannot simply restart it. **Manua
 >
 > If you have not configured to persist the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory, after the restore failure, you need to first delete the part of data already restored to the target cluster. After that, deploy tidb-lightning again and retry the data restore.
 
-If the lightning fails to restore data, and if you have configured to persist the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory, follow the steps below to do manual intervention:
+If TiDB Lightning fails to restore data, and if you have configured to persist the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory, follow the steps below to do manual intervention:
 
 1. View the log by executing the following command:
 
@@ -347,7 +347,7 @@ If the lightning fails to restore data, and if you have configured to persist th
         1. Configure `dataSource` in `values.yaml`. Make sure the new `Job` uses the data source and checkpoint information of the failed `Job`:
 
             - In the local or ad hoc mode, you do not need to modify `dataSource`.
-            - In the remote mode, modify `dataSource` to the ad hoc mode. `dataSource.adhoc.pvcName` is the PVC name created by the original Helm chart. `dataSource.adhoc.backupName` is the backup name of the data to be backed up.
+            - In the remote mode, modify `dataSource` to the ad hoc mode. `dataSource.adhoc.pvcName` is the PVC name created by the original Helm chart. `dataSource.adhoc.backupName` is the backup name of the data to be restored.
 
         2. Modify `failFast` in `values.yaml` to `false`, and create a `Job` used for `tidb-lightning-ctl`.
 
@@ -363,7 +363,7 @@ If the lightning fails to restore data, and if you have configured to persist th
 
         5. Obtain the starting script by running `cat /proc/1/cmdline`.
 
-        6. Get the command line parameters from the starting script. Refer to [TiDB Lightning Troubleshooting](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-lightning) and troubleshoot using `tidb-lightning-ctl`.
+        6. Get the command-line parameters from the starting script. Refer to [TiDB Lightning Troubleshooting](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-lightning) and troubleshoot using `tidb-lightning-ctl`.
 
         7. After the troubleshooting, modify `failFast` in `values.yaml` to `true` and create a new `Job` to resume data restore.
 
@@ -374,8 +374,8 @@ If the lightning fails to restore data, and if you have configured to persist th
         2. Configure `dataSource` in `values.yaml`. Make sure the new `Job` uses the data source and checkpoint information of the failed `Job`:
 
             - In the local or ad hoc mode, you do not need to modify `dataSource`.
-            - In the remote mode, modify `dataSource` to the ad hoc mode. `dataSource.adhoc.pvcName` is the PVC name created by the original Helm chart. `dataSource.adhoc.backupName` is the backup name of the data to be backed up.
+            - In the remote mode, modify `dataSource` to the ad hoc mode. `dataSource.adhoc.pvcName` is the PVC name created by the original Helm chart. `dataSource.adhoc.backupName` is the backup name of the data to be restored.
 
-        3. Create a new `job` using the modified `values.yaml` file and resume data restore.
+        3. Create a new `Job` using the modified `values.yaml` file and resume data restore.
 
 4. After the troubleshooting and data restore is completed, [delete the `Job`s](#destroy-tikv-importer-and-tidb-lightning) for data restore and troubleshooting.
