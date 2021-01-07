@@ -201,13 +201,12 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.1.7                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.1.7                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.1.7                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  release-1.1                     A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.1.7          v1.1.7          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.1.7                          A Helm chart for TiKV Importer
-pingcap/tikv-operator   v0.1.0          v0.1.0          A Helm chart for Kubernetes
+pingcap/tidb-backup     v1.1.9                          A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.1.9                          A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.1.9                          A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  v1.1.9                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.1.9          v1.1.9          tidb-operator Helm chart for Kubernetes
+pingcap/tikv-importer   v1.1.9                          A Helm chart for TiKV Importer
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
