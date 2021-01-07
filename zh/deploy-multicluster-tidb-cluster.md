@@ -50,7 +50,6 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
-  namespace: "${cluster1_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -104,7 +103,6 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
-  namespace: "${cluster2_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -191,7 +189,6 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
-  namespace: "${cluster1_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -258,7 +255,6 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
-  namespace: "${cluster2_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -309,9 +305,9 @@ EOF
 
 当我们需要让一个集群从所加入跨 Kubernetes 部署的TiDB集群退出并回收资源时，我们可以通过缩容流程来实现上述需求。在此场景下，我们需要满足缩容的一些限制，限制如下:
 
-- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于3
+- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于 3
 
-我们以上面文档创建的 cluster2 集群为例，先将 PD，TiKV，TiDB 的副本数设置为0，如果开启了 TiFlash，TiCDC，Pump 等其他组件，也请一并将其副本数设为0
+我们以上面文档创建的 cluster2 集群为例，先将 PD，TiKV，TiDB 的副本数设置为0，如果开启了 TiFlash，TiCDC，Pump 等其他组件，也请一并将其副本数设为 0
 
 ```bash
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
