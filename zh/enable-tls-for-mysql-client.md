@@ -73,6 +73,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-for-mysql-client/','/do
     ``` json
     {
         "CN": "TiDB Server",
+        "CA": {
+            "expiry": "87600h"
+        },
         "key": {
             "algo": "rsa",
             "size": 2048
@@ -222,6 +225,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/enable-tls-for-mysql-client/','/do
       secretName: ${cluster_name}-ca-secret
       commonName: "TiDB CA"
       isCA: true
+      duration: 87600h # 10yrs
+      renewBefore: 720h # 30d
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
