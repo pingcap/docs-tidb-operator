@@ -146,7 +146,7 @@ EOF
 1. 需要为每个 Kubernetes 集群上的组件签发证书，并加载到对应的 Kubernetes 集群中。
 2. 各个 Kubernetes 内 TiDB 组件所使用的证书需要是同一个 CA (Certification Authroity) 签发的。各个组件会通过证书的 CN(Common Name) 来验证证书是否有效。
 3. 如果没有跨多个 Kubernetes 集群的 TLS 证书管理方案，建议使用 `cfssl` 签发证书。这是因为 `cert-manager` 的 `Issuer` 目前没有管理跨多个 Kubernetes 集群的 TLS 证书生命周期管理能力。
-4. 需要在签发组件证书时，在 hosts 中加上带有 `.${cluster_domain}` 格式的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，以 PD 组件证书为例，可以参考下面的 hosts 列表来配置签发各个组件使用的证书：
+4. 需要在签发组件证书时，在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，以 PD 组件证书为例，可以参考下面的 hosts 列表来配置签发各个组件使用的证书：
 
 ```json
 "hosts": [
