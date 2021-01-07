@@ -31,11 +31,11 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 部署跨多个 Kubernetes 集群的 TiDB 集群，默认您已部署好此场景所需要的 Kubernetes 集群，在此基础上进行下面的部署工作。
 
-下面以部署两个集群为例进行介绍，其中集群 1 为初始集群，按照下面给出的配置进行创建，先于集群 2 部署，集群 1 正常运行后，按照下面给出配置创建集群 2 ，等集群完成创建和部署工作后，两集群正常运行。
+下面以部署两个集群为例进行介绍，其中集群 1 为初始集群，按照下面给出的配置进行创建，集群 1 正常运行后，按照下面给出配置创建集群 2，等集群完成创建和部署工作后，两个集群正常运行。
 
 ### 部署初始集群
 
-通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间 
+通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
 
 ```bash
 # 集群 1 的集群名称
@@ -81,7 +81,7 @@ EOF
 
 ### 部署新集群加入初始集群
 
-等待集群 1 完成部署，完成部署后，创建集群 2 ，相关命令如下。在实际使用中，集群 1 并不一定是初始集群，可以指定多集群内的任一集群加入即可。
+等待集群 1 完成部署，完成部署后，创建集群 2，相关命令如下。在实际使用中，集群 1 并不一定是初始集群，可以指定多集群内的任一集群加入即可。
 
 ```bash
 # 集群 1 的集群名称
