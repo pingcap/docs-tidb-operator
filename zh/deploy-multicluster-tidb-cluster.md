@@ -149,7 +149,7 @@ EOF
 
 ### 签发证书
 
-相较于普通场景，在跨多个 Kubernetes 集群的 TiDB 集群场景下，签发证书的 hosts 中多了`${cluster_name}-pd.${namespace}.svc.${cluster_domain}`此类格式的记录，例如 PD 的证书
+相较于普通场景，在跨多个 Kubernetes 集群的 TiDB 集群场景下，签发证书的 hosts 中多了 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}` 此类格式的记录，例如 PD 的证书
 
 ```json
 "hosts": [
@@ -303,24 +303,29 @@ EOF
 
 ## 已加入集群的退出和回收
 
-当我们需要让一个集群从所加入跨 Kubernetes 部署的TiDB集群退出并回收资源时，我们可以通过缩容流程来实现上述需求。在此场景下，我们需要满足缩容的一些限制，限制如下:
+当我们需要让一个集群从所加入跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，我们可以通过缩容流程来实现上述需求。在此场景下，我们需要满足缩容的一些限制，限制如下：
 
-- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于 3
+- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3
 
-我们以上面文档创建的 cluster2 集群为例，先将 PD，TiKV，TiDB 的副本数设置为0，如果开启了 TiFlash，TiCDC，Pump 等其他组件，也请一并将其副本数设为 0
+我们以上面文档创建的集群 2 为例，先将 PD，TiKV，TiDB 的副本数设置为 0 ，如果开启了 TiFlash，TiCDC，Pump 等其他组件，也请一并将其副本数设为 0
 
 ```bash
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-等待 cluster2 集群状态变为 Ready，相关组件被缩容到 0 副本时，cluster2 已经退出集群，
+等待集群 2 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
 
 ```bash
-kubectl get pods
+kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
+```
+
+Pod 列表更显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
+
+```bash
 kubectl get tc cluster2
 ```
 
-此时我们可以删除该对象，对相关资源进行回收。
+结果显示集群 2 为 `Ready` 状态，此时我们可以删除该对象，对相关资源进行回收。
 
 ```bash
 kubectl delete tc cluster2
@@ -334,7 +339,7 @@ kubectl delete tc cluster2
 >
 > 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用
 
-编辑已有集群的 tidbcluster 对象
+编辑已有集群的 `tidbcluster` 对象：
 
 ```bash
 kubectl edit tidbcluster cluster1
@@ -342,19 +347,19 @@ kubectl edit tidbcluster cluster1
 
 在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
 
-滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`，具体操作如下:
+滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`，具体操作如下：
 
-使用端口转发一个 PD 实例的端口
+使用端口转发一个 PD 实例的端口：
 
 ```bash
 kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
 ```
 
-获取集群信息
+获取集群信息：
 
 > **注意：**
 >
-> 如果开启了 TLS，则需要配置安全证书。例如:
+> 如果开启了 TLS，则需要配置安全证书。例如：
 > 
 > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 >
@@ -364,13 +369,13 @@ kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
 curl http://127.0.0.1:2379/v2/members
 ```
 
-执行后输出如下结果
+执行后输出如下结果：
 
 ```output
 {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]}]}
 ```
 
-记录各个 PD 实例的 member ID，使用 member ID 依次更新每个成员的 Peer URL，更新方法如下所示：
+记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`，更新方法如下所示：
 
 ```bash
 member_ID="6ed0312dc663b885"
