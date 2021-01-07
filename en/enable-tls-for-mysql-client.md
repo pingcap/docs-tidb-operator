@@ -383,6 +383,8 @@ You can generate multiple sets of client-side certificates. At least one set of 
     - Backup
     - Restore
 
+    If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
+
     To create certificates for these components, take the following steps:
 
     1. Create a `tidb-components-client-cert.yaml` file with the following content:
@@ -391,18 +393,18 @@ You can generate multiple sets of client-side certificates. At least one set of 
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-tidb-initializer-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-tidb-initializer-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-tidb-initializer-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-tidb-initializer-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "TiDB Initializer client"
-        usages:
+          commonName: "TiDB Initializer client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -410,18 +412,18 @@ You can generate multiple sets of client-side certificates. At least one set of 
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-pd-dashboard-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-pd-dashboard-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-pd-dashboard-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-pd-dashboard-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "PD Dashboard client"
-        usages:
+          commonName: "PD Dashboard client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -429,18 +431,18 @@ You can generate multiple sets of client-side certificates. At least one set of 
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-backup-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-backup-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-backup-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-backup-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "Backup client"
-        usages:
+          commonName: "Backup client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -448,18 +450,18 @@ You can generate multiple sets of client-side certificates. At least one set of 
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-restore-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-restore-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-restore-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-restore-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "Restore client"
-        usages:
+          commonName: "Restore client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -472,7 +474,30 @@ You can generate multiple sets of client-side certificates. At least one set of 
         - `dnsNames` and `ipAddresses` are not required.
         - Add the Issuer created above in the `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
-    
+
+        To generate a client-side certificate for TiDB Lightning, use the following content and set `tlsCluster.tlsClientSecretName` to `${cluster_name}-lightning-client-secret` in TiDB Lightning's `values.yaml` file.
+
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-lightning-client-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-lightning-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
+            - PingCAP
+          commonName: "Lightning client"
+          usages:
+            - client auth
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
+
     2. Create the certificate by running the following command:
 
         {{< copyable "shell-regular" >}}
@@ -480,7 +505,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
         ``` shell
         kubectl apply -f tidb-components-client-cert.yaml
         ```
-    
+
     3. After creating these objects, cert-manager will generate four secret objects for the four components.
 
     > **Note:**
