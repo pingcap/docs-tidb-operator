@@ -63,13 +63,13 @@ spec:
     baseImage: pingcap/pd
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
@@ -87,14 +87,14 @@ EOF
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的cluster domain
+# 集群 1 的Cluster Domain
 cluster1_domain="cluster1.com"
 # 集群 1 的命名空间
 cluster1_namespace="pingcap"
 
 # 集群 2 的集群名称
 cluster2_name="cluster2"
-# 集群 2 的cluster domain
+# 集群 2 的Cluster Domain
 cluster2_domain="cluster2.com"
 # 集群 2 的命名空间
 cluster2_namespace="pingcap"
@@ -121,13 +121,13 @@ spec:
     baseImage: pingcap/pd
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
@@ -138,9 +138,9 @@ spec:
 EOF
 ```
 
-## 开启 TLS 的跨多个 Kubernetes 集群部署 TiDB 集群
+## 跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群
 
-在部署跨多个 Kubernetes 集群的 TiDB 集群过程中，TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
+跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
 
 在为跨多个 Kubernetes 集群的 TiDB 集群开启 TiDB 组件间 TLS 中，需要注意证书授权对象是否包含了多集群上的各个组件
 
@@ -176,12 +176,12 @@ EOF
 
 ### 部署初始集群
 
-通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 cluster domain，`cluster1_namespace` 为集群 1 的命名空间。
+通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。
 
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的cluster domain
+# 集群 1 的Cluster Domain
 cluster1_domain="cluster1.com"
 # 集群 1 的命名空间
 cluster1_namespace="pingcap"
@@ -206,7 +206,7 @@ spec:
     baseImage: pingcap/pd
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: 
       security:
         cert-allowed-cn:
@@ -215,7 +215,7 @@ spec:
     baseImage: pingcap/tikv
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: 
       security:
        cert-allowed-cn:
@@ -241,14 +241,14 @@ EOF
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的cluster domain
+# 集群 1 的Cluster Domain
 cluster1_domain="cluster1.com"
 # 集群 1 的命名空间
 cluster1_namespace="pingcap"
 
 # 集群 2 的集群名称
 cluster2_name="cluster2"
-# 集群 2 的cluster domain
+# 集群 2 的Cluster Domain
 cluster2_domain="cluster2.com"
 # 集群 2 的命名空间
 cluster2_namespace="pingcap"
@@ -277,7 +277,7 @@ spec:
     baseImage: pingcap/pd
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: 
       security:
         cert-allowed-cn:
@@ -286,7 +286,7 @@ spec:
     baseImage: pingcap/tikv
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: 
       security:
        cert-allowed-cn:
@@ -334,7 +334,9 @@ kubectl delete tc cluster2
 
 ## 已有数据集群开启跨多个 Kubernetes 集群功能并作为 TiDB 集群的初始集群
 
-> 注意: 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用
+> **注意：**
+>
+> 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用
 
 编辑已有集群的 tidbcluster 对象
 
@@ -342,7 +344,7 @@ kubectl delete tc cluster2
 kubectl edit tidbcluster cluster1
 ```
 
-在 spec 字段里添加 cluster domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
+在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
 
 滚动更新结束后，需要进入 PD 容器，使用容器内的 /pd-ctl 更新 PD 的 `advertise-url` 信息，具体操作如下:
 
@@ -354,7 +356,7 @@ kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
 
 获取集群信息
 
-> 注意:
+> **注意：**
 >
 > 如果开启了 TLS，则需要配置安全证书。例如:
 > 
