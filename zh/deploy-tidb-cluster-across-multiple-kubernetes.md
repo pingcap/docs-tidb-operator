@@ -139,6 +139,7 @@ EOF
 ## 跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群
 
 您也可以按照如下步骤对跨多个 Kubernetes 集群部署的 TiDB 集群开启 TLS 功能。
+
 ### 签发证书
 
 部署跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，与普通的 TiDB 集群部署过程相比，签发证书过程有以下几点不同：
