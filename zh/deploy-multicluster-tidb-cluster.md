@@ -138,18 +138,15 @@ EOF
 
 ## 跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群
 
-跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
-
-在为跨多个 Kubernetes 集群的 TiDB 集群开启 TiDB 组件间 TLS 中，需要注意证书授权对象是否包含了多集群上的各个组件
-
-其他 TLS 相关信息，可参考以下文档：
-
-- [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-- [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
-
+您也可以按照如下步骤对跨多个 Kubernetes 集群部署的 TiDB 集群开启 TLS 功能。
 ### 签发证书
 
-相较于普通场景，在跨多个 Kubernetes 集群的 TiDB 集群场景下，签发证书的 hosts 中多了 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}` 此类格式的记录，例如 PD 的证书
+部署跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，与普通的 TiDB 集群部署过程相比，签发证书过程有以下几点不同：
+
+1. 需要为每个 Kubernetes 集群上的组件签发证书，并加载到对应的 Kubernetes 集群中。
+2. 各个 Kubernetes 内 TiDB 组件所使用的证书需要是同一个 CA (Certification Authroity) 签发的。各个组件会通过证书的 CN(Common Name) 来验证证书是否有效。
+3. 如果没有跨多个 Kubernetes 集群的 TLS 证书管理方案，建议使用 `cfssl` 签发证书。这是因为 `cert-manager` 的 `Issuer` 目前没有管理跨多个 Kubernetes 集群的 TLS 证书生命周期管理能力。
+4. 需要在签发组件证书时，在 hosts 中加上带有 `.${cluster_domain}` 格式的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，以 PD 组件证书为例，可以参考下面的 hosts 列表来配置签发各个组件使用的证书：
 
 ```json
 "hosts": [
@@ -170,11 +167,14 @@ EOF
 ],
 ```
 
-在签发相关 TLS 证书时，需要注意加上带有 Cluster Domain 的格式 host 记录。
+其他 TLS 相关信息，可参考以下文档：
+
+- [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
+- [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
 ### 部署初始集群
 
-通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。
+通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书
 
 ```bash
 # 集群 1 的集群名称
