@@ -342,7 +342,7 @@ kubectl edit tidbcluster cluster1
 
 在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
 
-滚动更新结束后，需要进入 PD 容器，使用容器内的 /pd-ctl 更新 PD 的 `advertise-url` 信息，具体操作如下:
+滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`，具体操作如下:
 
 使用端口转发一个 PD 实例的端口
 
@@ -370,7 +370,7 @@ curl http://127.0.0.1:2379/v2/members
 {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]}]}
 ```
 
-记录 member ID，使用 member ID 更新 Peer URL
+记录各个 PD 实例的 member ID，使用 member ID 依次更新每个成员的 Peer URL，更新方法如下所示：
 
 ```bash
 member_ID="6ed0312dc663b885"
