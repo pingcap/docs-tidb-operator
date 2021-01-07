@@ -319,7 +319,7 @@ kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{
 kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
 ```
 
-Pod 列表更显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
+Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
 
 ```bash
 kubectl get tc cluster2
