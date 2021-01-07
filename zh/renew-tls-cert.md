@@ -63,7 +63,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
     kubectl create secret generic ${cluster_name}-cluster-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-    其中 ${cluster_name} 为集群的名字，${namespace} 为 TiDB 集群部署的命名空间。
+    其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
 
     > **注意：**
     >
@@ -106,7 +106,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
     kubectl create secret generic ${cluster_name}-cluster-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-    其中 ${cluster_name} 为集群的名字，${namespace} 为 TiDB 集群部署的命名空间。
+    其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
 
     > **注意：**
     >
@@ -131,7 +131,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
     kubectl create secret generic ${cluster_name}-cluster-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.new.pem --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-    其中 ${cluster_name} 为集群的名字，${namespace} 为 TiDB 集群部署的命名空间。
+    其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
 
     > **注意：**
     >
