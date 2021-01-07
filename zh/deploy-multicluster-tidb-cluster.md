@@ -50,7 +50,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
-  namespace: pingcap
+  namespace: "${cluster1_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -104,7 +104,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
-  namespace: pingcap
+  namespace: "${cluster2_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -191,7 +191,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
-  namespace: pingcap
+  namespace: "${cluster1_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
@@ -258,7 +258,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
-  namespace: pingcap
+  namespace: "${cluster2_namespace}"
 spec:
   version: v4.0.9
   timezone: UTC
