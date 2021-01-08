@@ -136,36 +136,189 @@ spec:
 EOF
 ```
 
-## 跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群
+## 跨多个 Kubernetes 集群部署开启组件间 TLS 的 TiDB 集群
 
-您也可以按照如下步骤对跨多个 Kubernetes 集群部署的 TiDB 集群开启 TLS 功能。
+您可以按照以下步骤为跨多个 Kubernetes 集群部署的 TiDB 集群开启组件间 TLS。
 
-### 签发证书
+### 签发根证书
 
-部署跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，与普通的 TiDB 集群部署过程相比，签发证书过程有以下几点不同：
+#### 使用 cfssl 系统签发根证书
 
-1. 需要为每个 Kubernetes 集群上的组件签发证书，并加载到对应的 Kubernetes 集群中。
-2. 各个 Kubernetes 内 TiDB 组件所使用的证书需要是同一个 CA (Certification Authroity) 签发的。各个组件会通过证书的 CN(Common Name) 来验证证书是否有效。
-3. 如果没有跨多个 Kubernetes 集群的 TLS 证书管理方案，建议使用 `cfssl` 签发证书。这是因为 `cert-manager` 的 `Issuer` 目前没有管理跨多个 Kubernetes 集群的 TLS 证书生命周期管理能力。
-4. 需要在签发组件证书时，在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，以 PD 组件证书为例，可以参考下面的 hosts 列表来配置签发各个组件使用的证书：
+如果您使用 `cfssl`，签发 CA 证书的过程与一般签发过程没有差别，您需要保存好第一次创建的 CA 证书，并且在后面为 TiDB 组件签发证书时都使用这个 CA 证书，即在为其他集群创建组件证书时，不需要再次创建 CA 证书。
+
+#### 使用 cert-manager 系统签发根证书
+
+如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 CA 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 TLS 文档中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
+
+1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
+
+  ```bash
+  cluster_name="cluster1"
+  namespace="pingcap"
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: cert-manager.io/v1alpha2
+  kind: Issuer
+  metadata:
+    name: ${cluster_name}-selfsigned-ca-issuer
+    namespace: ${namespace}
+  spec:
+    selfSigned: {}
+  ---
+  apiVersion: cert-manager.io/v1alpha2
+  kind: Certificate
+  metadata:
+    name: ${cluster_name}-ca
+    namespace: ${namespace}
+  spec:
+    secretName: ${cluster_name}-ca-secret
+    commonName: "TiDB"
+    isCA: true
+    duration: 87600h # 10yrs
+    renewBefore: 720h # 30d
+    issuerRef:
+      name: ${cluster_name}-selfsigned-ca-issuer
+      kind: Issuer
+  ---
+  EOF
+  ```
+
+2. 导出 CA
+
+  ```bash
+  # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
+  kubectl get secret cluster1-ca-secret -o yaml > ca.yaml
+  ```
+
+3. 将导出的 CA 导出到其他集群
+
+  ```bash
+  kubectl apply -f ca.yaml
+  ```
+
+4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
+
+  在初始集群上，创建组件间证书签发 `Issuer`
+
+  ```bash
+  cluster_name="cluster1"
+  namespace="pingcap"
+  caSecretName="cluster1-ca-secret"
+
+  cat << EOF | kubectl apply -f -
+  apiVersion: cert-manager.io/v1alpha2
+  kind: Issuer
+  metadata:
+    name: ${cluster_name}-tidb-issuer
+    namespace: ${namespace}
+  spec:
+    ca:
+      secretName: ${caSecretName}
+  EOF
+  ```
+
+  在新集群上，创建组件间证书签发 `Issuer`
+
+  ```bash
+  cluster_name="cluster2"
+  namespace="pingcap"
+  # 注意这里的 CA 证书的名字，指新集群中存放 CA 的 Secret 的名字
+  caSecretName="cluster1-ca-secret"
+
+  cat << EOF | kubectl apply -f -
+  apiVersion: cert-manager.io/v1alpha2
+  kind: Issuer
+  metadata:
+    name: ${cluster_name}-tidb-issuer
+    namespace: ${namespace}
+  spec:
+    ca:
+      secretName: ${caSecretName}
+  EOF
+  ```
+
+### 为各个 Kubernetes 集群的 TiDB 组件签发证书
+
+在签发组件证书时，在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，
+
+如果使用 `cfssl`， 以创建 PD 组件所使用的证书为例，`pd-server.json`文件如下所示：
 
 ```json
-"hosts": [
-    "127.0.0.1",
-    "::1",
-    "${cluster_name}-pd",
-    "${cluster_name}-pd.${namespace}",
-    "${cluster_name}-pd.${namespace}.svc",
-    "${cluster_name}-pd.${namespace}.svc.${cluster_domain}",
-    "${cluster_name}-pd-peer",
-    "${cluster_name}-pd-peer.${namespace}",
-    "${cluster_name}-pd-peer.${namespace}.svc",
-    "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
-    "*.${cluster_name}-pd-peer",
-    "*.${cluster_name}-pd-peer.${namespace}",
-    "*.${cluster_name}-pd-peer.${namespace}.svc",
-    "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
-],
+{
+    "CN": "TiDB",
+    "hosts": [
+      "127.0.0.1",
+      "::1",
+      "${cluster_name}-pd",
+      "${cluster_name}-pd.${namespace}",
+      "${cluster_name}-pd.${namespace}.svc",
+      "${cluster_name}-pd.${namespace}.svc.${cluster_domain}",
+      "${cluster_name}-pd-peer",
+      "${cluster_name}-pd-peer.${namespace}",
+      "${cluster_name}-pd-peer.${namespace}.svc",
+      "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
+      "*.${cluster_name}-pd-peer",
+      "*.${cluster_name}-pd-peer.${namespace}",
+      "*.${cluster_name}-pd-peer.${namespace}.svc",
+      "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+    ],
+    "key": {
+        "algo": "ecdsa",
+        "size": 256
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "CA",
+            "ST": "San Francisco"
+        }
+    ]
+}
+```
+
+如果使用 `cert-manager`, 以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示：
+
+```bash
+cluster_name="cluster2"
+namespace="pingcap"
+cluster_domain="cluster.local"
+cat << EOF | kubectl apply -f -
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ${cluster_name}-pd-cluster-secret
+  namespace: ${namespace}
+spec:
+  secretName: ${cluster_name}-pd-cluster-secret
+  duration: 8760h # 365d
+  renewBefore: 360h # 15d
+  organization:
+  - PingCAP
+  commonName: "TiDB"
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - "${cluster_name}-pd"
+    - "${cluster_name}-pd.${namespace}"
+    - "${cluster_name}-pd.${namespace}.svc"
+    - "${cluster_name}-pd.${namespace}.svc.${cluster_domain}"
+    - "${cluster_name}-pd-peer"
+    - "${cluster_name}-pd-peer.${namespace}"
+    - "${cluster_name}-pd-peer.${namespace}.svc"
+    - "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+    - "*.${cluster_name}-pd-peer"
+    - "*.${cluster_name}-pd-peer.${namespace}"
+    - "*.${cluster_name}-pd-peer.${namespace}.svc"
+    - "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+  ipAddresses:
+  - 127.0.0.1
+  - ::1
+  issuerRef:
+    name: ${cluster_name}-tidb-issuer
+    kind: Issuer
+    group: cert-manager.io
+EOF
 ```
 
 其他 TLS 相关信息，可参考以下文档：
