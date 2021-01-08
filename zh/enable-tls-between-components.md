@@ -82,6 +82,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     cat << EOF > ca-csr.json
     {
         "CN": "TiDB",
+        "CA": {
+            "expiry": "87600h"
+        },
         "key": {
             "algo": "rsa",
             "size": 2048
@@ -654,6 +657,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
       secretName: ${cluster_name}-ca-secret
       commonName: "TiDB"
       isCA: true
+      duration: 87600h # 10yrs
+      renewBefore: 720h # 30d
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
@@ -1370,7 +1375,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
     - 第二种方式：创建 Drainer 的时候不设置 `drainerName`：
@@ -1391,7 +1396,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
 3. 创建 Backup/Restore 资源对象。
