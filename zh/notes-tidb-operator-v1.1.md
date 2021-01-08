@@ -87,8 +87,8 @@ spec
 
 升级到 TiDB Operator v1.1 之后，可以通过 BackupSchedule CR 配置定时全量备份：
 
-- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling 定时全量备份](backup-using-dumpling.md#定时全量备份)
-- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR 定时全量备份](backup-using-br.md#定时全量备份)
+- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling 定时全量备份](backup-restore-with-s3.md#定时全量备份到-s3-兼容存储)
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR 定时全量备份](backup-restore-with-s3.md#使用-br-定时备份数据到-s3-兼容存储)
 
 > **注意：**
 >
@@ -112,8 +112,8 @@ spec
 
 升级到 TiDB Operator v1.1 之后，可以通过 Backup CR 进行备份。Dumpling 方式只支持全量备份，BR 方式支持全量备份与增量备份：
 
-- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling Ad-hoc 全量备份](backup-using-dumpling.md#ad-hoc-全量备份)
-- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR Ad-hoc 备份](backup-using-br.md#ad-hoc-备份)
+- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling Ad-hoc 全量备份](backup-restore-with-s3.md#ad-hoc-全量备份)
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [BR Ad-hoc 备份](backup-restore-with-s3.md#ad-hoc-备份)
 
 > **注意：**
 >
@@ -123,8 +123,8 @@ spec
 
 升级到 TiDB Operator v1.1 之后，可以通过 Restore CR 进行备份恢复：
 
-- 如果 TiDB 集群版本 < v3.1，可以参考 [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-using-lightning.md#使用-tidb-lightning-恢复-s3-兼容存储上的备份数据)。
-- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 工具恢复 S3 兼容存储上的备份数据](restore-using-br.md#恢复-s3-兼容存储上的备份数据)。
+- 如果 TiDB 集群版本 < v3.1，可以参考 [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](backup-restore-with-s3.md#使用-tidb-lightning-恢复兼容-s3-的存储上的备份数据)。
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 恢复 S3 兼容存储上的备份数据](backup-restore-with-s3.md#使用-br-恢复兼容-s3-的存储上的备份数据)。
 
 > **注意：**
 >

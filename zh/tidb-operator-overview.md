@@ -1,7 +1,6 @@
 ---
 title: TiDB Operator 简介
 summary: 介绍 TiDB Operator 的整体架构及使用方式。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/tidb-operator-overview/']
 ---
 
 # TiDB Operator 简介
@@ -45,8 +44,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + [TiDB 集群扩缩容](scale-a-tidb-cluster.md)
 + [TiDB 集群升级](upgrade-a-tidb-cluster.md#升级-tidb-版本)
 + [TiDB 集群配置变更](configure-a-tidb-cluster.md)
-+ [TiDB 集群备份](backup-using-br.md)
-+ [TiDB 集群备份恢复](restore-using-br.md)
++ [TiDB 集群备份与恢复](backup-restore-overview.md)
 + [配置 TiDB 集群故障自动转移](use-auto-failover.md)
 + [监控 TiDB 集群](monitor-a-tidb-cluster.md)
 + [查看 TiDB 日志](view-logs.md)
