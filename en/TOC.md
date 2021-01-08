@@ -86,11 +86,7 @@
     - [Configure tidb-cluster Chart](tidb-cluster-chart-config.md)
     - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
-<<<<<<< HEAD
-=======
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
-+ [TiDB Operator Roadmap](roadmap.md)
->>>>>>> c169148... en: refactor monitoring docs (#1020)
 + Release Notes
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
