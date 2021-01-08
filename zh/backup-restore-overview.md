@@ -1,9 +1,9 @@
 ---
-title: TiDB 集群备份与恢复简介
+title: 备份与恢复简介
 summary: 介绍如何使用 BR、Dumpling、TiDB Lightning 工具对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 ---
 
-# TiDB 集群备份与恢复简介
+# 备份与恢复简介
 
 本文档介绍如何使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)、[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 
@@ -37,6 +37,8 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 dumpling 和 mydumper，BR 更适合大数据量的场景，BR 只支持 TiDB v3.1 及以上版本。
 
 ## Backup CR 字段介绍
+
+### 通用字段介绍
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
@@ -83,25 +85,25 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
 * `.spec.tableFilter`：备份（恢复）时指定让 Dumpling 或者 BR 备份（恢复）符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。
 
-当不配置时，如果使用 Dumpling 备份，或者使用 TiDB Lightning 备份，`tableFilter` 字段的默认值如下：
+    当不配置时，如果使用 Dumpling 备份，或者使用 TiDB Lightning 备份，`tableFilter` 字段的默认值如下：
 
-```bash
-tableFilter:
-- "*.*"
-- "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
-```
+    ```bash
+    tableFilter:
+    - "*.*"
+    - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
+    ```
 
-如果使用 BR 备份，BR 会备份除系统库以外的所有数据库；如果使用 BR 恢复，BR 会恢复备份文件中的所有数据库。
+    如果使用 BR 备份，BR 会备份除系统库以外的所有数据库；如果使用 BR 恢复，BR 会恢复备份文件中的所有数据库。
 
-> **注意：**
->
-> tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
-> 
-> ```
-> tableFilter:
-> - "*.*"
-> - "!db.table"
-> ```
+    > **注意：**
+    >
+    > tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+    > 
+    > ```
+    > tableFilter:
+    > - "*.*"
+    > - "!db.table"
+    > ```
 
 ### BR 字段介绍
 
