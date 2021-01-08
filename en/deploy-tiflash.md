@@ -81,13 +81,13 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
 ## Remove TiFlash
 
-1. Adjust the number of replicas of the data tables migrated to the TiFlash cluster.
+1. Adjust the number of replicas of the tables replicated to the TiFlash cluster.
 
-    To completely remove TiFlash, you need to set the number of replicas of all data tables migrated to TiFlash in the cluster to `0`.
+    To completely remove TiFlash, you need to set the number of replicas of all tables in TiFlash to `0`.
 
     1. To connect to the TiDB service, refer to the steps in [Access the TiDB Cluster in Kubernetes](access-tidb.md).
 
-    2. To adjust the number of replicas of the data tables migrated to the TiFlash cluster, run the following command:
+    2. To adjust the number of replicas of the tables replicated to the TiFlash cluster, run the following command:
 
        {{< copyable "sql" >}}
 
@@ -97,7 +97,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
 2. Wait for the TiFlash replicas of the related tables to be deleted.
 
-   Connect to the TiDB service and run the following command. If you can not find the migration information of the related tables, it means that the replica is deleted:
+   Connect to the TiDB service and run the following command. If you can not find the replication information of the related tables, it means that the replica is deleted:
 
     {{< copyable "sql" >}}
 
@@ -105,7 +105,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-3. To remove TiFlash Pod, run the following command to modify the `spec.tiflash.replicas` to `0`:
+3. To remove TiFlash Pods, run the following command to modify the `spec.tiflash.replicas` to `0`:
 
     {{< copyable "shell-regular" >}}
 
@@ -125,7 +125,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
    If the output is empty, it means that you delete the Pod of the TiFlash cluster successfully.
 
-   To check whether the store of the TiFlash node is the `Tombstone` state, run the following command:
+   To check whether the store of the TiFlash node is in the `Tombstone` state, run the following command:
 
     ```shell
     kubectl get tidbcluster ${cluster_name} -n ${namespace} -o yaml
@@ -157,9 +157,9 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
     Only after you delete all Pods of the TiFlash cluster successfully and the store of all TiFlash nodes has changed to the `Tombstone` state, can you perform the next operation.
 
-5. Delete TiFlash StatefulSet.
+5. Delete the TiFlash StatefulSet.
 
-   To modify TiDB Cluster CR and delete the `spec.tiflash` field, run the following command:
+   To modify the TidbCluster CR and delete the `spec.tiflash` field, run the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -167,7 +167,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-   To delete TiFlash StatefulSet, run the following command:
+   To delete the TiFlash StatefulSet, run the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -197,7 +197,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
       kubectl delete pvc -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
       ```
 
-    2. If the PV retention policy is `Retain`, the corresponding PV is still retained after you delete the PVC object. If you want to delete the PV, you can set the retention policy of the PV to `Delete`, and the PV can be deleted and recycled automatically.
+    2. If the PV reclaim policy is `Retain`, the corresponding PV is still retained after you delete the PVC object. If you want to delete the PV, you can set the reclaim policy of the PV to `Delete`, and the PV can be deleted and recycled automatically.
 
       {{< copyable "shell-regular" >}}
 
@@ -205,7 +205,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
       kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
       ```
 
-      In the above command, `${pv_name}` represents the name of the TiFlash cluster PV, and you can check by running the following command:
+      In the above command, `${pv_name}` represents the PV name of the TiFlash cluster. You can check the PV name by running the following command:
 
       {{< copyable "shell-regular" >}}
 
