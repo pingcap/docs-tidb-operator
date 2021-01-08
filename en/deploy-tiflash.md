@@ -113,7 +113,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-4. Check the store state of TiFlash Pod and TiFlash node.
+4. Check the state of TiFlash Pods and TiFlash node stores.
 
    First, run the following command to check whether you delete the TiFlash Pod successfully:
 
