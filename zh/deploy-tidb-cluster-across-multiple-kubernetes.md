@@ -21,7 +21,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 ## 实验性支持场景
 
-- 对已有数据的集群从未开启此功能状态变为开启此功能状态，生产使用建议通过数据迁移完成此需求
+- 对已有数据的集群从未开启此功能状态变为开启此功能状态，如需在生产环境中使用，建议通过数据迁移完成此需求。
 
 ## 不支持场景
 
@@ -144,8 +144,8 @@ EOF
 
 部署跨多个 Kubernetes 集群部署开启 TLS 的 TiDB 集群，与普通的 TiDB 集群部署过程相比，签发证书过程有以下几点不同：
 
-1. 需要为每个 Kubernetes 集群上的组件签发证书，并加载到对应的 Kubernetes 集群中。
-2. 各个 Kubernetes 内 TiDB 组件所使用的证书需要是同一个 CA (Certification Authroity) 签发的。各个组件会通过证书的 CN(Common Name) 来验证证书是否有效。
+1. 需要为每个 Kubernetes 集群上的组件签发证书，并创建 Secret。
+2. 各个 Kubernetes 内 TiDB 组件所使用的证书需要是同一个 CA (Certification Authroity) 签发的。各个组件会通过证书的 CN (Common Name) 来验证证书是否有效。
 3. 如果没有跨多个 Kubernetes 集群的 TLS 证书管理方案，建议使用 `cfssl` 签发证书。这是因为 `cert-manager` 的 `Issuer` 目前没有管理跨多个 Kubernetes 集群的 TLS 证书生命周期管理能力。
 4. 需要在签发组件证书时，在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，以 PD 组件证书为例，可以参考下面的 hosts 列表来配置签发各个组件使用的证书：
 
@@ -302,13 +302,13 @@ spec:
 EOF
 ```
 
-## 已加入集群的退出和回收
+## 退出和回收已加入集群
 
-当我们需要让一个集群从所加入跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，我们可以通过缩容流程来实现上述需求。在此场景下，我们需要满足缩容的一些限制，限制如下：
+当您需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
 
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3
 
-我们以上面文档创建的集群 2 为例，先将 PD，TiKV，TiDB 的副本数设置为 0 ，如果开启了 TiFlash，TiCDC，Pump 等其他组件，也请一并将其副本数设为 0
+我们以上面文档创建的集群 2 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0。
 
 ```bash
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
@@ -338,7 +338,7 @@ kubectl delete tc cluster2
 
 > **警告：**
 >
-> 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用
+> 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用。
 
 编辑已有集群的 `tidbcluster` 对象：
 
