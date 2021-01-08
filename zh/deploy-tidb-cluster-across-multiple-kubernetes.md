@@ -198,44 +198,44 @@ EOF
 
 4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
 
-  在初始集群上，创建组件间证书签发 `Issuer`
+    1. 在初始集群上，创建组件间证书签发 `Issuer`
 
-  ```bash
-  cluster_name="cluster1"
-  namespace="pingcap"
-  caSecretName="cluster1-ca-secret"
+    ```bash
+    cluster_name="cluster1"
+    namespace="pingcap"
+    caSecretName="cluster1-ca-secret"
 
-  cat << EOF | kubectl apply -f -
-  apiVersion: cert-manager.io/v1alpha2
-  kind: Issuer
-  metadata:
-    name: ${cluster_name}-tidb-issuer
-    namespace: ${namespace}
-  spec:
-    ca:
-      secretName: ${caSecretName}
-  EOF
-  ```
+    cat << EOF | kubectl apply -f -
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Issuer
+    metadata:
+      name: ${cluster_name}-tidb-issuer
+      namespace: ${namespace}
+    spec:
+      ca:
+        secretName: ${caSecretName}
+    EOF
+    ```
 
-  在新集群上，创建组件间证书签发 `Issuer`
+    2. 在新集群上，创建组件间证书签发 `Issuer`
 
-  ```bash
-  cluster_name="cluster2"
-  namespace="pingcap"
-  # 注意这里的 CA 证书的名字，指新集群中存放 CA 的 Secret 的名字
-  caSecretName="cluster1-ca-secret"
+    ```bash
+    cluster_name="cluster2"
+    namespace="pingcap"
+    # 注意这里的 CA 证书的名字，指新集群中存放 CA 的 Secret 的名字
+    caSecretName="cluster1-ca-secret"
 
-  cat << EOF | kubectl apply -f -
-  apiVersion: cert-manager.io/v1alpha2
-  kind: Issuer
-  metadata:
-    name: ${cluster_name}-tidb-issuer
-    namespace: ${namespace}
-  spec:
-    ca:
-      secretName: ${caSecretName}
-  EOF
-  ```
+    cat << EOF | kubectl apply -f -
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Issuer
+    metadata:
+      name: ${cluster_name}-tidb-issuer
+      namespace: ${namespace}
+    spec:
+      ca:
+        secretName: ${caSecretName}
+    EOF
+    ```
 
 ### 为各个 Kubernetes 集群的 TiDB 组件签发证书
 
