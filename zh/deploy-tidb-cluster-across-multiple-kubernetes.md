@@ -239,11 +239,16 @@ EOF
 
 ### 为各个 Kubernetes 集群的 TiDB 组件签发证书
 
-在签发组件证书时，在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`，
+您需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`
 
-如果使用 `cfssl`， 以创建 PD 组件所使用的证书为例，`pd-server.json`文件如下所示：
+如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，`pd-server.json` 文件如下所示。
 
-```json
+```bash
+cluster_name=cluster2
+cluster_domain=cluster.local
+namespace=pingcap
+
+cat << EOF > pd-server.json
 {
     "CN": "TiDB",
     "hosts": [
@@ -274,14 +279,16 @@ EOF
         }
     ]
 }
+EOF
 ```
 
-如果使用 `cert-manager`, 以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示：
+如果使用 `cert-manager`,以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
 
 ```bash
 cluster_name="cluster2"
 namespace="pingcap"
 cluster_domain="cluster.local"
+
 cat << EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
@@ -320,6 +327,8 @@ spec:
     group: cert-manager.io
 EOF
 ```
+
+您需要参考 TLS 相关文档，为组件签发对应的证书，并导入相应 Kubernetes 集群的对应 Secret 中。
 
 其他 TLS 相关信息，可参考以下文档：
 
