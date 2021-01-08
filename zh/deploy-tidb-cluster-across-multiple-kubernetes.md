@@ -282,7 +282,7 @@ cat << EOF > pd-server.json
 EOF
 ```
 
-如果使用 `cert-manager`,以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
+如果使用 `cert-manager`，以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
 
 ```bash
 cluster_name="cluster2"
