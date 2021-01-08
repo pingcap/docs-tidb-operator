@@ -21,7 +21,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-restore-with-s3.md#使用-br-备份-tidb-集群到兼容-s3-的存储)
     - [使用 BR 备份 TiDB 集群到 GCS](backup-restore-with-gcs.md#使用-br-备份-tidb-集群到-gcs)
     - [使用 BR 备份 TiDB 集群到持久卷](backup-restore-with-pv.md#使用-br-备份-tidb-集群到持久卷)
-    - [使用 BR 恢复兼容 S3 的存储上的备份数据](backup-restore-with-s3.md#使用-br-恢复兼容-s3-存储上的备份数据)
+    - [使用 BR 恢复兼容 S3 的存储上的备份数据](backup-restore-with-s3.md#使用-br-恢复兼容-s3-的存储上的备份数据)
     - [使用 BR 恢复 GCS 上的备份数据](backup-restore-with-gcs.md#使用-br-恢复-gcs-上的备份数据)
     - [使用 BR 恢复持久卷上的备份数据](backup-restore-with-pv.md#使用-br-恢复持久卷上的备份数据)
 
