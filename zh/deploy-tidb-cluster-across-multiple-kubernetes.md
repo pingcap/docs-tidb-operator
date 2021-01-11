@@ -183,20 +183,20 @@ EOF
     EOF
     ```
 
-1. 导出 CA
+2. 导出 CA
 
     ```bash
     # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
     kubectl get secret cluster1-ca-secret -o yaml > ca.yaml
     ```
 
-1. 将导出的 CA 导出到其他集群
+3. 将导出的 CA 导出到其他集群
 
     ```bash
     kubectl apply -f ca.yaml
     ```
 
-1. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
+4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
 
     1. 在初始集群上，创建组件间证书签发 `Issuer`
 
