@@ -502,50 +502,50 @@ kubectl delete tc cluster2
 >
 > 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用。
 
-编辑已有集群的 `tidbcluster` 对象：
+1. 编辑已有集群的 `tidbcluster` 对象：
 
-```bash
-kubectl edit tidbcluster cluster1
-```
+  ```bash
+  kubectl edit tidbcluster cluster1
+  ```
 
-在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
+  在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
 
-滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`，具体操作如下：
+  滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`，具体操作如下：
 
-使用端口转发一个 PD 实例的端口：
+  使用端口转发一个 PD 实例的端口：
 
-```bash
-kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
-```
+  ```bash
+  kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
+  ```
 
-获取集群信息：
+2. 获取集群信息：
 
-```bash
-curl http://127.0.0.1:2379/v2/members
-```
+  ```bash
+  curl http://127.0.0.1:2379/v2/members
+  ```
 
-> **注意：**
->
-> 如果开启了 TLS，则需要配置安全证书。例如：
-> 
-> `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
->
-> 后面使用 curl 时都需要带上证书相关信息
+  > **注意：**
+  >
+  > 如果开启了 TLS，则需要配置安全证书。例如：
+  > 
+  > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
+  >
+  > 后面使用 curl 时都需要带上证书相关信息
 
-执行后输出如下结果：
+  执行后输出如下结果：
 
-```output
-{"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]}]}
-```
+  ```output
+  {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster.local:2379"]}]}
+  ```
 
-记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`，更新方法如下所示：
+3. 记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`，更新方法如下所示：
 
-```bash
-member_ID="6ed0312dc663b885"
-member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2380"
+  ```bash
+  member_ID="6ed0312dc663b885"
+  member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster.local:2380"
 
-curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
--H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
-```
+  curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
+  -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
+  ```
 
 更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
