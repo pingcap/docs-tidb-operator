@@ -11,19 +11,19 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
 + 如果 TiDB 集群版本 < v3.1，可以参考以下文档：
 
-    - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-restore-with-s3.md#使用-dumpling-备份-tidb-集群到兼容-s3-的存储)
-    - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-restore-with-gcs.md#使用-dumpling-备份-tidb-集群到-gcs)
-    - [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](backup-restore-with-s3.md#使用-tidb-lightning-恢复兼容-s3-的存储上的备份数据)
-    - [使用 TiDB Lightning 恢复 GCS 上的备份数据](backup-restore-with-gcs.md#使用-tidb-lightning-恢复-gcs-上的备份数据)
+    - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
+    - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
+    - [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)
+    - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
 
 + 如果 TiDB 集群版本 >= v3.1，可以参考以下文档：
 
-    - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-restore-with-s3.md#使用-br-备份-tidb-集群到兼容-s3-的存储)
-    - [使用 BR 备份 TiDB 集群到 GCS](backup-restore-with-gcs.md#使用-br-备份-tidb-集群到-gcs)
-    - [使用 BR 备份 TiDB 集群到持久卷](backup-restore-with-pv.md#使用-br-备份-tidb-集群到持久卷)
-    - [使用 BR 恢复兼容 S3 的存储上的备份数据](backup-restore-with-s3.md#使用-br-恢复兼容-s3-的存储上的备份数据)
-    - [使用 BR 恢复 GCS 上的备份数据](backup-restore-with-gcs.md#使用-br-恢复-gcs-上的备份数据)
-    - [使用 BR 恢复持久卷上的备份数据](backup-restore-with-pv.md#使用-br-恢复持久卷上的备份数据)
+    - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
+    - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
+    - [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
+    - [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
+    - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+    - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
 
 ## 使用场景
 
@@ -57,7 +57,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
     > **注意：**
     >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, 并且使用 BR 备份恢复。BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`。
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, 并且使用 BR 备份恢复，BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`。
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
@@ -70,7 +70,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
 * `.spec.from.user`：待备份 TiDB 集群的访问用户。
-* `.spec.from.secretName`：存储 `.spec.from.user` 用户的密码的 secret。
+* `.spec.from.secretName`：存储 `.spec.from.user` 用户的密码的 Secret。
 * `.spec.from.tlsClientSecretName`：指定备份使用的存储证书的 Secret。
 
     如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 进行备份，可以通过这个参数为备份指定一个 Secret，可以通过如下命令生成：
@@ -81,11 +81,15 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
 
+    > **注意：**
+    >
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, 并且使用 BR 备份， BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`。
+
 * `.spec.storageClassName`：备份时所需的 persistent volume (PV) 类型。
 * `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 Gi。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
-* `.spec.tableFilter`：备份（恢复）时指定让 Dumpling 或者 BR 备份（恢复）符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。
+* `.spec.tableFilter`：备份时指定让 Dumpling 或者 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。
 
-    当不配置时，如果使用 Dumpling 备份，或者使用 TiDB Lightning 备份，`tableFilter` 字段的默认值如下：
+    当不配置时，如果使用 Dumpling 备份，`tableFilter` 字段的默认值如下：
 
     ```bash
     tableFilter:
@@ -93,11 +97,11 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
     ```
 
-    如果使用 BR 备份，BR 会备份除系统库以外的所有数据库；如果使用 BR 恢复，BR 会恢复备份文件中的所有数据库。
+    如果使用 BR 备份，BR 会备份除系统库以外的所有数据库。
 
     > **注意：**
     >
-    > tableFilter 如果要写排除规则导出除 db.table 的所有表 "!db.table" 必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+    > 如果要使用排除规则 `"!db.table"` 导出除 `db.table` 的所有表，那么在 `"!db.table"` 前必须先添加 `*.*` 规则。如下面例子所示：
     > 
     > ```
     > tableFilter:
@@ -115,15 +119,58 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
 * `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
 * `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
-* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限传输给 TiKV 进程。默认为 `true`。
+* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限 或者 GCP 权限传输给 TiKV 进程。默认为 `true`。
 * `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
-* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 GCP 权限传输给 TiKV 进程。默认为 `true`。
+
+### S3 存储字段介绍
+
+* `.spec.s3.provider`：支持的兼容 S3 的 `provider`。
+
+    更多支持的兼容 S3 的 `provider` 如下：
+
+    * `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
+    * `digitalocean`：Digital Ocean Spaces
+    * `dreamhost`：Dreamhost DreamObjects
+    * `ibmcos`：IBM COS S3
+    * `minio`：Minio Object Storage
+    * `netease`：Netease Object Storage (NOS)
+    * `wasabi`：Wasabi Object Storage
+    * `other`：Any other S3 compatible provider
+
+* `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
+* `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
+* `.spec.s3.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
+* `.spec.s3.acl`：支持的 access-control list (ACL) 策略。
+
+    Amazon S3 支持以下几种 access-control list (ACL) 策略：
+
+    * `private`
+    * `public-read`
+    * `public-read-write`
+    * `authenticated-read`
+    * `bucket-owner-read`
+    * `bucket-owner-full-control`
+
+    如果不设置 ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍参考 [AWS 官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
+
+* `.spec.s3.storageClass`：支持的 `storageClass` 类型。
+
+    Amazon S3 支持以下几种 `storageClass` 类型：
+
+    * `STANDARD`
+    * `REDUCED_REDUNDANCY`
+    * `STANDARD_IA`
+    * `ONEZONE_IA`
+    * `GLACIER`
+    * `DEEP_ARCHIVE`
+
+    如果不设置 `storageClass`，则默认使用 `STANDARD_IA`。这几种存储类型的详细介绍参考 [AWS 官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
 
 ### GCS 存储字段介绍
 
 * `.spec.gcs.projectId`：代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
-* `.spec.gcs.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
+* `.spec.gcs.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
 * `spec.gcs.storageClass`：GCS 支持以下几种 `storageClass` 类型：
 
     * `MULTI_REGIONAL`
@@ -133,6 +180,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     * `DURABLE_REDUCED_AVAILABILITY`
 
     如果不设置 `storageClass`，则默认使用 `COLDLINE`。这几种存储类型的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/storage-classes)。
+
 * `spec.gcs.objectAcl`：设置 object access-control list (ACL) 策略。
 
     GCS 支持以下几种 ACL 策略：
@@ -146,23 +194,17 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
     如果不设置 object ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
-### S3 存储字段介绍
+* `spec.gcs.bucketAcl`：设置 bucket access-control list (ACL) 策略。
 
-* `.spec.s3.provider`：支持的兼容 S3 的 `provider`。
-* `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
-* `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
-* `.spec.s3.prefix`：这个字段可以省略，如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
+    GCS 支持以下几种 bucket ACL 策略：
 
-更多支持的兼容 S3 的 `provider` 如下：
+    * `authenticatedRead`
+    * `private`
+    * `projectPrivate`
+    * `publicRead`
+    * `publicReadWrite`
 
-* `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
-* `digitalocean`：Digital Ocean Spaces
-* `dreamhost`：Dreamhost DreamObjects
-* `ibmcos`：IBM COS S3
-* `minio`：Minio Object Storage
-* `netease`：Netease Object Storage (NOS)
-* `wasabi`：Wasabi Object Storage
-* `other`：Any other S3 compatible provider
+    如果不设置 bucket ACL 策略，则默认策略为 `private`。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
 ## Restore CR 字段介绍
 
@@ -171,10 +213,41 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.to.port`：待恢复 TiDB 集群的访问端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
 * `.spec.to.secretName`：存储 `.spec.to.user` 用户的密码的 secret。
+* `.spec.to.tlsClientSecretName`：指定恢复备份使用的存储证书的 Secret。
+
+    如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
+    ```
+
+    > **注意：**
+    >
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.to`。
+
 * `.spec.storageClassName`：指定恢复时所需的 PV 类型。
 * `.spec.storageSize`：指定恢复集群时所需的 PV 大小。该值应大于 TiDB 集群备份的数据大小。
+* `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
+
+    > **注意：**
+    >
+    > 如果要使用排除规则 `"!db.table"` 导出除 `db.table` 的所有表，那么在 `"!db.table"` 前必须先添加 `*.*` 规则。如下面例子所示：
+    >
+    > ```
+    > tableFilter:
+    > - "*.*"
+    > - "!db.table"
+    > ```
+
+* `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
+* `.spec.s3`：S3 兼容存储相关配置，具体介绍参考 [S3 字段介绍](#s3-字段介绍)。
+* `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [gcs 字段介绍](#gcs-字段介绍)。
 
 ## BackupSchedule CR 字段介绍
+
+`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定远程存储相关的配置，该配置与 Ad-hoc 全量备份到远程存储的配置完全一样，具体配置方式可参考 [Ad-hoc 备份](backup-to-aws-s3-using-br.md#ad-hoc-备份)，字段介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。下面介绍 `backupSchedule` 独有的配置项：
 
 + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
@@ -192,7 +265,9 @@ kubectl delete backup ${name} -n ${namespace}
 kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
-如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时删除备份文件。在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。
+如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时删除备份文件。
+
+在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。
 
 如果直接删除存在 Backup/BackupSchedule CR 的 namespace，TiDB Operator 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
 
