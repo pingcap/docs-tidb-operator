@@ -47,7 +47,7 @@
   - [使用 DM 迁移 MySQL 数据到 TiDB 集群](deploy-tidb-dm.md)
   + 备份与恢复
     - [备份与恢复简介](backup-restore-overview.md)
-    - [授权访问远程存储](grant-permissions-to-remote-storage.md)
+    - [远程存储访问授权](grant-permissions-to-remote-storage.md)
     + 使用 S3 兼容存储备份与恢复
       - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
       - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)

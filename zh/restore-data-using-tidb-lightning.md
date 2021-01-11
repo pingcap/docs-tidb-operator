@@ -12,7 +12,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 目前，[TiDB Lightning 支持 `importer`, `local` 及 `tidb` 三种后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `importer` 后端, 需要分别部署 tikv-importer 与 tidb-lightning；对于 `local` 或 `tidb` 后端，则仅需要部署 tidb-lightning。
 
-此外，对于 `tidb` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)。
+此外，对于 `tidb` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
 ## 部署 TiKV Importer
 
@@ -133,7 +133,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 2. 存储访问授权
 
-    和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。在使用不同的权限授予方式时，需要使用不用的配置。使用 Ceph、GCS 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权。
+    和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。在使用不同的权限授予方式时，需要使用不用的配置。使用 Ceph、GCS 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权，可参考 [通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
     * 通过 AccessKey 和 SecretKey 授权
 
