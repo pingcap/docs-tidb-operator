@@ -160,7 +160,7 @@ EOF
 
 #### 使用 cert-manager 系统签发根证书
 
-如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 CA 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 [TLS 文档](enable-tls-between-components#使用-cert-manager-系统颁发证书)中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
+如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 CA 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
 1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
 
