@@ -216,6 +216,6 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
     > **注意：**
     >
     > - 各组件目前[暂不支持 CA 证书的自动重新加载](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components#证书重加载)，需要参考[更新和替换 CA 证书及组件间证书](#更新和替换-ca-证书及组件间证书)进行处理。
-    > - 对于 TiDB server 端证书，可参考以下任意方式进行手动重加载：
+    > - 对于 TiDB Server 端证书，可参考以下任意方式进行手动重加载：
     >     - 参考[重加载证书、密钥和 CA](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#重加载证书密钥和-ca)。
     >     - 参考[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)对 TiDB Server 进行滚动重启。
