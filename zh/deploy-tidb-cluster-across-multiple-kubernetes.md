@@ -160,7 +160,7 @@ EOF
 
 #### 使用 cert-manager 系统签发根证书
 
-如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 CA 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
+如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
 1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
 
@@ -286,6 +286,8 @@ EOF
 
 您需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`
 
+#### 使用 cfssl 系统为 TiDB 组件签发证书
+
 如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，`pd-server.json` 文件如下所示。
 
 根据实际情况设置以下环境变量
@@ -332,6 +334,8 @@ cat << EOF > pd-server.json
 }
 EOF
 ```
+
+#### 使用 cert-manager 系统为 TiDB 组件签发证书
 
 如果使用 `cert-manager`，以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
 
