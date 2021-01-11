@@ -22,7 +22,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 - [使用 `cfssl` 系统颁发证书](#使用-cfssl-系统颁发证书)；
 - [使用 `cert-manager` 系统颁发证书](#使用-cert-manager-系统颁发证书)；
 
-当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-cert.md)。
+当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
 
 ### 第一步：为 DM 集群各个组件生成证书
 
