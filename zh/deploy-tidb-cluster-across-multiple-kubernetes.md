@@ -207,10 +207,12 @@ EOF
     kubectl get secret cluster1-ca-secret -o yaml > ca.yaml
     ```
 
-3. 将导出的 CA 导出到其他集群
+3. 将导出的 CA 导入到其他集群
+
+    您需要配置这里的 `namespace` 使得集群可以访问到 CA 证书
 
     ```bash
-    kubectl apply -f ca.yaml
+    kubectl apply -f ca.yaml -n ${namespace}
     ```
 
 4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
