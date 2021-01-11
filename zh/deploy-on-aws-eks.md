@@ -169,13 +169,23 @@ kubectl create namespace tidb-cluster
 
 ### 部署 TiDB 集群和监控
 
+首先执行以下命令，下载TidbCluster 和 TidbMonitor CR的配置文件。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster &&
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
+```
+如需了解更详细的配置信息，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
+
 执行以下命令，在 EKS 集群中部署 TidbCluster 和 TidbMonitor CR。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
+kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
+kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群及其监控。
