@@ -209,7 +209,7 @@ EOF
 
 3. 将导出的 CA 导入到其他集群
 
-    您需要配置这里的 `namespace` 使得集群可以访问到 CA 证书
+    您需要配置这里的 `namespace` 使得相关组件可以访问到 CA 证书
 
     ```bash
     kubectl apply -f ca.yaml -n ${namespace}
