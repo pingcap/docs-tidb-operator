@@ -204,7 +204,7 @@ EOF
 
     ```bash
     # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
-    kubectl get secret cluster1-ca-secret -o yaml > ca.yaml
+    kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
     ```
 
 3. 将导出的 CA 导入到其他集群
