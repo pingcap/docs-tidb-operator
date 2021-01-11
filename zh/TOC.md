@@ -34,11 +34,7 @@
 + 安全
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-<<<<<<< HEAD
-=======
-  - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
   - [更新和替换 TLS 证书](renew-tls-certificate.md)
->>>>>>> c2ea3ff... zh: add the doc about renewing TLS certs (#1026)
 + 运维
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
