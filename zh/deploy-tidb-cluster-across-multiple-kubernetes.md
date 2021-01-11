@@ -27,7 +27,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 - 两个已有数据集群互相连通，对于这一场景应通过数据迁移完成
 
-## 跨多个 Kubernetes 集群部署 TiDB 集群
+## 跨多个 Kubernetes 集群部署集群
 
 部署跨多个 Kubernetes 集群的 TiDB 集群，默认您已部署好此场景所需要的 Kubernetes 集群，在此基础上进行下面的部署工作。
 
