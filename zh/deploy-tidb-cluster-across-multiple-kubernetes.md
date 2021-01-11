@@ -207,7 +207,7 @@ EOF
     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
     ```
 
-3. 将导出的 CA 导出到其他集群
+3. 将导出的 CA 导入到其他集群
 
     ```bash
     kubectl apply -f ca.yaml
