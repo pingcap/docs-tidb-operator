@@ -98,7 +98,7 @@ Change the related PD configuration to make sure that PD is in a normal state.
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-    After all the Pods are recreated and go to the `Running` state, the configuration is successfully modified.
+    After all the Pods are recreated and are in the `Running` state, the configuration is successfully modified.
 
 ## Upgrade using Helm
 
