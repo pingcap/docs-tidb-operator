@@ -35,7 +35,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 ### 部署初始集群
 
-通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
+根据实际情况设置以下环境变量，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
 
 ```bash
 # 集群 1 的集群名称
@@ -44,7 +44,11 @@ cluster1_name="cluster1"
 cluster1_domain="cluster1.com"
 # 集群 1 的命名空间
 cluster1_namespace="pingcap"
+```
 
+执行以下指令：
+
+```bash
 cat << EOF | kubectl apply -f -n ${cluster1_namespace} - 
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -81,7 +85,9 @@ EOF
 
 ### 部署新集群加入初始集群
 
-等待集群 1 完成部署后，创建集群 2，相关命令如下。在实际使用中，集群 2 可以加入多集群内的任意一个已有集群。
+等待集群 1 完成部署后，创建集群 2。在实际使用中，集群 2 可以加入多集群内的任意一个已有集群。
+
+根据实际情况设置以下环境变量：
 
 ```bash
 # 集群 1 的集群名称
@@ -97,7 +103,11 @@ cluster2_name="cluster2"
 cluster2_domain="cluster2.com"
 # 集群 2 的命名空间
 cluster2_namespace="pingcap"
+```
 
+执行以下指令：
+
+```bash
 cat << EOF | kubectl apply -f -n ${cluster2_namespace} - 
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -152,10 +162,16 @@ EOF
 
 1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
 
+    根据实际情况设置以下环境变量：
+
     ```bash
     cluster_name="cluster1"
     namespace="pingcap"
+    ```
 
+    执行以下指令：
+
+    ```bash
     cat <<EOF | kubectl apply -f -
     apiVersion: cert-manager.io/v1alpha2
     kind: Issuer
@@ -179,7 +195,6 @@ EOF
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
-    ---
     EOF
     ```
 
@@ -200,11 +215,17 @@ EOF
 
     1. 在初始集群上，创建组件间证书签发 `Issuer`
 
+        根据实际情况设置以下环境变量：
+
         ```bash
         cluster_name="cluster1"
         namespace="pingcap"
         caSecretName="cluster1-ca-secret"
+        ```
 
+        执行以下指令：
+
+        ```bash
         cat << EOF | kubectl apply -f -
         apiVersion: cert-manager.io/v1alpha2
         kind: Issuer
@@ -219,12 +240,18 @@ EOF
 
     2. 在新集群上，创建组件间证书签发 `Issuer`
 
+       根据实际情况设置以下环境变量：
+
        ```bash
        cluster_name="cluster2"
        namespace="pingcap"
        # 注意这里的 CA 证书的名字，指新集群中存放 CA 的 Secret 的名字
        caSecretName="cluster1-ca-secret"
+       ```
+       
+       执行以下指令：
 
+       ```bash
        cat << EOF | kubectl apply -f -
        apiVersion: cert-manager.io/v1alpha2
        kind: Issuer
@@ -243,11 +270,17 @@ EOF
 
 如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，`pd-server.json` 文件如下所示。
 
+根据实际情况设置以下环境变量
+
 ```bash
 cluster_name=cluster2
 cluster_domain=cluster.local
 namespace=pingcap
+```
 
+`pd-server.json`可以通过如下指令创建：
+
+```bash
 cat << EOF > pd-server.json
 {
     "CN": "TiDB",
@@ -284,11 +317,17 @@ EOF
 
 如果使用 `cert-manager`，以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
 
+通过以下指令设置环境变量：
+
 ```bash
 cluster_name="cluster2"
 namespace="pingcap"
 cluster_domain="cluster.local"
+```
 
+执行以下指令：
+
+```bash
 cat << EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
@@ -339,6 +378,8 @@ EOF
 
 通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书
 
+根据实际情况设置以下环境变量：
+
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
@@ -346,6 +387,8 @@ cluster1_name="cluster1"
 cluster1_domain="cluster1.com"
 # 集群 1 的命名空间
 cluster1_namespace="pingcap"
+
+执行以下指令：
 
 cat << EOF | kubectl apply -f -n ${cluster1_namespace} - 
 apiVersion: pingcap.com/v1alpha1
@@ -398,6 +441,8 @@ EOF
 
 等待集群 1 完成部署，完成部署后，创建集群 2 ，相关命令如下。在实际使用中，集群 1 并不一定是初始集群，可以指定多集群内的任一集群加入即可。
 
+根据实际情况设置以下环境变量：
+
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
@@ -412,7 +457,11 @@ cluster2_name="cluster2"
 cluster2_domain="cluster2.com"
 # 集群 2 的命名空间
 cluster2_namespace="pingcap"
+```
 
+执行以下指令：
+
+```
 cat << EOF | kubectl apply -f -n ${cluster2_namespace} - 
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
