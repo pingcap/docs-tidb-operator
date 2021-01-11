@@ -200,11 +200,25 @@ EOF
     EOF
     ```
 
-2. 导出 CA
+2. 导出 CA 并删除无关信息
 
     ```bash
     # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
+    ```
+
+    删除 Secret YAML 文件中无关信息，删除后YAML文件如下所示，其中 `data` 内信息已省略：
+
+    ```yaml
+    apiVersion: v1
+    data:
+      ca.crt: LS0...LQo=
+      tls.crt: LS0t....LQo=
+      tls.key: LS0t...tCg==
+    kind: Secret
+    metadata:
+      name: cluster1-ca-secret
+    type: kubernetes.io/tls
     ```
 
 3. 将导出的 CA 导入到其他集群
