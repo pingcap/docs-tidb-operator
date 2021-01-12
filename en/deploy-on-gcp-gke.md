@@ -91,7 +91,7 @@ kubectl create namespace tidb-cluster
 
 ### Deploy
 
-First download the sample `TidbCluster` and `TidbMonitor` configuration files:
+First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 
 {{< copyable "shell-regular" >}}
 
