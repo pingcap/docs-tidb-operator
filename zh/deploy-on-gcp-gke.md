@@ -94,8 +94,8 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-monitor.yaml -n tidb-cluster
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-cluster.yaml &&
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-monitor.yaml
 ```
 如需了解更详细的配置信息，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
 
