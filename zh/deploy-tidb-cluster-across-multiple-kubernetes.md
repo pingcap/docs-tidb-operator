@@ -39,6 +39,8 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 根据实际情况设置以下环境变量，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
@@ -49,6 +51,8 @@ cluster1_namespace="pingcap"
 ```
 
 执行以下指令：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 cat << EOF | kubectl apply -f -n ${cluster1_namespace} - 
@@ -91,6 +95,8 @@ EOF
 
 根据实际情况设置以下环境变量：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
@@ -108,6 +114,8 @@ cluster2_namespace="pingcap"
 ```
 
 执行以下指令：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 cat << EOF | kubectl apply -f -n ${cluster2_namespace} - 
@@ -166,12 +174,16 @@ EOF
 
     根据实际情况设置以下环境变量：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     cluster_name="cluster1"
     namespace="pingcap"
     ```
 
     执行以下指令：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     cat <<EOF | kubectl apply -f -
@@ -202,6 +214,8 @@ EOF
 
 2. 导出 CA 并删除无关信息
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
@@ -225,6 +239,8 @@ EOF
 
     您需要配置这里的 `namespace` 使得相关组件可以访问到 CA 证书
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     kubectl apply -f ca.yaml -n ${namespace}
     ```
@@ -235,6 +251,8 @@ EOF
 
         根据实际情况设置以下环境变量：
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
         cluster_name="cluster1"
         namespace="pingcap"
@@ -242,6 +260,8 @@ EOF
         ```
 
         执行以下指令：
+
+        {{< copyable "shell-regular" >}}
 
         ```bash
         cat << EOF | kubectl apply -f -
@@ -260,6 +280,8 @@ EOF
 
        根据实际情况设置以下环境变量：
 
+       {{< copyable "shell-regular" >}}
+
        ```bash
        cluster_name="cluster2"
        namespace="pingcap"
@@ -268,6 +290,8 @@ EOF
        ```
        
        执行以下指令：
+
+       {{< copyable "shell-regular" >}}
 
        ```bash
        cat << EOF | kubectl apply -f -
@@ -292,6 +316,8 @@ EOF
 
 根据实际情况设置以下环境变量
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 cluster_name=cluster2
 cluster_domain=cluster.local
@@ -299,6 +325,8 @@ namespace=pingcap
 ```
 
 `pd-server.json`可以通过如下指令创建：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 cat << EOF > pd-server.json
@@ -341,6 +369,8 @@ EOF
 
 通过以下指令设置环境变量：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 cluster_name="cluster2"
 namespace="pingcap"
@@ -348,6 +378,8 @@ cluster_domain="cluster.local"
 ```
 
 执行以下指令：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 cat << EOF | kubectl apply -f -
@@ -401,6 +433,8 @@ EOF
 通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书
 
 根据实际情况设置以下环境变量：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 # 集群 1 的集群名称
@@ -465,6 +499,8 @@ EOF
 
 根据实际情况设置以下环境变量：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 # 集群 1 的集群名称
 cluster1_name="cluster1"
@@ -483,7 +519,9 @@ cluster2_namespace="pingcap"
 
 执行以下指令：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 cat << EOF | kubectl apply -f -n ${cluster2_namespace} - 
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -543,11 +581,15 @@ EOF
 
 我们以上面文档创建的集群 2 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
 等待集群 2 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
@@ -555,11 +597,15 @@ kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
 
 Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 kubectl get tc cluster2
 ```
 
 结果显示集群 2 为 `Ready` 状态，此时我们可以删除该对象，对相关资源进行回收。
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 kubectl delete tc cluster2
@@ -575,6 +621,8 @@ kubectl delete tc cluster2
 
 1. 编辑已有集群的 `tidbcluster` 对象：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     kubectl edit tidbcluster cluster1
     ```
@@ -585,11 +633,15 @@ kubectl delete tc cluster2
 
     使用端口转发一个 PD 实例的端口：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
     ```
 
 2. 获取集群信息：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     curl http://127.0.0.1:2379/v2/members
@@ -610,6 +662,8 @@ kubectl delete tc cluster2
     ```
 
 3. 记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`，更新方法如下所示：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     member_ID="6ed0312dc663b885"
