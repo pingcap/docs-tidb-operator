@@ -156,11 +156,11 @@ EOF
 
 #### 使用 cfssl 系统签发根证书
 
-如果您使用 `cfssl`，签发 CA 证书的过程与一般签发过程没有差别，您需要保存好第一次创建的 CA 证书，并且在后面为 TiDB 组件签发证书时都使用这个 CA 证书，即在为其他集群创建组件证书时，不需要再次创建 CA 证书。即您只需要完成一次 [为 TiDB 组件间开启 TLS](enable-tls-between-components.md#使用-cfssl-系统颁发证书) 文档中 1 ~ 4 步操作，完成 CA 证书签发。其他为组件间证书签发操作从第 5 步开始即可。
+如果您使用 `cfssl`，签发 CA 证书的过程与一般签发过程没有差别，您需要保存好第一次创建的 CA 证书，并且在后面为 TiDB 组件签发证书时都使用这个 CA 证书，即在为其他集群创建组件证书时，不需要再次创建 CA 证书。即您只需要完成一次[为 TiDB 组件间开启 TLS](enable-tls-between-components.md#使用-cfssl-系统颁发证书) 文档中 1 ~ 4 步操作，完成 CA 证书签发。其他为组件间证书签发操作从第 5 步开始即可。
 
 #### 使用 cert-manager 系统签发根证书
 
-如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer` （在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 ${cluster_name}-tidb-issuer 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
+如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer`（在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 `${cluster_name}-tidb-issuer` 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
 1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
 
@@ -207,7 +207,7 @@ EOF
     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
     ```
 
-    删除 Secret YAML 文件中无关信息，删除后YAML文件如下所示，其中 `data` 内信息已省略：
+    删除 Secret YAML 文件中无关信息，删除后 YAML 文件如下所示，其中 `data` 内信息已省略：
 
     ```yaml
     apiVersion: v1
