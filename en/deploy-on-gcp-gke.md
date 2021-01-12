@@ -107,7 +107,7 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the GKE cluster, run the fol
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f tidb-cluster.yaml -n tidb-cluster &&
+kubectl create -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl create -f tidb-monitor.yaml -n tidb-cluster
 ```
 
