@@ -11,15 +11,15 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 您需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
-- 各 Kubernetes 集群上的 TiDB 组件有能力访问集群内和集群间所有 TiDB 组件的 Pod IP 
-- 各 Kubernetes 集群上的 TiDB 组件有能力解析集群内和集群间所有 TiDB 组件的 Pod FQDN
+- 各 Kubernetes 集群上的 TiDB 组件有能力访问集群内和集群间所有 TiDB 组件的 Pod IP。
+- 各 Kubernetes 集群上的 TiDB 组件有能力解析集群内和集群间所有 TiDB 组件的 Pod FQDN。
 
 ## 支持场景
 
 目前支持场景：
 
-- 新部署跨多个 Kubernetes 集群的 TiDB 集群
-- 在其他 Kubernetes 集群上部署开启此功能的新集群加入同样开启此功能的集群
+- 新部署跨多个 Kubernetes 集群的 TiDB 集群。
+- 在其他 Kubernetes 集群上部署开启此功能的新集群加入同样开启此功能的集群。
 
 实验性支持场景：
 
@@ -27,7 +27,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 不支持场景：
 
-- 两个已有数据集群互相连通，对于这一场景应通过数据迁移完成
+- 两个已有数据集群互相连通，对于这一场景应通过数据迁移完成。
 
 ## 跨多个 Kubernetes 集群部署集群
 
@@ -37,16 +37,13 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 ### 部署初始集群
 
-根据实际情况设置以下环境变量，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
+根据实际情况设置以下环境变量，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_cluster_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_cluster_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的Cluster Domain
-cluster1_domain="cluster1.com"
-# 集群 1 的命名空间
+cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
 ```
 
@@ -66,7 +63,7 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_domain}"
+  clusterDomain: "${cluster1_cluster_domain}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -93,23 +90,17 @@ EOF
 
 等待集群 1 完成部署后，创建集群 2。在实际使用中，集群 2 可以加入多集群内的任意一个已有集群。
 
-根据实际情况设置以下环境变量：
+您可以参考下面的范例，根据实际情况设置填入集群 1 和集群 2 的 `Name`、`Cluster Domain`、`Namespace` 等相关信息：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的Cluster Domain
-cluster1_domain="cluster1.com"
-# 集群 1 的命名空间
+cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
 
-# 集群 2 的集群名称
 cluster2_name="cluster2"
-# 集群 2 的Cluster Domain
-cluster2_domain="cluster2.com"
-# 集群 2 的命名空间
+cluster2_cluster_domain="cluster2.com"
 cluster2_namespace="pingcap"
 ```
 
@@ -129,7 +120,7 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_domain}"
+  clusterDomain: "${cluster2_cluster_domain}"
   cluster:
     name: "${cluster1_name}"
     namespace: "${cluster1_namespace}"
@@ -170,7 +161,7 @@ EOF
 
 如果您使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer`（在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 `${cluster_name}-tidb-issuer` 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
-1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`
+1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`。
 
     根据实际情况设置以下环境变量：
 
@@ -212,12 +203,13 @@ EOF
     EOF
     ```
 
-2. 导出 CA 并删除无关信息
+2. 导出 CA 并删除无关信息。
+
+    首先需要导出存放 CA 的 `Secret`, `Secret` 的名字可以由第一步 `Certificate` 的 `.spec.secretName` 得到。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    # secret 的名字由第一步 Certificate 的 .spec.secretName 设置
     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
     ```
 
@@ -235,9 +227,9 @@ EOF
     type: kubernetes.io/tls
     ```
 
-3. 将导出的 CA 导入到其他集群
+3. 将导出的 CA 导入到其他集群。
 
-    您需要配置这里的 `namespace` 使得相关组件可以访问到 CA 证书
+    您需要配置这里的 `namespace` 使得相关组件可以访问到 CA 证书：
 
     {{< copyable "shell-regular" >}}
 
@@ -245,9 +237,9 @@ EOF
     kubectl apply -f ca.yaml -n ${namespace}
     ```
 
-4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA
+4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA。
 
-    1. 在初始集群上，创建组件间证书签发 `Issuer`
+    1. 在初始集群上，创建组件间证书签发 `Issuer`。
 
         根据实际情况设置以下环境变量：
 
@@ -256,7 +248,7 @@ EOF
         ```bash
         cluster_name="cluster1"
         namespace="pingcap"
-        caSecretName="cluster1-ca-secret"
+        ca_secret_name="cluster1-ca-secret"
         ```
 
         执行以下指令：
@@ -272,21 +264,20 @@ EOF
           namespace: ${namespace}
         spec:
           ca:
-            secretName: ${caSecretName}
+            secretName: ${ca_secret_name}
         EOF
         ```
 
-    2. 在新集群上，创建组件间证书签发 `Issuer`
+    2. 在新集群上，创建组件间证书签发 `Issuer`。
 
-       根据实际情况设置以下环境变量：
+       根据实际情况设置以下环境变量，其中 `ca_secret_name` 需要指向您刚才导入的存放 `CA` 的 `Secret`，`cluster_name` 和 `namespace` 在下面的操作中需要用到：
 
        {{< copyable "shell-regular" >}}
 
        ```bash
        cluster_name="cluster2"
        namespace="pingcap"
-       # 注意这里的 CA 证书的名字，指新集群中存放 CA 的 Secret 的名字
-       caSecretName="cluster1-ca-secret"
+       ca_secret_name="cluster1-ca-secret"
        ```
        
        执行以下指令：
@@ -302,19 +293,19 @@ EOF
          namespace: ${namespace}
        spec:
          ca:
-           secretName: ${caSecretName}
+           secretName: ${ca_secret_name}
        EOF
        ```
 
 ### 为各个 Kubernetes 集群的 TiDB 组件签发证书
 
-您需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`
+您需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`。
 
 #### 使用 cfssl 系统为 TiDB 组件签发证书
 
 如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，`pd-server.json` 文件如下所示。
 
-根据实际情况设置以下环境变量
+根据实际情况设置以下环境变量：
 
 {{< copyable "shell-regular" >}}
 
@@ -430,18 +421,15 @@ EOF
 
 ### 部署初始集群
 
-通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_domain` 为集群 1 的 Cluster Domain，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书
+通过如下命令部署初始化集群，实际使用中需要根据您的实际情况设置 `cluster1_name` 和 `cluster1_cluster_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_cluster_domain` 为集群 1 的 `Cluster Domain`，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书。
 
 根据实际情况设置以下环境变量：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的Cluster Domain
-cluster1_domain="cluster1.com"
-# 集群 1 的命名空间
+cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
 
 执行以下指令：
@@ -459,7 +447,7 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_domain}"
+  clusterDomain: "${cluster1_cluster_domain}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -502,18 +490,12 @@ EOF
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 集群 1 的集群名称
 cluster1_name="cluster1"
-# 集群 1 的Cluster Domain
-cluster1_domain="cluster1.com"
-# 集群 1 的命名空间
+cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
 
-# 集群 2 的集群名称
 cluster2_name="cluster2"
-# 集群 2 的Cluster Domain
-cluster2_domain="cluster2.com"
-# 集群 2 的命名空间
+cluster2_cluster_domain="cluster2.com"
 cluster2_namespace="pingcap"
 ```
 
@@ -535,7 +517,7 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_domain}"
+  clusterDomain: "${cluster2_cluster_domain}"
   cluster:
     name: "${cluster1_name}"
     namespace: "${cluster1_namespace}"
@@ -577,9 +559,9 @@ EOF
 
 当您需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
 
-- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3
+- 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
-我们以上面文档创建的集群 2 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0。
+我们以上面文档创建的集群 2 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0：
 
 {{< copyable "shell-regular" >}}
 
@@ -653,7 +635,7 @@ kubectl delete tc cluster2
     > 
     > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
     >
-    > 后面使用 curl 时都需要带上证书相关信息
+    > 后面使用 curl 时都需要带上证书相关信息。
 
     执行后输出如下结果：
 
@@ -673,4 +655,4 @@ kubectl delete tc cluster2
     -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
     ```
 
-更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)
+更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。
