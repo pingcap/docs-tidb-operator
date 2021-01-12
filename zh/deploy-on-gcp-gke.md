@@ -89,7 +89,7 @@ kubectl create namespace tidb-cluster
 
 ### 部署 TiDB 集群
 
-首先执行以下命令，下载TidbCluster 和 TidbMonitor CR的配置文件。
+首先执行以下命令，下载 TidbCluster 和 TidbMonitor CR 的配置文件。
 
 {{< copyable "shell-regular" >}}
 
