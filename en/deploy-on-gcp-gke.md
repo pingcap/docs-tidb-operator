@@ -100,7 +100,7 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
 ```
 
-Kindly refer to [*configure-a-tidb-cluster*](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
+Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the GKE cluster, run the following command:
 
