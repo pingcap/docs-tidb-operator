@@ -97,7 +97,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
 2. Wait for the TiFlash replicas of the related tables to be deleted.
 
-   Connect to the TiDB service and run the following command. If you can not find the replication information of the related tables, it means that the replica is deleted:
+    Connect to the TiDB service and run the following command. If you can not find the replication information of the related tables, it means that the replica is deleted:
 
     {{< copyable "sql" >}}
 
@@ -105,7 +105,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
     ```
 
-3. To remove TiFlash Pods, run the following command to modify the `spec.tiflash.replicas` to `0`:
+3. To remove TiFlash Pods, run the following command to modify `spec.tiflash.replicas` to `0`:
 
     {{< copyable "shell-regular" >}}
 
