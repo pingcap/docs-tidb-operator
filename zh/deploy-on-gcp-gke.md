@@ -97,7 +97,7 @@ kubectl create namespace tidb-cluster
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-cluster.yaml &&
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-monitor.yaml
 ```
-如需了解更详细的配置信息，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
+如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
 
 执行以下命令，在 GKE 集群中部署 TidbCluster 和 TidbMonitor CR。
 
