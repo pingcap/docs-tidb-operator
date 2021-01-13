@@ -107,13 +107,8 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the GKE cluster, run the fol
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/gcp/tidb-monitor.yaml -n tidb-cluster
-=======
 kubectl create -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl create -f tidb-monitor.yaml -n tidb-cluster
->>>>>>> 2198bb7... Update deploy-on-gcp-gke.md (#1022)
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
