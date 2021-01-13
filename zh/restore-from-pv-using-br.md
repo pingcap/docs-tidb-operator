@@ -15,7 +15,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
 
 > **注意：**
 >
-> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` Secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
+> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
@@ -25,7 +25,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. 创建 `restore-demo2-tidb-secret` Secret，该 secret 存放用来访问 TiDB 服务的账号的密码：
+2. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 服务的账号的密码：
 
     {{< copyable "shell-regular" >}}
 

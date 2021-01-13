@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 > **注意：**
 >
-> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` Secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
+> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
@@ -72,11 +72,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
+      # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+      # to:
+      #   host: ${tidb_host}
+      #   port: ${tidb_port}
+      #   user: ${tidb_user}
+      #   secretName: restore-demo2-tidb-secret
       gcs:
         projectId: ${project-id}
         secretName: gcs-secret
