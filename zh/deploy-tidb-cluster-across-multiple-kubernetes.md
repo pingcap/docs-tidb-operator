@@ -624,7 +624,7 @@ kubectl delete tc cluster2
     ```
 
     访问 `PD API`，获取 `members` 信息：
-    
+
     {{< copyable "shell-regular" >}}
 
     ```bash
@@ -645,7 +645,7 @@ kubectl delete tc cluster2
     {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]}]}
     ```
 
-3. 记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`：
+    记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`：
 
     {{< copyable "shell-regular" >}}
 
