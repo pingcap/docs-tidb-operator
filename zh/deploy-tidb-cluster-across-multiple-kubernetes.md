@@ -603,19 +603,19 @@ kubectl delete tc cluster2
 
 1. 更新 `.spec.clusterDomain` 配置：
 
-    编辑已有集群的 `tidbcluster` 对象：
+    编辑已有集群的 `tidbcluster` 对象，根据您的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl edit tidbcluster cluster1
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com"}}'
     ```
 
-    在 spec 字段里添加 Cluster Domain 字段，比如 `.spec.clusterDomain: "cluster1.com"`，可以参考上面初始集群的 YAML 文件修改此处。修改完成后，TiDB 集群进入滚动更新状态。
+    修改完成后，TiDB 集群进入滚动更新状态。
 
-2. 更新 PD 的 `advertise-peer-urls` 信息：
+2. 更新 PD 的 `PeerURL` 信息：
 
-    滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `advertise-peer-urls`：
+    滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `PeerURL`：
 
     {{< copyable "shell-regular" >}}
 
@@ -623,7 +623,7 @@ kubectl delete tc cluster2
     kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
     ```
 
-    访问 `PD API`，获取 `members` 信息：
+    访问 `PD API`，获取 `members` 信息，注意使用 `port-forward` 后，终端会被占用，需要在另一个终端执行下列操作：
 
     {{< copyable "shell-regular" >}}
 
