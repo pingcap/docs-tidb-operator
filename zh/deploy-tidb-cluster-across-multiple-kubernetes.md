@@ -603,7 +603,7 @@ kubectl delete tc cluster2
 
 1. 更新 `.spec.clusterDomain` 配置：
 
-    编辑已有集群的 `tidbcluster` 对象，根据您的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
+    根据您的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
     > **警告：**
     > 
@@ -637,11 +637,9 @@ kubectl delete tc cluster2
 
     > **注意：**
     >
-    > 如果开启了 TLS，则需要配置安全证书。例如：
+    > 如果集群开启了 TLS，使用 curl 命令时需要配置证书。例如：
     > 
     > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
-    >
-    > 后面使用 curl 时都需要带上证书相关信息。
 
     执行后输出如下结果：
 
@@ -649,7 +647,7 @@ kubectl delete tc cluster2
     {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]}]}
     ```
 
-    记录各个 PD 实例的 `member ID`，使用 `member ID` 依次更新每个成员的 `Peer URL`：
+    记录各个 PD 实例的 `id`，使用 `id` 依次更新每个成员的 `peerURL`：
 
     {{< copyable "shell-regular" >}}
 
