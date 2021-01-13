@@ -105,13 +105,8 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml -n tidb-cluster &&
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml -n tidb-cluster
-=======
 kubectl create -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl create -f tidb-monitor.yaml -n tidb-cluster
->>>>>>> 4ed3adf... Update deploy-on-gcp-gke.md (#1037)
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
