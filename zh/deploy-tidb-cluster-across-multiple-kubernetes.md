@@ -619,9 +619,9 @@ kubectl delete tc cluster2
 
 2. 更新 PD 的 `PeerURL` 信息：
 
-    滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `PeerURL`。
+    滚动更新结束后，需要使用 `port-forward` 暴露 PD 的 API 接口，使用 PD 的 API 接口更新 PD 的 `PeerURL`。
 
-    1. 使用 `port-forward` 转发 PD API 接口：
+    1. 使用 `port-forward` 暴露 PD 的 API 接口：
 
         {{< copyable "shell-regular" >}}
 
