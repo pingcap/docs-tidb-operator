@@ -38,6 +38,8 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
 ## Backup CR 字段介绍
 
+为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户可以通过创建一个自定义的 `Backup` Custom Resource (CR) 对象来描述一次备份，具体备份过程可参考 [备份与恢复简介](#备份与恢复简介)中列出的文档。以下介绍 Backup CR 各个字段的具体含义。
+
 ### 通用字段介绍
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
@@ -205,6 +207,8 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.local.volumeMount`：持久卷挂载配置。
 
 ## Restore CR 字段介绍
+
+为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` Custom Resource (CR) 对象来描述一次恢复，具体恢复过程可参考 [备份与恢复简介](#备份与恢复简介)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
 
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.to.host`：待恢复 TiDB 集群的访问地址。
