@@ -11,15 +11,11 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
 
 本文使用的恢复方式基于 TiDB Operator 新版（v1.1.8 及以上）的 CustomResourceDefinition (CRD) 实现。
 
-## 数据库账户权限
-
-- `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
+## 环境准备
 
 > **注意：**
 >
-> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
-
-## 环境准备
+> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` Secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
@@ -29,7 +25,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 服务的账号的密码：
+2. 创建 `restore-demo2-tidb-secret` Secret，该 secret 存放用来访问 TiDB 服务的账号的密码：
 
     {{< copyable "shell-regular" >}}
 
@@ -37,11 +33,11 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
     ```
 
-    > **注意：**
-    >
-    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
-
 3. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器。
+
+## 数据库账户权限
+
+- `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 
 ## 恢复过程
 
@@ -72,7 +68,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
         # concurrency: 4
         # rateLimit: 0
         # checksum: true
-      # # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
+      # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
       # to:
       #   host: ${tidb_host}
       #   port: ${tidb_port}
@@ -98,7 +94,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
     kubectl get rt -n test2 -owide
     ```
 
-关于 BR 和持久卷的配置项可以参考 [backup-pv.yaml](backup-to-pv-using-br.md#ad-hoc-备份过程) 中的配置。
+以上示例将存储在 NFS 上指定路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。持久卷存储相关配置参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
 
 以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
 
