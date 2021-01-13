@@ -17,6 +17,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 - 使用 `cfssl` 系统颁发证书；
 - 使用 `cert-manager` 系统颁发证书；
 
+当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+
 ## 第一步：为 TiDB 集群颁发两套证书
 
 ### 使用 `cfssl` 系统颁发证书
@@ -73,6 +75,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     ``` json
     {
         "CN": "TiDB Server",
+        "CA": {
+            "expiry": "87600h"
+        },
         "key": {
             "algo": "rsa",
             "size": 2048
@@ -222,6 +227,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
       secretName: ${cluster_name}-ca-secret
       commonName: "TiDB CA"
       isCA: true
+      duration: 87600h # 10yrs
+      renewBefore: 720h # 30d
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
