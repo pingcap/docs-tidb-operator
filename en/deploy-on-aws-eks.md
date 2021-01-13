@@ -184,13 +184,8 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the fol
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.6/examples/aws/tidb-monitor.yaml -n tidb-cluster
-=======
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
->>>>>>> 21375ff... Update deploy-on-aws-eks.md (#1021)
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
