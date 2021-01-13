@@ -185,13 +185,8 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml -n tidb-cluster && \
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml -n tidb-cluster
-=======
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
->>>>>>> 2fdcd85... Update deploy-on-aws-eks.md (#1038)
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群及其监控。
