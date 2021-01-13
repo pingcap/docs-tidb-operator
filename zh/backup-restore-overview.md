@@ -248,6 +248,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
 * `.spec.s3`：S3 兼容存储相关配置，具体介绍参考 [S3 字段介绍](#s3-存储字段介绍)。
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
+* `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
 
 ## BackupSchedule CR 字段介绍
 
