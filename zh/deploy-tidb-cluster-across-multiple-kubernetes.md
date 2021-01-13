@@ -605,6 +605,10 @@ kubectl delete tc cluster2
 
     编辑已有集群的 `tidbcluster` 对象，根据您的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
+    > **警告：**
+    > 
+    > 目前需要您使用正确的信息配置 `clusterDomain`，配置修改后无法再次修改。
+
     {{< copyable "shell-regular" >}}
 
     ```bash
