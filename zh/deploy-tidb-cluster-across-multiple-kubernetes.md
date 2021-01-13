@@ -619,44 +619,46 @@ kubectl delete tc cluster2
 
 2. 更新 PD 的 `PeerURL` 信息：
 
-    滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `PeerURL`：
+    滚动更新结束后，需要使用 `port-forward` 访问 PD 的 API 接口，更新 PD 的 `PeerURL`。
 
-    {{< copyable "shell-regular" >}}
+    1. 使用 `port-forward` 转发 PD API 接口：
 
-    ```bash
-    kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
-    ```
+        {{< copyable "shell-regular" >}}
 
-    访问 `PD API`，获取 `members` 信息，注意使用 `port-forward` 后，终端会被占用，需要在另一个终端执行下列操作：
+        ```bash
+        kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
+        ```
 
-    {{< copyable "shell-regular" >}}
+    2. 访问 `PD API`，获取 `members` 信息，注意使用 `port-forward` 后，终端会被占用，需要在另一个终端执行下列操作：
 
-    ```bash
-    curl http://127.0.0.1:2379/v2/members
-    ```
+        {{< copyable "shell-regular" >}}
 
-    > **注意：**
-    >
-    > 如果集群开启了 TLS，使用 curl 命令时需要配置证书。例如：
-    > 
-    > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
+        ```bash
+        curl http://127.0.0.1:2379/v2/members
+        ```
 
-    执行后输出如下结果：
+        > **注意：**
+        >
+        > 如果集群开启了 TLS，使用 curl 命令时需要配置证书。例如：
+        > 
+        > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 
-    ```output
-    {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]}]}
-    ```
+        执行后输出如下结果：
 
-    记录各个 PD 实例的 `id`，使用 `id` 依次更新每个成员的 `peerURL`：
+        ```output
+        {"members":[{"id":"6ed0312dc663b885","name":"cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"bd9acd3d57e24a32","name":"cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-1.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]},{"id":"e04e42cccef60246","name":"cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com","peerURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc:2380"],"clientURLs":["http://cluster1-pd-2.cluster1-pd-peer.pingcap.svc.cluster1.com:2379"]}]}
+        ```
 
-    {{< copyable "shell-regular" >}}
+    3. 记录各个 PD 实例的 `id`，使用 `id` 依次更新每个成员的 `peerURL`：
 
-    ```bash
-    member_ID="6ed0312dc663b885"
-    member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2380"
+        {{< copyable "shell-regular" >}}
 
-    curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
-    -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
-    ```
+        ```bash
+        member_ID="6ed0312dc663b885"
+        member_peer_url="http://cluster1-pd-0.cluster1-pd-peer.pingcap.svc.cluster1.com:2380"
+
+        curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
+        -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
+        ```
 
 更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。
