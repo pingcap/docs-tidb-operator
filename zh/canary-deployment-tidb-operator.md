@@ -10,6 +10,12 @@ aliases:
 1. 灰度升级TiDB-Operator
 2. 部署多套TiDB-Operator controller-manager
 
+### **注意事项**
+
+1. 只要有一个`Operator`开启了webhook，所有`Operator`会共用一套
+2. 不支持`tidbcluster`在开启了`AdvancedStatefulSet`和`StatefulSet`两种Operator之间切换：
+  [pingcap/tidb-operator#3693](https://github.com/pingcap/tidb-operator/issues/3693)
+
 ## Values新增参数
 
 1. appendReleaseSuffix  
