@@ -7,22 +7,36 @@ aliases:
 
 ## 适用场景
 
-1. 灰度升级TiDB-Operator
-2. 部署多套TiDB-Operator controller-manager
+1. 灰度升级 TiDB Operator。
+2. 部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
 
-## Values新增参数
+    > **注意：**
+    >
+    > - 目前仅支持部署多套 tidb-controller-manager 和 tidb-scheduler。
+    > - Admission Webhook 只需要部署一套。
+    > - 如果多套 TiDB Operator，有的开启了 [`Advanced StatefulSet`](advanced-statefulset.md)，有的没有开启，那么同一个 TidbCluster Custom Resource(CR) 不能在这些 TiDB Operator 之间切换。
 
-1. appendReleaseSuffix  
-说明：自动为资源名称添加后缀，后缀为：xxx-{{ .Release.Name }}，在同一namespace下部署多套Operator时需要开启此参数  
-默认值：false  
+## values.yaml 新增参数
 
-2. controllerManager.create  
-  说明：是否创建controllerManager  
-  默认值： true  
-3. controllerManager.selector  
-  说明：配置controller-manager selector参数，基于tidbcluster label选择管控集群,多个标签之间为and关系。默认为`[]`时会管控所有tidbcluster  
-  默认值： []  
-  样例：
+1. appendReleaseSuffix
+
+    如果配置为 `true`，部署时会自动为 `tidb-controller-manager` 和 `tidb-scheduler` 相关的资源名称添加后缀 `-{{ .Release.Name }}`，例如，通过 `helm install canary pingcap/tidb-operator ...` 命令部署的 `tidb-controller-manager` deployment 名称为：`tidb-controller-manager-canary`，如果要部署多套 TiDB Operator 需要开启此参数。
+
+    默认值：`false`。
+
+2. controllerManager.create
+
+    控制是否创建 `tidb-controller-manager`。
+
+    默认值：`true`。
+
+3. controllerManager.selector
+
+    配置 `tidb-controller-manager` 的 `-selector` 参数，用于根据 CR 的 label 筛选 `tidb-controller-manager` 控制的 CR，多个 selector 之间为 `and` 关系。
+
+    默认值：`[]`，控制所有 CR。
+
+    示例：
 
     ```yaml
     selector:
@@ -31,304 +45,129 @@ aliases:
     - k2!=v2
     ```
 
-4. scheduler.create  
-  说明：是否创建tidb-scheduler  
-  默认值：true  
+4. scheduler.create
 
-## 部署多套Operator步骤
+    控制是否创建 `tidb-scheduler`。
 
-1. 部署第一套Operator
+    默认值：`true`。
 
-    ```shell
-    helm install --name tidb-operator --namespace tidb-admin charts/tidb-operator \
-    -f charts/tidb-operator/values.yaml \
-    --set-string operatorImage=pingcap/tidb-operator:v1.2-nightly
-    ```
+## 部署多套 TiDB Operator 分别控制不同 TiDB 集群
 
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    NAME:   tidb-operator
-    LAST DEPLOYED: Wed Jan 13 10:28:30 2021
-    NAMESPACE: tidb-admin
-    STATUS: DEPLOYED
+1. 部署第一套 TiDB Operator。
 
-    RESOURCES:
-    ==> v1/ClusterRole
-    NAME                                   CREATED AT
-    tidb-operator:tidb-controller-manager  2021-01-13T02:28:30Z
-    tidb-operator:tidb-scheduler           2021-01-13T02:28:30Z
-
-    ==> v1/ClusterRoleBinding
-    NAME                                   ROLE                                               AGE
-    tidb-operator:kube-scheduler           ClusterRole/system:kube-scheduler                  0s
-    tidb-operator:tidb-controller-manager  ClusterRole/tidb-operator:tidb-controller-manager  0s
-    tidb-operator:tidb-scheduler           ClusterRole/tidb-operator:tidb-scheduler           0s
-    tidb-operator:volume-scheduler         ClusterRole/system:volume-scheduler                0s
-
-    ==> v1/ConfigMap
-    NAME                   DATA  AGE
-    tidb-scheduler-policy  1     0s
-
-    ==> v1/Deployment
-    NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-    tidb-controller-manager  0/1    1           0          0s
-    tidb-scheduler           0/1    1           0          0s
-
-    ==> v1/Pod(related)
-    NAME                                      READY  STATUS             RESTARTS  AGE
-    tidb-controller-manager-59b4c56cff-5h45t  0/1    ContainerCreating  0         0s
-    tidb-scheduler-8bf9976fb-x45cr            0/2    ContainerCreating  0         0s
-
-    ==> v1/ServiceAccount
-    NAME                     SECRETS  AGE
-    tidb-controller-manager  1        0s
-    tidb-scheduler           1        0s
-
-    NOTES:
-    Make sure tidb-operator components are running:
-    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-    </code></pre>
-    </details>
-
-2. 查看Operator部署情况
-
-    ```shell
-    kubectl -n tidb-admin get po
-    ```
-
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    NAME                                       READY   STATUS    RESTARTS   AGE
-    tidb-controller-manager-59b4c56cff-5h45t   1/1     Running   0          10s
-    tidb-scheduler-8bf9976fb-x45cr             2/2     Running   0          10s
-    </code></pre>
-    </details>
-
-3. 部署TiDBCluster
-
-    ```shell
-    kubectl -n tidb-cluster-1 create -f examples/basic/tidb-cluster.yaml
-    ```
-
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    kubectl -n tidb-cluster-1 get po
-    NAME                               READY   STATUS    RESTARTS   AGE
-    basic-discovery-54f9f8bc7c-mm2nh   1/1     Running   0          2m24s
-    basic-pd-0                         1/1     Running   0          2m24s
-    basic-tidb-0                       2/2     Running   0          99s
-    basic-tikv-0                       1/1     Running   0          2m11s
-    </code></pre>
-    </details>
-
-4. 查看tidb集群部署情况
-
-    ```shell
-    kubectl -n tidb-cluster-1 get tc
-    ```
-
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    NAME    READY   PD                  STORAGE   READY   DESIRE   TIKV                  STORAGE   READY   DESIRE   TIDB                  READY   DESIRE   AGE
-    basic   True    pingcap/pd:v4.0.9   1Gi       1       1        pingcap/tikv:v4.0.9   1Gi       1       1        pingcap/tidb:v4.0.9   1       1        12m
-    </code></pre>
-    </details>
-
-5. 标记TiDBCluster
-
-    ```
-    kubectl -n tidb-cluster-1 label tidbcluster basic canary-release=v1 canary-deployment=true
-    ```
-
-6. 配置第一套Operator仅管理标签为`canary-release=v1,canary-deployment=true`的tidbcluster
-    配置values.yaml:
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 values.yaml 中添加如下配置，部署第一套 TiDB Operator：
 
     ```yaml
     controllerManager:
-        selector:
-        - canary-release=v1
-        - canary-deployment=true
-    ```
+      selector:
+      - user=dev
+    ```    
 
-    或直接通过`--set`命令：
+2. 部署 TiDB 集群。
 
-    ```shell
-    helm upgrade tidb-operator . --reuse-values --set controllerManager.selector="{canary-release=v1,canary-deployment=true}"
-    ```
+    1. 参考[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md) 配置 TidbCluster CR，并配置 `label` 匹配上一步中为 `tidb-controller-manager` 配置的 `selector`，例如：
 
-7. 验证controller已启动selector
-
-    ```shell
-    kubectl  -n tidb-admin get deploy tidb-controller-manager -o yaml
-    ```
-
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: tidb-controller-manager
-      namespace: tidb-admin
-    spec:
-      template:
+        ```yaml
+        apiVersion: pingcap.com/v1alpha1
+        kind: TidbCluster
+        metadata:
+          name: basic1
+          labels:
+            user: dev
         spec:
-          containers:
-          - command:
-            ...
-            - -selector=canary-release=v1,canary-deployment=true
-            ...
-    </code></pre>
-    </details>
+          ...
+        ```
 
-8. 查看Operator日志
+        如果创建 TiDB 集群时没有设置 label，也可以通过如下命令设置：
 
-    ```shell
-    kubectl  -n tidb-admin logs tidb-controller-manager-55b887bdc9-lzdwv
-    ```
+        {{< copyable "shell-regular" >}}
 
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    ...
-    I0113 02:50:13.195779       1 main.go:69] FLAG: --selector="canary-release=v1,canary-deployment=true"
-    ...
-    I0113 02:50:32.409378       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 02:50:32.773635       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 02:51:00.294241       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 02:51:00.680001       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 02:51:30.306216       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 02:51:30.686362       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    </code></pre>
-    </details>
+        ```shell
+        kubectl -n ${namespace} label tidbcluster ${cluster_name} user=dev
+        ```
 
-9. 部署第二套Operator
-    配置values.yaml:
+    2. 参考[在 Kubernetes 中部署 TiDB 集群](deploy-on-general-kubernetes.md) 部署 TiDB 集群，并确认集群各组件正常启动。
+
+3. 部署第二套 TiDB Operator。
+
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 values.yaml 中添加如下配置，部署第二套 TiDB Operator (没有部署 `tidb-scheduler`)：
 
     ```yaml
     controllerManager:
-        selector:
-        - canary-release=v2
-        - canary-deployment=true
+      selector:
+      - user=qa
     appendReleaseSuffix: true
     scheduler:
       create: false
     ```
 
-    或直接通过`--set`命令：
+    > **注意：**
+    >
+    > 如果配置 `scheduler.create: true`，会创建一个名字为 `{{ .scheduler.schedulerName }}-{{.Release.Name}}` 的 scheduler，要使用这个 scheduler，需要配置 TidbCluster CR 中的 `spec.schedulerName` 为这个 scheduler。
 
-    ```shell
-    helm install --name tidb-operator-v2 --namespace tidb-admin charts/tidb-operator \
-    -f charts/tidb-operator/values.yaml \
-    --set operatorImage=pingcap/tidb-operator:v1.2-nightly \
-    --set controllerManager.selector="{canary-release=v2,canary-deployment=true}" \
-    --set appendReleaseSuffix=true,scheduler.create=false
-    ```
+4. 部署 TiDB 集群。
 
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    NAME:   tidb-operator-v2
-    LAST DEPLOYED: Wed Jan 13 11:17:27 2021
-    NAMESPACE: tidb-admin
-    STATUS: DEPLOYED
+    1. 参考[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md) 配置 TidbCluster CR，并配置 `label` 匹配上一步中为 `tidb-controller-manager` 配置的 `selector`，例如：
 
-    RESOURCES:
-    ==> v1/ClusterRole
-    NAME                                      CREATED AT
-    tidb-operator-v2:tidb-controller-manager  2021-01-13T03:17:27Z
-
-    ==> v1/ClusterRoleBinding
-    NAME                                      ROLE                                                  AGE
-    tidb-operator-v2:tidb-controller-manager  ClusterRole/tidb-operator-v2:tidb-controller-manager  0s
-
-    ==> v1/Deployment
-    NAME                                      READY  UP-TO-DATE  AVAILABLE  AGE
-    tidb-controller-manager-tidb-operator-v2  0/1    0           0          0s
-
-    ==> v1/Pod(related)
-
-    ==> v1/ServiceAccount
-    NAME                                      SECRETS  AGE
-    tidb-controller-manager-tidb-operator-v2  1        0s
-
-    NOTES:
-    Make sure tidb-operator components are running:
-        kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator-v2
-    </code></pre>
-    </details>
-
-10. 确认第二套Operator部署情况
-
-    ```shell
-    kubectl -n tidb-admin get deploy tidb-controller-manager-tidb-operator-v2 -o yaml
-    ```
-
-    <details>
-    <summary>Output</summary>
-    <pre><code>
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: tidb-controller-manager-tidb-operator-v2
-      namespace: tidb-admin
-    spec:
-      template:
+        ```yaml
+        apiVersion: pingcap.com/v1alpha1
+        kind: TidbCluster
+        metadata:
+          name: basic2
+          labels:
+            user: qa
         spec:
-          containers:
-          - command:
-            ...
-            - -selector=canary-release=v2,canary-deployment=true
-            ...
-    </code></pre>
-    </details>
+          ...
+        ```
 
-11. 部署第二套tidbcluster
+        如果创建 TiDB 集群时没有设置 label，也可以通过如下命令设置：
 
-    ```shell
-    kubectl -n tidb-cluster-2 create -f examples/basic/tidb-cluster.yaml
-    ```
+        {{< copyable "shell-regular" >}}
 
-12. 标记第二套tidbcluster
+        ```shell
+        kubectl -n ${namespace} label tidbcluster ${cluster_name} user=qa
+        ```
 
-    ```shell
-    kubectl -n tidb-cluster-2 label tidbcluster basic canary-release=v2 canary-deployment=true
-    ```
+    2. 参考[在 Kubernetes 中部署 TiDB 集群](deploy-on-general-kubernetes.md) 部署 TiDB 集群，并确认集群各组件正常启动。
 
-13. 验证
+5. 查看两套 TiDB Operator日志，确认两套 TiDB Operator 分别管理各自匹配 selector 的 TiDB 集群。
 
-    查看第一套Operator controller-manager日志
+    示例：
+
+    查看第一套 TiDB Operator tidb-controller-manager 日志:
 
     ```shell
-    kubectl -n tidb-admin logs -f tidb-controller-manager-55b887bdc9-7jjzr
+    kubectl -n tidb-admin logs tidb-controller-manager-55b887bdc9-lzdwv
     ```
 
     <details>
     <summary>Output</summary>
     <pre><code>
-    I0113 03:37:35.330277       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 03:38:04.948813       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
-    I0113 03:38:05.325378       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic] updated successfully
+    ...
+    I0113 02:50:13.195779       1 main.go:69] FLAG: --selector="user=dev"
+    ...
+    I0113 02:50:32.409378       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic1] updated successfully
+    I0113 02:50:32.773635       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic1] updated successfully
+    I0113 02:51:00.294241       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic1] updated successfully
     </code></pre>
     </details>
 
-    查看第二套Operator controller-manager日志
+    查看第二套 TiDB Operator tidb-controller-manager 日志:
 
     ```shell
-    tidb-controller-manager-tidb-operator-v2-5dfcd7f9-vll4c
+    kubectl -n tidb-admin logs tidb-controller-manager-tidb-operator-v2-5dfcd7f9-vll4c
     ```
 
     <details>
     <summary>Output</summary>
     <pre><code>
-    I0113 03:38:43.859387       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic] updated successfully
-    I0113 03:38:45.060028       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic] updated successfully
-    I0113 03:38:46.261045       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic] updated successfully
+    ...
+    I0113 02:50:13.195779       1 main.go:69] FLAG: --selector="user=qa"
+    ...
+    I0113 03:38:43.859387       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic2] updated successfully
+    I0113 03:38:45.060028       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic2] updated successfully
+    I0113 03:38:46.261045       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-2/basic2] updated successfully
     </code></pre>
     </details>
 
-    通过对比两套tidb-operator controller-manager日志，第一套Operator仅管理tidb-cluster-1/basic集群，第二套Operator仅管理tidb-cluster-1/basic集群。
+    通过对比两套 TiDB Operator tidb-controller-manager 日志，第一套 TiDB Operator 仅管理 tidb-cluster-1/basic1 集群，第二套 TiDB Operator 仅管理 tidb-cluster-2/basic2 集群。
