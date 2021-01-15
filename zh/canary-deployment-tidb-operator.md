@@ -1,8 +1,8 @@
 ---
 title: 灰度部署 TiDB Operator
 summary: 介绍如何灰度部署 TiDB Operator。
-aliases:
 ---
+
 # 灰度部署 TiDB Operator
 
 ## 适用场景
@@ -14,23 +14,23 @@ aliases:
     >
     > - 目前仅支持部署多套 tidb-controller-manager 和 tidb-scheduler。
     > - Admission Webhook 只需要部署一套。
-    > - 如果多套 TiDB Operator，有的开启了 [`Advanced StatefulSet`](advanced-statefulset.md)，有的没有开启，那么同一个 TidbCluster Custom Resource(CR) 不能在这些 TiDB Operator 之间切换。
+    > - 如果部署了多套 TiDB Operator，有的开启了 [`Advanced StatefulSet`](advanced-statefulset.md)，有的没有开启，那么同一个 TidbCluster Custom Resource (CR) 不能在这些 TiDB Operator 之间切换。
 
-## values.yaml 新增参数
+## 灰度部署相关参数
 
-1. appendReleaseSuffix
+1. `appendReleaseSuffix`
 
     如果配置为 `true`，部署时会自动为 `tidb-controller-manager` 和 `tidb-scheduler` 相关的资源名称添加后缀 `-{{ .Release.Name }}`，例如，通过 `helm install canary pingcap/tidb-operator ...` 命令部署的 `tidb-controller-manager` deployment 名称为：`tidb-controller-manager-canary`，如果要部署多套 TiDB Operator 需要开启此参数。
 
     默认值：`false`。
 
-2. controllerManager.create
+2. `controllerManager.create`
 
     控制是否创建 `tidb-controller-manager`。
 
     默认值：`true`。
 
-3. controllerManager.selector
+3. `controllerManager.selector`
 
     配置 `tidb-controller-manager` 的 `-selector` 参数，用于根据 CR 的 label 筛选 `tidb-controller-manager` 控制的 CR，多个 selector 之间为 `and` 关系。
 
@@ -45,7 +45,7 @@ aliases:
     - k2!=v2
     ```
 
-4. scheduler.create
+4. `scheduler.create`
 
     控制是否创建 `tidb-scheduler`。
 
@@ -128,13 +128,13 @@ aliases:
         kubectl -n ${namespace} label tidbcluster ${cluster_name} user=qa
         ```
 
-    2. 参考[在 Kubernetes 中部署 TiDB 集群](deploy-on-general-kubernetes.md) 部署 TiDB 集群，并确认集群各组件正常启动。
+    2. 参考[在 Kubernetes 中部署 TiDB 集群](deploy-on-general-kubernetes.md)部署 TiDB 集群，并确认集群各组件正常启动。
 
-5. 查看两套 TiDB Operator日志，确认两套 TiDB Operator 分别管理各自匹配 selector 的 TiDB 集群。
+5. 查看两套 TiDB Operator 的日志，确认两套 TiDB Operator 分别管理各自匹配 selector 的 TiDB 集群。
 
     示例：
 
-    查看第一套 TiDB Operator tidb-controller-manager 日志:
+    查看第一套 TiDB Operator `tidb-controller-manager` 的日志:
 
     ```shell
     kubectl -n tidb-admin logs tidb-controller-manager-55b887bdc9-lzdwv
@@ -152,7 +152,7 @@ aliases:
     </code></pre>
     </details>
 
-    查看第二套 TiDB Operator tidb-controller-manager 日志:
+    查看第二套 TiDB Operator `tidb-controller-manager` 的日志:
 
     ```shell
     kubectl -n tidb-admin logs tidb-controller-manager-tidb-operator-v2-5dfcd7f9-vll4c
@@ -170,4 +170,4 @@ aliases:
     </code></pre>
     </details>
 
-    通过对比两套 TiDB Operator tidb-controller-manager 日志，第一套 TiDB Operator 仅管理 tidb-cluster-1/basic1 集群，第二套 TiDB Operator 仅管理 tidb-cluster-2/basic2 集群。
+    通过对比两套 TiDB Operator tidb-controller-manager 日志，第一套 TiDB Operator 仅管理 `tidb-cluster-1/basic1` 集群，第二套 TiDB Operator 仅管理 `tidb-cluster-2/basic2` 集群。
