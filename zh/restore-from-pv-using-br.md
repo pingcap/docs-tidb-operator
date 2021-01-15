@@ -37,7 +37,7 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
 
 ## 数据库账户权限
 
-- `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
+- `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，Restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 
 ## 恢复过程
 
