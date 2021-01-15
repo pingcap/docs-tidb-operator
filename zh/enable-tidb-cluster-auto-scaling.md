@@ -177,22 +177,22 @@ TiDB Operator 会根据 TidbClusterAutoScaler CR 的配置，向 PD 发起请求
 
 3. 通过以下命令开始进行压测:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-sysbench --config-file=${path}/sysbench.config oltp_point_select --tables=1 --table-size=20000 run
-```
+    ```shell
+    sysbench --config-file=${path}/sysbench.config oltp_point_select --tables=1 --table-size=20000 run
+    ```
 
-上述命令执行完毕后，出现如下输出：
+    上述命令执行完毕后，出现如下输出：
 
-```sh
-Initializing worker threads...
+    ```sh
+    Initializing worker threads...
 
-Threads started!
+    Threads started!
 
-[ 5s ] thds: 20 tps: 37686.35 qps: 37686.35 (r/w/o: 37686.35/0.00/0.00) lat (ms,95%): 0.99 err/s: 0.00 reconn/s: 0.00
-[ 10s ] thds: 20 tps: 38487.20 qps: 38487.20 (r/w/o: 38487.20/0.00/0.00) lat (ms,95%): 0.95 err/s: 0.00 reconn/s: 0.00
-```
+    [ 5s ] thds: 20 tps: 37686.35 qps: 37686.35 (r/w/o: 37686.35/0.00/0.00) lat (ms,95%): 0.99 err/s: 0.00 reconn/s: 0.00
+    [ 10s ] thds: 20 tps: 38487.20 qps: 38487.20 (r/w/o: 38487.20/0.00/0.00) lat (ms,95%): 0.95 err/s: 0.00 reconn/s: 0.00
+    ```
 
 4. 新建一个会话终端，通过以下命令观察 TiDB 集群的 Pod 变化情况。
 
