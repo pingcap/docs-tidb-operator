@@ -97,7 +97,7 @@ If you see `Ready` for all nodes, congratulations! You've set up your first Kube
 TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com//pingcap/tidb-operator/master/manifests/crd.yaml && \
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
 kubectl get crd tidbclusters.pingcap.com
 ```
 
@@ -122,13 +122,13 @@ To deploy the TiDB cluster, perform the following steps:
 2. Deploy the TiDB cluster:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com//pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml -n demo
     ```
 
 3. Deploy the TiDB cluster monitor:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com//pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n demo
     ```
 
 4. View the Pod status:
