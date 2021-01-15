@@ -17,13 +17,13 @@ TiDB Operator 版本：1.2.0-alpha.1
 - 跨多个 Kubernetes 集群部署一个 TiDB 集群 ([@L3T](https://github.com/L3T), [@handlerww](https://github.com/handlerww))
 - 支持管理 DM 2.0 ([@lichunzhu](https://github.com/lichunzhu), [@BinChenn](https://github.com/BinChenn))
 - 通过 PD API 进行弹性伸缩 ([@howardlau1999](https://github.com/howardlau1999))
-- TiDB Operator 支持灰度升级 ([#3548](https://github.com/pingcap/tidb-operator/pull/3548), [@shonge](https://github.com/shonge), [#3554](https://github.com/pingcap/tidb-operator/pull/3554), [@cvvz](https://github.com/cvvz))
+- 支持灰度升级 TiDB Operator ([#3548](https://github.com/pingcap/tidb-operator/pull/3548), [@shonge](https://github.com/shonge), [#3554](https://github.com/pingcap/tidb-operator/pull/3554), [@cvvz](https://github.com/cvvz))
 
 ## 优化提升
 
-- TiDB-Lightning chart 支持 local backend ([#3644](https://github.com/pingcap/tidb-operator/pull/3644), [@csuzhangxc](https://github.com/csuzhangxc))
-- TiDB-Lightning chart and TiKV-Importer chart 支持 TLS ([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
-- TiDB-Lightning chart 支持持久化 checkpoint ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
+- TiDB Lightning chart 支持 local backend ([#3644](https://github.com/pingcap/tidb-operator/pull/3644), [@csuzhangxc](https://github.com/csuzhangxc))
+- TiDB Lightning chart 和 TiKV Importer chart 支持 TLS ([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
+- TiDB Lightning chart 支持持久化 checkpoint ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
 - TidbMonitor 支持配置 Thanos sidecar ([#3579](https://github.com/pingcap/tidb-operator/pull/3579), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor 管理资源从 Deployment 变为 StatefulSet ([#3440](https://github.com/pingcap/tidb-operator/pull/3440), [@mikechengwei](https://github.com/mikechengwei))
 
