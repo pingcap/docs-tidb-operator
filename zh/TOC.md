@@ -29,6 +29,7 @@
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
+  - [灰度部署 TiDB Operator](canary-deployment-tidb-operator.md)
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
@@ -95,6 +96,8 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 + [TiDB Operator Roadmap](roadmap.md)
 + 版本发布历史
+  + v1.2
+    - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
