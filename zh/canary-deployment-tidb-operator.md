@@ -5,6 +5,8 @@ summary: 介绍如何灰度部署 TiDB Operator。
 
 # 灰度部署 TiDB Operator
 
+本文介绍如何灰度升级 TiDB Operator 以及如何部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
+
 ## 适用场景
 
 1. 灰度升级 TiDB Operator。
@@ -17,6 +19,8 @@ summary: 介绍如何灰度部署 TiDB Operator。
     > - 如果部署了多套 TiDB Operator，有的开启了 [`Advanced StatefulSet`](advanced-statefulset.md)，有的没有开启，那么同一个 TidbCluster Custom Resource (CR) 不能在这些 TiDB Operator 之间切换。
 
 ## 灰度部署相关参数
+
+为了支持灰度部署功能，`tidb-operator` chart 中 `values.yaml` 文件里面添加了以下参数。
 
 1. `appendReleaseSuffix`
 
