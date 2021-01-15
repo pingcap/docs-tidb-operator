@@ -96,8 +96,8 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-alpha.1/examples/gcp/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-alpha.1/examples/gcp/tidb-monitor.yaml
 ```
 
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
@@ -404,7 +404,7 @@ Some GCP instance types provide additional [local store volumes](https://cloud.g
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-alpha.1/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. Use the local storage.

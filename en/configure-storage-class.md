@@ -149,7 +149,7 @@ If the components such as monitoring, TiDB Binlog, and `tidb-backup` use local d
 
 - For a disk storing data in TiKV, you can [mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) it into `/mnt/ssd` directory, and create `ssd-storage` `StorageClass` for it to use.
 
-Based on the disk mounts above, you need to modify the [`local-volume-provisioner` YAML file](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml) accordingly, configure discovery directory and create the necessary `StorageClass`. Here is an example of a modified YAML file:
+Based on the disk mounts above, you need to modify the [`local-volume-provisioner` YAML file](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-alpha.1/manifests/local-dind/local-volume-provisioner.yaml) accordingly, configure discovery directory and create the necessary `StorageClass`. Here is an example of a modified YAML file:
 
 ```yaml
 apiVersion: storage.k8s.io/v1
