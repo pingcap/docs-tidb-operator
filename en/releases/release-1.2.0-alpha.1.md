@@ -21,9 +21,9 @@ TiDB Operator version: 1.2.0-alpha.1
 
 ## Improvements
 
-- Add local backend support for the TiDB-Lightning chart ([#3644](https://github.com/pingcap/tidb-operator/pull/3644), [@csuzhangxc](https://github.com/csuzhangxc))
-- Add TLS support for the TiDB-Lightning chart and TiKV-Importer chart ([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support persisting checkpoint for TiDB-Lightning helm chart ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
+- Add local backend support for the TiDB Lightning chart ([#3644](https://github.com/pingcap/tidb-operator/pull/3644), [@csuzhangxc](https://github.com/csuzhangxc))
+- Add TLS support for the TiDB Lightning chart and TiKV Importer chart ([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support persisting checkpoint for TiDB Lightning helm chart ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support Thanos sidecar for monitoring multiple clusters ([#3579](https://github.com/pingcap/tidb-operator/pull/3579), [@mikechengwei](https://github.com/mikechengwei))
 - Migrate from Deployment to StatefulSet for TidbMonitor ([#3440](https://github.com/pingcap/tidb-operator/pull/3440), [@mikechengwei](https://github.com/mikechengwei))
 
