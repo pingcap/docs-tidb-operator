@@ -94,14 +94,6 @@ spec:
 
 TiDB Operator 会根据 TidbClusterAutoScaler CR 的配置，向 PD 发起请求，查询扩缩容结果，并根据 PD 返回的结果，利用[异构集群](deploy-heterogeneous-tidb-cluster.md)特性，创建、更新或者删除异构 TiDB 集群（只配置 TiDB 组件或者只配置 TiKV 组件），实现 TiDB 集群的弹性伸缩。
 
-异构 TiDB 集群的 TiDB 或者 TiKV 组件的配置会根据 PD 返回结果设置：
-
-* requests=limits=返回的资源配置
-* replicas
-* label
-
-其他配置都和 `spec.cluster` 对应的 TidbCluster CR 中对应组件的配置一样。
-
 ### 字段介绍
 
 * `spec.cluster`：需要被弹性调度的 TiDB 集群。
