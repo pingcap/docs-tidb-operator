@@ -17,6 +17,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 > * 目前仅支持基于 CPU 利用率的弹性伸缩。
 
 开启弹性伸缩特性需要主动开启 TiDB Operator 相关配置，默认情况下 TiDB Operator 的弹性伸缩特性是关闭的。
+
 你可以通过以下方式来开启弹性调度特性:
 
 1. 修改 TiDB Operator 的 `values.yaml`
@@ -48,7 +49,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 
 ## 了解 TidbClusterAutoScaler
 
-我们通过 `TidbClusterAutoScaler` CR 对象来控制 TiDB 集群的弹性伸缩行为。
+你可以通过 `TidbClusterAutoScaler` CR 对象来控制 TiDB 集群的弹性伸缩行为。
+
 以下是一个例子：
 
 ```yaml
