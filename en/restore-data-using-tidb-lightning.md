@@ -302,7 +302,7 @@ To destroy tikv-importer, execute the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm delete ${release_name}`
+helm delete ${release_name}
 ```
 
 To destroy tidb-lightning, execute the following command:

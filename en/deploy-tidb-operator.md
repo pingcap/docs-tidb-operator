@@ -123,7 +123,7 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install tidb-operator ./tidb-operator --namespace=tidb-admin --create-namespace
+    helm upgrade tidb-operator pingcap/tidb-operator -f  `${HOME}/tidb-operator/values-tidb-operator.yaml`
     ```
 
 #### Offline installation

@@ -453,7 +453,7 @@ helm repo update
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm search tidb-operator -l --devel
+    helm search hub mysql
     ```
 
 - View charts in other Repos:
