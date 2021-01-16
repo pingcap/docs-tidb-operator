@@ -5,13 +5,13 @@ summary: Learn how to deploy a TiDB cluster across multiple Kubernetes clusters.
 
 # Deploy a TiDB Cluster across Multiple Kubernetes Clusters
 
-To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple network-interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes cluster means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be parsed in any cluster and between clusters.
+To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple network-interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be parsed in any cluster and between clusters.
 
 ## Prerequisites
 
 You need to configure the Kubernetes network and DNS so that the Kubernetes cluster meets the following conditions:
 
-- The TiDB components on each Kubernetes cluster can access the Pod IP of all TiDB components in and between clusters.各 Kubernetes.
+- The TiDB components on each Kubernetes cluster can access the Pod IP of all TiDB components in and between clusters.
 - The TiDB components on each Kubernetes cluster can parse the Pod FQDN of all TiDB components in and between clusters.
 
 ## Supported scenarios
@@ -147,17 +147,17 @@ spec:
 EOF
 ```
 
-## Deploy enabling TLS between TiDB components across multiple Kubernetes clusters
+## Deploy the TiDB cluster with TLS enabled between TiDB components across multiple Kubernetes clusters
 
-You can follow the steps below to enable TLS between TiDB components across multiple Kubernetes clusters.
+You can follow the steps below to enable TLS between TiDB components for TiDB clusters deployed across multiple Kubernetes clusters.
 
 ### Issue the root certificate
 
 #### Issue the root certificate using `cfssl`
 
-If you use `cfssl`, the CA certificate issue process is no different from the general issue process. You need to save the CA certificate created for the first time, and use this CA certificate when issuing certificates for TiDB components later. When creating a component certificate in a cluster, you do not need to create a CA certificate again and only need to complete step one to four in the [Enabling TLS between TiDB components](enable-tls-between-components.md#using-cfssl) once to complete the issuance of the CA certificate. You need to start from step five for the issue of certificates between other cluster components.
+If you use `cfssl`, the CA certificate issue process is no different from the general issue process. You need to save the CA certificate created for the first time, and use this CA certificate when issuing certificates for TiDB components later. When creating a component certificate in a cluster, you do not need to create a CA certificate again and only need to complete step one to four in the [Enabling TLS between TiDB components](enable-tls-between-components.md#using-cfssl) once to complete the issue of the CA certificate. You need to start from step five for the issue of certificates between other cluster components.
 
-#### Use the cert-manager system to issue a root certificate
+#### Use the `cert-manager` system to issue a root certificate
 
 If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certificate` in the initial cluster, and export the `CA Secret` to other new clusters that want to join. Other clusters only need to create component certificates to issue `Issuer` (Refers to the Issuer named ${cluster_name}-tidb-issuer in the [TLS document](enable-tls-between-components.md#using-cert-manager
 )). Use this CA to configure `Issuer`, the detailed process is as follows:
@@ -271,7 +271,7 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
 
     2. Create a certificate issuing `Issuer` between TiDB components in the new cluster.
 
-       Set the following environment variables according to the actual situation. Among them, `ca_secret_name` needs to point to the `Secret` that you just imported to store the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
+       Set the following environment variables according to the actual situation. Among them, `ca_secret_name` needs to point to the `Secret` that you just import to store the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
 
        {{< copyable "shell-regular" >}}
        ```bash
@@ -354,7 +354,7 @@ cat << EOF > pd-server.json
 EOF
 ```
 
-#### Use the cert-manager system to issue certificates for TiDB components
+#### Use the `cert-manager` system to issue certificates for TiDB components
 
 If you use `cert-manager`, take the certificate used to create the PD component as an example, `Certifcates` is shown below.
 
@@ -412,9 +412,9 @@ spec:
 EOF
 ```
 
-You need to refer to the TLS related documents, issue the corresponding certificates for the components, and create the `Secret` in the corresponding Kubernetes cluster.
+You need to refer to the TLS-related documents, issue the corresponding certificates for the components, and create the `Secret` in the corresponding Kubernetes clusters.
 
-For other TLS related information, refer to the following documents:
+For other TLS-related information, refer to the following documents:
 
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
@@ -554,9 +554,9 @@ spec:
 EOF
 ```
 
-## Exit and recycle clusters that already joined
+## Exit and reclaim clusters that already joined
 
-When you need to make a cluster exit from the joined TiDB cluster deployed across Kubernetes and reclaim resources, you can achieve the above requirements through the scaling out. In this scenario, some requirements of scaling in need to be met. The restrictions are as follows:
+When you need to make a cluster exit from the joined TiDB cluster deployed across Kubernetes and reclaim resources, you can achieve the above requirements through the scaling in. In this scenario, some requirements of scaling in need to be met. The restrictions are as follows:
 
 - After scaling in, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
@@ -568,7 +568,7 @@ Take the cluster two created in the above document as an example. First, set the
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-Wait for the status of cluster two to become `Ready`, and scale out related components to `0` copy:
+Wait for the status of cluster two to become `Ready`, and scale in related components to `0` copy:
 
 {{< copyable "shell-regular" >}}
 
@@ -576,8 +576,7 @@ Wait for the status of cluster two to become `Ready`, and scale out related comp
 kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
 ```
 
-The Pod list is displayed as `No resources found.`. At this time, Pods have all been scaled out, and cluster two has exited the cluster. Check the cluster status of cluster two:
-Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
+The Pod list is displayed as `No resources found.`. At this time, Pods have all been scaled in, and cluster two exits the cluster. Check the cluster status of cluster two:
 
 {{< copyable "shell-regular" >}}
 
@@ -585,7 +584,7 @@ Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，�
 kubectl get tc cluster2
 ```
 
-The result shows that cluster two is in the `Ready` state. At this time, you can delete the object and reclaim related resources.
+The result shows that cluster two is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
 
 {{< copyable "shell-regular" >}}
 
@@ -595,7 +594,7 @@ kubectl delete tc cluster2
 
 Through the above steps, you can complete exit and resources reclaim of the joined clusters.
 
-## Enable the existing data cluster across multiple Kubernetes cluster feature as the initial TiDB cluster 已有数据集群开启跨多个 Kubernetes 集群功能并作为 TiDB 集群的初始集群
+## Enable the existing data cluster across multiple Kubernetes cluster feature as the initial TiDB cluster
 
 > **Warning:**
 >
@@ -639,7 +638,7 @@ Through the above steps, you can complete exit and resources reclaim of the join
 
         > **Note:**
         >
-        > If the cluster enables TLS, you need to configure a certificate when using the curl command. For example:
+        > If the cluster enables TLS, you need to configure the certificate when using the curl command. For example:
         >
         > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 
