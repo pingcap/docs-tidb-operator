@@ -30,7 +30,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
 
     > **Note:**
     >
-    > During the installation, do not let the CLI binary of Helm 3 overwrites that of Helm 2.  For example, you can name Helm 3 CLI binary as `helm3`. (All following examples in this document uses `helm3`.)
+    > During the installation, do not let the CLI binary of Helm 3 overwrite that of Helm 2.  For example, you can name Helm 3 CLI binary as `helm3`. (All following examples in this document uses `helm3`.)
 
 2. Install [helm-2to3 plugin](https://github.com/helm/helm-2to3) for Helm 3.
 
@@ -101,7 +101,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
 
     > **Note:**
     >
-    > If the original Helm 2 is Tillerless (Tiller is installed locally via plugins like [helm-tiller](https://github.com/rimusz/helm-tiller) rather than in the Kubernetes cluster), you can migrate the release by adding the `--tiller-out-cluster` flag in the command: `helm3 2to3 convert tidb-operator --tiller-out-cluster`
+    > If the original Helm 2 is Tillerless (Tiller is installed locally via plugins like [helm-tiller](https://github.com/rimusz/helm-tiller) rather than in the Kubernetes cluster), you can migrate the release by adding the `--tiller-out-cluster` flag in the command: `helm3 2to3 convert tidb-operator --tiller-out-cluster`.
 
 5. Confirm that TiDB Operator, TidbCluster, and TidbMonitor run normally.
 
