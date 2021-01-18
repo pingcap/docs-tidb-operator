@@ -99,11 +99,7 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
 
     > **Note:**
     >
-<<<<<<< HEAD
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.1.9`. You can view the currently supported versions by running the `helm search -l tidb-operator` command.
-=======
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.2.0-alpha.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
->>>>>>> 59e527b... en: add the doc about migrating to helm 3 (#1047)
+    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.1.9`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
 
 2. Configure TiDB Operator
 

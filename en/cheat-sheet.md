@@ -501,11 +501,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=v1.1.9 -f values-tidb-operator.yaml
-=======
-helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.0-alpha.1 -f values-tidb-operator.yaml
->>>>>>> 59e527b... en: add the doc about migrating to helm 3 (#1047)
+helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.1.9 -f values-tidb-operator.yaml
 ```
 
 ### View the deployed Helm release

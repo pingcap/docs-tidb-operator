@@ -172,85 +172,7 @@ helm version
 version.BuildInfo{Version:"v3.4.1", GitCommit:"c4e74854886b2efe3321e185578e6db9be0a6e29", GitTreeState:"clean", GoVersion:"go1.14.11"}
 ```
 
-<<<<<<< HEAD
-### Install the Helm server
-
-#### Install RBAC
-
-If `RBAC` is not enabled in the Kubernetes cluster, skip this section and [install Tiller](#install-tiller) directly.
-
-The Helm server is a service called `tiller`, first install the `RBAC` rules required by `tiller`:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/tiller-rbac.yaml
-```
-
-If the server cannot access the Internet, download the `tiller-rbac.yaml` file on a machine with Internet access:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/tiller-rbac.yaml
-```
-
-Copy the file `tiller-rbac.yaml` to the server and install the `RBAC`:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f tiller-rbac.yaml
-```
-
-#### Install Tiller
-
-The Helm server is a service called `tiller`, which runs as a pod in the Kubernetes cluster. To install `tiller`, run the following command:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-helm init --service-account=tiller --upgrade
-```
-
-The image used by Pod `tiller` is `gcr.io/kubernetes-helm/tiller:v2.16.7`. If your server cannot access `gcr.io`, you can try to use the mirror registry:
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-helm init --service-account=tiller --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -Eo 'v[0-9]\.[0-9]+\.[0-9]+')
-```
-
-If the server cannot access the Internet, you need to download the Docker image used by `tiller` on a machine which can access the Internet:
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-docker pull gcr.io/kubernetes-helm/tiller:v2.16.7
-docker save -o tiller-v2.16.7.tar gcr.io/kubernetes-helm/tiller:v2.16.7
-```
-
-Copy the file `tiller-v2.16.7.tar` to the server, and use the command `docker load` to load the image:
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-docker load -i tiller-v2.16.7.tar
-```
-
-Finally, install `tiller` with the following command and confirm that the `tiller` Pod is in the running state:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-helm init --service-account=tiller --skip-refresh
-kubectl get po -n kube-system -l name=tiller
-```
-
-#### Configure the Helm repo
-=======
 ### Configure the Helm repo
->>>>>>> 59e527b... en: add the doc about migrating to helm 3 (#1047)
 
 Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
 
@@ -356,13 +278,8 @@ Copy these chart files to the server and decompress them. You can use these char
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
 tar zxvf tidb-operator.v1.1.9.tgz
-helm install ./tidb-operator --name=${release_name} --namespace=${namespace}
-=======
-tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
->>>>>>> 59e527b... en: add the doc about migrating to helm 3 (#1047)
 ```
 
 ## Use Terraform
