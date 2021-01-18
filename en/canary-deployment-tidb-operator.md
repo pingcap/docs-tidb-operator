@@ -1,6 +1,6 @@
 ---
 title: Canary Deployment of TiDB Operator
-summary:
+summary: Learn how to canary upgrade TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
 ---
 
 # Canary Deployment of TiDB Operator
