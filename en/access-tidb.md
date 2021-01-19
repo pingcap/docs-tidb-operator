@@ -8,21 +8,15 @@ aliases: ['/docs/tidb-in-kubernetes/stable/access-tidb/','/docs/tidb-in-kubernet
 
 This document describes how to access the TiDB cluster.
 
-You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc., and use different access methods for different types. 
+You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc., and use different access methods for different types.
 
 You can obtain TiDB Service information by running the following command:
 
 {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
-> **Note:**
->
-> [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
-=======
 ```shell
 kubectl get svc ${serviceName} -n ${namespace}
 ```
->>>>>>> a638553... en: Add content about spec.tidb.service in config-a-tidb-cluster.md (#1055)
 
 For example:
 
