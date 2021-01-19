@@ -83,7 +83,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
 1. Adjust the number of replicas of the tables replicated to the TiFlash cluster.
 
-    To completely remove TiFlash, you need to set the number of replicas of all tables in TiFlash to `0`.
+    To completely remove TiFlash, you need to set the number of replicas of all tables replicated to the TiFlash to `0`.
 
     1. To connect to the TiDB service, refer to the steps in [Access the TiDB Cluster in Kubernetes](access-tidb.md).
 
