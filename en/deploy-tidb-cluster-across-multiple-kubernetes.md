@@ -33,11 +33,11 @@ Unsupported scenarios:
 
 Before you deploy a TiDB cluster across multiple Kubernetes clusters, you need to first deploy the Kubernetes clusters required for this operation. The following deployment assumes that you have completed Kubernetes deployment.
 
-The following takes the deployment of two clusters as an example. Cluster one is the initial cluster. Create it according to the configuration given below. After cluster one is running normally, create cluster two according to the configuration given below. After creating and deploying clusters, two clusters run normally.
+The following takes the deployment of two clusters as an example. Cluster #1 is the initial cluster. Create it according to the configuration given below. After cluster #1 is running normally, create cluster #2 according to the configuration given below. After creating and deploying clusters, two clusters run normally.
 
 ### Deploy the initial cluster
 
-Set the following environment variables according to the actual situation. You need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual use, where `cluster1_name` is the cluster name of cluster one, and `cluster1_cluster_domain` is the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of cluster one, and `cluster1_namespace` is the namespace of cluster one.
+Set the following environment variables according to the actual situation. You need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual use, where `cluster1_name` is the cluster name of cluster #1, and `cluster1_cluster_domain` is the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of cluster #1, and `cluster1_namespace` is the namespace of cluster #1.
 
 {{< copyable "shell-regular" >}}
 
@@ -89,9 +89,9 @@ EOF
 
 ### Deploy the new cluster to join the initial cluster
 
-You can wait for the cluster one to complete the deployment, then create cluster two. In actual situation, cluster two can join any existing cluster in multiple clusters.
+You can wait for the cluster #1 to complete the deployment, then create cluster #2. In actual situation, cluster #2 can join any existing cluster in multiple clusters.
 
-Refer to the following example and fill in the relevant information such as `Name`, `Cluster Domain`, and `Namespace` of cluster one and cluster two according to the actual situation:
+Refer to the following example and fill in the relevant information such as `Name`, `Cluster Domain`, and `Namespace` of cluster #1 and cluster #2 according to the actual situation:
 
 {{< copyable "shell-regular" >}}
 
@@ -421,7 +421,7 @@ For other TLS-related information, refer to the following documents:
 
 ### Deploy the initial cluster
 
-To deploy and initialize the cluster, use the following command. In actual use, you need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual situation, where `cluster1_name` is the cluster name of cluster one, `cluster1_cluster_domain` is the `Cluster Domain` of cluster one, and `cluster1_namespace` is the namespace of cluster one. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
+To deploy and initialize the cluster, use the following command. In actual use, you need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual situation, where `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the `Cluster Domain` of cluster #1, and `cluster1_namespace` is the namespace of cluster #1. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
 
 Set the following environment variables according to the actual situation.
 
@@ -483,7 +483,7 @@ EOF
 
 ### Deploy a new cluster to join the initial cluster
 
-You can wait for the cluster one to complete the deployment. After completing the deployment, you can create cluster two. The related command are as follows. In actual use, cluster one might not the initial cluster. You can specify any cluster in multiple clusters to join.
+You can wait for the cluster #1 to complete the deployment. After completing the deployment, you can create cluster #2. The related command are as follows. In actual use, cluster #1 might not the initial cluster. You can specify any cluster in multiple clusters to join.
 
 Set the following environment variables according to the actual situation:
 
@@ -560,7 +560,7 @@ When you need to make a cluster exit from the joined TiDB cluster deployed acros
 
 - After scaling in, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
-Take the cluster two created in the above document as an example. First, set the number of copies of PD, TiKV, TiDB to `0`. If you enable other components such as TiFlash, TiCDC, Pump, etc., set the number of these copies to `0`:
+Take the cluster #2 created in the above document as an example. First, set the number of copies of PD, TiKV, TiDB to `0`. If you enable other components such as TiFlash, TiCDC, Pump, etc., set the number of these copies to `0`:
 
 {{< copyable "shell-regular" >}}
 
@@ -568,7 +568,7 @@ Take the cluster two created in the above document as an example. First, set the
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-Wait for the status of cluster two to become `Ready`, and scale in related components to `0` copy:
+Wait for the status of cluster #2 to become `Ready`, and scale in related components to `0` copy:
 
 {{< copyable "shell-regular" >}}
 
@@ -576,7 +576,7 @@ Wait for the status of cluster two to become `Ready`, and scale in related compo
 kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
 ```
 
-The Pod list is displayed as `No resources found.`. At this time, Pods have all been scaled in, and cluster two exits the cluster. Check the cluster status of cluster two:
+The Pod list is displayed as `No resources found.`. At this time, Pods have all been scaled in, and cluster #2 exits the cluster. Check the cluster status of cluster #2:
 
 {{< copyable "shell-regular" >}}
 
@@ -584,7 +584,7 @@ The Pod list is displayed as `No resources found.`. At this time, Pods have all 
 kubectl get tc cluster2
 ```
 
-The result shows that cluster two is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
+The result shows that cluster #2 is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
 
 {{< copyable "shell-regular" >}}
 
