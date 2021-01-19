@@ -75,7 +75,7 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 >
 > Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
 
-TiDB Operator manages TiFlash by creating [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). Since `StatefulSet` does not support modifying `volumeClaimTemplates` after creation, updating `storageClaims` to add the disk can not mount the additional PV to the Pod. There are two solutions:
+TiDB Operator manages TiFlash by creating [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). Since `StatefulSet` does not support modifying `volumeClaimTemplates` after creation, updating `storageClaims` to add the disk cannot mount the additional PV to the Pod. There are two solutions:
 
 * When deploying the TiFlash cluster for the first time, determine how many PVs are required and configure `storageClaims`.
 * If you really want to add a PV, after configuring `storageClaims`, you need to manually delete the TiFlash StatefulSet (`kubectl delete sts -n ${namespace} ${cluster_name}-tiflash`) and wait for the TiDB Operator to recreate it.
