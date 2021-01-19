@@ -97,7 +97,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
 2. Wait for the TiFlash replicas of the related tables to be deleted.
 
-    Connect to the TiDB service and run the following command. If you can not find the replication information of the related tables, it means that the replica is deleted:
+    Connect to the TiDB service and run the following command. If you can not find the replication information of the related tables, it means that the replicas are deleted:
 
     {{< copyable "sql" >}}
 
@@ -113,7 +113,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     kubectl edit tidbcluster ${cluster_name} -n ${namespace}
     ```
 
-4. Check the state of TiFlash Pods and TiFlash node stores.
+4. Check the state of TiFlash Pods and TiFlash stores.
 
    First, run the following command to check whether you delete the TiFlash Pod successfully:
 
@@ -125,7 +125,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
    If the output is empty, it means that you delete the Pod of the TiFlash cluster successfully.
 
-   To check whether the store of the TiFlash node is in the `Tombstone` state, run the following command:
+   To check whether the stores of the TiFlash are in the `Tombstone` state, run the following command:
 
     ```shell
     kubectl get tidbcluster ${cluster_name} -n ${namespace} -o yaml
@@ -155,7 +155,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
             state: Tombstone
     ```
 
-    Only after you delete all Pods of the TiFlash cluster successfully and the store of all TiFlash nodes has changed to the `Tombstone` state, can you perform the next operation.
+    Only after you delete all Pods of the TiFlash cluster successfully and all the TiFlash stores have changed to the `Tombstone` state, can you perform the next operation.
 
 5. Delete the TiFlash StatefulSet.
 
