@@ -24,7 +24,7 @@ To support canary deployment, the following parameters are added to the `values.
 
 - `appendReleaseSuffix`
 
-    If this parameter is set to `true`, when you deploy TiDB Operator, TiDB Operator adds automatically a prefix (`-{{ .Release.Name }}`) to the name of resources related to `tidb-controller-manager` and `tidb-scheduler`.
+    If this parameter is set to `true`, when you deploy TiDB Operator, the Helm chart automatically adds a suffix (`-{{ .Release.Name }}`) to the name of resources related to `tidb-controller-manager` and `tidb-scheduler`.
 
     For example, if you execute `helm install canary pingcap/tidb-operator ...`, the name of the `tidb-controller-manager` deployment is `tidb-controller-manager-canary`.
 
@@ -86,7 +86,7 @@ To support canary deployment, the following parameters are added to the `values.
           ...
         ```
 
-        If `label` is not set when you deploy the TiDB cluster, you can configure `label` by running the following command:
+        If `labels` is not set when you deploy the TiDB cluster, you can configure `labels` by running the following command:
 
         {{< copyable "shell-regular" >}}
 
@@ -128,7 +128,7 @@ To support canary deployment, the following parameters are added to the `values.
           ...
         ```
 
-        If `label` is not set when you deploy the TiDB cluster, you can configure `label` by running the following command:
+        If `labels` is not set when you deploy the TiDB cluster, you can configure `labels` by running the following command:
 
         {{< copyable "shell-regular" >}}
 
