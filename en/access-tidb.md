@@ -6,9 +6,11 @@ aliases: ['/docs/tidb-in-kubernetes/dev/access-tidb/']
 
 # Access the TiDB Cluster
 
+This document describes how to access the TiDB cluster.
+
 You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc., and use different access methods for different types. 
 
-You can obtain TiDB Service information by the following command:
+You can obtain TiDB Service information by running the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -39,7 +41,7 @@ The above example describes the information of the `basic-tidb` service in the `
 
 ## NodePort
 
-If there is no LoadBalancer, you can choose to expose it through NodePort. NodePort exposes services through the node's IP and static port. You can access a NodePort service outside the cluster by requesting `NodeIP + NodePort`.
+If there is no LoadBalancer, you can choose to expose the service through NodePort. NodePort exposes services through the node's IP and static port. You can access a NodePort service from outside of the cluster by requesting `NodeIP + NodePort`.
 
 To view the Node Port assigned by Service, run the following commands to obtain the Service object of TiDB:
 
@@ -62,8 +64,8 @@ To check you can access TiDB services by using the IP of what nodes, see the fol
 
 ## LoadBalancer
 
-If Kubernetes is run in an environment with LoadBalancer, such as GCP/AWS platform, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
+If the TiDB cluster runs in an environment with LoadBalancer, such as on GCP or AWS, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
 
-See [EKS](deploy-on-aws-eks.md#install-the-mysql-client-and-connect), [GKE](deploy-on-gcp-gke.md#install-the-mysql-client-and-connect) and [ACK](deploy-on-alibaba-cloud.md#access-the-database) and access TiDB Service through LoadBalancer.
+To access TiDB Service through LoadBalancer, refer to [EKS](deploy-on-aws-eks.md#install-the-mysql-client-and-connect), [GKE](deploy-on-gcp-gke.md#install-the-mysql-client-and-connect) and [ACK](deploy-on-alibaba-cloud.md#access-the-database).
 
 See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/) to know more about the features of Service and what LoadBalancer in the cloud platform supports.
