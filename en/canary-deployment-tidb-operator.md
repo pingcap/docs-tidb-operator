@@ -5,18 +5,18 @@ summary: Learn how to perform a canary deployment of TiDB Operator and how to de
 
 # Canary Deployment of TiDB Operator
 
-This document describes how to perform a canary upgrade of TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
+This document describes how to perform a canary upgrade of TiDB Operator and how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
 ## Scenarios
 
-- Canary upgrade TiDB Operator.
-- Deploy multiple TiDB Operator to manage different TiDB clusters.
+- Perform a canary upgrade of TiDB Operator.
+- Deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
     > **Note:**
     >
     > - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s.
     > - Only one Admission Webhook is required.
-    > - If you have deployed multiple TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
+    > - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
 
 ## Related parameters
 
@@ -28,7 +28,7 @@ To support canary deployment, the following parameters are added to the `values.
 
     For example, if you execute `helm install canary pingcap/tidb-operator ...`, the name of the `tidb-controller-manager` deployment is `tidb-controller-manager-canary`.
 
-    If you need to deploy multiple TiDB Operator, set this parameter to `true`.
+    If you need to deploy multiple sets of TiDB Operator, set this parameter to `true`.
 
     Default value: `false`.
 
@@ -59,7 +59,7 @@ To support canary deployment, the following parameters are added to the `values.
 
     Default value: `true`.
 
-## Deploy multiple TiDB Operator to manage different TiDB clusters
+## Deploy multiple sets of TiDB Operator to manage different TiDB clusters
 
 1. Deploy the first TiDB Operator.
 
@@ -138,7 +138,7 @@ To support canary deployment, the following parameters are added to the `values.
 
     2. Refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md) to deploy the TiDB cluster. Confirm that each component in the cluster is started normally.
 
-5. View the logs of the two TiDB Operator, and confirm that each TiDB Operator manages the TiDB cluster that matches the corresponding selectors.
+5. View the logs of the two sets of TiDB Operator, and confirm that each TiDB Operator manages the TiDB cluster that matches the corresponding selectors.
 
     For example:
 
@@ -178,4 +178,4 @@ To support canary deployment, the following parameters are added to the `values.
     </code></pre>
     </details>
 
-    By comparing the logs of the two TiDB Operator, you can confirm that the first TiDB Operator only manages the `tidb-cluster-1/basic1` cluster, and the second TiDB Operator only manages the `tidb-cluster-2/basic2` cluster.
+    By comparing the logs of the two sets of TiDB Operator, you can confirm that the first TiDB Operator only manages the `tidb-cluster-1/basic1` cluster, and the second TiDB Operator only manages the `tidb-cluster-2/basic2` cluster.
