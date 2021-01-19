@@ -1,7 +1,7 @@
 ---
 title: 访问 Kubernetes 上的 TiDB 集群
 summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/access-tidb/','/docs-cn/tidb-in-kubernetes/v1.1/access-tidb/','/docs-cn/dev/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/','/docs-cn/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/access-tidb/','/docs-cn/tidb-in-kubernetes/v1.1/access-tidb/','/docs-cn/dev/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/','/docs-cn/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/','/docs-cn/stable/tidb-in-kubernetes/deploy/access-tidb/']
 ---
 
 # 访问 TiDB 集群
