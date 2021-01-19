@@ -1,11 +1,11 @@
 ---
 title: Canary Deployment of TiDB Operator
-summary: Learn how to canary upgrade TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
+summary: Learn how to perform a canary deployment of TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
 ---
 
 # Canary Deployment of TiDB Operator
 
-This document describes how to canary upgrade TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
+This document describes how to perform a canary upgrade of TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
 
 ## Scenarios
 
@@ -40,7 +40,7 @@ To support canary deployment, the following parameters are added to the `values.
 
 - `controllerManager.selector`
 
-    Sets the `-selector` parameter of `tidb-controller-manager`. The parameter is used to filter the CRs controlled by `tidb-controller-manager` according to the CR labels. If multiple selectors exist, the selectors are in `and` relationship.
+    Sets the `-selector` parameter for `tidb-controller-manager`. The parameter is used to filter the CRs controlled by `tidb-controller-manager` according to the CR labels. If multiple selectors exist, the selectors are in `and` relationship.
 
     Default value: `[]` (`tidb-controller-manager` controls all CRs).
 
