@@ -17,6 +17,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 - 使用 `cfssl` 系统颁发证书；
 - 使用 `cert-manager` 系统颁发证书；
 
+当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+
 ## 第一步：为 TiDB 集群颁发两套证书
 
 ### 使用 `cfssl` 系统颁发证书
@@ -73,6 +75,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     ``` json
     {
         "CN": "TiDB Server",
+        "CA": {
+            "expiry": "87600h"
+        },
         "key": {
             "algo": "rsa",
             "size": 2048
@@ -222,6 +227,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
       secretName: ${cluster_name}-ca-secret
       commonName: "TiDB CA"
       isCA: true
+      duration: 87600h # 10yrs
+      renewBefore: 720h # 30d
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
@@ -371,6 +378,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     - PD Dashboard
     - Backup
     - Restore
+      
+    如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则也可以为其中的 TiDB Lightning 组件生成 Client 端证书。
 
     下面就来生成这些组件的 Client 证书。
 
@@ -380,18 +389,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-tidb-initializer-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-tidb-initializer-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-tidb-initializer-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-tidb-initializer-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "TiDB Initializer client"
-        usages:
+          commonName: "TiDB Initializer client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -399,18 +408,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-pd-dashboard-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-pd-dashboard-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-pd-dashboard-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-pd-dashboard-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "PD Dashboard client"
-        usages:
+          commonName: "PD Dashboard client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -418,18 +427,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-backup-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-backup-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-backup-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-backup-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "Backup client"
-        usages:
+          commonName: "Backup client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -437,18 +446,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         apiVersion: cert-manager.io/v1alpha2
         kind: Certificate
         metadata:
-        name: ${cluster_name}-restore-client-secret
-        namespace: ${namespace}
+          name: ${cluster_name}-restore-client-secret
+          namespace: ${namespace}
         spec:
-        secretName: ${cluster_name}-restore-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+          secretName: ${cluster_name}-restore-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
             - PingCAP
-        commonName: "Restore client"
-        usages:
+          commonName: "Restore client"
+          usages:
             - client auth
-        issuerRef:
+          issuerRef:
             name: ${cluster_name}-tidb-issuer
             kind: Issuer
             group: cert-manager.io
@@ -461,6 +470,29 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         - `dnsNames` 和 `ipAddresses` 不需要填写；
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+
+        如需要为 TiDB Lignting 组件生成 Client 端证书，则可以使用以下内容并通过在 TiDB Lightning 的 Helm Chart `values.yaml` 中设置 `tlsCluster.tlsClientSecretName` 为 `${cluster_name}-lightning-client-secret`：
+        
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-lightning-client-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-lightning-client-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
+            - PingCAP
+          commonName: "Lightning client"
+          usages:
+            - client auth
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
 
     2. 通过执行下面的命令来创建证书：
 
@@ -497,7 +529,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
          name: ${cluster_name}
          namespace: ${namespace}
         spec:
-         version: v3.1.0
+         version: v4.0.9
          timezone: UTC
          pvReclaimPolicy: Retain
          pd:
@@ -638,5 +670,9 @@ kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpat
 ``` shell
 mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
+
+> **注意：**
+>
+> [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 
 最后请参考 [官网文档](https://pingcap.com/docs-cn/stable/enable-tls-between-clients-and-servers/#检查当前连接是否是加密连接) 来验证是否正确开启了 TLS。

@@ -21,7 +21,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     > **注意：**
     >
-    > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.1.0`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
+    > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.2.0-alpha.1`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
+    > 如果未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) )。
 
 2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -38,6 +39,23 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     ```shell
     helm upgrade tidb-operator pingcap/tidb-operator --version=${version} -f ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    ```
+    
+    Pod 全部正常启动之后，运行以下命令确认 TiDB Operator 镜像版本：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
+    ```
+
+    输出类似下方结果则表示升级成功，`${version}`表示要升级到的版本号。
+
+    ```
+    image: pingcap/tidb-operator:${version}
+    image: docker.io/pingcap/tidb-operator:${version}
+    image: pingcap/tidb-operator:${version}
+    image: docker.io/pingcap/tidb-operator:${version}
     ```
 
     > **注意：**

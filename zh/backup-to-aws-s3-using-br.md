@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 # 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
 
-本文详细描述了如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [BR](https://pingcap.com/docs-cn/stable/br/backup-and-restore-tool/) 获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
+本文详细描述了如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
 
 本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现。
 
@@ -35,13 +35,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
     使用该授权模式时，可以参考 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/create-cluster.html) 创建 EKS 集群， 并且部署 TiDB Operator 以及 TiDB 集群。
 
-## Ad-hoc 全量备份
+## Ad-hoc 备份
 
-Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
+Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个自定义的 `Backup` Custom Resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
-目前 Ad-hoc 全量备份已经兼容以上三种授权模式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
+目前 Ad-hoc 备份已经兼容以上三种授权模式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
-### Ad-hoc 全量备份环境准备
+### Ad-hoc 备份环境准备
+
+> **注意：**
+>
+> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤，并且不需要在 Backup CR 中配置 `spec. tikvGCLifeTime` 和 `spec.from` 字段。
 
 #### 通过 AccessKey 和 SecretKey 授权
 
@@ -90,7 +94,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
 3. 创建 IAM 角色：
 
     可以参考 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)来为账号创建一个 IAM 角色，并且通过 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html) 为 IAM 角色赋予需要的权限。由于 `Backup` 需要访问 AWS 的 S3 存储，所以这里给 IAM 赋予了 `AmazonS3FullAccess` 的权限。
-    
+
 4. 绑定 IAM 到 TiKV Pod：
 
     在使用 BR 备份的过程中，TiKV Pod 和 BR Pod 一样需要对 S3 存储进行读写操作，所以这里需要给 TiKV Pod 打上 annotation 来绑定 IAM 角色。
@@ -126,7 +130,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
     ```
 
 3. 在集群上为服务帐户启用 IAM 角色：
-    
+
     可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) 开启所在的 EKS 集群的 IAM 角色授权。
 
 4. 创建 IAM 角色：
@@ -153,6 +157,10 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
 > **注意：**
 >
 > `arn:aws:iam::123456789012:role/user` 为步骤 4 中创建的 IAM 角色。
+
+### 数据库账户权限
+
+* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 
 ### 使用 BR 备份数据到 Amazon S3 的存储
 
@@ -185,6 +193,9 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # timeAgo: ${time}
         # checksum: true
         # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -229,6 +240,9 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -271,6 +285,9 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` Custom Resource (CR) 
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -318,26 +335,30 @@ kubectl get bk -n test1 -o wide
 更多 `Backup` CR 字段的详细解释:
 
 * `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_lifetime` 时间设置，默认为 72h。
+* `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
-    在备份开始之前，若 TiDB 集群的 `tikv_gc_lifetime` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
+    在备份开始之前，若 TiDB 集群的 `tikv_gc_life_time` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证备份的数据不被 TiKV GC 掉，TiDB Operator 会在备份前[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
 
-    备份结束后不论成功或者失败，只要老的 `tikv_gc_lifetime` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_lifetime` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_lifetime` 并认为备份失败。
+    备份结束后不论成功或者失败，只要老的 `tikv_gc_life_time` 比设置的 `.spec.tikvGCLifeTime` 小，TiDB Operator 都会尝试恢复 `tikv_gc_life_time` 为备份前的值。在极端情况下，TiDB Operator 访问数据库失败会导致 TiDB Operator 无法自动恢复 `tikv_gc_life_time` 并认为备份失败。
 
-    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_lifetime`：
+    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_life_time`：
 
     ```sql
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    如果发现 `tikv_gc_lifetime` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_lifetime`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_lifetime` 调回原样。
+    如果发现 `tikv_gc_life_time` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_life_time` 调回原样。
+
+    > **注意：**
+    >
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`：备份集群后删除备份 CR 时的备份文件清理策略。目前支持三种清理策略：
 
     * `Retain`：任何情况下，删除备份 CR 时会保留备份出的文件
     * `Delete`：任何情况下，删除备份 CR 时会删除备份出的文件
     * `OnFailure`：如果备份中失败，删除备份 CR 时会删除备份出的文件
-    
+
     如果不配置该字段，或者配置该字段的值为上述三种以外的值，均会保留备份出的文件。值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 `Delete`。
 
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
@@ -352,7 +373,38 @@ kubectl get bk -n test1 -o wide
 
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
-    ```     
+    ```
+
+    > **注意：**
+    >
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.from`.
+
+* `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库：
+
+    > **注意：**
+    >
+    > `tableFilter` 如果要写排除规则导出除 `db.table` 的所有表，`"!db.table"` 前必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+
+    ```
+    tableFilter:
+    - "*.*"
+    - "!db.table"
+    ```
+
+以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。
+
+自 v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考 [使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+
+* `.spec.br.cluster`：代表需要备份的集群名字。
+* `.spec.br.clusterNamespace`：代表需要备份的集群所在的 `namespace`。
+* `.spec.br.logLevel`：代表日志的级别。默认为 `info`。
+* `.spec.br.statusAddr`：为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试。如果不填，则默认不监听。
+* `.spec.br.concurrency`：备份时每一个 TiKV 进程使用的线程数。备份时默认为 4，恢复时默认为 128。
+* `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
+* `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
+* `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
+* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限传输给 TiKV 进程。默认为 `true`。
+* `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
 更多支持的兼容 S3 的 `provider` 如下：
 
@@ -371,7 +423,7 @@ kubectl get bk -n test1 -o wide
 
 ### 定时全量备份环境准备
 
-同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
+同 [Ad-hoc 备份环境准备](#ad-hoc-备份环境准备)。
 
 ### 使用 BR 定时备份数据到 Amazon S3 的存储
 
@@ -409,6 +461,7 @@ kubectl get bk -n test1 -o wide
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -458,6 +511,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -505,6 +559,7 @@ kubectl get bk -n test1 -o wide
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -533,7 +588,7 @@ kubectl get bks -n test1 -o wide
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
 ```
 
-从以上两个示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 S3 兼容存储相关的配置，该配置与 Ad-hoc 全量备份到兼容 S3 的存储配置完全一样，可参考[使用 BR 备份数据到 Amazon S3 的存储](#使用-br-备份数据到-amazon-s3-的存储)。下面介绍 `backupSchedule` 独有的配置项：
+从以上两个示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 S3 兼容存储相关的配置，该配置与 Ad-hoc 备份到兼容 S3 的存储配置完全一样，可参考[使用 BR 备份数据到 Amazon S3 的存储](#使用-br-备份数据到-amazon-s3-的存储)。下面介绍 `backupSchedule` 独有的配置项：
 
 + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
@@ -542,7 +597,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 删除备份的 backup CR
 
-用户可以通过下述语句来删除对应的全量备份 CR 或定时全量备份 CR。
+用户可以通过下述语句来删除对应的备份 CR 或定时全量备份 CR。
 
 {{< copyable "shell-regular" >}}
 
@@ -566,3 +621,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

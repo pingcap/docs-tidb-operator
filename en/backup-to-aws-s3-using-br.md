@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 # Back up Data to S3-Compatible Storage Using BR
 
-This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
+This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -39,15 +39,19 @@ In the AWS cloud environment, different types of Kubernetes clusters provide dif
     >
     > When you use this method, refer to [AWS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) for instructions on how to create an EKS cluster, and then deploy TiDB Operator and the TiDB cluster.
 
-## Ad-hoc full backup
+## Ad-hoc backup
 
-Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-Currently, the above three authorization methods are supported for the ad-hoc full backup. This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage and all the above methods are used in the examples.
+Currently, the above three authorization methods are supported for the ad-hoc backup. This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage and all the above methods are used in the examples.
 
-### Prerequisites for ad-hoc full backup
+### Prerequisites for ad-hoc backup
 
-Before you perform ad-hoc full backup, AWS account permissions need to be granted. This section describes three methods to grant AWS account permissions.
+Before you perform ad-hoc backup, AWS account permissions need to be granted. This section describes three methods to grant AWS account permissions.
+
+> **Note:**
+>
+> If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically. You can omit the step that creates the secret which stores the account and password needed to access the TiDB cluster.
 
 #### Grant permissions by importing AccessKey and SecretKey
 
@@ -162,7 +166,11 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
     >
     > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 4.
 
-### Process of ad-hoc full backup
+### Required database account privileges
+
+* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
+
+### Process of ad-hoc backup
 
 - If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
@@ -193,6 +201,9 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
         # timeAgo: ${time}
         # checksum: true
         # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -237,6 +248,9 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -279,6 +293,9 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       from:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -293,8 +310,7 @@ Before you perform ad-hoc full backup, AWS account permissions need to be grante
 
 The above three examples uses three methods to grant permissions to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored.
 
-<details>
-<summary>Configure the access-control list (ACL) policy</summary>
+#### Configure ACL policies
 
 Amazon S3 supports the following ACL policies:
 
@@ -307,10 +323,7 @@ Amazon S3 supports the following ACL policies:
 
 If the ACL policy is not configured, the `private` policy is used by default. For the detailed description of these access control policies, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html).
 
-</details>
-
-<details>
-<summary>Configure <code>storageClass</code></summary>
+#### Configure storageClass types
 
 Amazon S3 supports the following `storageClass` types:
 
@@ -323,27 +336,26 @@ Amazon S3 supports the following `storageClass` types:
 
 If `storageClass` is not configured, `STANDARD_IA` is used by default. For the detailed description of these storage types, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html).
 
-</details>
+#### Configure Backup CR
 
 After creating the `Backup` CR, use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
 
- ```shell
- kubectl get bk -n test1 -o wide
- ```
+```shell
+kubectl get bk -n test1 -o wide
+```
 
-<details>
-<summary>More <code>Backup</code> CR parameter description</summary>
+More `Backup` CR parameter description:
 
 - `.spec.metadata.namespace`: the namespace where the `Backup` CR is located.
-- `.spec.tikvGCLifeTime`: the temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+- `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+    Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_life_time` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_life_time` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
 
     {{< copyable "sql" >}}
 
@@ -351,12 +363,17 @@ After creating the `Backup` CR, use the following command to check the backup st
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
+    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
 
     {{< copyable "sql" >}}
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    ```
+
+    > **Note:**
+    >
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
 
 - * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
 
@@ -384,12 +401,42 @@ After creating the `Backup` CR, use the following command to check the backup st
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
 
-</details>
+    > **Note:**
+    >
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
 
-<details>
-<summary>Supported S3-compatible <code>provider</code></summary>
+- `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
 
-- `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
+    > **Note:**
+    >
+    > To use the table filter to exclude `db.table`, you need to add the `*.*` rule to include all tables first. For example:
+
+    ```
+    tableFilter:
+    - "*.*"
+    - "!db.table"
+    ```
+
+In the examples above, some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`.
+
+Since TiDB Operator v1.1.6, if you want to back up incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
+
+* `.spec.br.cluster`: The name of the cluster to be backed up.
+* `.spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
+* `.spec.br.logLevel`: The log level (`info` by default).
+* `.spec.br.statusAddr`: The listening address through which BR provides statistics. If not specified, BR does not listen on any status address by default.
+* `.spec.br.concurrency`: The number of threads used by each TiKV process during backup. Defaults to `4` for backup and `128` for restore.
+* `.spec.br.rateLimit`: The speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The speed limit is not set by default.
+* `.spec.br.checksum`: Whether to verify the files after the backup is completed. Defaults to `true`.
+* `.spec.br.timeAgo`: Backs up the data before `timeAgo`. If the parameter value is not specified (empty by default), it means backing up the current data. It supports data formats such as "1.5h" and "2h45m". See [ParseDuration](https://golang.org/pkg/time/#ParseDuration) for more information.
+* `.spec.br.sendCredToTikv`: Whether the BR process passes its GCP privileges to the TiKV process. Defaults to `true`.
+* `.spec.br.options`: The extra arguments that BR supports. It accepts an array of strings, supported since TiDB Operator v1.1.6. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
+
+#### Configure S3-compatible providers
+
+Supported S3-compatible `provider`s are as follows:
+
+- `alibaba`：Alibaba Cloud Object Storage System (OSS), formerly Aliyun
 - `digitalocean`：Digital Ocean Spaces
 - `dreamhost`：Dreamhost DreamObjects
 - `ibmcos`：IBM COS S3
@@ -398,15 +445,13 @@ After creating the `Backup` CR, use the following command to check the backup st
 - `wasabi`：Wasabi Object Storage
 - `other`：Any other S3 compatible provider
 
-</details>
-
 ## Scheduled full backup
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
 ### Prerequisites for scheduled full backup
 
-The prerequisites for the scheduled full backup is the same as the [prerequisites for ad-hoc full backup](#prerequisites-for-ad-hoc-full-backup).
+The prerequisites for the scheduled full backup is the same as the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
 
 ### Process of scheduled full backup
 
@@ -444,6 +489,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -493,6 +539,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -540,6 +587,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -570,7 +618,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 From the above two examples, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
 
-`backupTemplate` specifies the configuration related to the S3 storage, which is the same as the configuration of the ad-hoc full backup to S3 (refer to [S3 backup process](#process-of-ad-hoc-full-backup) for details). The following are the unique configuration items of `backupSchedule`:
+`backupTemplate` specifies the configuration related to the S3 storage, which is the same as the configuration of the ad-hoc full backup to S3 (refer to [S3 backup process](#process-of-ad-hoc-backup) for details). The following are the unique configuration items of `backupSchedule`:
 
 - `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup items to be retained. When this value is exceeded, the outdated backup items will be deleted. If you set this configuration item to `0`, all backup items are retained.
 
@@ -582,7 +630,7 @@ From the above two examples, you can see that the `backupSchedule` configuration
 
 ## Delete the backup CR
 
-You can delete the full backup CR (`Backup`) and the scheduled backup CR (`BackupSchedule`) by the following commands:
+You can delete the backup CR (`Backup`) and the scheduled backup CR (`BackupSchedule`) by the following commands:
 
 {{< copyable "shell-regular" >}}
 
@@ -604,3 +652,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 After deleting the `metadata.finalizers` configuration, you can delete CR normally.
+
+## Troubleshooting
+
+If you encounter any problem during the backup process, refer to [Common Deployment Failures](deploy-failures.md).

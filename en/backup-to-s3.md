@@ -21,9 +21,17 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 - If you use Amazon S3 to back up and restore the cluster, you have three methods to grant permissions. For details, refer to [Back up TiDB Cluster Data to AWS Using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions).
 - If Ceph is used as backend storage in backup and restore test, the permission is granted by importing AccessKey and SecretKey.
 
-### Prerequisites for ad-hoc backup
+### Prerequisites for ad-hoc full backup
 
-Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequisites-for-ad-hoc-full-backup).
+Refer to [Ad-hoc backup prerequisites](backup-to-aws-s3-using-br.md#prerequisites-for-ad-hoc-backup).
+
+### Required database account privileges
+
+* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
+* SELECT
+* RELOAD
+* LOCK TABLES
+* REPLICATION CLIENT
 
 ### Ad-hoc backup process
 
@@ -82,7 +90,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -121,7 +129,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -165,7 +173,7 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
@@ -208,14 +216,11 @@ Refer to [Ad-hoc full backup prerequisites](backup-to-aws-s3-using-br.md#prerequ
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-      storageClassName: local-storage
+      # storageClassName: local-storage
       storageSize: 10Gi
     ```
 
 In the examples above, all data of the TiDB cluster is exported and backed up to Amazon S3 and Ceph respectively. You can ignore the `acl`, `endpoint`, and `storageClass` configuration items in the Amazon S3 configuration. S3-compatible storage types other than Amazon S3 can also use a configuration similar to that of Amazon S3. You can also leave the configuration item fields empty if you do not need to configure these items as shown in the above Ceph configuration.
-
-<details>
-<summary>Configure the access-control list (ACL) policy</summary>
 
 Amazon S3 supports the following ACL polices:
 
@@ -228,11 +233,6 @@ Amazon S3 supports the following ACL polices:
 
 If the ACL policy is not configured, the `private` policy is used by default. For the detailed description of these access control policies, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html).
 
-</details>
-
-<details>
-<summary>Configure <code>storageClass</code></summary>
-
 Amazon S3 supports the following `storageClass` types:
 
 * `STANDARD`
@@ -244,27 +244,24 @@ Amazon S3 supports the following `storageClass` types:
 
 If `storageClass` is not configured, `STANDARD_IA` is used by default. For the detailed description of these storage types, refer to [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html).
 
-</details>
-
 After creating the `Backup` CR, you can use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
 
- ```shell
- kubectl get bk -n test1 -owide
- ```
+```shell
+kubectl get bk -n test1 -owide
+```
 
-<details>
-<summary>More <code>Backup</code> CR parameter description</summary>
+More `Backup` CR parameter description:
 
 * `.spec.metadata.namespace`: the namespace where the `Backup` CR is located.
-* `.spec.tikvGCLifeTime`: the temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+* `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+    Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_life_time` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_life_time` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
 
     {{< copyable "sql" >}}
 
@@ -272,12 +269,13 @@ After creating the `Backup` CR, you can use the following command to check the b
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
+    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
 
     {{< copyable "sql" >}}
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    ```
 
 * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
 
@@ -298,16 +296,26 @@ After creating the `Backup` CR, you can use the following command to check the b
 * `spec.s3.region`: configures the Region where Amazon S3 is located if you want to use Amazon S3 for backup storage.
 * `.spec.s3.bucket`: the name of the bucket compatible with S3 storage.
 * `.spec.s3.prefix`: this field can be ignored. If you set this field, it will be used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
-* `.spec.dumpling`: Dumpling-related configurations, with two major fields. One is the `options` field, which specifies some parameters needed by Dumpling, and the other is the `tableFilter` field, which allows Dumpling to back up a table that matches the [table filter rule](https://docs.pingcap.com/tidb/stable/table-filter). These configurations of Dumpling can be ignored by default. When not specified, the values of `options` and `tableFilter` (by default) is as follows:
+* `.spec.dumpling`: Dumpling-related configurations. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/dev/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
 
     ```
     options:
     - --threads=16
     - --rows=10000
+    ```
+
+* `.spec.storageClassName`: the persistent volume (PV) type specified for the backup operation.
+* `.spec.storageSize`: the PV size specified for the backup operation (`100 Gi` by default). This value must be greater than the size of the TiDB cluster to be backed up.
+
+    The PVC name corresponding to the `Backup` CR of a TiDB cluster is fixed. If the PVC already exists in the cluster namespace and the size is smaller than `spec.storageSize`, you need to delete this PVC and then run the Backup job.
+
+* `.spec.tableFilter`: Dumpling only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, the default value of `tableFilter` is as follows:
+
+    ```bash
     tableFilter:
     - "*.*"
     - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
-   ```
+    ```
 
     > **Note:**
     >
@@ -319,17 +327,9 @@ After creating the `Backup` CR, you can use the following command to check the b
     - "!db.table"
     ```
 
-* `.spec.storageClassName`: the persistent volume (PV) type specified for the backup operation.
-* `.spec.storageSize`: the PV size specified for the backup operation (`100 Gi` by default). This value must be greater than the size of the TiDB cluster to be backed up.
+Supported S3-compatible providers are as follows:
 
-    The PVC name corresponding to the `Backup` CR of a TiDB cluster is fixed. If the PVC already exists in the cluster namespace and the size is smaller than `spec.storageSize`, you need to delete this PVC and then run the Backup job.
-
-</details>
-
-<details>
-<summary>Supported S3-compatible <code>provider</code></summary>
-
-* `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
+* `alibaba`：Alibaba Cloud Object Storage System (OSS), formerly Aliyun
 * `digitalocean`：Digital Ocean Spaces
 * `dreamhost`：Dreamhost DreamObjects
 * `ibmcos`：IBM COS S3
@@ -338,15 +338,13 @@ After creating the `Backup` CR, you can use the following command to check the b
 * `wasabi`：Wasabi Object Storage
 * `other`：Any other S3 compatible provider
 
-</details>
-
 ## Scheduled full backup to S3-compatible storage
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
 ### Prerequisites for scheduled backup
 
-The prerequisites for the scheduled backup is the same as the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
+The prerequisites for the scheduled backup is the same as the [prerequisites for ad-hoc full backup](#prerequisites-for-ad-hoc-full-backup).
 
 ### Scheduled backup process
 
@@ -410,7 +408,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -454,7 +452,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -502,7 +500,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -549,7 +547,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
       #  - --rows=10000
       #  tableFilter:
       #  - "test.*"
-        storageClassName: local-storage
+        # storageClassName: local-storage
         storageSize: 10Gi
     ```
 
@@ -608,3 +606,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 After deleting the `metadata.finalizers` configuration, you can delete CR normally.
+
+## Troubleshooting
+
+If you encounter any problem during the backup process, refer to [Common Deployment Failures](deploy-failures.md).

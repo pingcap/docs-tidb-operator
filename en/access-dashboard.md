@@ -32,7 +32,7 @@ spec:
 >
 > This guide shows how to quickly access TiDB Dashboard. Do **NOT** use this method in the production environment. For production environments, refer to [Access TiDB Dashboard by Ingress](#access-tidb-dashboard-by-ingress).
 
-TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You can refer to the following example to quickly deploy a v4.0.1 TiDB cluster in Kubernetes.
+TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You can refer to the following example to quickly deploy a v4.0.4 TiDB cluster in Kubernetes.
 
 1. Deploy the following `.yaml` file into the Kubernetes cluster by running the `kubectl apply -f` command:
 
@@ -42,7 +42,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     metadata:
       name: basic
     spec:
-      version: v4.0.1
+      version: v4.0.9
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -156,6 +156,35 @@ type: kubernetes.io/tls
 
 After Ingress is deployed, visit <https://{host}/dashboard> to access TiDB Dashboard.
 
+### Use NodePort Service
+
+Because `ingress` can only be accessed with a domain name, it might be difficult to use `ingress` in some scenarios. In this case, to access and use TiDB Dashboard, you can add a `Service` of `NodePort` type.
+
+The following is an `.yaml` example using the `Service` of `NodePort` type to access the TiDB Dashboard. To deploy the following `.yaml` file into the Kubernetes cluster, you can run the `kubectl apply -f` command:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: access-dashboard
+  namespace: ${namespace}
+spec:
+  ports:
+  - name: dashboard
+    port: 10262
+    protocol: TCP
+    targetPort: 10262
+  type: NodePort
+  selector:
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/instance: ${cluster_name}
+    app.kubernetes.io/name: tidb-cluster
+```
+
+After deploying the `Service`, you can access TiDB Dashboard via <https://{nodeIP}:{nodePort}/dashboard>. By default, `nodePort` is randomly assigned by Kubernetes. You can also specify an available port in the `.yaml` file.
+
+Note that if there is more than one PD `Pod` in the cluster, you need to set `spec.pd.enableDashboardInternalProxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
+
 ## Update the TiDB cluster
 
 To enable quick access to TiDB Dashboard by updating an existing TiDB cluster, update the following two configurations:
@@ -170,3 +199,13 @@ spec:
   pd:
     enableDashboardInternalProxy: true
 ```
+
+## Unsupported TiDB Dashboard features
+
+Due to the special environment of Kubernetes, some features of TiDB Dashboard are not supported in TiDB Operator, including:
+
+- In **Overview** -> **Monitor & Alert** -> **View Metrics**, the link does not direct to the Grafana monitoring dashboard. If you need to access Grafana, refer to [Access the Grafana monitoring dashboard](monitor-a-tidb-cluster.md#access-the-grafana-monitoring-dashboard).
+
+- The log search feature is unavailable. If you need to view the log of a component, execute `kubectl logs ${pod_name} -n {namespace}`. You can also view logs using the log service of the Kubernetes cluster.
+
+- In **Cluster Info** -> **Hosts**, the **Disk Usage** cannot display correctly. You can view the disk usage of each component by viewing the component dashboards in [the TidbMonitor dashboard](monitor-a-tidb-cluster.md#access-the-grafana-monitoring-dashboard). You can also view the disk usage of Kubernetes nodes by deploying a [Kubernetes host monitoring system](monitor-kubernetes.md#monitor-kubernetes-components).

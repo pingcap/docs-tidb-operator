@@ -18,7 +18,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    In the command above, `${version}` is the version of the TiDB cluster, such as `v4.0.0-rc`.
+    In the command above, `${version}` is the version of the TiDB cluster, such as `v4.0.9`.
 
 2. Unpack the TiDB package for installation:
 
@@ -53,7 +53,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id`. The value of `alloc-id` must be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
-1. Access the Prometheus monitoring data of the TiDB cluster by taking steps in [Access the monitoring data](monitor-a-tidb-cluster.md#access-the-monitoring-data).
+1. Access the Prometheus monitoring data of the TiDB cluster by taking steps in [Access the Prometheus monitoring data](monitor-a-tidb-cluster.md#access-the-prometheus-monitoring-data).
 
 2. Enter `pd_cluster_id` in the input box and click the `Execute` button to make a query. Get the largest value in the query result.
 

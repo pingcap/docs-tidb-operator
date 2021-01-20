@@ -86,14 +86,6 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     watch kubectl get -n $namespace pod -o wide
     ```
 
-    或者：
-
-    {{< copyable "shell-regular" >}}
-
-    ```sql
-    watch tkctl get all
-    ```
-
     Pod 恢复正常运行后，操作结束。
 
 ## 维护 TiKV 实例所在节点
@@ -192,7 +184,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pvc ${pvc_name}
+    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
     ```
 
 6. 删除 TiKV 实例：

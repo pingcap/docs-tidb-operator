@@ -17,9 +17,12 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
 
 + 如果 TiDB 集群版本 >= v3.1，可以参考以下文档：
-
-    - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
+    - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
+    - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+    - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
     - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+    - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+    - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
 
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
@@ -95,7 +98,7 @@ Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-backup --name=${backup_name} --namespace=${namespace} -f values.yaml --version=${version}
+    helm install ${backup_name} pingcap/tidb-backup --namespace=${namespace} -f values.yaml --version=${version}
     ```
 
 ### 查看备份
@@ -131,7 +134,7 @@ kubectl get pvc -n ${namespace} -l app.kubernetes.io/component=backup,pingcap.co
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-backup --namespace=${namespace} --name=${restore_name} -f values.yaml --version=${version}
+    helm install ${restore_name} pingcap/tidb-backup --namespace=${namespace} -f values.yaml --version=${version}
     ```
 
 ## 增量备份

@@ -16,8 +16,12 @@ For TiDB Operator 1.1 or later versions, it is recommended that you use the back
     - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
     - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 + If the TiDB cluster version >= v3.1, refer to the following documents:
+    - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
+    - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
     - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
     - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
+    - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
+    - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
 TiDB in Kubernetes supports two backup strategies using Helm charts:
 
@@ -93,7 +97,7 @@ Follow the steps below to perform an ad-hoc full backup task:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-backup --name=${backup_name} --namespace=${namespace} -f values.yaml --version=${version}
+    helm install ${backup_name} pingcap/tidb-backup --namespace=${namespace} -f values.yaml --version=${version}
     ```
 
 ### View backups
@@ -129,7 +133,7 @@ The `pingcap/tidb-backup` helm chart helps restore a TiDB cluster using backup d
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-backup --namespace=${namespace} --name=${restore_name} -f values.yaml --version=${version}
+    helm install ${restore_name} pingcap/tidb-backup --namespace=${namespace} -f values.yaml --version=${version}
     ```
 
 ## Incremental backup

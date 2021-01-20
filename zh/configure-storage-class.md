@@ -66,7 +66,9 @@ kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
 
 ## 本地 PV 配置
 
-Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 项目中的 `local-volume-provisioner` 程序创建本地存储对象。创建流程如下：
+Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 项目中的 `local-volume-provisioner` 程序创建本地存储对象。
+
+以下示例流程以 `/mnt/disks` 为发现目录，以 `local-storage` 为 StorageClass 名称，创建 PV。如需为监控、备份等使用不同的数据盘或 StorageClass，可参考下文的[示例](#示例)进行配置。
 
 1. 参考 Kubernetes 提供的[操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在集群节点中预分配本地存储。
 
@@ -75,7 +77,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
     如果服务器没有外网，需要先用有外网的机器下载 `local-volume-provisioner.yaml` 文件，然后再进行安装：
@@ -83,7 +85,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/local-dind/local-volume-provisioner.yaml
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
@@ -113,7 +115,13 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     kubectl get pv | grep local-storage
     ```
 
-    `local-volume-provisioner` 会为发现目录 (discovery directory) 下的每一个挂载点创建一个 PV。注意，在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
+    `local-volume-provisioner` 会为发现目录 (discovery directory) 下的每一个挂载点创建一个 PV。
+    
+    > **注意：**
+    > 
+    > - 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
+    > - 如果发现目录下无任何挂载点，则不会创建任何 PV，`kubectl get pv | grep local-storage` 输出将为空。
+    > - 如果 StorageClass 名称不为 `local-storage`，则需按实际 StorageClass 名称替换 `kubectl get pv | grep local-storage` 中的 `local-storage` 来确认 PV 状态。
 
 更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local)和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
 
@@ -151,7 +159,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 盘挂载完成后，需要根据上述磁盘挂载情况修改 [`local-volume-provisioner` yaml 文件](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml)，配置发现目录并创建必要的 `StorageClass`。以下是根据上述挂载修改的 yaml 文件示例：
 
-```
+```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -246,7 +254,7 @@ data:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/local-dind/local-volume-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
 ```
 
 后续创建 TiDB 集群或备份等组件的时候，再配置相应的 `StorageClass` 供其使用。

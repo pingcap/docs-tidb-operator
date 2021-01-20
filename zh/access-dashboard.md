@@ -28,7 +28,7 @@ spec:
 >
 > 以下教程仅为演示如何快速访问 TiDB Dashboard，请勿在生产环境中直接使用以下方法。
 
-`TiDB Dashboard` 目前在 4.0.0 版本及以上中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.1 版本的 TiDB 集群。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
+`TiDB Dashboard` 目前在 4.0.0 版本及以上中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.4 版本的 TiDB 集群。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -36,7 +36,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.1
+  version: v4.0.9
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -144,6 +144,35 @@ type: kubernetes.io/tls
 
 当 Ingress 部署完成以后，你就可以通过 <https://{host}/dashboard> 访问 TiDB Dashboard。
 
+### 使用 NodePort Service
+
+由于 `Ingress` 必需使用域名访问，在某些场景下可能难以使用，此时可以通过添加一个 `NodePort` 类型的 `Service` 来访问和使用 `TiDB Dashboard`.
+
+以下是一个使用 `NodePort` 类型的 `Service` 访问 `TiDB Dashboard` 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: access-dashboard
+  namespace: ${namespace}
+spec:
+  ports:
+  - name: dashboard
+    port: 10262
+    protocol: TCP
+    targetPort: 10262
+  type: NodePort
+  selector:
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/instance: ${cluster_name}
+    app.kubernetes.io/name: tidb-cluster
+```
+
+当 `Service` 部署完成后，可以通过 <https://{nodeIP}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
+
+需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
+
 ## 更新 TiDB 集群
 
 如果你是在一个已经运行的 TiDB 集群上进行更新来开启快捷访问 `Dashboard` 功能，以下两项配置都需要更新:
@@ -158,3 +187,13 @@ spec:
   pd:
     enableDashboardInternalProxy: true
 ```
+
+## TiDB Operator 中不支持的 Dashboard 功能
+
+TiDB Dashboard 中的部分功能会因为 kubernetes 的特殊环境而无法使用，包括以下功能：
+
+1. **概况** -> **监控和告警** -> **查看监控项**的链接无法正确跳转到 Grafana 监控页。如果需要访问 Grafana 监控，可以参考[访问 Grafana 监控面板](monitor-a-tidb-cluster.md#访问-grafana-监控面板)。
+
+2. 日志搜索功能无法使用。如果需要查看对应组件的日志，可以使用 `kubectl logs ${pod_name} -n {namespace}` 查看对应组件的日志或者通过 Kubernetes 集群的日志服务查看。
+
+3. **集群信息** -> **主机** 的磁盘容量，磁盘使用率无法正确显示。可以通过 [TidbMonitor 监控面板](monitor-a-tidb-cluster.md#访问-grafana-监控面板) 的各组件 dashboards 查看各个组件的磁盘使用或者部署 [Kubernetes 宿主机 Grafana 监控](monitor-kubernetes.md#kubernetes-组件监控) 查看 Kubernetes 节点的磁盘使用情况。

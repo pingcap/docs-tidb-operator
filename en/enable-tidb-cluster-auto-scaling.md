@@ -85,7 +85,7 @@ spec:
 
 The TiDB component can be configured using `spec.tidb`. Currently, the auto-scaling API of TiDB is the same as that of TiKV.
 
-In a `TidbClusterAutoScaler` object, the `cluster` attribute specifies the TiDB clusters to be auto-scaled. These clusters are marked by `name` and `namespace`. You need to provide the metrics collection and query service to `TidbClusterAutoScaler` because it captures resource usage through the metrics collection component. The `monitor` attribute refers to the `TidbMonitor` object. For more information, see [Monitor TiDB Clusters using TidbMonitor](monitor-using-tidbmonitor.md).
+In a `TidbClusterAutoScaler` object, the `cluster` attribute specifies the TiDB clusters to be auto-scaled. These clusters are marked by `name` and `namespace`. You need to provide the metrics collection and query service to `TidbClusterAutoScaler` because it captures resource usage through the metrics collection component. The `monitor` attribute refers to the `TidbMonitor` object. For more information, see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
 For the external `Prometheus` other than `TidbMonitor`, you can fill in the Host by configuring `spec.metricsUrl` to specify the monitoring metrics collection service for the TiDB cluster. If you deploy the monitoring of the TiDB cluster using `Helm`, take the following steps to specify `spec.metricsUrl`.
 
@@ -233,7 +233,7 @@ spec:
 1. Set the auto-scaling interval.
 
     Compared with the stateless web service, a distributed database software is often sensitive to the instance auto-scaling. You need to make sure that there is a certain interval between each auto-scaling in case scaling operations are too frequent.
-    You can set the interval (in seconds) between each auto-scaling by configuring `spec.tikv.scaleInIntervalSeconds` and `spec.tikv.ScaleOutIntervalSeconds` in TiTV. This also applies to TiDB.
+    You can set the interval (in seconds) between each auto-scaling by configuring `spec.tikv.scaleInIntervalSeconds` and `spec.tikv.ScaleOutIntervalSeconds` in TiKV. This also applies to TiDB.
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1

@@ -16,11 +16,17 @@ TiDB Operator 部署前，请确认以下软件需求：
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) 启用（可选）
-* [Helm](https://helm.sh) 版本 >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797)
+* [Helm](https://helm.sh)
 
 ## 部署 Kubernetes 集群
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。若想创建一个简单集群测试，可以参考[快速上手教程](get-started.md)。
+
+对于部分公有云环境，可以参考如下文档部署 TiDB Operator 及 TiDB 集群：
+
+- [部署到 AWS EKS](deploy-on-aws-eks.md)
+- [部署到 GCP GKE](deploy-on-gcp-gke.md)
+- [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
 
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化存储 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。为提高性能，建议使用本地 SSD 盘作为持久化卷。可以根据[这一步](#配置本地持久化卷)配置本地持久化卷。
 
@@ -32,11 +38,9 @@ Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorizat
 
 ## 配置本地持久化卷
 
-### 准备本地卷
-
 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
-## 安装 TiDB Operator
+## 部署 TiDB Operator
 
 ### 创建 CRD
 
@@ -45,7 +49,7 @@ TiDB Operator 使用 [Custom Resource Definition (CRD)](https://kubernetes.io/do
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 如果服务器没有外网，需要先用有外网的机器下载 `crd.yaml` 文件，然后再进行安装：
@@ -53,7 +57,7 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.0/manifests/crd.yaml
+wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 kubectl apply -f ./crd.yaml
 ```
 
@@ -76,13 +80,15 @@ tidbinitializers.pingcap.com         2020-06-11T07:59:42Z
 tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 ```
 
-### 安装 
+### 自定义部署 TiDB Operator
 
-创建以上各种自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator，有两种安装方式：在线和离线安装 TiDB Operator。
+若需要快速部署 TiDB Operator，可参考快速上手中[部署 TiDB Operator文档](get-started.md#部署-tidb-operator)。本节介绍自定义部署 TiDB Operator 的配置方式。
 
-#### 在线安装 TiDB Operator
+创建 CRDs 之后，在 Kubernetes 集群上部署 TiDB Operator有两种方式：在线和离线部署。
 
-1. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
+#### 在线部署 TiDB Operator
+
+1. 获取你要部署的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -93,7 +99,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.1.0`，可以通过 `helm search -l tidb-operator` 查看当前支持的版本。
+    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.2.0-alpha.1`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
 
 2. 配置 TiDB Operator
 
@@ -101,12 +107,12 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     其他项目例如：`limits`、`requests` 和 `replicas`，请根据需要进行修改。
 
-3. 安装 TiDB Operator
+3. 部署 TiDB Operator
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
+    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml --create-namespace && \
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
 
@@ -133,15 +139,15 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.1.0.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
     ```
 
-    将 `tidb-operator-v1.1.0.tgz` 文件拷贝到服务器上并解压到当前目录：
+    将 `tidb-operator-v1.2.0-alpha.1.tgz` 文件拷贝到服务器上并解压到当前目录：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.1.0.tgz
+    tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
     ```
 
 2. 下载 TiDB Operator 运行所需的 Docker 镜像
@@ -153,8 +159,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.1.0
-    pingcap/tidb-backup-manager:v1.1.0
+    pingcap/tidb-operator:v1.2.0-alpha.1
+    pingcap/tidb-backup-manager:v1.2.0-alpha.1
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -167,13 +173,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.1.0
-    docker pull pingcap/tidb-backup-manager:v1.1.0
+    docker pull pingcap/tidb-operator:v1.2.0-alpha.1
+    docker pull pingcap/tidb-backup-manager:v1.2.0-alpha.1
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.1.0.tar pingcap/tidb-operator:v1.1.0
-    docker save -o tidb-backup-manager-v1.1.0.tar pingcap/tidb-backup-manager:v1.1.0
+    docker save -o tidb-operator-v1.2.0-alpha.1.tar pingcap/tidb-operator:v1.2.0-alpha.1
+    docker save -o tidb-backup-manager-v1.2.0-alpha.1.tar pingcap/tidb-backup-manager:v1.2.0-alpha.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -183,8 +189,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.1.0.tar
-    docker load -i tidb-backup-manager-v1.1.0.tar
+    docker load -i tidb-operator-v1.2.0-alpha.1.tar
+    docker load -i tidb-backup-manager-v1.2.0-alpha.1.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
@@ -221,7 +227,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install ./tidb-operator --name=tidb-operator --namespace=tidb-admin
+    helm install tidb-operator ./tidb-operator --namespace=tidb-admin --create-namespace
     ```
 
 5. 升级 TiDB Operator

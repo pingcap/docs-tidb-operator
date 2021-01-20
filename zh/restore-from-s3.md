@@ -20,6 +20,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 
 参考[环境准备](restore-from-aws-s3-using-br.md#环境准备)
 
+## 数据库账户权限
+
+| 权限 | 作用域 |
+|:----|:------|
+| SELECT | Tables |
+| INSERT | Tables |
+| UPDATE | Tables |
+| DELETE | Tables |
+| CREATE | Databases, tables |
+| DROP | Databases, tables |
+| ALTER | Tables |
+
 ## 将指定备份数据恢复到 TiDB 集群
 
 > **注意：**
@@ -66,7 +78,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
             endpoint: ${endpoint}
             secretName: s3-secret
             path: s3://${backup_path}
-          storageClassName: local-storage
+          # storageClassName: local-storage
           storageSize: 1Gi
         ```
 
@@ -99,7 +111,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
             region: ${region}
             secretName: s3-secret
             path: s3://${backup_path}
-          storageClassName: local-storage
+          # storageClassName: local-storage
           storageSize: 1Gi
         ```
 
@@ -122,19 +134,19 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
           namespace: test2
           annotations:
             iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
-          spec:
-            backupType: full
-            to:
-              host: ${tidb_host}
-              port: ${tidb_port}
-              user: ${tidb_user}
-              secretName: restore-demo2-tidb-secret
-            s3:
-              provider: aws
-              region: ${region}
-              path: s3://${backup_path}
-            storageClassName: local-storage
-            storageSize: 1Gi
+        spec:
+          backupType: full
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: aws
+            region: ${region}
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
         ```
 
     + 创建 Restore custom resource (CR)，通过 IAM 绑定 ServiceAccount 授权的方式将指定的备份数据恢复至 TiDB 集群：
@@ -154,20 +166,20 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
         metadata:
           name: demo2-restore
           namespace: test2
-          spec:
-            backupType: full
-            serviceAccount: tidb-backup-manager
-            to:
-              host: ${tidb_host}
-              port: ${tidb_port}
-              user: ${tidb_user}
-              secretName: restore-demo2-tidb-secret
-            s3:
-              provider: aws
-              region: ${region}
-              path: s3://${backup_path}
-            storageClassName: local-storage
-            storageSize: 1Gi
+        spec:
+          backupType: full
+          serviceAccount: tidb-backup-manager
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: aws
+            region: ${region}
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
         ```
 
 2. 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
@@ -193,3 +205,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 > **注意：**
 >
 > TiDB Operator 会创建一个 PVC，用于数据恢复，备份数据会先从远端存储下载到 PV，然后再进行恢复。如果恢复完成后想要删掉这个 PVC，可以参考[删除资源](cheat-sheet.md#删除资源)先把恢复 Pod 删掉，然后再把 PVC 删掉。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

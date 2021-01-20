@@ -18,6 +18,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 
 ## 环境准备
 
+> **注意：**
+>
+> 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，以下创建 `backup-demo1-tidb-secret` secret 的步骤可以省略。
+
 ### 通过 AccessKey 和 SecretKey 授权
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建备份需要的 RBAC 相关资源：
@@ -130,6 +134,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 >
 > `arn:aws:iam::123456789012:role/user` 为步骤 4 中创建的 IAM 角色。
 
+## 数据库账户权限
+
+* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
+
 ## 将指定备份数据恢复到 TiDB 集群
 
 + 创建 `Restore` CR，通过 accessKey 和 secretKey 授权的方式恢复集群：
@@ -160,6 +168,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
         # timeAgo: ${time}
         # checksum: true
         # sendCredToTikv: true
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -203,6 +212,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -244,6 +254,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
         # rateLimit: 0
         # timeAgo: ${time}
         # checksum: true
+      # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
       to:
         host: ${tidb_host}
         port: ${tidb_port}
@@ -279,4 +290,36 @@ kubectl get rt -n test2 -o wide
 
     ```shell
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
-    ```  
+    ```
+
+    > **注意：**
+    >
+    > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，无需配置 `spec.to`.
+
+* `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。当不配置时，BR 会恢复备份文件中的所有数据库：
+
+    > **注意：**
+    >
+    > `tableFilter` 如果要写排除规则导出除 `db.table` 的所有表，`"!db.table"` 前必须先添加 `*.*` 规则来导出所有表，如下面例子所示：
+
+    ```
+    tableFilter:
+    - "*.*"
+    - "!db.table"
+    ```
+
+以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。
+
+* `.spec.br.cluster`：代表需要备份的集群名字。
+* `.spec.br.clusterNamespace`：代表需要备份的集群所在的 `namespace`。
+* `.spec.br.logLevel`：代表日志的级别。默认为 `info`。
+* `.spec.br.statusAddr`：为 BR 进程监听一个进程状态的 HTTP 端口，方便用户调试。如果不填，则默认不监听。
+* `.spec.br.concurrency`：备份时每一个 TiKV 进程使用的线程数。备份时默认为 4，恢复时默认为 128。
+* `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
+* `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
+* `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
+* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 GCP 权限传输给 TiKV 进程。默认为 `true`。
+
+## 故障诊断
+
+在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。

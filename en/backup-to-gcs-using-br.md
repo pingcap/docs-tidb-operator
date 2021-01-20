@@ -5,17 +5,17 @@ summary: Learn how to back up data to Google Cloud Storage (GCS) using BR.
 
 # Back up Data to GCS Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS). "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to GCS.
+This document describes how to back up the data of a TiDB cluster in Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to GCS.
 
 The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
-## Ad-hoc full backup
+## Ad-hoc backup
 
-Ad-hoc full backup describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
 This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to GCS.
 
-### Prerequisites for ad-hoc full backup
+### Prerequisites for ad-hoc backup
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -43,7 +43,15 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
-### Process of ad-hoc full backup
+    > **Note:**
+    >
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit this step.
+
+### Required database account privileges
+
+* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
+
+### Process of ad-hoc backup
 
 1. Create the `Backup` CR, and back up cluster data to GCS as described below:
 
@@ -62,8 +70,8 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     apiVersion: pingcap.com/v1alpha1
     kind: Backup
     metadata:
-    name: demo1-backup-gcs
-    namespace: test1
+      name: demo1-backup-gcs
+      namespace: test1
     spec:
       # backupType: full
       from:
@@ -80,6 +88,8 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
       gcs:
         projectId: ${project-id}
         secretName: gcs-secret
@@ -90,10 +100,11 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
         # objectAcl: private
     ```
 
-    In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `sendCredToTikv`.
+    In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`.
 
-    <details>
-    <summary>Parameter description</summary>
+    Since TiDB Operator v1.1.6, if you want to back up incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
+
+    More `br` parameter descriptions:
 
     * `spec.br.cluster`: The name of the cluster to be backed up.
     * `spec.br.clusterNamespace`: The `namespace` of the cluster to be backed up.
@@ -102,43 +113,38 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     * `spec.br.concurrency`: The number of threads used by each TiKV process during backup. Defaults to `4` for backup and `128` for restore.
     * `spec.br.rateLimit`: The speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The speed limit is not set by default.
     * `spec.br.checksum`: Whether to verify the files after the backup is completed. Defaults to `true`.
+    * `spec.br.timeAgo`: Backs up the data before `timeAgo`. If the parameter value is not specified (empty by default), it means backing up the current data. It supports data formats such as "1.5h" and "2h45m". See [ParseDuration](https://golang.org/pkg/time/#ParseDuration) for more information.
     * `spec.br.sendCredToTikv`: Whether the BR process passes its GCP privileges to the TiKV process. Defaults to `true`.
-    
-    </details>
+    * `spec.br.options`: The extra arguments that BR supports. It accepts an array of strings, supported since TiDB Operator v1.1.6. This could be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
 
     This example backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, and `storageClass`.
 
     The `projectId` in the configuration is the unique identifier of a user project on GCP. For how to obtain the identifier, see [GCP Documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 
-    <details>
-    <summary>Configure <code>storageClass</code>.</summary>
+    * configure `storageClass`
 
-    GCS supports the following `storageClass` types:
+        GCS supports the following `storageClass` types:
 
-    * `MULTI_REGIONAL`
-    * `REGIONAL`
-    * `NEARLINE`
-    * `COLDLINE`
-    * `DURABLE_REDUCED_AVAILABILITY`
+        * `MULTI_REGIONAL`
+        * `REGIONAL`
+        * `NEARLINE`
+        * `COLDLINE`
+        * `DURABLE_REDUCED_AVAILABILITY`
 
-    If you do not configure `storageClass`, the default type is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
+        If you do not configure `storageClass`, the default type is `COLDLINE`. See [GCS Documentation](https://cloud.google.com/storage/docs/storage-classes) for details.
 
-    </details>
+    * configure object access-control list (ACL) policies
 
-    <details>
-    <summary>Configure the object access-control list (ACL) strategy</summary>
+        GCS supports the following ACL policies:
 
-    GCS supports the following ACL strategies:
+        * `authenticatedRead`
+        * `bucketOwnerFullControl`
+        * `bucketOwnerRead`
+        * `private`
+        * `projectPrivate`
+        * `publicRead`
 
-    * `authenticatedRead`
-    * `bucketOwnerFullControl`
-    * `bucketOwnerRead`
-    * `private`
-    * `projectPrivate`
-    * `publicRead`
-
-    If you do not configure the object ACL strategy, the default strategy is `private`. See [GCS Documentation](https://cloud.google.com/storage/docs/access-control/lists) for details.
-    </details>
+        If you do not configure the object ACL policy, the default policy is `private`. See [GCS Documentation](https://cloud.google.com/storage/docs/access-control/lists) for details.
 
 2. After creating the `Backup` CR, use the following command to check the backup status:
 
@@ -148,18 +154,16 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl get bk -n test1 -owide
     ```
 
-<details>
-
-<summary>More descriptions of fields in the <code>Backup</code> CR</summary>
+More descriptions of fields in the `Backup` CR:
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_lifetime` time setting during the backup. Defaults to 72h.
+* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup. Defaults to 72h.
 
-    Before the backup begins, if the `tikv_gc_lifetime` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_lifetime` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+    Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_life_time` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_lifetime` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_lifetime` to the previous value.
+    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_life_time` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_lifetime` and treats the backup as failed. At this time, you can view `tikv_gc_lifetime` of the current TiDB cluster using the following statement:
+    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
 
     {{< copyable "sql" >}}
 
@@ -167,13 +171,17 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    In the output of the command above, if the value of `tikv_gc_lifetime` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_lifetime` back to the previous value manually:
+    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
 
     {{< copyable "sql" >}}
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
+
+    > **Note:**
+    >
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.tikvGCLifeTime`.
 
 * `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted after the backup is completed.
 
@@ -203,7 +211,21 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
     ```
 
-</details>
+    > **Note:**
+    >
+    > If TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically, so you can omit `spec.from`.
+
+* `.spec.tableFilter`: BR only backs up tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/). This field can be ignored by default. If the field is not configured, BR backs up all schemas except the system schemas.
+
+    > **Note:**
+    >
+    > To use the table filter to exclude `db.table`, you need to add the `*.*` rule to include all tables first. For example:
+
+    ```
+    tableFilter:
+    - "*.*"
+    - "!db.table"
+    ```
 
 ## Scheduled full backup
 
@@ -211,7 +233,7 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 
 ### Prerequisites for scheduled full backup
 
-The prerequisites for the scheduled full backup is the same with the [prerequisites for ad-hoc full backup](#prerequisites-for-ad-hoc-full-backup).
+The prerequisites for the scheduled full backup is the same with the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
 
 ### Process of scheduled full backup
 
@@ -223,21 +245,22 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
     kubectl apply -f backup-schedule-gcs.yaml
     ```
 
-    The content of `backup-scheduler-aws-s3.yaml` is as follows:
+    The content of `backup-schedule-gcs.yaml` is as follows:
 
     ```yaml
     ---
     apiVersion: pingcap.com/v1alpha1
     kind: BackupSchedule
     metadata:
-    name: demo1-backup-schedule-gcs
-    namespace: test1
+      name: demo1-backup-schedule-gcs
+      namespace: test1
     spec:
       #maxBackups: 5
       #pause: true
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        # Only needed for TiDB Operator < v1.1.7 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
           port: ${tidb_port}
@@ -278,7 +301,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
     kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n test1
     ```
 
-From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to GCS, which is the same as the configuration of the ad-hoc full backup to GCS (refer to [Ad-hoc backup process](#process-of-ad-hoc-full-backup) for details).
+From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to GCS, which is the same as the configuration of the ad-hoc backup to GCS (refer to [Ad-hoc backup process](#process-of-ad-hoc-backup) for details).
 
 <details>
 <summary>The unique configuration items of <code>backupSchedule</code></summary>
@@ -295,7 +318,7 @@ From the example above, you can see that the `backupSchedule` configuration cons
 
 ## Delete the backup CR
 
-You can delete the full backup CR (`Backup`) and the scheduled backup CR (`BackupSchedule`) by the following commands:
+You can delete the backup CR (`Backup`) and the scheduled backup CR (`BackupSchedule`) by the following commands:
 
 {{< copyable "shell-regular" >}}
 
@@ -317,3 +340,7 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 After deleting the `metadata.finalizers` configuration, you can delete CR normally.
+
+## Troubleshooting
+
+If you encounter any problem during the backup process, refer to [Common Deployment Failures](deploy-failures.md).

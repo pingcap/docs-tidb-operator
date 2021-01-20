@@ -12,11 +12,16 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`
+   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
+
+> **Note:**
+>
+> * TiDB 4.0.5 (or later versions) and TiDB Operator 1.1.4 (or later versions) support enabling TLS for TiFlash.
+> * TiDB 4.0.3 (or later versions) and TiDB Operator 1.1.3 (or later versions) support enabling TLS for TiCDC.
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
@@ -42,13 +47,12 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     mkdir -p cfssl
     cd cfssl
-    cfssl print-defaults config > ca-config.json
-    cfssl print-defaults csr > ca-csr.json
     ```
 
-2. Configure the client auth (CA) option in `ca-config.json`:
+2. Generate the `ca-config.json` configuration file:
 
-    ```json
+    ```shell
+    cat << EOF > ca-config.json
     {
         "signing": {
             "default": {
@@ -75,17 +79,18 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             }
         }
     }
+    EOF
     ```
 
-    > **Note:**
-    >
-    > Add `"client auth"` in `profiles` - `internal` - `usages`, because this server-side certificate is also used as the client-side certificate.
+3. Generate the `ca-csr.json` configuration file:
 
-3. Change the certificate signing request (CSR) of `ca-csr.json`:
-
-    ``` json
+    ```shell
+    cat << EOF > ca-csr.json
     {
         "CN": "TiDB",
+        "CA": {
+            "expiry": "87600h"
+        },
         "key": {
             "algo": "rsa",
             "size": 2048
@@ -100,6 +105,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             }
         ]
     }
+    EOF
     ```
 
 4. Generate CA by the configured option:
@@ -389,6 +395,125 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
             ```
 
+    - TiFlash
+
+        1. Generate the default `tiflash-server.json` file:
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            cfssl print-defaults csr > tiflash-server.json
+            ```
+
+        2. Edit this file to change the `CN` and `hosts` attributes:
+
+            ```json
+            ...
+                "CN": "TiDB",
+                "hosts": [
+                  "127.0.0.1",
+                  "::1",
+                  "${cluster_name}-tiflash",
+                  "${cluster_name}-tiflash.${namespace}",
+                  "${cluster_name}-tiflash.${namespace}.svc",
+                  "${cluster_name}-tiflash-peer",
+                  "${cluster_name}-tiflash-peer.${namespace}",
+                  "${cluster_name}-tiflash-peer.${namespace}.svc",
+                  "*.${cluster_name}-tiflash-peer",
+                  "*.${cluster_name}-tiflash-peer.${namespace}",
+                  "*.${cluster_name}-tiflash-peer.${namespace}.svc"
+                ],
+            ...
+            ```
+
+            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+
+        3. Generate the TiFlash server-side certificate:
+
+            {{< copyable "shell-regular" >}}
+
+            ``` shell
+            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
+            ```
+
+    - TiKV Importer
+
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
+
+        1. Generate the default `importer-server.json` file:
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            cfssl print-defaults csr > importer-server.json
+            ```
+
+        2. Edit this file to change the `CN` and `hosts` attributes:
+
+            ```json
+            ...
+                "CN": "TiDB",
+                "hosts": [
+                  "127.0.0.1",
+                  "::1",
+                  "${cluster_name}-importer",
+                  "${cluster_name}-importer.${namespace}",
+                  "${cluster_name}-importer.${namespace}.svc"
+                  "${cluster_name}-importer.${namespace}.svc",
+                  "*.${cluster_name}-importer",
+                  "*.${cluster_name}-importer.${namespace}",
+                  "*.${cluster_name}-importer.${namespace}.svc"
+                ],
+            ...
+            ```
+
+            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+
+        3. Generate the TiKV Importer server-side certificate:
+
+            {{< copyable "shell-regular" >}}
+
+            ``` shell
+            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
+            ```
+
+    - TiDB Lightning
+
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
+
+        1. Generate the default `lightning-server.json` file:
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            cfssl print-defaults csr > lightning-server.json
+            ```
+
+        2. Edit this file to change the `CN` and `hosts` attributes:
+
+            ```json
+            ...
+                "CN": "TiDB",
+                "hosts": [
+                  "127.0.0.1",
+                  "::1",
+                  "${cluster_name}-lightning",
+                  "${cluster_name}-lightning.${namespace}",
+                  "${cluster_name}-lightning.${namespace}.svc"
+                ],
+            ...
+            ```
+
+            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+
+        3. Generate the TiDB Lightning server-side certificate:
+
+            {{< copyable "shell-regular" >}}
+
+            ``` shell
+            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal lightning-server.json | cfssljson -bare lightning-server
+            ```
+
 6. Generate the client-side certificate:
 
     First, create the default `client.json` file:
@@ -458,6 +583,38 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         kubectl create secret generic ${cluster_name}-drainer-cluster-secret --namespace=${namespace} --from-file=tls.crt=drainer-server.pem --from-file=tls.key=drainer-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
+    - The TiCDC cluster certificate Secret:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create secret generic ${cluster_name}-ticdc-cluster-secret --namespace=${namespace} --from-file=tls.crt=ticdc-server.pem --from-file=tls.key=ticdc-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
+    - The TiFlash cluster certificate Secret:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
+    - The TiKV Importer cluster certificate Secret:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
+    - The TiDB Lightning cluster certificate Secret:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl create secret generic ${cluster_name}-lightning-cluster-secret --namespace=${namespace} --from-file=tls.crt=lightning-server.pem --from-file=tls.key=lightning-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
     - The client certificate Secret:
 
         {{< copyable "shell-regular" >}}
@@ -510,6 +667,8 @@ This section describes how to issue certificates using two methods: `cfssl` and 
       secretName: ${cluster_name}-ca-secret
       commonName: "TiDB"
       isCA: true
+      duration: 87600h # 10yrs
+      renewBefore: 720h # 30d
       issuerRef:
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
@@ -927,6 +1086,170 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${cluster_name}-ticdc-cluster-secret` Secret object to be used by the TiCDC component of the TiDB server.
 
+    - TiFlash
+
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-tiflash-cluster-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-tiflash-cluster-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
+          - PingCAP
+          commonName: "TiDB"
+          usages:
+            - server auth
+            - client auth
+          dnsNames:
+          - "${cluster_name}-tiflash"
+          - "${cluster_name}-tiflash.${namespace}"
+          - "${cluster_name}-tiflash.${namespace}.svc"
+          - "${cluster_name}-tiflash-peer"
+          - "${cluster_name}-tiflash-peer.${namespace}"
+          - "${cluster_name}-tiflash-peer.${namespace}.svc"
+          - "*.${cluster_name}-tiflash-peer"
+          - "*.${cluster_name}-tiflash-peer.${namespace}"
+          - "*.${cluster_name}-tiflash-peer.${namespace}.svc"
+          ipAddresses:
+          - 127.0.0.1
+          - ::1
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
+
+        In the file, `${cluster_name}` is the name of the cluster:
+
+        - Set `spec.secretName` to `${cluster_name}-tiflash-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
+        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+
+            - `${cluster_name}-tiflash`
+            - `${cluster_name}-tiflash.${namespace}`
+            - `${cluster_name}-tiflash.${namespace}.svc`
+            - `${cluster_name}-tiflash-peer`
+            - `${cluster_name}-tiflash-peer.${namespace}`
+            - `${cluster_name}-tiflash-peer.${namespace}.svc`
+            - `*.${cluster_name}-tiflash-peer`
+            - `*.${cluster_name}-tiflash-peer.${namespace}`
+            - `*.${cluster_name}-tiflash-peer.${namespace}.svc`
+
+        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
+            - `127.0.0.1`
+            - `::1`
+        - Add the Issuer created above in `issuerRef`.
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+
+        After the object is created, `cert-manager` generates a `${cluster_name}-tiflash-cluster-secret` Secret object to be used by the TiFlash component of the TiDB server.
+
+    - TiKV Importer
+
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
+
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-importer-cluster-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-importer-cluster-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
+          - PingCAP
+          commonName: "TiDB"
+          usages:
+            - server auth
+            - client auth
+          dnsNames:
+          - "${cluster_name}-importer"
+          - "${cluster_name}-importer.${namespace}"
+          - "${cluster_name}-importer.${namespace}.svc"
+          - "*.${cluster_name}-importer"
+          - "*.${cluster_name}-importer.${namespace}"
+          - "*.${cluster_name}-importer.${namespace}.svc"
+          ipAddresses:
+          - 127.0.0.1
+          - ::1
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
+
+        In the file, `${cluster_name}` is the name of the cluster:
+
+        - Set `spec.secretName` to `${cluster_name}-importer-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
+        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+
+            - `${cluster_name}-importer`
+            - `${cluster_name}-importer.${namespace}`
+            - `${cluster_name}-importer.${namespace}.svc`
+
+        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
+            - `127.0.0.1`
+            - `::1`
+        - Add the Issuer created above in `issuerRef`.
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
+
+    - TiDB Lightning
+
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
+
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-lightning-cluster-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-lightning-cluster-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          organization:
+          - PingCAP
+          commonName: "TiDB"
+          usages:
+            - server auth
+            - client auth
+          dnsNames:
+          - "${cluster_name}-lightning"
+          - "${cluster_name}-lightning.${namespace}"
+          - "${cluster_name}-lightning.${namespace}.svc"
+          ipAddresses:
+          - 127.0.0.1
+          - ::1
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
+
+        In the file, `${cluster_name}` is the name of the cluster:
+
+        - Set `spec.secretName` to `${cluster_name}-lightning-cluster-secret`.
+        - Add `server auth` and `client auth` in `usages`.
+        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
+
+            - `${cluster_name}-lightning`
+            - `${cluster_name}-lightning.${namespace}`
+            - `${cluster_name}-lightning.${namespace}.svc`
+
+        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
+            - `127.0.0.1`
+            - `::1`
+        - Add the Issuer created above in `issuerRef`.
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        After the object is created, `cert-manager` generates a `${cluster_name}-lightning-cluster-secret` Secret object to be used by the TiDB Lightning component of the TiDB server.
+
 4. Generate the client-side certificate for components of the TiDB cluster.
 
     ```yaml
@@ -988,7 +1311,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v3.1.0
+     version: v4.0.9
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1044,7 +1367,7 @@ In this step, you need to perform the following operations:
        version: 6.0.1
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v3.1.0
+       version: v4.0.9
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1076,7 +1399,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
     - Method 2: Do not set `drainerName` when you create Drainer.
@@ -1097,7 +1420,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
 3. Create the Backup/Restore resource object:
@@ -1172,40 +1495,57 @@ In this step, you need to perform the following operations:
         kubectl apply -f restore.yaml
         ```
 
-## Configure `pd-ctl` and connect to the cluster
+## Configure `pd-ctl`, `tikv-ctl` and connect to the cluster
 
-1. Download `pd-ctl`:
+1. Mount the certificates.
 
-    Refer to [Download TiDB installation package](https://pingcap.com/docs/stable/reference/tools/pd-control/#download-tidb-installation-package).
-
-2. Download the client-side certificate:
-
-    The client-side certificate is the client certificate you have created in [Generate certificates for components](#generate-certificates-for-components-of-the-tidb-cluster). You can directly use the certificate, or obtain it from the `${cluster_name}-cluster-client-secret` Kubernetes Secret object created before.
+    Configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true` with the following command:
 
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
-    kubectl get secret -n ${namespace} ${cluster_name}-cluster-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+    kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-3. Connect to the PD and TiKV cluster using `pd-ctl` and `tikv-ctl`:
+    > **Note:**
+    >
+    > * The above configuration will trigger the rolling update of PD and TiKV cluster.
+    > * The above configurations are supported since TiDB Operator v1.1.5.
 
-    When you deploy the server-side certificate for the PD and TiKV component, some `hosts` are customized, so you need to use these `hosts` to connect to the PD and TiKV cluster.
+2. Use `pd-ctl` to connect to the PD cluster.
 
-    - Connect to the PD cluster:
+    Get into the PD Pod:
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        pd-ctl --cacert=client-ca.crt --cert=client-tls.crt --key=client-tls.key -u https://${cluster_name}-pd.${namespace}.svc:2379 member
-        ```
+    ``` shell
+    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} sh
+    ```
 
-    - Connect to the TiKV cluster:
+    Use `pd-ctl`:
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        tikv-ctl --ca-path=client-ca.crt --cert-path=client-tls.crt --key-path=client-tls.key --host ${cluster_name}-tikv-0.${cluster_name}-tikv-peer.${namespace}:20160 cluster
-        ```
+    ``` shell
+    cd /var/lib/cluster-client-tls
+    /pd-ctl --cacert=ca.crt --cert=tls.crt --key=tls.key -u https://127.0.0.1:2379 member
+    ```
+
+3. Use `tikv-ctl` to connect to the TiKV cluster.
+
+    Get into the TiKV Pod:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} sh
+    ```
+
+    Use `tikv-ctl`:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    cd /var/lib/cluster-client-tls
+    /tikv-ctl --ca-path=ca.crt --cert-path=tls.crt --key-path=tls.key --host 127.0.0.1:20160 cluster
+    ```
