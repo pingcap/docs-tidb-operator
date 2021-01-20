@@ -23,7 +23,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
 ## 增加或者减少 TidbMonitor
 
-当需要更新或者下线 TidbMonitor 时，我们需要更新 Thanos Query Store 的启动配置 `--store`，并重启 Thanos Query。
+当需要更新或者下线 TidbMonitor 时，我们需要更新 Thanos Query Store 的启动配置 `--store`，滚动更新 Thanos Query 组件。
 
 ## 配置 Thanos Sidecar 归档存储
 
