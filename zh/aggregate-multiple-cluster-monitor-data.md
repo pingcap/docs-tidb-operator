@@ -9,15 +9,15 @@ summary: 通过 Thanos 框架聚合多个 TiDB 集群的监控数据
 
 ## Thanos 介绍
 
-Thanos 是 Prometheus 高可用的解决方案，用于简化 Prometheus 的可用性保证。详细内容请参考 [Thanos官方文档](https://thanos.io/design.md/)。
+Thanos 是 Prometheus 高可用的解决方案，用于简化 Prometheus 的可用性保证。详细内容请参考 [Thanos 官方文档](https://thanos.io/design.md/)。
 
 Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://thanos.io/components/query.md/) 组件，我们可以利用这个功能解决 TiDB 多集群监控数据聚合的问题。
 
 ## 配置 Thanos Query
 
-首先我们需要为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。请参考 [示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos/README.md)，更新 TidbMonitor。
+首先，我们需要为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。请参考[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos/README.md)，更新 TidbMonitor。
 
-Thanos Sidecar 配置好之后，我们需要部署 Thanos Query 组件。在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个TidbMonitor。部署完 Thanos Query，我们就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
+Thanos Sidecar 配置好之后，我们需要部署 Thanos Query 组件。在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，我们就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
 ## 配置 Grafana
 
