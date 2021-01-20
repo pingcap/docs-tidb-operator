@@ -65,7 +65,7 @@ summary: 介绍如何灰度部署 TiDB Operator。
     controllerManager:
       selector:
       - user=dev
-    ```
+    ```    
 
 2. 部署 TiDB 集群。
 
