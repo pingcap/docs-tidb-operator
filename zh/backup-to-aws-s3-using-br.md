@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: 使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储
-summary: 介绍如何使用 BR 工具备份 TiDB 集群数据到兼容 Amazon S3 的存储。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-aws-s3-using-br/']
-=======
 title: 使用 BR 备份 TiDB 集群数据到兼容 S3 的存储
 summary: 介绍如何使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的存储。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
->>>>>>> 97f26c8... Improve backup restore docs (#991)
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-aws-s3-using-br/']
 ---
 
 <!-- markdownlint-disable MD007 -->

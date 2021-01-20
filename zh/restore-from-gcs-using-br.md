@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: 使用 BR 工具恢复 GCS 上的备份数据
-summary: 介绍如何使用 BR 工具将存储在 GCS 上的备份数据恢复到 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-gcs-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-gcs-using-br/']
-=======
 title: 使用 BR 恢复 GCS 上的备份数据
 summary: 介绍如何使用 BR 将存储在 GCS 上的备份数据恢复到 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
->>>>>>> 97f26c8... Improve backup restore docs (#991)
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-gcs-using-br/','/docs-cn/tidb-in-kubernetes/v1.1/restore-from-gcs-using-br/']
 ---
 
 # 使用 BR 恢复 GCS 上的备份数据
