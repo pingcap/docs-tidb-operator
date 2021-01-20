@@ -1,26 +1,20 @@
 ---
-title: Canary Deployment of TiDB Operator
-summary: Learn how to perform a canary deployment of TiDB Operator and how to deploy multiple TiDB Operator to manage different TiDB clusters.
+title: Deploy Multiple Sets of TiDB Operator
+summary: Learn how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 ---
 
-# Canary Deployment of TiDB Operator
+# Deploy Multiple Sets of TiDB Operator
 
-This document describes how to perform a canary upgrade of TiDB Operator and how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
+This document describes how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
-## Scenarios
-
-- Perform a canary upgrade of TiDB Operator.
-- Deploy multiple sets of TiDB Operator to manage different TiDB clusters.
-
-    > **Note:**
-    >
-    > - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s.
-    > - Only one Admission Webhook is required.
-    > - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
+> **Note:**
+>
+> - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s.
+> - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
 
 ## Related parameters
 
-To support canary deployment, the following parameters are added to the `values.yaml` file in the `tidb-operator` chart:
+To support deploying multiple sets of TiDB Operator, the following parameters are added to the `values.yaml` file in the `tidb-operator` chart:
 
 - `appendReleaseSuffix`
 
@@ -59,7 +53,7 @@ To support canary deployment, the following parameters are added to the `values.
 
     Default value: `true`.
 
-## Deploy multiple sets of TiDB Operator to manage different TiDB clusters
+## Deploy
 
 1. Deploy the first TiDB Operator.
 
