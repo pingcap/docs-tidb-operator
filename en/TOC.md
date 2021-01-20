@@ -62,6 +62,7 @@
   - [View TiDB Logs](view-logs.md)
   - [Configure Automatic Failover](use-auto-failover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+  - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
 + Disaster Recovery
   - [Recover PD Cluster](pd-recover.md)
   - [Recover Deleted Cluster](recover-deleted-cluster.md)
@@ -92,6 +93,8 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
+  + v1.2
+    - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)

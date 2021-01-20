@@ -19,7 +19,7 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
     > The access key must be granted permissions to control the corresponding resources.
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) >= 1.12
-- [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797)
+- [Helm](https://helm.sh)
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*
 
@@ -89,7 +89,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.1.9"
+    operator_version = "v1.2.0-alpha.1"
     ```
 
     * To deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
