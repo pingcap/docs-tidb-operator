@@ -25,7 +25,7 @@ Thanos Sidecar 配置好之后，我们需要部署 Thanos Query 组件。在 Th
 
 ## 增加或者减少 TidbMonitor
 
-当需要更新或者下线 TidbMonitor 时，我们需要将 Thanos Query Store 启动配置 `--store` 更新并重启。
+当需要更新或者下线 TidbMonitor 时，我们需要更新 Thanos Query Store 的启动配置 `--store`，并重启 Thanos Query。
 
 ## 配置 Thanos Sidecar 归档存储
 
