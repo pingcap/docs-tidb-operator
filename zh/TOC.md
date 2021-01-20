@@ -23,11 +23,13 @@
       - [部署 TiDB 集群](deploy-on-general-kubernetes.md)    
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
+  - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiFlash](deploy-tiflash.md)
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
+  - [灰度部署 TiDB Operator](canary-deployment-tidb-operator.md)
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
@@ -35,6 +37,7 @@
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
   - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
+  - [更新和替换 TLS 证书](renew-tls-certificate.md)
 + 运维
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
@@ -93,6 +96,8 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 + [TiDB Operator Roadmap](roadmap.md)
 + 版本发布历史
+  + v1.2
+    - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
