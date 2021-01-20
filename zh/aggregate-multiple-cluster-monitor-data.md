@@ -34,7 +34,6 @@ Thanos Sidecar 支持将监控数据同步到 S3 远端存储，配置如下:
 
 同时需要创建一个Secret，示例如下:
 
-
 > ```yaml
 > apiVersion: v1
 > kind: Secret
@@ -60,7 +59,7 @@ Thanos Sidecar 支持将监控数据同步到 S3 远端存储，配置如下:
 >         enable: true
 >       part_size: 41943040
 > ```
-> 
+
 ## 配置 Grafana
 
 安装完 Thanos Query , Grafana 只需要将 DataSource 更改成 Thanos 源，就可以查询到多个TiDBMonitor的监控数据。
