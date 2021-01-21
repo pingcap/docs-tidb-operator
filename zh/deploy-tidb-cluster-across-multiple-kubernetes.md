@@ -431,9 +431,11 @@ EOF
 cluster1_name="cluster1"
 cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
+```
 
 执行以下指令：
 
+```
 cat << EOF | kubectl apply -f -n ${cluster1_namespace} - 
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
