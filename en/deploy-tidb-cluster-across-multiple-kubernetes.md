@@ -360,7 +360,7 @@ EOF
 
 #### Use the `cert-manager` system to issue certificates for TiDB components
 
-The following example shows how to use `cert-manager` to create a certificate used by PD.  `Certifcates` is shown below.
+The following example shows how to use `cert-manager` to create a certificate used by PD. `Certifcates` is shown below.
 
 Set the following environment variables according to the actual situation.
 
