@@ -159,7 +159,7 @@ If you use `cfssl`, the CA certificate issue process is the same as the general 
 
 In other words, when you create a component certificate in a cluster, you do not need to create a CA certificate again. Complete step 1 ~ 4 in [Enabling TLS between TiDB components](enable-tls-between-components.md#using-cfssl) once to issue the CA certificate. After that, start from step 5 to issue certificates between other cluster components.
 
-#### Use the `cert-manager` system to issue a root certificate
+#### Use `cert-manager`
 
 If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certificate` in the initial cluster, and export the `CA Secret` to other new clusters that want to join. 
 
