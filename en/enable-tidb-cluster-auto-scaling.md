@@ -49,7 +49,7 @@ Take the following steps to manually enable auto-scaling:
 
 ## `TidbClusterAutoScaler`
 
-The `TidbClusterAutoScaler` CR object is used to control the behavior of the auto-scaling behavior in the TiDB cluster.
+The `TidbClusterAutoScaler` CR object is used to control the auto-scaling behavior in the TiDB cluster.
 
 The following is an example.
 
@@ -90,7 +90,7 @@ spec:
         - compute_small
 ```
 
-### Working principles
+### Implementation principles
 
 According to the configuration of the `TidbClusterAutoScaler` CR, TiDB Operator sends requests to PD to query the result of scaling. Based on the result, TiDB Operator makes use of the [heterogeneous cluster](deploy-heterogeneous-tidb-cluster.md) feature to create, update, or delete the heterogeneous TiDB cluster to achieve auto-scaling of the TiDB cluster.
 
@@ -107,15 +107,15 @@ According to the configuration of the `TidbClusterAutoScaler` CR, TiDB Operator 
     * `cpu`: CPU configuration.
     * `memory`: memory configuration.
     * `storage`: storage configuration.
-    * `count`: the number of resources that the current configuration can use. If not configured, there is no limit.
+    * `count`: the number of resources that the current configuration can use. If this field is not configured, there is no limit on resources.
 
 * `spec.tikv.rules`: the rules of TiKV elastic scheduling. Currently only CPU-based rules are supported.
 
-    * `max_threshold`: If the CPU utilization of all Pods is higher than `max_threshold`, the scaling-out operation is triggered.
-    * `min_threshold`: If the CPU utilization of all Pods is lower than `min_threshold`, the scaling-in operation is triggered.
+    * `max_threshold`: If the average CPU utilization of all Pods is higher than `max_threshold`, the scaling-out operation is triggered.
+    * `min_threshold`: If the average CPU utilization of all Pods is lower than `min_threshold`, the scaling-in operation is triggered.
     * `resource_types`: the resource types that can be used for CPU-based elastic scheduling. This field corresponds to `key` in `spec.tikv.resources[]`. If not configured, this field is set to all `key`s in `spec.tikv.resources[]` by default.
 
-* `spec.tikv.scaleInIntervalSeconds`: the minimum interval between this scaling-in operation and the last scaling in/out operation. If not configured, the field is set to `300` by default, which means 300 seconds.
+* `spec.tikv.scaleInIntervalSeconds`: the minimum interval between this scaling-in operation and the last scaling in/out operation. If not configured, the field is set to `500` by default, which means 500 seconds.
 * `spec.tidb`: the configuration related to TiDB elastic scheduling. Other fields are the same as `spec.tikv`.
 
 For more information about configuration fields, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#basicautoscalerspec).
