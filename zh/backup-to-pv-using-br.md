@@ -43,7 +43,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     >
     > 如果使用 TiDB Operator >= v1.1.7 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，该步骤可以省略。
 
-3. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器，并且中配置了 TiKV 挂载跟备份任务相同的 NFS 共享目录到相同的本地目录。TiKV 挂载 NFS 的具体配置方法可以参考如下配置：
+3. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器，并且配置了 TiKV 挂载跟备份任务相同的 NFS 共享目录到相同的本地目录。TiKV 挂载 NFS 的具体配置方法可以参考如下配置：
 
     ```yaml
     spec:
