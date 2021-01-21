@@ -489,7 +489,7 @@ EOF
 
 ### Deploy a new cluster to join the initial cluster
 
-You can wait for the cluster #1 to complete the deployment. After completing the deployment, you can create cluster #2. The related command are as follows. In actual use, cluster #1 might not the initial cluster. You can specify any cluster in multiple clusters to join.
+You can wait for the cluster #1 to complete the deployment. After completing the deployment, you can create cluster #2. The related commands are as follows. In actual use, cluster #1 might not the initial cluster. You can specify cluster #2 to join any cluster in the multiple clusters.
 
 Set the following environment variables according to the actual situation:
 
@@ -560,13 +560,13 @@ spec:
 EOF
 ```
 
-## Exit and reclaim clusters that already joined
+## Exit and reclaim clusters that already join a cross-Kubernetes cluster
 
-When you need to make a cluster exit from the joined TiDB cluster deployed across Kubernetes and reclaim resources, you can achieve the above requirements through the scaling in. In this scenario, some requirements of scaling in need to be met. The restrictions are as follows:
+When you need to make a cluster exit from the joined TiDB cluster deployed across Kubernetes and reclaim resources, you can perform the operation by scaling in the cluster. In this scenario, the following requirements of scaling-in need to be met.
 
-- After scaling in, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
+- After scaling in the cluster, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
-Take the cluster #2 created in the above document as an example. First, set the number of copies of PD, TiKV, TiDB to `0`. If you enable other components such as TiFlash, TiCDC, Pump, etc., set the number of these copies to `0`:
+Take the cluster #2 created in [the last section](#deploy-a-new-cluster-to-join-the-initial-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you enable other components such as TiFlash, TiCDC, and Pump, set the number of these replicas to `0`:
 
 {{< copyable "shell-regular" >}}
 
@@ -574,7 +574,7 @@ Take the cluster #2 created in the above document as an example. First, set the 
 kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-Wait for the status of cluster #2 to become `Ready`, and scale in related components to `0` copy:
+Wait for the status of cluster #2 to become `Ready`, and scale in related components to `0` replica:
 
 {{< copyable "shell-regular" >}}
 
@@ -582,7 +582,7 @@ Wait for the status of cluster #2 to become `Ready`, and scale in related compon
 kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
 ```
 
-The Pod list is displayed as `No resources found.`. At this time, Pods have all been scaled in, and cluster #2 exits the cluster. Check the cluster status of cluster #2:
+The Pod list shows `No resources found`. At this time, Pods have all been scaled in, and cluster #2 exits the cluster. Check the cluster status of cluster #2:
 
 {{< copyable "shell-regular" >}}
 
