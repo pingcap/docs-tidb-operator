@@ -5,7 +5,7 @@ summary: 介绍如何使用 BR、Dumpling、TiDB Lightning 工具对 Kubernetes 
 
 # 备份与恢复简介
 
-本文档介绍如何使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)、[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+本文档介绍如何使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)、[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 
 TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现：
 
@@ -164,7 +164,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
 * `.spec.gcs.projectId`：代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
-* `.spec.gcs.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
+* `.spec.gcs.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
 * `spec.gcs.storageClass`：GCS 支持以下几种 `storageClass` 类型：
 
     * `MULTI_REGIONAL`
