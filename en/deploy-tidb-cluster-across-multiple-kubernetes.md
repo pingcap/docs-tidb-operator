@@ -37,7 +37,7 @@ The following takes the deployment of two clusters as an example. Cluster #1 is 
 
 ### Deploy the initial cluster
 
-Set the following environment variables according to the actual situation. You need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual use, where `cluster1_name` is the cluster name of cluster #1, and `cluster1_cluster_domain` is the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of cluster #1, and `cluster1_namespace` is the namespace of cluster #1.
+Set the following environment variables according to the actual situation. You need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual use. `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of cluster #1, and `cluster1_namespace` is the namespace of cluster #1.
 
 {{< copyable "shell-regular" >}}
 
@@ -89,7 +89,7 @@ EOF
 
 ### Deploy the new cluster to join the initial cluster
 
-You can wait for the cluster #1 to complete the deployment, then create cluster #2. In actual situation, cluster #2 can join any existing cluster in multiple clusters.
+You can wait for the cluster #1 to complete the deployment, and then create cluster #2. In the actual situation, cluster #2 can join any existing cluster in multiple clusters.
 
 Refer to the following example and fill in the relevant information such as `Name`, `Cluster Domain`, and `Namespace` of cluster #1 and cluster #2 according to the actual situation:
 
@@ -147,20 +147,23 @@ spec:
 EOF
 ```
 
-## Deploy the TiDB cluster with TLS enabled between TiDB components across multiple Kubernetes clusters
+## Deploy the TLS-enabled TiDB cluster across multiple Kubernetes clusters
 
 You can follow the steps below to enable TLS between TiDB components for TiDB clusters deployed across multiple Kubernetes clusters.
 
 ### Issue the root certificate
 
-#### Issue the root certificate using `cfssl`
+#### Use `cfssl`
 
-If you use `cfssl`, the CA certificate issue process is no different from the general issue process. You need to save the CA certificate created for the first time, and use this CA certificate when issuing certificates for TiDB components later. When creating a component certificate in a cluster, you do not need to create a CA certificate again and only need to complete step one to four in the [Enabling TLS between TiDB components](enable-tls-between-components.md#using-cfssl) once to complete the issue of the CA certificate. You need to start from step five for the issue of certificates between other cluster components.
+If you use `cfssl`, the CA certificate issue process is the same as the general issue process. You need to save the CA certificate created for the first time, and use this CA certificate when you issue certificates for TiDB components later. 
+
+In other words, when you create a component certificate in a cluster, you do not need to create a CA certificate again. Complete step 1 ~ 4 in [Enabling TLS between TiDB components](enable-tls-between-components.md#using-cfssl) once to issue the CA certificate. After that, start from step 5 to issue certificates between other cluster components.
 
 #### Use the `cert-manager` system to issue a root certificate
 
-If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certificate` in the initial cluster, and export the `CA Secret` to other new clusters that want to join. Other clusters only need to create component certificates to issue `Issuer` (Refers to the Issuer named ${cluster_name}-tidb-issuer in the [TLS document](enable-tls-between-components.md#using-cert-manager
-)). Use this CA to configure `Issuer`, the detailed process is as follows:
+If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certificate` in the initial cluster, and export the `CA Secret` to other new clusters that want to join. 
+
+For other clusters, you only need to create a component certificate `Issuer` (refers to `${cluster_name}-tidb-issuer` in the [TLS document](enable-tls-between-components.md#using-cert-manager)) and configure the `Issuer` to use the `CA`. The detailed process is as follows:
 
 1. Create a `CA Issuer` and a `CA Certificate` in the initial cluster.
 
@@ -206,7 +209,7 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
 
 2. Export the CA and delete irrelevant information.
 
-  First, you need to export the `Secret` that stores the CA. The name of the `Secret` can be obtained from the `.spec.secretName` of the first step `Certificate`.
+  First, you need to export the `Secret` that stores the CA. The name of the `Secret` can be obtained from `.spec.secretName` of the `Certificate` YAML file in the first step.
 
   {{< copyable "shell-regular" >}}
 
@@ -214,7 +217,7 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
   kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
   ```
 
-  Delete irrelevant information in the `Secret YAML` file. The `YAML` file after deletion is as follows, where the information in `data` has been omitted:
+  Delete irrelevant information in the Secret YAML file. After the deletion, the YAML file is as follows (the information in `data` is omitted):
 
   ```yaml
     apiVersion: v1
@@ -236,11 +239,11 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
 
     ```bash
     kubectl apply -f ca.yaml -n ${namespace}
-   ·```
+    ```
 
-4. Create a component certificate in the initial cluster and the new cluster to issue `Issuer` using this CA.
+4. Create a component certificate `Issuer` in the initial cluster and the new cluster, and configure it to use this CA.
 
-    1. Create a certificate issuing `Issuer` between TiDB components in the initial cluster.
+    1. Create an `Issuer` that issues certificates between TiDB components in the initial cluster.
 
         Set the following environment variables according to the actual situation:
 
@@ -271,7 +274,7 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
 
     2. Create a certificate issuing `Issuer` between TiDB components in the new cluster.
 
-       Set the following environment variables according to the actual situation. Among them, `ca_secret_name` needs to point to the `Secret` that you just import to store the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
+       Set the following environment variables according to the actual situation. Among them, `ca_secret_name` points to the imported `Secret` that stores the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
 
        {{< copyable "shell-regular" >}}
        ```bash
@@ -303,9 +306,9 @@ You need to issue a component certificate for each TiDB component on the Kuberne
 
 #### Use the cfssl system to issue certificates for TiDB components
 
-If you use `cfssl`, take the certificate used to create the PD component as an example, the `pd-server.json` file is as follows.
+The following example shows how to use `cfssl` to create a certificate used by PD. The `pd-server.json` file is as follows.
 
-Set the following environment variables according to the actual situation.
+Set the following environment variables according to the actual situation:
 
 {{< copyable "shell-regular" >}}
 
@@ -356,7 +359,7 @@ EOF
 
 #### Use the `cert-manager` system to issue certificates for TiDB components
 
-If you use `cert-manager`, take the certificate used to create the PD component as an example, `Certifcates` is shown below.
+The following example shows how to use `cert-manager` to create a certificate used by PD.  `Certifcates` is shown below.
 
 Set the following environment variables according to the actual situation.
 
@@ -421,7 +424,9 @@ For other TLS-related information, refer to the following documents:
 
 ### Deploy the initial cluster
 
-To deploy and initialize the cluster, use the following command. In actual use, you need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual situation, where `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the `Cluster Domain` of cluster #1, and `cluster1_namespace` is the namespace of cluster #1. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
+This section introduces how to deploy and initialize the cluster. 
+
+In actual use, you need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual situation, where `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the `Cluster Domain` of cluster #1, and `cluster1_namespace` is the namespace of cluster #1. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
 
 Set the following environment variables according to the actual situation.
 
