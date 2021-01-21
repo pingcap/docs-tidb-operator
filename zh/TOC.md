@@ -29,10 +29,11 @@
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
-  - [灰度部署 TiDB Operator](canary-deployment-tidb-operator.md)
+  - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
+    - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
 + 安全
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
