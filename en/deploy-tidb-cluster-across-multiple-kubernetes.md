@@ -209,17 +209,17 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
 2. Export the CA and delete irrelevant information.
 
-  First, you need to export the `Secret` that stores the CA. The name of the `Secret` can be obtained from `.spec.secretName` of the `Certificate` YAML file in the first step.
+    First, you need to export the `Secret` that stores the CA. The name of the `Secret` can be obtained from `.spec.secretName` of the `Certificate` YAML file in the first step.
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```bash
-  kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
-  ```
+    ```bash
+     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
+    ```
 
-  Delete irrelevant information in the Secret YAML file. After the deletion, the YAML file is as follows (the information in `data` is omitted):
+    Delete irrelevant information in the Secret YAML file. After the deletion, the YAML file is as follows (the information in `data` is omitted):
 
-  ```yaml
+    ```yaml
     apiVersion: v1
     data:
       ca.crt: LS0...LQo=
@@ -233,9 +233,9 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
 3. Import the exported CA to other clusters.
 
-   You need to configure the `namespace` so that related components can access the CA certificate:
+    You need to configure the `namespace` so that related components can access the CA certificate:
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     kubectl apply -f ca.yaml -n ${namespace}
@@ -272,12 +272,13 @@ For other clusters, you only need to create a component certificate `Issuer` (re
         EOF
         ```
 
-    2. Create a certificate issuing `Issuer` between TiDB components in the new cluster.
+    2. Create an `Issuer` that issues certificates between TiDB components in the new cluster.
 
-       Set the following environment variables according to the actual situation. Among them, `ca_secret_name` points to the imported `Secret` that stores the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
+        Set the following environment variables according to the actual situation. Among them, `ca_secret_name` points to the imported `Secret` that stores the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
 
        {{< copyable "shell-regular" >}}
-       ```bash
+
+      ```bash
        cluster_name="cluster2"
        namespace="pingcap"
        ca_secret_name="cluster1-ca-secret"
@@ -304,7 +305,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
 You need to issue a component certificate for each TiDB component on the Kubernetes cluster. When issuing a component certificate, you need to add an authorization record ending with `.${cluster_domain}` to the hosts, for example, `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`.
 
-#### Use the cfssl system to issue certificates for TiDB components
+#### Use the `cfssl` system to issue certificates for TiDB components
 
 The following example shows how to use `cfssl` to create a certificate used by PD. The `pd-server.json` file is as follows.
 
