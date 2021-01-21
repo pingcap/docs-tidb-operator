@@ -437,9 +437,11 @@ Set the following environment variables according to the actual situation.
 cluster1_name="cluster1"
 cluster1_cluster_domain="cluster1.com"
 cluster1_namespace="pingcap"
+```
 
 Run the following command:
 
+```
 cat << EOF | kubectl apply -f -n ${cluster1_namespace} -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
