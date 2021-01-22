@@ -92,7 +92,7 @@ spec:
 
 ### Implementation principles
 
-According to the configuration of the `TidbClusterAutoScaler` CR, TiDB Operator sends requests to PD to query the result of scaling. Based on the result, TiDB Operator makes use of the [heterogeneous cluster](deploy-heterogeneous-tidb-cluster.md) feature to create, update, or delete the heterogeneous TiDB cluster to achieve auto-scaling of the TiDB cluster.
+According to the configuration of the `TidbClusterAutoScaler` CR, TiDB Operator sends requests to PD to query the result of scaling. Based on the result, TiDB Operator makes use of the [heterogeneous cluster](deploy-heterogeneous-tidb-cluster.md) feature to create, update, or delete the heterogeneous TiDB cluster (only the TiDB component or the TiKV component is configured). In this way, the auto-scaling of the TiDB cluster is achieved.
 
 ### Related fields
 
