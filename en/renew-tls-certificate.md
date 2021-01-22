@@ -141,7 +141,7 @@ If you renew and replace the combined CA certificate, server-side and client-sid
 
     After the completion of the rolling restart, each component can only accept the certificate issued by the new CA certificate.
 
-## Renew and replace the certificate issued by the`cert-manager`
+## Renew and replace the certificate issued by the `cert-manager`
 
 If the original TLS certificate is issued by [the `cert-manager` system](enable-tls-between-components.md#using-cert-manager), and the original certificate has not expired, you can handle with the issue separately according to whether to renew the CA certificate.
 
