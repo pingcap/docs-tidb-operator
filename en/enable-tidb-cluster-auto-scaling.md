@@ -115,7 +115,8 @@ According to the configuration of the `TidbClusterAutoScaler` CR, TiDB Operator 
     * `min_threshold`: If the average CPU utilization of all Pods is lower than `min_threshold`, the scaling-in operation is triggered.
     * `resource_types`: the resource types that can be used for CPU-based elastic scheduling. This field corresponds to `key` in `spec.tikv.resources[]`. If not configured, this field is set to all `key`s in `spec.tikv.resources[]` by default.
 
-* `spec.tikv.scaleInIntervalSeconds`: the minimum interval between this scaling-in operation and the last scaling in/out operation. If not configured, the field is set to `500` by default, which means 500 seconds.
+* `spec.tikv.scaleInIntervalSeconds`: the interval between this scaling-in operation and the last scaling in/out operation. If not configured, the field is set to `500` by default, which means 500 seconds.
+* `spec.tikv.scaleOutIntervalSeconds`: the interval between this scaling-out operation and the last scaling in/out operation. If not configured, the field is set to `300` by default, which means 300 seconds.
 * `spec.tidb`: the configuration related to TiDB elastic scheduling. Other fields are the same as `spec.tikv`.
 
 For more information about configuration fields, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#basicautoscalerspec).
