@@ -24,7 +24,7 @@ Certificates can be issued in multiple methods. This document describes two meth
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
-If you need to renew the existing TLS certificate, refer to [Renew and Replace TLS Certificate](renew-tls-certificate.md).
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
 ### Generate certificates for components of the DM cluster
 
