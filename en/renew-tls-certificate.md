@@ -77,7 +77,7 @@ If the original TLS certificates are issued by [the `cfssl` system](enable-tls-b
 
 > **Note:**
 >
-> Before renewing and replacing certificates between components, make sure that the CA certificate can verify the certificates between components before and after the renewal as valid. If you [renew and replace the CA certificate](#renew-and-replace-the-CA-certificate), make sure that you complete restarting the TiDB cluster based on the new CA certificate.
+> Before renewing and replacing certificates between components, make sure that the CA certificate can verify the certificates between components before and after the renewal as valid. If you [renew and replace the CA certificate](#renew-and-replace-the-ca-certificate), make sure that you complete restarting the TiDB cluster based on the new CA certificate.
 
 1. Generate new server-side and client-side certificates based on the original configuration information of each component.
 
