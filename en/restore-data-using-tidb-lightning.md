@@ -135,7 +135,9 @@ To restore backup data from the remote source, take the following steps:
 
 2. Grant permissions to remote storage access
 
-    Like restoring data using BR and Dumpling, when using Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). If you use Ceph or GCS as the storage, you can only grant permissions by importing AccessKey and SecretKey.
+    Like restoring data using BR and Dumpling, when you use Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md#aws-account-permissions).
+
+    If you use Ceph or GCS as the storage, you can only grant permissions by importing AccessKey and SecretKey. See [Grant permissions by AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
     * Grant permissions by importing AccessKey and SecretKey
 
