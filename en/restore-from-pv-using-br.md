@@ -96,7 +96,7 @@ The restore method described in this document is implemented based on Custom Res
 
 The above example restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about local storage configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
 
-In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `timeAgo`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
+In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
 
 For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
 

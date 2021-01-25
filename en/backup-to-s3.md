@@ -26,13 +26,13 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. Grant permissions to remote storage.
+2. Grant permissions to the remote storage.
 
-    If you use Amazon S3 to back up the cluster, you can grant permissions by three methods. To grant permissions to access S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    If you use Amazon S3 to back up the cluster, you can grant permissions by three methods. To grant permissions to access S3-compatible remote storages, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
     If you use Ceph as the backend storage for testing, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
-3. Create the `backup-demo1-tidb-secret` secret which stores the account and password needed to access the TiDB cluster:
+3. Create the `backup-demo1-tidb-secret` secret which stores the root account and password needed to access the TiDB cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -235,7 +235,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
 In the examples above, all data of the TiDB cluster is exported and backed up to Amazon S3 or Ceph. You can ignore the `acl`, `endpoint`, and `storageClass` fields in the Amazon S3 configuration. Other S3-compatible storages can also use a configuration similar to that of Amazon S3. You can also leave the fields empty if you do not need to configure them, as shown in the above Ceph configuration. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
 
-`spec.dumpling` refers to Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/dev/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
+`spec.dumpling` refers to Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
 
 ```
 options:

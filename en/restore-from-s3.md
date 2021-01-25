@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-s3/']
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
 
-The restoration method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions.
+The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions.
 
 This document shows an example in which the backup data stored in the specified path on the S3-compatible storage is restored to the TiDB cluster.
 
@@ -28,7 +28,7 @@ This document shows an example in which the backup data stored in the specified 
 
     If you use Ceph as the backend storage for testing, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
-3. Create the `restore-demo2-tidb-secret` secret which stores the account and password needed to access the TiDB cluster:
+3. Create the `restore-demo2-tidb-secret` secret which stores the root account and password needed to access the TiDB cluster:
 
     {{< copyable "shell-regular" >}}
 

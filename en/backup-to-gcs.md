@@ -94,7 +94,7 @@ To better explain how to perform the backup operation, this document shows an ex
 
     The above example backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, `bucketAcl`, and `storageClass`. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
 
-    `spec.dumpling` refers to Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/dev/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
+    `spec.dumpling` refers to Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
 
     ```
     options:
@@ -152,7 +152,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
           secretName: backup-demo1-tidb-secret
         gcs:
           secretName: gcs-secret
-          projectId: ${project-id}
+          projectId: ${project_id}
           bucket: ${bucket}
           # prefix: ${prefix}
           # location: us-east1
