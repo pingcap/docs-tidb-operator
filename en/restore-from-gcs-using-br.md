@@ -15,7 +15,7 @@ This document shows an example in which the backup data stored in the specified 
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, `tikv_gc_life_time` will be adjusted by BR automatically. You do not need to configure `spec.to` fields in the `Restore` CR. In addition, you can skip the steps of creating the `restore-demo2-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
+> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR. In addition, you can skip the steps of creating the `restore-demo2-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
@@ -25,7 +25,7 @@ This document shows an example in which the backup data stored in the specified 
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. Grant permissions to remote storage.
+2. Grant permissions to the remote storage.
 
     Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
 
@@ -95,7 +95,7 @@ This document shows an example in which the backup data stored in the specified 
     kubectl get rt -n test2 -owide
     ```
 
-The above example restores data from the `spec.gcs.prefix` folder of the `spec.gcs.bucket` bucket on GCS to the `demo2` TiDB cluster in the `test2` namespace. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
+The example above restores data from the `spec.gcs.prefix` folder of the `spec.gcs.bucket` bucket on GCS to the `demo2` TiDB cluster in the `test2` namespace. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
 
 In the examples above, some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
 

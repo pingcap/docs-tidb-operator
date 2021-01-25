@@ -22,7 +22,7 @@ This document shows an example in which the backup data stored in the specified 
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. Grant permissions to remote storage.
+2. Grant permissions to the remote storage.
 
     If you restore data from Amazon S3, you can grant permissions by three methods. To grant permissions to access S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
@@ -204,7 +204,7 @@ After creating the `Restore` CR, execute the following command to check the rest
 kubectl get rt -n test2 -owide
 ```
 
-The above example restores data from the `spec.s3.path` path on S3-compatible storage to the `spec.to.host` TiDB cluster. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
+The example above restores data from the `spec.s3.path` path on S3-compatible storage to the `spec.to.host` TiDB cluster. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
 
 For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
 

@@ -133,7 +133,7 @@ To restore backup data from the remote source, take the following steps:
 
 1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
 
-2. Grant permissions to remote storage access
+2. Grant permissions to the remote storage
 
     Like restoring data using BR and Dumpling, when you use Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md#aws-account-permissions).
 

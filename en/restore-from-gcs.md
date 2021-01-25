@@ -22,7 +22,7 @@ This document shows an example in which the backup data stored in the specified 
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. Grant permissions to remote storage.
+2. Grant permissions to the remote storage.
 
     Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
 
@@ -79,7 +79,7 @@ This document shows an example in which the backup data stored in the specified 
       storageSize: 1Gi
     ```
 
-    The above example restores data from the `spec.gcs.path` path on GCS to the `spec.to.host` TiDB cluster. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
+    The example above restores data from the `spec.gcs.path` path on GCS to the `spec.to.host` TiDB cluster. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
 
     For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
 
