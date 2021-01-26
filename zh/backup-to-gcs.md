@@ -1,7 +1,7 @@
 ---
 title: 使用 Dumpling 备份 TiDB 集群数据到 GCS
 summary: 介绍如何使用 Dumpling 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-gcs/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-gcs/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/backup-to-gcs/','/docs-cn/tidb-in-kubernetes/v1.1/backup-to-gcs/','/docs-cn/v3.1/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs/']
 ---
 
 # 使用 Dumpling 备份 TiDB 集群数据到 GCS
