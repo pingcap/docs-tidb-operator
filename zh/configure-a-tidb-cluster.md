@@ -625,7 +625,7 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 {{< copyable "" >}}
 
-```shell
+```yaml
 affinity:
  podAntiAffinity:
    preferredDuringSchedulingIgnoredDuringExecution:
