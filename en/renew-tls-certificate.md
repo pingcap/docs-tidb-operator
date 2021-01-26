@@ -135,9 +135,9 @@ After you [renew and replace the combined CA certificate](#renew-and-replace-the
 
     > **Note:**
     >
-    > In the above command, assume that you refer to steps in [renew and replace the TLS Certificate](#renew-and-replace-the-tls-certificate) to back up the new CA certificate as `ca.new.pem`.
+    > - The above command assumes that you have [renewed and replaced the CA certificate](#renew-and-replace-the-tls-certificate) and saved the new CA certificate as `ca.new.pem`.
 
-2. Perform the rolling restart to components that need to load the combined CA certificate, refer to [perform the rolling restart to the TiDB cluster](restart-a-tidb-cluster.md).
+2. [Perform the rolling restart](restart-a-tidb-cluster.md) to components that need to load the new certificates.
 
     After the completion of the rolling restart, each component can only accept the certificate issued by the new CA certificate.
 
