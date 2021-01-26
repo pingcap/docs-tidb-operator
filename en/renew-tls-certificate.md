@@ -1,6 +1,6 @@
 ---
 title: Renew and Replace the TLS Certificate
-summary: Learn how to renew and replace TlS certificates between TiDB components.
+summary: Learn how to renew and replace TLS certificates between TiDB components.
 ---
 
 # Renew and Replace the TLS Certificate
@@ -92,7 +92,7 @@ If the original TLS certificates are issued by [the `cfssl` system](enable-tls-b
 
     > **Note:**
     >
-    > - The above command assumes that you have [renewed and replaced the CA certificate](#renew-and-replace-the-tls-certificate) and saved the new CA certificate as `ca.new.pem` and the new key as `ca-key.new.pem`. If you do not renew the CA certificate and the key, modify the corresponding parameters in the command to `ca.pem` and `ca-key.pem`.
+    > - The above command assumes that you have [renewed and replaced the CA certificate](#renew-and-replace-the-tls-certificate) and saved the new CA certificate as `ca.new.pem` and the new key as `ca-key.new.pem`. If you have not renewed the CA certificate and the key, modify the corresponding parameters in the command to `ca.pem` and `ca-key.pem`.
     > - The above command only generates the server-side and the client-side certificates between PD, TiKV, and TiDB components. If you need to generate the server-side CA certificates for other components, such as TiCDC and TiFlash, you can execute the similar command.
 
 2. Update each corresponding Kubernetes Secret object based on the newly generated server-side and client-side certificates.
@@ -209,13 +209,13 @@ The steps to renew and replace the CA certificates of PD, TiKV, TiDB and certifi
 
     In the above command, `${cluster_name}` is the name of the cluster.
 
-    If you want to manually update the certificate between components, you can directly delete the corresponding Kubernetes Secret objects and trigger cert-manager to regenerate the certificate between components.
+    If you want to manually update the certificate between components, you can directly delete the corresponding Kubernetes Secret objects and trigger `cert-manager` to regenerate the certificate between components.
 
 2. For certificates between components, each component automatically reloads the new certificates when creating the new connection later.
 
     > **Note:**
     >
-    > - Currently, each component does not support [reload certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) manually，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate-and-certificates-between-components).
+    > - Currently, each component does not support [reload CA certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) manually，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate-and-certificates-between-components).
     > - For the TiDB server-side certificate, you can manually reload by referring to any of the following methods:
     >     - Refer to [Reload certificate, key, and CA](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#reload-certificate-key-and-ca).
     >     - Refer to [Rolling restart the TiDB Cluster](restart-a-tidb-cluster.md) to perform a rolling restart of TiDB server.
