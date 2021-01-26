@@ -9,7 +9,7 @@ This document describes how to perform backup and restore on the TiDB cluster in
 
 TiDB Operator 1.1 and later versions implement the backup and restore methods using Custom Resource Definition (CRD):
 
-+ If your TiDB cluster version is v3.1 or later versions, refer to the following documents:
++ If your TiDB cluster version is v3.1 or later, refer to the following documents:
 
     - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
     - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
@@ -25,7 +25,7 @@ TiDB Operator 1.1 and later versions implement the backup and restore methods us
 
 ## Use scenarios
 
-[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV data files to get the logic backup. If you need to back up SST files (Key-Value pairs) directly or perform latency-insensitive incremental backup, refer to [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
+[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV data files to get the logic full backup or export. If you need to back up SST files (Key-Value pairs) directly or perform latency-insensitive incremental backup, refer to [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
 
 [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. You can use TiDB Lightning for the following two purposes:
 
@@ -43,11 +43,11 @@ This section introduces the fields in the `Backup` CR.
 ### General fields
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup. Defaults to 72h.
+* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to 72h.
 
     Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
 
-    After the backup, no matter the backup is successful or not, as long as the previous `tikv_gc_life_time` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
+    After the backup, no matter the backup is successful or not, as long as the previous `tikv_gc_life_time` value is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
 
     In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
 
@@ -57,9 +57,9 @@ This section introduces the fields in the `Backup` CR.
     select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
     ```
 
-    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), you need to [set `tikv_gc_life_time` back](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the previous value manually:
+    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (usually 10m), you need to [set `tikv_gc_life_time` back](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the previous value manually:
 
-* `.spec.cleanPolicy`: The clean policy of the backup data when the backup CR is deleted.
+* `.spec.cleanPolicy`: The cleaning policy for the backup data when the backup CR is deleted.
 
     Three clean policies are supported:
 
@@ -69,7 +69,7 @@ This section introduces the fields in the `Backup` CR.
 
     If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
 
-    Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this behavior, set this field to `Delete`.
+    Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this earlier behavior, set this field to `Delete`.
 
 * `.spec.from.host`: The address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
 * `.spec.from.port`: The port of the TiDB cluster to be backed up.
@@ -90,7 +90,7 @@ This section introduces the fields in the `Backup` CR.
 
     The PVC name corresponding to the `Backup` CR of a TiDB cluster is fixed. If the PVC already exists in the cluster namespace and the size is smaller than `spec.storageSize`, you need to delete this PVC and then run the Backup job.
 
-* `.spec.tableFilter`: Specify tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/) for BR or Dumpling. This field can be ignored by default.
+* `.spec.tableFilter`: Specifies tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/) for BR or Dumpling. This field can be ignored by default.
 
     If the field is not configured, the default value of `tableFilter` is as follows:
 
@@ -138,7 +138,7 @@ This section introduces the fields in the `Backup` CR.
     - `wasabi`: Wasabi Object Storage
     - `other`: Any other S3 compatible provider
 
-* `spec.s3.region`: If you want to use Amazon S3 for backup storage, configure this field as the Region where Amazon S3 is located.
+* `spec.s3.region`: If you want to use Amazon S3 for backup storage, configure this field as the region where Amazon S3 is located.
 * `.spec.s3.bucket`: The name of the bucket compatible with S3 storage.
 * `.spec.s3.prefix`: If you set this field, the value is used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
 * `.spec.s3.acl`: The supported access-control list (ACL) policies.
@@ -221,7 +221,7 @@ To restore data to a TiDB cluster in Kubernetes, you can create a `Restore` CR o
 
 This section introduces the fields in the `Restore` CR.
 
-* `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
+* `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.
 * `.spec.to.port`: The port of the TiDB cluster to be restored.
 * `.spec.to.user`: The accessing user of the TiDB cluster to be restored.
@@ -238,7 +238,7 @@ This section introduces the fields in the `Restore` CR.
 
 * `.spec.storageClassName`: The persistent volume (PV) type specified for the restore operation.
 * `.spec.storageSize`: The PV size specified for the restore operation. This value must be greater than the size of the backup data.
-* `.spec.tableFilter`: Specify tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/) for BR. This field can be ignored by default.
+* `.spec.tableFilter`: Specifies tables that match the [table filter rules](https://docs.pingcap.com/tidb/stable/table-filter/) for BR. This field can be ignored by default.
 
     If the field is not configured, the default `tableFilter` value for TiDB Lightning is as follows:
 
@@ -248,7 +248,7 @@ This section introduces the fields in the `Restore` CR.
     - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
     ```
 
-    If the field is not configured, BR restores all the schemas in the backup file.
+    If this field is not configured, BR restores all the schemas in the backup file.
 
     > **Note:**
     >
@@ -269,7 +269,7 @@ This section introduces the fields in the `Restore` CR.
 
 The `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`. `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
 
-The following are the unique configuration items of `backupSchedule`:
+The unique configuration items of `backupSchedule` are as follows:
 
 * `.spec.maxBackups`: A backup retention policy, which determines the maximum number of backup files to be retained. When the number of backup files exceeds this value, the outdated backup file will be deleted. If you set this field to `0`, all backup items are retained.
 * `.spec.maxReservedTime`: A backup retention policy based on time. For example, if you set the value of this field to `24h`, only backup files within the recent 24 hours are retained. All backup files older than this value are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set `.spec.maxBackups` and `.spec.maxReservedTime` at the same time, the latter takes effect.
@@ -287,11 +287,11 @@ kubectl delete backup ${name} -n ${namespace}
 kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
-If you use TiDB Operator v1.1.2 or earlier versions, or if you use TiDB Operator v1.1.3 or later versions and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the backup data when it deletes the CR.
+If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the backup data when it deletes the CR.
 
 In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup`/`BackupSchedule` CRs and then delete the namespace.
 
-If you delete the namespace before you delete the `Backup`/`BackupSchedule` CR, TiDB Operator continues to create jobs to clean the backup data. However, since the namespace is in `Terminating` state, TiDB Operator fails to create a job, which causes the namespace to be stuck in the state.
+If you delete the namespace before you delete the `Backup`/`BackupSchedule` CR, TiDB Operator will keep creating jobs to clean the backup data. However, because the namespace is in `Terminating` state, TiDB Operator fails to create such a job, which causes the namespace to be stuck in this state.
 
 To address this issue, delete `finalizers` by running the following command:
 
