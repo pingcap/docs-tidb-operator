@@ -533,7 +533,7 @@ helm upgrade tidb-operator pingcap/tidb-operator --version=v1.1.9 -f values-tidb
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm del ${name}
+helm uninstall ${name}
 ```
 
 For example:
@@ -541,7 +541,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm del tidb-operator
+helm uninstall tidb-operator
 ```
 
 ### More
