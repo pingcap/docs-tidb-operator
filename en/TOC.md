@@ -29,6 +29,7 @@
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
   - [Deploy TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
+  - [Deploy Multiple Sets of TiDB Operator](deploy-multiple-tidb-operator.md)
   + Deploy Monitoring
     - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
     - [Access TiDB Dashboard](access-dashboard.md)
@@ -36,6 +37,7 @@
   - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
+  - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
 + Operate
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
@@ -63,6 +65,7 @@
   - [View TiDB Logs](view-logs.md)
   - [Configure Automatic Failover](use-auto-failover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+  - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
 + Disaster Recovery
   - [Recover PD Cluster](pd-recover.md)
   - [Recover Deleted Cluster](recover-deleted-cluster.md)

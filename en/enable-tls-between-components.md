@@ -28,6 +28,8 @@ Certificates can be issued in multiple methods. This document describes two meth
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 ## Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
@@ -1399,7 +1401,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
     - Method 2: Do not set `drainerName` when you create Drainer.
@@ -1420,7 +1422,7 @@ In this step, you need to perform the following operations:
         {{< copyable "shell-regular" >}}
 
         ``` shell
-        helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${helm_version} -f values.yaml
+        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
         ```
 
 3. Create the Backup/Restore resource object:
