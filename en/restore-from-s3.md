@@ -24,7 +24,7 @@ This document shows an example in which the backup data stored in the specified 
 
 2. Grant permissions to the remote storage.
 
-    If you restore data from Amazon S3, you can grant permissions by three methods. To grant permissions to access S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    To grant permissions to access S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
     If you use Ceph as the backend storage for testing, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 

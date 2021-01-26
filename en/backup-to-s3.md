@@ -28,7 +28,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
 2. Grant permissions to the remote storage.
 
-    If you use Amazon S3 to back up the cluster, you can grant permissions by three methods. To grant permissions to access S3-compatible remote storages, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    To grant permissions to access S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
     If you use Ceph as the backend storage for testing, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
