@@ -1,6 +1,6 @@
 ---
 title: Backup and Restore Overview
-summary:
+summary: Learn how to perform backup and restore on the TiDB cluster in Kubernetes using BR, Dumpling, and TiDB Lightning.
 ---
 
 # Backup and Restore Overview
@@ -12,15 +12,17 @@ TiDB Operator 1.1 and later versions implement the backup and restore methods us
 + If your TiDB cluster version is v3.1 or later, refer to the following documents:
 
     - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
-    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
     - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
+    - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
+    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
     - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
+    - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
 + If your TiDB cluster version is earlier than v3.1, refer to the following documents:
 
     - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
-    - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
     - [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
+    - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
     - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
 
 ## Use scenarios
@@ -63,8 +65,8 @@ This section introduces the fields in the `Backup` CR.
 
     Three clean policies are supported:
 
-    * `Retain`: On any circumstances, retain the backup data when deleting the backup CR.
-    * `Delete`: On any circumstances, delete the backup data when deleting the backup CR.
+    * `Retain`: Under any circumstances, retain the backup data when deleting the backup CR.
+    * `Delete`: Under any circumstances, delete the backup data when deleting the backup CR.
     * `OnFailure`: If the backup fails, delete the backup data when deleting the backup CR.
 
     If this field is not configured, or if you configure a value other than the three policies above, the backup data is retained.
