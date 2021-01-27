@@ -39,7 +39,7 @@ This document shows an example in which the backup data stored in the specified 
 
 ## Required database account privileges
 
-* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restoration, the `Restore` CR needs a database account with these privileges to adjust the GC time.
+* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restore, the `Restore` CR needs a database account with these privileges to adjust the GC time.
 
 ## Restore Process
 
@@ -78,7 +78,7 @@ This document shows an example in which the backup data stored in the specified 
       #   user: ${tidb_user}
       #   secretName: restore-demo2-tidb-secret
       gcs:
-        projectId: ${project-id}
+        projectId: ${project_id}
         secretName: gcs-secret
         bucket: ${bucket}
         prefix: ${prefix}

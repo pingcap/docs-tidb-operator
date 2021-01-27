@@ -5,7 +5,7 @@ summary: Learn how to grant permissions to access remote storage for backup and 
 
 # Grant Permissions to Remote Storage
 
-This document describes how to grant permissions to access remote storage for backup and restore. During the backup process, TiDB cluster data is backed up to remote storage. During the restore process, the backup data is restored from remote storage to the TiDB cluster.
+This document describes how to grant permissions to access remote storage for backup and restore. During the backup process, TiDB cluster data is backed up to the remote storage. During the restore process, the backup data is restored from the remote storage to the TiDB cluster.
 
 ## AWS account permissions
 
@@ -13,10 +13,9 @@ Amazon Web Service (AWS) provides different methods to grant permissions for dif
 
 ### Grant permissions by AccessKey and SecretKey
 
-The AWS client can read `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from the process environment variables to obtain the related user or role permissions.
+The AWS client can read `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from the process environment variables to obtain the associated user or role permissions.
 
-Create the `s3-secret` secret by running the following command. Use the AWS account's AccessKey and SecretKey.
-The secret stores the credential used for accessing S3-compatible storage.
+Create the `s3-secret` secret by running the following command. Use the AWS account's AccessKey and SecretKey. The secret stores the credential used for accessing S3-compatible storage.
 
 {{< copyable "shell-regular" >}}
 
@@ -43,7 +42,7 @@ If you associate the user's [IAM](https://aws.amazon.com/cn/iam/) role with the 
 
 2. Associate IAM with the TiKV Pod:
 
-    When you use BR to back up TiDB data, the TiKV Pod also needs to perform read and write operations on S3-compatible storage as the BR Pod. Therefore, you need to add annotations to the TiKV Pod to associate it with the IAM role.
+    When you use BR to back up TiDB data, the TiKV Pod also needs to perform read and write operations on S3-compatible storage as the BR Pod does. Therefore, you need to add annotations to the TiKV Pod to associate it with the IAM role.
 
     {{< copyable "shell-regular" >}}
 
@@ -71,7 +70,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
     [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships`.
 
-3. Associate IAM with the ServiceAccount resources.
+3. Associate IAM with the `ServiceAccount` resources.
 
     {{< copyable "shell-regular" >}}
 
@@ -79,7 +78,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
     kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
-4. Associate the ServiceAccount with the TiKV Pod:
+4. Associate the `ServiceAccount` with the TiKV Pod:
 
     {{< copyable "shell-regular" >}}
 

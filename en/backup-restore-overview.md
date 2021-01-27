@@ -25,7 +25,7 @@ TiDB Operator 1.1 and later versions implement the backup and restore methods us
     - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
     - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
 
-## Use scenarios
+## User scenarios
 
 [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV data files to get the logic full backup or export. If you need to back up SST files (Key-Value pairs) directly or perform latency-insensitive incremental backup, refer to [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
 

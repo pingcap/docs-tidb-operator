@@ -42,7 +42,7 @@ This document shows an example in which the backup data stored in the specified 
 
 ## Required database account privileges
 
-* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restoration, the `Restore` CR needs a database account with these privileges to adjust the GC time.
+* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restore, the `Restore` CR needs a database account with these privileges to adjust the GC time.
 
 ## Restore process
 
