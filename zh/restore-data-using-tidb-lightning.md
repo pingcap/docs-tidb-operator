@@ -133,15 +133,13 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 2. 存储访问授权
 
-    和使用 BR 和 Dumpling 进行数据恢复时一样，使用 Amazon S3 作为后端存储时，同样存在三种权限授予方式，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。在使用不同的权限授予方式时，需要使用不用的配置。
+    使用 Amazon S3 作为后端存储时，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。在使用不同的权限授予方式时，需要使用不用的配置。
 
-    使用 Ceph 作为存储后端时，目前仅支持通过 AccessKey 和 SecretKey 授权，可参考[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
+    使用 Ceph 作为存储后端时，参考[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
     使用 GCS 作为存储后端时，参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)。
 
     * 通过 AccessKey 和 SecretKey 授权
-
-        使用 Amazon S3、Ceph 或 GCS 作为存储后端时支持通过 AccessKey 和 SecretKey 授权。
 
         1. 新建一个包含 rclone 配置的 `Secret` 配置文件 `secret.yaml`。rclone 配置示例如下。一般只需要配置一种云存储。
 
