@@ -86,7 +86,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
         # options:
         # - --lastbackupts=420134118382108673
       gcs:
-        projectId: ${project-id}
+        projectId: ${project_id}
         secretName: gcs-secret
         bucket: ${bucket}
         prefix: ${prefix}
@@ -161,7 +161,7 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
           # sendCredToTikv: true
         gcs:
           secretName: gcs-secret
-          projectId: ${project-id}
+          projectId: ${project_id}
           bucket: ${bucket}
           prefix: ${prefix}
           # location: us-east1

@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-gcs/']
 
 # Restore Data from GCS
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [TiDB Lightning](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [TiDB Lightning](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restore.
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions.
 

@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-s3/']
 
 # Restore Data from S3-Compatible Storage Using TiDB Lightning
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. For the underlying implementation, [`Lightning`](https://pingcap.com/docs/stable/how-to/get-started/tidb-lightning/#tidb-lightning-tutorial) is used to perform the restore.
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions.
 
@@ -196,7 +196,7 @@ This document shows an example in which the backup data stored in the specified 
       storageSize: 1Gi
     ```
 
-After creating the `Restore` CR, execute the following command to check the restoration status:
+After creating the `Restore` CR, execute the following command to check the restore status:
 
 {{< copyable "shell-regular" >}}
 

@@ -20,7 +20,7 @@ TiDB Lightning supports [three backends](https://docs.pingcap.com/tidb/stable/ti
 
 > **Note:**
 >
-> If you use the `local` or `tidb` backend for data restoration, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
+> If you use the `local` or `tidb` backend for data restore, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
 
 You can deploy tikv-importer using the Helm chart. See the following example:
 
@@ -137,7 +137,9 @@ To restore backup data from the remote source, take the following steps:
 
     Like restoring data using BR and Dumpling, when you use Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
-    If you use Ceph or GCS as the storage, you can only grant permissions by importing AccessKey and SecretKey. See [Grant permissions by AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
+    If you use Ceph as the storage, you can only grant permissions by importing AccessKey and SecretKey. See [Grant permissions by AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
+
+    If you use GCS as the storage, refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
 
     * Grant permissions by importing AccessKey and SecretKey
 

@@ -6,9 +6,9 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 
 # Restore Data from S3-Compatible Storage Using BR
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to perform the restoration.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to perform the restore.
 
-The restoration method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
+The restore method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
 
 This document shows an example in which the backup data stored in the specified path on the Amazon S3 storage is restored to the TiDB cluster.
 
@@ -173,7 +173,7 @@ This document shows an example in which the backup data stored in the specified 
         prefix: my-folder
     ```
 
-After creating the `Restore` CR, execute the following command to check the restoration status:
+After creating the `Restore` CR, execute the following command to check the restore status:
 
 {{< copyable "shell-regular" >}}
 
