@@ -27,9 +27,9 @@ If you need to update or offline TidbMonitor, update the starting configuration 
 
 ## Configure archives and storage of Thanos Sidecar
 
-Thanos Sidecar supports replicating monitoring data to S3 remote storage, the configuration is as follows:
+Thanos Sidecar supports replicating monitoring data to S3 remote storage, and the configuration is as follows:
 
-TidbMonitor CR configuration is as follows:
+The configuration of the TidbMonitor CR is as follows:
 
 ```yaml
 spec:
