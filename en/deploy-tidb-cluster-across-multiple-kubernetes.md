@@ -602,7 +602,7 @@ kubectl delete tc cluster2
 
 Through the above steps, you can complete exit and resources reclaim of the joined clusters.
 
-## Enable the existing data cluster across multiple Kubernetes cluster feature as the initial TiDB cluster
+## Enable the feature for a cluster with existing data and make it the initial TiDB cluster
 
 > **Warning:**
 >
