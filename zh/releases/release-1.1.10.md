@@ -4,7 +4,7 @@ title: TiDB Operator 1.1.10 Release Notes
 
 # TiDB Operator 1.1.10 Release Notes
 
-发布日期：2021 年 1 月 29 日
+发布日期：2021 年 1 月 28 日
 
 TiDB Operator 版本：1.1.10
 
