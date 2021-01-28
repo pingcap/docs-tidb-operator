@@ -510,7 +510,7 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
 
 #### Spec.tidb.storageVolumes 配置
 
-按照如下示例配置 TiDB Cluster，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
+按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
 
 {{< copyable "" >}}
 
