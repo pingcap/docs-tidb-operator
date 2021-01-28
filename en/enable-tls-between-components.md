@@ -28,6 +28,8 @@ Certificates can be issued in multiple methods. This document describes two meth
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 ## Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
@@ -1311,7 +1313,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v4.0.9
+     version: v4.0.10
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1367,7 +1369,7 @@ In this step, you need to perform the following operations:
        version: 6.0.1
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v4.0.9
+       version: v4.0.10
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
