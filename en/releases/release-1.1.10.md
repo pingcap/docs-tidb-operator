@@ -10,7 +10,7 @@ TiDB Operator version: 1.1.10
 
 ## Rolling Update Changes
 
-- If the `spec.initializer.version` in the TidbMonitor does not match the TiDB version in the TidbCluster, upgrading TiDB Operator will cause the recreation of the TidbMonitor Pod due to [#3684](https://github.com/pingcap/tidb-operator/pull/3684)
+- Upgrading TiDB Operator will cause the recreation of the TidbMonitor Pod due to [#3684](https://github.com/pingcap/tidb-operator/pull/3684)
 
 ## New Features
 
@@ -24,7 +24,7 @@ TiDB Operator version: 1.1.10
 - Support customizing the storage config for TiDB slow log ([#3731](https://github.com/pingcap/tidb-operator/pull/3731), [@BinChenn](https://github.com/BinChenn))
 - Add `tidb_cluster` label for the scrape jobs in TidbMonitor to support monitoring multiple clusters ([#3750](https://github.com/pingcap/tidb-operator/pull/3750), [@mikechengwei](https://github.com/mikechengwei))
 - Supports persisting checkpoint for TiDB Lightning helm chart ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
-- Change the directory of the customized alert rules in TidbMonitor from `tidb:${tidb_image_version}` to `tidb:${initializer_image_version}` ([#3684](https://github.com/pingcap/tidb-operator/pull/3684), [@BinChenn](https://github.com/BinChenn))
+- Change the directory of the customized alert rules in TidbMonitor from `tidb:${tidb_image_version}` to `tidb:${initializer_image_version}` so that when the TiDB cluster is upgraded afterwards, the TidbMonitor Pod will not be recreated ([#3684](https://github.com/pingcap/tidb-operator/pull/3684), [@BinChenn](https://github.com/BinChenn))
 
 ## Bug Fixes
 

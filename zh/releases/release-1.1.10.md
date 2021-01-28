@@ -10,7 +10,7 @@ TiDB Operator 版本：1.1.10
 
 ## 滚动升级改动
 
-- 由于 [#3684](https://github.com/pingcap/tidb-operator/pull/3684) 的改动，如果 TidbMonitor 中 `spec.initializer.version` 和 TidbCluster 中 TiDB 组件的版本不一致，升级 TiDB Operator 会导致 TidbMonitor Pod 删除重建
+- 由于 [#3684](https://github.com/pingcap/tidb-operator/pull/3684) 的改动，升级 TiDB Operator 会导致 TidbMonitor Pod 删除重建
 
 ## 新功能
 
@@ -24,7 +24,7 @@ TiDB Operator 版本：1.1.10
 - 支持为 TiDB slow log 自定义存储 ([#3731](https://github.com/pingcap/tidb-operator/pull/3731), [@BinChenn](https://github.com/BinChenn))
 - 为 TidbMonitor 中的 scrape jobs 增加 `tidb_cluster` label 以支持多集群监控 ([#3750](https://github.com/pingcap/tidb-operator/pull/3750), [@mikechengwei](https://github.com/mikechengwei))
 - TiDB Lightning chart 支持持久化 checkpoint ([#3653](https://github.com/pingcap/tidb-operator/pull/3653), [@csuzhangxc](https://github.com/csuzhangxc))
-- 将 TidbMonitor 自定义告警规则的存储路径从 `tidb:${tidb_image_version}` 修改为 `tidb:${initializer_image_version}` ([#3684](https://github.com/pingcap/tidb-operator/pull/3684), [@BinChenn](https://github.com/BinChenn))
+- 将 TidbMonitor 自定义告警规则的存储路径从 `tidb:${tidb_image_version}` 修改为 `tidb:${initializer_image_version}`，确保后续 TiDB 集群升级时不会导致 TidbMonitor Pod 重建 ([#3684](https://github.com/pingcap/tidb-operator/pull/3684), [@BinChenn](https://github.com/BinChenn))
 
 ## Bug 修复
 
