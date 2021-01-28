@@ -626,9 +626,9 @@ Through the above steps, you can complete exit and resources reclaim of the join
 
 2. Update the `PeerURL` information of PD:
 
-    After completing the rolling update, you need to use `port-forward` to expose PD's API interface, and use API interface of PD to update `PeerURL` of PD.
+    After completing the rolling update, you need to use `port-forward` to expose PD's API, and use API of PD to update `PeerURL` of PD.
 
-    1. Use `port-forward` to expose API interface of PD:
+    1. Use `port-forward` to expose API of PD:
 
         {{< copyable "shell-regular" >}}
 
