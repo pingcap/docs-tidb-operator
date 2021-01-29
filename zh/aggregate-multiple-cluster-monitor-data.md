@@ -11,7 +11,7 @@ summary: 通过 Thanos 框架聚合多个 TiDB 集群的监控数据
 
 Thanos 是 Prometheus 高可用的解决方案，用于简化 Prometheus 的可用性保证。详细内容请参考 [Thanos 官方文档](https://thanos.io/design.md/)。
 
-Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://thanos.io/components/query.md/) 组件，可以利用这个功能解决 TiDB 多集群监控数据聚合的问题。
+Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://thanos.io/tip/components/query.md/) 组件，可以利用这个功能解决 TiDB 多集群监控数据聚合的问题。
 
 ## 配置 Thanos Query
 
