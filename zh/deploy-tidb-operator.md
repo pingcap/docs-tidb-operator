@@ -236,7 +236,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-    > 如果对应 `tidb-admin` namespace 不存在，则可先使用 `kubectl create namespace tidb-admin` 创建该 namespace
+    > 如果对应 `tidb-admin` namespace 不存在，则可先使用 `kubectl create namespace tidb-admin` 创建该 namespace。
 
 5. 升级 TiDB Operator
 
