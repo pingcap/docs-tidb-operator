@@ -9,7 +9,7 @@ This document describes how to aggregate the monitoring data of multiple TiDB cl
 
 ## Thanos
 
-[Thanos](https://thanos.io/design.md/) is a high availability solution for Prometheus to simplify the availability guarantee of Prometheus.
+[Thanos](https://thanos.io/design.md/) is a high availability solution for Prometheus that simplifies the availability guarantee of Prometheus.
 
 Thanos provides [Thanos Query](https://thanos.io/components/query.md/) component as a unified query solution across Prometheus. You can use this feature to solve the problem of aggregating monitoring data of multiple clusters.
 
@@ -19,17 +19,17 @@ First, you need to configure a Thanos Sidecar container for each TidbMonitor. To
 
 ## Configure Grafana
 
-After you deploy Thanos Query, Grafana only needs to change the DataSource into the Thanos source to query the monitoring data of multiple TidbMonitors.
+After you deploy Thanos Query, change Grafana's DataSource into Thanos to query the monitoring data of multiple `TidbMonitor` CRs.
 
 ## Add or reduce TidbMonitor
 
-If you need to update or offline TidbMonitor, update the starting configuration `--store` of Thanos Query Store, and perform a rolling update to Thanos Query component.
+If you need to update the `TidbMonitor` CR or take it offline, update the starting configuration `--store` of Thanos Query Store, and perform a rolling update to the Thanos Query component.
 
 ## Configure archives and storage of Thanos Sidecar
 
-Thanos Sidecar supports replicating monitoring data to S3 remote storage, and the configuration is as follows:
+Thanos Sidecar supports replicating monitoring data to S3 remote storage.
 
-The configuration of the TidbMonitor CR is as follows:
+The configuration of the `TidbMonitor` CR is as follows:
 
 ```yaml
 spec:
