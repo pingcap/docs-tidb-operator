@@ -79,7 +79,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-gcs-using-br/','/docs
       #   user: ${tidb_user}
       #   secretName: restore-demo2-tidb-secret
       gcs:
-        projectId: ${project-id}
+        projectId: ${project_id}
         secretName: gcs-secret
         bucket: ${bucket}
         prefix: ${prefix}
