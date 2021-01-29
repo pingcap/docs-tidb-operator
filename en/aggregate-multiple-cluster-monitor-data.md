@@ -15,7 +15,23 @@ Thanos provides [Thanos Query](https://thanos.io/components/query.md/) component
 
 ## Configure Thanos Query
 
-First, you need to configure a Thanos Sidecar container for each TidbMonitor. To update TidbMonitor, configure Thanos Sidecar and deploy Thanos Query component, refer to [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos/README.md).In Thanos Query, a Prometheus corresponds to a Store, which corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a unified query interface for monitoring data through Thanos Query's API.
+First, deploy the TidbMonitor with Thanos Sidecar container:
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml"
+```
+
+Then deploy the Thanos Query component:
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml"
+```
+
+In Thanos Query, a Prometheus corresponds to a Store, which corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a unified query interface for monitoring data through Thanos Query's API.
 
 ## Configure Grafana
 
