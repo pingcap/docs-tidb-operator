@@ -5,13 +5,13 @@ summary: Learn how to aggregate monitoring data of multiple TiDB clusters by Tha
 
 # Aggregate Monitoring Data of Multiple TiDB Clusters
 
-This document describes how to aggregate the monitoring data of multiple TiDB clusters by Thanos to solve the centralization problem of monitoring data of multiple clusters.
+This document describes how to aggregate the monitoring data of multiple TiDB clusters by Thanos to provide centralized monitoring service.
 
 ## Thanos
 
 [Thanos](https://thanos.io/design.md/) is a high availability solution for Prometheus that simplifies the availability guarantee of Prometheus.
 
-Thanos provides [Thanos Query](https://thanos.io/components/query.md/) component as a unified query solution across Prometheus. You can use this feature to solve the problem of aggregating monitoring data of multiple clusters.
+Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) component as a unified query solution across multiple Prometheus clusters. You can use this feature to aggregate monitoring data of multiple TiDB clusters.
 
 ## Configure Thanos Query
 
