@@ -5,7 +5,7 @@ summary: Learn how to aggregate monitoring data of multiple TiDB clusters by Tha
 
 # Aggregate Monitoring Data of Multiple TiDB Clusters
 
-This document describes how to aggregate the monitoring data of multiple TiDB clusters by Thanos to solve the centralization problem of monitoring data of multiple clusters.
+This document describes how to aggregate the monitoring data of multiple TiDB clusters by Thanos to provide centralized monitoring service.
 
 ## Thanos
 
