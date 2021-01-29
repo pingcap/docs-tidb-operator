@@ -1,12 +1,7 @@
 ---
 title: Restore Data from S3-Compatible Storage Using BR
-<<<<<<< HEAD
-summary: Learn how to restore data from Amazon S3 using BR.
-aliases: ['/docs/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/','/docs/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br/']
-=======
 summary: Learn how to restore data from Amazon S3-compatible storage using BR.
-aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
->>>>>>> a203adc... en: Refactor backup restore (#1071)
+aliases: ['/docs/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/','/docs/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br/']
 ---
 
 # Restore Data from S3-Compatible Storage Using BR

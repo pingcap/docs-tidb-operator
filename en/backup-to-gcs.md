@@ -88,90 +88,9 @@ To better explain how to perform the backup operation, this document shows an ex
     #  - --rows=10000
     #  tableFilter:
     #  - "test.*"
-<<<<<<< HEAD
-    storageClassName: local-storage
-    storageSize: 10Gi
-    ```
-
-2. Create the `Backup` CR and back up data to GCS:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f backup-gcs.yaml
-    ```
-
-In the above example, all data of the TiDB cluster is exported and backed up to GCS. You can ignore the `location`, `objectAcl`, `bucketAcl`, and `storageClass` items in the GCS configuration.
-
-`projectId` in the configuration is the unique identifier of the user project on GCP. To learn how to get this identifier, refer to the [GCP documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-
-GCS supports the following `storageClass` types:
-
-* `MULTI_REGIONAL`
-* `REGIONAL`
-* `NEARLINE`
-* `COLDLINE`
-* `DURABLE_REDUCED_AVAILABILITY`
-
-If `storageClass` is not configured, `COLDLINE` is used by default. For the detailed description of these storage types, refer to [GCS documentation](https://cloud.google.com/storage/docs/storage-classes).
-
-GCS supports the following object ACL polices:
-
-* `authenticatedRead`
-* `bucketOwnerFullControl`
-* `bucketOwnerRead`
-* `private`
-* `projectPrivate`
-* `publicRead`
-
-If the object ACL policy is not configured, the `private` policy is used by default. For the detailed description of these access control policies, refer to [GCS documentation](https://cloud.google.com/storage/docs/access-control/lists).
-
-GCS supports the following bucket ACL policies:
-
-* `authenticatedRead`
-* `private`
-* `projectPrivate`
-* `publicRead`
-* `publicReadWrite`
-
-If the bucket ACL policy is not configured, the `private` policy is used by default. For the detailed description of these access control policies, refer to [GCS documentation](https://cloud.google.com/storage/docs/access-control/lists).
-
-After creating the `Backup` CR, you can use the following command to check the backup status:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl get bk -n test1 -owide
-```
-
-More parameter description:
-
-* `.spec.metadata.namespace`: the namespace where the `Backup` CR is located.
-* `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` time setting during the backup. Defaults to 72h.
-
-    Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator adjusts the value of `tikv_gc_life_time` to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
-
-    After the backup, no matter whether the backup is successful or not, as long as the previous `tikv_gc_life_time` is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
-
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
-    ```
-
-    In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (10m by default), it means TiDB Operator failed to automatically recover the value. Therefore, you need to set `tikv_gc_life_time` back to the previous value manually:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
-=======
       storageClassName: local-storage
       storageSize: 10Gi
     ```
->>>>>>> a203adc... en: Refactor backup restore (#1071)
 
     The example above backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, `bucketAcl`, and `storageClass`. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
 
