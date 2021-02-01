@@ -234,7 +234,7 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     helm install tidb-operator ./tidb-operator --namespace=tidb-admin
     ```
 
-   > **Note:**
+    > **Note:**
     >
     > If the corresponding `tidb-admin` namespace does not exist, you can create the namespace first by running the `kubectl create namespace tidb-admin` command.
 
