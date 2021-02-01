@@ -15,7 +15,23 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
 ## 配置 Thanos Query
 
-首先，需要为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。请参考[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos/README.md)，更新 TidbMonitor，配置 Thanos Sidecar 并部署 Thanos Query 组件。在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
+首先，需要为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml"
+```
+
+然后需要部署 Thanos Query 组件：
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml"
+```
+
+在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
 ## 配置 Grafana
 
