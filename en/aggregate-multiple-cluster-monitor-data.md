@@ -37,7 +37,7 @@ In Thanos Query, a Prometheus corresponds to a Store, which corresponds to a Tid
 
 After you deploy Thanos Query, change Grafana's DataSource into Thanos to query the monitoring data of multiple `TidbMonitor` CRs.
 
-## Add or reduce TidbMonitor
+## Add or remove TidbMonitor
 
 If you need to update the `TidbMonitor` CR or take it offline, update the starting configuration `--store` of Thanos Query Store, and perform a rolling update to the Thanos Query component.
 
