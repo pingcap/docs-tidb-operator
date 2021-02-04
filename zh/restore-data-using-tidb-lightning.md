@@ -1,7 +1,7 @@
 ---
 title: 导入集群数据
 summary: 使用 TiDB Lightning 导入集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/','/docs-cn/stable/tidb-in-kubernetes/maintain/lightning/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/','/docs-cn/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning/','/docs-cn/stable/tidb-in-kubernetes/maintain/lightning/','/docs-cn/dev/tidb-in-kubernetes/maintain/lightning/']
 ---
 
 # 导入集群数据
