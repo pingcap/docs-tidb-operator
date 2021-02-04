@@ -1,7 +1,7 @@
 ---
 title: TiDB in Kubernetes Sysbench Performance Test
 summary: Learn the Sysbench performance test of TiDB in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/stable/benchmark-sysbench/','/docs/tidb-in-kubernetes/v1.1/benchmark-sysbench/']
+aliases: ['/docs/tidb-in-kubernetes/stable/benchmark-sysbench/','/docs/tidb-in-kubernetes/v1.1/benchmark-sysbench/','/docs/stable/benchmark/sysbench-in-k8s/']
 ---
 
 # TiDB in Kubernetes Sysbench Performance Test
