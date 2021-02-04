@@ -19,7 +19,7 @@ You need to configure the Kubernetes network and DNS so that the Kubernetes clus
 Currently supported scenarios:
 
 - Deploy a new TiDB cluster across multiple Kubernetes clusters.
-- Deploy new clusters that enable this feature on other Kubernetes clusters and join the clusters that also enable this feature.
+- Deploy new TiDB clusters that enable this feature on other Kubernetes clusters and join the initial TiDB cluster.
 
 Experimentally supported scenarios:
 
@@ -636,7 +636,7 @@ Through the above steps, you can complete exit and resources reclaim of the join
         kubectl port-forward pods/cluster1-pd-0 2380:2380 2379:2379 -n pingcap
         ```
 
-    2. Access `PD API` to obtain `members` information. Note that after using `port-forward`, the terminal is occupied. You need to perform the following operations in another terminal:
+    2. Access `PD API` to obtain `members` information. Note that after using `port-forward`, the terminal session is occupied. You need to perform the following operations in another terminal session:
 
         {{< copyable "shell-regular" >}}
 
