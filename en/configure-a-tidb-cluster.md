@@ -530,7 +530,7 @@ When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the ser
 
 ### Configure PV for TiDB slow logs
 
-TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV information in `spec.tidb.storageVolumes` or `spec.tidb. additionalVolumes`.
+TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
 This section shows how to configure PV using `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
