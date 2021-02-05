@@ -39,7 +39,14 @@ After you deploy Thanos Query, change Grafana's DataSource into Thanos to query 
 
 ## Add or remove TidbMonitor
 
-If you need to update the `TidbMonitor` CR or take it offline, update the starting configuration `--store` of Thanos Query Store, and perform a rolling update to the Thanos Query component.
+If you need to add, update, or remove a monitor store from the Thanos Query, update the `--store` configuration of Thanos Query, and perform a rolling update to the Thanos Query component.
+
+```shell
+        thanos query \
+            --http-address     "0.0.0.0:9090" \
+            --store            "<store-api>:<grpc-port>" \
+            --store            "<store-api2>:<grpc-port>" 
+```
 
 ## Configure archives and storage of Thanos Sidecar
 

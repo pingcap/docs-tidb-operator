@@ -39,7 +39,14 @@ kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 ## 增加或者减少 TidbMonitor
 
-当需要更新或者下线 TidbMonitor 时，需要更新 Thanos Query Store 的启动配置 `--store`，滚动更新 Thanos Query 组件。
+当需要从 Thanos Query 增加、更新或者下线 Monitor Store 时，需要更新 Thanos Query Store 的启动配置 `--store`，滚动更新 Thanos Query 组件。
+
+```shell
+   thanos query \
+            --http-address     "0.0.0.0:9090" \
+            --store            "<store-api>:<grpc-port>" \
+            --store            "<store-api2>:<grpc-port>"      
+```
 
 ## 配置 Thanos Sidecar 归档存储
 
