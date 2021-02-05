@@ -557,7 +557,7 @@ For how to configure the `spec.tidb.storageVolumes` field, refer to [Multiple di
 
 #### Configure using `spec.tidb.additionalVolumes`
 
-The following example takes NFS as an example. In the example, TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
+In the following example, NFS is used as the storage, and TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
 
 For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes).
 
