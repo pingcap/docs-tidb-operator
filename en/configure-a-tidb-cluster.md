@@ -40,11 +40,11 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.9`
+- `spec.version`: the format is `imageTag`, such as `v4.0.10`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.9`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.10`
 
 ### Recommended configuration
 
@@ -100,7 +100,7 @@ The meanings of the related fields are as follows:
 
 For example:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
   pd:
@@ -272,7 +272,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v4.0.10
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -294,7 +294,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v4.0.10
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -326,7 +326,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
+    image: pingcap/tikv:v4.0.10
     config:
       log-level: "info"
       slow-log-threshold: "1s"
@@ -345,7 +345,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
+    image: pingcap/tikv:v4.0.10
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -374,7 +374,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v4.0.10
     config:
       lease: 3
       enable-prevote: true
@@ -390,7 +390,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v4.0.10
     config: |
       lease = 3
       enable-prevote = true
@@ -475,6 +475,169 @@ spec:
 
 For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
 
+## Configure TiDB cluster graceful upgrade
+
+When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
+
+Starting from v1.1.2, TiDB Operator supports gracefully upgrading the TiDB cluster. You can enable this feature by configuring the following items:
+
+- `spec.tidb.terminationGracePeriodSeconds`: The longest tolerable duration to delete the old TiDB Pod during the rolling upgrade. If this duration is exceeded, the TiDB Pod will be deleted forcibly.
+- `spec.tidb.lifecycle`: Sets the `preStop` hook for the TiDB Pod, which is the operation executed before the TiDB server stops.
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.10
+  pvReclaimPolicy: Retain
+  discovery: {}
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: {}
+    terminationGracePeriodSeconds: 60
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /bin/sh
+          - -c
+          - "sleep 10 && kill -QUIT 1"
+```
+
+The YAML file above:
+
+- Sets the longest tolerable duration to delete the TiDB Pod to 60 seconds. If the client does not close the connections after 60 seconds, these connections will be closed forcibly. You can adjust the value according to your needs.
+- Sets the value of `preStop` hook to `sleep 10 && kill -QUIT 1`. Here `PID 1` refers to the PID of the TiDB server process in the TiDB Pod. When the TiDB server process receives the signal, it exits only after all the connections are closed by the client.
+
+When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection is not established to this TiDB node. However, because this process is asynchronous, you can make the system sleep for a few seconds before you send the `kill` signal, which makes sure that the TiDB node is removed from the endpoints.
+
+### Configure PV for TiDB slow logs
+
+TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+
+This section shows how to configure PV using `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+
+#### Configure using `spec.tidb.storageVolumes`
+
+Configure the `TidbCluster` CR as the following example. In the example, TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
+
+For how to configure the `spec.tidb.storageVolumes` field, refer to [Multiple disks mounting](#multiple-disks-mounting).
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # can be ignored
+    slowLogVolumeName: ${volumeName}
+    storageVolumes:
+      # name must be consistent with slowLogVolumeName
+      - name: ${volumeName}
+        storageClassName: ${storageClass}
+        storageSize: "1Gi"
+        mountPath: ${mountPath}
+```
+
+#### Configure using `spec.tidb.additionalVolumes`
+
+In the following example, NFS is used as the storage, and TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
+
+For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes).
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # can be ignored
+    slowLogVolumeName: ${volumeName}
+    additionalVolumes:
+    # name must be consistent with slowLogVolumeName
+    - name: ${volumeName}
+      nfs:
+        server: 192.168.0.2
+        path: /nfs
+    additionalVolumeMounts:
+    # name must be consistent with slowLogVolumeName
+    - name: ${volumeName}
+      mountPath: ${mountPath}
+```
+
+### Configure TiDB service
+
+You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
+
+#### ClusterIP
+
+`ClusterIP` exposes services through the internal IP of the cluster. When selecting this type of service, you can only access it within the cluster using ClusterIP or the Service domain name (`${cluster_name}-tidb.${namespace}`).
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: ClusterIP
+```
+
+#### NodePort
+
+If there is no LoadBalancer, you can choose to expose the service through NodePort. NodePort exposes services through the node's IP and static port. You can access a NodePort service from outside of the cluster by requesting `NodeIP + NodePort`.
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      type: NodePort
+      # externalTrafficPolicy: Local
+```
+
+NodePort has two modes:
+
+- `externalTrafficPolicy=Cluster`: All machines in the cluster allocate a NodePort port to TiDB, which is the default value.
+
+    When using the `Cluster` mode, you can access the TiDB service through the IP and NodePort of any machine. If there is no TiDB Pod on the machine, the corresponding request will be forwarded to the machine with TiDB Pod.
+
+    > **Note:**
+    >
+    > In this mode, the request source IP obtained by the TiDB service is the host IP, not the real client source IP, so access control based on the client source IP is not available in this mode.
+
+-`externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
+
+#### LoadBalancer
+
+If the TiDB cluster runs in an environment with LoadBalancer, such as on GCP or AWS, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
+
+```yaml
+spec:
+  ...
+  tidb:
+    service:
+      annotations:
+        cloud.google.com/load-balancer-type: "Internal"
+      externalTrafficPolicy: Local
+      type: LoadBalancer
+```
+
+See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/) to know more about the features of Service and what LoadBalancer in the cloud platform supports.
+
 ## Configure high availability
 
 > **Note:**
@@ -491,7 +654,7 @@ The following is an example of a typical service high availability setup:
 
 {{< copyable "" >}}
 
-```shell
+```yaml
 affinity:
  podAntiAffinity:
    preferredDuringSchedulingIgnoredDuringExecution:

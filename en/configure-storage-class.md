@@ -66,7 +66,9 @@ After volume expansion is enabled, expand the PV using the following method:
 
 ## Local PV configuration
 
-Kubernetes currently supports statically allocated local storage. To create a local storage object, use `local-volume-provisioner` in the [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) repository. The procedure is as follows:
+Kubernetes currently supports statically allocated local storage. To create a local storage object, use `local-volume-provisioner` in the [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) repository.
+
+The following process uses `/mnt/disks` as the discovery directory and `local-storage` as the StorageClass name to create a PV. If you need to use a different data disk or StorageClass for monitoring, backup, or other purposes, refer to the following [example](#disk-mount-examples) for configuration.
 
 1. Pre-allocate local storage in cluster nodes. See the [operation guide](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md) provided by Kubernetes.
 
@@ -75,7 +77,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
      ```
 
     If the server has no access to the Internet, download the `local-volume-provisioner.yaml` file on a machine with Internet access and then install it.
@@ -83,7 +85,7 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/local-dind/local-volume-provisioner.yaml &&
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml &&
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
@@ -113,7 +115,13 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     kubectl get pv | grep local-storage
     ```
 
-    `local-volume-provisioner` creates a PV for each mounting point under the discovery directory. Note that on GKE, `local-volume-provisioner` creates a local volume of only 375 GiB in size by default.
+    `local-volume-provisioner` creates a PV for each mounting point under the discovery directory.
+
+    > **Note:**
+    >
+    > - On GKE, `local-volume-provisioner` creates a local volume of only 375 GiB in size by default.
+    > - If no mount point is in the discovery directory, no PV is created and the output of `kubectl get pv | grep local-storage` is empty.
+    > - If the StorageClass name is not `local-storage`, you need to replace `local-storage` in `kubectl get pv | grep local-storage` with the actual StorageClass name to confirm the PV status.
 
 For more information, refer to [Kubernetes local storage](https://kubernetes.io/docs/concepts/storage/volumes/#local) and [local-static-provisioner document](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview).
 
@@ -139,7 +147,7 @@ If the components such as monitoring, TiDB Binlog, and `tidb-backup` use local d
 
     >**Note:**
     >
-    > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. For each directory, a corresponding PV will be created. Each Pump uses one PV and each Drainer uses one PV. Each [Ad-hoc full backup](backup-and-restore-using-helm-charts.md#ad-hoc-full-backup) task uses one PV, and all [scheduled full backup](backup-and-restore-using-helm-charts.md#scheduled-full-backup) tasks share one PV.
+    > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. For each directory, a corresponding PV will be created. Each Pump uses one PV and each Drainer uses one PV. All [Ad-hoc full backup](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage) tasks and all [scheduled full backup](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage) tasks share one PV.
 
 - For a disk storing data in PD, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount them into `/mnt/sharedssd` directory. Then, create `shared-ssd-storage` `StorageClass` for them to use.
 
@@ -246,7 +254,7 @@ Finally, execute the `kubectl apply` command to deploy `local-volume-provisioner
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/local-dind/local-volume-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
 ```
 
 When you later deploy tidb clusters, deploy TiDB Binlog for incremental backups, or do full backups, configure the corresponding `StorageClass` for use.

@@ -28,7 +28,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v4.0.9
+        version: v4.0.10
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -47,7 +47,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v4.0.9
+        version: v4.0.10
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -180,20 +180,10 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     helm repo update
     ```
 
-    Helm 3:
-
     {{< copyable "shell-regular" >}}
 
     ```shell
     helm search repo tidb-drainer -l
-    ```
-
-    Helm 2:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm search tidb-drainer -l
     ```
 
 2. Get the default `values.yaml` file to facilitate customization:
@@ -208,7 +198,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v4.0.9
+    clusterVersion: v4.0.10
     baseImage:pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
@@ -238,7 +228,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     ...
-    clusterVersion: v4.0.9
+    clusterVersion: v4.0.10
     baseImage: pingcap/tidb-binlog-enterprise
     ...
     ```
@@ -248,7 +238,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-drainer --name=${release_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
+    helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
 
     If the server does not have an external network, refer to [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
@@ -457,7 +447,7 @@ The steps are as follows:
 
 2. Delete the corresponding Drainer Pod:
 
-    Execute `helm del --purge ${release_name}` to delete the Drainer Pod.
+    Execute `helm uninstall ${release_name}` to delete the Drainer Pod.
 
     If you no longer need Drainer, execute `kubectl delete pvc data-${drainer_node_id} -n ${namespace}` to delete the PVC resources of Drainer.
 

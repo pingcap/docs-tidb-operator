@@ -65,7 +65,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v4.0.9
+    version: v4.0.10
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -124,7 +124,7 @@ spec
 升级到 TiDB Operator v1.1 之后，可以通过 Restore CR 进行备份恢复：
 
 - 如果 TiDB 集群版本 < v3.1，可以参考 [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
-- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 工具恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)。
+- 如果 TiDB 集群版本 >= v3.1，可以参考 [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)。
 
 > **注意：**
 >

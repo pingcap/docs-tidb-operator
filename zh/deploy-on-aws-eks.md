@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 部署前，请确认已完成以下环境准备：
 
-- 安装 [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator。
+- 安装 [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator。
 
 - 完成 AWS [eksctl 入门](https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/getting-started-eksctl.html)中所有操作。
 
@@ -174,8 +174,8 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/aws/tidb-cluster.yaml &&
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/aws/tidb-monitor.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-cluster.yaml &&
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aws/tidb-monitor.yaml
 ```
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)

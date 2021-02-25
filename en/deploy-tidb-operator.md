@@ -16,7 +16,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
-* [Helm](https://helm.sh) version >= 2.11.0 && < 3.0.0 && != [2.16.4](https://github.com/helm/helm/issues/7797)
+* [Helm 3](https://helm.sh)
 
 ### Deploy the Kubernetes cluster
 
@@ -49,7 +49,7 @@ TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 If the server cannot access the Internet, you need to download the `crd.yaml` file on a machine with Internet access before installing:
@@ -57,7 +57,7 @@ If the server cannot access the Internet, you need to download the `crd.yaml` fi
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/manifests/crd.yaml
+wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 kubectl apply -f ./crd.yaml
 ```
 
@@ -99,7 +99,7 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
 
     > **Note:**
     >
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.1.9`. You can view the currently supported versions by running the `helm search -l tidb-operator` command.
+    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.2.0-alpha.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
 
 2. Configure TiDB Operator
 
@@ -112,9 +112,13 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
+    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
+
+    > **Note:**
+    >
+    > If the corresponding `tidb-admin` namespace does not exist, you can create the namespace first by running the `kubectl create namespace tidb-admin` command.
 
 4. Upgrade TiDB Operator
 
@@ -123,7 +127,7 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator pingcap/tidb-operator -f  ${HOME}/tidb-operator/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator -f  `${HOME}/tidb-operator/values-tidb-operator.yaml`
     ```
 
 #### Offline installation
@@ -139,15 +143,15 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.1.9.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
     ```
 
-    Copy the `tidb-operator-v1.1.9.tgz` file to the target server and extract it to the current directory:
+    Copy the `tidb-operator-v1.2.0-alpha.1.tgz` file to the target server and extract it to the current directory:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.1.9.tgz
+    tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
     ```
 
 2. Download the Docker images used by TiDB Operator
@@ -159,8 +163,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.1.9
-    pingcap/tidb-backup-manager:v1.1.9
+    pingcap/tidb-operator:v1.2.0-alpha.1
+    pingcap/tidb-backup-manager:v1.2.0-alpha.1
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -173,13 +177,13 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.1.9
-    docker pull pingcap/tidb-backup-manager:v1.1.9
+    docker pull pingcap/tidb-operator:v1.2.0-alpha.1
+    docker pull pingcap/tidb-backup-manager:v1.2.0-alpha.1
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.1.9.tar pingcap/tidb-operator:v1.1.9
-    docker save -o tidb-backup-manager-v1.1.9.tar pingcap/tidb-backup-manager:v1.1.9
+    docker save -o tidb-operator-v1.2.0-alpha.1.tar pingcap/tidb-operator:v1.2.0-alpha.1
+    docker save -o tidb-backup-manager-v1.2.0-alpha.1.tar pingcap/tidb-backup-manager:v1.2.0-alpha.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -189,8 +193,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.1.9.tar
-    docker load -i tidb-backup-manager-v1.1.9.tar
+    docker load -i tidb-operator-v1.2.0-alpha.1.tar
+    docker load -i tidb-backup-manager-v1.2.0-alpha.1.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
@@ -227,8 +231,12 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install ./tidb-operator --name=tidb-operator --namespace=tidb-admin
+    helm install tidb-operator ./tidb-operator --namespace=tidb-admin
     ```
+
+    > **Note:**
+    >
+    > If the corresponding `tidb-admin` namespace does not exist, you can create the namespace first by running the `kubectl create namespace tidb-admin` command.
 
 5. Upgrade TiDB Operator
 

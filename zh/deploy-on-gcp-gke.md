@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 部署前，请确认已完成以下环境准备：
 
-* [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
+* [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
 * [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
@@ -94,8 +94,8 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-cluster.yaml &&
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.9/examples/gcp/tidb-monitor.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml &&
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
 ```
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
@@ -193,7 +193,7 @@ gcloud compute instances create bastion \
     $ mysql -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v4.0.9 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v4.0.10 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 

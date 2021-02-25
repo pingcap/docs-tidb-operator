@@ -28,6 +28,7 @@
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
   - [Deploy TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
+  - [Deploy Multiple Sets of TiDB Operator](deploy-multiple-tidb-operator.md)
   + Deploy Monitoring
     - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
     - [Access TiDB Dashboard](access-dashboard.md)
@@ -35,6 +36,7 @@
   - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
+  - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
 + Operate
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
@@ -45,23 +47,27 @@
     - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
   - [Migrate MySQL Data to TiDB Cluster Using DM](deploy-tidb-dm.md)
   + Backup and Restore
-    - [Use Helm Charts](backup-and-restore-using-helm-charts.md)
-    + Use CRDs
-      - [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
-      - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
-      - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
-      - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
-      - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
-      - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
-      - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
-      - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
-      - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
-      - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
+    - [Overview](backup-restore-overview.md)
+    - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
+    + Backup and Restore with S3-Compatible Storage
+      - [Back up Data Using BR](backup-to-aws-s3-using-br.md)
+      - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
+      - [Back up Data Using Dumpling](backup-to-s3.md)
+      - [Restore Data Using TiDB Lightning](restore-from-s3.md)
+    + Backup and Restore with GCS
+      - [Back up Data Using BR](backup-to-gcs-using-br.md)
+      - [Restore Data Using BR](restore-from-gcs-using-br.md)
+      - [Back up Data Using Dumpling](backup-to-gcs.md)
+      - [Restore Data Using TiDB Lightning](restore-from-gcs.md)
+    + Backup and Restore with Persistent Volumes
+      - [Back up Data Using BR](backup-to-pv-using-br.md)
+      - [Restore Data Using BR](restore-from-pv-using-br.md)
   - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
   - [Maintain a Kubernetes Node](maintain-a-kubernetes-node.md)
   - [View TiDB Logs](view-logs.md)
   - [Configure Automatic Failover](use-auto-failover.md)
   - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+  - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
 + Disaster Recovery
   - [Recover PD Cluster](pd-recover.md)
   - [Recover Deleted Cluster](recover-deleted-cluster.md)
@@ -92,6 +98,8 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
+  + v1.2
+    - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
     - [1.1.11](releases/release-1.1.11.md)
     - [1.1.10](releases/release-1.1.10.md)

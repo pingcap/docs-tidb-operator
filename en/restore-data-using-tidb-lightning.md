@@ -20,7 +20,7 @@ TiDB Lightning supports [three backends](https://docs.pingcap.com/tidb/stable/ti
 
 > **Note:**
 >
-> If you use the `local` or `tidb` backend for data restoration, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
+> If you use the `local` or `tidb` backend for data restore, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
 
 You can deploy tikv-importer using the Helm chart. See the following example:
 
@@ -35,7 +35,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm search tikv-importer -l
+    helm search repo tikv-importer -l
     ```
 
 2. Get the default `values.yaml` file for easier customization:
@@ -52,7 +52,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
 
     ```yaml
     clusterName: demo
-    image: pingcap/tidb-lightning:v4.0.9
+    image: pingcap/tidb-lightning:v4.0.10
     imagePullPolicy: IfNotPresent
     storageClassName: local-storage
     storage: 20Gi
@@ -75,7 +75,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tikv-importer --name=${cluster_name} --namespace=${namespace} --version=${chart_version} -f values.yaml
+    helm install ${cluster_name} pingcap/tikv-importer --namespace=${namespace} --version=${chart_version} -f values.yaml
     ```
 
     > **Note:**
@@ -133,13 +133,15 @@ To restore backup data from the remote source, take the following steps:
 
 1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
 
-2. Grant permissions to remote storage access
+2. Grant permissions to the remote storage
 
-    Like restoring data using BR and Dumpling, when using Amazon S3 as the storage, there are three methods to grant permissions. The configuration varies with different methods. For details, see [Back up the TiDB Cluster on AWS using BR](backup-to-aws-s3-using-br.md#three-methods-to-grant-aws-account-permissions). If you use Ceph or GCS as the storage, you can only grant permissions by importing AccessKey and SecretKey.
+    If you use Amazon S3 as the storage, refer to [AWS account Permissions](grant-permissions-to-remote-storage.md#aws-account-permissions). The configuration varies with different methods.
+
+    If you use Ceph as the storage, you can only grant permissions by importing AccessKey and SecretKey. See [Grant permissions by AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
+
+    If you use GCS as the storage, refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
 
     * Grant permissions by importing AccessKey and SecretKey
-
-        If you use Amazon S3, Ceph, or GCS as the storage, grant permissions by importing AccessKey and SecretKey.
 
         1. Create a `Secret` configuration file `secret.yaml` containing the rclone configuration. A sample configuration is listed below. Only one cloud storage configuration is required.
 
@@ -239,7 +241,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-lightning --name=${release_name} --namespace=${namespace} --set failFast=true -f tidb-lightning-values.yaml --version=${chart_version}
+    helm install ${release_name} pingcap/tidb-lightning --namespace=${namespace} --set failFast=true -f tidb-lightning-values.yaml --version=${chart_version}
     ```
 
 * If you grant permissions by associating Amazon S3 IAM with Pod, take the following steps:
@@ -255,7 +257,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
         {{< copyable "shell-regular" >}}
 
         ```shell
-        helm install pingcap/tidb-lightning --name=${release_name} --namespace=${namespace} --set failFast=true -f tidb-lightning-values.yaml --version=${chart_version}
+        helm install ${release_name} pingcap/tidb-lightning --namespace=${namespace} --set failFast=true -f tidb-lightning-values.yaml --version=${chart_version}
         ```
 
         > **Note:**
@@ -285,7 +287,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
         {{< copyable "shell-regular" >}}
 
         ```shell
-        helm install pingcap/tidb-lightning --name=${release_name} --namespace=${namespace} --set-string failFast=true,serviceAccount=${servieaccount} -f tidb-lightning-values.yaml --version=${chart_version}
+        helm install ${release_name} pingcap/tidb-lightning --namespace=${namespace} --set-string failFast=true,serviceAccount=${servieaccount} -f tidb-lightning-values.yaml --version=${chart_version}
         ```
 
         > **Note:**
@@ -302,7 +304,7 @@ To destroy tikv-importer, execute the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm delete ${release_name} --purge
+helm uninstall ${release_name}
 ```
 
 To destroy tidb-lightning, execute the following command:
@@ -310,7 +312,7 @@ To destroy tidb-lightning, execute the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm delete ${release_name} --purge
+helm uninstall ${release_name}
 ```
 
 ## Troubleshoot TiDB Lightning
