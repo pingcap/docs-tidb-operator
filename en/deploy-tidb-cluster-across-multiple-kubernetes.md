@@ -8,7 +8,7 @@ summary: Learn how to deploy a TiDB cluster across multiple Kubernetes clusters.
 > It's an experimental feature, it's not recommended to use it in production.
 # Deploy a TiDB Cluster across Multiple Kubernetes Clusters
 
-To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be parsed in any cluster and between clusters.
+To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be lookup by querying the DNS service in any cluster and between clusters.
 
 ## Prerequisites
 
@@ -92,7 +92,7 @@ EOF
 
 ### Deploy the new cluster to join the initial cluster
 
-You can wait for the cluster #1 to complete the deployment, and then create cluster #2. In the actual situation, cluster #2 can join any existing cluster in multiple clusters.
+You can wait for the cluster #1 to complete the deployment, and then create cluster #2. In the actual situation, cluster #2 refers to the cluster you newly created. You can create a new cluster to join any existing cluster in multiple clusters.
 
 Refer to the following example and fill in the relevant information such as `Name`, `Cluster Domain`, and `Namespace` of cluster #1 and cluster #2 according to the actual situation:
 
