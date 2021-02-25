@@ -93,6 +93,8 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.1
+    - [1.1.11](releases/release-1.1.11.md)
+    - [1.1.10](releases/release-1.1.10.md)
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)
