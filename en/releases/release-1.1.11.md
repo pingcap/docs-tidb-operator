@@ -19,7 +19,3 @@ TiDB Operator version: 1.1.11
 - Add TiFlash rolling upgrade logic to avoid all TiFlash stores unavailable during upgrade ([#3789](https://github.com/pingcap/tidb-operator/pull/3789), [@handlerww](https://github.com/handlerww))
 - Retrieve the region leader count from TiKV Pod directly instead of from PD to get the accurate count ([#3801](https://github.com/pingcap/tidb-operator/pull/3801), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - Print RocksDB and Raft log to stdout to support them be collected and queried in the grafana ([#3768](https://github.com/pingcap/tidb-operator/pull/3768), [@baurine](https://github.com/baurine))
-
-## Bug Fixes
-
-- Add blank in backup manager script to avoid the script crashed in some shell ([#3809](https://github.com/pingcap/tidb-operator/pull/3809), [@handlerww](https://github.com/handlerww))

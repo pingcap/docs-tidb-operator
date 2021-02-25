@@ -19,7 +19,3 @@ TiDB Operator 版本：1.1.11
 - 添加 TiFlash 滚动更新机制避免升级期间所有 TiFlash Store 同时不可用 ([#3789](https://github.com/pingcap/tidb-operator/pull/3789), [@handlerww](https://github.com/handlerww))
 - 由从 PD 获取 region leader 数量改为从 TiKV 直接获取, 提高该监控项精确性 ([#3801](https://github.com/pingcap/tidb-operator/pull/3801), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - 打印 RocksDB 和 Raft 日志到 stdout, 以支持这些日志的收集和查询 ([#3768](https://github.com/pingcap/tidb-operator/pull/3768), [@baurine](https://github.com/baurine))
-
-## Bug 修复
-
-- 在 BackupManager 的脚本中修复一个缺失的空格, 避免某些 shell 执行脚本时报错 ([#3809](https://github.com/pingcap/tidb-operator/pull/3809), [@handlerww](https://github.com/handlerww))
