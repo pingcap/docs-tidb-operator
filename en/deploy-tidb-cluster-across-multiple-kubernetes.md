@@ -3,6 +3,9 @@ title: Deploy a TiDB Cluster across Multiple Kubernetes Clusters
 summary: Learn how to deploy a TiDB cluster across multiple Kubernetes clusters.
 ---
 
+> **Warning:**
+>
+> It's an experimental feature, it's not recommended to use it in production.
 # Deploy a TiDB Cluster across Multiple Kubernetes Clusters
 
 To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be parsed in any cluster and between clusters.
@@ -167,21 +170,21 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
 1. Create a `CA Issuer` and a `CA Certificate` in the initial cluster.
 
-  Set the following environment variables according to the actual situation:
+    Set the following environment variables according to the actual situation:
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```bash
-  cluster_name="cluster1"
-  namespace="pingcap"
-  ```
+    ```bash
+    cluster_name="cluster1"
+    namespace="pingcap"
+    ```
 
-  Run the following command:
+    Run the following command:
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```bash
-  cat <<EOF | kubectl apply -f -
+    ```bash
+    cat <<EOF | kubectl apply -f -
     apiVersion: cert-manager.io/v1alpha2
     kind: Issuer
     metadata:
@@ -278,7 +281,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
        {{< copyable "shell-regular" >}}
 
-      ```bash
+       ```bash
        cluster_name="cluster2"
        namespace="pingcap"
        ca_secret_name="cluster1-ca-secret"
