@@ -5,10 +5,11 @@ summary: Learn how to deploy a TiDB cluster across multiple Kubernetes clusters.
 
 > **Warning:**
 >
-> It's an experimental feature, it's not recommended to use it in production.
+> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
 # Deploy a TiDB Cluster across Multiple Kubernetes Clusters
 
-To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be lookup by querying the DNS service in any cluster and between clusters.
+To deploy a TiDB cluster across multiple Kubernetes clusters refers to deploying **one** TiDB cluster on multiple interconnected Kubernetes clusters. Each component of the cluster is distributed on multiple Kubernetes clusters to achieve disaster recovery among Kubernetes clusters. The interconnected network of Kubernetes clusters means that Pod IP can be accessed in any cluster and between clusters, and Pod FQDN records can be parsed in any cluster and between clusters.
 
 ## Prerequisites
 
@@ -112,7 +113,7 @@ Run the following command:
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -f -n ${cluster2_namespace} - 
+cat << EOF | kubectl apply -f -n ${cluster2_namespace} -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:

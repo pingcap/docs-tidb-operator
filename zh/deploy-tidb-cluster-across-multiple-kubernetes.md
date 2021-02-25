@@ -3,9 +3,13 @@ title: 跨多个 Kubernetes 集群部署 TiDB 集群
 summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集群
 ---
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 # 跨多个 Kubernetes 集群部署 TiDB 集群
 
-跨多个 Kubernetes 集群部署 TiDB 集群，是指在多个网络互通的 Kubernetes 集群上部署**一个** TiDB 集群，集群各个组件分布在多个 Kubernetes 集群上，实现在 Kubernetes 集群间容灾。所谓 Kubernetes 集群网络互通，是指 Pod IP 在任意集群内和集群间可以被互相访问，Pod FQDN 记录在集群内和集群间均可被解析。
+跨多个 Kubernetes 集群部署 TiDB 集群，是指在多个网络互通的 Kubernetes 集群上部署**一个** TiDB 集群，集群各个组件分布在多个 Kubernetes 集群上，实现在 Kubernetes 集群间容灾。所谓 Kubernetes 集群网络互通，是指 Pod IP 在任意集群内和集群间可以被互相访问，可以通过查询任何集群内以及集群间的 DNS 服务解析 Pod FQDN 记录。
 
 ## 前置条件
 
@@ -88,7 +92,7 @@ EOF
 
 ### 部署新集群加入初始集群
 
-等待集群 1 完成部署后，创建集群 2。在实际使用中，集群 2 可以加入多集群内的任意一个已有集群。
+等待集群 1 完成部署后，创建集群 2。在实际使用中，新创建的集群 2 可以加入多集群内的任意一个已有集群。
 
 可以参考下面的范例，根据实际情况设置填入集群 1 和集群 2 的 `Name`、`Cluster Domain`、`Namespace` 等相关信息：
 
