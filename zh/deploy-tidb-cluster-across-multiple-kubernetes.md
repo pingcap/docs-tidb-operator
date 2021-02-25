@@ -9,7 +9,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 # 跨多个 Kubernetes 集群部署 TiDB 集群
 
-跨多个 Kubernetes 集群部署 TiDB 集群，是指在多个网络互通的 Kubernetes 集群上部署**一个** TiDB 集群，集群各个组件分布在多个 Kubernetes 集群上，实现在 Kubernetes 集群间容灾。所谓 Kubernetes 集群网络互通，是指 Pod IP 在任意集群内和集群间可以被互相访问，可以通过查询任何集群内以及集群间的 DNS 服务解析 Pod FQDN 记录。
+跨多个 Kubernetes 集群部署 TiDB 集群，是指在多个网络互通的 Kubernetes 集群上部署**一个** TiDB 集群，集群各个组件分布在多个 Kubernetes 集群上，实现在 Kubernetes 集群间容灾。所谓 Kubernetes 集群网络互通，是指 Pod IP 在任意集群内和集群间可以被互相访问，Pod FQDN 记录在集群内和集群间均可被解析。
 
 ## 前置条件
 
