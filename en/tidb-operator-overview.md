@@ -22,7 +22,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 ## TiDB Operator architecture
 
-![TiDB Operator Overview](/media/tidb-operator-overview.png)
+![TiDB Operator Overview](/media/tidb-operator-overview-1.0.png)
 
 `TidbCluster` is a custom resource defined by CRD (`CustomResourceDefinition`) and is used to describe the desired state of the TiDB cluster. The following components are responsible for the orchestration and scheduling logic in a TiDB cluster:
 
@@ -31,7 +31,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 In addition, TiDB Operator also provides `tkctl`, the command-line interface for TiDB clusters in Kubernetes. It is used for cluster operations and troubleshooting cluster issues.
 
-![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
+![TiDB Operator Control Flow](/media/tidb-operator-control-flow-1.0.png)
 
 The diagram above is the analysis of the control flow of TiDB Operator. Because TiDB clusters also need components such as monitoring, initialization, scheduled backup, Binlog and so on, TiDB Operator encapsulates the definition of these components in the Helm chart. The overall control process is as follows:
 

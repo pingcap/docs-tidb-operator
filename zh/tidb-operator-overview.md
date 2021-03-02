@@ -22,7 +22,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 ## TiDB Operator 整体架构
 
-![TiDB Operator Overview](/media/tidb-operator-overview.png)
+![TiDB Operator Overview](/media/tidb-operator-overview-1.0.png)
 
 其中，`TidbCluster` 是由 CRD（`CustomResourceDefinition`）定义的自定义资源，用于描述用户期望的 TiDB 集群状态。TiDB 集群的编排和调度逻辑则由下列组件负责：
 
@@ -31,7 +31,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 此外，TiDB Operator 还提供了命令行接口 `tkctl` 用于运维集群和诊断集群问题。
 
-![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
+![TiDB Operator Control Flow](/media/tidb-operator-control-flow-1.0.png)
 
 上图是 TiDB Operator 的控制流程解析。由于 TiDB 集群还需要监控、初始化、定时备份、Binlog 等组件，TiDB Operator 中使用 Helm Chart 封装了 TiDB 集群定义。整体的控制流程如下：
 
