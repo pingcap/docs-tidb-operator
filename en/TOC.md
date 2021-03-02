@@ -23,6 +23,7 @@
       - [Deploy TiDB Cluster](deploy-on-general-kubernetes.md)
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
+  - [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Deploy Heterogeneous Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiCDC](deploy-ticdc.md)
@@ -101,6 +102,7 @@
   + v1.2
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
+    - [1.1.11](releases/release-1.1.11.md)
     - [1.1.10](releases/release-1.1.10.md)
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
