@@ -20,7 +20,7 @@ First, deploy the TidbMonitor with Thanos Sidecar container:
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml"
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml
 ```
 
 Then deploy the Thanos Query component:
@@ -28,7 +28,7 @@ Then deploy the Thanos Query component:
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml"
+kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
 ```
 
 In Thanos Query, a Prometheus corresponds to a Store, which corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a unified query interface for monitoring data through Thanos Query's API.
@@ -42,10 +42,10 @@ After you deploy Thanos Query, change Grafana's DataSource into Thanos to query 
 If you need to add, update, or remove a monitor store from the Thanos Query, update the `--store` configuration of Thanos Query, and perform a rolling update to the Thanos Query component.
 
 ```shell
-        thanos query \
-            --http-address     "0.0.0.0:9090" \
-            --store            "<store-api>:<grpc-port>" \
-            --store            "<store-api2>:<grpc-port>" 
+- query
+- --http-address=0.0.0.0:9090
+- --store=<store-api>:<grpc-port>
+- --store=<store-api2>:<grpc-port>
 ```
 
 ## Configure archives and storage of Thanos Sidecar
