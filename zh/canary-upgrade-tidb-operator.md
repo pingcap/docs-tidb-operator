@@ -5,12 +5,12 @@ summary: 介绍如何灰度升级 TiDB Operator。
 
 # TiDB Operator 灰度升级
 
-本文介绍如何灰度升级 TiDB Operator。
+本文介绍如何灰度升级 TiDB Operator。灰度升级可以控制 TiDB Operator 升级的影响范围，避免由于 TiDB Operator 升级导致对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响，在确认 TiDB Operator 升级的影响或者确认 TiDB Operator 新版本能正常稳定工作后再正常升级 TiDB Operator。
 
 > **注意：**
 >
 > - 目前仅支持灰度升级 tidb-controller-manager 和 tidb-scheduler。
-> - v1.1.10 开始支持此项功能，所以当前 TiDB Operator 版本要 >= v1.1.10
+> - v1.1.10 开始支持此项功能，所以当前 TiDB Operator 版本需 >= v1.1.10。
 
 ## 相关参数
 
@@ -32,7 +32,7 @@ summary: 介绍如何灰度升级 TiDB Operator。
 
 2. 部署灰度 TiDB Operator。
 
-    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 values.yaml 中添加如下配置，**在不同的 namespace**，例如，`tidb-admin-canary`，部署灰度 TiDB Operator：
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，**在不同的 namespace** 中（例如 `tidb-admin-canary`）部署灰度 TiDB Operator：
 
     ```yaml
     controllerManager:

@@ -30,6 +30,7 @@
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
+  - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
