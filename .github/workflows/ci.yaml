@@ -12,7 +12,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '12'
-     - name: "Check file encoding"
+    - name: "Check file encoding"
       run:
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
         git fetch upstream;
