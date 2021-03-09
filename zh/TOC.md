@@ -30,7 +30,6 @@
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
-  - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
@@ -44,6 +43,7 @@
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
   - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
   + TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
