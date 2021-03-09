@@ -14,7 +14,7 @@ jobs:
         node-version: '12'
      - name: "Check file encoding"
       run:
-        git remote add upstream https://github.com/pingcap/docs-dm.git;
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
         git fetch upstream;
         wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-file-encoding.py;
         python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
