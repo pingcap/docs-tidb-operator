@@ -67,7 +67,7 @@ compute.googleapis.com container.googleapis.com
 
 要使用以上 3 个环境变量来配置 Terraform，可执行以下步骤：
 
-1. 将 `GCP_REGION` 替换为你的 GCP Region。
+1. 将 `GCP_REGION` 替换为你的 GCP region。
 
     {{< copyable "shell-regular" >}}
 
@@ -134,7 +134,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
     > **注意：**
     >
-    > 工作节点的数量取决于指定 Region 中可用区的数量。大部分 Region 有 3 个可用区，但是 `us-central1` 有 4 个可用区。参考 [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) 查看更多信息。参考[自定义](#自定义)部分来自定义区域集群的节点池。
+    > 工作节点的数量取决于指定 region 中可用区的数量。大部分 region 有 3 个可用区，但是 `us-central1` 有 4 个可用区。参考 [Regions and zones](https://cloud.google.com/compute/docs/regions-zones/) 查看更多信息。参考[自定义](#自定义)部分来自定义区域集群的节点池。
 
 2. 启动脚本来部署 TiDB 集群：
 
@@ -319,7 +319,7 @@ Check Table Before Drop: false
     > **注意：**
     >
     > - 每个集群的 `cluster_name` 必须是唯一的。
-    > - 为任一组件实际创建的总节点数等于配置文件中的节点数乘以该 Region 中可用区的个数。
+    > - 为任一组件实际创建的总节点数等于配置文件中的节点数乘以该 region 中可用区的个数。
 
     你可以通过 `kubectl` 获取创建的 TiDB 集群和监控组件的地址。如果你希望 Terraform 脚本打印此信息，可在 `outputs.tf` 中添加一个 `output` 配置项，如下所示：
 
