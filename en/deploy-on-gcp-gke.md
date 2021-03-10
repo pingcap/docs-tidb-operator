@@ -61,12 +61,12 @@ To execute the Terraform script, you need to configure the following three varia
     - It is recommended for you to create a separate service account to be used by Terraform. See [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) for more information. `./create-service-account.sh` will create such a service account with minimal permissions.
     - See [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for information on creating service account keys. The steps in the script below detail how to do this using a script provided in the `deploy/gcp` directory, alternatively if creating the service account and key yourself, choose `JSON` key type during creation. The downloaded `JSON` file that contains the private key is the credentials file you need.
 
-* `GCP_REGION`: The Region in which to create the resources, for example: `us-west1`.
+* `GCP_REGION`: The region in which to create the resources, for example: `us-west1`.
 * `GCP_PROJECT`: The GCP project in which everything will be created.
 
 To configure Terraform with the three variables above, perform the following steps:
 
-1. Replace the `GCP_REGION` with your GCP Region.
+1. Replace the `GCP_REGION` with your GCP region.
 
     {{< copyable "shell-regular" >}}
 
@@ -133,7 +133,7 @@ This section describes how to deploy a TiDB cluster.
 
     > **Note:**
     >
-    > The number of worker nodes created depends on the number of Availability Zones in the specified Region. Most Regions have 3 zones, but `us-central1` has 4 zones. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
+    > The number of worker nodes created depends on the number of Availability Zones in the specified region. Most regions have 3 zones, but `us-central1` has 4 zones. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
 
 2. Execute the script to deploy the TiDB cluster.
 
@@ -310,7 +310,7 @@ An instance of a `tidb-cluster` module corresponds to a TiDB cluster in the GKE 
     > **Note:**
     >
     > - `cluster_name` must be unique for each cluster.
-    > - The total number of nodes actually created for each component is equal to the number of nodes in the configuration file multiplied by the number of Availability Zones in the Region.
+    > - The total number of nodes actually created for each component is equal to the number of nodes in the configuration file multiplied by the number of Availability Zones in the region.
 
     You can use `kubectl` to get the addresses for the TiDB cluster created and its monitoring service. If you want the Terraform script to print this information, add an `output` section in `outputs.tf` as follows:
 
