@@ -134,7 +134,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
     > **注意：**
     >
-    > 工作节点的数量取决于指定 region 中可用区的数量。大部分 region 有 3 个可用区，但是 `us-central1` 有 4 个可用区。参考 [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) 查看更多信息。参考[自定义](#自定义)部分来自定义区域集群的节点池。
+    > 工作节点的数量取决于指定 region 中可用区的数量。大部分 region 有 3 个可用区，但是 `us-central1` 有 4 个可用区。参考 [Regions and zones](https://cloud.google.com/compute/docs/regions-zones/) 查看更多信息。参考[自定义](#自定义)部分来自定义区域集群的节点池。
 
 2. 启动脚本来部署 TiDB 集群：
 

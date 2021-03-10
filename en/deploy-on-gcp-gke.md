@@ -133,7 +133,7 @@ This section describes how to deploy a TiDB cluster.
 
     > **Note:**
     >
-    > The number of worker nodes created depends on the number of Availability Zones in the specified region. Most regions have 3 zones, but `us-central1` has 4 zones. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
+    > The number of worker nodes created depends on the number of Availability Zones in the specified region. Most regions have 3 zones, but `us-central1` has 4 zones. See [Regions and zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
 
 2. Execute the script to deploy the TiDB cluster.
 
