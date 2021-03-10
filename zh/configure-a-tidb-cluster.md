@@ -53,7 +53,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 #### enableDynamicConfiguration
 
-建议设置 `spec.enableDynamicConfiguration: true`，开启动态配置特性。版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
+建议设置 `spec.enableDynamicConfiguration: true`，开启动态配置特性。
+
+版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
 
 #### pvReclaimPolicy
 

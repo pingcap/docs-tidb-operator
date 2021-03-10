@@ -127,7 +127,11 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 垂直扩缩容操作
 
-通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.resources` 对 TiCDC 进行垂直扩缩容。
+通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+
+如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。
+
+如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.resources` 对 TiCDC 进行垂直扩缩容。
 
 ### 查看垂直扩缩容进度
 
