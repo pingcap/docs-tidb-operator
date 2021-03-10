@@ -35,7 +35,21 @@ aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/upgrade-a-tidb-cluster/','/docs-cn/d
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
 
+<<<<<<< HEAD
 ## 更新 TiDB 集群配置
+=======
+> **注意：**
+>
+> 如果需要升级到企业版，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`。
+>
+> 例如将 `spec.pd.baseImage` 从 `pingcap/pd` 修改为 `pingcap/pd-enterprise`。
+
+### 强制升级 TiDB 集群
+
+如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和更新 TiDB 集群配置这三种操作都无法成功执行。
+
+这种情况下，可使用 `force-upgrade` 强制升级集群以恢复集群功能。首先为集群设置 `annotation`：
+>>>>>>> be6821b... CI: add file format lint script to check manual line breaks and file encoding (#1126)
 
 默认条件下，修改配置文件不会自动应用到 TiDB 集群中，只有在实例重启时，才会重新加载新的配置文件。
 
@@ -69,8 +83,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/upgrade-a-tidb-cluster/','/docs-cn/d
 
 如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](scale-a-tidb-cluster.md)、[升级 TiDB 版本](#升级-tidb-版本)和[更新 TiDB 集群配置](#更新-tidb-集群配置)这三种操作都无法成功执行。
 
-这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。
-首先为集群设置 `annotation`：
+这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。首先为集群设置 `annotation`：
 
 {{< copyable "shell-regular" >}}
 

@@ -32,7 +32,17 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     watch kubectl -n <namespace> get pod -o wide
     ```
 
+<<<<<<< HEAD
     当所有组件的 Pod 数量都达到了预设值，并且都进入  `Running` 状态后，水平扩缩容完成。
+=======
+    输出结果中 `count` 的最大值就是所有数据表的最大副本数 N。
+
+3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止 `port-forward`。
+
+4. 如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数大于等于所有数据表的最大副本数 N，直接进行下面第 6 步。如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数小于所有数据表的最大副本数 N，参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并针对所有副本数大于集群剩余 TiFlash Pod 数的表执行如下命令：
+
+    {{< copyable "sql" >}}
+>>>>>>> be6821b... CI: add file format lint script to check manual line breaks and file encoding (#1126)
 
 > **注意：**
 >
@@ -47,7 +57,15 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 
 ### 垂直扩缩容操作
 
+<<<<<<< HEAD
 1. 修改 `values.yaml` 文件中的 `tidb.resources`、`tikv.resources`、`pd.resources` 至期望值。
+=======
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
+    ```
+
+6. 修改 `spec.tiflash.replicas` 对 TiFlash 进行缩容。
+>>>>>>> be6821b... CI: add file format lint script to check manual line breaks and file encoding (#1126)
 
 2. 执行 `helm upgrade` 命令进行升级：
 
@@ -59,7 +77,23 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 
 3. 查看升级进度：
 
+<<<<<<< HEAD
     {{< copyable "shell-regular" >}}
+=======
+垂直扩缩容操作指的是通过增加或减少节点的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是节点滚动升级的过程。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
+
+### 垂直扩缩容操作
+
+通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+
+如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。
+
+如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.resources` 对 TiCDC 进行垂直扩缩容。
+
+### 查看垂直扩缩容进度
+
+{{< copyable "shell-regular" >}}
+>>>>>>> be6821b... CI: add file format lint script to check manual line breaks and file encoding (#1126)
 
     ```shell
     watch kubectl -n <namespace> get pod -o wide
