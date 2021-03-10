@@ -56,11 +56,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/','/docs-c
 
 ## 安装部署
 
+<<<<<<< HEAD
 ### 部署 ACK，TiDB Operator 和 TiDB 集群节点池
 
 使用如下步骤部署 ACK，TiDB Operator 和 TiDB 集群节点池。
 
 1. 设置目标 Region 和阿里云密钥（也可以在运行 `terraform` 命令时根据命令提示输入）：
+=======
+1. 设置目标 region 和阿里云密钥（也可以在运行 `terraform` 命令时根据命令提示输入）：
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
     {{< copyable "shell-regular" >}}
 

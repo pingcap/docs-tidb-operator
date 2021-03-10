@@ -39,7 +39,19 @@ gcloud config set compute/region <gcp-region>
 
 ## Create a GKE cluster and node pool
 
+<<<<<<< HEAD
 1. Create a GKE cluster and a default node pool:
+=======
+    - It is recommended for you to create a separate service account to be used by Terraform. See [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) for more information. `./create-service-account.sh` will create such a service account with minimal permissions.
+    - See [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for information on creating service account keys. The steps in the script below detail how to do this using a script provided in the `deploy/gcp` directory, alternatively if creating the service account and key yourself, choose `JSON` key type during creation. The downloaded `JSON` file that contains the private key is the credentials file you need.
+
+* `GCP_REGION`: The region in which to create the resources, for example: `us-west1`.
+* `GCP_PROJECT`: The GCP project in which everything will be created.
+
+To configure Terraform with the three variables above, perform the following steps:
+
+1. Replace the `GCP_REGION` with your GCP region.
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
     {{< copyable "shell-regular" >}}
 
@@ -100,7 +112,13 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
 ```
 
+<<<<<<< HEAD
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
+=======
+    > **Note:**
+    >
+    > The number of worker nodes created depends on the number of Availability Zones in the specified region. Most regions have 3 zones, but `us-central1` has 4 zones. See [Regions and zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the GKE cluster, run the following command:
 
@@ -217,6 +235,54 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     6 rows in set (0.01 sec)
     ```
 
+<<<<<<< HEAD
+=======
+    > **Note:**
+    >
+    > - `cluster_name` must be unique for each cluster.
+    > - The total number of nodes actually created for each component is equal to the number of nodes in the configuration file multiplied by the number of Availability Zones in the region.
+
+    You can use `kubectl` to get the addresses for the TiDB cluster created and its monitoring service. If you want the Terraform script to print this information, add an `output` section in `outputs.tf` as follows:
+
+    {{< copyable "" >}}
+
+    ```hcl
+    output "how_to_connect_to_example_tidb_cluster_from_bastion" {
+    value = module.example-tidb-cluster.how_to_connect_to_tidb_from_bastion
+    }
+    ```
+
+    This above configuration enables this script to print out the exact command used to connect to the TiDB cluster.
+
+2. After you finish modification, execute `terraform init` and `terraform apply` to create the cluster.
+
+## Scale the TiDB cluster
+
+To scale the TiDB cluster, perform the following steps:
+
+1. Modify the `tikv_count` or `tidb_count` variable in the `variables.tf` file to your desired count.
+2. Run `terraform apply`.
+
+> **Warning:**
+>
+> Currently, scaling in is not supported because it cannot be determined which node will be removed. Scaling in by modifying `tikv_count` can lead to data loss.
+
+Scaling out needs a few minutes to complete, you can watch the scaling-out process by running the following command:
+
+```bash
+kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name> --watch
+```
+
+For example, to scale out the cluster, you can modify the number of TiDB instances (`tidb_count`) from 1 to 2:
+
+```hcl
+variable "tidb_count" {
+  description = "Number of TiDB nodes per availability zone"
+  default     = 2
+}
+```
+
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 > **Note:**
 >
 > * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.

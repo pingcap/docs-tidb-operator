@@ -38,7 +38,18 @@ gcloud config set compute/region <gcp-region>
 
 ## 创建 GKE 集群和节点池
 
+<<<<<<< HEAD
 1. 创建 GKE 集群和一个默认节点池：
+=======
+    - 参考[服务账号密钥文档](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)来创建服务账号密钥。下面脚本中的步骤详细说明了如何使用 `deploy/gcp` 目录中提供的脚本执行此操作。或者，如果自己创建服务账号和密钥，可以在创建时选择 `JSON` 类型的密钥。下载的包含私钥的 `JSON` 文件即所需的证书文件。
+
++ `GCP_REGION`：创建资源所在的区域，例如：`us-west1`。
++ `GCP_PROJECT`：GCP 项目的名称。
+
+要使用以上 3 个环境变量来配置 Terraform，可执行以下步骤：
+
+1. 将 `GCP_REGION` 替换为你的 GCP region。
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
     {{< copyable "shell-regular" >}}
 
@@ -93,10 +104,16 @@ kubectl create namespace tidb-cluster
 
 {{< copyable "shell-regular" >}}
 
+<<<<<<< HEAD
 ```shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.11/examples/gcp/tidb-cluster.yaml &&
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.11/examples/gcp/tidb-monitor.yaml
 ```
+=======
+    > **注意：**
+    >
+    > 工作节点的数量取决于指定 region 中可用区的数量。大部分 region 有 3 个可用区，但是 `us-central1` 有 4 个可用区。参考 [Regions and zones](https://cloud.google.com/compute/docs/regions-zones/) 查看更多信息。参考[自定义](#自定义)部分来自定义区域集群的节点池。
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
 
@@ -236,7 +253,52 @@ NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)
 basic-grafana            LoadBalancer   10.15.255.169   34.123.168.114   3000:30657/TCP        35m
 ```
 
+<<<<<<< HEAD
 其中 `EXTERNAL-IP` 栏即为 LoadBalancer IP。
+=======
+## 管理多个 TiDB 集群
+
+一个 `tidb-cluster` 模块的实例对应一个 GKE 集群中的 TiDB 集群。要添加一个新的 TiDB 集群，可执行以下步骤：
+
+1. 编辑 `tidbclusters.tf` 文件来添加一个 `tidb-cluster` 模块。
+
+    例如：
+
+    {{< copyable "" >}}
+
+    ```hcl
+    module "example-tidb-cluster" {
+    providers = {
+        helm = "helm.gke"
+    }
+    source                     = "../modules/gcp/tidb-cluster"
+    cluster_id                 = module.tidb-operator.cluster_id
+    tidb_operator_id           = module.tidb-operator.tidb_operator_id
+    gcp_project                = var.GCP_PROJECT
+    gke_cluster_location       = local.location
+    gke_cluster_name           = <gke-cluster-name>
+    cluster_name               = <example-tidb-cluster>
+    cluster_version            = "v3.0.1"
+    kubeconfig_path            = local.kubeconfig
+    tidb_cluster_chart_version = "v1.0.0"
+    pd_instance_type           = "n1-standard-1"
+    tikv_instance_type         = "n1-standard-4"
+    tidb_instance_type         = "n1-standard-2"
+    monitor_instance_type      = "n1-standard-1"
+    pd_node_count              = 1
+    tikv_node_count            = 2
+    tidb_node_count            = 1
+    monitor_node_count         = 1
+    }
+    ```
+
+    > **注意：**
+    >
+    > - 每个集群的 `cluster_name` 必须是唯一的。
+    > - 为任一组件实际创建的总节点数等于配置文件中的节点数乘以该 region 中可用区的个数。
+
+    你可以通过 `kubectl` 获取创建的 TiDB 集群和监控组件的地址。如果你希望 Terraform 脚本打印此信息，可在 `outputs.tf` 中添加一个 `output` 配置项，如下所示：
+>>>>>>> 8a3a3e9... en, zh: update capitalization of "Region" (#1127)
 
 你可以通过浏览器访问 `${grafana-lb}:3000` 地址查看 Grafana 监控指标。其中 `${grafana-lb}` 替换成前面获取的 IP。
 
