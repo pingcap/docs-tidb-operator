@@ -11,10 +11,6 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases
       - uses: amannn/action-semantic-pull-request@v3.4.0
@@ -29,10 +25,16 @@ jobs:
             *
             media
             .github
+            scripts
+            hack
+            .circleci
+            chore
+            fix
+            refactor
           # Configure which scopes are allowed.
-          scopes: |
-            core
-            ui
+          # scopes: |
+            # core
+            # ui
           # Configure that a scope must always be provided.
           requireScope: false
           wip: true
