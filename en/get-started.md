@@ -767,7 +767,7 @@ For more information about destroying a TiDB cluster running in TiDB Operator, c
 
 ## What's next
 
-If you want to deploy TiDB in Kubernetes for production, see the following docs:
+If you are ready to deploy a TiDB cluster in Kubernetes for the production environment:
 
 - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
 - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
