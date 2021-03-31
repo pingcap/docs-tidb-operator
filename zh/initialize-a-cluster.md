@@ -77,8 +77,6 @@ kubectl apply -f ${cluster_name}/tidb-initializer.yaml --namespace=${namespace}
 
 初始化一套 TiDB 集群会用到下面这些 Docker 镜像：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tnir/mysqlclient:latest
 ```
