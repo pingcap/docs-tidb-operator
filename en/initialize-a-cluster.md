@@ -79,9 +79,9 @@ If the server does not have an external network, you need to download the Docker
 
 The following Docker images are used to initialize a TiDB cluster:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
-```shell
+```
 tnir/mysqlclient:latest
 ```
 
