@@ -49,7 +49,7 @@ kubectl create secret generic tidb-secret --from-literal=root=${root_password} -
 
 集群在初始化过程还可以自动执行 `initSql` 中的 SQL 语句用于初始化，该功能可以用于默认给集群创建一些 database 或者 table，并且执行一些用户权限管理类的操作。例如如下设置会在集群创建完成后自动创建名为 `app` 的 database，并且赋予 `developer` 账号对 `app` 的所有管理权限：
 
-{{< copyable "yaml" >}}
+{{< copyable "" >}}
 
 ```yaml
 spec:

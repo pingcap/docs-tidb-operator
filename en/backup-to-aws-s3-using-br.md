@@ -64,7 +64,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
 
     The content of `backup-aws-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -109,7 +109,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
     kubectl apply -f backup-aws-s3.yaml
     ```
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     The content of `backup-aws-s3.yaml` is as follows:
 
@@ -159,7 +159,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
 
     The content of `backup-aws-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -232,7 +232,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
 
     The content of `backup-scheduler-aws-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -282,7 +282,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
 
     The content of `backup-scheduler-aws-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -333,7 +333,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
 
     The content of `backup-scheduler-aws-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---

@@ -117,7 +117,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
     The content of `backup-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -158,7 +158,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
     The content of `backup-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -204,7 +204,7 @@ For the current S3-compatible storage types, Ceph and Amazon S3 work normally as
 
     The content of `backup-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -294,7 +294,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
     The content of `backup-schedule-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -343,7 +343,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
     The content of `backup-schedule-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -389,7 +389,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
     The content of `backup-schedule-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---
@@ -439,7 +439,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
     The content of `backup-schedule-s3.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---

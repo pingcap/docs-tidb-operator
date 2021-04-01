@@ -132,7 +132,7 @@ The prerequisites for the scheduled backup is the same as the [prerequisites for
 
     The content of `backup-schedule-gcs.yaml` is as follows:
 
-    {{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
     ```yaml
     ---

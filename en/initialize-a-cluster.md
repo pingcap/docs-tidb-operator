@@ -49,7 +49,7 @@ The cluster can also automatically execute the SQL statements in batch in `initS
 
 For example, the following configuration automatically creates a database named `app` after the cluster creation, and grants the `developer` account full management privileges on `app`:
 
-{{< copyable "yaml" >}}
+{{< copyable "" >}}
 
 ```yaml
 spec:

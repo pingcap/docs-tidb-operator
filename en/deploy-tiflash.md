@@ -28,7 +28,7 @@ kubectl eidt tc ${cluster_name} -n ${namespace}
 
 Add the TiFlash configuration as follows:
 
-{{< copyable "yaml" >}}
+{{< copyable "" >}}
 
 ```yaml
 spec:
