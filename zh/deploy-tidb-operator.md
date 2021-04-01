@@ -160,8 +160,6 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     TiDB Operator 用到的 Docker 镜像有：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     pingcap/tidb-operator:v1.1.11
     pingcap/tidb-backup-manager:v1.1.11
