@@ -39,6 +39,7 @@
 + Operate
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+  - [Perform a Canary Upgrade](canary-upgrade-tidb-operator.md)
   - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
   + Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
