@@ -5,7 +5,7 @@ summary: Learn how to perform a canary upgrade on TiDB Operator in Kubernetes.
 
 # Perform a Canary Upgrade on TiDB Operator
 
-This document describes how to perform a canary upgrade on TiDB Operator. By canary upgrades, you can prevent TiDB Operator upgrade from causing unexpected impact on all the TiDB clusters in Kubernetes. After you confirm the impact of TiDB Operator upgrade or the upgraded TiDB Operator works stably, you can normally upgrade TiDB Operator.
+This document describes how to perform a canary upgrade on TiDB Operator. Using canary upgrades, you can prevent normal TiDB Operator upgrade from causing an unexpected impact on all the TiDB clusters in Kubernetes. After you confirm the impact of TiDB Operator upgrade or that the upgraded TiDB Operator works stably, you can normally upgrade TiDB Operator.
 
 > **Note:**
 >
@@ -28,7 +28,7 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
       - version!=canary
     ```
 
-    If you already performed the step above, skip to Step 2.
+    If you have already performed the step above, skip to Step 2.
 
 2. Deploy the canary TiDB Operator:
 
@@ -50,7 +50,7 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
     > * If you do not need to perform a canary upgrade on `tidb-scheduler`, configure `scheduler.create: false`.
     > * If you configure `scheduler.create: true`, a scheduler named `{{ .scheduler.schedulerName }}-{{.Release.Name}}` will be created. To use this scheduler, configure `spec.schedulerName` in the `TidbCluster` CR to the name of this scheduler.
 
-3. To test the canary upgrade of `tidb-controller-manager`, set labels for some TiDB cluster by running the following command:
+3. To test the canary upgrade of `tidb-controller-manager`, set labels for a TiDB cluster by running the following command:
 
     {{< copyable "shell-regular" >}}
 
