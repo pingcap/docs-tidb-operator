@@ -10,7 +10,7 @@ TiDB Operator 版本：1.2.0-alpha.1
 
 ## 滚动升级改动
 
-- 由于 [#3440](https://github.com/pingcap/tidb-operator/pull/3440) 的改动，升级 TiDB Operator 到 v1.2.0-beta.1 版本后，TidbMonitor Pod 会被删除重建。
+- 由于 [#3440](https://github.com/pingcap/tidb-operator/pull/3440) 的改动，升级 TiDB Operator 到 v1.2.0-alpha.1 版本后，TidbMonitor Pod 会被删除重建。
 
 ## 新功能
 
