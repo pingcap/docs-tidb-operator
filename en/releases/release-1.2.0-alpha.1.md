@@ -10,7 +10,7 @@ TiDB Operator version: 1.2.0-alpha.1
 
 ## Rolling Update Changes
 
-- Due to [#3440](https://github.com/pingcap/tidb-operator/pull/3440), the Pod of TidbMonitor will be deleted and recreated after TiDB Operator is upgraded to v1.2.0-alpha.1.
+- Due to [#3440](https://github.com/pingcap/tidb-operator/pull/3440), the Pod of TidbMonitor will be deleted and recreated after TiDB Operator is upgraded to v1.2.0-beta.1.
 
 ## New Features
 
