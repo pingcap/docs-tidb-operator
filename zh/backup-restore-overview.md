@@ -288,5 +288,3 @@ kubectl delete backupschedule ${name} -n ${namespace}
 ```shell
 kubectl edit backup ${name} -n ${namespace}
 ```
-
-删除 `metadata.finalizers` 配置，即可正常删除 CR。
