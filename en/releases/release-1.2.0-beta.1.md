@@ -22,7 +22,7 @@ TiDB Operator version: 1.2.0-beta.1
 - Delete evict leader scheduler after TiKV Pod is recreated during upgrade ([#3724](https://github.com/pingcap/tidb-operator/pull/3724), [@handlerww](https://github.com/handlerww))
 - Improve support multiple PVC for PD ([#3820](https://github.com/pingcap/tidb-operator/pull/3820), [@dragonly](https://github.com/dragonly))
 - Improve support multiple PVC for TiKV ([#3816](https://github.com/pingcap/tidb-operator/pull/3816), [@dragonly](https://github.com/dragonly))
-- Support PVC resizing for TiDB ([#3891](https://github.com/pingcap/tidb-operator/pull/3891), [@dragonly](https://github.com/dragonly))
+- Improve support PVC resizing for TiDB ([#3891](https://github.com/pingcap/tidb-operator/pull/3891), [@dragonly](https://github.com/dragonly))
 
 ## Bug Fixes
 
