@@ -4,7 +4,7 @@ title: TiDB Operator 1.2.0-beta.1 Release Notes
 
 # TiDB Operator 1.2.0-beta.1 Release Notes
 
-发布日期: 2021 年 4 月 7 日
+发布日期：2021 年 4 月 7 日
 
 TiDB Operator 版本：1.2.0-beta.1
 
