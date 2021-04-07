@@ -22,11 +22,10 @@ TiDB Operator version: 1.2.0-beta.1
 - Delete evict leader scheduler after TiKV Pod is recreated during upgrade ([#3724](https://github.com/pingcap/tidb-operator/pull/3724), [@handlerww](https://github.com/handlerww))
 - Support multiple PVC for PD ([#3820](https://github.com/pingcap/tidb-operator/pull/3820), [@dragonly](https://github.com/dragonly))
 - Support multiple PVC for TiKV ([#3816](https://github.com/pingcap/tidb-operator/pull/3816), [@dragonly](https://github.com/dragonly))
+- Support PVC resizing for TiDB ([#3891](https://github.com/pingcap/tidb-operator/pull/3891), [@dragonly](https://github.com/dragonly))
 
 ## Bug Fixes
 
-- Support PVC resizing for TiDB ([#3891](https://github.com/pingcap/tidb-operator/pull/3891), [@dragonly](https://github.com/dragonly))
 - Fix the issue that PVCs will be set to incorrect size if multiple PVCs are configured for PD/TiKV ([#3858](https://github.com/pingcap/tidb-operator/pull/3858), [@dragonly](https://github.com/dragonly))
 - Fix the panic issue when `.spec.tidb` is not set in the TidbCluster CR with TLS enabled ([#3852](https://github.com/pingcap/tidb-operator/pull/3852), [@dragonly](https://github.com/dragonly))
-- Fix `UnjoinedMembers` in PD and DM cluster status. ([#3836](https://github.com/pingcap/tidb-operator/pull/3836), [@dragonly](https://github.com/dragonly))
 - Fix the issue that some unrecognized environment variables are included in the external labels of the TidbMonitor ([#3785](https://github.com/pingcap/tidb-operator/pull/3785), [@mikechengwei](https://github.com/mikechengwei))
