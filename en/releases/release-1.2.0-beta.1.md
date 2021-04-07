@@ -10,7 +10,7 @@ TiDB Operator version: 1.2.0-beta.1
 
 ## New Features
 
-- Support setting customized envs for backup and restore jobs ([#3833](https://github.com/pingcap/tidb-operator/pull/3833), [@dragonly](https://github.com/dragonly))
+- Support setting customized envs for backup and restore job containers ([#3833](https://github.com/pingcap/tidb-operator/pull/3833), [@dragonly](https://github.com/dragonly))
 - TidbMonitor add additional volume and volumeMount configurations ([#3855](https://github.com/pingcap/tidb-operator/pull/3855), [@mikechengwei](https://github.com/mikechengwei))
 - Support affinity and tolerations in backup/restore CR ([#3835](https://github.com/pingcap/tidb-operator/pull/3835), [@dragonly](https://github.com/dragonly))
 
