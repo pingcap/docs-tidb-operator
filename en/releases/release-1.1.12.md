@@ -19,7 +19,7 @@ TiDB Operator version: 1.1.12
 
 - Add retry for DNS lookup failure exception in TiDBInitializer ([#3884](https://github.com/pingcap/tidb-operator/pull/3884), [@handlerww](https://github.com/handlerww))
 - Support multiple PVCs for PD during scaling and failover ([#3820](https://github.com/pingcap/tidb-operator/pull/3820), [@dragonly](https://github.com/dragonly))
-- Optimize `PodsAreChanged` function ([#3901](https://github.com/pingcap/tidb-operator/pull/3901), [@shonge](https://github.com/shonge))
+- Optimize the `PodsAreChanged` function ([#3901](https://github.com/pingcap/tidb-operator/pull/3901), [@shonge](https://github.com/shonge))
 - Add E2E serial test case "Canary Deploy Operator from 1.1.10 to latest" ([#3764](https://github.com/pingcap/tidb-operator/pull/3764), [@shonge](https://github.com/shonge))
 
 ## Bug Fixes
