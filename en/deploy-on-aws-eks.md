@@ -33,7 +33,7 @@ According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-
 
 Save the following configuration as the `cluster.yaml` file. Replace `${clusterName}` with your desired cluster name.
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: eksctl.io/v1alpha5
@@ -529,7 +529,7 @@ For more information about the storage class configuration and EBS volume types,
 
 ## Use local storage
 
-Some AWS instance types provide additional [NVMe SSD local store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+Use AWS EBS as a primary production configuration. To simulate bare metal performance, some AWS instance types provide additional [NVMe SSD local store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
