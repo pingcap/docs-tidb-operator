@@ -20,7 +20,6 @@ TiDB Operator 版本：1.1.12
 - TiDBInitializer 中增加重试机制，解决 DNS 查询异常处理问题 ([#3884](https://github.com/pingcap/tidb-operator/pull/3884)，[@handlerww](https://github.com/handlerww))
 - 在 PD 的扩缩容和容灾过程中增加多 PVC 支持 ([#3820](https://github.com/pingcap/tidb-operator/pull/3820)，[@dragonly](https://github.com/dragonly))
 - 优化 `PodsAreChanged` 函数 ([#3901](https://github.com/pingcap/tidb-operator/pull/3901), [@shonge](https://github.com/shonge))
-- 增加 "Canary Deploy Operator from 1.1.10 to latest" E2E serial 测试用例 ([#3764](https://github.com/pingcap/tidb-operator/pull/3764), [@shonge](https://github.com/shonge))
 
 ## Bug 修复
 
