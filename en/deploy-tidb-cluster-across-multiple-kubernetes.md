@@ -57,7 +57,7 @@ Run the following command:
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -f -n ${cluster1_namespace} -
+cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
