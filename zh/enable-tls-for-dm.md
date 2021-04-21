@@ -478,7 +478,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.0-rc.2
+  version: v2.0.2
   pvReclaimPolicy: Retain
   discovery:
     address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
@@ -545,7 +545,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.0-rc.2
+  version: v2.0.2
   pvReclaimPolicy: Retain
   discovery:
     address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
