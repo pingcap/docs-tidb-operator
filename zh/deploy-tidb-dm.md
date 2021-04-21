@@ -10,7 +10,6 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 ## 前置条件
 
 * TiDB Operator [部署](deploy-tidb-operator.md)完成。
-* 一套已经部署好的 TidbCluster 集群。
 
 ## 部署配置
 
@@ -34,22 +33,6 @@ TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
 ### 集群配置
 
-#### Discovery 配置
-
-DMCluster 部署时需要使用 TidbCluster 的 Discovery 服务，必须填写 `spec.discovery.address`，格式为 `http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261`。
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: DMCluster
-metadata:
-  name: ${dm_cluster_name}
-  namespace: ${namespace}
-spec:
-  ...
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
-```
-
 #### DM-master 配置
 
 DM-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 DM-master Pod。
@@ -65,8 +48,7 @@ metadata:
 spec:
   version: v2.0.2
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   master:
     baseImage: pingcap/dm
     imagePullPolicy: IfNotPresent

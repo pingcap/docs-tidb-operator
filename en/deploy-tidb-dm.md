@@ -10,7 +10,6 @@ summary: Learn how to deploy and use TiDB DM cluster in Kubernetes.
 ## Prerequisites
 
 * Complete [deploying TiDB Operator](deploy-tidb-operator.md).
-* Complete deploying a TiDB Cluster.
 
 ## Configure DM deployment
 
@@ -34,22 +33,6 @@ TiDB Operator only supports deploying DM 2.0 and later versions.
 
 ### Cluster
 
-#### Configure Discovery
-
-To deploy the DM cluster, you need to use the Discovery service of TidbCluster and must fill in the  `spec.discovery.address`. The format is `http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261`.
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: DMCluster
-metadata:
-  name: ${dm_cluster_name}
-  namespace: ${namespace}
-spec:
-  ...
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
-```
-
 #### Configure DM-master
 
 DM-master is an indispensable component of the DM cluster. You need to deploy at least three DM-master Pods if you want to achieve high availability.
@@ -65,8 +48,7 @@ metadata:
 spec:
   version: v2.0.2
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   master:
     baseImage: pingcap/dm
     imagePullPolicy: IfNotPresent
