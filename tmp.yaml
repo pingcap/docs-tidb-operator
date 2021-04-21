@@ -1,0 +1,61 @@
+  tikv:
+    baseImage: registry.pek01.in.zhihu.com/pingcap/tikv
+    replicas: 15
+    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+    storageClassName: local-nvme-storage
+    requests:
+      cpu: 6000m
+      memory: 12Gi
+      storage: 300Gi
+    config:
+      raftdb:
+        max-background-jobs: 10
+        max-sub-compactions: 4
+      raftstore:
+        apply-pool-size: 2
+        store-pool-size: 2
+      readpool:
+        coprocessor:
+          high-concurrency: 128
+          low-concurrency: 16
+          normal-concurrency: 64
+          use-unified-pool: true
+        storage:
+          high-concurrency: 16
+          low-concurrency: 16
+          normal-concurrency: 16
+          use-unified-pool: true
+          block-cache.capacity: 20GB
+          scheduler-concurrency: 1024000
+          scheduler-worker-pool-size: 8
+        unified:
+          max-thread-count: 24
+        rocksdb:
+          defaultcf:
+            max-write-buffer-number: 10
+          max-background-jobs: 20
+          max-sub-compactions: 4
+        server:
+          grpc-concurrency: 4
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/tidb
+      operator: Exists
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: node-role.kubernetes.io/tidb
+              operator: Exists
+  tidb:
+    baseImage: registry.pek01.in.zhihu.com/pingcap/tidb
+    replicas: 8
+    service:
+      type: ClusterIP
+    config:
+      status:
+        record-db-qps: true
+  ticdc:
+    baseImage: registry.pek01.in.zhihu.com/pingcap/ticdc
+    replicas: 3
