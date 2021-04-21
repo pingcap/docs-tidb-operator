@@ -105,6 +105,12 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
 
     TiDB Operator will use the `k8s.gcr.io/kube-scheduler` image. If you cannot download the image, you can modify the `scheduler.kubeSchedulerImageName` in the `${HOME}/tidb-operator/values-tidb-operator.yaml` file to `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`.
 
+    TiDB Operator will manage all TiDB clusters in the Kubernetes cluster by default. If you only need it to manage clusters in a specific namespace, you can set `clusterScoped: false` in `values.yaml`.
+
+    > **Note:**
+    >
+    > After setting `clusterScoped: false`, TiDB Operator will still operate Nodes, Persistent Volumes and Storage Classe in the Kubernetes cluster by default. If the role deploying TiDB Operator does not have the permissions of these resource, you can set the corresponding permission request under `controllerManager.clusterPermissions` to `false` to disable operations for these resource by TiDB Operator.
+
     You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
 3. Deploy TiDB Operator
