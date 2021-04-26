@@ -22,7 +22,7 @@ It takes you through the following steps:
 
 > **Warning:**
 >
-> This is for testing only. DO NOT USE in production!
+> For production use, please consult [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
 
 ## Select a project
 
@@ -232,7 +232,3 @@ Once you have finished experimenting, you can delete the Kubernetes cluster:
 ```shell
 gcloud container clusters delete tidb
 ```
-
-## More Information
-
-To learn more about creating a deployment on GKE suitable for production use, please consult <https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/>.
