@@ -6,7 +6,11 @@ aliases: ['/docs/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-gke/','/doc
 
 # Deploy TiDB on Google Cloud
 
+<<<<<<< HEAD
 This tutorial is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs&tutorial=deploy-tidb-from-kubernetes-gke.md).
+=======
+This document is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
+>>>>>>> b55ae50... zh, en: refine docs for deploying TiDB on GKE (#1178)
 
 <a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs&tutorial=deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
 
@@ -22,7 +26,7 @@ It takes you through the following steps:
 
 > **Warning:**
 >
-> This is for testing only. DO NOT USE in production!
+> This document is for testing purposes only. **Do not** follow it in production environments. For production environments, see the instructions in [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
 
 ## Select a project
 
