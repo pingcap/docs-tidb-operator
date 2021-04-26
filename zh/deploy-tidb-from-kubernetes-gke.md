@@ -298,10 +298,7 @@ kubectl get pv -l app.kubernetes.io/namespace=tidb,app.kubernetes.io/managed-by=
 ``` shell
 gcloud container clusters delete tidb
 ```
-<<<<<<< HEAD
 
 ## 更多信息
 
 我们还提供简单的[基于 Terraform 的部署方案](deploy-on-gcp-gke.md)。
-=======
->>>>>>> b55ae50... zh, en: refine docs for deploying TiDB on GKE (#1178)
