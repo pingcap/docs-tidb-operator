@@ -693,7 +693,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
 
-    根据官网文档：[Enable TLS Authentication](https://docs.pingcap.com/tidb/stable/enable-tls-between-components)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
+    根据官网文档：[Enable TLS Authentication](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
 
     - PD 组件的 Server 端证书。
 
