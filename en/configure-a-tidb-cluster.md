@@ -170,6 +170,17 @@ To enable `HostNetwork` for all supported components, configure `spec.hostNetwor
 
 To enable `HostNetwork` for specified components, configure `hostNetwork: true` for the components.
 
+### SecurityContext
+
+In some kubernetes environments, container can't run as root user. You can configure pods to use [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as non-root user.
+
+```yaml
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 2000
+  fsGroup: 2000
+```
+
 ### Cluster topology
 
 #### PD/TiKV/TiDB
@@ -649,7 +660,9 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 ### High availability of TiDB service
 
-High availability at other levels (such as rack, zone, region) is guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+#### Use affinity to schedule pods
+
+`PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical service high availability setup:
 
@@ -700,6 +713,43 @@ affinity:
        namespaces:
        - ${namespace}
 ```
+#### Use topologySpreadConstraints to make pods even spread
+
+Use topologySpreadConstraints can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+
+> **Note:**
+>
+> EvenPodsSpread feature gate must be enabled. It has no effect on kubernetes before v1.16 or which disables this feature gate.
+
+This is an example：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+Config above can make pods of same component even spread on different zones and nodes.
+
+Now `topologySpreadConstraints` only support `topologyKey` field. Config above will expand as below in pod spec.
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **Note:**
+>
+> If this field and custom scheduler(or nodeAffinity, nodeSelector, etc..) are both set, nodes not matching custom scheduler will be bypassed. See [implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
 
 ### High availability of data
 

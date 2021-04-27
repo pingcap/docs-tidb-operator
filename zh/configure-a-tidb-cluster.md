@@ -161,6 +161,17 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
 
+### SecurityContext
+
+某些 kubernetes 集群中可能禁止容器以 root 用户运行，可以通过配置 [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) 来以非 root 用户运行 TiDB 集群。
+
+```yaml
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 2000
+  fsGroup: 2000
+```
+
 ### 集群拓扑
 
 #### PD/TiKV/TiDB
@@ -619,7 +630,9 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 ### TiDB 服务高可用
 
-其它层面的高可用（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+#### 通过 affinity 调度实例
+
+通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
 
 下面是一个典型的高可用设置例子：
 
@@ -670,6 +683,46 @@ affinity:
        namespaces:
        - ${namespace}
 ```
+
+#### 通过 topologySpreadConstraints 实现均匀分布
+
+通过 topologySpreadConstraints 可以实现同一组件的不同实例在拓扑上的均匀分布，详见 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+
+> **注意：**
+>
+> 该功能需要打开 EvenPodsSpread feature gate，在低于 1.16 版本或未打开该 feature gate 的 kubernetes 上不会生效
+
+
+下面是一个典型的高可用设置例子：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+该配置能让同一组件的不同实例均匀分布在不同 zone 和节点上
+
+当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置，上述配置会自动展开成如下配置
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **注意：**
+>
+> 该功能和自定义调度器(或 nodeAffinity，nodeSelector 等)同时使用时会忽略掉自定义调度器已经过滤过的节点，详见[implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
+
 
 ### 数据的高可用
 
