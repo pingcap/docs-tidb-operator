@@ -713,6 +713,7 @@ affinity:
        namespaces:
        - ${namespace}
 ```
+
 #### Use topologySpreadConstraints to make pods even spread
 
 Use topologySpreadConstraints can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)

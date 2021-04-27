@@ -692,7 +692,6 @@ affinity:
 >
 > 该功能需要打开 EvenPodsSpread feature gate，在低于 1.16 版本或未打开该 feature gate 的 kubernetes 上不会生效
 
-
 下面是一个典型的高可用设置例子：
 
 {{< copyable "" >}}
@@ -722,7 +721,6 @@ topologySpreadConstrains:
 > **注意：**
 >
 > 该功能和自定义调度器(或 nodeAffinity，nodeSelector 等)同时使用时会忽略掉自定义调度器已经过滤过的节点，详见[implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
-
 
 ### 数据的高可用
 
