@@ -80,7 +80,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
 
 3. Visit <http://localhost:10262/dashboard> in your browser to access TiDB Dashboard.
 
-> **Warning:**
+> **Note:**
 >
 > `port-forward` default bind IP 127.0.0.1, if you want to access the machine runs `port-forward`, you can specify `--address` flag to bind the IP address.
 
