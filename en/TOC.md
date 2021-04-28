@@ -43,6 +43,7 @@
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
   - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+  - [Perform a Canary Upgrade](canary-upgrade-tidb-operator.md)
   - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
   + Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
@@ -101,8 +102,10 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.2
+    - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
+    - [1.1.12](releases/release-1.1.12.md)
     - [1.1.11](releases/release-1.1.11.md)
     - [1.1.10](releases/release-1.1.10.md)
     - [1.1.9](releases/release-1.1.9.md)

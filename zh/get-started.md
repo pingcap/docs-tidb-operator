@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 > **警告：**
 >
-> 本文中部署例子仅用于测试目的。**不要**直接用于生产环境。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅**部署** > **部署 TiDB 集群**章节。
 
 基本步骤如下：
 
@@ -291,7 +291,7 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-beta.1
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -299,9 +299,9 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-alpha.1 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-alpha.1 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-beta.1 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-beta.1 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-beta.1 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
@@ -748,3 +748,12 @@ kubectl delete namespace tidb-cluster
 ```shell
 pgrep -lfa kubectl
 ```
+
+## 探索更多
+
+如果你已经准备好在生产环境的 Kubernetes 上部署 TiDB 集群，可参阅以下文档：
+
+- [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
+- [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
+- [在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
+- [在阿里云上部署 TiDB 集群](deploy-on-alibaba-cloud.md)
