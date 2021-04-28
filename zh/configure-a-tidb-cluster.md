@@ -87,6 +87,10 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 每个组件都可以配置 `storageVolumes` 字段，用于描述用户自定义的多个 PV。
 
+> **注意：**
+>
+> `storageVolumes` 只支持创建集群的时间配置，后续不支持修改。
+
 相关字段的含义如下：
 
 - `storageVolume.name`：PV 的名称。

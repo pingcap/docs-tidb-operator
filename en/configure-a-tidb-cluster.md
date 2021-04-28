@@ -541,6 +541,10 @@ Configure the `TidbCluster` CR as the following example. In the example, TiDB Op
 
 For how to configure the `spec.tidb.storageVolumes` field, refer to [Multiple disks mounting](#multiple-disks-mounting).
 
+> **Warning:
+>
+> It's only support to configure `storageVolumes` when you create the cluster, do not support update it later once cluster created.
+
 {{< copyable "" >}}
 
 ```yaml
