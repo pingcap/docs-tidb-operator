@@ -76,7 +76,7 @@ kubectl port-forward svc/basic-discovery -n ${namespace} 10262:10262
 
 > **注意：**
 >
-> `port-forward` 默认绑定 IP 127.0.0.1, 如果你需要在其它机器访问跑 `port-forward` 命令的机器， 可以添加 `--address` 指定绑定 IP 地址。
+> `port-forward` 默认绑定 IP 127.0.0.1, 如果你需要在其它机器访问运行 `port-forward` 命令的机器， 可以添加 `--address` 指定绑定 IP 地址。
 
 ## 通过 Ingress 访问 TiDB Dashboard
 
