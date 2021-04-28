@@ -10,7 +10,7 @@ TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群�
 
 > **注意：**
 >
-> discovery 会 proxy 请求到 PD, 本文档我们直接访问的是 discovery 而不是 PD。
+> Discovery 服务会 proxy 请求到 TiDB Dashboard, 本文档我们通过 Discovery 服务访问 TiDB Dashboard。
 
 ## 前置条件
 
