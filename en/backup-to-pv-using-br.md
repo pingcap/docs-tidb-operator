@@ -11,7 +11,7 @@ PVs in this documentation can be any [Kubernetes supported Persistent Volume typ
 
 > **Note:**
 >
-> The backup method described in this document is supported since TiDB Operator v1.1.8 version.
+> The backup method described in this document is supported starting from TiDB Operator v1.1.8.
 
 ## Ad-hoc backup
 
