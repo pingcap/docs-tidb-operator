@@ -113,7 +113,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.br.concurrency`：备份时每一个 TiKV 进程使用的线程数。备份时默认为 4，恢复时默认为 128。
 * `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
 * `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
-* `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h", "2h45m" 等数据。
+* `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h"，"2h45m" 等数据。
 * `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限 或者 GCP 权限传输给 TiKV 进程。默认为 `true`。
 * `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
@@ -123,7 +123,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
     更多支持的兼容 S3 的 `provider` 如下：
 
-    * `alibaba`：Alibaba Cloud Object Storage System (OSS), formerly Aliyun
+    * `alibaba`：Alibaba Cloud Object Storage System (OSS)，formerly Aliyun
     * `digitalocean`：Digital Ocean Spaces
     * `dreamhost`：Dreamhost DreamObjects
     * `ibmcos`：IBM COS S3
