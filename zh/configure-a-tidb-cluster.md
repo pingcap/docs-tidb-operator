@@ -89,7 +89,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 > **注意：**
 >
-> `storageVolumes` 只支持创建集群的时间配置，后续不支持修改。
+> 请在集群创建之前配置好 `storageVolumes`，集群创建完成后，不支持增加或者删除 `storageVolumes`，对于已经配置的 `storageVolumes`，除增大 `storageVolume.storageSize` 外，其他项不支持修改。如果要增大 `storageVolume.storageSize`，需要对应的 StorageClass 支持[动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
 
 相关字段的含义如下：
 
