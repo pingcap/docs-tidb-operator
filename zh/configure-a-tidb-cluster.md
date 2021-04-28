@@ -161,6 +161,31 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
 
+### Discovery
+
+PD集群在启动时，第一个 Pod 和其它 Pod 启动参数不一样。Discovery服务用来确定PD的启动参数，来辅助PD启动。可通过配置 `spec.discovery` 限制Discovery服务资源，详见 [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v4.0.12
+  pvReclaimPolicy: Retain
+  discovery:
+    limits:
+      cpu: "0.2"
+    requests:
+      cpu: "0.2"
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+...
+```
+
 ### 集群拓扑
 
 #### PD/TiKV/TiDB
