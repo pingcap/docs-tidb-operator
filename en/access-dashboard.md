@@ -82,7 +82,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
 
 > **Warning:**
 >
-> `port-forward` default bind IP 127.0.0.1, if you want to access the machine runs `port-forward`, you can specify --address flag to bind the IP address.
+> `port-forward` default bind IP 127.0.0.1, if you want to access the machine runs `port-forward`, you can specify `--address` flag to bind the IP address.
 
 ## Access TiDB Dashboard by Ingress
 
