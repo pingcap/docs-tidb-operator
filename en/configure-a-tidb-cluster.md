@@ -174,6 +174,8 @@ To enable `HostNetwork` for specified components, configure `hostNetwork: true` 
 
 In some kubernetes environments, container can't run as root user. You can configure pods to use [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as non-root user.
 
+`podSecurityContext` can be set at cluster level(spec.podSecurityContext) for all of components or component level(e.g. spec.tidb.podSecurityContext) for specific component.
+
 ```yaml
 podSecurityContext:
   runAsUser: 1000
@@ -750,7 +752,7 @@ topologySpreadConstrains:
 
 > **Note:**
 >
-> If this field and custom scheduler(or nodeAffinity, nodeSelector, etc..) are both set, nodes not matching custom scheduler will be bypassed. See [implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
+> If this field and tidb scheduler (or nodeAffinity, nodeSelector, etc..) are both set, nodes not matching tidb scheduler will be bypassed. See [implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
 
 ### High availability of data
 
