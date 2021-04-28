@@ -45,7 +45,7 @@ This section introduces the fields in the `Backup` CR.
 ### General fields
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.toolImage`：set the tools image used by `Backup`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/dumpling:v4.0.10` when using Dumpling. If not, BR will use the version in `pingcap/br:${tikv_version}` by default。 When using Dumpling to backup, the version specified in `TOOLKIT_V40` stored in [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/${operator_version}/images/tidb-backup-manager/Dockerfile) will be used by default. v1.1.9 and the later versions support this configuration.
+* `.spec.toolImage`：set the tools image used by `Backup`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/dumpling:v4.0.10` when using Dumpling. If not, BR will use the version in `pingcap/br:${tikv_version}` by default. When using Dumpling to backup, the version specified in `TOOLKIT_V40` stored in Backup Manager Dockerfile at `https://github.com/pingcap/tidb-operator/blob/${operator_version}/images/tidb-backup-manager/Dockerfile` will be used by default. v1.1.9 and the later versions support this configuration.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to 72h.
 
     Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
@@ -225,7 +225,7 @@ To restore data to a TiDB cluster in Kubernetes, you can create a `Restore` CR o
 This section introduces the fields in the `Restore` CR.
 
 * `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
-* `.spec.toolImage`：set the tools image used by `Restore`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/lightning:v4.0.10` when using Lightning. If not, BR will use the version in `pingcap/br:${tikv_version}` by default。 When using Lightning to restore, the version specified in `TOOLKIT_V40` stored in [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/${operator_version}/images/tidb-backup-manager/Dockerfile) will be used by default. v1.1.9 and the later versions support this configuration.
+* `.spec.toolImage`：set the tools image used by `Restore`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/lightning:v4.0.10` when using Lightning. If not, BR will use the version in `pingcap/br:${tikv_version}` by default. When using Lightning to restore, the version specified in `TOOLKIT_V40` stored in Backup Manager Dockerfile at `https://github.com/pingcap/tidb-operator/blob/${operator_version}/images/tidb-backup-manager/Dockerfile` will be used by default. v1.1.9 and the later versions support this configuration.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.
 * `.spec.to.port`: The port of the TiDB cluster to be restored.
 * `.spec.to.user`: The accessing user of the TiDB cluster to be restored.
