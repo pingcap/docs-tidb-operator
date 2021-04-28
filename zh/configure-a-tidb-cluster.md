@@ -165,7 +165,7 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
 
 某些 kubernetes 集群中可能禁止容器以 root 用户运行，可以通过配置 [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) 来以非 root 用户运行 TiDB 集群。
 
-`podSecurityContext` 可以设置在整个集群级别 (spec.podSecurity) 配置所有组件或者设置在组件级别 (e.g. spec.tidb.podSecurity) 来配置特定的组件。
+`podSecurityContext` 可以设置在整个集群级别 (spec.podSecurityContext) 配置所有组件或者设置在组件级别 (e.g. spec.tidb.podSecurityContext) 来配置特定的组件。
 
 ```yaml
 podSecurityContext:
@@ -694,7 +694,9 @@ affinity:
 >
 > 该功能需要打开 EvenPodsSpread feature gate，在低于 1.16 版本或未打开该 feature gate 的 Kubernetes 上不会生效。
 
-下面是一个典型的高可用设置例子：
+`topologySpreadConstraints` 可以设置在整个集群级别 (spec.topologySpreadConstraints) 配置所有组件或者设置在组件级别 (e.g. spec.tidb.topologySpreadConstraints) 来配置特定的组件。
+
+下面是一个例子：
 
 {{< copyable "" >}}
 
