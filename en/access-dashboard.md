@@ -10,7 +10,7 @@ TiDB Dashboard is a visualized tool in TiDB 4.0 used to monitor and diagnose the
 
 This document describes how to access TiDB Dashboard in Kubernetes.
 
-> **Warning:**
+> **Note:**
 >
 > discovery will proxy the request to PD, in this document we access the discovery instead of PD.
 
