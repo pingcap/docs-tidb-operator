@@ -29,5 +29,5 @@ TiDB Operator version: 1.2.0-beta.2
 
 ## Bug Fixes
 
-- Fix the issue that TiDB instances are kept at TiDB Dashboard after scaled in ([#3929](https://github.com/pingcap/tidb-operator/pull/3929), [@july2993](https://github.com/july2993))
+- Fix the issue that TiDB instances are kept in TiDB Dashboard after being scaled in ([#3929](https://github.com/pingcap/tidb-operator/pull/3929), [@july2993](https://github.com/july2993))
 - Fix the issue that useless TidbCluster CR sync caused by the update of `lastHeartbeatTime` in `status.tikv.stores` ([#3886](https://github.com/pingcap/tidb-operator/pull/3886), [@songjiansuper](https://github.com/songjiansuper))
