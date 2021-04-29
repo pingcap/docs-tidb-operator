@@ -651,7 +651,7 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 #### Use affinity to schedule pods
 
-By configuring `PodAntiAffinity`, you can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. For the user guide of Affinity, see [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+By configuring `PodAntiAffinity`, you can avoid the situation in which different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery (high availability) is achieved. For the user guide of Affinity, see [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical service high availability setup:
 
