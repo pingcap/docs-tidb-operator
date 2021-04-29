@@ -12,7 +12,7 @@ This document describes how to access TiDB Dashboard in Kubernetes.
 
 > **Note:**
 >
-> discovery will proxy the request to PD, in this document we access the discovery instead of PD.
+> TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. The Discovery service can also send proxy requests to the TiDB Dashboard. In this document, TiDB Dashboard is accessed using the Discovery service.
 
 ## Prerequisites
 
