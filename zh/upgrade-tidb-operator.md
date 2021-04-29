@@ -64,7 +64,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 ## 离线升级步骤
 
-如果服务器没有外网，需要按照下面的步骤来离线安装 TiDB Operator：
+如果服务器没有外网，需要按照下面的步骤来离线升级 TiDB Operator：
 
 1. 更新 [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
 
@@ -78,7 +78,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
    > **注意：**
    >
-   > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.2.0-beta.1`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
+   > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
    > 如果未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) )。
 
 2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
