@@ -6,13 +6,13 @@ aliases: ['/docs/tidb-in-kubernetes/dev/containers-run-as-non-root-user/']
 
 # 以非 root 用户运行 TiDB Operator 和 TiDB 集群
 
-在某些 Kubernetes 环境中，无法用 root 用户运行容器。我们可以通过配置 [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) 来以非 root 用户启动容器。
+在某些 Kubernetes 环境中，无法用 root 用户运行容器。你可以通过配置 [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) 来以非 root 用户启动容器。
 
 ## 配置 TiDB Operator 相关的容器
 
 安全上下文 (Security context) 可以在 helm 的 `values.yaml` 文件中配置。所有 operator 的相关组件都支持该配置 (`<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`)。
 
-比如如下配置:
+以下是一个配置示例:
 
 ```yaml
 controllerManager:
@@ -26,9 +26,9 @@ controllerManager:
 
 安全上下文 (Security context) 同样可以在任意一种 CR (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) 中开启。
 
-该字段可以配置在集群级别 (`spec.podSecurityContext`) 对所有组件生效或者配置在组件级别 (e.g. `spec.tidb.podSecurityContext` in TidbCluster, `spec.master.podSecurityContext` in DMCluster) 仅对该组件生效。
+`podSecurityContext` 可以配置在集群级别 (`spec.podSecurityContext`) 对所有组件生效或者配置在组件级别 (例如，配置 TidbCluster 的 `spec.tidb.podSecurityContext`，配置 DMCluster 的 `spec.master.podSecurityContext`) 仅对该组件生效。
 
-比如集群级别的配置如下:
+以下是一个集群级别的配置示例：
 
 ```yaml
 spec:
@@ -38,7 +38,7 @@ spec:
     fsGroup: 2000
 ```
 
-组件级别的例子如下:
+以下是一个组件级别的配置示例：
 
 ```yaml
 spec:

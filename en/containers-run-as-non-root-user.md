@@ -1,18 +1,18 @@
 ---
-title: TiDB Operator and TiDB clusters run as non-root user
-summary: Let TiDB Operator and TiDB clusters run as non root user
+title: Run TiDB Operator and TiDB Clusters as a Non-root User
+summary: Make TiDB Operator and TiDB clusters run as a non-root user
 aliases: ['/docs/tidb-in-kubernetes/dev/containers-run-as-non-root-user/']
 ---
 
-# TiDB Operator and TiDB clusters run as non-root user
+# Run TiDB Operator and TiDB Clusters as a Non-root User
 
-In some Kubernetes environments, container can't run as root user. You can configure pods to use [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as non-root user.
+In some Kubernetes environments, containers cannot be run as the root user. In this case, you can configure pods using [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as a non-root user.
 
 ## Configure TiDB Operator containers
 
-Security context can be set in helm `values.yaml`. All of operator components support this config (at `<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`).
+You can configure security context in the helm `values.yaml` file. All TiDB Operator components (at `<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`) support this configuration.
 
-For example:
+The following is an example configuration:
 
 ```yaml
 controllerManager:
@@ -24,11 +24,11 @@ controllerManager:
 
 ## Configure containers controlled by CR
 
-Security context can also be enabled in all CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make containers run as non-user.
+You can also enable security context in all CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make containers run as a non-user.
 
-It can be set at cluster level (`spec.podSecurityContext`) for all of components or component level (e.g. `spec.tidb.podSecurityContext` in TidbCluster, `spec.master.podSecurityContext` in DMCluster) for specific component.
+You can set `podSecurityContext` at a cluster level (`spec.podSecurityContext`) for all components or at a component level (such as `spec.tidb.podSecurityContext` for TidbCluster, `spec.master.podSecurityContext` for DMCluster) for a specific component.
 
-For example (at cluster level):
+The following is an example configuration at a cluster level:
 
 ```yaml
 spec:
@@ -38,7 +38,7 @@ spec:
     fsGroup: 2000
 ```
 
-Or (at compnent level):
+The following is an example configuration at a component level:
 
 ```yaml
 spec:
@@ -54,4 +54,4 @@ spec:
       fsGroup: 2000
 ```
 
-If this field is set at both cluster level and component level, component level config will override the one at cluster level.
+For a component, if both the cluster level and the component level are configured, only the configuration of the component level takes effect.

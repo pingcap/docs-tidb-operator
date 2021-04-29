@@ -651,7 +651,7 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 #### Use affinity to schedule pods
 
-`PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+By configuring `PodAntiAffinity`, you can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. For the user guide of Affinity, see [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical service high availability setup:
 
@@ -703,17 +703,17 @@ affinity:
        - ${namespace}
 ```
 
-#### Use topologySpreadConstraints to make pods even spread
+#### Use topologySpreadConstraints to make pods evenly spread
 
-Use `topologySpreadConstraints` can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configure `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
 
 > **Note:**
 >
-> EvenPodsSpread feature gate must be enabled. It has no effect on Kubernetes before v1.16 or which disables this feature gate.
+> To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
 
-`topologySpreadConstraints` can be set at cluster level (`spec.topologySpreadConstraints`) for all of components or component level (e.g. `spec.tidb.topologySpreadConstraints`) for specific component.
+You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all of components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for a specific component.
 
-This is an example：
+The following is an example configuration:
 
 {{< copyable "" >}}
 
@@ -723,9 +723,9 @@ topologySpreadConstrains:
 - topologyKey: topology.kubernetes.io/zone
 ```
 
-Config above can make pods of same component even spread on different zones and nodes.
+The example configuration can make pods of the same component evenly spread on different zones and nodes.
 
-Now `topologySpreadConstraints` only support `topologyKey` field. Config above will expand as below in pod spec.
+Currently, `topologySpreadConstraints` only supports the configuration of the `topologyKey` field. In the pod spec, the above example configuration will be automatically expanded as follows:
 
 ```yaml
 topologySpreadConstrains:
@@ -741,7 +741,7 @@ topologySpreadConstrains:
 
 > **Note:**
 >
-> This feature can be used to replace [TiDB Scheduler](tidb-scheduler.md) for even scheduling.
+> You can use this feature to replace [TiDB Scheduler](tidb-scheduler.md) for evenly scheduling.
 
 ### High availability of data
 
