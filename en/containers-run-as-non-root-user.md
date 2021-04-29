@@ -1,14 +1,14 @@
 ---
-title: Containers run as non-root user
-summary: Config all of related containers run as non root user
+title: TiDB Operator and TiDB clusters run as non-root user
+summary: Let TiDB Operator and TiDB clusters run as non root user
 aliases: ['/docs/tidb-in-kubernetes/dev/containers-run-as-non-root-user/']
 ---
 
-# Containers run as non-root user
+# TiDB Operator and TiDB clusters run as non-root user
 
 In some Kubernetes environments, container can't run as root user. You can configure pods to use [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as non-root user.
 
-## Configure operator containers
+## Configure TiDB Operator containers
 
 Security context can be set in helm `values.yaml`. All of operator components support this config (at `<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`).
 
@@ -24,7 +24,7 @@ controllerManager:
 
 ## Configure containers controlled by CR
 
-Security context can also be enabled in all CRs to make containers run as non-user.
+Security context can also be enabled in all CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make containers run as non-user.
 
 It can be set at cluster level (`spec.podSecurityContext`) for all of components or component level (e.g. `spec.tidb.podSecurityContext` in TidbCluster, `spec.master.podSecurityContext` in DMCluster) for specific component.
 

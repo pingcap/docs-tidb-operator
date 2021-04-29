@@ -52,7 +52,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
-- [Containers run as non-root user](containers-run-as-non-root-user.md)
+- [TiDB Operator and TiDB clusters run as non-root user](containers-run-as-non-root-user.md)
 
 </NavColumn>
 
