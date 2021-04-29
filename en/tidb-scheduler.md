@@ -77,7 +77,7 @@ This ensures stable scheduling and is helpful for the scenario of manually confi
 
 > **Note:**
 >
-> This rule cannot be implemented by [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-even-spread).
+> This rule cannot be implemented by [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread).
 
 ## How TiDB Scheduler works
 

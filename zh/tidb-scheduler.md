@@ -77,7 +77,7 @@ kubectl label nodes node1 zone=zone1
 
 > **注意：**
 >
-> 该规则 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现均匀分布) 无法实现。
+> 该规则 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布) 无法实现。
 
 ## 工作原理
 
