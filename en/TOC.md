@@ -39,6 +39,7 @@
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
   - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
+  - [Containers run as non-root user](containers-run-as-non-root-user.md)
 + Operate
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
