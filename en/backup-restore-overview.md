@@ -225,7 +225,7 @@ To restore data to a TiDB cluster in Kubernetes, you can create a `Restore` CR o
 This section introduces the fields in the `Restore` CR.
 
 * `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
-* `.spec.toolImage`：set the tools image used by `Restore`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/lightning:v4.0.10` when using Lightning. If not set, `pingcap/br:${tikv_version}` will be used for backup with BR by default, and the `TOOLKIT_VERSION` in the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) will be used for backup with Lightning by default. v1.1.9 and the later versions support this configuration.
+* `.spec.toolImage`：set the tools image used by `Restore`. For example, you can set `spec.toolImage: pingcap/br:v4.0.10` when using BR, or you can set `spec.toolImage: pingcap/lightning:v4.0.10` when using Lightning. If not set, `pingcap/br:${tikv_version}` will be used for a restore with BR by default, and the `TOOLKIT_VERSION` in the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) will be used for a restore with Lightning by default. v1.1.9 and the later versions support this configuration.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.
 * `.spec.to.port`: The port of the TiDB cluster to be restored.
 * `.spec.to.user`: The accessing user of the TiDB cluster to be restored.
