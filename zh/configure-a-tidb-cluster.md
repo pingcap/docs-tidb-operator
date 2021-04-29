@@ -161,19 +161,6 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
 
-### SecurityContext
-
-某些 kubernetes 集群中可能禁止容器以 root 用户运行，可以通过配置 [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) 来以非 root 用户运行 TiDB 集群。
-
-`podSecurityContext` 可以设置在整个集群级别 (spec.podSecurityContext) 配置所有组件或者设置在组件级别 (e.g. spec.tidb.podSecurityContext) 来配置特定的组件。
-
-```yaml
-podSecurityContext:
-  runAsUser: 1000
-  runAsGroup: 2000
-  fsGroup: 2000
-```
-
 ### 集群拓扑
 
 #### PD/TiKV/TiDB
@@ -688,13 +675,13 @@ affinity:
 
 #### 通过 topologySpreadConstraints 实现均匀分布
 
-通过 topologySpreadConstraints 可以实现同一组件的不同实例在拓扑上的均匀分布，详见 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
+通过 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布，详见 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
 
 > **注意：**
 >
 > 该功能需要打开 EvenPodsSpread feature gate，在低于 1.16 版本或未打开该 feature gate 的 Kubernetes 上不会生效。
 
-`topologySpreadConstraints` 可以设置在整个集群级别 (spec.topologySpreadConstraints) 配置所有组件或者设置在组件级别 (e.g. spec.tidb.topologySpreadConstraints) 来配置特定的组件。
+`topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 配置所有组件或者设置在组件级别 (e.g. `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
 
 下面是一个例子：
 
@@ -724,7 +711,7 @@ topologySpreadConstrains:
 
 > **注意：**
 >
-> 该功能和 TiDB Operator 自定义调度器 (或 nodeAffinity，nodeSelector 等) 同时使用时会忽略掉自定义调度器已经过滤过的节点，详见[implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)。
+> 可以用该功能替换 [TiDB Scheduler](tidb-scheduler.md) 来实现均匀调度
 
 ### 数据的高可用
 

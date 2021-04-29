@@ -170,19 +170,6 @@ To enable `HostNetwork` for all supported components, configure `spec.hostNetwor
 
 To enable `HostNetwork` for specified components, configure `hostNetwork: true` for the components.
 
-### SecurityContext
-
-In some kubernetes environments, container can't run as root user. You can configure pods to use [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as non-root user.
-
-`podSecurityContext` can be set at cluster level (spec.podSecurityContext) for all of components or component level (e.g. spec.tidb.podSecurityContext) for specific component.
-
-```yaml
-podSecurityContext:
-  runAsUser: 1000
-  runAsGroup: 2000
-  fsGroup: 2000
-```
-
 ### Cluster topology
 
 #### PD/TiKV/TiDB
@@ -718,13 +705,13 @@ affinity:
 
 #### Use topologySpreadConstraints to make pods even spread
 
-Use topologySpreadConstraints can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+Use `topologySpreadConstraints` can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
 
 > **Note:**
 >
 > EvenPodsSpread feature gate must be enabled. It has no effect on Kubernetes before v1.16 or which disables this feature gate.
 
-`topologySpreadConstraints` can be set at cluster level (spec.topologySpreadConstraints) for all of components or component level (e.g. spec.tidb.topologySpreadConstraints) for specific component.
+`topologySpreadConstraints` can be set at cluster level (`spec.topologySpreadConstraints`) for all of components or component level (e.g. `spec.tidb.topologySpreadConstraints`) for specific component.
 
 This is an example：
 
@@ -754,7 +741,7 @@ topologySpreadConstrains:
 
 > **Note:**
 >
-> If this field and tidb scheduler (or nodeAffinity, nodeSelector, etc..) are both set, nodes not matching tidb scheduler will be bypassed. See [implicit conventions](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#conventions)
+> This feature can be used to replace [TiDB Scheduler](tidb-scheduler.md) for even scheduling.
 
 ### High availability of data
 

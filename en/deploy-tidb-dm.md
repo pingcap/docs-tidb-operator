@@ -88,6 +88,47 @@ spec:
 
 ```
 
+### Topology Spread Constraint
+
+Use `topologySpreadConstraints` can make pods even spread in different topology. See [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+
+> **Note:**
+>
+> EvenPodsSpread feature gate must be enabled. It has no effect on Kubernetes before v1.16 or which disables this feature gate.
+
+`topologySpreadConstraints` can be set at cluster level (`spec.topologySpreadConstraints`) for all of components or component level (e.g. `spec.tidb.topologySpreadConstraints`) for specific component.
+
+This is an example：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+Config above can make pods of same component even spread on different zones and nodes.
+
+Now `topologySpreadConstraints` only support `topologyKey` field. Config above will expand as below in pod spec.
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **Note:**
+>
+> This feature can be used to replace [TiDB Scheduler](tidb-scheduler.md) for even scheduling.
+
+
 ## Deploy the DM cluster
 
 After configuring the yaml file of the DM cluster in the above steps, execute the following command to deploy the DM cluster:

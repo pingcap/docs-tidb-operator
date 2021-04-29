@@ -86,6 +86,46 @@ spec:
       keepalive-ttl: 15
 ```
 
+### 拓扑分布约束
+
+通过 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布，详见 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
+
+> **注意：**
+>
+> 该功能需要打开 EvenPodsSpread feature gate，在低于 1.16 版本或未打开该 feature gate 的 Kubernetes 上不会生效。
+
+`topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 配置所有组件或者设置在组件级别 (e.g. `spec.master.topologySpreadConstraints`) 来配置特定的组件。
+
+下面是一个例子：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+该配置能让同一组件的不同实例均匀分布在不同 zone 和节点上。
+
+当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置，上述配置会自动展开成如下配置。
+
+```yaml
+topologySpreadConstrains:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **注意：**
+>
+> 可以用该功能替换 [TiDB Scheduler](tidb-scheduler.md) 来实现均匀调度
+
 ## 部署 DM 集群
 
 按上述步骤配置完 DM 集群的 yaml 文件后，执行以下命令部署 DM 集群：
