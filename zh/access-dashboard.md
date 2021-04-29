@@ -10,7 +10,7 @@ TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群�
 
 > **注意：**
 >
-> Discovery 服务会 proxy 请求到 TiDB Dashboard, 本文档我们通过 Discovery 服务访问 TiDB Dashboard。
+> TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务，Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。另外，Discovery 服务也会代理请求到 TiDB Dashboard，本文档我们通过 Discovery 服务访问 TiDB Dashboard。
 
 ## 前置条件
 
