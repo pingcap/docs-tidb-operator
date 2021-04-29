@@ -26,7 +26,7 @@ controllerManager:
 
 You can also enable security context in all CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make containers run as a non-root user.
 
-You can set `podSecurityContext` at a cluster level (`spec.podSecurityContext`) for all components or at a component level (such as `spec.tidb.podSecurityContext` for TidbCluster, `spec.master.podSecurityContext` for DMCluster) for a specific component.
+You can either configure `podSecurityContext` at a cluster level (`spec.podSecurityContext`) for all components or at a component level (such as `spec.tidb.podSecurityContext` for TidbCluster and `spec.master.podSecurityContext` for DMCluster) for a specific component.
 
 The following is an example configuration at a cluster level:
 
