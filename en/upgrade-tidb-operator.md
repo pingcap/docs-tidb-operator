@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 This document describes how to upgrade TiDB Operator and Kubernetes.
 
-## Upgrade TiDB Operator
+## Online Upgrade TiDB Operator
 
 1. Update [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/):
 
@@ -61,6 +61,65 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
     > **Note:**
     >
     > After TiDB Operator is upgraded, the `discovery` deployment in all TiDB clusters will automatically upgrade to the specified version of TiDB Operator.
+
+## Offline Upgrade TiDB Operator
+
+If your server cannot access the Internet, install TiDB Operator offline by the following steps:
+
+1. Update [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/):
+
+   {{< copyable "shell-regular" >}}
+
+    ```shell
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml && \
+    kubectl apply -f ./crd.yaml && \
+    kubectl get crd tidbclusters.pingcap.com
+    ```
+
+   > **Note:**
+   >
+   > The `${version}` in this document represents the version of TiDB Operator, such as `v1.2.0-beta.1`. You can check the currently supported version using the `helm search repo -l tidb-operator` command.
+   > If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
+
+2. Get the `values.yaml` file of the `tidb-operator` chart that you want to install:
+
+   {{< copyable "shell-regular" >}}
+
+   ```shell
+   wget http://charts.pingcap.org/tidb-operator-${version}.tgz && \
+   tar zxvf tidb-operator-${version}.tgz && \
+   mkdir -p ${HOME}/tidb-operator/${version} && \
+   cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    ```
+
+3. Download `operatorImage` image version on an Internet machine and upload to server, then use `docker load` to install Docker image to server (for details, please refer to [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md)), then upgrade via the following command:
+
+   {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm upgrade tidb-operator ./tidb-operator --version=${version} -f ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    ```
+
+   After all the Pods start normally, execute the following command to check the image of TiDB Operator:
+
+   {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
+    ```
+
+   If TiDB Operator is successfully upgraded, the expected output is as follows. `${version}` represents the desired version of TiDB Operator.
+
+    ```
+    image: pingcap/tidb-operator:${version}
+    image: docker.io/pingcap/tidb-operator:${version}
+    image: pingcap/tidb-operator:${version}
+    image: docker.io/pingcap/tidb-operator:${version}
+    ```
+
+   > **Note:**
+   >
+   > After TiDB Operator is upgraded, the `discovery` deployment in all TiDB clusters will automatically upgrade to the specified version of TiDB Operator.
 
 ## Upgrade TiDB Operator from v1.0 to v1.1 or later releases
 
