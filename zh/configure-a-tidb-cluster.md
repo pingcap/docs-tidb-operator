@@ -185,6 +185,7 @@ spec:
       storage: "1Gi"
     config: {}
 ...
+```
 
 ### 集群拓扑
 
