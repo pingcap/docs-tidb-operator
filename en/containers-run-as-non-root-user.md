@@ -1,16 +1,15 @@
 ---
 title: Run TiDB Operator and TiDB Clusters as a Non-root User
 summary: Make TiDB Operator related containers run as a non-root user
-aliases: ['/docs/tidb-in-kubernetes/dev/containers-run-as-non-root-user/']
 ---
 
 # Run TiDB Operator and TiDB Clusters as a Non-root User
 
-In some Kubernetes environments, containers cannot be run as the root user. In this case, you can configure pods using [`SecurityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run as a non-root user.
+In some Kubernetes environments, containers cannot be run as the root user. In this case, you can set [`securityContext`](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) to run containers as a non-root user.
 
 ## Configure TiDB Operator containers
 
-You can configure security context in the helm `values.yaml` file. All TiDB Operator components (at `<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`) support this configuration.
+For TiDB Operator containers, you can configure security context in the helm `values.yaml` file. All TiDB Operator components (at `<controllerManager/scheduler/advancedStatefulset/admissionWebhook>.securityContext`) support this configuration.
 
 The following is an example configuration:
 
@@ -24,7 +23,7 @@ controllerManager:
 
 ## Configure containers controlled by CR
 
-You can also enable security context in all CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make containers run as a non-root user.
+For the containers controlled by CR, you can configure security context in any CRs (TidbCluster/DMCluster/TiInitializer/TiMonitor/Backup/BackupSchedule/Restore) to make the containers run as a non-root user.
 
 You can either configure `podSecurityContext` at a cluster level (`spec.podSecurityContext`) for all components or at a component level (such as `spec.tidb.podSecurityContext` for TidbCluster and `spec.master.podSecurityContext` for DMCluster) for a specific component.
 
