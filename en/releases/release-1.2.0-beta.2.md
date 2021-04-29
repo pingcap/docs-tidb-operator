@@ -27,7 +27,7 @@ TiDB Operator version: 1.2.0-beta.2
 - Optimize TidbMonitor for DmCluster with TLS enabled ([#3942](https://github.com/pingcap/tidb-operator/pull/3942), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor supports not generating Prometheus alert rules ([#3932](https://github.com/pingcap/tidb-operator/pull/3932), [@mikechengwei](https://github.com/mikechengwei))
 
-## Bug Fixes
+## Bug fixes
 
 - Fix the issue that TiDB instances are kept in TiDB Dashboard after being scaled in ([#3929](https://github.com/pingcap/tidb-operator/pull/3929), [@july2993](https://github.com/july2993))
 - Fix the useless sync of TidbCluster CR caused by the update of `lastHeartbeatTime` in `status.tikv.stores` ([#3886](https://github.com/pingcap/tidb-operator/pull/3886), [@songjiansuper](https://github.com/songjiansuper))
