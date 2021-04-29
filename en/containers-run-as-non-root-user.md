@@ -1,6 +1,6 @@
 ---
 title: Run TiDB Operator and TiDB Clusters as a Non-root User
-summary: Make TiDB Operator and TiDB clusters run as a non-root user
+summary: Make TiDB Operator related containers run as a non-root user
 aliases: ['/docs/tidb-in-kubernetes/dev/containers-run-as-non-root-user/']
 ---
 
