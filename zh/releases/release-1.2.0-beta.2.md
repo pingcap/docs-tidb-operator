@@ -26,7 +26,6 @@ TiDB Operator 版本：1.2.0-beta.2
 - 为 TidbMonitor Pod 增加 readiness 探测器 ([#3943](https://github.com/pingcap/tidb-operator/pull/3943), [@mikechengwei](https://github.com/mikechengwei))
 - 优化 TidbMonitor 对启用了 TLS 的 DmCluster 的监控 ([#3942](https://github.com/pingcap/tidb-operator/pull/3942), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor 支持不生成 Prometheus 的告警规则 ([#3932](https://github.com/pingcap/tidb-operator/pull/3932), [@mikechengwei](https://github.com/mikechengwei))
-- 优化 `PodsAreChanged` 函数 ([#3901](https://github.com/pingcap/tidb-operator/pull/3901), [@shonge](https://github.com/shonge))
 
 ## Bug 修复
 

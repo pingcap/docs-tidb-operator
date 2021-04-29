@@ -26,7 +26,6 @@ TiDB Operator version: 1.2.0-beta.2
 - Add readiness probe for the TidbMonitor Pod ([#3943](https://github.com/pingcap/tidb-operator/pull/3943), [@mikechengwei](https://github.com/mikechengwei))
 - Optimize TidbMonitor for DmCluster with TLS enabled ([#3942](https://github.com/pingcap/tidb-operator/pull/3942), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor supports not generating Prometheus alert rules ([#3932](https://github.com/pingcap/tidb-operator/pull/3932), [@mikechengwei](https://github.com/mikechengwei))
-- Optimize the `PodsAreChanged` function ([#3901](https://github.com/pingcap/tidb-operator/pull/3901), [@shonge](https://github.com/shonge))
 
 ## Bug Fixes
 
