@@ -163,7 +163,7 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
 
 ### Discovery
 
-TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务，Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。可以通过 `spec.discovery` 配置 Discovery 服务的资源，详见[容器资源管理](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
+TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。你可以通过 `spec.discovery` 配置 Discovery 服务的资源，详见[容器资源管理](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
