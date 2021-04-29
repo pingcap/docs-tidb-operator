@@ -15,7 +15,7 @@ TiDB Operator version: 1.2.0-beta.2
 
 ## New Features
 
-- TidbMonitor supports monitoring multiple TidbCluster with TLS enabled ([#3867](https://github.com/pingcap/tidb-operator/pull/3867), [@mikechengwei](https://github.com/mikechengwei))
+- TidbMonitor supports monitoring multiple TidbClusters with TLS enabled ([#3867](https://github.com/pingcap/tidb-operator/pull/3867), [@mikechengwei](https://github.com/mikechengwei))
 - Support configuring `podSecurityContext` for all TiDB components ([#3909](https://github.com/pingcap/tidb-operator/pull/3909), [@liubog2008](https://github.com/liubog2008))
 - Support configuring `topologySpreadConstraints` for all TiDB components ([#3937](https://github.com/pingcap/tidb-operator/pull/3937), [@liubog2008](https://github.com/liubog2008))
 - Support deploying DmCluster in a different namespace of a TidbCluster ([#3914](https://github.com/pingcap/tidb-operator/pull/3914), [@csuzhangxc](https://github.com/csuzhangxc))
