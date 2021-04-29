@@ -10,8 +10,8 @@ TiDB Operator version: 1.2.0-beta.2
 
 ## Rolling Update Changes
 
-- Upgrading TiDB Operator will cause the recreation of the TidbMonitor Pod due to ([#3943](https://github.com/pingcap/tidb-operator/pull/3943)
-- Upgrading TiDB Operator will cause the recreation of the DM-master Pod due to ([#3914](https://github.com/pingcap/tidb-operator/pull/3914)
+- Upgrading TiDB Operator will cause the recreation of the TidbMonitor Pod due to [#3943](https://github.com/pingcap/tidb-operator/pull/3943)
+- Upgrading TiDB Operator will cause the recreation of the DM-master Pod due to [#3914](https://github.com/pingcap/tidb-operator/pull/3914)
 
 ## New Features
 
