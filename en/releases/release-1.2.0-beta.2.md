@@ -19,7 +19,7 @@ TiDB Operator version: 1.2.0-beta.2
 - Support configuring `podSecurityContext` for all TiDB components ([#3909](https://github.com/pingcap/tidb-operator/pull/3909), [@liubog2008](https://github.com/liubog2008))
 - Support configuring `topologySpreadConstraints` for all TiDB components ([#3937](https://github.com/pingcap/tidb-operator/pull/3937), [@liubog2008](https://github.com/liubog2008))
 - Support deploying a DmCluster in a different namespace than a TidbCluster ([#3914](https://github.com/pingcap/tidb-operator/pull/3914), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support installing TiDB Operator with namespace scoped permissions ([#3896](https://github.com/pingcap/tidb-operator/pull/3896), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support installing TiDB Operator with only namespace-scoped permissions ([#3896](https://github.com/pingcap/tidb-operator/pull/3896), [@csuzhangxc](https://github.com/csuzhangxc))
 
 ## Improvements
 
