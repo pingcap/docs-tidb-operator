@@ -90,7 +90,7 @@ spec:
 
 ### Topology Spread Constraint
 
-By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configure `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
+By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configuring `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
 
 > **Note:**
 >
