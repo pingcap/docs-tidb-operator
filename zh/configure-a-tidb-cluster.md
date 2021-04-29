@@ -164,13 +164,14 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
 ### Discovery
 
 PD集群在启动时，第一个 Pod 和其它 Pod 启动参数不一样。Discovery服务用来确定PD的启动参数，来辅助PD启动。可通过配置 `spec.discovery` 限制Discovery服务资源，详见 [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.12
+  version: v5.0.0
   pvReclaimPolicy: Retain
   discovery:
     limits:
@@ -184,7 +185,6 @@ spec:
       storage: "1Gi"
     config: {}
 ...
-```
 
 ### 集群拓扑
 
