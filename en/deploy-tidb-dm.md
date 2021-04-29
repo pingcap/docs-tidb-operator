@@ -128,7 +128,6 @@ topologySpreadConstrains:
 >
 > This feature can be used to replace [TiDB Scheduler](tidb-scheduler.md) for even scheduling.
 
-
 ## Deploy the DM cluster
 
 After configuring the yaml file of the DM cluster in the above steps, execute the following command to deploy the DM cluster:
