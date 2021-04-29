@@ -711,7 +711,7 @@ By configuring `topologySpreadConstraints`, you can make pods evenly spread in d
 >
 > To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
 
-You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all of components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for a specific component.
+You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
 The following is an example configuration:
 
