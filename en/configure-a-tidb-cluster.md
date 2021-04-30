@@ -174,6 +174,8 @@ To enable `HostNetwork` for specified components, configure `hostNetwork: true` 
 
 TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. You can configure resources of the Discovery service using `spec.discovery`. For details, see [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
 
+A `spec.discovery` configuration example is as follows:
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
