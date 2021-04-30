@@ -182,7 +182,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v5.0.0
+  version: v5.0.1
   pvReclaimPolicy: Retain
   discovery:
     limits:
