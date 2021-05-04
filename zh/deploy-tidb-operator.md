@@ -40,6 +40,67 @@ Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorizat
 
 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
+## TiDB Operator 需要的 RBAC
+
+默认配置下，使用如下命令查看 ClusterRole，并返回结果：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get clusterrole|grep tidb
+```
+
+```shell
+tidb-operator:tidb-controller-manager                                  2021-05-04T13:08:55Z
+tidb-operator:tidb-scheduler                                           2021-05-04T13:08:55Z
+```
+
+`tidb-controller-manager` RBAC 详细结果如下：
+
+```shell
+  Resources                                      Non-Resource URLs  Resource Names  Verbs
+  ---------                                      -----------------  --------------  -----
+  events                                         []                 []              [*]
+  services                                       []                 []              [*]
+  statefulsets.apps.pingcap.com/status           []                 []              [*]
+  statefulsets.apps.pingcap.com                  []                 []              [*]
+  controllerrevisions.apps                       []                 []              [*]
+  deployments.apps                               []                 []              [*]
+  statefulsets.apps                              []                 []              [*]
+  ingresses.extensions                           []                 []              [*]
+  *.pingcap.com                                  []                 []              [*]
+  configmaps                                     []                 []              [create get list watch update delete]
+  endpoints                                      []                 []              [create get list watch update delete]
+  serviceaccounts                                []                 []              [create get update delete]
+  clusterrolebindings.rbac.authorization.k8s.io  []                 []              [create get update delete]
+  rolebindings.rbac.authorization.k8s.io         []                 []              [create get update delete]
+  secrets                                        []                 []              [create update get list watch delete]
+  clusterroles.rbac.authorization.k8s.io         []                 []              [escalate create get update delete]
+  roles.rbac.authorization.k8s.io                []                 []              [escalate create get update delete]
+  persistentvolumeclaims                         []                 []              [get list watch create update delete patch]
+  jobs.batch                                     []                 []              [get list watch create update delete]
+  persistentvolumes                              []                 []              [get list watch patch update]
+  pods                                           []                 []              [get list watch update delete]
+  nodes                                          []                 []              [get list watch]
+  storageclasses.storage.k8s.io                  []                 []              [get list watch]
+                                                 [/metrics]         []              [get]
+```
+
+`tidb-scheduler` RBAC 详细结果如下：
+
+```shell
+  Resources                   Non-Resource URLs  Resource Names    Verbs
+  ---------                   -----------------  --------------    -----
+  leases.coordination.k8s.io  []                 []                [create]
+  endpoints                   []                 []                [delete get patch update]
+  persistentvolumeclaims      []                 []                [get list update]
+  configmaps                  []                 []                [get list watch]
+  pods                        []                 []                [get list watch]
+  nodes                       []                 []                [get list]
+  leases.coordination.k8s.io  []                 [tidb-scheduler]  [get update]
+  tidbclusters.pingcap.com    []                 []                [get]
+```
+
 ## 部署 TiDB Operator
 
 ### 创建 CRD
