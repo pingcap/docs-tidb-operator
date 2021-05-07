@@ -557,6 +557,19 @@ The YAML file above:
 
 When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection is not established to this TiDB node. However, because this process is asynchronous, you can make the system sleep for a few seconds before you send the `kill` signal, which makes sure that the TiDB node is removed from the endpoints.
 
+## Configure TiKV cluster graceful upgrade
+
+Before restart tikv, we will evict all leaders in it, we only restart it when the leader number drop into zero or reach a specified timeout.
+
+If you want to specified the timeout, you can specified `spec.tikv.evictLeaderTimeout` (default 3 minutes).
+
+If you do not want it to restart after timeout with having not evicting all leaders, you can just specified a large value like:
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
 ### Configure PV for TiDB slow logs
 
 TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
