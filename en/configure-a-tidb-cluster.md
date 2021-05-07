@@ -570,6 +570,7 @@ spec:
   tikv:
     evictLeaderTimeout: 10000m
 ```
+
 ### Configure PV for TiDB slow logs
 
 TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
