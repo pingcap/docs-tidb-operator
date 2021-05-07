@@ -64,7 +64,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
 
 ## Offline Upgrade TiDB Operator
 
-If your server cannot access the Internet, upgrade TiDB Operator offline by the following steps:
+If your server cannot access the Internet, you can take the following steps to upgrade TiDB Operator offline:
 
 1. Update [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/):
 
