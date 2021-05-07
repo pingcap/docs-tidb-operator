@@ -92,7 +92,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. 在有外网的机器上将 `operatorImage` 镜像版本下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上（详情请参考[下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md)），然后通过以下命令升级：
+3. 升级 TiDB Operator 运行所需的 Docker 镜像，详情请参考[下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md)
+   
+   ```shell
+    pingcap/tidb-operator:${version}
+    pingcap/tidb-backup-manager:${version}
+   ```
+
+4. 修改 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
 
    {{< copyable "shell-regular" >}}
 

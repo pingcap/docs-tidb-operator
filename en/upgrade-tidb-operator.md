@@ -92,7 +92,14 @@ If your server cannot access the Internet, you can take the following steps to u
    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. Download `operatorImage` image version on an Internet machine and upload to server, then use `docker load` to install Docker image to server (for details, please refer to [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md)), then upgrade via the following command:
+3. Upgrade the Docker images used by TiDB Operator, for details, please refer to [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md)
+
+   ```shell
+    pingcap/tidb-operator:${version}
+    pingcap/tidb-backup-manager:${version}
+   ```
+
+4. Modify the `operatorImage` image in the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file. Merge the customized configuration in the old `values.yaml` file with the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and execute `helm upgrade`:
 
    {{< copyable "shell-regular" >}}
 
