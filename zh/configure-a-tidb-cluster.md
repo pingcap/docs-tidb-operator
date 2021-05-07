@@ -538,9 +538,9 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
 
 ### 配置 TiKV 平滑升级
 
-重启 tikv 之前，我们会驱逐 tikv 上的全部 leader, 当 leader 个数为 0 或者超时后才重启。
+TiKV 升级过程中，在重启 TiKV Pod 之前，我们会驱逐 TiKV Pod 上的全部 region leader，当 region leader 个数为 0 或者超时（默认 10 分钟）后才重启。
 
-如果你希望调整超时时间可以配置 `spec.tikv.evictLeaderTimeout`（默认 3 分钟）,不希望强制重启，可以配置一个大的值，如：
+如果驱逐 region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加，可以通过调整超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）来避免这个问题，可以配置一个比较大的值，如：
 
 ```
 spec:
