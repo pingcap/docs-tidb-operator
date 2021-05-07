@@ -557,7 +557,7 @@ The YAML file above:
 
 When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection is not established to this TiDB node. However, because this process is asynchronous, you can make the system sleep for a few seconds before you send the `kill` signal, which makes sure that the TiDB node is removed from the endpoints.
 
-## Configure TiKV cluster graceful upgrade
+## Configure graceful upgrade for TiKV cluster
 
 Before restart tikv, we will evict all leaders in it, we only restart it when the leader number drop into zero or reach a specified timeout.
 
