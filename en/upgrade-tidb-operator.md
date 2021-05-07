@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 This document describes how to upgrade TiDB Operator and Kubernetes.
 
-## Online Upgrade TiDB Operator
+## Upgrade TiDB Operator online
 
 1. Update [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/):
 
