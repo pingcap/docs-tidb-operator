@@ -64,7 +64,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 ## 离线升级步骤
 
-如果服务器没有外网，需要按照下面的步骤来离线升级 TiDB Operator：
+如果服务器没有连接外网，你可以按照以下步骤离线升级 TiDB Operator：
 
 1. 更新 [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
 
