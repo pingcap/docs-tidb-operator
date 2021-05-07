@@ -536,6 +536,18 @@ spec:
 
 Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
 
+### 配置 TiKV 平滑升级
+
+重启 tikv 之前，我们会驱逐 tikv 上的全部 leader, 当 leader 个数为 0 或者超时后才重启。
+
+如果你希望调整超时时间可以配置 `spec.tikv.evictLeaderTimeout`（默认 3 分钟）,不希望强制重启，可以配置一个大的值，如：
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
+
 ### 配置 TiDB 慢查询日志持久卷
 
 默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`。如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
