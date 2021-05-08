@@ -94,7 +94,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
   leases.coordination.k8s.io  []                 []                [create]                         leader 选举需要创建 Lease 资源锁
   endpoints                   []                 []                [delete get patch update]        操作 Endpoint 资源
   persistentvolumeclaims      []                 []                [get list update]                读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label
-  configmaps                  []                 []                [get list watch]                 读取 Configmap 资源
+  configmaps                  []                 []                [get list watch]                 读取调度策略 tidb-scheduler-policy
   pods                        []                 []                [get list watch]                 读取 Pod 信息
   nodes                       []                 []                [get list]                       读取 Node 信息
   leases.coordination.k8s.io  []                 [tidb-scheduler]  [get update]                     leader 选举需要读取/更新 Lease 资源锁
