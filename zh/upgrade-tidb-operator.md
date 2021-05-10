@@ -68,6 +68,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 1. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
 
+   需要先用有外网的机器下载 `crd.yaml` 文件，然后再进行安装：
+   
    {{< copyable "shell-regular" >}}
 
     ```shell
