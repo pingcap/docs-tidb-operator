@@ -1,0 +1,3 @@
+files:
+  - source: zh
+    translation: '%original_path%/%original_file_name%'
