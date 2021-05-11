@@ -91,22 +91,22 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 2. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
-   需要先用有外网的机器下载 `tidb-operator` chart 包文件：
+    1. 使用有外网的机器下载 `tidb-operator` chart 包文件：
    
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   wget http://charts.pingcap.org/tidb-operator-${version}.tgz
+    ```shell
+    wget http://charts.pingcap.org/tidb-operator-${version}.tgz
     ```
 
-   然后把`tidb-operator` chart 包文件传到需要安装到服务器上，并运行以下命令：
+    2. 将 `tidb-operator` chart 包文件上传到需要升级的服务器上，然后运行以下命令：
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   tar zxvf tidb-operator-${version}.tgz && \
-   mkdir -p ${HOME}/tidb-operator/${version} && \
-   cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    ```shell
+    tar zxvf tidb-operator-${version}.tgz && \
+    mkdir -p ${HOME}/tidb-operator/${version} && \
+    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
 3. 升级 TiDB Operator 运行所需的 Docker 镜像，详情请参考[下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md)
