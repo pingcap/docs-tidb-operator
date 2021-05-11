@@ -68,27 +68,26 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 1. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
 
-   需要先用有外网的机器下载 `crd.yaml` 文件：
+    1. 使用有外网的机器下载 `crd.yaml` 文件：
    
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
-    ```
+     ```shell
+     wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
+     ```
+    > **注意：**
+    >
+    > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
+    > 如果此命令的输出中未包含最新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
 
-   然后把 `crd.yaml` 传到需要安装到服务器上，用以下命令安装并查看：
+    2. 将 `crd.yaml` 上传到需要升级的服务器上，然后用以下命令安装并查看：
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f ./crd.yaml && \
-    kubectl get crd tidbclusters.pingcap.com
-    ```
-
-   > **注意：**
-   >
-   > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
-   > 如果此命令的输出中未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
+     ```shell
+     kubectl apply -f ./crd.yaml && \
+     kubectl get crd tidbclusters.pingcap.com
+     ```
 
 2. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
