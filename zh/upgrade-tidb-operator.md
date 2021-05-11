@@ -144,7 +144,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
    > **注意：**
    >
-   > TiDB Operator 升级之后，所有 TiDB 集群中的 `discovery` deployment 都会自动升级到指定的 TiDB Operator 版本。
+   > TiDB Operator 升级之后，所有 TiDB 集群中的 `discovery` deployment 都会自动升级到对应的 TiDB Operator 版本。
 
 ## 从 TiDB Operator v1.0 版本升级到 v1.1 及之后版本
 
