@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 ## 在线升级步骤
 
-1. 更新 [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
+1. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
 
     {{< copyable "shell-regular" >}}
 
@@ -21,8 +21,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     > **注意：**
     >
-    > `${version}` 在后续文档中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
-    > 如果未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) )。
+    > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
+    > 如果此命令的输出中未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
 
 2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -68,12 +68,19 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 1. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)：
 
-   需要先用有外网的机器下载 `crd.yaml` 文件，然后再进行安装：
+   需要先用有外网的机器下载 `crd.yaml` 文件：
    
    {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml && \
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
+    ```
+
+   然后把 `crd.yaml` 传到需要安装到服务器上，用以下命令安装并查看：
+
+   {{< copyable "shell-regular" >}}
+
+    ```shell
     kubectl apply -f ./crd.yaml && \
     kubectl get crd tidbclusters.pingcap.com
     ```
@@ -83,12 +90,21 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
    > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
    > 如果此命令的输出中未包含最新版本，可以通过 `helm repo update` 更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
 
-2. 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
+2. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
+
+   需要先用有外网的机器下载 `tidb-operator` chart 包文件：
+   
+   {{< copyable "shell-regular" >}}
+
+   ```shell
+   wget http://charts.pingcap.org/tidb-operator-${version}.tgz
+    ```
+
+   然后把`tidb-operator` chart 包文件传到需要安装到服务器上，并运行以下命令：
 
    {{< copyable "shell-regular" >}}
 
    ```shell
-   wget http://charts.pingcap.org/tidb-operator-${version}.tgz && \
    tar zxvf tidb-operator-${version}.tgz && \
    mkdir -p ${HOME}/tidb-operator/${version} && \
    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
