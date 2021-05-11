@@ -109,7 +109,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. 升级 TiDB Operator 运行所需的 Docker 镜像，详情请参考[下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md)
+3. 使用有外网的机器下载 TiDB Operator 升级所需的以下 Docker 镜像，将下载的镜像上传到需要升级的服务器上，然后执行 docker load 安装以下 Docker 镜像。关于 Docker 镜像的下载和安装命令，请参阅 [下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md#离线安装-tidb-operator) 。
+
    
    ```shell
     pingcap/tidb-operator:${version}
