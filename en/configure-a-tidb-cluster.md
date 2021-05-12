@@ -504,7 +504,7 @@ spec:
 
 For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
 
-### Configure TiDB cluster graceful upgrade
+### Configure graceful upgrade for TiDB cluster 
 
 When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
 
