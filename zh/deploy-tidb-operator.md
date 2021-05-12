@@ -57,45 +57,45 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 
 `tidb-controller-manager` ClusterRole 详细信息如下：
 
-资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释
----------                                     | ----------------- | -------------- | -----                                            | -------
-events                                        | []                | []             | [*]                                              | 输出 Event 信息
-services                                      | []                | []             | [*]                                              | 操作 Service 资源
-statefulsets.apps.pingcap.com/status          | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源
-statefulsets.apps.pingcap.com                 | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源
-controllerrevisions.apps                      | []                | []             | [*]                                              | k8s Deployment/Daemonset 版本控制
-deployments.apps                              | []                | []             | [*]                                              | 操作 Deployment 资源
-statefulsets.apps                             | []                | []             | [*]                                              | 操作 Statefulset 资源
-ingresses.extensions                          | []                | []             | [*]                                              | 操作监控系统 Ingress 资源
-*.pingcap.com                                 | []                | []             | [*]                                              | 操作 pingcap.com 下所有资源
-configmaps                                    | []                | []             | [create get list watch update delete]            | 操作 configmaps 资源
-endpoints                                     | []                | []             | [create get list watch update delete]            | 操作 Endpoints 资源
-serviceaccounts                               | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-clusterrolebindings.rbac.authorization.k8s.io | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-rolebindings.rbac.authorization.k8s.io        | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-secrets                                       | []                | []             | [create update get list watch delete]            | 操作 Secret 资源
-clusterroles.rbac.authorization.k8s.io        | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务
-roles.rbac.authorization.k8s.io               | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务
-persistentvolumeclaims                        | []                | []             | [get list watch create update delete patch]      | 操作 PVC 资源
-jobs.batch                                    | []                | []             | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复
-persistentvolumes                             | []                | []             | [get list watch patch update]                    | 操作 PV Label
-pods                                          | []                | []             | [get list watch update delete]                   | 操作 Pod 资源
-nodes                                         | []                | []             | [get list watch]                                 | 读取 Node Label
-storageclasses.storage.k8s.io                 | []                | []             | [get list watch]                                 | 扩展磁盘空间需要读取
-                                              |[/metrics]         |[]              | [get]                                            | 读取监控指标
+| 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
+| ---------                                     | ----------------- | -------------- | -----                                            | ------- |
+| events                                        | []                | []             | [*]                                              | 输出 Event 信息 |
+| services                                      | []                | []             | [*]                                              | 操作 Service 资源 |
+| statefulsets.apps.pingcap.com/status          | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源 |
+| statefulsets.apps.pingcap.com                 | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源 |
+| controllerrevisions.apps                      | []                | []             | [*]                                              | k8s Deployment/Daemonset 版本控制 |
+| deployments.apps                              | []                | []             | [*]                                              | 操作 Deployment 资源 |
+| statefulsets.apps                             | []                | []             | [*]                                              | 操作 Statefulset 资源 |
+| ingresses.extensions                          | []                | []             | [*]                                              | 操作监控系统 Ingress 资源 |
+| *.pingcap.com                                 | []                | []             | [*]                                              | 操作 pingcap.com 下所有资源 |
+| configmaps                                    | []                | []             | [create get list watch update delete]            | 操作 configmaps 资源 |
+| endpoints                                     | []                | []             | [create get list watch update delete]            | 操作 Endpoints 资源 |
+| serviceaccounts                               | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| clusterrolebindings.rbac.authorization.k8s.io | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| rolebindings.rbac.authorization.k8s.io        | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| secrets                                       | []                | []             | [create update get list watch delete]            | 操作 Secret 资源 |
+| clusterroles.rbac.authorization.k8s.io        | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务 |
+| roles.rbac.authorization.k8s.io               | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务 |
+| persistentvolumeclaims                        | []                | []             | [get list watch create update delete patch]      | 操作 PVC 资源 |
+| jobs.batch                                    | []                | []             | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复 |
+| persistentvolumes                             | []                | []             | [get list watch patch update]                    | 操作 PV Label |
+| pods                                          | []                | []             | [get list watch update delete]                   | 操作 Pod 资源 |
+| nodes                                         | []                | []             | [get list watch]                                 | 读取 Node Label |
+| storageclasses.storage.k8s.io                 | []                | []             | [get list watch]                                 | 扩展磁盘空间需要读取 |
+|                                               |[/metrics]         |[]              | [get]                                            | 读取监控指标 |
 
 `tidb-scheduler` ClusterRole 详细结果如下：
 
-资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释
----------                  | ----------------- | --------------   | -----                           | -------
-leases.coordination.k8s.io | []                | []               | [create]                        | leader 选举需要创建 Lease 资源锁
-endpoints                  | []                | []               | [delete get patch update]       | 操作 Endpoint 资源
-persistentvolumeclaims     | []                | []               | [get list update]               | 读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label
-configmaps                 | []                | []               | [get list watch]                | 读取 Configmap 资源
-pods                       | []                | []               | [get list watch]                | 读取 Pod 信息
-nodes                      | []                | []               | [get list]                      | 读取 Node 信息
-leases.coordination.k8s.io | []                | [tidb-scheduler] | [get update]                    | leader 选举需要读取/更新 Lease 资源锁
-tidbclusters.pingcap.com   | []                | []               | [get]                           | 读取 Tidbcluster 中 PD/TiKV 组件副本数
+| 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
+| ---------                  | ----------------- | --------------   | -----                           | ------- |
+| leases.coordination.k8s.io | []                | []               | [create]                        | leader 选举需要创建 Lease 资源锁 |
+| endpoints                  | []                | []               | [delete get patch update]       | 操作 Endpoint 资源 |
+| persistentvolumeclaims     | []                | []               | [get list update]               | 读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label |
+| configmaps                 | []                | []               | [get list watch]                | 读取 Configmap 资源 |
+| pods                       | []                | []               | [get list watch]                | 读取 Pod 信息 |
+| nodes                      | []                | []               | [get list]                      | 读取 Node 信息 |
+| leases.coordination.k8s.io | []                | [tidb-scheduler] | [get update]                    | leader 选举需要读取/更新 Lease 资源锁 |
+| tidbclusters.pingcap.com   | []                | []               | [get]                           | 读取 Tidbcluster 中 PD/TiKV 组件副本数 |
 
 如果部署时设置`clusterScoped=false`，表示在非集群级别管理 TiDB Cluster，使用如下命令查看 ClusterRole/Role，并返回结果：
 
@@ -122,47 +122,47 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-07T06:14:
 
 `tidb-controller-manager` ClusterRole 详细结果如下：
 
-资源                          | 非资源 URLs        | 资源名          | 动作                             | 解释
----------                     | ----------------- | -------------- | -----                            | -------
-persistentvolumes             | []                | []             | [get list watch patch update]    | 操作 PV Label
-nodes                         | []                | []             | [get list watch]                 | 读取 Node Label
-storageclasses.storage.k8s.io | []                | []             | [get list watch]                 | 扩展磁盘空间需要读取
+| 资源                          | 非资源 URLs        | 资源名          | 动作                             | 解释 |
+| ---------                     | ----------------- | -------------- | -----                            | ------- |
+| persistentvolumes             | []                | []             | [get list watch patch update]    | 操作 PV Label |
+| nodes                         | []                | []             | [get list watch]                 | 读取 Node Label |
+| storageclasses.storage.k8s.io | []                | []             | [get list watch]                 | 扩展磁盘空间需要读取 |
 
-`tidb-controller-manager` Role 详细信息如下：
-
-资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释
----------                                     | ----------------- | -------------- | -----                                            | -------
-events                                        | []                | []             | [*]                                              | 输出 Event 信息
-services                                      | []                | []             | [*]                                              | 操作 Service 资源
-statefulsets.apps.pingcap.com/status          | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源
-statefulsets.apps.pingcap.com                 | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源
-controllerrevisions.apps                      | []                | []             | [*]                                              | k8s Deployment/Daemonset 版本控制
-deployments.apps                              | []                | []             | [*]                                              | 操作 Deployment 资源
-statefulsets.apps                             | []                | []             | [*]                                              | 操作 Statefulset 资源
-ingresses.extensions                          | []                | []             | [*]                                              | 操作监控系统 Ingress 资源
-*.pingcap.com                                 | []                | []             | [*]                                              | 操作 pingcap.com 下所有资源
-configmaps                                    | []                | []             | [create get list watch update delete]            | 操作 configmaps 资源
-endpoints                                     | []                | []             | [create get list watch update delete]            | 操作 Endpoints 资源
-serviceaccounts                               | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-rolebindings.rbac.authorization.k8s.io        | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-secrets                                       | []                | []             | [create update get list watch delete]            | 操作 Secret 资源
-roles.rbac.authorization.k8s.io               | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务
-persistentvolumeclaims                        | []                | []             | [get list watch create update delete patch]      | 操作 PVC 资源
-jobs.batch                                    | []                | []             | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复
-pods                                          | []                | []             | [get list watch update delete]                   | 操作 Pod 资源
+`tidb-controller-manager` Role 详细信息如下： |
+| 
+| 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
+| ---------                                     | ----------------- | -------------- | -----                                            | ------- |
+| events                                        | []                | []             | [*]                                              | 输出 Event 信息 |
+| services                                      | []                | []             | [*]                                              | 操作 Service 资源 |
+| statefulsets.apps.pingcap.com/status          | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源 |
+| statefulsets.apps.pingcap.com                 | []                | []             | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源 |
+| controllerrevisions.apps                      | []                | []             | [*]                                              | k8s Deployment/Daemonset 版本控制 |
+| deployments.apps                              | []                | []             | [*]                                              | 操作 Deployment 资源 |
+| statefulsets.apps                             | []                | []             | [*]                                              | 操作 Statefulset 资源 |
+| ingresses.extensions                          | []                | []             | [*]                                              | 操作监控系统 Ingress 资源 |
+| *.pingcap.com                                 | []                | []             | [*]                                              | 操作 pingcap.com 下所有资源 |
+| configmaps                                    | []                | []             | [create get list watch update delete]            | 操作 configmaps 资源 |
+| endpoints                                     | []                | []             | [create get list watch update delete]            | 操作 Endpoints 资源 |
+| serviceaccounts                               | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| rolebindings.rbac.authorization.k8s.io        | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| secrets                                       | []                | []             | [create update get list watch delete]            | 操作 Secret 资源 |
+| roles.rbac.authorization.k8s.io               | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务 |
+| persistentvolumeclaims                        | []                | []             | [get list watch create update delete patch]      | 操作 PVC 资源 |
+| jobs.batch                                    | []                | []             | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复 |
+| pods                                          | []                | []             | [get list watch update delete]                   | 操作 Pod 资源 |
 
 `tidb-scheduler` Role 详细结果如下：
 
-资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释
----------                  | ----------------- | --------------   | -----                           | -------
-leases.coordination.k8s.io | []                | []               | [create]                        | leader 选举需要创建 Lease 资源锁
-endpoints                  | []                | []               | [delete get patch update]       | 操作 Endpoint 资源
-persistentvolumeclaims     | []                | []               | [get list update]               | 读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label
-configmaps                 | []                | []               | [get list watch]                | 读取 Configmap 资源
-pods                       | []                | []               | [get list watch]                | 读取 Pod 信息
-nodes                      | []                | []               | [get list]                      | 读取 Node 信息
-leases.coordination.k8s.io | []                | [tidb-scheduler] | [get update]                    | leader 选举需要读取/更新 Lease 资源锁
-tidbclusters.pingcap.com   | []                | []               | [get]                           | 读取 Tidbcluster 中 PD/TiKV 组件副本数
+| 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
+| ---------                  | ----------------- | --------------   | -----                           | ------- |
+| leases.coordination.k8s.io | []                | []               | [create]                        | leader 选举需要创建 Lease 资源锁 |
+| endpoints                  | []                | []               | [delete get patch update]       | 操作 Endpoint 资源 |
+| persistentvolumeclaims     | []                | []               | [get list update]               | 读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label |
+| configmaps                 | []                | []               | [get list watch]                | 读取 Configmap 资源 |
+| pods                       | []                | []               | [get list watch]                | 读取 Pod 信息 |
+| nodes                      | []                | []               | [get list]                      | 读取 Node 信息 |
+| leases.coordination.k8s.io | []                | [tidb-scheduler] | [get update]                    | leader 选举需要读取/更新 Lease 资源锁 |
+| tidbclusters.pingcap.com   | []                | []               | [get]                           | 读取 Tidbcluster 中 PD/TiKV 组件副本数 |
 
 ## 部署 TiDB Operator
 
