@@ -71,7 +71,7 @@ ingresses.extensions                          | []                | []          
 configmaps                                    | []                | []             | [create get list watch update delete]            | 操作 configmaps 资源
 endpoints                                     | []                | []             | [create get list watch update delete]            | 操作 Endpoints 资源
 serviceaccounts                               | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
-clusterrolebindings.rbac.authorization.k8s.io | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务部署
+clusterrolebindings.rbac.authorization.k8s.io | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
 rolebindings.rbac.authorization.k8s.io        | []                | []             | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务
 secrets                                       | []                | []             | [create update get list watch delete]            | 操作 Secret 资源
 clusterroles.rbac.authorization.k8s.io        | []                | []             | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务
