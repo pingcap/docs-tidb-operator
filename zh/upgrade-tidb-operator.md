@@ -89,7 +89,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
      kubectl get crd tidbclusters.pingcap.com
      ```
 
-2. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
+2. 获取你要升级到的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
     1. 使用有外网的机器下载 `tidb-operator` chart 包文件：
    
