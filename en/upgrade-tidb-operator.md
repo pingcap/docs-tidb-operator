@@ -92,7 +92,7 @@ If your server cannot access the Internet, you can take the following steps to u
    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. Upgrade the Docker images used by TiDB Operator, for details, please refer to [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md)
+3. Download the following Docker images for the upgrade using a machine with the Internet access, upload the downloaded images to the server to be upgraded, and then install the following Docker images using the `docker load` command. For detailed commands of downloading and installing Docker images, see [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md#download-the-docker-images-used-by-tidb-operator).
 
    ```shell
     pingcap/tidb-operator:${version}
