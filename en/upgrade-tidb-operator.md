@@ -89,15 +89,24 @@ If your server cannot access the Internet, you can take the following steps to u
      kubectl get crd tidbclusters.pingcap.com
      ```
 
-2. Get the `values.yaml` file of the `tidb-operator` chart that you want to install:
+2. Get the `values.yaml` file in the `tidb-operator` chart for the new version of TiDB Operator.
 
-   {{< copyable "shell-regular" >}}
+    1. Download the `tidb-operator` chart package file using a machine with the Internet access:
+    
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   wget http://charts.pingcap.org/tidb-operator-${version}.tgz && \
-   tar zxvf tidb-operator-${version}.tgz && \
-   mkdir -p ${HOME}/tidb-operator/${version} && \
-   cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    ```shell
+    wget http://charts.pingcap.org/tidb-operator-${version}.tgz
+    ```
+
+    2. Upload the `tidb-operator` chart package file to the server to be upgraded, and then run the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tar zxvf tidb-operator-${version}.tgz && \
+    mkdir -p ${HOME}/tidb-operator/${version} && \
+    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
 3. Download the following Docker images for the upgrade using a machine with the Internet access, upload the downloaded images to the server to be upgraded, and then install the following Docker images using the `docker load` command. For detailed commands of downloading and installing Docker images, see [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md#download-the-docker-images-used-by-tidb-operator).
