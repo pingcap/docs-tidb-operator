@@ -10,7 +10,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
 
 ## Upgrade TiDB Operator online
 
-1. Update [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/):
+1. Update CustomResourceDefinition (CRD) for Kubernetes. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
     {{< copyable "shell-regular" >}}
 
