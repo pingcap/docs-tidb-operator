@@ -107,7 +107,7 @@ If your server cannot access the Internet, you can take the following steps to u
     helm upgrade tidb-operator ./tidb-operator --version=${version} -f ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-   After all the Pods start normally, execute the following command to check the image of TiDB Operator:
+   After all the Pods start normally, execute the following command to check the image version of TiDB Operator:
 
    {{< copyable "shell-regular" >}}
 
