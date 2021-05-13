@@ -115,7 +115,7 @@ If your server cannot access the Internet, you can take the following steps to u
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-   If TiDB Operator is successfully upgraded, the expected output is as follows. `${version}` represents the desired version of TiDB Operator.
+   If TiDB Operator is successfully upgraded, the expected output is as follows. `${version}` represents the new version of TiDB Operator.
 
     ```
     image: pingcap/tidb-operator:${version}
