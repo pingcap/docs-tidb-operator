@@ -68,18 +68,26 @@ If your server cannot access the Internet, you can take the following steps to u
 
 1. Update CustomResourceDefinition (CRD) for Kubernetes. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
-   {{< copyable "shell-regular" >}}
+    1. Download the `crd.yaml` file using a machine with the Internet access:
 
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml && \
-    kubectl apply -f ./crd.yaml && \
-    kubectl get crd tidbclusters.pingcap.com
-    ```
+    {{< copyable "shell-regular" >}}
 
-   > **Note:**
-   >
-   > The `${version}` in this document represents the version of TiDB Operator, such as `v1.2.0-beta.2`. You can check the currently supported versions using the `helm search repo -l tidb-operator` command.
-   > If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
+     ```shell
+     wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
+     ```
+    > **Note:**
+    >
+    > The `${version}` in this document represents the version of TiDB Operator, such as `v1.2.0-beta.2`. You can check the currently supported versions using the `helm search repo -l tidb-operator` command.
+    > If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
+
+    2. Upload `crd.yaml` to the server to be upgraded, and then run the following command for the installation and check:
+
+    {{< copyable "shell-regular" >}}
+
+     ```shell
+     kubectl apply -f . /crd.yaml && \
+     kubectl get crd tidbclusters.pingcap.com
+     ```
 
 2. Get the `values.yaml` file of the `tidb-operator` chart that you want to install:
 
