@@ -24,7 +24,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
     > The `${version}` in this document represents the version of TiDB Operator, such as `v1.2.0-beta.2`. You can check the currently supported version using the `helm search repo -l tidb-operator` command.
     > If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
 
-2. Get the `values.yaml` file of the `tidb-operator` chart that you want to install:
+2. Get the `values.yaml` file of the `tidb-operator` chart for the new version of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
 
@@ -33,7 +33,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
     helm inspect values pingcap/tidb-operator --version=${version} > ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. Modify the `operatorImage` image in the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file. Merge the customized configuration in the old `values.yaml` file with the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and execute `helm upgrade`:
+3. In the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and then execute `helm upgrade`:
 
     {{< copyable "shell-regular" >}}
 
