@@ -10,6 +10,10 @@ TiDB Dashboard is a visualized tool in TiDB 4.0 used to monitor and diagnose the
 
 This document describes how to access TiDB Dashboard in Kubernetes.
 
+> **Note:**
+>
+> TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. The Discovery service can also send proxy requests to the TiDB Dashboard. In this document, TiDB Dashboard is accessed using the Discovery service.
+
 ## Prerequisites
 
 To access TiDB Dashboard smoothly in Kubernetes, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster (v4.0.1 or later versions).
@@ -42,7 +46,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     metadata:
       name: basic
     spec:
-      version: v4.0.10
+      version: v5.0.1
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -75,6 +79,10 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     ```
 
 3. Visit <http://localhost:10262/dashboard> in your browser to access TiDB Dashboard.
+
+> **Note:**
+>
+> By default, `port-forward` binds to the IP address 127.0.0.1. If you need to use another IP address to access the machine running the `port-forward` command, you can add the `-address` option and specify the IP address to be bound.
 
 ## Access TiDB Dashboard by Ingress
 

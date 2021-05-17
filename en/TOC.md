@@ -39,6 +39,7 @@
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
   - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
+  - [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
 + Operate
   - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
   - [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md)
@@ -102,6 +103,7 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.2
+    - [1.2.0-beta.2](releases/release-1.2.0-beta.2.md)
     - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
