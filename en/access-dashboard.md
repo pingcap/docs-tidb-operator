@@ -6,7 +6,11 @@ aliases: ['/docs/tidb-in-kubernetes/stable/access-dashboard/','/docs/tidb-in-kub
 
 # Access TiDB Dashboard
 
-TiDB Dashboard is a visualized tool in TiDB 4.0 used to monitor and diagnose the TiDB cluster. For details, see [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-intro).
+> **Warning:**
+>
+> The TiDB Dashboard is available on the `/dashboard` path of the PD. Other paths outside of this may not have access control. 
+
+TiDB Dashboard is a visualized tool that was introduced in TiDB 4.0 and is used to monitor and diagnose the TiDB cluster. For details, see [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-intro).
 
 This document describes how to access TiDB Dashboard in Kubernetes.
 
@@ -30,7 +34,7 @@ spec:
     enableDashboardInternalProxy: true
 ```
 
-## Quick start
+## Access TiDB Dashboard by port forward
 
 > **Warning:**
 >
