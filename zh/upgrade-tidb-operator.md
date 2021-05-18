@@ -66,40 +66,52 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 如果服务器没有连接外网，你可以按照以下步骤离线升级 TiDB Operator：
 
-1. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
+1. 使用有外网的机器下载升级所需的文件和镜像
 
-    1. 使用有外网的机器下载 `crd.yaml` 文件：
+    1. 下载 TiDB Operator 需要的 `crd.yaml` 文件。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
    
     {{< copyable "shell-regular" >}}
 
-     ```shell
-     wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
-     ```
-    > **注意：**
-    >
-    > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
-    > 如果此命令的输出中未包含最新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
+    ```shell
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
+    ```
 
-    2. 将 `crd.yaml` 上传到需要升级的服务器上，然后用以下命令安装并查看：
+    2. 下载 `tidb-operator` chart 包文件：
 
-    {{< copyable "shell-regular" >}}
-
-     ```shell
-     kubectl apply -f ./crd.yaml && \
-     kubectl get crd tidbclusters.pingcap.com
-     ```
-
-2. 获取你要升级到的 `tidb-operator` chart 中的 `values.yaml` 文件：
-
-    1. 使用有外网的机器下载 `tidb-operator` chart 包文件：
-   
     {{< copyable "shell-regular" >}}
 
     ```shell
     wget http://charts.pingcap.org/tidb-operator-${version}.tgz
     ```
+   
+    3. 下载 TiDB Operator 升级所需的以下 Docker 镜像:
 
-    2. 将 `tidb-operator` chart 包文件上传到需要升级的服务器上，然后运行以下命令：
+   {{< copyable "shell-regular" >}}
+
+    ```shell
+    docker pull pingcap/tidb-operator:${version}
+    docker pull pingcap/tidb-backup-manager:${version}
+
+    docker save -o tidb-operator-${version}.tar pingcap/tidb-operator:${version}
+    docker save -o tidb-backup-manager-${version}.tar pingcap/tidb-backup-manager:${version}
+    ```
+
+    > **注意：**
+    >
+    > `${version}` 在本文中代表 TiDB Operator 版本，例如 `v1.2.0-beta.2`。你可以通过 `helm search repo -l tidb-operator` 命令查看当前支持的版本。
+    > 如果此命令的输出中未包含最新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo) 。
+   
+2. 上传并安装下载的文件和镜像到需要升级的服务器上
+
+    1. 安装 TiDB Operator 需要的 `crd.yaml` 文件：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f ./crd.yaml && \
+    ```
+
+    2. 解压 `tidb-operator` chart 包文件，并拷贝 `values.yaml` 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -109,15 +121,16 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
     ```
 
-3. 使用有外网的机器下载 TiDB Operator 升级所需的以下 Docker 镜像，将下载的镜像上传到需要升级的服务器上，然后执行 docker load 安装以下 Docker 镜像。关于 Docker 镜像的下载和安装命令，请参阅[下载 TiDB Operator 运行所需的 Docker 镜像](deploy-tidb-operator.md#离线安装-tidb-operator) 。
+    3. 安装 Docker 镜像安装到服务器上：
 
-   
-   ```shell
-    pingcap/tidb-operator:${version}
-    pingcap/tidb-backup-manager:${version}
-   ```
+    {{< copyable "shell-regular" >}}
 
-4. 修改 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
+    ```shell
+    docker load -i tidb-operator-${version}.tar
+    docker load -i tidb-backup-manager-${version}.tar
+    ```
+
+3. 修改 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
 
    {{< copyable "shell-regular" >}}
 
