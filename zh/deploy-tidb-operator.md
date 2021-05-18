@@ -56,7 +56,7 @@ tidb-operator:tidb-controller-manager                                  2021-05-0
 tidb-operator:tidb-scheduler                                           2021-05-04T13:08:55Z
 ```
 
-`tidb-controller-manager` ClusterRole 资源权限如下：
+`tidb-operator:tidb-controller-manager` ClusterRole 是为 `tidb-controller-manager` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
@@ -85,7 +85,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展磁盘空间需要读取 |
 | -                                             |[/metrics]         | -              | [get]                                            | 读取监控指标 |
 
-`tidb-scheduler` ClusterRole 资源权限如下：
+`tidb-operator:tidb-scheduler` ClusterRole 是为 `tidb-scheduler` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
@@ -121,7 +121,7 @@ tidb-admin    tidb-operator:tidb-controller-manager            2021-05-07T06:14:
 tidb-admin    tidb-operator:tidb-scheduler                     2021-05-07T06:14:52Z
 ```
 
-`tidb-controller-manager` ClusterRole 资源权限如下：
+`tidb-operator:tidb-controller-manager` ClusterRole 是为 `tidb-controller-manager` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                          | 非资源 URLs        | 资源名          | 动作                             | 解释 |
 | ---------                     | ----------------- | -------------- | -----                            | ------- |
@@ -152,7 +152,7 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-07T06:14:
 | jobs.batch                                    | -                 | -              | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复 |
 | pods                                          | -                 | -              | [get list watch update delete]                   | 操作 Pod 资源 |
 
-`tidb-scheduler` Role 资源权限如下：
+`tidb-operator:tidb-scheduler` ClusterRole 是为 `tidb-scheduler` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
