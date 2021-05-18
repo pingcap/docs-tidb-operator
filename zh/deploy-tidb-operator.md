@@ -47,7 +47,7 @@ Kubernetes [基于角色的访问控制 (RBAC)](https://kubernetes.io/docs/refer
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get clusterrole|grep tidb
+kubectl get clusterrole | grep tidb
 ```
 
 输出结果如下：
