@@ -42,7 +42,7 @@ Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorizat
 
 ## TiDB Operator 需要的 RBAC
 
-默认配置下，使用如下命令查看 ClusterRole，并返回结果：
+TiDB Operator 的基于角色的访问控制 (RBAC) 功能是通过 ClusterRole 来进行权限管理的。默认配置下，要查看TiDB Operator 的 ClusterRole，请使用以下命令：
 
 {{< copyable "shell-regular" >}}
 
