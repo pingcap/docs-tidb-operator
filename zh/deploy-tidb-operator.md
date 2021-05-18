@@ -40,7 +40,7 @@ Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorizat
 
 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
-## TiDB Operator 需要的 RBAC
+## TiDB Operator 需要的 RBAC(Role-based access control) 规则
 
 TiDB Operator 的基于角色的访问控制 (RBAC) 功能是通过 ClusterRole 来进行权限管理的。默认配置下，要查看TiDB Operator 的 ClusterRole，请使用以下命令：
 
