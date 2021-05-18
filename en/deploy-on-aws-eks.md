@@ -23,7 +23,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     * Install and configure `eksctl` used for creating Kubernetes clusters.
     * Install `kubectl`.
 
-To verify that AWS Cli is configured correctly, run `aws configure list`. This should show a value for `acces_key` and `secret_key`.
+To verify that AWS Cli is configured correctly, run `aws configure list`. This should show a value for `access_key` and `secret_key`.
 
 > **Note:**
 >
