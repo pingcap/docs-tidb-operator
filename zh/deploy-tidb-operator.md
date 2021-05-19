@@ -81,7 +81,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | jobs.batch                                    | -                 | -              | [get list watch create update delete]            | TiDB 集群初始化、备份、恢复操作使用 Job 进行 |
 | persistentvolumes                             | -                 | -              | [get list watch patch update]                    | 为 PV 添加集群信息相关 Label、修改 `persistentVolumeReclaimPolicy` 等操作 |
 | pods                                          | -                 | -              | [get list watch update delete]                   | 操作 Pod 资源 |
-| nodes                                         | -                 | -              | [get list watch]                                 | 读取 Node Label |
+| nodes                                         | -                 | -              | [get list watch]                                 | 读取 Node Label 并根据 Label 信息为 TiKV、TiFlash 设置 Store Label |
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展磁盘空间需要读取 |
 | -                                             |[/metrics]         | -              | [get]                                            | 读取监控指标 |
 
