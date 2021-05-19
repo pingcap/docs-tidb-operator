@@ -37,6 +37,16 @@ kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
+## 访问 Thanos Query 面板
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl port-forward svc/thanos-query 9090
+```
+
+执行上述命令后，就可以通过浏览器访问 <http://127.0.0.1:9090> 
+
 ## 配置 Grafana
 
 部署完 Thanos Query，Grafana 只需要将 DataSource 更改成 Thanos 源，就可以查询到多个 TidbMonitor 的监控数据。
