@@ -62,7 +62,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
     >
     > After TiDB Operator is upgraded, the `discovery` deployment in all TiDB clusters will be automatically upgraded to the specified version of TiDB Operator.
 
-## Offline Upgrade TiDB Operator
+## Upgrade TiDB Operator offline
 
 If your server cannot access the Internet, you can take the following steps to upgrade TiDB Operator offline:
 
