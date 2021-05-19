@@ -96,7 +96,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
     ```
    
-2. 上传并安装下载的文件和镜像到需要升级的服务器上
+2. 上传并安装下载的文件和镜像到需要升级的服务器上。
 
     1. 安装 TiDB Operator 需要的 `crd.yaml` 文件：
 
