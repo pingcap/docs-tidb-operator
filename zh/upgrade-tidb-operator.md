@@ -84,7 +84,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     wget http://charts.pingcap.org/tidb-operator-v1.2.0-beta.2.tgz
     ```
    
-    3. 下载 TiDB Operator 升级所需的以下 Docker 镜像:
+    3. 下载 TiDB Operator 升级所需的 Docker 镜像:
 
    {{< copyable "shell-regular" >}}
 
