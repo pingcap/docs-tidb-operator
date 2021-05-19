@@ -78,7 +78,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | clusterroles.rbac.authorization.k8s.io        | -                 | -              | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务 |
 | roles.rbac.authorization.k8s.io               | -                 | -              | [escalate create get update delete]              | 部署 TidbMonitor/Discovery 服务 |
 | persistentvolumeclaims                        | -                 | -              | [get list watch create update delete patch]      | 操作 PVC 资源 |
-| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | TiDB 集群初始化/备份/恢复 |
+| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | TiDB 集群初始化、备份、恢复操作使用 Job 进行 |
 | persistentvolumes                             | -                 | -              | [get list watch patch update]                    | 操作 PV Label |
 | pods                                          | -                 | -              | [get list watch update delete]                   | 操作 Pod 资源 |
 | nodes                                         | -                 | -              | [get list watch]                                 | 读取 Node Label |
