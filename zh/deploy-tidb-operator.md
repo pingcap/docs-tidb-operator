@@ -96,7 +96,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | pods                       | -                 | -                | [get list watch]                | 读取 Pod 信息 |
 | nodes                      | -                 | -                | [get list]                      | 读取 Node 信息 |
 | leases.coordination.k8s.io | -                 | [tidb-scheduler] | [get update]                    | leader 选举需要读取/更新 Lease 资源锁 |
-| tidbclusters.pingcap.com   | -                 | -                | [get]                           | 读取 Tidbcluster 中 PD/TiKV 组件副本数 |
+| tidbclusters.pingcap.com   | -                 | -                | [get]                           | 读取 Tidbcluster 信息 |
 
 如果部署时设置`clusterScoped=false`，表示在非集群级别管理 TiDB Cluster，使用如下命令查看 ClusterRole/Role，并返回结果：
 
