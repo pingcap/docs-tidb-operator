@@ -116,7 +116,7 @@ If your server cannot access the Internet, you can take the following steps to u
     pingcap/tidb-backup-manager:${version}
    ```
 
-4. In the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Opeartor version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and execute `helm upgrade`:
+4. In the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and then execute `helm upgrade`:
 
    {{< copyable "shell-regular" >}}
 
