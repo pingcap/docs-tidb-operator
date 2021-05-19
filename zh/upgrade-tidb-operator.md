@@ -108,7 +108,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f ./crd.yaml && \
+    kubectl apply -f ./crd.yaml
     ```
 
     2. 解压 `tidb-operator` chart 包文件，并拷贝 `values.yaml` 文件：
