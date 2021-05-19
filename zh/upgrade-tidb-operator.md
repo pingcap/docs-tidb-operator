@@ -116,7 +116,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
     ```
 
-    3. 安装 Docker 镜像安装到服务器上：
+    3. 安装 Docker 镜像到服务器上：
 
     {{< copyable "shell-regular" >}}
 
