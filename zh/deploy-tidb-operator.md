@@ -82,7 +82,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | persistentvolumes                             | -                 | -              | [get list watch patch update]                    | 为 PV 添加集群信息相关 Label、修改 `persistentVolumeReclaimPolicy` 等操作 |
 | pods                                          | -                 | -              | [get list watch update delete]                   | 操作 Pod 资源 |
 | nodes                                         | -                 | -              | [get list watch]                                 | 读取 Node Label 并根据 Label 信息为 TiKV、TiFlash 设置 Store Label |
-| storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展磁盘空间需要读取 |
+| storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展 PVC 存储之前确认 StorageClass 是否支持 `VolumeExpansion` |
 | -                                             |[/metrics]         | -              | [get]                                            | 读取监控指标 |
 
 `tidb-operator:tidb-scheduler` ClusterRole 是为 `tidb-scheduler` Pod 创建的 ClusterRole，其对应的权限包括：
