@@ -71,7 +71,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | *.pingcap.com                                 | -                 | -              | [*]                                              | 操作 pingcap.com 下所有自定义资源 |
 | configmaps                                    | -                 | -              | [create get list watch update delete]            | 操作 ConfigMap 资源 |
 | endpoints                                     | -                 | -              | [create get list watch update delete]            | 操作 Endpoints 资源 |
-| serviceaccounts                               | -                 | -              | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
+| serviceaccounts                               | -                 | -              | [create get update delete]                       | 为 TidbMonitor/Discovery 服务创建 ServiceAccount |
 | clusterrolebindings.rbac.authorization.k8s.io | -                 | -              | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
 | rolebindings.rbac.authorization.k8s.io        | -                 | -              | [create get update delete]                       | 部署 TidbMonitor/Discovery 服务 |
 | secrets                                       | -                 | -              | [create update get list watch delete]            | 操作 Secret 资源 |
