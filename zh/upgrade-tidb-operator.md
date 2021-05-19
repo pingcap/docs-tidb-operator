@@ -66,7 +66,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 如果服务器没有连接外网，你可以按照以下步骤离线升级 TiDB Operator：
 
-1. 使用有外网的机器下载升级所需的文件和镜像
+1. 使用有外网的机器下载升级所需的文件和镜像。
 
     1. 下载 TiDB Operator 需要的 `crd.yaml` 文件。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
    
