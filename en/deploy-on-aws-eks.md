@@ -246,7 +246,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
 
 > **Note:**
 >
-> The configuration in `tidb-cluster.yaml` setups the loadbalancer for TiDB with the "internal" scheme. This means that it is only accessible from within the VPC and not externally. To access TiDB over the MySQL protocol you need to use a bastion host or use `kubectl port-forward`. If you want to expose TiDB over the internet and if you are aware of the risks of doing this you can change the scheme for the loadbalancer from "internal" to "internet-facing" and re-deploy the loadbalancing service.
+> By default, the configuration in `tidb-cluster.yaml` sets up the LoadBalancer for TiDB with the "internal" scheme. This means that the LoadBalancer is only accessible within the VPC, not externally. To access TiDB over the MySQL protocol, you need to use a bastion host or use `kubectl port-forward`. If you want to expose TiDB over the internet and if you are aware of the risks of doing this, you can change the scheme for the LoadBalancer from "internal" to "internet-facing" in the `tidb-cluster.yaml` file, and then re-deploy the loadbalancing service.
 
 1. Log in to the bastion host via SSH:
 
