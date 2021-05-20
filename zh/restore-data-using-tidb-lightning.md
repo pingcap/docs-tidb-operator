@@ -6,11 +6,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 # 导入集群数据
 
-本文介绍了如何使用 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) 导入集群数据。
+本文介绍了如何使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview) 导入集群数据。
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于单独的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-目前，TiDB Lightning 支持 `Importer-backend`，`Local-backend` 及 `TiDB-backend` 三种后端，对于这三种后端的区别和选择，可以参考[TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，则仅需要部署 tidb-lightning。
+目前，TiDB Lightning 支持 `Importer-backend`，`Local-backend` 及 `TiDB-backend` 三种后端，对于这三种后端的区别和选择，可以参考 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，则仅需要部署 tidb-lightning。
 
 此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
