@@ -78,8 +78,8 @@ GRANT
 >
 > This section lists multiple storage access methods. Only follow the method that matches your situation.
 >
-> The methods are:
-
+> The methods are as follows:
+> 
 > - Amazon S3 by importing AccessKey and SecretKey
 > - Ceph by importing AccessKey and SecretKey
 > - Amazon S3 by binding IAM with Pod
@@ -281,7 +281,7 @@ After creating the `Backup` CR, use the following command to check the backup st
 kubectl get bk -n tidb-cluster -owide
 ```
 
-To get detailed information on a backup job use the following command. Use the name from the output of the previous command.
+To get detailed information on a backup job, use the following command. For `$backup_job_name` in the command, use the name from the output of the previous command.
 
 {{< copyable "shell-regular" >}}
 
@@ -289,7 +289,7 @@ To get detailed information on a backup job use the following command. Use the n
 kubectl describe bk -n tidb-cluster $backup_job_name
 ```
 
-To run ad-hoc backup again you need to [delete the backup CR](backup-restore-overview.md#delete-the-backup-cr) and create it again.
+To run ad-hoc backup again, you need to [delete the backup CR](backup-restore-overview.md#delete-the-backup-cr) and create it again.
 
 ## Scheduled full backup to S3-compatible storage
 
