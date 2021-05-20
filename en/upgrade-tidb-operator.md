@@ -129,7 +129,7 @@ If your server cannot access the Internet, you can take the following steps to u
     docker load -i tidb-backup-manager-v1.2.0-beta.2.tar
     ```
 
-4. In the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and then execute `helm upgrade`:
+3. In the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` file, and then execute `helm upgrade`:
 
    {{< copyable "shell-regular" >}}
 
