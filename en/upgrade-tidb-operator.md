@@ -134,7 +134,7 @@ If your server cannot access the Internet, you can take the following steps to u
    {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator ./tidb-operator --version=${version} -f ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    helm upgrade tidb-operator ./tidb-operator --version=v1.2.0-beta.2 -f ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
     ```
 
    After all the Pods start normally, execute the following command to check the image version of TiDB Operator:
