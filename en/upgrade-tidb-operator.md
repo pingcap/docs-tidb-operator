@@ -71,28 +71,34 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
 
 If your server cannot access the Internet, you can take the following steps to upgrade TiDB Operator offline:
 
-1. Update CustomResourceDefinition (CRD) for Kubernetes. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
+1. Download the files and images required for the upgrade using a machine with the Internet access:
 
-    1. Download the `crd.yaml` file using a machine with the Internet access:
-
-    {{< copyable "shell-regular" >}}
-
-     ```shell
-     wget https://raw.githubusercontent.com/pingcap/tidb-operator/${version}/manifests/crd.yaml
-     ```
-    > **Note:**
-    >
-    > The `${version}` in this document represents the version of TiDB Operator, such as `v1.2.0-beta.2`. You can check the currently supported versions using the `helm search repo -l tidb-operator` command.
-    > If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
-
-    2. Upload `crd.yaml` to the server to be upgraded, and then run the following command for the installation and check:
+    1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom- resource-definitions/).
 
     {{< copyable "shell-regular" >}}
 
-     ```shell
-     kubectl apply -f . /crd.yaml && \
-     kubectl get crd tidbclusters.pingcap.com
-     ```
+    ```shell
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-beta.2/manifests/crd.yaml
+    ```
+
+    2. Download the `tidb-operator` chart package file.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    wget http://charts.pingcap.org/tidb-operator-v1.2.0-beta.2.tgz
+    ```
+
+    3. Download the Docker image required for the new TiDB Operator version:
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    docker pull pingcap/tidb-operator:v1.2.0-beta.2
+    docker pull pingcap/tidb-backup-manager:v1.2.0-beta.2
+    docker save -o tidb-operator-v1.2.0-beta.2.tar pingcap/tidb-operator:v1.2.0-beta.2
+    docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
+    ```
 
 2. Get the `values.yaml` file in the `tidb-operator` chart for the new version of TiDB Operator.
 
