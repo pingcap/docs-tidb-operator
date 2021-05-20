@@ -33,7 +33,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     helm inspect values pingcap/tidb-operator --version=v1.2.0-beta.2 > ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
     ```
 
-3. 修改 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
+3. 修改 `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
 
     {{< copyable "shell-regular" >}}
 
@@ -49,13 +49,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-    输出类似下方结果则表示升级成功，`${version}`表示要升级到的版本号。
+    输出类似下方结果则表示升级成功，`v1.2.0-beta.2`表示要升级到的版本号。
 
     ```
-    image: pingcap/tidb-operator:${version}
-    image: docker.io/pingcap/tidb-operator:${version}
-    image: pingcap/tidb-operator:${version}
-    image: docker.io/pingcap/tidb-operator:${version}
+    image: pingcap/tidb-operator:v1.2.0-beta.2
+    image: docker.io/pingcap/tidb-operator:v1.2.0-beta.2
+    image: pingcap/tidb-operator:v1.2.0-beta.2
+    image: docker.io/pingcap/tidb-operator:v1.2.0-beta.2
     ```
 
     > **注意：**
@@ -125,7 +125,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     docker load -i tidb-backup-manager-v1.2.0-beta.2.tar
     ```
 
-3. 修改 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/${version}/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
+3. 修改 `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
 
    {{< copyable "shell-regular" >}}
 
@@ -141,13 +141,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-   输出类似下方结果则表示升级成功，`${version}`表示要升级到的版本号。
+   输出类似下方结果则表示升级成功，`v1.2.0-beta.2`表示要升级到的版本号。
 
     ```
-    image: pingcap/tidb-operator:${version}
-    image: docker.io/pingcap/tidb-operator:${version}
-    image: pingcap/tidb-operator:${version}
-    image: docker.io/pingcap/tidb-operator:${version}
+    image: pingcap/tidb-operator:v1.2.0-beta.2
+    image: docker.io/pingcap/tidb-operator:v1.2.0-beta.2
+    image: pingcap/tidb-operator:v1.2.0-beta.2
+    image: docker.io/pingcap/tidb-operator:v1.2.0-beta.2
     ```
 
    > **注意：**
