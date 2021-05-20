@@ -86,7 +86,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
    
     3. 下载 TiDB Operator 升级所需的 Docker 镜像:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     docker pull pingcap/tidb-operator:v1.2.0-beta.2
