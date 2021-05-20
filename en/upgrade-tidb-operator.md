@@ -100,24 +100,33 @@ If your server cannot access the Internet, you can take the following steps to u
     docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
     ```
 
-2. Get the `values.yaml` file in the `tidb-operator` chart for the new version of TiDB Operator.
+2. Upload the downloaded files and images to the server that needs to be upgraded, and then take the following steps for installation:
 
-    1. Download the `tidb-operator` chart package file using a machine with the Internet access:
-    
+    1. Install the `crd.yaml` file for TiDB Operator:
+
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-${version}.tgz
+    kubectl apply -f . /crd.yaml
     ```
 
-    2. Upload the `tidb-operator` chart package file to the server to be upgraded, and then run the following command:
+    2. Unpack the `tidb-operator` chart package file, and then copy the `values.yaml` file:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator-${version}.tgz && \
-    mkdir -p ${HOME}/tidb-operator/${version} && \
-    cp tidb-operator/values.yaml ${HOME}/tidb-operator/${version}/values-tidb-operator.yaml
+    tar zxvf tidb-operator-v1.2.0-beta.2.tgz && \
+    mkdir -p ${HOME}/tidb-operator/v1.2.0-beta.2 &&
+    cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
+    ```
+
+    3. Install the Docker image on the server:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    docker load -i tidb-operator-v1.2.0-beta.2.tar
+    docker load -i tidb-backup-manager-v1.2.0-beta.2.tar
     ```
 
 3. Download the following Docker images for the upgrade using a machine with the Internet access, upload the downloaded images to the server to be upgraded, and then install the following Docker images using the `docker load` command. For detailed commands of downloading and installing Docker images, see [Download the Docker images used by TiDB Operator](deploy-tidb-operator.md#download-the-docker-images-used-by-tidb-operator).
