@@ -8,6 +8,11 @@ aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 This document describes how to upgrade TiDB Operator and Kubernetes.
 
+> **Note:**
+>
+> You can check the currently supported versions of TiDB Operator using the `helm search repo -l tidb-operator` command.
+> If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
+
 ## Upgrade TiDB Operator online
 
 1. Update CustomResourceDefinition (CRD) for Kubernetes. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
