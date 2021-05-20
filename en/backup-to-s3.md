@@ -76,7 +76,7 @@ GRANT
 
 > **Note**
 >
-> This section lists multiple methods. Only follow the method that matches your situation.
+> This section lists multiple storage access methods. Only follow the method that matches your situation.
 >
 > The methods are:
 
