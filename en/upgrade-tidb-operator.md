@@ -24,7 +24,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
     kubectl get crd tidbclusters.pingcap.com
     ```
 
-2. Get the `values.yaml` file of the `tidb-operator` chart for the new version of TiDB Operator.
+2. Get the `values.yaml` file of the `tidb-operator` chart for the new TiDB Operator version. 
 
     {{< copyable "shell-regular" >}}
 
@@ -60,7 +60,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
 
     > **Note:**
     >
-    > After TiDB Operator is upgraded, the `discovery` deployment in all TiDB clusters will be automatically upgraded to the specified version of TiDB Operator.
+    > After TiDB Operator is upgraded, the `discovery` deployment in all TiDB clusters will be automatically upgraded to the corresponding version of TiDB Operator.
 
 ## Upgrade TiDB Operator offline
 
@@ -68,7 +68,7 @@ If your server cannot access the Internet, you can take the following steps to u
 
 1. Download the files and images required for the upgrade using a machine with the Internet access:
 
-    1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom- resource-definitions/).
+    1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
     {{< copyable "shell-regular" >}}
 
@@ -84,13 +84,14 @@ If your server cannot access the Internet, you can take the following steps to u
     wget http://charts.pingcap.org/tidb-operator-v1.2.0-beta.2.tgz
     ```
 
-    3. Download the Docker image required for the new TiDB Operator version:
+    3. Download the Docker images required for the new TiDB Operator version:
 
     {{< copyable "shell-regular" >}}
     
     ```shell
     docker pull pingcap/tidb-operator:v1.2.0-beta.2
     docker pull pingcap/tidb-backup-manager:v1.2.0-beta.2
+
     docker save -o tidb-operator-v1.2.0-beta.2.tar pingcap/tidb-operator:v1.2.0-beta.2
     docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
     ```
@@ -115,7 +116,7 @@ If your server cannot access the Internet, you can take the following steps to u
     cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
     ```
 
-    3. Install the Docker image on the server:
+    3. Install the Docker images on the server:
 
     {{< copyable "shell-regular" >}}
 
