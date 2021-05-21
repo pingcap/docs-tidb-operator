@@ -103,7 +103,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get clusterrole|grep tidb
+kubectl get clusterrole | grep tidb
 ```
 
 ```shell
