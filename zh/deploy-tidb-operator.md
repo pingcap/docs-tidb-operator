@@ -63,7 +63,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | events                                        | -                 | -              | [*]                                              | 输出 Event 信息 |
 | services                                      | -                 | -              | [*]                                              | 操作 Service 资源 |
 | statefulsets.apps.pingcap.com/status          | -                 | -              | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源，详细信息可以参考[文档](advanced-statefulset.md) |
-| statefulsets.apps.pingcap.com                 | -                 | -              | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源 |
+| statefulsets.apps.pingcap.com                 | -                 | -              | [*]                                              | AdvancedStatefulSet=true 时，需要操作此资源，详细信息可以参考[文档](advanced-statefulset.md) |
 | controllerrevisions.apps                      | -                 | -              | [*]                                              | Kubernetes StatefulSet/Daemonset 版本控制 |
 | deployments.apps                              | -                 | -              | [*]                                              | 操作 Deployment 资源 |
 | statefulsets.apps                             | -                 | -              | [*]                                              | 操作 Statefulset 资源 |
