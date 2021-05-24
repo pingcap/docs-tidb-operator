@@ -121,7 +121,7 @@ Three possible reasons:
     kubectl get deployment --all-namespaces |grep tidb-scheduler
     ```
 
-## How does TiDB ensure data safety and reliability?
+## How does TiDB ensure data safety and reliability? 
 
 To ensure persistent storage of data, TiDB clusters deployed by TiDB Operator use [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) provided by Kubernetes cluster as the storage.
 
