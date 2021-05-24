@@ -78,11 +78,11 @@ If your server cannot access the Internet, you can take the following steps to u
 
     2. Download the `tidb-operator` chart package file.
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.2.0-beta.2.tgz
-    ```
+        ```shell
+        wget http://charts.pingcap.org/tidb-operator-v1.2.0-beta.2.tgz
+        ```
 
     3. Download the Docker images required for the new TiDB Operator version:
 
