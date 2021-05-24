@@ -280,7 +280,6 @@ After creating the `Backup` CR, use the following command to check the backup st
 ```shell
 kubectl get bk -n tidb-cluster -owide
 ```
->>>>>>> 4f645403 (en: backup-to-s3, deploy-on-aws-eks: various small changes (#1210))
 
 To get detailed information on a backup job, use the following command. For `$backup_job_name` in the command, use the name from the output of the previous command.
 
