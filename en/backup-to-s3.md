@@ -74,7 +74,7 @@ GRANT
 >     - --ignore-checksum
 > ```
 
-> **Note**
+> **Note:**
 >
 > This section lists multiple storage access methods. Only follow the method that matches your situation.
 >
