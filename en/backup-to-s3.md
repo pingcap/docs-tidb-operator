@@ -277,11 +277,6 @@ After creating the `Backup` CR, use the following command to check the backup st
 
 {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
- ```shell
- kubectl get bk -n test1 -owide
- ```
-=======
 ```shell
 kubectl get bk -n tidb-cluster -owide
 ```
