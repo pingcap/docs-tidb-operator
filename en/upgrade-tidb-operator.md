@@ -70,11 +70,11 @@ If your server cannot access the Internet, you can take the following steps to u
 
     1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-beta.2/manifests/crd.yaml
-    ```
+        ```shell
+        wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.0-beta.2/manifests/crd.yaml
+        ```
 
     2. Download the `tidb-operator` chart package file.
 
@@ -86,44 +86,44 @@ If your server cannot access the Internet, you can take the following steps to u
 
     3. Download the Docker images required for the new TiDB Operator version:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
     
-    ```shell
-    docker pull pingcap/tidb-operator:v1.2.0-beta.2
-    docker pull pingcap/tidb-backup-manager:v1.2.0-beta.2
+        ```shell
+        docker pull pingcap/tidb-operator:v1.2.0-beta.2
+        docker pull pingcap/tidb-backup-manager:v1.2.0-beta.2
 
-    docker save -o tidb-operator-v1.2.0-beta.2.tar pingcap/tidb-operator:v1.2.0-beta.2
-    docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
-    ```
+        docker save -o tidb-operator-v1.2.0-beta.2.tar pingcap/tidb-operator:v1.2.0-beta.2
+        docker save -o tidb-backup-manager-v1.2.0-beta.2.tar pingcap/tidb-backup-manager:v1.2.0-beta.2
+        ```
 
 2. Upload the downloaded files and images to the server that needs to be upgraded, and then take the following steps for installation:
 
     1. Install the `crd.yaml` file for TiDB Operator:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f . /crd.yaml
-    ```
+        ```shell
+        kubectl apply -f . /crd.yaml
+        ```
 
     2. Unpack the `tidb-operator` chart package file, and then copy the `values.yaml` file:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    tar zxvf tidb-operator-v1.2.0-beta.2.tgz && \
-    mkdir -p ${HOME}/tidb-operator/v1.2.0-beta.2 &&
-    cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
-    ```
+        ```shell
+        tar zxvf tidb-operator-v1.2.0-beta.2.tgz && \
+        mkdir -p ${HOME}/tidb-operator/v1.2.0-beta.2 &&
+        cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml
+        ```
 
     3. Install the Docker images on the server:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    docker load -i tidb-operator-v1.2.0-beta.2.tar
-    docker load -i tidb-backup-manager-v1.2.0-beta.2.tar
-    ```
+        ```shell
+        docker load -i tidb-operator-v1.2.0-beta.2.tar
+        docker load -i tidb-backup-manager-v1.2.0-beta.2.tar
+        ```
 
 3. In the `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/v1.2.0-beta.2/values-tidb-operator.yaml` file, and then execute `helm upgrade`:
 
