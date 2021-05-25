@@ -278,7 +278,7 @@ kubectl get bk -n tidb-cluster -owide
 kubectl describe bk -n tidb-cluster $backup_job_name
 ```
 
-如果要再次运行 ad-hoc 备份，你需要[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)并重新创建。
+如果要再次运行 ad-hoc 备份，你需要[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr) 并重新创建。
 
 ## 定时全量备份
 
