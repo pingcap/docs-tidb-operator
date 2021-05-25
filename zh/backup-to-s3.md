@@ -270,7 +270,7 @@ options:
 kubectl get bk -n tidb-cluster -owide
 ```
 
-要了解一个 Backup job 的详细信息，请使用以下命令。对于此命令中的 `$backup_job_name`，请使用上一条命令输出中的名称。
+要获取一个 Backup job 的详细信息，请使用以下命令。对于此命令中的 `$backup_job_name`，请使用上一条命令输出中的名称。
 
 {{< copyable "shell-regular" >}}
 
