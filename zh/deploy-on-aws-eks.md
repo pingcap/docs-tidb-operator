@@ -184,7 +184,7 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.12/examples
 
 > **注意：**
 >
-> 默认情况下，`tidb-cluster.yaml` 文件中的配置为 TiDB 的 LoadBalancer 设置了“内部”方案。这意味着 LoadBalancer 只能在 VPC 内部访问，而不能在外部访问。要通过 MySQL 协议访问 TiDB，你需要使用一个堡垒主机或使用 `kubectl port-forward`。如果你想在互联网上公开 TiDB，并且意识到这样做的风险，你可以在 `tidb-cluster.yaml` 文件中将 LoadBalancer 的方案从“内部”改为“面向互联网”。
+> 默认情况下，`tidb-cluster.yaml` 文件中 TiDB 服务的 LoadBalancer 配置为 "internal"。这意味着 LoadBalancer 只能在 VPC 内部访问，而不能在外部访问。要通过 MySQL 协议访问 TiDB，你需要使用一个堡垒机或使用 `kubectl port-forward`。如果你想在互联网上公开访问 TiDB，并且知晓这样做的风险，你可以在 `tidb-cluster.yaml` 文件中将 LoadBalancer 从 "internal" 改为 "internet-facing"。
 
 执行以下命令，在 EKS 集群中部署 TidbCluster 和 TidbMonitor CR。
 
