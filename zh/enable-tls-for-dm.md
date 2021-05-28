@@ -592,8 +592,7 @@ spec:
         ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
 
     mysql-instances:
-      -
-        source-id: "replica-01"
+      - source-id: "replica-01"
         loader-config-name: "global"
 
     loaders:
