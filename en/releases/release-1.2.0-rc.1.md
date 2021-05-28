@@ -21,7 +21,7 @@ TiDB Operator version: 1.2.0-rc.1
 
 - Mask the backup password in logging ([#3979](https://github.com/pingcap/tidb-operator/pull/3979), [@dveeden](https://github.com/dveeden))
 - Add an additional volumeMounts field for Grafana ([#3960](https://github.com/pingcap/tidb-operator/pull/3960), [@mikechengwei](https://github.com/mikechengwei))
-- Add some useful additional printout columns for TidbMonitor ([#3958](https://github.com/pingcap/tidb-operator/pull/3958), [@mikechengwei](https://github.com/mikechengwei))
+- Add several useful additional printout columns for TidbMonitor ([#3958](https://github.com/pingcap/tidb-operator/pull/3958), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor supports writing monitor configuration to PD etcd directly ([#3924](https://github.com/pingcap/tidb-operator/pull/3924), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug fixes
