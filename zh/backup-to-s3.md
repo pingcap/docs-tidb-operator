@@ -274,7 +274,7 @@ kubectl get bk -n tidb-cluster -owide
 
 {{< copyable "shell-regular" >}}
 
-``shell
+```shell
 kubectl describe bk -n tidb-cluster $backup_job_name
 ```
 
