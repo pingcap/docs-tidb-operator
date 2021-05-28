@@ -100,6 +100,7 @@ Change the related PD configuration to make sure that PD is in a normal state.
 
     After all the Pods are recreated and are in the `Running` state, the configuration is successfully modified.
 
+<<<<<<< HEAD
 ## Upgrade using Helm
 
 If you continue to manage your cluster using Helm, refer to the following steps to upgrade the TiDB cluster.
@@ -164,6 +165,8 @@ helm upgrade ${release_name} pingcap/tidb-cluster -f values.yaml --version=${cha
 > kubectl annotate tc ${release_name} -n ${namespace} tidb.pingcap.com/force-upgrade-
 > ```
 
+=======
+>>>>>>> ab00e2b5 (Remove the helm section - Eng+CN (#1231))
 > **Note:**
 >
 > By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
