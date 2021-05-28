@@ -10,7 +10,7 @@ TiDB Operator 版本：1.2.0-rc.1
 
 ## 滚动升级改动
 
-- 由于 [#3973](https://github.com/pingcap/tidb-operator/pull/3973) 的改动，升级 TiDB Operator 会导致 Pump Pod 删除重建。
+- 由于 [#3973](https://github.com/pingcap/tidb-operator/pull/3973) 的改动，升级 TiDB Operator 会导致 Pump Pod 删除重建
 
 ## 新功能
 
