@@ -8,9 +8,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 
 本文描述了将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。
 
-本文使用的恢复方式基于 TiDB Operator v1.1 及以上的 CustomResourceDefinition (CRD) 实现，底层通过使用 [TiDB Lightning TiDB-backend](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview) 来恢复数据。
+本文使用的恢复方式基于 TiDB Operator v1.1 及以上的 CustomResourceDefinition (CRD) 实现，底层通过使用 [TiDB Lightning TiDB-backend](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-tidb-backend) 来恢复数据。
 
-目前，TiDB Lightning 支持 `Importer-backend`，`Local-backend` 及 `TiDB-backend` 三种后端，对于这三种后端的区别和选择，可以参考 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参考[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
+目前，TiDB Lightning 支持 `Importer-backend`，`Local-backend` 、`TiDB-backend` 三种后端，关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参考[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
 
 以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
