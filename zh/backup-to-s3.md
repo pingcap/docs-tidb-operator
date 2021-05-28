@@ -19,7 +19,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### Ad-hoc 全量备份环境准备
 
-1. 执行以下命令，根据 [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml) 在 `tidb-cluster` 命名空间创建基于角色的访问控制（RBAC）资源。
+1. 执行以下命令，根据 [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml) 在 `tidb-cluster` 命名空间创建基于角色的访问控制 (RBAC) 资源。
 
     {{< copyable "shell-regular" >}}
 
@@ -278,7 +278,7 @@ kubectl get bk -n tidb-cluster -owide
 kubectl describe bk -n tidb-cluster $backup_job_name
 ```
 
-如果要再次运行 ad-hoc 备份，你需要[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr) 并重新创建。
+如果要再次运行 Ad-hoc 备份，你需要[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr) 并重新创建。
 
 ## 定时全量备份
 
