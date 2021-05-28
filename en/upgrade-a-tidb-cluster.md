@@ -99,3 +99,7 @@ Change the related PD configuration to make sure that PD is in a normal state.
     ```
 
     After all the Pods are recreated and are in the `Running` state, the configuration is successfully modified.
+
+> **Note:**
+>
+> By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
