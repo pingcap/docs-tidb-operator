@@ -10,7 +10,7 @@ Kubernetes [基于角色的访问控制 (RBAC)](https://kubernetes.io/docs/refer
 
 ## Cluster 级别管理 TiDB 集群
 
-部署时默认设置 `clusterScoped=true`，表示在 Cluster 级别管理 TiDB 集群，使用如下命令查看创建的 ClusterRole/Role：
+默认配置下，`clusterScoped=true`，安装的 TiDB Operator 是 cluster-scoped，能管理 Kubernetes 集群内所有 TiDB 集群，要查看为 TiDB Operator 创建的 ClusterRole，请使用以下命令：
 
 {{< copyable "shell-regular" >}}
 
