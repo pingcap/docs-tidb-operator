@@ -15,7 +15,7 @@ TiDB Operator 版本：1.2.0-rc.1
 ## 新功能
 
 - 支持为 TidbCluster 中的 Pod 与 service 设置自定义的 label ([#3892](https://github.com/pingcap/tidb-operator/pull/3892), [@SabaPing](https://github.com/SabaPing) [@july2993](https://github.com/july2993))
-- 完整支持对 Pump 的生命周期管理 ([#3973](https://github.com/pingcap/tidb-operator/pull/3973), [@july2993](https://github.com/july2993))
+- 支持对 Pump 的完整生命周期管理 ([#3973](https://github.com/pingcap/tidb-operator/pull/3973), [@july2993](https://github.com/july2993))
 
 ## 优化提升
 
