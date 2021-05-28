@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于单独的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-目前，TiDB Lightning 支持 `Importer-backend`、`Local-backend` 、`TiDB-backend` 三种后端，关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，仅需要部署 tidb-lightning。
+目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，仅需要部署 tidb-lightning。
 
 此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
@@ -232,7 +232,7 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
 部署 TiDB Lightning 的方式根据不同的权限授予方式及存储方式，有不同的情况。
 
-+ 对于[本地模式](#本地模式)、[Ad hoc 模式](#ad-hoc-模式)和使用 Amazon S3 AccessKey 和 SecretKey 权限授予方式，或者使用 Ceph，GCS 作为存储后端的[远程模式](#远程模式)时，运行以下命令部署 TiDB Lightning：
++ 对于[本地模式](#本地模式)、[Ad hoc 模式](#ad-hoc-模式)、[远程模式](#远程模式)（需要是符合以下三个条件之一的远程模式：使用 Amazon S3 AccessKey 和 SecretKey 权限授予方式、使用 Ceph 作为存储后端、使用 GCS 作为存储后端），运行以下命令部署 TiDB Lightning：
 
     {{< copyable "shell-regular" >}}
 
@@ -240,13 +240,13 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
     helm install ${release_name} pingcap/tidb-lightning --namespace=${namespace} --set failFast=true -f tidb-lightning-values.yaml --version=${chart_version}
     ```
 
-+ 使用 Amazon S3 IAM 绑定 Pod 的授权方式的[远程模式](#远程模式)时，需要做以下步骤：
++ 使用 Amazon S3 IAM 绑定 Pod 的授权方式的[远程模式](#远程模式)时，需要完成以下步骤：
 
     1. 创建 IAM 角色：
 
         可以参考 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)来为账号创建一个 IAM 角色，并且通过 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html)为 IAM 角色赋予需要的权限。由于 `Lightning` 需要访问 AWS 的 S3 存储，所以这里给 IAM 赋予了 `AmazonS3FullAccess` 的权限。
 
-    2. 修改 tidb-lightning-values.yaml，找到字段 `annotations`，增加 annotation `iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user`。
+    2. 修改 `tidb-lightning-values.yaml`，找到 `annotations` 字段，增加 annotation `iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user`。
 
     3. 部署 Tidb-Lightning：
 
