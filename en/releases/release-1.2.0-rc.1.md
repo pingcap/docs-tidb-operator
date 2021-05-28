@@ -14,7 +14,7 @@ TiDB Operator version: 1.2.0-rc.1
 
 ## New features
 
-- Support customized labels for TidbCluster pods and services ([#3892](https://github.com/pingcap/tidb-operator/pull/3892), [@SabaPing](https://github.com/SabaPing) [@july2993](https://github.com/july2993))
+- Support customized labels for TidbCluster Pods and services ([#3892](https://github.com/pingcap/tidb-operator/pull/3892), [@SabaPing](https://github.com/SabaPing) [@july2993](https://github.com/july2993))
 - Support full lifecycle management for Pump ([#3973](https://github.com/pingcap/tidb-operator/pull/3973), [@july2993](https://github.com/july2993))
 
 ## Improvements
