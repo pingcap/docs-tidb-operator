@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/access-dashboard/','/docs-cn/tidb-
 
 > **警告：**
 >
-> PD 的 `/dashboard` 路径中提供了 TiDB Dashboard。除此以外的其他路径可能没有访问控制。
+> TiDB Dashboard 位于 PD 的 `/dashboard` 路径中。其他路径可能无法访问控制。
 
 TiDB Dashboard 是从 TiDB 4.0 开始引入的专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://docs.pingcap.com/zh/tidb/stable/dashboard-intro) 了解详情。本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
 
