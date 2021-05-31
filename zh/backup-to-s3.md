@@ -488,6 +488,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
       #  - "test.*"
         # storageClassName: local-storage
         storageSize: 10Gi
+    ```    
 
 定时全量备份创建完成后，可以通过以下命令查看定时全量备份的状态：
 
