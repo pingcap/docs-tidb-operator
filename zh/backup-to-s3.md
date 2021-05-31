@@ -265,15 +265,9 @@ options:
 
 {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
- ```shell
- kubectl get bk -n test1 -owide
- ```
-=======
 ```shell
 kubectl get bk -n tidb-cluster -owide
 ```
->>>>>>> 8bf6c479 (zh: backup-to-s3, deploy-on-aws-eks: various small changes (#1223))
 
 要获取一个 Backup job 的详细信息，请使用以下命令。对于此命令中的 `$backup_job_name`，请使用上一条命令输出中的名称。
 
