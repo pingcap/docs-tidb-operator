@@ -74,11 +74,7 @@ GRANT
 >     - --ignore-checksum
 > ```
 
-<<<<<<< HEAD
 > **Note:**
-=======
-> **Note**
->>>>>>> 4f645403 (en: backup-to-s3, deploy-on-aws-eks: various small changes (#1210))
 >
 > This section lists multiple storage access methods. Only follow the method that matches your situation.
 >
@@ -283,7 +279,6 @@ After creating the `Backup` CR, use the following command to check the backup st
 
 ```shell
 kubectl get bk -n tidb-cluster -owide
-<<<<<<< HEAD
 ```
 
 To get detailed information on a backup job, use the following command. For `$backup_job_name` in the command, use the name from the output of the previous command.
@@ -294,18 +289,6 @@ To get detailed information on a backup job, use the following command. For `$ba
 kubectl describe bk -n tidb-cluster $backup_job_name
 ```
 
-=======
-```
-
-To get detailed information on a backup job, use the following command. For `$backup_job_name` in the command, use the name from the output of the previous command.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl describe bk -n tidb-cluster $backup_job_name
-```
-
->>>>>>> 4f645403 (en: backup-to-s3, deploy-on-aws-eks: various small changes (#1210))
 To run ad-hoc backup again, you need to [delete the backup CR](backup-restore-overview.md#delete-the-backup-cr) and create it again.
 
 ## Scheduled full backup to S3-compatible storage
