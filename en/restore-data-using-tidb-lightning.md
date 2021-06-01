@@ -94,7 +94,7 @@ Use the following command to get the default configuration of TiDB Lightning:
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-Configure a `backend` used by TiDB Lightning depending on your needs. To do that, you need to set the `backend` value in `values.yaml` to an option in `importer`, `local`, or `tidb`.
+Configure a `backend` used by TiDB Lightning depending on your needs. To do that, you can set the `backend` value in `values.yaml` to an option in `importer`, `local`, or `tidb`.
 
 > **Note:**
 >
