@@ -217,7 +217,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
 
 2. Configure the `from.host` in the `source1.yaml` file as the MySQL host address that the Kubernetes cluster can access internally.
 
-3. Configure the `relay-dir` in `source1.yaml` file as a subdirectory of the persistent volume in the Pod mount `/var/lib/dm-worker` directory . For example, `/var/lib/dm-worker/relay`.
+3. Configure the `relay-dir` in the `source1.yaml` file as a subdirectory of the persistent volume in the Pod mount `/var/lib/dm-worker` directory. For example, `/var/lib/dm-worker/relay`.
 
 4. After you prepare the `source1.yaml` file, load the MySQL-1 data source into the DM cluster by executing the following command:
 
@@ -238,7 +238,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
 3. In the `task.yaml` file, take the following steps:
 
     - Add the `loaders.${customized_name}.dir` field as the import and export directory for the full volume data, where `${customized_name}` is a name that you can customize. 
-    - Configure `loaders.${customized_name}.dir` as the subdirectory of the persistent volume in the Pod `/var/lib/dm-worker` directory. For example, `/var/lib/dm-worker/dumped_data`.
+    - Configure the `loaders.${customized_name}.dir` field as the subdirectory of the persistent volume in the Pod `/var/lib/dm-worker` directory. For example, `/var/lib/dm-worker/dumped_data`.
     - Reference `${customized_name}` in the instance configuration. For example, `mysql-instances[0].loader-config-name: "{customized_name}"`.
 
 ### Start/Check/Stop the migration tasks
