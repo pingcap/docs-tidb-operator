@@ -13,7 +13,7 @@ summary: Learn how to deploy and use TiDB DM cluster in Kubernetes.
 
 > **Note:**
 >
-> Require TiDB Operator version >= 1.2.0.
+> Make sure that the TiDB Operator version >= 1.2.0.
 
 ## Configure DM deployment
 
