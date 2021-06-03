@@ -739,7 +739,7 @@ topologySpreadConstraints:
 
 该配置能让同一组件的不同实例均匀分布在不同 zone 和节点上。
 
-当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置：
+当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置： 
 
 ```yaml
 topologySpreadConstraints:
