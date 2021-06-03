@@ -343,7 +343,10 @@ spec:
 ....
   tikv:
     image: pingcap/tikv:v4.0.12
-    config: {}
+    config:
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -361,8 +364,9 @@ spec:
   tikv:
     image: pingcap/tikv:v4.0.12
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
