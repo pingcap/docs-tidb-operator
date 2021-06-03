@@ -342,16 +342,11 @@ metadata:
 spec:
 ....
   tikv:
-<<<<<<< HEAD
     image: pingcap/tikv:v4.0.12
-    config: {}
-=======
-    image: pingcap/tikv:v5.0.1
     config:
       storage:
         block-cache:
           capacity: "16GB"
->>>>>>> 9c4bde97 (zh: Update configure-a-tidb-cluster.md (#1224))
     replicas: 1
     requests:
       cpu: 2
