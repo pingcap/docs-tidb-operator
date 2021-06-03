@@ -120,10 +120,6 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限 或者 GCP 权限传输给 TiKV 进程。默认为 `true`。
 * `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
-### toolImage 字段介绍
-
-* `.spec.toolImage`：代表 BR 工具使用的二进制镜像，默认使用 pingcap/br:${tikv_version}。
-
 ### S3 存储字段介绍
 
 * `.spec.s3.provider`：支持的兼容 S3 的 `provider`。
