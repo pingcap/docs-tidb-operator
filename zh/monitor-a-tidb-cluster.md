@@ -18,7 +18,6 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 > **注意：**
 >
-> * 一个 TidbMonitor 只支持监控一个 TidbCluster。
 > * `spec.clusters[0].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
 
 ### 持久化监控数据
@@ -284,3 +283,76 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 默认的 Prometheus 和告警配置不能发送告警消息，如需发送告警消息，可以使用任意支持 Prometheus 告警的工具与其集成。推荐通过 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/) 管理与发送告警消息。
 
 如果在你的现有基础设施中已经有可用的 AlertManager 服务，可以参考[设置 kube-prometheus 与 AlertManager](#设置-kube-prometheus-与-alertmanager) 设置 `spec.alertmanagerURL` 配置其地址供 Prometheus 使用；如果没有可用的 AlertManager 服务，或者希望部署一套独立的服务，可以参考官方的[说明](https://github.com/prometheus/alertmanager)部署。
+
+## 多集群监控配置
+
+TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是`TLS`集群，也可以是非 `TLS` 集群。配置示例如下:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: basic
+spec:
+  clusters:
+    - name: ns1
+      namespace: ns1
+    - name: ns2
+      namespace: ns2
+  persistent: true
+  storage: 5G
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.18.1
+    service:
+      type: NodePort
+  grafana:
+    baseImage: grafana/grafana
+    version: 6.1.6
+    service:
+      type: NodePort
+  initializer:
+    baseImage: pingcap/tidb-monitor-initializer
+    version: v4.0.9
+  reloader:
+    baseImage: pingcap/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+
+## 监控聚合
+
+TidbMonitor 在 Operator 1.2.x 版本之后也支持了 Thanos 框架，可以通过 Thanos 做监控的数据的聚合。 
+
+TidbMonitor 支持了Thanos Sidecar 容器，用 Thanos Query 进行数据聚合，配置示例如下:
+
+```
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: basic
+spec:
+  clusters:
+  - name: basic
+  thanos:
+    baseImage: thanosio/thanos
+    version: v0.17.2
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.11.1
+  grafana:
+    baseImage: grafana/grafana
+    version: 6.1.6
+  initializer:
+    baseImage: pingcap/tidb-monitor-initializer
+    version: v5.0.1
+  reloader:
+    baseImage: pingcap/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-thanos/README.md)。
+
