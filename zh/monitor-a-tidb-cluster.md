@@ -284,9 +284,10 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 如果在你的现有基础设施中已经有可用的 AlertManager 服务，可以参考[设置 kube-prometheus 与 AlertManager](#设置-kube-prometheus-与-alertmanager) 设置 `spec.alertmanagerURL` 配置其地址供 Prometheus 使用；如果没有可用的 AlertManager 服务，或者希望部署一套独立的服务，可以参考官方的[说明](https://github.com/prometheus/alertmanager)部署。
 
-## 多集群监控配置
+## 多集群监控
 
-TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是`TLS`集群，也可以是非 `TLS` 集群。配置示例如下:
+TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是`TLS`集群，也可以是非 `TLS` 集群。
+只需要简单的配置就可以实现这一功能，配置示例如下:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -324,9 +325,9 @@ spec:
 
 ## 监控聚合
 
-TidbMonitor 在 Operator 1.2.x 版本之后也支持了 Thanos 框架，可以通过 Thanos 做监控的数据的聚合。 
+TidbMonitor 在 Operator 1.2.x 版本之后也支持了 [Thanos](https://thanos.io/tip/thanos/design.md/) 框架，用户可以通过 Thanos 做监控的数据的聚合。 
 
-TidbMonitor 支持了Thanos Sidecar 容器，用 Thanos Query 进行数据聚合，配置示例如下:
+TidbMonitor 增加启动 `Thanos Sidecar` 容器，并用 `Thanos Query` 进行数据聚合，配置示例如下:
 
 ```
 apiVersion: pingcap.com/v1alpha1
