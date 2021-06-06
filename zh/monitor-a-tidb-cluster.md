@@ -355,4 +355,3 @@ spec:
 ```
 
 如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-thanos/README.md)。
-
