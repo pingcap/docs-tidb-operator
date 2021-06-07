@@ -23,6 +23,8 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     * Install and configure `eksctl` used for creating Kubernetes clusters.
     * Install `kubectl`.
 
+To verify whether AWS CLI is configured correctly, run the `aws configure list` command. If the output shows the values for `access_key` and `secret_key`, AWS CLI is configured correctly. Otherwise, you need to re-configure AWS CLI.
+
 > **Note:**
 >
 > The operations described in this document requires at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
@@ -31,7 +33,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
 
 According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 in total) for each component when creating an EKS.
 
-Save the following configuration as the `cluster.yaml` file. Replace `${clusterName}` with your desired cluster name.
+Save the following configuration as the `cluster.yaml` file. Replace `${clusterName}` with your desired cluster name. The cluster and node group names should match the regular expression `[a-zA-Z][-a-zA-Z0-9]*`, so avoid names that contain `_`.
 
 {{< copyable "" >}}
 
@@ -135,7 +137,7 @@ Execute the following command to create the cluster:
 eksctl create cluster -f cluster.yaml
 ```
 
-After executing the command above, you need to wait until the EKS cluster is successfully created and the node group is created and added in the EKS cluster. This process might take 5 to 10 minutes. For more cluster configuration, refer to [`eksctl` documentation](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
+After executing the command above, you need to wait until the EKS cluster is successfully created and the node group is created and added in the EKS cluster. This process might take 5 to 20 minutes. For more cluster configuration, refer to [`eksctl` documentation](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
 
 > **Warning:**
 >
@@ -178,6 +180,10 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 ```
 
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
+
+> **Note:**
+>
+> By default, the configuration in `tidb-cluster.yaml` sets up the LoadBalancer for TiDB with the "internal" scheme. This means that the LoadBalancer is only accessible within the VPC, not externally. To access TiDB over the MySQL protocol, you need to use a bastion host or use `kubectl port-forward`. If you want to expose TiDB over the internet and if you are aware of the risks of doing this, you can change the scheme for the LoadBalancer from "internal" to "internet-facing" in the `tidb-cluster.yaml` file.
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the EKS cluster, run the following command:
 
@@ -299,7 +305,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
 > * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (cluster version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
 > * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
-### Access the Grafana monitoring dashboard
+## Access the Grafana monitoring dashboard
 
 Obtain the LoadBalancer domain name of Grafana:
 
@@ -324,6 +330,10 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 > **Note:**
 >
 > The default Grafana username and password are both `admin`.
+
+## Access the TiDB Dashboard
+
+See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to securely allow access to the TiDB Dashboard.
 
 ## Upgrade
 
