@@ -287,6 +287,7 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 ## 多集群监控
 
 TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是`TLS`集群，也可以是非 `TLS` 集群。
+
 只需要简单的配置就可以实现这一功能，配置示例如下:
 
 ```yaml
