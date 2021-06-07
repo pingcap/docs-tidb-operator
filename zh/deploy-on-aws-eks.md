@@ -28,9 +28,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 >
 > 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
-## 推荐机型
+## 推荐机型及存储
 
-出于性能考虑，推荐 PD 所在节点使用 c5.xlarge，TiDB 所在节点使用 c5.2xlarge，TiKV/TiFlash 所在节点使用 r5b.2xlarge，对于 GP3 推荐配置为 400MBps 4000 IOPS。
+推荐机型方面，出于性能考虑，推荐 PD 所在节点使用 c5.xlarge，TiDB 所在节点使用 c5.2xlarge，TiKV/TiFlash 所在节点使用 r5b.2xlarge。
+
+推荐存储方面，AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 推荐配置为，TiKV 推荐 GP3 配置为 400MBps 4000 IOPS，TiFlash 推荐 GP3 配置为 625MBps 6000 IOPS。
+
+目前 EKS 默认还不支持使用 EBS gp3 的 StorageClass，详情可以参考 [issue](https://github.com/aws/containers-roadmap/issues/1187)，如果你使用 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) [v0.8.0](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/CHANGELOG-0.x.md#v080) 及以上版本，gp3 已经是默认的卷类型。
 
 ## 创建 EKS 集群和节点池
 
@@ -521,8 +525,6 @@ spec:
           storage: 100Gi
       storageClassName: io1
 ```
-
-AWS 已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type)，建议使用 EBS gp3 卷类型。但是 EKS 默认还不支持使用 EBS gp3 的 StorageClass，详情可以参考 [issue](https://github.com/aws/containers-roadmap/issues/1187)，如果你使用 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) [v0.8.0](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/CHANGELOG-0.x.md#v080) 及以上版本，gp3 已经是默认的卷类型。
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
