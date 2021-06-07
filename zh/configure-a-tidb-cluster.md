@@ -344,7 +344,10 @@ spec:
 ....
   tikv:
     image: pingcap/tikv:v5.0.1
-    config: {}
+    config:
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -362,8 +365,9 @@ spec:
   tikv:
     image: pingcap/tikv:v5.0.1
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -536,6 +540,18 @@ spec:
 - 设置 `preStop` Hook 为 `sleep 10 && kill -QUIT 1`，这里 Pid 1 为 TiDB Pod 内 TiDB server 进程的 Pid。TiDB server 进程收到这个信号之后，会等待所有连接被客户端关闭之后才会退出。
 
 Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
+
+### 配置 TiKV 平滑升级
+
+TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 10 分钟）后，TiKV Pod 才会重启。
+
+如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
 
 ### 配置 TiDB 慢查询日志持久卷
 
@@ -720,7 +736,7 @@ affinity:
 {{< copyable "" >}}
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
 - topologyKey: topology.kubernetes.io/zone
 ```
@@ -730,7 +746,7 @@ topologySpreadConstrains:
 当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置：
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
   maxSkew: 1
   whenUnsatisfiable: DoNotSchedule
