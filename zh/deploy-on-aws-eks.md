@@ -64,6 +64,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -72,6 +73,7 @@ nodeGroups:
     desiredCapacity: 0
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -80,6 +82,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -89,6 +92,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -97,6 +101,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -105,6 +110,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -114,6 +120,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -122,6 +129,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -130,6 +138,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -154,6 +163,94 @@ eksctl create cluster -f cluster.yaml
 >
 > * 为已经启动的 EC2 [开启实例缩减保护](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance)，ASG 自身的实例缩减保护不需要打开。
 > * [设置 ASG 终止策略](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)为 `NewestInstance`。
+
+## 使用其他 EBS 存储类型
+
+AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 新建一个存储类 (Storage Class)：
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: io1
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: io1
+  fsType: ext4
+  iopsPerGB: "10"
+  encrypted: "false"
+```
+
+然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
+
+```yaml
+spec:
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 3
+    storageClaims:
+    - resources:
+        requests:
+          storage: 100Gi
+      storageClassName: io1
+```
+
+更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
+
+## 使用本地存储
+
+请使用 AWS EBS 作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 AWS 部分实例类型提供的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
+
+> **注意：**
+>
+> 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
+>
+> 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
+>
+> 由于节点重建会导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
+
+了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
+
+1. 为 TiKV 创建附带本地存储的节点组。
+
+    修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
+
+    ```yaml
+      - name: tikv-1a
+        desiredCapacity: 1
+        privateNetworking: true
+        availabilityZones: ["ap-northeast-1a"]
+        instanceType: c5d.4xlarge
+        labels:
+          dedicated: tikv
+        taints:
+          dedicated: tikv:NoSchedule
+        ...
+    ```
+
+    创建节点组：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    eksctl create nodegroups -f cluster.yaml
+    ```
+
+    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
+
+2. 部署 local volume provisioner。
+
+    本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    ```
+
+3. 使用本地存储。
+
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
 
 ## 部署 TiDB Operator
 
@@ -504,91 +601,3 @@ spec:
   tikv:
     baseImage: pingcap/tikv-enterprise
 ```
-
-## 使用其他 EBS 存储类型
-
-AWS EBS 支持多种存储类型。若需要低延迟、高吞吐，可以选择 `io1` 类型。首先我们为 `io1` 新建一个存储类 (Storage Class)：
-
-```yaml
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: io1
-provisioner: kubernetes.io/aws-ebs
-parameters:
-  type: io1
-  fsType: ext4
-  iopsPerGB: "10"
-  encrypted: "false"
-```
-
-然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
-
-```yaml
-spec:
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 3
-    storageClaims:
-    - resources:
-        requests:
-          storage: 100Gi
-      storageClassName: io1
-```
-
-更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
-
-## 使用本地存储
-
-请使用 AWS EBS 作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 AWS 部分实例类型提供的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
-
-> **注意：**
->
-> 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
->
-> 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
->
-> 由于节点重建会导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
-
-了解哪些实例可提供本地存储卷，可以查看 [AWS 实例列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
-
-1. 为 TiKV 创建附带本地存储的节点组。
-
-    修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
-
-    ```yaml
-      - name: tikv-1a
-        desiredCapacity: 1
-        privateNetworking: true
-        availabilityZones: ["ap-northeast-1a"]
-        instanceType: c5d.4xlarge
-        labels:
-          dedicated: tikv
-        taints:
-          dedicated: tikv:NoSchedule
-        ...
-    ```
-
-    创建节点组：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    eksctl create nodegroups -f cluster.yaml
-    ```
-
-    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
-
-2. 部署 local volume provisioner。
-
-    本地存储需要使用 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
-    ```
-
-3. 使用本地存储。
-
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
