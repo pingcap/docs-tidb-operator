@@ -326,4 +326,4 @@ spec:
 
 ### Grafana 查看多集群
 
-Grafana 当前支持多集群的查看，但是用户需要在 每个 Grafana Dashboard 中手工设置 `tidb_cluster` 变量 的`Hide` 选项为 `Variable`.
+Grafana 当前支持多集群的查看，但是用户需要在 每个 Grafana Dashboard 中手工设置 `tidb_cluster` 变量 的`Hide` 选项为 `Variable`。
