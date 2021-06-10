@@ -18,7 +18,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 > **注意：**
 >
-> * `spec.clusters[0].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
+> * `spec.clusters[].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
 
 ### 持久化监控数据
 
@@ -286,7 +286,7 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是`TLS`集群，也可以是非 `TLS` 集群。
+TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是开启 `TLS` 的集群，也可以是没有开启 `TLS` 的集群。
 
 只需要简单的配置就可以实现这一功能，配置示例如下:
 
@@ -315,7 +315,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.9
+    version: v5.0.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
