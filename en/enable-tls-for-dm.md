@@ -24,6 +24,8 @@ Certificates can be issued in multiple methods. This document describes two meth
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 ### Generate certificates for components of the DM cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
@@ -503,10 +505,9 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.0-rc.2
+  version: v2.0.3
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   master:
     baseImage: pingcap/dm
     replicas: 1
@@ -541,7 +542,7 @@ Use `dmctl`:
 
 ``` shell
 cd /var/lib/dm-master-tls
-/dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr https://127.0.0.1:8261 list-member
+/dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr 127.0.0.1:8261 list-member
 ```
 
 ## Use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client
@@ -572,10 +573,9 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.0-rc.2
+  version: v2.0.3
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   tlsClientSecretNames:
     - ${mysql_secret_name1}
     - ${tidb_secret_name}
@@ -591,6 +591,7 @@ After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secr
 
     ``` yaml
     source-id: mysql-replica-01
+    relay-dir: /var/lib/dm-worker/relay
     from:
       host: ${mysql_host1}
       user: dm
@@ -618,6 +619,14 @@ After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secr
         ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
         ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
         ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
+    
+    mysql-instances:
+    - source-id: "replica-01"
+      loader-config-name: "global"
+      
+    loaders:
+      global:
+        dir: "/var/lib/dm-worker/dumped_data"    
     ```
 
 ### Step 4: Start the migration tasks

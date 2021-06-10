@@ -21,7 +21,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
 将如下配置存为 `cluster.yaml` 文件，并替换 `${heterogeneous_cluster_name}` 为自己想命名的异构集群名字，`${origin_cluster_name}` 替换为想要加入的已有集群名称:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -30,7 +30,7 @@ metadata:
   name: ${heterogeneous_cluster_name}
 spec:
   configUpdateStrategy: RollingUpdate
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -75,7 +75,7 @@ kubectl create -f cluster.yaml -n ${namespace}
 
 将如下配置存为 `tidbmonitor.yaml` 文件，并替换 `${origin_cluster_name}` 为想要加入的集群名称，`${heterogeneous_cluster_name}` 替换为异构集群名称：
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -94,7 +94,7 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.9
+    version: v5.0.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -122,7 +122,7 @@ kubectl create -f tidbmonitor.yaml -n ${namespace}
 
 将如下配置存为 `cluster.yaml` 文件，并替换 `${heterogeneous_cluster_name}` 为自己想命名的异构集群名字，`${origin_cluster_name}` 替换为想要加入的已有集群名称:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -133,7 +133,7 @@ spec:
   tlsCluster:
     enabled: true
   configUpdateStrategy: RollingUpdate
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}

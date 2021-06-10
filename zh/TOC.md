@@ -20,7 +20,7 @@
       - [配置 Storage Class](configure-storage-class.md)
       - [部署 TiDB Operator](deploy-tidb-operator.md)
       - [配置 TiDB 集群](configure-a-tidb-cluster.md)
-      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)    
+      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
   - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
@@ -33,15 +33,18 @@
   + 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
+    - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
 + 安全
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
   - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
   - [更新和替换 TLS 证书](renew-tls-certificate.md)
+  - [以非 root 用户运行 TiDB Operator 和 TiDB 集群](containers-run-as-non-root-user.md)
 + 运维
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
   - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
   - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
   + TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
@@ -51,15 +54,15 @@
     - [备份与恢复简介](backup-restore-overview.md)
     - [远程存储访问授权](grant-permissions-to-remote-storage.md)
     + 使用 S3 兼容存储备份与恢复
-      - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
-      - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
       - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
       - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
+      - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
     + 使用 GCS 备份与恢复
-      - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
-      - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
       - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
+      - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
     + 使用持久卷备份与恢复
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
@@ -100,8 +103,14 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + 版本发布历史
   + v1.2
+    - [1.2.0-rc.1](releases/release-1.2.0-rc.1.md)
+    - [1.2.0-beta.2](releases/release-1.2.0-beta.2.md)
+    - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
+    - [1.1.12](releases/release-1.1.12.md)
+    - [1.1.11](releases/release-1.1.11.md)
+    - [1.1.10](releases/release-1.1.10.md)
     - [1.1.9](releases/release-1.1.9.md)
     - [1.1.8](releases/release-1.1.8.md)
     - [1.1.7](releases/release-1.1.7.md)

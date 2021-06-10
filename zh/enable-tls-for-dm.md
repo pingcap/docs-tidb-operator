@@ -478,10 +478,9 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.0-rc.2
+  version: v2.0.3
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   master:
     baseImage: pingcap/dm
     replicas: 1
@@ -516,7 +515,7 @@ kubectl exec -it ${cluster_name}-dm-master-0 -n ${namespace} sh
 
 ``` shell
 cd /var/lib/dm-master-tls
-/dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr https://127.0.0.1:8261 list-member
+/dmctl --ssl-ca=ca.crt --ssl-cert=tls.crt --ssl-key=tls.key --master-addr 127.0.0.1:8261 list-member
 ```
 
 ## 用 DM 集群同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库
@@ -545,10 +544,9 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.0-rc.2
+  version: v2.0.3
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   tlsClientSecretNames:
     - ${mysql_secret_name1}
     - ${tidb_secret_name}
@@ -564,6 +562,7 @@ spec:
 
     ``` yaml
     source-id: mysql-replica-01
+    relay-dir: /var/lib/dm-worker/relay
     from:
       host: ${mysql_host1}
       user: dm
@@ -581,7 +580,7 @@ spec:
     name: test
     task-mode: all
     is-sharding: false
-    
+
     target-database:
       host: ${tidb_host}
       port: 4000
@@ -591,6 +590,14 @@ spec:
         ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
         ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
         ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
+
+    mysql-instances:
+    - source-id: "replica-01"
+      loader-config-name: "global"
+
+    loaders:
+      global:
+        dir: "/var/lib/dm-worker/dumped_data"
     ```
 
 ### 第四步：启动同步任务

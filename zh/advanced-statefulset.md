@@ -36,7 +36,7 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
 
 2. 在 TiDB Operator chart 的 `values.yaml` 中启用 `AdvancedStatefulSet` 特性：
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```yaml
     features:
@@ -77,7 +77,7 @@ kind: TidbCluster
 metadata:
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -126,7 +126,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[1]'
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -177,7 +177,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[]'
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:

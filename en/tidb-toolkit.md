@@ -201,12 +201,12 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.2.0-alpha.1                  A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.2.0-alpha.1                  A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.2.0-alpha.1                  A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.2.0-alpha.1                  A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.2.0-alpha.1  v1.2.0-alpha.1  tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.2.0-alpha.1                  A Helm chart for TiKV Importer
+pingcap/tidb-backup     v1.2.0-rc.1                  A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.2.0-rc.1                  A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.2.0-rc.1                  A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  v1.2.0-rc.1                  A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.2.0-rc.1  v1.2.0-rc.1  tidb-operator Helm chart for Kubernetes
+pingcap/tikv-importer   v1.2.0-rc.1                  A Helm chart for TiKV Importer
 ```
 
 When a new version of chart has been released, you can use `helm repo update` to update the repository cached locally:
@@ -219,7 +219,7 @@ helm repo update
 
 ### Helm common operations
 
-Common Helm operations include `helm install`, `helm upgrade`, and `helm del`. Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
+Common Helm operations include `helm install`, `helm upgrade`, and `helm uninstall`. Helm chart usually contains many configurable parameters which could be tedious to configure manually. For convenience, it is recommended that you configure using a YAML file. Based on the conventions in the Helm community, the YAML file used for Helm configuration is named `values.yaml` in this document.
 
 Before performing the deploy, upgrade and deploy, you can view the deployed applications via `helm ls`:
 
@@ -254,7 +254,7 @@ When performing a deployment or upgrade, you must specify the chart name (`chart
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm del ${release_name}
+    helm uninstall ${release_name} -n ${namespace}
     ```
 
 For more information on Helm, refer to [Helm Documentation](https://helm.sh/docs/).
@@ -268,9 +268,9 @@ Use the following command to download the chart file required for cluster instal
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.2.0-alpha.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.2.0-alpha.1.tgz
+wget http://charts.pingcap.org/tidb-operator-v1.2.0-rc.1.tgz
+wget http://charts.pingcap.org/tidb-drainer-v1.2.0-rc.1.tgz
+wget http://charts.pingcap.org/tidb-lightning-v1.2.0-rc.1.tgz
 ```
 
 Copy these chart files to the server and decompress them. You can use these charts to install the corresponding components by running the `helm install` command. Take `tidb-operator` as an example:
@@ -278,7 +278,7 @@ Copy these chart files to the server and decompress them. You can use these char
 {{< copyable "shell-regular" >}}
 
 ```shell
-tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
+tar zxvf tidb-operator.v1.2.0-rc.1.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 

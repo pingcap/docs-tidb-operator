@@ -36,7 +36,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
 
 2. Enable the `AdvancedStatefulSet` feature in `values.yaml` of the TiDB Operator chart:
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```yaml
     features:
@@ -79,7 +79,7 @@ kind: TidbCluster
 metadata:
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -128,7 +128,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[1]'
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -179,7 +179,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[]'
   name: asts
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:

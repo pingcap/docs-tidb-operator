@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.9`
+- `spec.version`，格式为 `imageTag`，例如 `v5.0.1`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.9`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.0.1`
 
 ### 推荐配置
 
@@ -54,6 +54,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 #### enableDynamicConfiguration
 
 建议设置 `spec.enableDynamicConfiguration: true`，开启动态配置特性。
+
 版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
 
 #### pvReclaimPolicy
@@ -86,6 +87,10 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 每个组件都可以配置 `storageVolumes` 字段，用于描述用户自定义的多个 PV。
 
+> **注意：**
+>
+> 你需要在集群创建之前配置 `storageVolumes`。集群创建完成后，不支持添加或者删除 `storageVolumes`。对于已经配置的 `storageVolumes`，除增大 `storageVolume.storageSize` 外，其他项不支持修改。如果要增大 `storageVolume.storageSize`，需要对应的 StorageClass 支持[动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
+
 相关字段的含义如下：
 
 - `storageVolume.name`：PV 的名称。
@@ -95,7 +100,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 例子:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
   pd:
@@ -156,9 +161,37 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 >
 > TiDB Operator 默认会使用一些挂载路径，比如会为 TiDB Pod 挂载 `EmptyDir` 到 `/var/log/tidb` 目录。在配置 `storageVolumes` 的时候要避免配置重复的 `mountPath`。
 
-### HostNetwork 
+### HostNetwork
 
 PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
+
+### Discovery
+
+TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。你可以通过 `spec.discovery` 配置 Discovery 服务的资源，详见[容器资源管理](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
+
+`spec.discovery` 配置示例：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v5.0.1
+  pvReclaimPolicy: Retain
+  discovery:
+    limits:
+      cpu: "0.2"
+    requests:
+      cpu: "0.2"
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+...
+```
 
 ### 集群拓扑
 
@@ -258,7 +291,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v5.0.1
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -280,7 +313,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v5.0.1
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -310,8 +343,11 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
-    config: {}
+    image: pingcap/tikv:v5.0.1
+    config:
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -327,10 +363,11 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
+    image: pingcap/tikv:v5.0.1
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -354,7 +391,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v5.0.1
     config:
       lease: 3
       enable-prevote: true
@@ -370,7 +407,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
@@ -466,7 +503,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.9
+  version: v5.0.1
   pvReclaimPolicy: Retain
   discovery: {}
   pd:
@@ -504,6 +541,64 @@ spec:
 
 Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
 
+### 配置 TiKV 平滑升级
+
+TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 10 分钟）后，TiKV Pod 才会重启。
+
+如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
+
+### 配置 TiDB 慢查询日志持久卷
+
+默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`。如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+
+#### Spec.tidb.storageVolumes 配置
+
+按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # 可省略
+    slowLogVolumeName: ${volumeName}
+    storageVolumes:
+      # name 必须和 slowLogVolumeName 字段的值保持一致
+      - name: ${volumeName}
+        storageClassName: ${storageClass}
+        storageSize: "1Gi"
+        mountPath: ${mountPath}
+```
+
+#### spec.tidb.additionalVolumes 配置（从 v1.1.8 版本开始支持）
+
+下面以 NFS 为例配置 `spec.tidb.additionalVolumes`。TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。具体支持的持久卷类型可参考 [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # 可省略
+    slowLogVolumeName: ${volumeName}
+    additionalVolumes:
+    # name 必须和 slowLogVolumeName 字段的值保持一致
+    - name: ${volumeName}
+      nfs:
+        server: 192.168.0.2
+        path: /nfs
+    additionalVolumeMounts:
+    # name 必须和 slowLogVolumeName 字段的值保持一致
+    - name: ${volumeName}
+      mountPath: ${mountPath}
+```
+
 ### 配置 TiDB 服务
 
 需要配置 `spec.tidb.service`，TiDB Operator 才会为 TiDB 创建 Service。Service 可以根据场景配置不同的类型，比如 `ClusterIP`、`NodePort`、`LoadBalancer` 等。
@@ -520,7 +615,7 @@ spec:
       type: ClusterIP
 ```
 
-### NodePort
+#### NodePort
 
 在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 是通过节点的 IP 和静态端口暴露服务。通过请求 `NodeIP + NodePort`，可以从集群的外部访问一个 NodePort 服务。
 
@@ -545,7 +640,7 @@ NodePort 有两种模式：
 
 - `externalTrafficPolicy=Local`：只有运行 TiDB 的机器会分配 NodePort 端口，用于访问本地的 TiDB 实例
 
-### LoadBalancer
+#### LoadBalancer
 
 若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台的 LoadBalancer 特性。
 
@@ -572,13 +667,15 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 ### TiDB 服务高可用
 
-其它层面的高可用（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+#### 通过 affinity 调度实例
+
+配置 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的。关于 Affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
 
 下面是一个典型的高可用设置例子：
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
-```shell
+```yaml
 affinity:
  podAntiAffinity:
    preferredDuringSchedulingIgnoredDuringExecution:
@@ -623,6 +720,46 @@ affinity:
        namespaces:
        - ${namespace}
 ```
+
+#### 通过 topologySpreadConstraints 实现 Pod 均匀分布
+
+配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
+
+> **注意：**
+>
+> 配置 `topologySpreadConstraints` 前，你需要开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或者 `EvenPodsSpread` feature gate 未开启，`topologySpreadConstraints` 的配置将不会生效。
+
+`topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
+
+以下是一个配置示例：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+该配置能让同一组件的不同实例均匀分布在不同 zone 和节点上。
+
+当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置：
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **注意：**
+>
+> 可以用该功能替换 [TiDB Scheduler](tidb-scheduler.md) 来实现均匀调度。
 
 ### 数据的高可用
 

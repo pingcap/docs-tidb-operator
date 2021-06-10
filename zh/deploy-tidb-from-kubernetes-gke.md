@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 
 > **警告：**
 >
-> 对于生产环境，不要使用此方式进行部署。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 GCP 上通过 Kubernetes 部署 TiDB 集群](deploy-on-gcp-gke.md)。
 
 ## 选择一个项目
 
@@ -102,7 +102,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.1
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -233,7 +233,3 @@ kubectl get pv -l app.kubernetes.io/namespace=demo,app.kubernetes.io/managed-by=
 ``` shell
 gcloud container clusters delete tidb
 ```
-
-## 更多信息
-
-了解更多在 GKE 生成环境部署，可以参考我们的 [GKE 部署文档](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-gcp-gke)。

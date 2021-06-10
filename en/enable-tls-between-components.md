@@ -28,6 +28,8 @@ Certificates can be issued in multiple methods. This document describes two meth
 - [Using the `cfssl` system](#using-cfssl)
 - [Using the `cert-manager` system](#using-cert-manager)
 
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 ## Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
@@ -701,7 +703,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In `cert-manager`, the Certificate resource represents the certificate interface. This certificate is issued and updated by the Issuer created in Step 2.
 
-    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
+    According to [Enable TLS Authentication](https://docs.pingcap.com/tidb/stable/enable-tls-between-components), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
 
     - PD
 
@@ -1198,6 +1200,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `::1`
         - Add the Issuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+
         After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
 
     - TiDB Lightning
@@ -1248,6 +1251,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `::1`
         - Add the Issuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+
         After the object is created, `cert-manager` generates a `${cluster_name}-lightning-cluster-secret` Secret object to be used by the TiDB Lightning component of the TiDB server.
 
 4. Generate the client-side certificate for components of the TiDB cluster.
@@ -1311,7 +1315,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v4.0.9
+     version: v5.0.1
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1367,7 +1371,7 @@ In this step, you need to perform the following operations:
        version: 6.0.1
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v4.0.9
+       version: v5.0.1
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1450,7 +1454,7 @@ In this step, you need to perform the following operations:
             secretName: ${s3_secret}
             bucket: ${my_bucket}
             prefix: ${my_folder}
-        ````
+        ```
 
         Deploy Backup:
 

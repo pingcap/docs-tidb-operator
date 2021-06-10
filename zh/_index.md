@@ -15,8 +15,8 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 | TiDB Operator 版本 | 适用的 TiDB 版本 |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
+| v1.1 | v3.0, v3.1, v4.0, v5.0 |
+| dev | v3.0, v3.1, v4.0, v5.0, dev |
 
 <NavColumns>
 <NavColumn>
@@ -54,6 +54,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
+- [以非 root 用户运行 TiDB Operator 和 TiDB 集群](containers-run-as-non-root-user.md)
 
 </NavColumn>
 

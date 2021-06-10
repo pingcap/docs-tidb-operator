@@ -13,8 +13,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB Operator version | Compatible TiDB versions |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
+| v1.1 | v3.0, v3.1, v4.0, v5.0 |
+| dev | v3.0, v3.1, v4.0, v5.0, dev |
 
 <NavColumns>
 <NavColumn>
@@ -52,6 +52,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
+- [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
 
 </NavColumn>
 
@@ -61,7 +62,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
 - [Scale a TiDB Cluster](scale-a-tidb-cluster.md)
-- [Backup and Restore](backup-and-restore-using-helm-charts.md)
+- [Backup and Restore](backup-restore-overview.md)
 - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
 - [Use Automatic Failover](use-auto-failover.md)
 

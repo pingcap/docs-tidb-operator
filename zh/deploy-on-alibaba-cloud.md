@@ -19,7 +19,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
     > Access Key 需要具有操作相应资源的权限。
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
-- [Helm](https://helm.sh)
+- [Helm 3](https://helm.sh)
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*
 
@@ -60,7 +60,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
 
 使用如下步骤部署 ACK，TiDB Operator 和 TiDB 集群节点池。
 
-1. 设置目标 Region 和阿里云密钥（也可以在运行 `terraform` 命令时根据命令提示输入）：
+1. 设置目标 region 和阿里云密钥（也可以在运行 `terraform` 命令时根据命令提示输入）：
 
     {{< copyable "shell-regular" >}}
 
@@ -89,7 +89,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.2.0-alpha.1"
+    operator_version = "v1.2.0-rc.1"
     ```
 
     如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 `ecs.i2.2xlarge`。

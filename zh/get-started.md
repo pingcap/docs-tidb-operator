@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 > **警告：**
 >
-> 本文中部署例子仅用于测试目的。**不要**直接用于生产环境。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅**部署** > **部署 TiDB 集群**章节。
 
 基本步骤如下：
 
@@ -196,6 +196,14 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 参考 [minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
+你可以使用 `minikube` 的子命令 `kubectl` 来进行集群操作。要使 `kubectl` 命令生效，你需要在 shell 配置文件中添加以下别名设置命令，或者在打开一个新的 shell 后执行以下别名设置命令。
+
+{{< copyable "shell-regular" >}}
+
+```
+alias kubectl='minikube kubectl --'
+```
+
 执行以下命令检查集群状态，并确保可以通过 `kubectl` 访问集群:
 
 {{< copyable "shell-regular" >}}
@@ -291,7 +299,7 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.1
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -299,9 +307,9 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-alpha.1 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-alpha.1 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.1 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-rc.1 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-rc.1 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
@@ -710,6 +718,8 @@ Check Table Before Drop: false
 kubectl delete tc basic -n tidb-cluster
 ```
 
+此命令中，`tc` 为 tidbclusters 的简称。
+
 ### 删除 TiDB Monitor
 
 {{< copyable "shell-regular" >}}
@@ -748,3 +758,12 @@ kubectl delete namespace tidb-cluster
 ```shell
 pgrep -lfa kubectl
 ```
+
+## 探索更多
+
+如果你已经准备好在生产环境的 Kubernetes 上部署 TiDB 集群，可参阅以下文档：
+
+- [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
+- [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
+- [在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
+- [在阿里云上部署 TiDB 集群](deploy-on-alibaba-cloud.md)

@@ -17,8 +17,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB Operator version | Compatible TiDB versions |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
+| v1.1 | v3.0, v3.1, v4.0, v5.0 |
+| dev | v3.0, v3.1, v4.0, v5.0, dev |
 
 ## Manage TiDB clusters using TiDB Operator
 
@@ -49,8 +49,7 @@ After the deployment is complete, see the following documents to use, operate, a
 + [Scale TiDB Cluster](scale-a-tidb-cluster.md)
 + [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-using-tidbcluster-cr)
 + [Change the Configuration of TiDB Cluster](configure-a-tidb-cluster.md)
-+ [Back up a TiDB Cluster](backup-to-aws-s3-using-br.md)
-+ [Restore a TiDB Cluster](restore-from-aws-s3-using-br.md)
++ [Back up and Restore a TiDB Cluster](backup-restore-overview.md)
 + [Automatic Failover](use-auto-failover.md)
 + [Monitor a TiDB Cluster in Kubernetes](monitor-a-tidb-cluster.md)
 + [View TiDB Logs in Kubernetes](view-logs.md)

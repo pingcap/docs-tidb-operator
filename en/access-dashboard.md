@@ -6,9 +6,17 @@ aliases: ['/docs/tidb-in-kubernetes/dev/access-dashboard/']
 
 # Access TiDB Dashboard
 
-TiDB Dashboard is a visualized tool in TiDB 4.0 used to monitor and diagnose the TiDB cluster. For details, see [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-intro).
+> **Warning:**
+>
+> The TiDB Dashboard is available in the `/dashboard` path of the PD. Other paths outside of this may not have access control. 
+
+TiDB Dashboard is a visualized tool introduced starting from TiDB 4.0 and is used to monitor and diagnose TiDB clusters. For details, see [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-intro).
 
 This document describes how to access TiDB Dashboard in Kubernetes.
+
+> **Note:**
+>
+> TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. The Discovery service can also send proxy requests to the TiDB Dashboard. In this document, TiDB Dashboard is accessed using the Discovery service.
 
 ## Prerequisites
 
@@ -26,7 +34,7 @@ spec:
     enableDashboardInternalProxy: true
 ```
 
-## Quick start
+## Access TiDB Dashboard by port forward
 
 > **Warning:**
 >
@@ -42,7 +50,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     metadata:
       name: basic
     spec:
-      version: v4.0.9
+      version: v5.0.1
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -75,6 +83,10 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     ```
 
 3. Visit <http://localhost:10262/dashboard> in your browser to access TiDB Dashboard.
+
+> **Note:**
+>
+> By default, `port-forward` binds to the IP address 127.0.0.1. If you need to use another IP address to access the machine running the `port-forward` command, you can add the `-address` option and specify the IP address to be bound.
 
 ## Access TiDB Dashboard by Ingress
 

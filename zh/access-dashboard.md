@@ -6,11 +6,19 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/access-dashboard/']
 
 # TiDB Dashboard 指南
 
-TiDB Dashboard 是 TiDB 4.0 专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://docs.pingcap.com/zh/tidb/stable/dashboard-intro) 了解详情。本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
+> **警告：**
+>
+> TiDB Dashboard 位于 PD 的 `/dashboard` 路径中。其他路径可能无法访问控制。
+
+TiDB Dashboard 是从 TiDB 4.0 开始引入的专门用来帮助观察与诊断整个 TiDB 集群的可视化面板，你可以在 [TiDB Dashboard](https://docs.pingcap.com/zh/tidb/stable/dashboard-intro) 了解详情。本篇文章将介绍如何在 Kubernetes 环境下访问 TiDB Dashboard。
+
+> **注意：**
+>
+> TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。此外，Discovery 服务也会发送代理请求到 TiDB Dashboard。本文档我们将通过 Discovery 服务访问 TiDB Dashboard。
 
 ## 前置条件
 
-你需要使用 v1.1.1 版本及以上的 TiDB Operator 以及 4.0.1 版本及以上的 TiDB 集群，才能在 Kubernetes 环境中流畅使用 `Dashboard`。 你需要在 `TidbCluster` 对象文件中通过以下方式开启 `Dashboard` 快捷访问:
+你需要使用 v1.1.1 版本及以上的 TiDB Operator 以及 4.0.1 版本及以上的 TiDB 集群，才能在 Kubernetes 环境中流畅使用 `Dashboard`。你需要在 `TidbCluster` 对象文件中通过以下方式开启 `Dashboard` 快捷访问:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -22,7 +30,7 @@ spec:
     enableDashboardInternalProxy: true
 ```
 
-## 快速上手
+## 通过端口转发访问 TiDB Dashboard
 
 > **注意：**
 >
@@ -36,7 +44,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -69,6 +77,10 @@ kubectl port-forward svc/basic-discovery -n ${namespace} 10262:10262
 ```
 
 然后在浏览器中访问 <http://localhost:10262/dashboard> 即可访问到 TiDB Dashboard。
+
+> **注意：**
+>
+> `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
 
 ## 通过 Ingress 访问 TiDB Dashboard
 

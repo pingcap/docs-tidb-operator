@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 部署前，请确认已完成以下环境准备：
 
-* [Helm](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
+* [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
 * [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
@@ -46,7 +46,7 @@ gcloud config set compute/region <gcp-region>
     gcloud container clusters create tidb --region us-east1 --machine-type n1-standard-4 --num-nodes=1
     ```
 
-    该命令创建一个区域 (Regional) 集群，在该集群模式下，节点会在该区域中分别创建三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考 [GKE 集群的类型](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
+    该命令创建一个区域 (regional) 集群，在该集群模式下，节点会在该区域中分别创建三个可用区 (zone)，以保障高可用。`--num-nodes=1` 参数，表示在各分区各自创建一个节点，总节点数为 3 个。生产环境推荐该集群模式。其他集群类型，可以参考 [GKE 集群的类型](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters)。
 
     以上命令集群创建在默认网络中，若希望创建在指定的网络中，通过 `--network/subnet` 参数指定。更多可查询 [GKE 集群创建文档](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster)。
 
@@ -193,7 +193,7 @@ gcloud compute instances create bastion \
     $ mysql -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v4.0.9 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v5.0.1 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -265,7 +265,7 @@ gcloud container clusters resize tidb --node-pool tikv --num-nodes 2
 ```
 
 > **注意：**
-> 
+>
 > 在区域集群下，节点分别创建在 3 个可用区下。这里扩容后，节点数为 2 * 3 = 6 个。
 
 ### 扩容 TiDB 组件
@@ -368,7 +368,7 @@ spec:
 
 ## 使用本地存储
 
-GCP 可以实例类型提供额外的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
+请使用[区域永久性磁盘](https://cloud.google.com/compute/docs/disks#pdspecs)作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 GCP 部分实例类型提供的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
 
 > **警告：**
 >

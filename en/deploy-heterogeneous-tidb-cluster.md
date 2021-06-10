@@ -19,7 +19,7 @@ A heterogeneous cluster creates differentiated instances for an existing TiDB cl
 
 Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -28,7 +28,7 @@ metadata:
   name: ${heterogeneous_cluster_name}
 spec:
   configUpdateStrategy: RollingUpdate
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -73,7 +73,7 @@ The configuration of a heterogeneous cluster is mostly the same as a normal TiDB
 
 Save the following configuration as the `tidbmonitor.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -92,7 +92,7 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.9
+    version: v5.0.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -122,7 +122,7 @@ For detailed procedures to create certificates for the heterogeneous cluster, re
 
 Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -133,7 +133,7 @@ spec:
   tlsCluster:
     enabled: true
   configUpdateStrategy: RollingUpdate
-  version: v4.0.9
+  version: v5.0.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -169,8 +169,8 @@ spec:
         storageClassName: standard
 ```
 
-`spec.tlsCluster.enabled`: Determines whether to enable TLS between the components.
-`spec.tidb.tlsClient.enabled`: Determines whether to enable TLS for MySQL client.
+- `spec.tlsCluster.enabled`: Determines whether to enable TLS between the components.
+- `spec.tidb.tlsClient.enabled`: Determines whether to enable TLS for MySQL client.
 
 Execute the following command to create the TLS-enabled heterogeneous cluster:
 

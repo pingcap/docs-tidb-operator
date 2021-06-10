@@ -21,6 +21,8 @@ To enable TLS for the MySQL client, perform the following steps:
 
 3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-an-encrypted-connection).
 
+If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 ## Issue two sets of certificates for the TiDB cluster
 
 This section describes how to issue certificates for the TiDB cluster using two methods: `cfssl` and `cert-manager`.
@@ -533,7 +535,7 @@ In this step, you create a TiDB cluster and perform the following operations:
           name: ${cluster_name}
           amespace: ${namespace}
         spec:
-          version: v4.0.9
+          version: v5.0.1
           timezone: UTC
           pvReclaimPolicy: Retain
           pd:

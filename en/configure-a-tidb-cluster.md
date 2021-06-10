@@ -38,13 +38,14 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 ### Version
 
 Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
+
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.9`
+- `spec.version`: the format is `imageTag`, such as `v5.0.1`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.9`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v5.0.1`
 
 ### Recommended configuration
 
@@ -100,7 +101,7 @@ The meanings of the related fields are as follows:
 
 For example:
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
   pd:
@@ -168,6 +169,34 @@ For PD, TiKV, TiDB, TiFlash, TiCDC, and Pump, you can configure the Pods to use 
 To enable `HostNetwork` for all supported components, configure `spec.hostNetwork: true`.
 
 To enable `HostNetwork` for specified components, configure `hostNetwork: true` for the components.
+
+### Discovery
+
+TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. You can configure resources of the Discovery service using `spec.discovery`. For details, see [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+
+A `spec.discovery` configuration example is as follows:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v5.0.1
+  pvReclaimPolicy: Retain
+  discovery:
+    limits:
+      cpu: "0.2"
+    requests:
+      cpu: "0.2"
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+...
+```
 
 ### Cluster topology
 
@@ -272,7 +301,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v5.0.1
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -294,7 +323,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.9
+    image: pingcap/tidb:v5.0.1
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -326,7 +355,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
+    image: pingcap/tikv:v5.0.1
     config:
       log-level: "info"
       slow-log-threshold: "1s"
@@ -345,7 +374,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.9
+    image: pingcap/tikv:v5.0.1
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -374,7 +403,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v5.0.1
     config:
       lease: 3
       enable-prevote: true
@@ -390,7 +419,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.9
+    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
@@ -475,7 +504,7 @@ spec:
 
 For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
 
-## Configure TiDB cluster graceful upgrade
+### Configure graceful upgrade for TiDB cluster 
 
 When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
 
@@ -490,7 +519,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.9
+  version: v5.0.1
   pvReclaimPolicy: Retain
   discovery: {}
   pd:
@@ -528,6 +557,74 @@ The YAML file above:
 
 When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the service endpoints. This is to ensure that the new connection is not established to this TiDB node. However, because this process is asynchronous, you can make the system sleep for a few seconds before you send the `kill` signal, which makes sure that the TiDB node is removed from the endpoints.
 
+### Configure graceful upgrade for TiKV cluster
+
+During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (10 minutes by default), TiKV Pod is restarted. 
+
+If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. To avoid the issues, you can configure the timeout `spec.tikv.evictLeaderTimeout` (10 minutes by default) to a larger value. For example:
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
+
+### Configure PV for TiDB slow logs
+
+TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+
+This section shows how to configure PV using `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+
+#### Configure using `spec.tidb.storageVolumes`
+
+Configure the `TidbCluster` CR as the following example. In the example, TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
+
+For how to configure the `spec.tidb.storageVolumes` field, refer to [Multiple disks mounting](#multiple-disks-mounting).
+
+> **Warning:
+>
+> You need to configure `storageVolumes` before creating the cluster. After the cluster is created, adding or removing `storageVolumes` is no longer supported. For the `storageVolumes` already configured, except for increasing `storageVolume.storageSize`, other modifications are not supported. To increase `storageVolume.storageSize`, you need to make sure that the corresponding StorageClass supports [dynamic expansion](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/).
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # can be ignored
+    slowLogVolumeName: ${volumeName}
+    storageVolumes:
+      # name must be consistent with slowLogVolumeName
+      - name: ${volumeName}
+        storageClassName: ${storageClass}
+        storageSize: "1Gi"
+        mountPath: ${mountPath}
+```
+
+#### Configure using `spec.tidb.additionalVolumes` (supported starting from v1.1.8)
+
+In the following example, NFS is used as the storage, and TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
+
+For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes).
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    separateSlowLog: true  # can be ignored
+    slowLogVolumeName: ${volumeName}
+    additionalVolumes:
+    # name must be consistent with slowLogVolumeName
+    - name: ${volumeName}
+      nfs:
+        server: 192.168.0.2
+        path: /nfs
+    additionalVolumeMounts:
+    # name must be consistent with slowLogVolumeName
+    - name: ${volumeName}
+      mountPath: ${mountPath}
+```
+
 ### Configure TiDB service
 
 You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
@@ -544,7 +641,7 @@ spec:
       type: ClusterIP
 ```
 
-### NodePort
+#### NodePort
 
 If there is no LoadBalancer, you can choose to expose the service through NodePort. NodePort exposes services through the node's IP and static port. You can access a NodePort service from outside of the cluster by requesting `NodeIP + NodePort`.
 
@@ -569,7 +666,7 @@ NodePort has two modes:
 
 -`externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
 
-### LoadBalancer
+#### LoadBalancer
 
 If the TiDB cluster runs in an environment with LoadBalancer, such as on GCP or AWS, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
 
@@ -596,13 +693,15 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 ### High availability of TiDB service
 
-High availability at other levels (such as rack, zone, region) is guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+#### Use affinity to schedule pods
+
+By configuring `PodAntiAffinity`, you can avoid the situation in which different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery (high availability) is achieved. For the user guide of Affinity, see [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical service high availability setup:
 
 {{< copyable "" >}}
 
-```shell
+```yaml
 affinity:
  podAntiAffinity:
    preferredDuringSchedulingIgnoredDuringExecution:
@@ -647,6 +746,46 @@ affinity:
        namespaces:
        - ${namespace}
 ```
+
+#### Use topologySpreadConstraints to make pods evenly spread
+
+By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configuring `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
+
+> **Note:**
+>
+> To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
+
+You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
+
+The following is an example configuration:
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+The example configuration can make pods of the same component evenly spread on different zones and nodes.
+
+Currently, `topologySpreadConstraints` only supports the configuration of the `topologyKey` field. In the pod spec, the above example configuration will be automatically expanded as follows:
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+```
+
+> **Note:**
+>
+> You can use this feature to replace [TiDB Scheduler](tidb-scheduler.md) for evenly scheduling.
 
 ### High availability of data
 

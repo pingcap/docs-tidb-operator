@@ -16,7 +16,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
-* [Helm](https://helm.sh)
+* [Helm 3](https://helm.sh)
 
 ### Deploy the Kubernetes cluster
 
@@ -99,11 +99,17 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
 
     > **Note:**
     >
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.2.0-alpha.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
+    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.2.0-rc.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
 
 2. Configure TiDB Operator
 
     TiDB Operator will use the `k8s.gcr.io/kube-scheduler` image. If you cannot download the image, you can modify the `scheduler.kubeSchedulerImageName` in the `${HOME}/tidb-operator/values-tidb-operator.yaml` file to `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`.
+
+    TiDB Operator manages all TiDB clusters in the Kubernetes cluster by default. If you only need it to manage clusters in a specific namespace, you can set `clusterScoped: false` in `values.yaml`.
+
+    > **Note:**
+    >
+    > After setting `clusterScoped: false`, TiDB Operator will still operate Nodes, Persistent Volumes, and Storage Classe in the Kubernetes cluster by default. If the role that deploys TiDB Operator does not have the permissions to operate these resources, you can set the corresponding permission request under `controllerManager.clusterPermissions` to `false` to disable TiDB Operator's operations on these resources.
 
     You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
@@ -112,9 +118,13 @@ After creating CRDs in the step above, there are two methods to deploy TiDB Oper
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml --create-namespace && \
+    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
+
+    > **Note:**
+    >
+    > If the corresponding `tidb-admin` namespace does not exist, you can create the namespace first by running the `kubectl create namespace tidb-admin` command.
 
 4. Upgrade TiDB Operator
 
@@ -139,15 +149,15 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.2.0-rc.1.tgz
     ```
 
-    Copy the `tidb-operator-v1.2.0-alpha.1.tgz` file to the target server and extract it to the current directory:
+    Copy the `tidb-operator-v1.2.0-rc.1.tgz` file to the target server and extract it to the current directory:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
+    tar zxvf tidb-operator.v1.2.0-rc.1.tgz
     ```
 
 2. Download the Docker images used by TiDB Operator
@@ -156,11 +166,11 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
 
     The Docker images used by TiDB Operator are:
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.2.0-alpha.1
-    pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    pingcap/tidb-operator:v1.2.0-rc.1
+    pingcap/tidb-backup-manager:v1.2.0-rc.1
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -173,13 +183,13 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.2.0-alpha.1
-    docker pull pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    docker pull pingcap/tidb-operator:v1.2.0-rc.1
+    docker pull pingcap/tidb-backup-manager:v1.2.0-rc.1
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.2.0-alpha.1.tar pingcap/tidb-operator:v1.2.0-alpha.1
-    docker save -o tidb-backup-manager-v1.2.0-alpha.1.tar pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    docker save -o tidb-operator-v1.2.0-rc.1.tar pingcap/tidb-operator:v1.2.0-rc.1
+    docker save -o tidb-backup-manager-v1.2.0-rc.1.tar pingcap/tidb-backup-manager:v1.2.0-rc.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -189,8 +199,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.2.0-alpha.1.tar
-    docker load -i tidb-backup-manager-v1.2.0-alpha.1.tar
+    docker load -i tidb-operator-v1.2.0-rc.1.tar
+    docker load -i tidb-backup-manager-v1.2.0-rc.1.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
@@ -227,8 +237,12 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install tidb-operator ./tidb-operator --namespace=tidb-admin --create-namespace
+    helm install tidb-operator ./tidb-operator --namespace=tidb-admin
     ```
+
+    > **Note:**
+    >
+    > If the corresponding `tidb-admin` namespace does not exist, you can create the namespace first by running the `kubectl create namespace tidb-admin` command.
 
 5. Upgrade TiDB Operator
 

@@ -17,7 +17,7 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 
 Before deploying a TiDB cluster on GCP GKE, make sure the following requirements are satisfied:
 
-* Install [Helm](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
+* Install [Helm 3](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
 * Install [gcloud](https://cloud.google.com/sdk/gcloud): a command-line tool used for creating and managing GCP services.
 * Complete the operations in the **Before you begin** section of [GKE Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin).
 
@@ -378,7 +378,7 @@ spec:
 
 ## Use local storage
 
-Some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+Use [Zonal Persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs) as a primary production configuration. To simulate bare metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >

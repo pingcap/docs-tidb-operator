@@ -201,12 +201,12 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.2.0-alpha.1                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.2.0-alpha.1                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.2.0-alpha.1                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.2.0-alpha.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.2.0-alpha.1          v1.2.0-alpha.1          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.2.0-alpha.1                          A Helm chart for TiKV Importer
+pingcap/tidb-backup     v1.2.0-rc.1                          A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.2.0-rc.1                          A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.2.0-rc.1                          A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  v1.2.0-rc.1                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.2.0-rc.1          v1.2.0-rc.1          tidb-operator Helm chart for Kubernetes
+pingcap/tikv-importer   v1.2.0-rc.1                          A Helm chart for TiKV Importer
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -219,7 +219,7 @@ helm repo update
 
 ### Helm 常用操作
 
-Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
+Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm uninstall`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项。基于 Helm 社区约定俗称的命名方式，在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
 
 执行部署、升级、销毁等操作前，可以使用 `helm ls` 查看集群中已部署的应用：
 
@@ -252,7 +252,7 @@ helm ls
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm del ${release_name}
+helm uninstall ${release_name} -n ${namespace}
 ```
 
 更多 helm 的相关文档，请参考 [Helm 官方文档](https://helm.sh/docs/)。
@@ -266,9 +266,9 @@ helm del ${release_name}
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.2.0-alpha.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.2.0-alpha.1.tgz
+wget http://charts.pingcap.org/tidb-operator-v1.2.0-rc.1.tgz
+wget http://charts.pingcap.org/tidb-drainer-v1.2.0-rc.1.tgz
+wget http://charts.pingcap.org/tidb-lightning-v1.2.0-rc.1.tgz
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
@@ -276,7 +276,7 @@ wget http://charts.pingcap.org/tidb-lightning-v1.2.0-alpha.1.tgz
 {{< copyable "shell-regular" >}}
 
 ```shell
-tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
+tar zxvf tidb-operator.v1.2.0-rc.1.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 

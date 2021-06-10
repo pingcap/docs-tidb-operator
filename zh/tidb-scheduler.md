@@ -30,8 +30,7 @@ metadata:
 haTopologyKey: kubernetes.io/hostname
 ```
 
-上述配置按照节点（默认值）维度进行调度，若要按照其他维度调度，比如: `pingcap.com/ha-topology-key: zone`，表示按照 zone 调度，
-还需给各节点打如下标签：
+上述配置按照节点（默认值）维度进行调度，若要按照其他维度调度，比如: `pingcap.com/ha-topology-key: zone`，表示按照 zone 调度，还需给各节点打如下标签：
 
 {{< copyable "shell-regular" >}}
 
@@ -75,6 +74,10 @@ kubectl label nodes node1 zone=zone1
 调度规则三：在 TiDB 实例滚动更新的时候，尽量将其调度回原来的节点。
 
 这样实现了稳定调度，对于手动将 Node IP + NodePort 挂载在 LB 后端的场景比较有帮助，避免升级集群后 Node IP 发生变更时需要重新调整 LB，这样可以减少滚动更新时对集群的影响。
+
+> **注意：**
+>
+> 该规则 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布) 无法实现。
 
 ## 工作原理
 

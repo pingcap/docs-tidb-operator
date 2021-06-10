@@ -16,7 +16,7 @@ TiDB Operator 部署前，请确认以下软件需求：
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) 启用（可选）
-* [Helm](https://helm.sh)
+* [Helm 3](https://helm.sh)
 
 ## 部署 Kubernetes 集群
 
@@ -99,11 +99,17 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.2.0-alpha.1`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
+    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.2.0-rc.1`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
 
 2. 配置 TiDB Operator
 
     TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果无法下载该镜像，可以修改 `${HOME}/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImageName` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
+
+    TiDB Operator 默认会管理 Kubernetes 集群中的所有 TiDB 集群，如仅需其管理特定 namespace 下的集群，则可在 `values.yaml` 中设置 `clusterScoped: false`。
+    
+    > **注意：**
+    >
+    > 在设置 `clusterScoped: false` 后，TiDB Operator 默认仍会操作 Kubernetes 集群中的 Nodes、Persistent Volumes 与 Storage Classes。若部署 TiDB Operator 的角色不具备这些资源的操作权限，则可以将 `controllerManager.clusterPermissions` 下的相应权限请求设置为 `false` 以禁用 TiDB Operator 对这些资源的操作。
 
     其他项目例如：`limits`、`requests` 和 `replicas`，请根据需要进行修改。
 
@@ -112,9 +118,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml --create-namespace && \
+    helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml && \
     kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
     ```
+
+    > **注意：**
+    >
+    > 如果对应 `tidb-admin` namespace 不存在，则可先使用 `kubectl create namespace tidb-admin` 创建该 namespace。
 
 4. 升级 TiDB Operator
 
@@ -139,15 +149,15 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.2.0-alpha.1.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.2.0-rc.1.tgz
     ```
 
-    将 `tidb-operator-v1.2.0-alpha.1.tgz` 文件拷贝到服务器上并解压到当前目录：
+    将 `tidb-operator-v1.2.0-rc.1.tgz` 文件拷贝到服务器上并解压到当前目录：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.2.0-alpha.1.tgz
+    tar zxvf tidb-operator.v1.2.0-rc.1.tgz
     ```
 
 2. 下载 TiDB Operator 运行所需的 Docker 镜像
@@ -156,11 +166,9 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     TiDB Operator 用到的 Docker 镜像有：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    pingcap/tidb-operator:v1.2.0-alpha.1
-    pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    pingcap/tidb-operator:v1.2.0-rc.1
+    pingcap/tidb-backup-manager:v1.2.0-rc.1
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -173,13 +181,13 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.2.0-alpha.1
-    docker pull pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    docker pull pingcap/tidb-operator:v1.2.0-rc.1
+    docker pull pingcap/tidb-backup-manager:v1.2.0-rc.1
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.2.0-alpha.1.tar pingcap/tidb-operator:v1.2.0-alpha.1
-    docker save -o tidb-backup-manager-v1.2.0-alpha.1.tar pingcap/tidb-backup-manager:v1.2.0-alpha.1
+    docker save -o tidb-operator-v1.2.0-rc.1.tar pingcap/tidb-operator:v1.2.0-rc.1
+    docker save -o tidb-backup-manager-v1.2.0-rc.1.tar pingcap/tidb-backup-manager:v1.2.0-rc.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -189,8 +197,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.2.0-alpha.1.tar
-    docker load -i tidb-backup-manager-v1.2.0-alpha.1.tar
+    docker load -i tidb-operator-v1.2.0-rc.1.tar
+    docker load -i tidb-backup-manager-v1.2.0-rc.1.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
@@ -227,8 +235,12 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install tidb-operator ./tidb-operator --namespace=tidb-admin --create-namespace
+    helm install tidb-operator ./tidb-operator --namespace=tidb-admin
     ```
+
+    > **注意：**
+    >
+    > 如果对应 `tidb-admin` namespace 不存在，则可先使用 `kubectl create namespace tidb-admin` 创建该 namespace。
 
 5. 升级 TiDB Operator
 

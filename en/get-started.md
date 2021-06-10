@@ -10,7 +10,7 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 > **Warning:**
 >
-> These deployments are for demonstration purposes only. **Do not use** for qualification or in production!
+> This document is for demonstration purposes only. **Do not** follow it in production environments. For production environments, see the instructions in **Deploy** > **Deploy TiDB Cluster**.
 
 These are the steps this document follows:
 
@@ -196,6 +196,14 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 See [minikube setup](https://kubernetes.io/docs/setup/minikube/) for more options to configure your virtual machine and Kubernetes cluster.
 
+To interact with the cluster, you can use `kubectl`, which is included as a sub-command in `minikube`. To make the `kubectl` command available, you can either add the following alias definition command to your shell profile or execute the following alias definition command after opening a new shell.
+
+{{< copyable "shell-regular" >}}
+
+```
+alias kubectl='minikube kubectl --'
+```
+
 Execute this command to check the status of your Kubernetes and make sure `kubectl` can connect to it:
 
 {{< copyable "shell-regular" >}}
@@ -296,7 +304,7 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.1
     ```
 
     If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
@@ -304,9 +312,9 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-alpha.1 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-alpha.1 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-alpha.1 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.1 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-rc.1 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-rc.1 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
@@ -724,6 +732,8 @@ The following steps show how to destroy the TiDB cluster, but do not affect the 
 kubectl delete tc basic -n tidb-cluster
 ```
 
+The `tc` in this command is a short name for tidbclusters.
+
 ### Delete TiDB monitoring services
 
 {{< copyable "shell-regular" >}}
@@ -764,3 +774,12 @@ pgrep -lfa kubectl
 ```
 
 For more information about destroying a TiDB cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
+
+## What’s next
+
+If you are ready to deploy a TiDB cluster in Kubernetes for the production environment, refer to the following documents:
+
+- [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
+- [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
+- [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md)
+- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
