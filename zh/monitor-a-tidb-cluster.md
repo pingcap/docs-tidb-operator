@@ -323,37 +323,3 @@ spec:
 ```
 
 如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
-
-## 监控聚合
-
-TidbMonitor 在 Operator 1.2.x 版本之后也支持了 [Thanos](https://thanos.io/tip/thanos/design.md/) 框架，用户可以通过 Thanos 做监控的数据的聚合。 
-
-TidbMonitor 增加启动 `Thanos Sidecar` 容器，并用 `Thanos Query` 进行数据聚合，配置示例如下:
-
-```
-apiVersion: pingcap.com/v1alpha1
-kind: TidbMonitor
-metadata:
-  name: basic
-spec:
-  clusters:
-  - name: basic
-  thanos:
-    baseImage: thanosio/thanos
-    version: v0.17.2
-  prometheus:
-    baseImage: prom/prometheus
-    version: v2.11.1
-  grafana:
-    baseImage: grafana/grafana
-    version: 6.1.6
-  initializer:
-    baseImage: pingcap/tidb-monitor-initializer
-    version: v5.0.1
-  reloader:
-    baseImage: pingcap/tidb-monitor-reloader
-    version: v1.0.1
-  imagePullPolicy: IfNotPresent
-```
-
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-thanos/README.md)。
