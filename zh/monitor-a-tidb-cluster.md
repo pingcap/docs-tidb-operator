@@ -323,3 +323,7 @@ spec:
 ```
 
 如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+
+### Grafana 查看多集群
+
+Grafana 当前支持多集群的查看，但是用户需要在 每个 Grafana Dashboard 中手工设置 `tidb_cluster` 变量 的`Hide` 选项为 `Variable`.
