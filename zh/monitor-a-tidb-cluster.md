@@ -315,7 +315,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.9
+    version: v5.0.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
