@@ -18,7 +18,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 > **注意：**
 >
-> * `spec.clusters[0].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
+> * `spec.clusters[].name` 需要配置为 TiDB 集群 TidbCluster 的名字。
 
 ### 持久化监控数据
 
