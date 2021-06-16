@@ -286,9 +286,9 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-TidbMonitor 在 Operator 1.2.x 版本之后支持跨 `namespace` 的多集群监控，这些集群可以是开启 `TLS` 的集群，也可以是没有开启 `TLS` 的集群。
+从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。无论要监控的集群是否已开启 `TLS`，你都可以通过配置 YAML 文件实现此功能。
 
-只需要简单的配置就可以实现这一功能，配置示例如下:
+配置示例如下:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -326,4 +326,4 @@ spec:
 
 ### Grafana 查看多集群
 
-Grafana 当前支持多集群的查看，但是用户需要在 每个 Grafana Dashboard 中打开设置选项，选择 `Variables`中的`tidb_cluster` 变量 ,将 `Hide` 属性设置为 `Variable`。
+要使用 Grafana 查看多个集群的状态，你需要在每个集群的 Grafana Dashboard 中打开设置选项，选择 `Variables`中的`tidb_cluster` 变量，将 `Hide` 属性设置为 `Variable`。
