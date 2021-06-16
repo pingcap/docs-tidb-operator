@@ -326,4 +326,4 @@ spec:
 
 ### Grafana 查看多集群
 
-要使用 Grafana 查看多个集群的状态，你需要在每个集群的 Grafana Dashboard 中打开设置选项，选择 `Variables`中的`tidb_cluster` 变量，将 `Hide` 属性设置为 `Variable`。
+要使用 Grafana 查看多个集群的状态，你需要在每个集群的 Grafana Dashboard 中找到 `Setting` 选项，选择 `Variables`中的`tidb_cluster` 变量，将 `Hide` 属性设置为 `Variable`。
