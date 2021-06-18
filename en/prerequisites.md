@@ -192,6 +192,7 @@ After the installation, take the following steps:
     create systemd drop-in directory for the docker service:
 
     {{< copyable "shell-regular" >}}
+
     ```shell
     sudo mkdir -p /etc/systemd/system/docker.service.d
     ```

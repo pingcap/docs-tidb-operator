@@ -194,10 +194,10 @@ sysctl --system
     创建 docker service 的 systemd drop-in 目录 `/etc/systemd/system/docker.service.d`：
 
     {{< copyable "shell-regular" >}}
+
     ```shell
     sudo mkdir -p /etc/systemd/system/docker.service.d
     ```
-
 
     创建 `/etc/systemd/system/docker.service.d/limit-nofile.conf` 文件，并添加 `LimitNOFILE` 参数：
 
