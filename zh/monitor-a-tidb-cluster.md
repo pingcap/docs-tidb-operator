@@ -286,7 +286,11 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。无论要监控的集群是否已开启 `TLS`，你都可以通过配置 YAML 文件实现此功能。
+从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。
+
+### 使用 YAML 文件配置多集群监控
+
+无论要监控的集群是否已开启 `TLS`，你都可以通过配置 TidbMonitor 的 YAML 文件实现。
 
 配置示例如下:
 
@@ -322,8 +326,12 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-如需了解完整的配置示例，可参考 [TiDB-operator中的示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+如需了解完整的配置示例，可参考 TiDB Operator 中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
 
-### Grafana 查看多集群
+### 使用 Grafana 查看多集群监控
 
-要使用 Grafana 查看多个集群的状态，你需要在每个集群的 Grafana Dashboard 中找到 `Setting` 选项，选择 `Variables`中的`tidb_cluster` 变量，将 `Hide` 属性设置为空选项。
+要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
+
+1. 点击 Grafana Dashboard 中的 `Dashboard settings` 选项，打开 `Settings` 面板。
+2. 在 `Settings` 面板 中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `Label`。
+3. 返回当前 Grafana Dashboard (目前无法保存对于 `Hide` 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${name}`。
