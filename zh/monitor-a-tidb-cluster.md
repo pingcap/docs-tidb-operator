@@ -328,7 +328,7 @@ spec:
 
 如需了解完整的配置示例，可参考 TiDB Operator 中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
 
-### Grafana 查看多集群
+### 使用 Grafana 查看多集群监控
 
 要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
 
