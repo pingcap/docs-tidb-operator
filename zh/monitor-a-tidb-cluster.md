@@ -333,5 +333,5 @@ spec:
 要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
 
 1. 点击 Grafana Dashboard 中的 `Dashboard settings` 选项，打开 `Settings` 面板。
-2. 在 `Settings` 面板 中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `Label`。
+2. 在 `Settings` 面板 中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `空选项`。
 3. 返回当前 Grafana Dashboard (目前无法保存对于 `Hide` 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${name}`。
