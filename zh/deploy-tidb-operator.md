@@ -127,7 +127,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator pingcap/tidb-operator -f  ${HOME}/tidb-operator/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator --namespace=tidb-admin -f  ${HOME}/tidb-operator/values-tidb-operator.yaml
     ```
 
 #### 离线安装 TiDB Operator
@@ -243,5 +243,5 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator ./tidb-operator
+    helm upgrade tidb-operator ./tidb-operator --namespace=tidb-admin
     ```
