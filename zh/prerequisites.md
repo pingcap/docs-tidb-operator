@@ -191,12 +191,23 @@ sysctl --system
 
 2. 设置 Docker daemon 的 ulimit。
 
-    编辑文件：
+    创建 docker service 的 systemd drop-in 目录 `/etc/systemd/system/docker.service.d`：
+
+    {{< copyable "shell-regular" >}}
+    ```shell
+    sudo mkdir -p /etc/systemd/system/docker.service.d
+    ```
+
+
+    创建 `/etc/systemd/system/docker.service.d/limit-nofile.conf` 文件，并添加 `LimitNOFILE` 参数：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    vim /etc/systemd/system/docker.service
+    cat > /etc/systemd/system/docker.service.d/limit-nofile.conf <<EOF
+    [Service]
+    LimitNOFILE=1048576
+    EOF
     ```
 
     设置 `LimitNOFILE=1048576`，这里设置 `LimitNOFILE` 为大于等于 `1048576` 的数字即可。
