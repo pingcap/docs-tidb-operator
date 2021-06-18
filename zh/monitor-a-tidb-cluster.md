@@ -286,7 +286,11 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。无论要监控的集群是否已开启 `TLS`，你都可以通过配置 YAML 文件实现此功能。
+从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。
+
+### 使用 YAML 文件配置多集群监控
+
+无论要监控的集群是否已开启 `TLS`，你都可以通过配置 TidbMonitor 的 YAML 文件实现。
 
 配置示例如下:
 
