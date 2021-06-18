@@ -189,7 +189,7 @@ After the installation, take the following steps:
 
 2. Set `ulimit` for the Docker daemon:
 
-    create systemd drop-in directory for the docker service:
+    1. Create the systemd drop-in directory for the docker service:
 
     {{< copyable "shell-regular" >}}
 
@@ -197,7 +197,7 @@ After the installation, take the following steps:
     sudo mkdir -p /etc/systemd/system/docker.service.d
     ```
 
-    create a file named `/etc/systemd/system/docker.service.d/limit-nofile.conf` that set the `LimitNOFILE` parameter：
+    2. Create a file named as `/etc/systemd/system/docker.service.d/limit-nofile.conf`, and add the configuration of the `LimitNOFILE` parameter to the file:
 
     {{< copyable "shell-regular" >}}
 
@@ -208,7 +208,7 @@ After the installation, take the following steps:
     EOF
     ```
 
-    Set `LimitNOFILE` to `1048576`. Here, you can set `LimitNOFILE` to a number equal to or greater than `1048576`.
+    3. Configure the value of the  `LimitNOFILE` parameter. The value must be a number equal to or greater than `1048576`.
 
     > **Note:**
     >
