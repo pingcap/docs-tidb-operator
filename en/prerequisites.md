@@ -195,6 +195,11 @@ After the installation, take the following steps:
 
     ```shell
     vim /etc/systemd/system/docker.service
+    # or
+    vim /usr/lib/systemd/system/docker.service
+    
+    systemctl daemon-reload
+    systemctl restart docker
     ```
 
     Set `LimitNOFILE` to `1048576`. Here, you can set `LimitNOFILE` to a number equal to or greater than `1048576`.
