@@ -336,5 +336,5 @@ spec:
 2. 在 `Settings` 面板 中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `空选项`。
 3. 返回当前 Grafana Dashboard (目前无法保存对于 `Hide` 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${name}`。
 
-此操作要求 Grafana 必须在 `6.5` 版本以上，才能编辑保存 `Dashboard`。
+如果需要保存 Dashboard， Grafana 必须在 `6.5` 版本以上，TiDB-Operator 1.2.x 版本以上 。
 
