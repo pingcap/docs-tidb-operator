@@ -17,6 +17,19 @@ This document describes how to initialize a TiDB cluster in Kubernetes (K8s), sp
 
 Refer to [TidbInitializer example](https://github.com/pingcap/tidb-operator/blob/master/manifests/initializer/tidb-initializer.yaml), [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md), and the following steps to complete TidbInitializer Custom Resource (CR), and save it to the `${cluster_name}/tidb-initializer.yaml` file. Please switch the TidbInitializer example and API documentation to the currently used version of TiDB Operator.
 
+Modify `spec.cluster.namespace` field and `spec.cluster.name` field in the file:
+
+{{< copyable "shell-regular" >}}
+
+```yaml
+# ...
+spec:
+  # ...
+  cluster:
+    namespace: ${cluster_namespce}
+    name: ${cluster_name}
+```
+
 ### Set initial account and password
 
 When a cluster is created, a default account `root` is created with no password. This might cause security issues. You can set a password for the `root` account in the following methods:
