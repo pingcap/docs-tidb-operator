@@ -12,6 +12,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`；
 3. 配置 MySQL 客户端使用加密连接。
 
+> **注意：**
+>
+> Secret 对象不能使用其他名字.
+
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
 
 - 使用 `cfssl` 系统颁发证书；

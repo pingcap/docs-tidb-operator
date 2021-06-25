@@ -21,6 +21,10 @@ To enable TLS for the MySQL client, perform the following steps:
 
 3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-an-encrypted-connection).
 
+> **Note:**
+>
+> Secret objects can't use any other name.
+
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
 ## Issue two sets of certificates for the TiDB cluster
