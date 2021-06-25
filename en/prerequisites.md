@@ -214,6 +214,14 @@ After the installation, take the following steps:
     >
     > `LimitNOFILE` must be explicitly set to `1048576` or a greater value, other than `infinity` by default. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value in some versions of `systemd` is `65536`.
 
+    4. Reload configuration.
+
+       {{< copyable "shell-regular" >}}
+
+       ```shell
+       systemctl daemon-reload && systemctl restart docker
+       ```
+
 ## Kubernetes service
 
 To deploy a multi-master, highly available cluster, see [Kubernetes documentation](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/).
