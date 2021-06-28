@@ -1,5 +1,5 @@
 ---
-title: 为 TiCDC 开启 TLS
+title: 让 TiCDC 组件使用 TLS 访问下游服务
 summary: 了解如何让 TiCDC 使用 TLS 连接访问下游服务
 ---
 
@@ -54,4 +54,3 @@ summary: 了解如何让 TiCDC 使用 TLS 连接访问下游服务
 
     kubectl exec ${cluster_name}-ticdc-0 -- /cdc cli changefeed create --pd=http://${pd_service}:2379 - --sink-uri="mysql://${user}:{$password}@${downstream_service}/?ssl-ca=/var/lib/sink-tls/${secret_name}/ca.crt&ssl-cert=/var/lib/sink-tls/${secret_name}/tls.crt&ssl-key=/var/lib/sink-tls/${secret_name}/tls.key"
     ```
-
