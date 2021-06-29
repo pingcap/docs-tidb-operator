@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     > **注意：**
     >
-    > 创建的 Secret 对象必须符合上述命名规范，否则 TiDB 集群无法成功部署。
+    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
 
 2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`；
 3. 配置 MySQL 客户端使用加密连接。
