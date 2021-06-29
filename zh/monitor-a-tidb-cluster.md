@@ -330,7 +330,7 @@ spec:
 
 ### 使用 Grafana 查看多集群监控
 
-`tidb-monitor-initializer` 镜像版本在 `< v4.0.14`、`< v5.0.3` 范围，要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
+当 `tidb-monitor-initializer` 镜像版本在 `< v4.0.14`、`< v5.0.3` 范围时，要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
 
 1. 点击 Grafana Dashboard 中的 `Dashboard settings` 选项，打开 `Settings` 面板。
 2. 在 `Settings` 面板中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `空选项`。
