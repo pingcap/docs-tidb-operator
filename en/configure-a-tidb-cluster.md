@@ -357,8 +357,9 @@ spec:
   tikv:
     image: pingcap/tikv:v5.0.1
     config:
-      log-level: "info"
-      slow-log-threshold: "1s"
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -376,8 +377,9 @@ spec:
   tikv:
     image: pingcap/tikv:v5.0.1
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -762,7 +764,7 @@ The following is an example configuration:
 {{< copyable "" >}}
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
 - topologyKey: topology.kubernetes.io/zone
 ```
@@ -772,7 +774,7 @@ The example configuration can make pods of the same component evenly spread on d
 Currently, `topologySpreadConstraints` only supports the configuration of the `topologyKey` field. In the pod spec, the above example configuration will be automatically expanded as follows:
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
   maxSkew: 1
   whenUnsatisfiable: DoNotSchedule

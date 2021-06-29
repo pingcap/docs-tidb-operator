@@ -344,7 +344,10 @@ spec:
 ....
   tikv:
     image: pingcap/tikv:v5.0.1
-    config: {}
+    config:
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -362,8 +365,9 @@ spec:
   tikv:
     image: pingcap/tikv:v5.0.1
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -732,7 +736,7 @@ affinity:
 {{< copyable "" >}}
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
 - topologyKey: topology.kubernetes.io/zone
 ```
@@ -742,7 +746,7 @@ topologySpreadConstrains:
 当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置：
 
 ```yaml
-topologySpreadConstrains:
+topologySpreadConstraints:
 - topologyKey: kubernetes.io/hostname
   maxSkew: 1
   whenUnsatisfiable: DoNotSchedule
