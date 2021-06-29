@@ -214,7 +214,7 @@ sysctl --system
 
     > **注意：**
     >
-    > `LimitNOFILE` 需要显式设置为 `1048576` 或者更大，而不是默认的 `infinity`，由于 [`systemd` 的 bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
+    > 请勿将 `LimitNOFILE` 的值设置为 `infinity`。由于 [`systemd` 的 bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
 
     4. 重新加载配置。
 
