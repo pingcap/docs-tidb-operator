@@ -50,5 +50,5 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec ${cluster_name}-ticdc-0 -- /cdc cli changefeed create --pd=http://${cluster_name}-pd-0.${cluster_name}-pd-peer:2379 --sink-uri="mysql://${user}:{$password}@${downstream_service}/?ssl-ca=/var/lib/sink-tls/${secret_name}/ca.crt&ssl-cert=/var/lib/sink-tls/${secret_name}/tls.crt&ssl-key=/var/lib/sink-tls/${secret_name}/tls.key"
+    kubectl exec ${cluster_name}-ticdc-0 -- /cdc cli changefeed create --pd=https://${cluster_name}-pd:2379 --sink-uri="mysql://${user}:{$password}@${downstream_service}/?ssl-ca=/var/lib/sink-tls/${secret_name}/ca.crt&ssl-cert=/var/lib/sink-tls/${secret_name}/tls.crt&ssl-key=/var/lib/sink-tls/${secret_name}/tls.key"
     ```
