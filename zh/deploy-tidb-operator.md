@@ -252,7 +252,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     helm upgrade tidb-operator ./tidb-operator
     ```
 
-## 配置 TiDB Operator
+## 自定义配置 TiDB Operator
 
 可以通过修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 来配置 TiDB Operator。本节后续使用 `values.yaml` 来代表 `/home/tidb/tidb-operator/values-tidb-operator.yaml`。
 
@@ -263,7 +263,7 @@ TiDB Operator 包含两个组件：
 
 这两个组件都是无状态的，由 `Deployment` 部署。在 `values.yaml` 文件中，你可以配置其中的 `limit`、`request` 与 `replicas` 参数。
 
-修改了 `values.yaml` 文件后，运行下面命令来应用：
+修改了 `values.yaml` 文件后，请运行以下命令使更改生效：
 
 {{< copyable "shell-regular" >}}
 
