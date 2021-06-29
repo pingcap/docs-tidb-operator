@@ -571,6 +571,10 @@ spec:
     evictLeaderTimeout: 10000m
 ```
 
+> **Warning:**
+>
+> If TiKV's version is earlier than 4.0.14, or is earlier than 5.0.3, due to [a bug of TiKV](https://github.com/tikv/tikv/pull/10364) please set `spec.tikv.evictLeaderTimeout` as large as possible.
+
 ### Configure PV for TiDB slow logs
 
 TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
