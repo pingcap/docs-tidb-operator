@@ -193,15 +193,15 @@ sysctl --system
 
     1. 创建 docker service 的 systemd drop-in 目录 `/etc/systemd/system/docker.service.d`：
 
-       {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
         ```shell
         sudo mkdir -p /etc/systemd/system/docker.service.d
         ```
 
-    2. 创建 `/etc/systemd/system/docker.service.d/limit-nofile.conf` 文件，并添加 `LimitNOFILE` 参数：
+    2. 创建 `/etc/systemd/system/docker.service.d/limit-nofile.conf` 文件，并配置 `LimitNOFILE` 参数的值，取值范围为大于等于 `1048576` 的数字即可。
 
-       {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
         ```shell
         cat > /etc/systemd/system/docker.service.d/limit-nofile.conf <<EOF
@@ -210,19 +210,17 @@ sysctl --system
         EOF
         ```
 
-    3. 配置 `LimitNOFILE` 参数的值。取值范围为大于等于 `1048576` 的数字即可。
+        > **注意：**
+        >
+        > 请勿将 `LimitNOFILE` 的值设置为 `infinity`。由于 [`systemd` 的 bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
 
-    > **注意：**
-    >
-    > 请勿将 `LimitNOFILE` 的值设置为 `infinity`。由于 [`systemd` 的 bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
+    3. 重新加载配置。
 
-    4. 重新加载配置。
+        {{< copyable "shell-regular" >}}
 
-       {{< copyable "shell-regular" >}}
-
-       ```shell
-       systemctl daemon-reload && systemctl restart docker
-       ```
+        ```shell
+        systemctl daemon-reload && systemctl restart docker
+        ```
 
 ## Kubernetes 服务
 

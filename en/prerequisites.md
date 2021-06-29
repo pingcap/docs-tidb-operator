@@ -191,36 +191,34 @@ After the installation, take the following steps:
 
     1. Create the systemd drop-in directory for the docker service:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    sudo mkdir -p /etc/systemd/system/docker.service.d
-    ```
+        ```shell
+        sudo mkdir -p /etc/systemd/system/docker.service.d
+        ```
 
-    2. Create a file named as `/etc/systemd/system/docker.service.d/limit-nofile.conf`, and add the configuration of the `LimitNOFILE` parameter to the file:
+    2. Create a file named as `/etc/systemd/system/docker.service.d/limit-nofile.conf`, and configure the value of the  `LimitNOFILE` parameter. The value must be a number equal to or greater than `1048576`.
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    cat > /etc/systemd/system/docker.service.d/limit-nofile.conf <<EOF
-    [Service]
-    LimitNOFILE=1048576
-    EOF
-    ```
+        ```shell
+        cat > /etc/systemd/system/docker.service.d/limit-nofile.conf <<EOF
+        [Service]
+        LimitNOFILE=1048576
+        EOF
+        ```
 
-    3. Configure the value of the  `LimitNOFILE` parameter. The value must be a number equal to or greater than `1048576`.
+        > **Note:**
+        >
+        > DO NOT set the value of `LimitNOFILE` to `infinity`. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value of `systemd` in some versions is `65536`.
 
-    > **Note:**
-    >
-    > DO NOT set the value of `LimitNOFILE` to `infinity`. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value of `systemd` in some versions is `65536`.
+    3. Reload configuration.
 
-    4. Reload configuration.
+        {{< copyable "shell-regular" >}}
 
-       {{< copyable "shell-regular" >}}
-
-       ```shell
-       systemctl daemon-reload && systemctl restart docker
-       ```
+        ```shell
+        systemctl daemon-reload && systemctl restart docker
+        ```
 
 ## Kubernetes service
 
