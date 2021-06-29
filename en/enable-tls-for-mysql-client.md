@@ -14,7 +14,7 @@ To enable TLS for the MySQL client, perform the following steps:
 
     > **Note:**
     >
-    > The Secret objects you created must follow the above naming convention. Otherwise, the TiDB cluster cannot be deployed successfully.
+    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB cluster will fail.
 
     Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
