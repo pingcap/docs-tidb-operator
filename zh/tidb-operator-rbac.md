@@ -24,7 +24,7 @@ tidb-operator:tidb-controller-manager                                  2021-05-0
 tidb-operator:tidb-scheduler                                           2021-05-04T13:08:55Z
 ```
 
-`tidb-operator:tidb-controller-manager` ClusterRole 是为 `tidb-controller-manager` Pod 创建的 ClusterRole，其对应的权限包括：
+`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
