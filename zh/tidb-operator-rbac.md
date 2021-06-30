@@ -53,7 +53,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展 PVC 存储之前确认 StorageClass 是否支持 `VolumeExpansion` |
 | -                                             |[/metrics]         | -              | [get]                                            | 读取监控指标 |
 
-`tidb-operator:tidb-scheduler` ClusterRole 是为 `tidb-scheduler` Pod 创建的 ClusterRole，其对应的权限包括：
+`tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 ClusterRole，其对应的权限包括：
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
