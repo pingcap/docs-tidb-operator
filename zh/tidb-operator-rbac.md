@@ -1,7 +1,6 @@
 ---
 title: TiDB Operator RBAC 规则
 summary: 介绍 TiDB Operator 需要的 RBAC 规则。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/tidb-operator-rbac/']
 ---
 
 # TiDB Operator 需要的 RBAC 规则
@@ -79,6 +78,10 @@ kubectl get clusterrole | grep tidb
 ```shell
 tidb-operator:tidb-controller-manager                                  2021-05-04T13:08:55Z
 ```
+
+> **注意：**
+>
+> 如果部署时设置 `controllerManager.clusterPermissions.nodes`、`controllerManager.clusterPermissions.persistentvolumes`、`controllerManager.clusterPermissions.storageclasses` 都为 `false`，则不会创建该 ClusterRole
 
 {{< copyable "shell-regular" >}}
 
