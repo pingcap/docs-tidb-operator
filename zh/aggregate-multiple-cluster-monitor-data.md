@@ -33,7 +33,7 @@ kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 > **注意：**
 >
-> - `${namespace}` 必须跟部署 `TidbCluster` 的 namespace 相同
+> - 在本示例中 `${namespace}` 必须跟部署 `TidbCluster` 的 namespace 相同，但是 Thanos Query 组件可以部署在其它 namespace 中，请注意修改它的命令参数 `--store`
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
@@ -53,7 +53,12 @@ kubectl port-forward -n ${namespace} svc/thanos-query 9090
 
 ## 配置 Grafana
 
-部署完 Thanos Query，Grafana 只需要将 DataSource（prometheus 类型）URL 改成 `http://thanos-query.$(namespace):9090` ，就可以查询到多个 TidbMonitor 的监控数据。
+部署完 Thanos Query，Grafana 只需添加或修改 DataSource（prometheus 类型）URL 为 `http://thanos-query.${namespace}:9090` ，就可以查询到多个 TidbMonitor 的监控数据，请参考以下步骤：
+
+1. 登陆 Grafana
+2. 左侧菜单选择 `Configuration` -> `Data Sources`
+3. 添加或修改一个 prometheus 类型 DataSource
+4. HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
 
 ## 增加或者减少 TidbMonitor
 
