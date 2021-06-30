@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/tidb-operator-rbac/']
 
 # TiDB Operator 需要的 RBAC 规则
 
-Kubernetes [基于角色的访问控制 (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) 功能是通过 Role 或者 ClusterRole 来进行管理的，并通过 RoleBinding 或 ClusterRoleBinding 将其权限赋予一个或者一组用户。
+Kubernetes [基于角色的访问控制 (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) 规则是通过 Role 或者 ClusterRole 来进行管理的，使用 RoleBinding 可以将 Role 的权限赋予给一个用户，使用 ClusterRoleBinding 可以将 ClusterRole 的权限赋予给一组用户。
 
 ## Cluster 级别管理 TiDB 集群
 
