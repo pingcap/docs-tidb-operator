@@ -138,4 +138,4 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-07T06:14:
 > **注意：**
 >
 > * `-` 表示为空。
-> * 动作列中的 `*` 表示 Kubernetes 集群要求的所有动作。
+> * 在**动作**列中，`*` 表示支持 Kubernetes 集群要求的所有动作。
