@@ -74,7 +74,7 @@ PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled 
 
 #### Storage Class
 
-You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](https://kubernetes.io/zh/docs/concepts/storage/storage-classes/) supported by the Kubernetes cluster, check with your system administrator.
+You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) supported by the Kubernetes cluster, check with your system administrator.
 
 Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, refer to the [Storage Configuration document](configure-storage-class.md) to select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
 
@@ -492,7 +492,7 @@ You can configure TiCDC start parameters through `spec.ticdc.config` in TidbClus
 
 For example:
 
-自 v1.2.0-rc.2 版本起支持透传 TOML 配置给组件:
+Since v1.2.0-rc.2, TiDB Operator supports passing raw TOML configuration to TiCDC:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
