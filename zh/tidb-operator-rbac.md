@@ -83,7 +83,7 @@ tidb-operator:tidb-controller-manager                                  2021-05-0
 
 > **注意：**
 >
-> 如果部署时设置 `controllerManager.clusterPermissions.nodes`、`controllerManager.clusterPermissions.persistentvolumes`、`controllerManager.clusterPermissions.storageclasses` 都为 `false`，则不会创建该 ClusterRole
+> 如果部署时设置 `controllerManager.clusterPermissions.nodes`、`controllerManager.clusterPermissions.persistentvolumes`、`controllerManager.clusterPermissions.storageclasses` 都为 `false`，则不会创建该 ClusterRole。
 
 {{< copyable "shell-regular" >}}
 
