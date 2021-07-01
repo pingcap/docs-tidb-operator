@@ -476,20 +476,6 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.ticdc.config` 来配置 TiCDC 启动参数。
 
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
-  ticdc:
-    config:
-      timezone: UTC
-      gcTTL: 86400
-      logLevel: info
-```
-
 自 v1.2.0-rc.2 版本起支持透传 TOML 配置给组件:
 
 ```yaml
@@ -503,6 +489,22 @@ spec:
     config: |
       gc-ttl = 86400
       log-level = "info"
+```
+
+TiDB Operator v1.2.0-rc.2 之前版本可以通过 YAML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  ticdc:
+    config:
+      timezone: UTC
+      gcTTL: 86400
+      logLevel: info
 ```
 
 获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml)。
