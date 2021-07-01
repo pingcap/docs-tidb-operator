@@ -194,7 +194,7 @@ After the installation, take the following steps:
         {{< copyable "shell-regular" >}}
 
         ```shell
-        sudo mkdir -p /etc/systemd/system/docker.service.d
+        mkdir -p /etc/systemd/system/docker.service.d
         ```
 
     2. Create a file named as `/etc/systemd/system/docker.service.d/limit-nofile.conf`, and configure the value of the  `LimitNOFILE` parameter. The value must be a number equal to or greater than `1048576`.
