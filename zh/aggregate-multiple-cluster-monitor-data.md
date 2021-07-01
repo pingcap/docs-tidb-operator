@@ -33,7 +33,7 @@ kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 > **注意：**
 >
-> - `${namespace}` 必须跟部署 `TidbCluster` 的 namespace 相同
+> 此命令中的 `${namespace}` 必须与部署 `TidbCluster` 的 namespace 相同。
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
@@ -48,8 +48,8 @@ kubectl port-forward -n ${namespace} svc/thanos-query 9090
 执行上述命令后，就可以通过浏览器访问 <http://127.0.0.1:9090> 
 
 如果你想通过 NodePort 或 LoadBalancer 访问，请参考：
-- [访问 TiDB 集群，NodePort方式](access-tidb.md#nodeport)
-- [访问 TiDB 集群，LoadBalancer方式](access-tidb.md#loadbalancer)
+- [NodePort方式](access-tidb.md#nodeport)
+- [LoadBalancer方式](access-tidb.md#loadbalancer)
 
 ## 配置 Grafana
 
