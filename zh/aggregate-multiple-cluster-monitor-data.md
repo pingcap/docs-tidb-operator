@@ -33,7 +33,7 @@ kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 > **注意：**
 >
-> - 在本示例中 `${namespace}` 必须跟部署 `TidbCluster` 的 namespace 相同，但是 Thanos Query 组件可以部署在其它 namespace 中，请注意修改它的命令参数 `--store`
+> - `${namespace}` 必须跟部署 `TidbCluster` 的 namespace 相同
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
