@@ -573,9 +573,7 @@ spec:
 
 > **Warning:**
 >
-> If TiKV's version is earlier than 4.0.14, or is earlier than 5.0.3, due to [a bug of TiKV](https://github.com/tikv/tikv/pull/10364) please set `spec.tikv.evictLeaderTimeout` as large as possible to ensure that all region leaders on the TiKV Pod can be evicted within time.
->
-> It is recommended to set the value greater than `1500m`.
+> If the TiKV version is earlier than 4.0.14 or 5.0.3, due to [a bug of TiKV](https://github.com/tikv/tikv/pull/10364), you need to configure the timeout `spec.tikv.evictLeaderTimeout` as large as possible to ensure that all Region leaders on the TiKV Pod can be evicted within the timeout. If you are not sure about the proper value, greater than '1500m' is recommended.
 
 ### Configure PV for TiDB slow logs
 
