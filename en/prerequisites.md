@@ -212,7 +212,7 @@ After the installation, take the following steps:
         >
         > DO NOT set the value of `LimitNOFILE` to `infinity`. Due to [a bug of `systemd`](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186), the `infinity` value of `systemd` in some versions is `65536`.
 
-    3. Reload configuration.
+    3. Reload the configuration.
 
         {{< copyable "shell-regular" >}}
 
