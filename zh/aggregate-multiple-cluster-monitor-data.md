@@ -56,7 +56,7 @@ kubectl port-forward -n ${namespace} svc/thanos-query 9090
 部署 Thanos Query 之后，要查询多个 TidbMonitor 的监控数据，请进行以下操作：
 
 1. 登陆 Grafana
-2. 左侧菜单选择 `Configuration` -> `Data Sources`
+2. 在左侧导航栏中，选择 `Configuration` > `Data Sources`。
 3. 添加或修改一个 prometheus 类型 DataSource
 4. HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
 
