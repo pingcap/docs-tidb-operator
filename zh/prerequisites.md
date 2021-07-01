@@ -196,7 +196,7 @@ sysctl --system
         {{< copyable "shell-regular" >}}
 
         ```shell
-        sudo mkdir -p /etc/systemd/system/docker.service.d
+        mkdir -p /etc/systemd/system/docker.service.d
         ```
 
     2. 创建 `/etc/systemd/system/docker.service.d/limit-nofile.conf` 文件，并配置 `LimitNOFILE` 参数的值，取值范围为大于等于 `1048576` 的数字即可。
