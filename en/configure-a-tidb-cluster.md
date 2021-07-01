@@ -41,11 +41,11 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v4.0.12`
+- `spec.version`: the format is `imageTag`, such as `v4.0.13`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.12`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v4.0.13`
 
 ### Recommended configuration
 
@@ -301,7 +301,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.12
+    image: pingcap/tidb:v4.0.13
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -323,7 +323,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.12
+    image: pingcap/tidb:v4.0.13
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -355,7 +355,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.12
+    image: pingcap/tikv:v4.0.13
     config:
       log-level: "info"
       slow-log-threshold: "1s"
@@ -374,7 +374,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.12
+    image: pingcap/tikv:v4.0.13
     config: |
       #  [storage]
       #    reserve-space = "2MB"
@@ -403,7 +403,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.12
+    image: pingcap/pd:v4.0.13
     config:
       lease: 3
       enable-prevote: true
@@ -419,7 +419,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.12
+    image: pingcap/pd:v4.0.13
     config: |
       lease = 3
       enable-prevote = true
@@ -519,7 +519,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.12
+  version: v4.0.13
   pvReclaimPolicy: Retain
   discovery: {}
   pd:
