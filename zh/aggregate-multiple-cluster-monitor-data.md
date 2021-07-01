@@ -62,7 +62,7 @@ kubectl port-forward -n ${namespace} svc/thanos-query 9090
 
 ## 增加或者减少 TidbMonitor
 
-当需要从 Thanos Query 增加、更新或者下线 Monitor Store 时，需要更新 Thanos Query 组件的命令参数 `--store`，滚动更新 Thanos Query 组件。
+在 Thanos Query 中，一个 Prometheus 对应一个 Monitor Store，也就对应一个 TidbMonitor。当需要从 Thanos Query 增加、更新或者下线 Monitor Store 时，需要更新 Thanos Query 组件的命令参数 `--store`，滚动更新 Thanos Query 组件。
 
 ```yaml
 spec:
