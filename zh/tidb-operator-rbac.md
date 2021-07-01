@@ -9,7 +9,9 @@ Kubernetes [基于角色的访问控制 (RBAC)](https://kubernetes.io/docs/refer
 
 ## Cluster 级别管理 TiDB 集群
 
-默认配置 (`clusterScoped=true`) 下，TiDB Operator 能管理 Kubernetes 集群内所有 TiDB 集群。要查看为 TiDB Operator 创建的 ClusterRole，请使用以下命令：
+默认配置 (`clusterScoped=true`) 下，TiDB Operator 能管理 Kubernetes 集群内所有 TiDB 集群。
+
+要查看为 TiDB Operator 创建的 ClusterRole，请使用以下命令：
 
 {{< copyable "shell-regular" >}}
 
