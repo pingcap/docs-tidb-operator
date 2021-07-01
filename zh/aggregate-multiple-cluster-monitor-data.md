@@ -58,7 +58,7 @@ kubectl port-forward -n ${namespace} svc/thanos-query 9090
 1. 登陆 Grafana
 2. 在左侧导航栏中，选择 `Configuration` > `Data Sources`。
 3. 添加或修改一个 prometheus 类型的 DataSource。
-4. HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
+4. 将 HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
 
 ## 增加或者减少 TidbMonitor
 
