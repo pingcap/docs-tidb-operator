@@ -254,7 +254,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 ## 自定义配置 TiDB Operator
 
-可以通过修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 来配置 TiDB Operator。本节后续使用 `values.yaml` 来代表 `/home/tidb/tidb-operator/values-tidb-operator.yaml`。
+可以通过修改 `${HOME}/tidb-operator/values-tidb-operator.yaml` 来配置 TiDB Operator。本节后续使用 `values.yaml` 来代表 `${HOME}/tidb-operator/values-tidb-operator.yaml`。
 
 TiDB Operator 包含两个组件：
 
