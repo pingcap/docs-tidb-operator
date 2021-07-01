@@ -40,9 +40,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/configure-a-tidb-cluster/','/docs-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.12`
+- `spec.version`，格式为 `imageTag`，例如 `v4.0.13`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.12`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.13`
 
 ### 推荐配置
 
@@ -290,7 +290,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.12
+    image: pingcap/tidb:v4.0.13
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -312,7 +312,7 @@ metadata:
 spec:
 ....
   tidb:
-    image: pingcap/tidb:v4.0.12
+    image: pingcap/tidb:v4.0.13
     imagePullPolicy: IfNotPresent
     replicas: 1
     service:
@@ -342,7 +342,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.12
+    image: pingcap/tikv:v4.0.13
     config:
       storage:
         block-cache:
@@ -362,7 +362,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.12
+    image: pingcap/tikv:v4.0.13
     config: |
       [storage]
         [storage.block-cache]
@@ -390,7 +390,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.12
+    image: pingcap/pd:v4.0.13
     config:
       lease: 3
       enable-prevote: true
@@ -406,7 +406,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.12
+    image: pingcap/pd:v4.0.13
     config: |
       lease = 3
       enable-prevote = true
@@ -502,7 +502,7 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v4.0.12
+  version: v4.0.13
   pvReclaimPolicy: Retain
   discovery: {}
   pd:

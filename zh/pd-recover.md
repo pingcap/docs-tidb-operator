@@ -18,7 +18,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/pd-recover/','/docs-cn/tidb-in-kub
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    `${version}` 是 TiDB 集群版本，例如，`v4.0.12`。
+    `${version}` 是 TiDB 集群版本，例如，`v4.0.13`。
 
 2. 解压安装包：
 
