@@ -555,7 +555,10 @@ spec:
 
 > **警告：**
 >
-> 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大。
+> 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大，以保证 TiKV Pod 上所有的 Region Leader 能在设置的时间内驱逐完毕。
+> 
+> 建议将其值设置为 `1500m` 以上。
+
 
 ### 配置 TiDB 慢查询日志持久卷
 
