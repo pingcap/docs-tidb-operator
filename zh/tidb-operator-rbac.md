@@ -29,9 +29,9 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 `tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole。
 `tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 ClusterRole。
 
-### tidb-controller-manager 权限
+### tidb-controller-manager ClusterRole 权限
 
-以下表格列出了 tidb-controller-manager 对应的权限。
+以下表格列出了 tidb-controller-manager ClusterRole 对应的权限。
 
 | 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
@@ -60,9 +60,14 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | 扩展 PVC 存储之前确认 StorageClass 是否支持 `VolumeExpansion` |
 | -                                             |[/metrics]         | -              | [get]                                            | 读取监控指标 |
 
-### tidb-scheduler 权限
+> **注意：**
+>
+> * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名**列中， `-` 表示该项没有资源名。
+> * 在**动作**列中，`*` 表示支持 Kubernetes 集群支持的所有动作。
 
-以下表格列出了 tidb-scheduler 对应的权限。
+### tidb-scheduler ClusterRole 权限
+
+以下表格列出了 tidb-scheduler ClusterRole 对应的权限。
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
@@ -77,8 +82,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 
 > **注意：**
 >
-> * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名** 列中， `-` 表示该项没有资源名。
-> * 在**动作**列中，`*` 表示支持 Kubernetes 集群要求的所有动作。
+> * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名**列中， `-` 表示该项没有资源名。
 
 ## Namespace 级别管理 TiDB 集群
 
@@ -93,6 +97,8 @@ kubectl get clusterrole | grep tidb
 ```shell
 tidb-operator:tidb-controller-manager                                  2021-05-04T13:08:55Z
 ```
+
+`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole。
 
 > **注意：**
 >
@@ -110,12 +116,12 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 ```
 
 其中：
-`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole 和 Role。
+`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 Role。
 `tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 Role。
 
-### tidb-controller-manager 权限（ClusterRole）
+### tidb-controller-manager ClusterRole 权限
 
-以下表格列出了 tidb-controller-manager 对应的权限（ClusterRole）。
+以下表格列出了 tidb-controller-manager ClusterRole 对应的权限。
 
 | 资源                          | 非资源 URLs        | 资源名          | 动作                             | 解释 |
 | ---------                     | ----------------- | -------------- | -----                            | ------- |
@@ -123,9 +129,13 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 | nodes                         | -                 | -              | [get list watch]                 | 读取 Node Label 并根据 Label 信息为 TiKV、TiFlash 设置 Store Label |
 | storageclasses.storage.k8s.io | -                 | -              | [get list watch]                 | 扩展 PVC 存储之前确认 StorageClass 是否支持 `VolumeExpansion` |
 
-### tidb-controller-manager 权限（Role）
+> **注意：**
+>
+> * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名**列中， `-` 表示该项没有资源名。
 
-以下表格列出了 tidb-controller-manager 对应的权限（Role）。
+### tidb-controller-manager Role 权限
+
+以下表格列出了 tidb-controller-manager Role 对应的权限。
 
 | 资源                                          | 非资源 URLs        | 资源名          | 动作                                             | 解释 |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
@@ -148,9 +158,14 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 | jobs.batch                                    | -                 | -              | [get list watch create update delete]            | TiDB 集群初始化、备份、恢复操作使用 Job 进行 |
 | pods                                          | -                 | -              | [get list watch update delete]                   | 操作 Pod 资源 |
 
-### tidb-scheduler 权限
+> **注意：**
+>
+> * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名**列中， `-` 表示该项没有资源名。
+> * 在**动作**列中，`*` 表示支持 Kubernetes 集群支持的所有动作。
 
-以下表格列出了 tidb-scheduler 对应的权限。
+### tidb-scheduler Role 权限
+
+以下表格列出了 tidb-scheduler Role 对应的权限。
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
@@ -166,4 +181,3 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 > **注意：**
 >
 > * 在**非资源 URLs** 列中， `-` 表示该项没有非资源 URLs。在**资源名**列中， `-` 表示该项没有资源名。
-> * 在**动作**列中，`*` 表示支持 Kubernetes 集群支持的所有动作。
