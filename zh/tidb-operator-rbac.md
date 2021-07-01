@@ -27,8 +27,8 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 ```
 
 其中：
-`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole。
-`tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 ClusterRole。
+* `tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 ClusterRole。
+* `tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 ClusterRole。
 
 ### tidb-controller-manager ClusterRole 权限
 
@@ -117,8 +117,8 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 ```
 
 其中：
-`tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 Role。
-`tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 Role。
+* `tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 Role。
+* `tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 Role。
 
 ### tidb-controller-manager ClusterRole 权限
 
