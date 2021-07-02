@@ -122,6 +122,7 @@ tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:
 ```
 
 其中：
+
 * `tidb-operator:tidb-controller-manager` 是为 `tidb-controller-manager` Pod 创建的 Role。
 * `tidb-operator:tidb-scheduler` 是为 `tidb-scheduler` Pod 创建的 Role。
 
