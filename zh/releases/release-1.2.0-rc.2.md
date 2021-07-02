@@ -24,4 +24,4 @@ TiDB Operator 版本：1.2.0-rc.2
 ## Bug 修复
 
 - 修复部署异构集群时 TiDB Operator 可能 panic 的问题 ([#4054](https://github.com/pingcap/tidb-operator/pull/4054) [#3965](https://github.com/pingcap/tidb-operator/pull/3965), [@KanShiori](https://github.com/KanShiori) [@july2993](https://github.com/july2993))
-- 修复 TidbCluster spec 未更改时 TiDB service 仍然持续被更新的问题 ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))
+- 修复 TidbCluster spec 未更改时 TiDB service 与 TidbCluster 状态仍然持续被更新的问题 ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))

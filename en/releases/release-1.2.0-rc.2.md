@@ -24,4 +24,4 @@ TiDB Operator version: 1.2.0-rc.2
 ## Bug fixes
 
 - Fix the issue that TiDB Operator may panic when heterogeneous clusters are deployed ([#4054](https://github.com/pingcap/tidb-operator/pull/4054) [#3965](https://github.com/pingcap/tidb-operator/pull/3965), [@KanShiori](https://github.com/KanShiori) [@july2993](https://github.com/july2993))
-- Fix the issue that TiDB service is updated continuously even if without any change to the spec ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))
+- Fix the issue that TiDB service and TidbCluster status is updated continuously even if without any change to the spec ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))
