@@ -5,17 +5,18 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
 
 # TiCDC 组件同步数据到开启 TLS 的下游服务
 
-下面主要介绍在 Kubernetes 上如何让 TiCDC 组件同步数据到开启 TLS 的下游服务。
+本文介绍在 Kubernetes 上如何让 TiCDC 组件同步数据到开启 TLS 的下游服务。
 
-## 开始之前
+## 准备条件
 
-你需要部署一个下游服务，并开启了客户端 TLS 认证。
+在开始之前，请进行以下准备工作：
 
-你需要生成客户端访问下游服务所需要的密钥文件。
+- 部署一个下游服务，并开启客户端 TLS 认证。
+- 生成客户端访问下游服务所需要的密钥文件。
 
 ## TiCDC 同步数据到开启 TLS 的下游服务
 
-1. 创建包含访问下游服务的客户端 TLS 证书的 Kubernetes Secret 对象。数据来自于你为客户端生成的密钥文件。
+1. 创建一个 Kubernetes Secret 对象，此对象需要包含用于访问下游服务的客户端 TLS 证书。数据来自于你为客户端生成的密钥文件。
     
     {{< copyable "shell-regular" >}}
 
@@ -23,7 +24,7 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
     kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-2. 设置 TidbCluster 中的 `spec.ticdc.tlsClientSecretNames` 字段，挂载 Secret 对象到 TiCDC 的 Pod。
+2. 设置 TidbCluster 中的 `spec.ticdc.tlsClientSecretNames` 字段，将 Secret 对象挂载到 TiCDC 的 Pod。
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
