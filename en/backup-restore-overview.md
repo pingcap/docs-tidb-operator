@@ -46,8 +46,17 @@ This section introduces the fields in the `Backup` CR.
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.toolImage`: The tool image used by `Backup`.
+<<<<<<< HEAD
     - When using BR for backup, you can specify the BR version in this field. For example, `.spec.toolImage: pingcap/br:v4.0.10`. If not specified, `pingcap/br:${tikv_version}` is used for backup by default.
     - When using Dumpling for backup, you can specify the Dumpling version in this field. For example, `spec.toolImage: pingcap/dumpling:v4.0.10`. If not specified, the Dumpling version specified in `TOOLKIT_V40` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/release-1.1/images/tidb-backup-manager/Dockerfile) is used for backup by default.
+=======
+
+    - When using BR for backup, you can specify the BR version in this field.
+        - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
+        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.1.0`, the image of the specified version is used for backup.
+        - If the BR version is not specified in the field, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
+    - When using Dumpling for backup, you can specify the Dumpling version in this field. For example, `spec.toolImage: pingcap/dumpling:v5.1.0`. If not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for backup by default.
+>>>>>>> 38c77a01 (en, zh: Update description about `toolImage` field of BR (#1287))
     - TiDB Operator supports this configuration starting from v1.1.9.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to 72h.
 
