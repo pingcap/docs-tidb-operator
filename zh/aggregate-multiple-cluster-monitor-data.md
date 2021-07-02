@@ -23,29 +23,44 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml
 ```
 
-然后需要部署 Thanos Query 组件：
+> **注意：**
+>
+> 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，必须与部署 `TidbCluster` 的 namespace 相同。
 
-{{< copyable "shell-regular" >}}
+然后需要部署 Thanos Query 组件，操作步骤如下：
 
-```
-kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
-```
+1. 下载 thanos-query 部署文件：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```
+    curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
+    ```
+
+2. 手动修改文件中的 `--store` 参数，将 `basic-prometheus:10901` 改成 `basic-prometheus.${namespace}:10901`。
+3. 执行 `kubectl apply` 命令部署：
+
+   {{< copyable "shell-regular" >}}
+
+    ```
+    kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
+    ```
 
 > **注意：**
 >
-> 此命令中的 `${namespace}` 必须与部署 `TidbCluster` 的 namespace 相同。
+> 上述操作步骤中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
 ## 访问 Thanos Query 面板
 
+要访问 Thanos Query 面板，请执行以下命令，然后通过浏览器访问 <http://127.0.0.1:9090>
+
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n ${namespace} svc/thanos-query 9090
+kubectl port-forward -n ${thanos_namespace} svc/thanos-query 9090
 ```
-
-执行上述命令后，就可以通过浏览器访问 <http://127.0.0.1:9090> 
 
 如果你想通过 NodePort 或 LoadBalancer 访问，请参考：
 - [NodePort方式](access-tidb.md#nodeport)
