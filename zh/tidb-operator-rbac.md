@@ -108,6 +108,8 @@ tidb-operator:tidb-controller-manager                                  2021-05-0
 
 {{< copyable "shell-regular" >}}
 
+要查看为 TiDB Operator 创建的 Role，请使用以下命令：
+
 ```shell
 kubectl get role -n tidb-admin
 ```
