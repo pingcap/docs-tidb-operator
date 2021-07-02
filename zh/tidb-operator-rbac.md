@@ -94,6 +94,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 ```shell
 kubectl get clusterrole | grep tidb
 ```
+输出结果如下：
 
 ```shell
 tidb-operator:tidb-controller-manager                                  2021-05-04T13:08:55Z
