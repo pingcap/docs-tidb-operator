@@ -48,7 +48,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
         - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
         - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v4.0.13`，那么使用指定的版本镜像进行备份。
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
-    - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本，例如， `spec.toolImage: pingcap/dumpling:v4.0.13`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_V40` 指定的 Dumpling 版本进行备份。           
+    - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本，例如， `spec.toolImage: pingcap/dumpling:v4.0.13`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/release-1.1/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_V40` 指定的 Dumpling 版本进行备份。           
     - TiDB Operator 从 v1.1.9 版本起支持这项配置。
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
