@@ -19,7 +19,7 @@ TiDB Operator version: 1.2.0-rc.2
 
 - Support using the TiKV version as the tag for BR `toolImage` if no tag is specified ([#4048](https://github.com/pingcap/tidb-operator/pull/4048), [@KanShiori](https://github.com/KanShiori))
 - Support handling PVC during scaling of TiDB ([#4033](https://github.com/pingcap/tidb-operator/pull/4033), [@csuzhangxc](https://github.com/csuzhangxc))
-- Add liveness and readiness probe for TiDB Operator ([#4002](https://github.com/pingcap/tidb-operator/pull/4002), [@mikechengwei](https://github.com/mikechengwei))
+- Add the liveness and readiness probes for TiDB Operator to check the TiDB Operator status ([#4002](https://github.com/pingcap/tidb-operator/pull/4002), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug fixes
 

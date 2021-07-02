@@ -19,7 +19,7 @@ TiDB Operator 版本：1.2.0-rc.2
 
 - 支持在未为 BR `toolImage` 指定 tag 时将 TiKV 版本作为 tag ([#4048](https://github.com/pingcap/tidb-operator/pull/4048), [@KanShiori](https://github.com/KanShiori))
 - 支持在扩缩容 TiDB 过程中协调 PVC ([#4033](https://github.com/pingcap/tidb-operator/pull/4033), [@csuzhangxc](https://github.com/csuzhangxc))
-- 为 TiDB Operator 增加 liveness 与 readiness probe ([#4002](https://github.com/pingcap/tidb-operator/pull/4002), [@mikechengwei](https://github.com/mikechengwei))
+- 为 TiDB Operator 增加 liveness 与 readiness 探测器，便于查看 TiDB Operator 状态 ([#4002](https://github.com/pingcap/tidb-operator/pull/4002), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug 修复
 
