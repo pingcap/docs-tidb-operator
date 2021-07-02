@@ -77,7 +77,7 @@ The following process uses `/mnt/disks` as the discovery directory and `local-st
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.12/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.13/manifests/local-dind/local-volume-provisioner.yaml
      ```
 
     If the server has no access to the Internet, download the `local-volume-provisioner.yaml` file on a machine with Internet access and then install it.
@@ -85,7 +85,7 @@ The following process uses `/mnt/disks` as the discovery directory and `local-st
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.12/manifests/local-dind/local-volume-provisioner.yaml &&
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.13/manifests/local-dind/local-volume-provisioner.yaml &&
     kubectl apply -f ./local-volume-provisioner.yaml
     ```
 
@@ -254,7 +254,7 @@ Finally, execute the `kubectl apply` command to deploy `local-volume-provisioner
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.12/manifests/local-dind/local-volume-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.13/manifests/local-dind/local-volume-provisioner.yaml
 ```
 
 When you later deploy tidb clusters, deploy TiDB Binlog for incremental backups, or do full backups, configure the corresponding `StorageClass` for use.
