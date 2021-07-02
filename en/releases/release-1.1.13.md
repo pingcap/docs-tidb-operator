@@ -10,7 +10,7 @@ TiDB Operator version: 1.1.13
 
 ## Improvements
 
-- TiCDC supports setting TLS certs for sinks ([#3926](https://github.com/pingcap/tidb-operator/pull/3926), [@handlerww](https://github.com/handlerww)
+- TiCDC supports setting TLS certs for sinks ([#3926](https://github.com/pingcap/tidb-operator/pull/3926), [@handlerww](https://github.com/handlerww))
 - Support using the TiKV version as the tag for BR `toolImage` if no tag is contained ([#4048](https://github.com/pingcap/tidb-operator/pull/4048), [@KanShiori](https://github.com/KanShiori))
 - Support handling PVC during scaling of TiDB ([#4033](https://github.com/pingcap/tidb-operator/pull/4033), [@csuzhangxc](https://github.com/csuzhangxc))
 - Masks the backup password in logging ([#3979](https://github.com/pingcap/tidb-operator/pull/3979), [@dveeden](https://github.com/dveeden))
