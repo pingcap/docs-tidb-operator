@@ -46,6 +46,7 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.toolImage`：用于指定 `Backup` 使用的工具镜像。
 
     - 使用 BR 备份时，可以用该字段指定 BR 的版本:
+
         - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
         - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.1.0`，那么使用指定的版本镜像进行备份。
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。

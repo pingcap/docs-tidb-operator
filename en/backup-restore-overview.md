@@ -46,6 +46,7 @@ This section introduces the fields in the `Backup` CR.
 
 * `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
 * `.spec.toolImage`: The tool image used by `Backup`.
+
     - When using BR for backup, you can specify the BR version in this field.
         - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
         - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.1.0`, the image of the specified version is used for backup.
