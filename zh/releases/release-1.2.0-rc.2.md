@@ -12,7 +12,7 @@ TiDB Operator 版本：1.2.0-rc.2
 
 - 支持透传 TiCDC 的 TOML 格式配置 ([#4010](https://github.com/pingcap/tidb-operator/pull/4010), [@july2993](https://github.com/july2993))
 - 支持为 TiCDC 设置 `StorageVolumes`、`AdditionalVolumes` 和 `AdditionalVolumeMounts` ([#4004](https://github.com/pingcap/tidb-operator/pull/4004), [@csuzhangxc](https://github.com/csuzhangxc))
-- 支持为 Discovery、TidbMonitor 和 TidbInitializer 设置自定义 `labels` 与 `annotations` ([#4029](https://github.com/pingcap/tidb-operator/pull/4029), [@csuzhangxc](https://github.com/csuzhangxc))
+- 支持为 Discovery、TidbMonitor 和 TidbInitializer 设置自定义的 `labels` 与 `annotations` ([#4029](https://github.com/pingcap/tidb-operator/pull/4029), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持修改 Grafana dashboard ([#4035](https://github.com/pingcap/tidb-operator/pull/4035), [@mikechengwei](https://github.com/mikechengwei))
 
 ## 优化提升
@@ -24,4 +24,4 @@ TiDB Operator 版本：1.2.0-rc.2
 ## Bug 修复
 
 - 修复部署异构集群时 TiDB Operator 可能 panic 的问题 ([#4054](https://github.com/pingcap/tidb-operator/pull/4054) [#3965](https://github.com/pingcap/tidb-operator/pull/3965), [@KanShiori](https://github.com/KanShiori) [@july2993](https://github.com/july2993))
-- 修复 TidbCluster spec 未更改时 TiDB service 与 TidbCluster 状态仍然持续被更新的问题 ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))
+- 修复当 TidbCluster spec 未更改时 TiDB service 与 TidbCluster 状态仍然持续被更新的问题 ([#4008](https://github.com/pingcap/tidb-operator/pull/4008), [@july2993](https://github.com/july2993))
