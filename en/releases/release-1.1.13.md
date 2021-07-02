@@ -16,5 +16,5 @@ TiDB Operator version: 1.1.13
 
 ## Bug Fixes
 
-- Fix the issue that TiDB Operator may panic when heterogeneous clusters are deployed ([#4054](https://github.com/pingcap/tidb-operator/pull/4054), [@KanShiori](https://github.com/KanShiori))
+- Fix the issue that TiDB Operator may panic when heterogeneous clusters are deployed ([#4054](https://github.com/pingcap/tidb-operator/pull/4054) [#3965](https://github.com/pingcap/tidb-operator/pull/3965), [@KanShiori](https://github.com/KanShiori) [@july2993](https://github.com/july2993))
 - Fix the issue that TiDB instances still exist in TiDB Dashboard after scaled in ([#3929](https://github.com/pingcap/tidb-operator/pull/3929), [@july2993](https://github.com/july2993))

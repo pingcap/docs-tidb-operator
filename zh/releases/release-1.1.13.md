@@ -16,5 +16,5 @@ TiDB Operator 版本：1.1.13
 
 ## Bug 修复
 
-- 修复部署异构集群时 TiDB Operator 可能 panic 的问题 ([#4054](https://github.com/pingcap/tidb-operator/pull/4054), [@KanShiori](https://github.com/KanShiori))
+- 修复部署异构集群时 TiDB Operator 可能 panic 的问题 ([#4054](https://github.com/pingcap/tidb-operator/pull/4054) [#3965](https://github.com/pingcap/tidb-operator/pull/3965), [@KanShiori](https://github.com/KanShiori) [@july2993](https://github.com/july2993))
 - 修复 TiDB 实例缩容后在 TiDB Dashboard 中仍然存在的问题 ([#3929](https://github.com/pingcap/tidb-operator/pull/3929), [@july2993](https://github.com/july2993))
