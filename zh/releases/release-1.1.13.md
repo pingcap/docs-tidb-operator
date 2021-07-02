@@ -10,7 +10,7 @@ TiDB Operator 版本：1.1.13
 
 ## 优化提升
 
-- TiCDC 支持设置连接下游的 TLS 证书 ([#3926](https://github.com/pingcap/tidb-operator/pull/3926), [@handlerww](https://github.com/handlerww)
+- TiCDC 支持设置连接下游的 TLS 证书 ([#3926](https://github.com/pingcap/tidb-operator/pull/3926), [@handlerww](https://github.com/handlerww))
 - 支持在未为 BR `toolImage` 指定 tag 时将 TiKV 版本作为 tag ([#4048](https://github.com/pingcap/tidb-operator/pull/4048), [@KanShiori](https://github.com/KanShiori))
 - 支持在扩缩容 TiDB 过程中协调 PVC ([#4033](https://github.com/pingcap/tidb-operator/pull/4033), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持在日志中隐藏执行备份操作时的密码 ([#3979](https://github.com/pingcap/tidb-operator/pull/3979), [@dveeden](https://github.com/dveeden))
