@@ -287,7 +287,7 @@ TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Re
 
 For example:
 
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -309,7 +309,7 @@ spec:
       cpu: 1
 ```
 
-YAML format can be configured with TiDB Operator versions prior to v1.1.6:
+For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -343,7 +343,7 @@ TiKV parameters can be configured by `spec.tikv.config` in TidbCluster Custom Re
 
 For example:
 
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -363,7 +363,7 @@ spec:
       cpu: 2
 ```
 
-YAML format can be configured with TiDB Operator versions prior to v1.1.6:
+For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -395,7 +395,7 @@ PD parameters can be configured by `spec.pd.config` in TidbCluster Custom Resour
 
 For example:
 
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -411,7 +411,7 @@ spec:
       enable-prevote = true
 ```
 
-YAML format can be configured with TiDB Operator versions prior to v1.1.6:
+For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -440,7 +440,7 @@ TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Cus
 
 For example:
 
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
+For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -462,7 +462,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-YAML format can be configured with TiDB Operator versions prior to v1.1.6:
+For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -492,7 +492,7 @@ You can configure TiCDC start parameters through `spec.ticdc.config` in TidbClus
 
 For example:
 
-Since v1.2.0-rc.2, TiDB Operator supports passing raw TOML configuration to TiCDC:
+For TiDB Operator v1.2.0-rc.2 and later versions, please use TOML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -507,7 +507,7 @@ spec:
       log-level = "info"
 ```
 
-YAML format can be configured with TiDB Operator versions prior to v1.2.0-rc.2:
+For TiDB Operator versions prior to v1.2.0-rc.2, please use the YAML format configuration:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1

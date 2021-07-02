@@ -279,7 +279,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.tidb.config` 来配置 TiDB 配置参数。
 
-自 v1.1.6 版本起支持透传 TOML 配置给组件：
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -301,7 +301,7 @@ spec:
       cpu: 1
 ```
 
-TiDB Operator v1.1.6 之前版本可以通过 YAML 格式配置：
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -333,7 +333,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.tikv.config` 来配置 TiKV 配置参数。
 
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -353,7 +353,7 @@ spec:
       cpu: 2
 ```
 
-TiDB Operator v1.1.6 之前版本可以通过 YAML 格式配置：
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -383,7 +383,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.pd.config` 来配置 PD 配置参数。
 
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -399,7 +399,7 @@ spec:
       enable-prevote = true
 ```
 
-TiDB Operator v1.1.6 之前版本可以通过 YAML 格式配置：
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -426,7 +426,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
 
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -448,7 +448,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-TiDB Operator v1.1.6 之前版本可以通过 YAML 格式配置：
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -476,7 +476,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.ticdc.config` 来配置 TiCDC 启动参数。
 
-自 v1.2.0-rc.2 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.2.0-rc.2 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -491,7 +491,7 @@ spec:
       log-level = "info"
 ```
 
-TiDB Operator v1.2.0-rc.2 之前版本可以通过 YAML 格式配置：
+对于 TiDB Operator v1.2.0-rc.2 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
