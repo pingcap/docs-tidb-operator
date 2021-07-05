@@ -15,40 +15,42 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
 ## 配置 Thanos Query
 
-首先，需要为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。示例如下：
+1. 为每个 TidbMonitor 配置一个 Thanos Sidecar 容器。
 
-{{< copyable "shell-regular" >}}
-
-```
-kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml
-```
-
-> **注意：**
->
-> 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，必须与部署 `TidbCluster` 的 namespace 相同。
-
-然后需要部署 Thanos Query 组件，操作步骤如下：
-
-1. 下载 thanos-query 部署文件：
+    示例如下：
 
     {{< copyable "shell-regular" >}}
-    
-    ```
-    curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
-    ```
-
-2. 手动修改文件中的 `--store` 参数，将 `basic-prometheus:10901` 改成 `basic-prometheus.${namespace}:10901`。
-3. 执行 `kubectl apply` 命令部署：
-
-   {{< copyable "shell-regular" >}}
 
     ```
-    kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
-> **注意：**
->
-> 上述操作步骤中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
+    > **注意：**
+    >
+    > 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，必须与部署 `TidbCluster` 的 namespace 相同。
+
+2. 部署 Thanos Query 组件。
+
+    1. 下载 thanos-query 部署文件：
+
+        {{< copyable "shell-regular" >}}
+        
+        ```
+        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
+        ```
+
+    2. 手动修改文件中的 `--store` 参数，将 `basic-prometheus:10901` 改成 `basic-prometheus.${namespace}:10901`。
+    3. 执行 `kubectl apply` 命令部署：
+
+      {{< copyable "shell-regular" >}}
+
+      ```
+      kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
+      ```
+
+    > **注意：**
+    >
+    > 上述操作步骤中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
@@ -70,7 +72,7 @@ kubectl port-forward -n ${thanos_namespace} svc/thanos-query 9090
 
 部署 Thanos Query 之后，要查询多个 TidbMonitor 的监控数据，请进行以下操作：
 
-1. 登陆 Grafana
+1. 登陆 Grafana。
 2. 在左侧导航栏中，选择 `Configuration` > `Data Sources`。
 3. 添加或修改一个 prometheus 类型的 DataSource。
 4. 将 HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
@@ -98,7 +100,7 @@ spec:
 
 > **注意：**
 >
-> 必须先创建 S3 bucket，如果你选择 AWS S3，请参考 [AWS S3 创建 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) 和 [AWS S3 endpoint 列表](https://docs.aws.amazon.com/general/latest/gr/s3.html)
+> 必须先创建 S3 bucket，如果你选择 AWS S3，请参考 [AWS S3 创建 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) 和 [AWS S3 endpoint 列表](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 
 Thanos Sidecar 支持将监控数据同步到 S3 远端存储，配置如下:
 
