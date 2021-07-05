@@ -16,7 +16,7 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
 
 ## TiCDC 同步数据到开启 TLS 的下游服务
 
-1. 创建一个 Kubernetes Secret 对象，此对象需要包含用于访问下游服务的客户端 TLS 证书。数据来自于你为客户端生成的密钥文件。
+1. 创建一个 Kubernetes Secret 对象，此对象需要包含用于访问下游服务的客户端 TLS 证书。证书来自于你为客户端生成的密钥文件。
     
     {{< copyable "shell-regular" >}}
 
