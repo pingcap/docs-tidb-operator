@@ -73,7 +73,7 @@ tidb-operator:tidb-scheduler                                           2021-05-0
 
 | 资源                       | 非资源 URLs        | 资源名            | 动作                            | 解释 |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
-| leases.coordination.k8s.io | -                 | -                | [create]                        | leader 选举需要创建 Lease 资源锁 |
+| leases.coordination.k8s.io | -                 | -                | [create]                        | Leader 选举需要创建 Lease 资源锁 |
 | endpoints                  | -                 | -                | [delete get patch update]       | 操作 Endpoints 资源 |
 | persistentvolumeclaims     | -                 | -                | [get list update]               | 读取 PD/TiKV PVC 信息，更新调度信息到 PVC Label |
 | configmaps                 | -                 | -                | [get list watch]                | 读取 ConfigMap 资源 |
