@@ -17,7 +17,7 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the Components will fail.
+    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB components will fail.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
