@@ -39,7 +39,9 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
         curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
-    2. 手动修改文件中的 `--store` 参数，将 `basic-prometheus:10901` 改成 `basic-prometheus.${namespace}:10901`。
+    2. 手动修改 `thanos-query.yaml` 文件中的 `--store` 参数，将 `basic-prometheus:10901` 改为 `basic-prometheus.${namespace}:10901`。
+    
+        其中，`${namespace}` 表示 TidbMonitor 部署的命名空间。
     3. 执行 `kubectl apply` 命令部署：
 
       {{< copyable "shell-regular" >}}
