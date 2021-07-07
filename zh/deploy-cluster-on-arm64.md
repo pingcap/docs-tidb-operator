@@ -91,7 +91,7 @@ spec:
     baseImage: pingcap/tidb-monitor-initializer-arm64
     version: v5.1.0
   reloader:
-    baseImage: pingcap/tidb-monitor-reloader
+    baseImage: pingcap/tidb-monitor-reloader-arm64
     version: v1.0.1
   # ...
 ```
