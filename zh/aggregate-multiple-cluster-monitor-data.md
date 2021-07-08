@@ -31,7 +31,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
 2. 部署 Thanos Query 组件。
 
-    1. 下载 thanos-query 部署文件：
+    1. 下载 Thanos Query 的部署文件 `thanos-query.yaml`：
 
         {{< copyable "shell-regular" >}}
         
@@ -102,7 +102,7 @@ spec:
 
 > **注意：**
 >
-> 必须先创建 S3 bucket，如果你选择 AWS S3，请参考 [AWS S3 创建 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) 和 [AWS S3 endpoint 列表](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
+> 为确保配置成功，必须先创建 S3 bucket。如果你选择 AWS S3，请参考 [AWS S3 创建 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) 和 [AWS S3 endpoint 列表](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 
 Thanos Sidecar 支持将监控数据同步到 S3 远端存储，配置如下:
 
