@@ -76,7 +76,7 @@ PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled 
 
 You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) supported by the Kubernetes cluster, check with your system administrator.
 
-Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, refer to the [Storage Configuration document](configure-storage-class.md) to select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
+Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, refer to the [Storage Configuration document](configure-storage-class.md) to select an appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
 
 > **Note:**
 >
@@ -210,11 +210,10 @@ If you want to enable TiFlash in the cluster, configure `spec.pd.config.replicat
 
 ```yaml
   pd:
-    config:
+    config: |
       ...
-      replication:
-        enable-placement-rules: true
-        ...
+      [replication]
+      enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
     maxFailoverCount: 3
@@ -596,7 +595,7 @@ spec:
 
 ### Configure PV for TiDB slow logs
 
-TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. And the slow query log is printed to the `stdout` through a sidecar container.
+By default, TiDB Operator creates a `slowlog` volume (which is an `EmptyDir`) to store the slow logs, mounts the `slowlog` volume to `/var/log/tidb`, and prints slow logs in the `stdout` through a sidecar container.
 
 > **Warning:**
 >

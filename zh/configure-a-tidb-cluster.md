@@ -71,7 +71,7 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](https://kubernetes.io/zh/docs/concepts/storage/storage-classes/)，请联系系统管理员确定。
 
-另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，参考[存储配置文档](configure-storage-class.md) 为 TiDB 集群各组件选择合适的存储类型。
+另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，参考[存储配置文档](configure-storage-class.md)为 TiDB 集群各组件选择合适的存储类型。
 
 > **注意：**
 >
@@ -205,11 +205,10 @@ spec:
 
 ```yaml
   pd:
-    config:
+    config: |
       ...
-      replication:
-        enable-placement-rules: true
-        ...
+      [replication]
+      enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
     maxFailoverCount: 3
@@ -580,7 +579,7 @@ spec:
 
 ### 配置 TiDB 慢查询日志持久卷
 
-默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，并且通过 sidecar 容器将慢查询日志打印到标准输出。
+默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
 
 > **警告：**
 >
@@ -588,7 +587,7 @@ spec:
 
 如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
 
-#### Spec.tidb.storageVolumes 配置
+#### spec.tidb.storageVolumes 配置
 
 按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
 
