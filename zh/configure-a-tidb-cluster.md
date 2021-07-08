@@ -53,7 +53,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 #### enableDynamicConfiguration
 
-建议设置 `spec.enableDynamicConfiguration: true`，为 TiKV 配置 `--advertise-status-addr` 启动参数。
+建议通过设置 `spec.enableDynamicConfiguration: true` 配置 TiKV 的 `--advertise-status-addr` 启动参数。
 
 版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
 
@@ -583,7 +583,7 @@ spec:
 
 > **警告：**
 >
-> 默认配置下，使用 `EmptyDir` 卷存储的慢查询日志会在 Pod 被删除（例如，滚动升级）后丢失，请确保 Kubernetes 集群内已经部署日志收集方案用于收集所有容器的日志。如果没有部署日志收集方案，请**务必**通过下面配置使用持久卷来存储慢查询日志。
+> 默认配置下，使用 `EmptyDir` 卷存储的慢查询日志会在 Pod 被删除（例如，滚动升级）后丢失。请确保 Kubernetes 集群内已经部署日志收集方案用于收集所有容器的日志。如果没有部署日志收集方案，请**务必**通过下面配置使用持久卷来存储慢查询日志。
 
 如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
 

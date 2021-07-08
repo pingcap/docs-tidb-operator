@@ -286,7 +286,7 @@ TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Re
 
 For example:
 
-For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
+For TiDB Operator v1.1.6 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -308,7 +308,7 @@ spec:
       cpu: 1
 ```
 
-For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
+For TiDB Operator versions earlier than v1.1.6, configure the parameters in the YAML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -342,7 +342,7 @@ TiKV parameters can be configured by `spec.tikv.config` in TidbCluster Custom Re
 
 For example:
 
-For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
+For TiDB Operator v1.1.6 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -362,7 +362,7 @@ spec:
       cpu: 2
 ```
 
-For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
+For TiDB Operator versions earlier than v1.1.6, configure the parameters in the YAML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -394,7 +394,7 @@ PD parameters can be configured by `spec.pd.config` in TidbCluster Custom Resour
 
 For example:
 
-For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
+For TiDB Operator v1.1.6 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -410,7 +410,7 @@ spec:
       enable-prevote = true
 ```
 
-For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
+For TiDB Operator versions earlier than v1.1.6, configure the parameters in the YAML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -439,7 +439,7 @@ TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Cus
 
 For example:
 
-For TiDB Operator v1.1.6 and later versions, please use TOML format configuration:
+For TiDB Operator v1.1.6 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -461,7 +461,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-For TiDB Operator versions prior to v1.1.6, please use the YAML format configuration:
+For TiDB Operator versions earlier than v1.1.6, configure the parameters in the YAML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -491,7 +491,7 @@ You can configure TiCDC start parameters through `spec.ticdc.config` in TidbClus
 
 For example:
 
-For TiDB Operator v1.2.0-rc.2 and later versions, please use TOML format configuration:
+For TiDB Operator v1.2.0-rc.2 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -506,7 +506,7 @@ spec:
       log-level = "info"
 ```
 
-For TiDB Operator versions prior to v1.2.0-rc.2, please use the YAML format configuration:
+For TiDB Operator versions earlier than v1.2.0-rc.2, configure the parameters in the YAML format as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -599,9 +599,9 @@ By default, TiDB Operator creates a `slowlog` volume (which is an `EmptyDir`) to
 
 > **Warning:**
 >
-> By default, the slow query logs stored using the `EmptyDir` volume will be lost after the Pod is deleted (for example, rolling update). Please make sure that a log collection solution has been deployed in the Kubernetes cluster to collect logs of all containers. If you do not deploy a log collection solution, please **must** follow the below configuration to use a persistent volume to store the slow query logs.
+> By default, after a Pod is deleted (for example, rolling update), the slow query logs stored using the `EmptyDir` volume are lost. Make sure that a log collection solution has been deployed in the Kubernetes cluster to collect logs of all containers. If you do not deploy such a log collection solution, you **must** make the following configuration to use a persistent volume to store the slow query logs.
 
-If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+If you want to use a separate PV to store the slow logs, you can specify the name of the PV in `spec.tidb.slowLogVolumeName`, and then configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
 This section shows how to configure PV using `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
