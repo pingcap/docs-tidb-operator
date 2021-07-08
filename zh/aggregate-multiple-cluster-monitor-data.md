@@ -66,6 +66,7 @@ kubectl port-forward -n ${thanos_namespace} svc/thanos-query 9090
 ```
 
 如果你想通过 NodePort 或 LoadBalancer 访问，请参考：
+
 - [NodePort 方式](access-tidb.md#nodeport)
 - [LoadBalancer 方式](access-tidb.md#loadbalancer)
 
