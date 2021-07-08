@@ -42,6 +42,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
     2. 手动修改 `thanos-query.yaml` 文件中的 `--store` 参数，将 `basic-prometheus:10901` 改为 `basic-prometheus.${namespace}:10901`。
     
         其中，`${namespace}` 表示 TidbMonitor 部署的命名空间。
+
     3. 执行 `kubectl apply` 命令部署：
 
       {{< copyable "shell-regular" >}}
@@ -74,8 +75,8 @@ kubectl port-forward -n ${thanos_namespace} svc/thanos-query 9090
 
 1. 登陆 Grafana。
 2. 在左侧导航栏中，选择 `Configuration` > `Data Sources`。
-3. 添加或修改一个 prometheus 类型的 DataSource。
-4. 将 HTTP 下面的 URL 设置为 `http://thanos-query.${namespace}:9090`
+3. 添加或修改一个 Prometheus 类型的 DataSource。
+4. 将 HTTP 下面的 URL 设置为 `http://thanos-query.${thanos_namespace}:9090`
 
 ## 增加或者减少 TidbMonitor
 
