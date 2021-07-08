@@ -341,19 +341,11 @@ metadata:
 spec:
 ....
   tikv:
-<<<<<<< HEAD
-    image: pingcap/tikv:v4.0.13
-    config:
-      storage:
-        block-cache:
-          capacity: "16GB"
-=======
     image: pingcap/tikv:v5.0.1
     config: |
       [storage]
         [storage.block-cache]
           capacity = "16GB"
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
     replicas: 1
     requests:
       cpu: 2
@@ -369,19 +361,11 @@ metadata:
 spec:
 ....
   tikv:
-<<<<<<< HEAD
-    image: pingcap/tikv:v4.0.13
-    config: |
-      [storage]
-        [storage.block-cache]
-          capacity = "16GB"
-=======
     image: pingcap/tikv:v5.0.1
     config:
       storage:
         block-cache:
           capacity: "16GB"
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
     replicas: 1
     requests:
       cpu: 2
@@ -407,17 +391,10 @@ metadata:
 spec:
 .....
   pd:
-<<<<<<< HEAD
-    image: pingcap/pd:v4.0.13
-    config:
-      lease: 3
-      enable-prevote: true
-=======
     image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
 ```
 
 对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
@@ -430,17 +407,10 @@ metadata:
 spec:
 .....
   pd:
-<<<<<<< HEAD
-    image: pingcap/pd:v4.0.13
-    config: |
-      lease = 3
-      enable-prevote = true
-=======
     image: pingcap/pd:v5.0.1
     config:
       lease: 3
       enable-prevote: true
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
 ```
 
 获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
@@ -504,23 +474,6 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.ticdc.config` 来配置 TiCDC 启动参数。
 
-对于 TiDB Operator v1.2.0-rc.2 及之后版本，请使用 TOML 格式配置：
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
-  ticdc:
-    config: |
-      gc-ttl = 86400
-      log-level = "info"
-```
-
-对于 TiDB Operator v1.2.0-rc.2 之前版本，请使用 YAML 格式配置：
-
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -535,7 +488,7 @@ spec:
       logLevel: info
 ```
 
-获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml)。
+获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig)。
 
 ### 配置 TiDB 平滑升级
 

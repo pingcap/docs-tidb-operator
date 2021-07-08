@@ -352,19 +352,11 @@ metadata:
 spec:
 ....
   tikv:
-<<<<<<< HEAD
-    image: pingcap/tikv:v4.0.13
-    config:
-      storage:
-        block-cache:
-          capacity: "16GB"
-=======
     image: pingcap/tikv:v5.0.1
     config: |
       [storage]
         [storage.block-cache]
           capacity = "16GB"
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
     replicas: 1
     requests:
       cpu: 2
@@ -380,19 +372,11 @@ metadata:
 spec:
 ....
   tikv:
-<<<<<<< HEAD
-    image: pingcap/tikv:v4.0.13
-    config: |
-      [storage]
-        [storage.block-cache]
-          capacity = "16GB"
-=======
     image: pingcap/tikv:v5.0.1
     config:
       storage:
         block-cache:
           capacity: "16GB"
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
     replicas: 1
     requests:
       cpu: 2
@@ -420,17 +404,10 @@ metadata:
 spec:
 .....
   pd:
-<<<<<<< HEAD
-    image: pingcap/pd:v4.0.13
-    config:
-      lease: 3
-      enable-prevote: true
-=======
     image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
 ```
 
 For TiDB Operator versions earlier than v1.1.6, configure the parameters in the YAML format as follows:
@@ -443,17 +420,10 @@ metadata:
 spec:
 .....
   pd:
-<<<<<<< HEAD
-    image: pingcap/pd:v4.0.13
-    config: |
-      lease = 3
-      enable-prevote = true
-=======
     image: pingcap/pd:v5.0.1
     config:
       lease: 3
       enable-prevote: true
->>>>>>> ac1cf5d7 (en, zh: update the doc of configuring tidb cluster (#1288))
 ```
 
 For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
@@ -521,23 +491,6 @@ You can configure TiCDC start parameters through `spec.ticdc.config` in TidbClus
 
 For example:
 
-For TiDB Operator v1.2.0-rc.2 and later versions, configure the parameters in the TOML format as follows:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
-  ticdc:
-    config: |
-      gc-ttl = 86400
-      log-level = "info"
-```
-
-For TiDB Operator versions earlier than v1.2.0-rc.2, configure the parameters in the YAML format as follows:
-
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -552,7 +505,7 @@ spec:
       logLevel: info
 ```
 
-For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml).
+For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
 
 ### Configure graceful upgrade for TiDB cluster 
 
