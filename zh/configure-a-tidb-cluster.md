@@ -52,7 +52,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/configure-a-tidb-cluster/','/docs-
 
 #### enableDynamicConfiguration
 
-建议设置 `spec.enableDynamicConfiguration: true`，开启动态配置特性。
+建议通过设置 `spec.enableDynamicConfiguration: true` 配置 TiKV 的 `--advertise-status-addr` 启动参数。
 
 版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
 
@@ -68,13 +68,9 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 #### 存储类型
 
-如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
+如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](https://kubernetes.io/zh/docs/concepts/storage/storage-classes/)，请联系系统管理员确定。
 
-另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，为 TiDB 集群各组件选择合适的存储类型，
-
-生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。
-
-对于演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。
+另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，参考[存储配置文档](configure-storage-class.md)为 TiDB 集群各组件选择合适的存储类型。
 
 > **注意：**
 >
@@ -82,7 +78,7 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 #### 多盘挂载
 
-TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用途的数据写入。
+TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于不同用途的数据写入。
 
 每个组件都可以配置 `storageVolumes` 字段，用于描述用户自定义的多个 PV。
 
@@ -115,9 +111,9 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
           filename: /var/log/pdlog/pd.log
         level: "warn"
     storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/pdlog"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/var/log/pdlog"
   tidb:
     baseImage: pingcap/tidb
     replicas: 1
@@ -129,9 +125,9 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
           filename: /var/log/tidblog/tidb.log
         level: "warn"
     storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/tidblog"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/var/log/tidblog"
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
@@ -148,12 +144,12 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
       titan:
         dirname: "/data_sbj/titan/data"
     storageVolumes:
-      - name: wal
-        storageSize: "2Gi"
-        mountPath: "/data_sbi/tikv/wal"
-      - name: titan
-        storageSize: "2Gi"
-        mountPath: "/data_sbj/titan/data"
+    - name: wal
+      storageSize: "2Gi"
+      mountPath: "/data_sbi/tikv/wal"
+    - name: titan
+      storageSize: "2Gi"
+      mountPath: "/data_sbj/titan/data"
 ```
 
 > **注意：**
@@ -200,7 +196,7 @@ spec:
 
 > **注意：**
 >
-> 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD 和 TiKV Pod 个数都减小到 1 个。
+> 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD Pod 个数减小到 1 个。
 
 #### 部署 TiFlash
 
@@ -208,11 +204,10 @@ spec:
 
 ```yaml
   pd:
-    config:
+    config: |
       ...
-      replication:
-        enable-placement-rules: true
-        ...
+      [replication]
+      enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
     maxFailoverCount: 3
@@ -276,33 +271,13 @@ spec:
 
 ### 配置 TiDB 组件
 
-本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 TiDB Operator 1.1 版本支持了 TiDB 集群 4.0 版本参数。
+本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项。
 
 #### 配置 TiDB 配置参数
 
 你可以通过 TidbCluster CR 的 `spec.tidb.config` 来配置 TiDB 配置参数。
 
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-....
-  tidb:
-    image: pingcap/tidb:v4.0.13
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      split-table: true
-      oom-action: "log"
-    requests:
-      cpu: 1
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -324,6 +299,28 @@ spec:
       cpu: 1
 ```
 
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+....
+  tidb:
+    image: pingcap/tidb:v4.0.13
+    imagePullPolicy: IfNotPresent
+    replicas: 1
+    service:
+      type: ClusterIP
+    config:
+      split-table: true
+      oom-action: "log"
+    requests:
+      cpu: 1
+```
+
 获取所有可以配置的 TiDB 配置参数，请参考 [TiDB 配置文档](https://pingcap.com/docs-cn/stable/tidb-configuration-file/)。
 
 > **注意：**
@@ -334,6 +331,8 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.tikv.config` 来配置 TiKV 配置参数。
 
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -342,17 +341,17 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.13
-    config:
-      storage:
-        block-cache:
-          capacity: "16GB"
+    image: pingcap/tikv:v5.0.1
+    config: |
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
     replicas: 1
     requests:
       cpu: 2
 ```
 
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -362,11 +361,11 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v4.0.13
-    config: |
-      [storage]
-        [storage.block-cache]
-          capacity = "16GB"
+    image: pingcap/tikv:v5.0.1
+    config:
+      storage:
+        block-cache:
+          capacity: "16GB"
     replicas: 1
     requests:
       cpu: 2
@@ -382,21 +381,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.pd.config` 来配置 PD 配置参数。
 
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-.....
-  pd:
-    image: pingcap/pd:v4.0.13
-    config:
-      lease: 3
-      enable-prevote: true
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -406,10 +391,26 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v4.0.13
+    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
+```
+
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+.....
+  pd:
+    image: pingcap/pd:v5.0.1
+    config:
+      lease: 3
+      enable-prevote: true
 ```
 
 获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
@@ -423,27 +424,7 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
 
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
-  tiflash:
-    config:
-      config:
-        flash:
-          flash_cluster:
-            log: "/data0/logs/flash_cluster_manager.log"
-        logger:
-          count: 10
-          level: information
-          errorlog: "/data0/logs/error.log"
-          log: "/data0/logs/server.log"
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
+对于 TiDB Operator v1.1.6 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -463,6 +444,28 @@ spec:
           level = "information"
           errorlog = "/data0/logs/error.log"
           log = "/data0/logs/server.log"
+```
+
+对于 TiDB Operator v1.1.6 之前版本，请使用 YAML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config:
+        flash:
+          flash_cluster:
+            log: "/data0/logs/flash_cluster_manager.log"
+        logger:
+          count: 10
+          level: information
+          errorlog: "/data0/logs/error.log"
+          log: "/data0/logs/server.log"
 ```
 
 获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)
@@ -558,9 +561,15 @@ spec:
 
 ### 配置 TiDB 慢查询日志持久卷
 
-默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`。如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
 
-#### Spec.tidb.storageVolumes 配置
+> **警告：**
+>
+> 默认配置下，使用 `EmptyDir` 卷存储的慢查询日志会在 Pod 被删除（例如，滚动升级）后丢失。请确保 Kubernetes 集群内已经部署日志收集方案用于收集所有容器的日志。如果没有部署日志收集方案，请**务必**通过下面配置使用持久卷来存储慢查询日志。
+
+如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+
+#### spec.tidb.storageVolumes 配置
 
 按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
 
