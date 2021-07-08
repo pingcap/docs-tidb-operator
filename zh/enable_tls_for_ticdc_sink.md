@@ -3,7 +3,7 @@ title: TiCDC 组件同步数据到开启 TLS 的下游服务
 summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
 ---
 
-# TiCDC 组件同步数据到开启 TLS 的下游服务
+# 使用 TiCDC 组件同步数据到开启 TLS 的下游服务
 
 本文介绍在 Kubernetes 上如何让 TiCDC 组件同步数据到开启 TLS 的下游服务。
 
