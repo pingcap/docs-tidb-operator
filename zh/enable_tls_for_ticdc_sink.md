@@ -24,7 +24,7 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
     kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-2. 挂载证书文件到 TiCDC Pod
+2. 挂载证书文件到 TiCDC Pod。
 
     * 如果你还未部署 TiDB 集群，在 TidbCluster CR 定义中添加 `spec.ticdc.tlsClientSecretNames` 字段，然后部署 TiDB 集群。
 
@@ -46,7 +46,7 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
         - ${secret_name}
     ```
 
-    TiCDC Pod 运行后，上述创建的 Secret 对象会被挂载到 TiCDC 的 Pod，你可以在 Pod 内的 `/var/lib/sink-tls/${secret_name}` 目录找到被挂载的密钥文件。
+    TiCDC Pod 运行后，创建的 Kubernetes Secret 对象会被挂载到 TiCDC 的 Pod。你可以在 Pod 内的 `/var/lib/sink-tls/${secret_name}` 目录找到被挂载的密钥文件。
 
 3. 通过 `cdc cli` 工具创建同步任务。
 
