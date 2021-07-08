@@ -50,9 +50,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
       kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
       ```
 
-    > **注意：**
-    >
-    > 上述操作步骤中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
+        其中，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
 
 在 Thanos Query 中，一个 Prometheus 对应一个 Store，也就对应一个 TidbMonitor。部署完 Thanos Query，就可以通过 Thanos Query 的 API 提供监控数据的统一查询接口。
 
