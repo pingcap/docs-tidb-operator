@@ -45,11 +45,11 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
     3. 执行 `kubectl apply` 命令部署：
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```
-      kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
-      ```
+        ```
+        kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
+        ```
 
         其中，`${thanos_namespace}` 表示 Thanos Query 组件部署的命名空间。
 
