@@ -24,9 +24,11 @@ summary: 了解如何让 TiCDC 组件同步数据到开启 TLS 的下游服务
     kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-2. 如果你还未部署 TiDB 集群，在 TidbCluster 定义中添加 `spec.ticdc.tlsClientSecretNames` 字段，然后部署 TiDB 集群。
+2. 挂载证书文件到 TiCDC Pod
 
-    如果你已经部署了 TiDB 集群，执行 `kubectl edit tc ${cluster_name}`，并添加 `spec.ticdc.tlsClientSecretNames` 字段，然后等待 TiCDC 的 Pod 自动滚动更新。
+    * 如果你还未部署 TiDB 集群，在 TidbCluster CR 定义中添加 `spec.ticdc.tlsClientSecretNames` 字段，然后部署 TiDB 集群。
+
+    * 如果你已经部署了 TiDB 集群，执行 `kubectl edit tc ${cluster_name} -n ${cluster_namespace}`，并添加 `spec.ticdc.tlsClientSecretNames` 字段，然后等待 TiCDC 的 Pod 自动滚动更新。
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
