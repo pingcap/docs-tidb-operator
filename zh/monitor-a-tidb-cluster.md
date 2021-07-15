@@ -285,7 +285,7 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。
+从 TiDB Operator 1.2 版本起，TidbMonitor 支持跨命名空间的多集群监控。
 
 ### 使用 YAML 文件配置多集群监控
 
@@ -325,7 +325,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-如需了解完整的配置示例，可参考 TiDB Operator 中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
 
 ### 使用 Grafana 查看多集群监控
 
