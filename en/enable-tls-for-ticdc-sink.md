@@ -18,11 +18,11 @@ Before you begin, do the following preparations:
 
 1. Create a Kubernetes Secret object that contains a TLS certificate used to access the client of the downstream service. You can get the certificate from the key file you generated for the client.
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-    kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
-  ```
+    ```shell
+      kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
+    ```
 
 2. Mount the certificate file to the TiCDC Pod.
 
