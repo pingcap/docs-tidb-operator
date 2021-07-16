@@ -1,5 +1,5 @@
 ---
-title: Synchronize Data to TLS-enabled Downstream Services with TiCDC Components
+title: Synchronize Data to TLS-enabled Downstream Services using TiCDC Components
 summary: Learn how to get TiCDC components to synchronize data to TLS-enabled downstream services.
 ---
 
