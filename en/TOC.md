@@ -38,7 +38,7 @@
   - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
-  - [Synchronize Data to TLS-enabled Downstream Services using TiCDC Components](enable_tls_for_ticdc_sink.md)
+  - [Synchronize Data to TLS-enabled Downstream Services using TiCDC Components](enable-tls-for-ticdc-sink.md)
   - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
   - [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
 + Operate
