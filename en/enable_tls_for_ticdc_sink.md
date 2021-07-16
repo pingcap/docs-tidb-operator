@@ -1,22 +1,22 @@
 ---
-title: Enable TLS for DM
-summary: Learn how to make TiCDC to synchronize data to TLS-enabled Downstream Services.
+title: Synchronize Data to TLS-enabled Downstream Services with TiCDC Components
+summary: Learn how to get TiCDC components to synchronize data to TLS-enabled downstream services.
 ---
 
 # Synchronize Data to TLS-enabled Downstream Services with TiCDC Components
 
-This article describes how to configure a TiCDC component to synchronize data to a TLS-enabled downstream service on Kubernetes.
+This document describes how to get the TiCDC components to synchronize data to TLS-enabled downstream services on Kubernetes.
 
-## Preparation work
+## Preparations
 
-Before you begin, make the following preparations:
+Before you begin, do the following preparations:
 
 - Deploy a downstream service, and enable the TLS authentication on the client.
 - Generate the key file required for the client to access the downstream service.
 
 ## Configure TiCDC to synchronizes data to a TLS-enabled downstream service
 
-1. Create a Kubernetes Secret object that contains the TLS certificate on the client used to access the downstream service. You can get the certificate comes from the key file you generated for the client.
+1. Create a Kubernetes Secret object that contains a TLS certificate used to access the client of the downstream service. You can get the certificate from the key file you generated for the client.
 
   {{< copyable "shell-regular" >}}
 
@@ -46,7 +46,7 @@ Before you begin, make the following preparations:
         - ${secret_name}
     ```
 
-    Once the TiCDC Pod is running, the created Kubernetes Secret object is mounted to the TiCDC Pod. You can find the mounted key file in the `/var/lib/sink-tls/${secret_name}` directory of the Pod.
+    Once the TiCDC Pod is running, the created Kubernetes Secret object is mounted to the TiCDC Pod. You can get the mounted key file in the `/var/lib/sink-tls/${secret_name}` directory of the Pod.
 
 3. Create a synchronization task using the `cdc cli` tool.
 
