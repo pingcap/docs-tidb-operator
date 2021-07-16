@@ -294,11 +294,11 @@ The default Prometheus and alert configuration do not support sending alert mess
 
 Starting from TiDB Operator 1.2, TidbMonitor supports monitoring multiple clusters across namespaces.
 
-### Configure multi-cluster monitoring using YAML Files
+### Configure the monitoring of multiple clusters using YAML files
 
 For the clusters to be monitored, regardless of whether `TLS` is enabled or not, you can monitor them by configuring TidbMonitor's YAML file.
 
-An example configuration is as follows:
+A configuration example is as follows:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -334,11 +334,11 @@ spec:
 
 For a complete configuration example, refer to [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls) in the TiDB Operator repository.
 
-### View multi-cluster monitoring using Grafana
+### Monitor multiple clusters using Grafana
 
-If the `tidb-monitor-initializer` image is earlier than v4.0.14 or v5.0.3, you can take the following steps in each Grafana Dashboard to monitor multiple clusters.
+If the `tidb-monitor-initializer` image is earlier than v4.0.14 or v5.0.3, to monitor multiple clusters, you can take the following steps in each Grafana Dashboard:
 
-1. On the Grafana Dashboard, click `Dashboard settings` to open the `Settings` pane. 
+1. On Grafana Dashboard, click `Dashboard settings` to open the `Settings` pane. 
 2. On the `Settings` pane, select the `tidb_cluster` variable from `Variables`, and then set the `Hide` property of the `tidb_cluster` variable to `Null option`. 
 3. Get back to the current Grafana Dashboard (changes to the `Hide` property cannot be saved currently), and you can see the drop-down list for cluster selection. The cluster name in the drop-down list is in the `${namespace}-${name}` format.
 
