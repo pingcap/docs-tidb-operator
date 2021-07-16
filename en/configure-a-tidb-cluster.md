@@ -55,12 +55,11 @@ It is recommended that you configure `spec.configUpdateStrategy: RollingUpdate` 
 
 #### enableDynamicConfiguration
 
-It is recommended that you configure `spec.enableDynamicConfiguration: true` to enable the dynamic configuration feature.
+It is recommended that you configure `spec.enableDynamicConfiguration: true` to enable the `--advertise-status-addr` startup parameter for TiKV.
 
 Versions required:
 
 - TiDB 4.0.1 or later versions
-- TiDB Operator 1.1.1 or later versions
 
 #### pvReclaimPolicy
 
@@ -74,13 +73,9 @@ PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled 
 
 #### Storage Class
 
-You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](configure-storage-class.md) supported by the Kubernetes cluster, check with your system administrator.
+You can set the storage class by modifying `storageClassName` of each component in `${cluster_name}/tidb-cluster.yaml` and `${cluster_name}/tidb-monitor.yaml`. For the [storage classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) supported by the Kubernetes cluster, check with your system administrator.
 
-Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
-
-For the production environment, local storage is recommended for TiKV. The actual local storage in Kubernetes clusters might be sorted by disk types, such as `nvme-disks` and `sas-disks`.
-
-For the demonstration environment or functional verification, you can use network storage, such as `ebs` and `nfs`.
+Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, refer to the [Storage Configuration document](configure-storage-class.md) to select an appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario.
 
 > **Note:**
 >
@@ -88,7 +83,7 @@ For the demonstration environment or functional verification, you can use networ
 
 #### Multiple disks mounting
 
-TiDB Operator supports mounting multiple PVs for PD, TiDB, and TiKV, which can be used for data writing for different purposes.
+TiDB Operator supports mounting multiple PVs for PD, TiDB, TiKV, and TiCDC, which can be used for data writing for different purposes.
 
 You can configure the `storageVolumes` field for each component to describe multiple user-customized PVs.
 
@@ -117,9 +112,9 @@ For example:
           filename: /var/log/pdlog/pd.log
         level: "warn"
     storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/pdlog"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/var/log/pdlog"
   tidb:
     baseImage: pingcap/tidb
     replicas: 1
@@ -131,9 +126,9 @@ For example:
           filename: /var/log/tidblog/tidb.log
         level: "warn"
     storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/tidblog"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/var/log/tidblog"
   tikv:
     baseImage: pingcap/tikv
     replicas: 1
@@ -150,12 +145,12 @@ For example:
       titan:
         dirname: "/data_sbj/titan/data"
     storageVolumes:
-      - name: wal
-        storageSize: "2Gi"
-        mountPath: "/data_sbi/tikv/wal"
-      - name: titan
-        storageSize: "2Gi"
-        mountPath: "/data_sbj/titan/data"
+    - name: wal
+      storageSize: "2Gi"
+      mountPath: "/data_sbi/tikv/wal"
+    - name: titan
+      storageSize: "2Gi"
+      mountPath: "/data_sbj/titan/data"
 ```
 
 > **Note:**
@@ -206,7 +201,7 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 
 > **Note:**
 >
-> If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce both the number of PD Pods and the number of TiKV Pods in the default deployment to `1`.
+> If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce the number of PD Pods in the default deployment to `1`.
 
 #### Enable TiFlash
 
@@ -214,11 +209,10 @@ If you want to enable TiFlash in the cluster, configure `spec.pd.config.replicat
 
 ```yaml
   pd:
-    config:
+    config: |
       ...
-      replication:
-        enable-placement-rules: true
-        ...
+      [replication]
+      enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
     maxFailoverCount: 3
@@ -285,35 +279,11 @@ spec:
 
 This section introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash/TiCDC.
 
-The current TiDB Operator v1.1 supports all parameters of TiDB v4.0.
-
 #### Configure TiDB parameters
 
 TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Resource.
 
 For example:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-....
-  tidb:
-    image: pingcap/tidb:v5.1.0
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      split-table: true
-      oom-action: "log"
-    requests:
-      cpu: 1
-```
-
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -355,27 +325,7 @@ metadata:
 spec:
 ....
   tikv:
-    image: pingcap/tikv:v5.1.0
-    config:
-      storage:
-        block-cache:
-          capacity: "16GB"
-    replicas: 1
-    requests:
-      cpu: 2
-```
-
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-....
-  tikv:
-    image: pingcap/tikv:v5.1.0
+    image: pingcap/tikv:v5.0.1
     config: |
       [storage]
         [storage.block-cache]
@@ -405,23 +355,7 @@ metadata:
 spec:
 .....
   pd:
-    image: pingcap/pd:v5.1.0
-    config:
-      lease: 3
-      enable-prevote: true
-```
-
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-.....
-  pd:
-    image: pingcap/pd:v5.1.0
+    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
@@ -439,28 +373,6 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Custom Resource.
 
 For example:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
-  tiflash:
-    config:
-      config:
-       flash:
-          flash_cluster:
-            log: "/data0/logs/flash_cluster_manager.log"
-        logger:
-          count: 10
-          level: information
-          errorlog: "/data0/logs/error.log"
-          log: "/data0/logs/server.log"
-```
-
-Since v1.1.6, TiDB Operator supports passing raw TOML configuration to the component:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -490,6 +402,23 @@ You can configure TiCDC start parameters through `spec.ticdc.config` in TidbClus
 
 For example:
 
+For TiDB Operator v1.2.0-rc.2 and later versions, configure the parameters in the TOML format as follows:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  ticdc:
+    config: |
+      gc-ttl = 86400
+      log-level = "info"
+```
+
+For TiDB Operator versions earlier than v1.2.0-rc.2, configure the parameters in the YAML format as follows:
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
@@ -504,13 +433,13 @@ spec:
       logLevel: info
 ```
 
-For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
+For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml).
 
 ### Configure graceful upgrade for TiDB cluster 
 
 When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
 
-Starting from v1.1.2, TiDB Operator supports gracefully upgrading the TiDB cluster. You can enable this feature by configuring the following items:
+You can enable this feature by configuring the following items:
 
 - `spec.tidb.terminationGracePeriodSeconds`: The longest tolerable duration to delete the old TiDB Pod during the rolling upgrade. If this duration is exceeded, the TiDB Pod will be deleted forcibly.
 - `spec.tidb.lifecycle`: Sets the `preStop` hook for the TiDB Pod, which is the operation executed before the TiDB server stops.
@@ -577,7 +506,13 @@ spec:
 
 ### Configure PV for TiDB slow logs
 
-TiDB Operator creates an `EmptyDir` volume named `slowlog` by default to store the slow logs and mounts the `slowlog` volume to `/var/log/tidb`. If you want to use a separate PV to store the slow logs, you can specify the name of the PV by configuring `spec.tidb.slowLogVolumeName` and configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
+By default, TiDB Operator creates a `slowlog` volume (which is an `EmptyDir`) to store the slow logs, mounts the `slowlog` volume to `/var/log/tidb`, and prints slow logs in the `stdout` through a sidecar container.
+
+> **Warning:**
+>
+> By default, after a Pod is deleted (for example, rolling update), the slow query logs stored using the `EmptyDir` volume are lost. Make sure that a log collection solution has been deployed in the Kubernetes cluster to collect logs of all containers. If you do not deploy such a log collection solution, you **must** make the following configuration to use a persistent volume to store the slow query logs.
+
+If you want to use a separate PV to store the slow logs, you can specify the name of the PV in `spec.tidb.slowLogVolumeName`, and then configure the PV in `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
 This section shows how to configure PV using `spec.tidb.storageVolumes` or `spec.tidb.additionalVolumes`.
 
@@ -606,7 +541,7 @@ For how to configure the `spec.tidb.storageVolumes` field, refer to [Multiple di
         mountPath: ${mountPath}
 ```
 
-#### Configure using `spec.tidb.additionalVolumes` (supported starting from v1.1.8)
+#### Configure using `spec.tidb.additionalVolumes`
 
 In the following example, NFS is used as the storage, and TiDB Operator uses the `${volumeName}` PV to store slow logs. The log file path is `${mountPath}/${volumeName}`.
 
