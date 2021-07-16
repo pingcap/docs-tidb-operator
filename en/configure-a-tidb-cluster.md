@@ -502,7 +502,7 @@ spec:
 
 > **Note:**
 >
->  If the Operator version is earlier than 1.2.0-rc.2, the default value of `spec.tikv.evictLeaderTimeout` is 3 minutes.
+> If the Operator version is earlier than 1.2.0-rc.2, the default value of `spec.tikv.evictLeaderTimeout` is 3 minutes.
 
 > **Warning:**
 >
