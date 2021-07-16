@@ -492,13 +492,17 @@ When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the ser
 
 During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (1500 minutes by default), TiKV Pod is restarted. 
 
-If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. You can configure the timeout by `spec.tikv.evictLeaderTimeout` (1500 minutes by default). For example:
+If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. To update the timeout, you can configure `spec.tikv.evictLeaderTimeout` (1500 minutes by default). For example:
 
 ```
 spec:
   tikv:
     evictLeaderTimeout: 10000m
 ```
+
+> **Note:**
+>
+>  If the Operator version is earlier than 1.2.0-rc.2, the default value of `spec.tikv.evictLeaderTimeout` is 3 minutes.
 
 > **Warning:**
 >

@@ -485,6 +485,10 @@ spec:
     evictLeaderTimeout: 10000m
 ```
 
+> **注意：**
+>
+> Operator 1.2.0-rc.2 版本之前，`spec.tikv.evictLeaderTimeout` 默认值为 3 分钟。
+
 > **警告：**
 >
 > 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大（推荐大于 `1500m`），以保证 TiKV Pod 上所有的 Region Leader 能在设置的时间内驱逐完毕。
