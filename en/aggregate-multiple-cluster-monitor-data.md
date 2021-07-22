@@ -65,7 +65,7 @@ To access the Thanos Query panel, execute the following command, and then access
 kubectl port-forward -n ${thanos_namespace} svc/thanos-query 9090
 ```
 
-If you want to access the Thanos Query panel using NodePort or LoadBalancer, refer to the following docs:
+If you want to access the Thanos Query panel using NodePort or LoadBalancer, refer to the following documents:
 
 - [NodePort method](access-tidb.md#nodeport)
 - [LoadBalancer way](access-tidb.md#loadbalancer)
