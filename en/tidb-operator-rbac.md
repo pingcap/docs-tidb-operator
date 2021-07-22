@@ -7,7 +7,7 @@ summary: Introduces the RBAC rules required by TiDB Operator.
 
 Kubernetes [Role-Based Access Control (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) rules use Role or ClusterRole for management, and use RoleBinding or ClusterRoleBinding to grant permissions to a user or a group of users.
 
-## Management of TiDB clusters at the cluster level
+## Manage TiDB clusters at the cluster level
 
 If the default setting `clusterScoped=true` is unchanged during the TiDB Operator deployment, the TiDB Operator manages all TiDB clusters within a Kubernetes cluster.
 
@@ -33,7 +33,7 @@ In the output:
 
 ### `tidb-controller-manager` ClusterRole permissions
 
-The following table lists the permissions corresponding to the tidb-controller-manager ClusterRole.
+The following table lists the permissions corresponding to the `tidb-controller-manager` ClusterRole.
 
 | Resource       | Non-Resource URLs        | Resource name          | Action                        | Explanation |
 | --------- | ---------     | ----------------- | --------------  | ------- |
@@ -45,7 +45,7 @@ The following table lists the permissions corresponding to the tidb-controller-m
 | deployments.apps                              | -                 | -              | [*]                                              | Control the access of the Deployment resource |
 | statefulsets.apps                             | -                 | -              | [*]                                              | Control the access of the Statefulset resource |
 | ingresses.extensions                          | -                 | -              | [*]                                              | Control the access of the Ingress resource for the monitoring system  |
-| *.pingcap.com                                 | -                 | -              | [*]                                              | Control the access of the all customized resources under pingcap.com |
+| *.pingcap.com                                 | -                 | -              | [*]                                              | Control the access of all customized resources under pingcap.com |
 | configmaps                                    | -                 | -              | [create get list watch update delete]            | Control the access of the ConfigMap resource |
 | endpoints                                     | -                 | -              | [create get list watch update delete]            | Control the access of the Endpoints resource |
 | serviceaccounts                               | -                 | -              | [create get update delete]                       | Create ServiceAccount for the TidbMonitor/Discovery service|
@@ -55,10 +55,10 @@ The following table lists the permissions corresponding to the tidb-controller-m
 | clusterroles.rbac.authorization.k8s.io        | -                 | -              | [escalate create get update delete]              | Create ClusterRole for the TidbMonitor service  |
 | roles.rbac.authorization.k8s.io               | -                 | -              | [escalate create get update delete]              | Create Role for the TidbMonitor/Discovery service |
 | persistentvolumeclaims                        | -                 | -              | [get list watch create update delete patch]      | Control the access of the PVC resource |
-| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | Use Job to perform TiDB cluster initialization, backup, and restore operations |
+| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | Use jobs to perform TiDB cluster initialization, backup, and restore operations |
 | persistentvolumes                             | -                 | -              | [get list watch patch update]                    | Perform operations such as adding labels related to cluster information for PV and modifying `persistentVolumeReclaimPolicy` |
 | pods                                          | -                 | -              | [get list watch update delete]                   | Control the access of the Pod resource |
-| nodes                                         | -                 | -              | [get list watch]                                 | Read node Labels and set store Labels for TiKV and TiFlash accordingly |
+| nodes                                         | -                 | -              | [get list watch]                                 | Read node labels and set store labels for TiKV and TiFlash accordingly |
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | Verify whether StorageClass supports `VolumeExpansion` before expanding PVC storage |
 | -                                             |[/metrics]         | -              | [get]                                            | Read monitoring indicators |
 
@@ -88,7 +88,7 @@ The following table lists the permissions corresponding to the `tidb-scheduler` 
 > * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
 > * In the **Resource Name** column, `-` indicates that the item does not have a resource name.
 
-## Management of TiDB clusters at the Namespace level 
+## Manage TiDB clusters at the namespace level 
 
 If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operator manages TiDB clusters at the Namespace level.
 
@@ -153,7 +153,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 | Resource                                      | Non-Resource URLs | Resource name     | Action                        | Explanation |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
-| events                                        | -                 | -              | [*]                                              | export event information  |
+| events                                        | -                 | -              | [*]                                              | Export event information  |
 | services                                      | -                 | -              | [*]                                              | Control the access of the service resources |
 | statefulsets.apps.pingcap.com/status          | -                 | -              | [*]                                              | Control the access of the StatefulSet resource when `AdvancedStatefulSet=true`. For more information, see [Advanced StatefulSet Controller](advanced-statefulset.md).  |
 | statefulsets.apps.pingcap.com                 | -                 | -              | [*]                                              | Control the access of the StatefulSet resource when `AdvancedStatefulSet=true`. For more information, see [Advanced StatefulSet Controller](advanced-statefulset.md).  |
@@ -161,7 +161,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 | deployments.apps                              | -                 | -              | [*]                                              | Control the access of the Deployment resource |
 | statefulsets.apps                             | -                 | -              | [*]                                              | Control the access of the Statefulset resource |
 | ingresses.extensions                          | -                 | -              | [*]                                              | Control the access of the Ingress resource for the monitoring system |
-| *.pingcap.com                                 | -                 | -              | [*]                                              | Control the access of the all customized resources under pingcap.com |
+| *.pingcap.com                                 | -                 | -              | [*]                                              | Control the access of all customized resources under pingcap.com |
 | configmaps                                    | -                 | -              | [create get list watch update delete]            | Control the access of the ConfigMap resource |
 | endpoints                                     | -                 | -              | [create get list watch update delete]            | Control the access of the Endpoints resource |
 | serviceaccounts                               | -                 | -              | [create get update delete]                       | Create ServiceAccount for the TidbMonitor/Discovery service |
@@ -169,7 +169,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 | secrets                                       | -                 | -              | [create update get list watch delete]            | Control the access of the Secret resource |
 | roles.rbac.authorization.k8s.io               | -                 | -              | [escalate create get update delete]              | Create Role for the TidbMonitor/Discovery service |
 | persistentvolumeclaims                        | -                 | -              | [get list watch create update delete patch]      | Control the access of the PVC resource |
-| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | Use Job to perform TiDB cluster initialization, backup, and restore operations |
+| jobs.batch                                    | -                 | -              | [get list watch create update delete]            | Use jobs to perform TiDB cluster initialization, backup, and restore operations |
 | pods                                          | -                 | -              | [get list watch update delete]                   | Control the access of the Pod resource |
 
 > **Note:**
