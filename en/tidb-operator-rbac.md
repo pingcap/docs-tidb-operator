@@ -35,9 +35,8 @@ In the output:
 
 The following table lists the permissions corresponding to the tidb-controller-manager ClusterRole.
 
-| Resource                                          | Non-Resource URLs        | Resource name          | Action                        | Explanation |
-| --------- | |
-| ---------                                     | ----------------- | -------------- | -----                                            | ------- |
+| Resource       | Non-Resource URLs        | Resource name          | Action                        | Explanation |
+| --------- | ---------     | ----------------- | --------------  | ------- |
 | events                                        | -                 | -              | [*]                                     | Export event information |
 | services                                      | -                 | -              | [*]                                     | Control the access of the service resources |
 | statefulsets.apps.pingcap.com/status          | -                 | -              | [*]      | Control the access of the StatefulSet resource when `AdvancedStatefulSet=true`. For more information, see [Advanced StatefulSet Controller](advanced-statefulset.md). |
