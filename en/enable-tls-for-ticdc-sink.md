@@ -16,7 +16,7 @@ Before you begin, do the following preparations:
 
 ## Configure TiCDC to synchronizes data to a TLS-enabled downstream service
 
-1. Create a Kubernetes Secret object that contains a TLS certificate used to access the client of the downstream service. You can get the certificate from the key file you generated for the client.
+1. Create a Kubernetes Secret object that contains a client TLS certificate used to access the downstream service. You can get the certificate from the key file you generated for the client.
 
     {{< copyable "shell-regular" >}}
 
