@@ -22,7 +22,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/thanos/design.md/) componen
     {{< copyable "shell-regular" >}}
 
     ```
-    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb- monitor.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
     > **Note:**
