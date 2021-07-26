@@ -31,7 +31,7 @@ controllerManager:
 
 其中，`pdFailoverPeriod`、`tikvFailoverPeriod`、`tiflashFailoverPeriod` 和 `tidbFailoverPeriod` 代表在确认实例故障后的等待超时时间，默认均为 5 分钟。超过这个时间后，TiDB Operator 就开始做故障自动转移。
 
-另外，在配置 TiDB 集群时，可以通过 `spec.${component}.maxFailoverCount` 指定 TiDB Operator 为每个组件故障自动转移能扩容的 Pod 数量阈值，具体可以参考 [TiDB 组件配置文档](configure-a-tidb-cluster.md#配置-pd-tidb-tikv-tiflash-故障自动转移阈值)。
+另外，在配置 TiDB 集群时，可以通过 `spec.${component}.maxFailoverCount` 指定 TiDB Operator 为每个组件故障自动转移能扩容的 Pod 数量阈值，具体可以参考 [TiDB 组件配置文档](configure-a-tidb-cluster.md#配置-pdtidbtikvtiflash-故障自动转移阈值)。
 
 > **注意：**
 > 
