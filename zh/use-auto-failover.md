@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/use-auto-failover/']
 
 # Kubernetes 上的 TiDB 集群故障自动转移
 
-由于 TiDB Operator 基于 `[StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)` 来管理 Pod，但 `StatefulSet` 在某些 Pod 或者节点发生故障时不会自动创建新 Pod 来替换旧 Pod，所以，TiDB Operator 通过自动扩容 Pod 实现故障自动转移功能，解决 `StatefulSet` 的这个问题。
+由于 TiDB Operator 基于 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 来管理 Pod，但 `StatefulSet` 在某些 Pod 或者节点发生故障时不会自动创建新 Pod 来替换旧 Pod，所以，TiDB Operator 通过自动扩容 Pod 实现故障自动转移功能，解决 `StatefulSet` 的这个问题。
 
 ## 配置故障自动转移
 
@@ -58,7 +58,7 @@ TiDB Operator 通过 `pd/health` PD API 获取 PD members 健康状况，并记�
 
 TiDB Operator 会为每个 PD 集群最多扩容 `spec.pd.maxFailoverCount` (默认 `3`) 个 Pod，超过这个阈值后不会再进行故障转移。
 
-另外，如果 PD 集群多数已经不健康，导致 PD 集群不可用，TiDB Operator 不会为这个 PD 集群进行故障自动转移。
+另外，如果 PD 集群多数 member 已经不健康，导致 PD 集群不可用，TiDB Operator 不会为这个 PD 集群进行故障自动转移。
 
 ### TiDB 故障转移策略
 
@@ -76,7 +76,7 @@ TiDB Operator 通过访问 PD API 获取 TiKV store 健康状况，并记录到 
 
 当一个 TiKV Pod 无法正常工作后，该 Pod 对应的 Store 状态会变为 `Disconnected`，默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，TiDB Operator 会在此基础上再等待 5 分钟（`tikvFailoverPeriod` 可配置），如果该 TiKV Pod 仍不能恢复，这个 Pod 信息会被记录到 TidbCluster CR 的 `.status.tikv.failureStores` 字段中。
 
-同时，TiDB Operator 在计算 TiKV StatefulSet 的 Replicas 的时候，会把 `.status.tikv.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 4 个 Pod 同时存在，如果不健康的 Pod 恢复正常，考虑到缩容 Pod 需要迁移数据，可能会对集群性能有一定影响，TiDB Operator 并**不会**将新扩容的 Pod 缩容掉，而是继续保持 4 个 Pod。
+同时，TiDB Operator 在计算 TiKV StatefulSet 的 Replicas 的时候，会把 `.status.tikv.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 `spec.tikv.replicas+1` 个 Pod 同时存在，如果不健康的 Pod 恢复正常，考虑到缩容 Pod 需要迁移数据，可能会对集群性能有一定影响，TiDB Operator 并**不会**将新扩容的 Pod 缩容掉，而是继续保持 `spec.tikv.replicas+1` 个 Pod。
 
 TiDB Operator 会为每个 TiKV 集群最多扩容 `spec.tikv.maxFailoverCount` (默认 `3`) 个 Pod，超过这个阈值后不会再进行故障转移。
 
@@ -98,7 +98,7 @@ TiDB Operator 通过访问 PD API 获取 TiFlash store 健康状况，并记录�
 
 当一个 TiFlash Pod 无法正常工作后，该 Pod 对应的 Store 状态会变为 `Disconnected`，默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，TiDB Operator 会在此基础上再等待 5 分钟（`tiflashFailoverPeriod` 可配置），如果该 TiFlash Pod 仍不能恢复，这个 Pod 信息会被记录到 TidbCluster CR 的 `.status.tiflash.failureStores` 字段中。
 
-同时，TiDB Operator 在计算 TiFlash StatefulSet 的 Replicas 的时候，会把 `.status.tiflash.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 4 个 Pod 同时存在，如果不健康的 Pod 恢复正常，考虑到缩容 Pod 需要迁移数据，可能会对集群性能有一定影响，TiDB Operator 并**不会**将新扩容的 Pod 缩容掉，而是继续保持 4 个 Pod。
+同时，TiDB Operator 在计算 TiFlash StatefulSet 的 Replicas 的时候，会把 `.status.tiflash.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 `spec.tiflash.replicas+1` 个 Pod 同时存在，如果不健康的 Pod 恢复正常，考虑到缩容 Pod 需要迁移数据，可能会对集群性能有一定影响，TiDB Operator 并**不会**将新扩容的 Pod 缩容掉，而是继续保持 `spec.tiflash.replicas+1` 个 Pod。
 
 TiDB Operator 会为每个 TiFlash 集群最多扩容 `spec.tiflash.maxFailoverCount` (默认 `3`) 个 Pod，超过这个阈值后不会再进行故障转移。
 
