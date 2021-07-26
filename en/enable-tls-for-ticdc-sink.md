@@ -48,7 +48,7 @@ Before you begin, do the following preparations:
 
     Once the TiCDC Pod is running, the created Kubernetes Secret object is mounted to the TiCDC Pod. You can get the mounted key file in the `/var/lib/sink-tls/${secret_name}` directory of the Pod.
 
-3. Create a synchronization task using the `cdc cli` tool.
+3. Create a replication task using the `cdc cli` tool.
 
     {{< copyable "shell-regular" >}}
 
