@@ -492,9 +492,9 @@ spec:
 
 #### 配置 PD、TiDB、TiKV、TiFlash 故障自动转移阈值
 
-如果安装 TiDB Operator 时开启了[故障自动转移](use-auto-failover.md)功能，TiDB Operator 会在 PD、TiDB、TiKV、TiFlash Pod 或者其所在节点发生故障时，触发故障自动转移功能，通过扩容相应组件补齐 Pod 副本数。
+[故障自动转移](use-auto-failover.md)功能在 TiDB Operator 中默认开启。当 PD、TiDB、TiKV、TiFlash 这些组件的 Pod 或者其所在节点发生故障时，TiDB Operator 会触发故障自动转移，通过扩容相应组件补齐 Pod 副本数。
 
-为防止故障自动转移功能创建太多 Pod，可以为每个组件配置故障自动转移能扩容的 Pod 数量阈值，默认为 `3`。如果配置为 `0`，代表关闭这个组件的故障自动转移功能。配置示例如下：
+为避免故障自动转移功能创建太多 Pod，可以为每个组件配置故障自动转移时能扩容的 Pod 数量阈值，默认为 `3`。如果配置为 `0`，代表关闭这个组件的故障自动转移功能。配置示例如下：
 
 ```yaml
   pd:
