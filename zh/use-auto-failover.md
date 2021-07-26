@@ -52,7 +52,6 @@ TiDB Operator 通过 `pd/health` PD API 获取 PD members 健康状况，并记�
 3. StatefulSet controller 会重新创建此 Pod 并以新的 member 身份加入集群。
 4. 在计算 PD StatefulSet 的 Replicas 时，TiDB Operator 会将已经被删除过的 `.status.pd.failureMembers` 考虑在内，因此会扩容一个新的 Pod。此时将有 4 个 Pod 同时存在。
 
-
 当原来集群中所有不健康的 Pod 都恢复正常时，TiDB Operator 会将新扩容的 Pod 自动缩容掉，恢复成原来的 Pod 数量。
 
 > **注意：**
