@@ -31,7 +31,7 @@ controllerManager:
 
 其中，`pdFailoverPeriod`、`tikvFailoverPeriod`、`tiflashFailoverPeriod` 和 `tidbFailoverPeriod` 代表在确认实例故障后的等待超时时间，默认均为 5 分钟。超过这个时间后，TiDB Operator 就开始做故障自动转移。
 
-另外，在配置 TiDB 集群时，可以通过 `spec.${component}.maxFailoverCount` 指定 TiDB Operator 为每个组件故障自动转移能扩容的 Pod 数量阈值，具体可以参考 [TiDB 组件配置文档](configure-a-tidb-cluster.md#配置-pdtidbtikvtiflash-故障自动转移阈值)。
+另外，在配置 TiDB 集群时，可以通过 `spec.${component}.maxFailoverCount` 指定 TiDB Operator 在各组件故障自动转移时能扩容的 Pod 数量阈值，详情请参考 [TiDB 组件配置文档](configure-a-tidb-cluster.md#配置-pdtidbtikvtiflash-故障自动转移阈值)。
 
 > **注意：**
 > 
@@ -78,7 +78,7 @@ TiDB Operator 通过访问每个 TiDB Pod 的 `/status` 接口确认 Pod 健康�
 
 TiDB Operator 通过访问 PD API 获取 TiKV store 健康状况，并记录到 TidbCluster CR 的 `.status.tikv.stores` 字段中。
 
-以一个有 3 个 Pod 的 TiKV 集群为例，当一个 TiKV Pod 无法正常工作时，该 Pod 对应的 Store 状态会变为 `Disconnected`，默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，TiDB Operator 将自动进行以下操作：
+以一个有 3 个 Pod 的 TiKV 集群为例，当一个 TiKV Pod 无法正常工作时，该 Pod 对应的 Store 状态会变为 `Disconnected`。默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，然后 TiDB Operator 将自动进行以下操作：
 
 1. 在此基础上再等待 5 分钟（可以通过 `tikvFailoverPeriod` 配置），如果此 TiKV Pod 仍未恢复，TiDB Operator 会将此 Pod 信息记录到 TidbCluster CR 的 `.status.tikv.failureStores` 字段中。
 2. 在计算 TiKV StatefulSet 的 Replicas 时，TiDB Operator 会将 `.status.tikv.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 4 个 Pod 同时存在。
@@ -105,7 +105,7 @@ TiDB Operator 会自动将新起的 TiKV Pod 缩容，请在集群缩容完成�
 
 TiDB Operator 通过访问 PD API 获取 TiFlash store 健康状况，并记录到 TidbCluster CR 的 `.status.tiflash.stores` 字段中。
 
-以一个有 3 个 Pod 的 TiFlash 集群为例，当一个 TiFlash Pod 无法正常工作时，该 Pod 对应的 Store 状态会变为 `Disconnected`，默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，TiDB Operator 将自动进行以下操作：
+以一个有 3 个 Pod 的 TiFlash 集群为例，当一个 TiFlash Pod 无法正常工作时，该 Pod 对应的 Store 状态会变为 `Disconnected`。默认 30 分钟（可以通过 `pd.config` 中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来修改）后会变成 `Down` 状态，然后 TiDB Operator 将自动进行以下操作：
 
 1. 在此基础上再等待 5 分钟（`tiflashFailoverPeriod` 可配置），如果此 TiFlash Pod 仍未恢复，TiDB Operator 会将此 Pod 信息记录到 TidbCluster CR 的 `.status.tiflash.failureStores` 字段中。
 2. 在计算 TiFlash StatefulSet 的 Replicas 时，TiDB Operator 会将 `.status.tiflash.failureStores` 考虑在内，因此会扩容一个新的 Pod。此时会有 4 个 Pod 同时存在。
@@ -132,7 +132,7 @@ TiDB Operator 会自动将新起的 TiFlash Pod 缩容，请在集群缩容完�
 
 你可以在集群或组件级别关闭故障自动转移功能。
 
-- 如需在集群级别关闭故障自动转移功能，在部署 TiDB Operator 时，请将 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 为 `false`。示例如下：
+- 如需在集群级别关闭故障自动转移功能，在部署 TiDB Operator 时，请将 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 字段值配置为 `false`。示例如下：
 
     ```yaml
     controllerManager:
