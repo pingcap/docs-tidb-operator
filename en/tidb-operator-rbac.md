@@ -19,7 +19,7 @@ To check the ClusterRole created for TiDB Operator, run the following command:
 kubectl get clusterrole | grep tidb
 ```
 
-The output is as follows:
+The example output is as follows:
 
 ```shell
 tidb-operator:tidb-controller-manager                                  2021-05-04T13:08:55Z
@@ -120,14 +120,14 @@ If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operat
     kubectl get role -n tidb-admin
     ```
 
-    The output is as follows:
+    The example output is as follows:
 
     ```shell
     tidb-admin    tidb-operator:tidb-controller-manager            2021-05-04T13:08:55Z
     tidb-admin    tidb-operator:tidb-scheduler                     2021-05-04T13:08:55Z
     ```
 
-    其中：
+    In the output:
 
     * `tidb-operator:tidb-controller-manager` is the role created for the `tidb-controller-manager` Pod.
     * `tidb-operator:tidb-scheduler` is the role created for the `tidb-scheduler` Pod.
