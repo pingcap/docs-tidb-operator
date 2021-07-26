@@ -337,8 +337,8 @@ For a complete configuration example, refer to [Example](https://github.com/ping
 
 If the `tidb-monitor-initializer` image is earlier than v4.0.14 or v5.0.3, to monitor multiple clusters, you can take the following steps in each Grafana Dashboard:
 
-1. On Grafana Dashboard, click `Dashboard settings` to open the `Settings` pane. 
-2. On the `Settings` pane, select the `tidb_cluster` variable from `Variables`, and then set the `Hide` property of the `tidb_cluster` variable to the null option in the drop-down list. 
-3. Get back to the current Grafana Dashboard (changes to the `Hide` property cannot be saved currently), and you can see the drop-down list for cluster selection. The cluster name in the drop-down list is in the `${namespace}-${name}` format.
+1. On Grafana Dashboard, click **Dashboard settings** to open the **Settings** panel. 
+2. On the **Settings** panel, select the **tidb_cluster** variable from **Variables**, and then set the **Hide** property of the **tidb_cluster** variable to the null option in the drop-down list. 
+3. Get back to the current Grafana Dashboard (changes to the **Hide** property cannot be saved currently), and you can see the drop-down list for cluster selection. The cluster name in the drop-down list is in the `${namespace}-${name}` format.
 
 If you need to save changes to the Grafana Dashboard, Grafana must be `6.5` or later, and TiDB Operator must be v1.2.0-rc.2 or later.
