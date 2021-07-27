@@ -39,7 +39,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
         curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
-    2. Manually modify the `--store` parameter in the `thanos-query.yaml` file, updating `basic-prometheus:10901` to `basic-prometheus.${namespace}:10901`.
+    2. Manually modify the `--store` parameter in the `thanos-query.yaml` file by updating `basic-prometheus:10901` to `basic-prometheus.${namespace}:10901`.
     
         `${namespace}` is the namespace where TidbMonitor is deployed.
 
@@ -51,7 +51,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
         kubectl -n ${thanos_namespace} apply -f thanos-query.yaml
         ```
 
-       In the command, `${thanos_namespace}` is the namespace where the Thanos Query component is deployed.
+       In the command above, `${thanos_namespace}` is the namespace where the Thanos Query component is deployed.
 
 In Thanos Query, a Prometheus instance corresponds to a store and also corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a uniform query interface for monitoring data through the Thanos Query's API.
 
