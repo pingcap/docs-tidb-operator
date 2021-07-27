@@ -9,9 +9,9 @@ This document describes how to aggregate the monitoring data of multiple TiDB cl
 
 ## Thanos
 
-[Thanos](https://thanos.io/design.md/) is a high availability solution for Prometheus that simplifies the availability guarantee of Prometheus.
+[Thanos](https://thanos.io/tip/thanos/design.md/) is a high availability solution for Prometheus that simplifies the availability guarantee of Prometheus.
 
-Thanos provides [Thanos Query](https://thanos.io/tip/thanos/design.md/) component as a unified query solution across multiple Prometheus clusters. You can use this feature to aggregate monitoring data of multiple TiDB clusters.
+Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) component as a unified query solution across multiple Prometheus clusters. You can use this feature to aggregate monitoring data of multiple TiDB clusters.
 
 ## Configure Thanos Query
 
@@ -53,7 +53,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/thanos/design.md/) componen
 
        In the command, `${thanos_namespace}` is the namespace where the Thanos Query component is deployed.
 
-In Thanos Query, a Prometheus corresponds to a store and also corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a uniform query interface for monitoring data through the Thanos Query's API.
+In Thanos Query, a Prometheus instance corresponds to a store and also corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a uniform query interface for monitoring data through the Thanos Query's API.
 
 ## Access the Thanos Query Panel
 
@@ -72,7 +72,7 @@ If you want to access the Thanos Query panel using NodePort or LoadBalancer, ref
 
 ## Configure Grafana
 
-After deploying Thanos Query, to query monitoring data of multiple TidbMonitors, take the following steps:
+After deploying Thanos Query, to query the monitoring data of multiple TidbMonitors, take the following steps:
 
 1. Log in to Grafana. 
 2. In the left navigation bar, select `Configuration` > `Data Sources`. 
@@ -102,7 +102,7 @@ spec:
 
 > **Note:**
 >
-> To ensure successful configuration, you must first create the S3 bucket. If you choose AWS S3, refer to [Create AWS S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) and [AWS S3 Endpoint List](https://docs.aws.amazon.com/general/latest/gr/s3.html) for instructions.
+> To ensure successful configuration, you must first create the S3 bucket. If you choose AWS S3, refer to [AWS documentation - Create AWS S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) and [AWS documentation - AWS S3 Endpoint List](https://docs.aws.amazon.com/general/latest/gr/s3.html) for instructions.
 
 Thanos Sidecar supports replicating monitoring data to S3 remote storage.
 
