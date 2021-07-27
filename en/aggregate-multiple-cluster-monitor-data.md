@@ -81,7 +81,7 @@ After deploying Thanos Query, to query the monitoring data of multiple TidbMonit
 
 ## Add or remove TidbMonitor
 
-In Thanos Query, a Prometheus corresponds to a monitor store and also corresponds to a TidbMonitor. If you need to add, update, or remove a monitor store from the Thanos Query, update the `--store` configuration of the Thanos Query component, and perform a rolling update to the Thanos Query component.
+In Thanos Query, a Prometheus instance corresponds to a monitor store and also corresponds to a TidbMonitor. If you need to add, update, or remove a monitor store from the Thanos Query, update the `--store` configuration of the Thanos Query component, and perform a rolling update to the Thanos Query component.
 
 ```yaml
 spec:
