@@ -1,7 +1,6 @@
 ---
 title: Command Cheat Sheet for TiDB Cluster Management
 summary: Learn the commonly used commands for managing TiDB clusters.
-aliases: ['/docs/tidb-in-kubernetes/dev/cheat-sheet/']
 ---
 
 # Command Cheat Sheet for TiDB Cluster Management

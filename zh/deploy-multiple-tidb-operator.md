@@ -1,7 +1,6 @@
 ---
 title: 部署多套 TiDB Operator 分别管理不同的 TiDB 集群
 summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集群。
-aliases: ['/zh/tidb-in-kubernetes/dev/canary-deployment-tidb-operator/']
 ---
 
 # 部署多套 TiDB Operator 分别管理不同的 TiDB 集群
