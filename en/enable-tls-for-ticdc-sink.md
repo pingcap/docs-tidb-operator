@@ -1,5 +1,5 @@
 ---
-title: Replicate Data to TLS-enabled Downstream Services using TiCDC Components
+title: Replicate Data to TLS-enabled Downstream Services Using TiCDC Components
 summary: Learn how to get TiCDC components to replicate data to TLS-enabled downstream services.
 ---
 
