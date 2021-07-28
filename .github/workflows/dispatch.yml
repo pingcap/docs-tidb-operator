@@ -1,9 +1,9 @@
-name: Repsitory dispatch workflow from docs-tidb-operator-master
+name: Repository dispatch workflow from docs-tidb-operator-release-1.2
 
 on:
   push:
     branches:
-      - master
+      - release-1.2
 
 jobs:
   build:
