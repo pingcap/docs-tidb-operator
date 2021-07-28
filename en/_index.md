@@ -1,7 +1,6 @@
 ---
 title: TiDB in Kubernetes Documentation
 summary: Learn about TiDB in Kubernetes documentation.
-aliases: ['/docs/tidb-in-kubernetes/dev/']
 ---
 
 # TiDB in Kubernetes Documentation
@@ -13,7 +12,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB Operator version | Compatible TiDB versions |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0 and later releases |
+| v1.1, v1.2 | v3.0 and later releases |
 | dev | v3.0 and later releases, dev |
 
 <NavColumns>
