@@ -23,7 +23,7 @@ TiDB Operator 1.2 introduces the following key features, which helps you manage 
 - Add [DMCluster CR to manage DM 2.0](deploy-tidb-dm.md)
 - Support customizing store labels for TiKV and TiFlash
 - Support [customizing storage for TiDB slow log](configure-a-tidb-cluster.md#configure-pv-for-tidb-slow-logs)
-- TiDB Lightning chart supports [configuring local backend and persisting the checkpoint information](restore-data-using-tidb-lightning.md)
+- TiDB Lightning chart supports [configuring local-backend and persisting the checkpoint information](restore-data-using-tidb-lightning.md)
 
 ## Security
 
