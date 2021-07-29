@@ -1,7 +1,6 @@
 ---
 title: What's New in TiDB Operator 1.1
 summary: Learn the new features in TiDB Operator 1.1.
-aliases: ['/docs/tidb-in-kubernetes/dev/whats-new-in-v1.1/']
 ---
 
 # What's New in TiDB Operator 1.1

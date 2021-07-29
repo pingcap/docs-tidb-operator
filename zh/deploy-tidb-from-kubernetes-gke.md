@@ -1,7 +1,6 @@
 ---
 title: 在 GCP 上通过 Kubernetes 部署 TiDB 集群
 summary: 在 GCP 上通过 Kubernetes 部署 TiDB 集群教程。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 ---
 
 # 在 GCP 上通过 Kubernetes 部署 TiDB 集群
@@ -102,7 +101,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 

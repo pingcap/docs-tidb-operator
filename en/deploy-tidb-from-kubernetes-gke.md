@@ -1,7 +1,6 @@
 ---
 title: Deploy TiDB on Google Cloud
 summary: Learn how to quickly deploy a TiDB cluster on Google Cloud using Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 ---
 
 # Deploy TiDB on Google Cloud
@@ -105,7 +104,7 @@ After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 

@@ -1,7 +1,6 @@
 ---
 title: Command Cheat Sheet for TiDB Cluster Management
 summary: Learn the commonly used commands for managing TiDB clusters.
-aliases: ['/docs/tidb-in-kubernetes/dev/cheat-sheet/']
 ---
 
 # Command Cheat Sheet for TiDB Cluster Management
@@ -485,7 +484,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm inspect values pingcap/tidb-operator --version=v1.2.0-rc.2 > values-tidb-operator.yaml
+helm inspect values pingcap/tidb-operator --version=v1.2.0 > values-tidb-operator.yaml
 ```
 
 ### Deploy using Helm chart
@@ -501,7 +500,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.0-rc.2 -f values-tidb-operator.yaml
+helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.0 -f values-tidb-operator.yaml
 ```
 
 ### View the deployed Helm release
@@ -525,7 +524,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.0-rc.2 -f values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.0 -f values-tidb-operator.yaml
 ```
 
 ### Delete Helm release

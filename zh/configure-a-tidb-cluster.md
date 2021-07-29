@@ -2,7 +2,6 @@
 title: 配置 TiDB 集群
 summary: 了解如何在 Kubernetes 中配置 TiDB 集群。
 category: how-to
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/','/docs-cn/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/']
 ---
 
 <!-- markdownlint-disable MD007 -->

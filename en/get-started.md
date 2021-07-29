@@ -1,7 +1,6 @@
 ---
 title: Get Started With TiDB Operator in Kubernetes
 summary: Learn how to quickly deploy a TiDB cluster in Kubernetes using TiDB Operator.
-aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube']
 ---
 
 # Get Started with TiDB Operator in Kubernetes
@@ -304,7 +303,7 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0
     ```
 
     If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
@@ -312,9 +311,9 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-rc.2 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-rc.2 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 

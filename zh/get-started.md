@@ -1,7 +1,6 @@
 ---
 title: 快速上手 TiDB Operator
 summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs-cn/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/zh/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/zh/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/','/zh/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube']
 ---
 
 # 快速上手 TiDB Operator
@@ -299,7 +298,7 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -307,9 +306,9 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-rc.2 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0-rc.2 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0-rc.2 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.0 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.0 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
