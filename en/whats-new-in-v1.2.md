@@ -16,7 +16,7 @@ TiDB Operator 1.2 introduces the following key features, which helps you manage 
 - TidbMonitor supports [configuring Thanos sidecar](aggregate-multiple-cluster-monitor-data.md)
 - TidbMonitor management resource changes from Deployment to StatefulSet to provide more flexibility
 - Support [deploying TiDB Operator with namespace permissions only](deploy-tidb-operator.md#customize-tidb-operator-deployment)
-- Support [deploying multiple TiDB Operators](deploy-multiple-tidb-operator.md) to manage different TiDB clusters separately
+- Support [deploying multiple sets of TiDB Operator](deploy-multiple-tidb-operator.md) to manage different TiDB clusters separately
 
 ## Usability
 
