@@ -19,7 +19,7 @@ TiDB Operator 版本：1.2.0
 
 ## 优化提升
 
-- 将升级过程中驱逐 TiKV 的 Region Leader 超时的默认值调整为 1500 分钟，以避免 Region Leader 没有驱逐完成而停止 Pod 导致数据损坏 ([#4071](https://github.com/pingcap/tidb-operator/pull/4071), [@KanShiori](https://github.com/KanShiori))
+- 将升级过程中驱逐 TiKV 的 Region Leader 超时的默认值调整为 1500 分钟，避免驱逐尚未完成时停止 Pod 导致数据损坏 ([#4071](https://github.com/pingcap/tidb-operator/pull/4071), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug 修复
 
