@@ -1,7 +1,6 @@
 ---
 title: 在 AWS EKS 上部署 TiDB 集群
 summary: 介绍如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 ---
 
 # 在 AWS EKS 上部署 TiDB 集群

@@ -1,7 +1,6 @@
 ---
 title: Deploy TiFlash in Kubernetes
 summary: Learn how to deploy TiFlash in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tiflash/']
 ---
 
 # Deploy TiFlash in Kubernetes

@@ -1,7 +1,6 @@
 ---
 title: Advanced StatefulSet Controller
 summary: Learn how to enable and use the advanced StatefulSet controller.
-aliases: ['/docs/tidb-in-kubernetes/dev/advanced-statefulset/']
 ---
 
 # Advanced StatefulSet Controller
