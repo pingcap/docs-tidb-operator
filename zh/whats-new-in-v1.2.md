@@ -4,7 +4,7 @@ title: What's New in TiDB Operator 1.2
 
 # What's New in TiDB Operator 1.2
 
-TiDB Operator 1.2 在 1.1 基础上完善了 TidbCluster CR（Custom Resource）的功能，支持对 Pump 的完整生命周期管理，并对 TidbMonitor controller 进行了重构，支持监控多个集群、Remotewrite、Thanos sidecar 等多个新功能，并针对 TiDB Operator 部署做了优化，支持部署 namespace scoped 以及支持部署多套 TiDB Operator 分别管理不同的 TiDB 集群。同时在易用性上做了许多改进，支持通过 CR 管理 DM 2.0 集群，为 TiKV、TiFlash 自定义 Store 标签等等。以下是主要变化：
+TiDB Operator 1.2 引入了以下关键特性，从扩展性、易用性、安全性等方面帮助你更轻松地管理 TiDB 集群及其周边工具。
 
 ## 扩展性
 
