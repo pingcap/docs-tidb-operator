@@ -23,4 +23,4 @@ TiDB Operator 版本：1.2.0
 
 ## Bug 修复
 
-- 修复可能解析 `TiDBMonitor` 定义中 `Prometheus.RemoteWrite` 的 URL 失败的问题 ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))
+- 修复解析 `TiDBMonitor` 定义中 `Prometheus.RemoteWrite` 的 URL 可能失败的问题 ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))
