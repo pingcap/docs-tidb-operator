@@ -19,7 +19,7 @@ TiDB Operator version: 1.2.0
 
 ## Improvements
 
-- Set the default region leader eviction timeout of TiKV to 1500 min ([#4071](https://github.com/pingcap/tidb-operator/pull/4071), [@KanShiori](https://github.com/KanShiori))
+- Changes the default region leader eviction timeout of TiKV to 1500 minutes to prevent the Pod from being deleted when the region leaders are not transferred completely to the other stores which will cause data corruption([#4071](https://github.com/pingcap/tidb-operator/pull/4071), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug fixes
 
