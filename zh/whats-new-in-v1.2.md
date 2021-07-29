@@ -10,11 +10,11 @@ TiDB Operator 1.2 引入了以下关键特性，从扩展性、易用性、安�
 
 - 支持为 TidbCluster 中的 Pod 与 service 自定义 label 及 annotation
 - 支持为所有 TiDB 组件设置 podSecurityContext、topologySpreadConstraints
-- 支持对 Pump 的完整生命周期管理
+- 支持对 [Pump](https://docs.pingcap.com/zh/tidb/stable/tidb-binlog-overview#pump) 的完整生命周期管理
 - TidbMonitor 支持[监控多个 TidbCluster](monitor-a-tidb-cluster.md#多集群监控)
 - TidbMonitor 支持 remotewrite
 - TidbMonitor 支持[配置 Thanos sidecar](aggregate-multiple-cluster-monitor-data.md)
-- TidbMonitor 管理资源从 Deployment 变为 StatefulSet
+- TidbMonitor 管理资源从 Deployment 变为 StatefulSet，以支持更多灵活性
 - 支持在[仅有 namespace 权限时部署 TiDB Operator](deploy-tidb-operator.md#自定义部署-tidb-operator)
 - 支持[部署多套 TiDB Operator](deploy-multiple-tidb-operator.md) 分别管理不同的 TiDB 集群
 
