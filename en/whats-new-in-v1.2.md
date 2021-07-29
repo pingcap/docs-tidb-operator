@@ -4,7 +4,7 @@ title: What's New in TiDB Operator 1.2
 
 # What's New in TiDB Operator 1.2
 
-TiDB Operator 1.2 introduces the following key features, which help you manage TiDB clusters and tools more easily in terms of extensibility, usability, and security.
+TiDB Operator 1.2 introduces the following key features, which helps you manage TiDB clusters and the tools more easily in terms of extensibility, usability, and security.
 
 ## Extensibility
 
