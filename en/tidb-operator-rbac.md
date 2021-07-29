@@ -174,8 +174,8 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 > **Note:**
 >
-> * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
-> * In the **Resource Names** column, `-` indicates that the item does not have a resource name.
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Resource names** column, `-` indicates that the item does not have a resource name.
 > * In the **Actions** column, `*` indicates that the resource supports all actions that can be performed on a Kubernetes cluster.
 
 ### `tidb-scheduler` Role permissions
