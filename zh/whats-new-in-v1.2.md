@@ -32,5 +32,3 @@ TiDB Operator 1.2 引入了以下关键特性，从扩展性、易用性、安�
 ## 实验性特性
 
 - [跨多个 Kubernetes 集群部署一个 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
-
-TiDB Operator 在 Kubernetes 上部署参见[安装文档](deploy-tidb-operator.md)，CRD 文档参见 [API References](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)。
