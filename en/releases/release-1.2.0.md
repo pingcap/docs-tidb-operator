@@ -15,7 +15,7 @@ TiDB Operator version: 1.2.0
 ## New features
 
 - Support setting Prometheus `retentionTime`, which is more fine-grained than `reserveDays`, and only use `retentionTime` if both are configured ([#4085](https://github.com/pingcap/tidb-operator/pull/4085), [@better0332](https://github.com/better0332))
-- Support setting `priorityClassName` of `Backup` Job ([#4078](https://github.com/pingcap/tidb-operator/pull/4078), [@mikechengwei](https://github.com/mikechengwei))
+- Support setting `priorityClassName` in the `Backup` CR to specify the priority of the backup Job ([#4078](https://github.com/pingcap/tidb-operator/pull/4078), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Improvements
 
@@ -23,4 +23,4 @@ TiDB Operator version: 1.2.0
 
 ## Bug fixes
 
-- Fix the issue that it may fail to parse the URL in `Prometheus.RemoteWrite` in `TiDBMonitor` ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))
+- Fix the issue that the URL in `Prometheus.RemoteWrite` may be parsed incorrectly in `TiDBMonitor` ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))

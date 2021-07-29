@@ -15,7 +15,7 @@ TiDB Operator 版本：1.2.0
 ## 新功能
 
 - 支持为 `TiDBMonitor` 的 `Prometheus` 设置比 `reserveDays` 更细粒度的 `retentionTime`，两者都配置的情况下仅使用 `retentionTime` ([#4085](https://github.com/pingcap/tidb-operator/pull/4085), [@better0332](https://github.com/better0332))
-- 支持设置 `Backup` Job 的 `priorityClassName` ([#4078](https://github.com/pingcap/tidb-operator/pull/4078), [@mikechengwei](https://github.com/mikechengwei))
+- 支持 `Backup` CR 通过 `priorityClassName` 设置备份 Job 优先级 ([#4078](https://github.com/pingcap/tidb-operator/pull/4078), [@mikechengwei](https://github.com/mikechengwei))
 
 ## 优化提升
 
