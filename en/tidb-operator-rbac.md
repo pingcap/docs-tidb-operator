@@ -195,5 +195,5 @@ The following table lists the permissions corresponding to the `tidb-scheduler` 
 
 > **Note:**
 >
-> * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
-> * In the **Resource Name** column, `-` indicates that the item does not have a resource name.
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Resource name** column, `-` indicates that the item does not have a resource name.
