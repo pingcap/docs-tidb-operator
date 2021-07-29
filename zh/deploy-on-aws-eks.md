@@ -36,7 +36,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 推荐存储方面，AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 配置，TiKV 推荐 gp3 配置为 400MBps 4000 IOPS，TiFlash 推荐 gp3 配置为 625MBps 6000 IOPS。
 
-目前 EKS 默认还不支持使用 EBS gp3 的 StorageClass，详情可以参考 [issue](https://github.com/aws/containers-roadmap/issues/1187)，如果你使用 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) [v0.8.0](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/CHANGELOG-0.x.md#v080) 及以上版本，gp3 已经是默认的卷类型。
+目前 EKS 默认还不支持使用 EBS gp3 的 StorageClass，详情可以参考 [issue](https://github.com/aws/containers-roadmap/issues/1187)，如果你使用 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) [v0.8.0](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/CHANGELOG-0.x.md#v080) 及以上版本，gp3 已经是默认的卷类型。可以参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 EBS CSI driver。
 
 ## 创建 EKS 集群和节点池
 
@@ -181,7 +181,7 @@ parameters:
   encrypted: "false"
 ```
 
-然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
+然后在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
 
 ```yaml
 spec:
@@ -205,7 +205,7 @@ spec:
 >
 > 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
 >
-> 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
+> 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，因此不建议在生产环境中使用本地盘。
 >
 > 由于节点重建会导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
 
