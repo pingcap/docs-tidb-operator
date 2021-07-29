@@ -1,15 +1,15 @@
 ---
-title: TiDB Operator RBAC Rules
+title: RBAC rules required by TiDB Operator
 summary: Introduces the RBAC rules required by TiDB Operator.
 ---
 
 # RBAC rules required by TiDB Operator
 
-Kubernetes [Role-Based Access Control (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) rules use Role or ClusterRole for management, and use RoleBinding or ClusterRoleBinding to grant permissions to a user or a group of users.
+The [role-based access control (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) rules implemented in Kubernetes use Role or ClusterRole for management, and use RoleBinding or ClusterRoleBinding to grant permissions to a user or a group of users.
 
 ## Manage TiDB clusters at the cluster level
 
-If the default setting `clusterScoped=true` is unchanged during the TiDB Operator deployment, the TiDB Operator manages all TiDB clusters within a Kubernetes cluster.
+If the default setting `clusterScoped=true` is unchanged during the TiDB Operator deployment, TiDB Operator manages all TiDB clusters within a Kubernetes cluster.
 
 To check the ClusterRole created for TiDB Operator, run the following command:
 
@@ -26,7 +26,7 @@ tidb-operator:tidb-controller-manager                                  2021-05-0
 tidb-operator:tidb-scheduler                                           2021-05-04T13:08:55Z
 ```
 
-In the output:
+In the output above:
 
 * `tidb-operator:tidb-controller-manager` is the ClusterRole created for the `tidb-controller-manager` Pod.
 * `tidb-operator:tidb-scheduler` is the ClusterRole created for the `tidb-scheduler` Pod.
@@ -37,7 +37,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 | Resource       | Non-Resource URLs        | Resource name          | Action                        | Explanation |
 | --------- | ---------     | ----------------- | --------------  | ------- |
-| events                                        | -                 | -              | [*]                                     | Export event information |
+| events                                        | -                 | -              | [*]                                     | Exports event information |
 | services                                      | -                 | -              | [*]                                     | Control the access of the service resources |
 | statefulsets.apps.pingcap.com/status          | -                 | -              | [*]      | Control the access of the StatefulSet resource when `AdvancedStatefulSet=true`. For more information, see [Advanced StatefulSet Controller](advanced-statefulset.md). |
 | statefulsets.apps.pingcap.com                 | -                 | -              | [*]                                              | Control the access of the StatefulSet resource when `AdvancedStatefulSet=true`. For more information, see [Advanced StatefulSet Controller](advanced-statefulset.md). |
@@ -60,12 +60,12 @@ The following table lists the permissions corresponding to the `tidb-controller-
 | pods                                          | -                 | -              | [get list watch update delete]                   | Control the access of the Pod resource |
 | nodes                                         | -                 | -              | [get list watch]                                 | Read node labels and set store labels for TiKV and TiFlash accordingly |
 | storageclasses.storage.k8s.io                 | -                 | -              | [get list watch]                                 | Verify whether StorageClass supports `VolumeExpansion` before expanding PVC storage |
-| -                                             |[/metrics]         | -              | [get]                                            | Read monitoring indicators |
+| -                                             |[/metrics]         | -              | [get]                                            | Read monitoring metrics |
 
 > **Note:**
 >
-> * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
-> * In the **Resource Names** column, `-` indicates that the item does not have a resource name.
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 > * In the **Actions** column, `*` indicates that the resource supports all actions that can be performed on a Kubernetes cluster.
 
 ### `tidb-scheduler` ClusterRole permissions
@@ -78,21 +78,21 @@ The following table lists the permissions corresponding to the `tidb-scheduler` 
 | endpoints                  | -                 | -                | [delete get patch update]       | Control the access of the Endpoints resource |
 | persistentvolumeclaims     | -                 | -                | [get list update]               | Read PVC information of PD/TiKV and update the scheduling information to the PVC label |
 | configmaps                 | -                 | -                | [get list watch]                | Read the ConfigMap resource |
-| pods                       | -                 | -                | [get list watch]                | Read pod information |
+| pods                       | -                 | -                | [get list watch]                | Read Pod information |
 | nodes                      | -                 | -                | [get list]                      | Read node information |
 | leases.coordination.k8s.io | -                 | [tidb-scheduler] | [get update]                    | Read and update lease resource locks for leader election |
 | tidbclusters.pingcap.com   | -                 | -                | [get]                           | Read Tidbcluster information |
 
 > **Note:**
 >
-> * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
-> * In the **Resource Name** column, `-` indicates that the item does not have a resource name.
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 
 ## Manage TiDB clusters at the namespace level 
 
 If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operator manages TiDB clusters at the Namespace level.
 
-- To check the ClusterRole created for the TiDB Operator, run the following command:
+- To check the ClusterRole created for TiDB Operator, run the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -112,7 +112,7 @@ If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operat
     >
     > During the TiDB Operator deployment, if `controllerManager.clusterPermissions.nodes`, `controllerManager.clusterPermissions.persistentvolumes`, `controllerManager.clusterPermissions.storageclasses` are all set to `false`, TiDB operator will not create this ClusterRole.
 
-- To check the roles created for the TiDB Operator, run the following command:
+- To check the roles created for TiDB Operator, run the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -136,7 +136,7 @@ If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operat
 
 The following table lists the permissions corresponding to the `tidb-controller-manager` ClusterRole.
 
-| Resource                   | Non-Resource URLs | Resource name     | Action                        | Explanation |
+| Resource                   | Non-resource URLs | Resource name     | Action                        | Explanation |
 | ---------                     | ----------------- | -------------- | -----                            | ------- |
 | persistentvolumes             | -                 | -   | [get list watch patch update]    | Perform operations such as adding labels related to cluster information for PV and modifying `persistentVolumeReclaimPolicy` |
 | nodes                         | -                 | -   | [get list watch]                 | Read node Labels and set store Labels for TiKV and TiFlash accordingly|
@@ -144,8 +144,8 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 > **Note:**
 >
-> * In the **Non-Resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
-> * In the **Resource Name** column, `-` indicates that the item does not have a resource name.
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 
 ### `tidb-controller-manager` Role permissions
 
