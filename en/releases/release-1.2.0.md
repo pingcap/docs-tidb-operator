@@ -23,4 +23,4 @@ TiDB Operator version: 1.2.0
 
 ## Bug fixes
 
-- Fix the issue that may parse URL of `Prometheus.RemoteWrite` in `TiDBMonitor` failed ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))
+- Fix the issue that it may fail to parse the URL in `Prometheus.RemoteWrite` in `TiDBMonitor` ([#4087](https://github.com/pingcap/tidb-operator/pull/4087), [@better0332](https://github.com/better0332))
