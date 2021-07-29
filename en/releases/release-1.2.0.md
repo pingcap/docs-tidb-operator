@@ -8,13 +8,13 @@ Release date: July 29, 2021
 
 TiDB Operator version: 1.2.0
 
-## Rolling Update Changes
+## Rolling update changes
 
 - Upgrading TiDB Operator will cause the recreation of the TidbMonitor Pod due to [#4085](https://github.com/pingcap/tidb-operator/pull/4085)
 
 ## New features
 
-- Support setting `retentionTime` for Prometheus with more fine-grained duration than `reserveDays`, and will only use `retentionTime` if both configured ([#4085](https://github.com/pingcap/tidb-operator/pull/4085), [@better0332](https://github.com/better0332))
+- Support setting Prometheus `retentionTime`, which is more fine-grained than `reserveDays`, and only use `retentionTime` if both are configured ([#4085](https://github.com/pingcap/tidb-operator/pull/4085), [@better0332](https://github.com/better0332))
 - Support setting `priorityClassName` of `Backup` Job ([#4078](https://github.com/pingcap/tidb-operator/pull/4078), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Improvements
