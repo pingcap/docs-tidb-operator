@@ -35,7 +35,7 @@ In the output above:
 
 The following table lists the permissions corresponding to the `tidb-controller-manager` ClusterRole.
 
-| Resource       | Non-Resource URLs        | Resource name          | Action                        | Explanation |
+| Resource       | Non-resource URLs        | Resource name          | Action                        | Explanation |
 | --------- | ---------     | ----------------- | --------------  | ------- |
 | events                                        | -                 | -              | [*]                                     | Exports event information |
 | services                                      | -                 | -              | [*]                                     | Control the access of the service resources |
@@ -72,7 +72,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 The following table lists the permissions corresponding to the `tidb-scheduler` ClusterRole.
 
-| Resource                   | Non-Resource URLs | Resource name     | Action                        | Explanation |
+| Resource                   | Non-resource URLs | Resource name     | Action                        | Explanation |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
 | leases.coordination.k8s.io | -                 | -                | [create]                        | Create lease resource locks for leader election |
 | endpoints                  | -                 | -                | [delete get patch update]       | Control the access of the Endpoints resource |
@@ -151,7 +151,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 The following table lists the permissions corresponding to the `tidb-controller-manager` Role.
 
-| Resource                                      | Non-Resource URLs | Resource name     | Action                        | Explanation |
+| Resource                                      | Non-resource URLs | Resource name     | Action                        | Explanation |
 | ---------                                     | ----------------- | -------------- | -----                                            | ------- |
 | events                                        | -                 | -              | [*]                                              | Export event information  |
 | services                                      | -                 | -              | [*]                                              | Control the access of the service resources |
@@ -182,7 +182,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 The following table lists the permissions corresponding to the `tidb-scheduler` Role.
 
-| Resource                   | Non-Resource URLs | Resource name     | Action                        | Explanation |
+| Resource                   | Non-resource URLs | Resource name     | Action                        | Explanation |
 | ---------                  | ----------------- | --------------   | -----                           | ------- |
 | leases.coordination.k8s.io | -                 | -                | [create]                        | Create lease resource locks for leader election |
 | endpoints                  | -                 | -                | [delete get patch update]       | Control the access of the Endpoints resource |
