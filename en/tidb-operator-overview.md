@@ -12,8 +12,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB Operator version | Compatible TiDB versions |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1,v1.2 | v3.0 及以上版本 |
-| dev | v3.0 及以上版本，dev |
+| v1.1, v1.2 | v3.0 and later releases |
+| dev | v3.0 and later releases, dev |
 
 ## Manage TiDB clusters using TiDB Operator
 
