@@ -7,8 +7,7 @@
 
 + Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.1](whats-new-in-v1.1.md)
-  - [TiDB Operator v1.1 Notice](notes-tidb-operator-v1.1.md)
+  - [What's New in v1.2](whats-new-in-v1.2.md)
 - [Get Started](get-started.md)
 + Deploy
   - Deploy TiDB Cluster
@@ -38,6 +37,7 @@
   - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
   - [Enable TLS between TiDB Components](enable-tls-between-components.md)
   - [Enable TLS for DM](enable-tls-for-dm.md)
+  - [Replicate Data to TLS-enabled Downstream Services Using TiCDC Components](enable-tls-for-ticdc-sink.md)
   - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
   - [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
 + Operate
@@ -103,6 +103,7 @@
 + [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.2
+    - [1.2 GA](releases/release-1.2.0.md)
     - [1.2.0-rc.2](releases/release-1.2.0-rc.2.md)
     - [1.2.0-rc.1](releases/release-1.2.0-rc.1.md)
     - [1.2.0-beta.2](releases/release-1.2.0-beta.2.md)
