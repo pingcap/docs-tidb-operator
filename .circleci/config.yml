@@ -14,7 +14,7 @@ jobs:
       - run:
           name: "Lint"
           command: |
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/release-1.2..HEAD -- '*.md' '*.yml' '*.yaml')
 
   build:
     docker:
@@ -48,7 +48,7 @@ jobs:
           name: "Publish PDF to Qiniu and S3"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "release-1.2" ]; then
               python3 scripts/upload.py output_en.pdf tidb-in-kubernetes-dev-en-manual.pdf;
               python3 scripts/upload.py output_zh.pdf tidb-in-kubernetes-dev-zh-manual.pdf;
             fi
@@ -64,4 +64,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - release-1.2
