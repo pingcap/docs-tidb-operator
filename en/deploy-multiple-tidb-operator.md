@@ -9,7 +9,7 @@ This document describes how to deploy multiple sets of TiDB Operator to manage d
 
 > **Note:**
 >
-> - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s.
+> - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s, AdvancedStatefulSet controller and AdmissionWebhook are not supported.
 > - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
 > - This feature is supported since v1.1.10.
 
@@ -102,6 +102,10 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
     appendReleaseSuffix: true
     scheduler:
       create: false
+    advancedStatefulset:
+      create: false
+    admissionWebhook:
+      create: false
     ```
 
     > **Note:**
@@ -109,6 +113,7 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
     > * It is recommended to deploy the new TiDB Operator in a separate namespace.
     > * Set `appendReleaseSuffix` to `true`.
     > * If you configure `scheduler.create: true`, a `tidb-scheduler` named `{{ .scheduler.schedulerName }}-{{.Release.Name}}` is created. To use this `tidb-scheduler`, you need to configure `spec.schedulerName` in the `TidbCluster` CR to the name of this scheduler.
+    > * You need to set `advancedStatefulset.create: false` and `admissionWebhook.create: false` because you cannot deploy multiple sets of AdvancedStatefulSet controller and AdmissionWebhook.
 
 4. Deploy the TiDB cluster.
 
