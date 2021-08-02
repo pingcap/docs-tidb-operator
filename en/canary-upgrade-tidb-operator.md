@@ -9,7 +9,7 @@ This document describes how to perform a canary upgrade on TiDB Operator. Using 
 
 > **Note:**
 >
-> - You can perform a canary upgrade only on `tidb-controller-manager` and `tidb-scheduler`.
+> - You can perform a canary upgrade only on `tidb-controller-manager` and `tidb-scheduler`, AdvancedStatefulSet controller and AdmissionWebhook are not supported.
 > - Canary upgrade is supported since v1.1.10. The version of your current TiDB Operator should be >= v1.1.10.
 
 ## Related parameters
@@ -41,6 +41,10 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
     appendReleaseSuffix: true
     #scheduler:
     #  create: false
+    advancedStatefulset:
+      create: false
+    admissionWebhook:
+      create: false
     ```
 
     > **Note:**
@@ -49,6 +53,7 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
     > * Set `appendReleaseSuffix` to `true`.
     > * If you do not need to perform a canary upgrade on `tidb-scheduler`, configure `scheduler.create: false`.
     > * If you configure `scheduler.create: true`, a scheduler named `{{ .scheduler.schedulerName }}-{{.Release.Name}}` will be created. To use this scheduler, configure `spec.schedulerName` in the `TidbCluster` CR to the name of this scheduler.
+    > * You need to set `advancedStatefulset.create: false` and `admissionWebhook.create: false` because you cannot perform a canary upgrade for the AdvancedStatefulSet controller and AdmissionWebhook.
 
 3. To test the canary upgrade of `tidb-controller-manager`, set labels for a TiDB cluster by running the following command:
 
