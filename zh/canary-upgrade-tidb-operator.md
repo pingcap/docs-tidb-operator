@@ -32,7 +32,7 @@ summary: 介绍如何灰度升级 TiDB Operator。
 
 2. 部署灰度 TiDB Operator。
 
-    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，**在不同的 namespace** 中（例如 `tidb-admin-canary`）部署灰度 TiDB Operator：
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，在**不同的 namespace** 中（例如 `tidb-admin-canary`）使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度 TiDB Operator：
 
     ```yaml
     controllerManager:

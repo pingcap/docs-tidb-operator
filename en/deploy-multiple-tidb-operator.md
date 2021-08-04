@@ -93,7 +93,7 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
 
 3. Deploy the second TiDB Operator.
 
-    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) to deploy the second TiDB Operator without `tidb-scheduler`. Add the following configuration in the `values.yaml` file, and deploy the second TiDB Operator (without `tidb-scheduler`) **in a different namespace** (such as `tidb-admin-qa`):
+    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) to deploy the second TiDB Operator without `tidb-scheduler`. Add the following configuration in the `values.yaml` file, and deploy the second TiDB Operator (without `tidb-scheduler`) in **a different namespace** (such as `tidb-admin-qa`) with a **different [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)** (such as `helm install tidb-operator-qa ...`):
 
     ```yaml
     controllerManager:

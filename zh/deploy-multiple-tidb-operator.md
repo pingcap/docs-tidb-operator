@@ -90,7 +90,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/canary-deployment-tidb-operator/']
 
 3. 部署第二套 TiDB Operator。
 
-    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，**在不同的 namespace** 中（例如 `tidb-admin-qa`）部署第二套 TiDB Operator (没有部署 `tidb-scheduler`)：
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，在**不同的 namespace** 中（例如 `tidb-admin-qa`）使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-qa ...`）部署第二套 TiDB Operator (没有部署 `tidb-scheduler`)：
 
     ```yaml
     controllerManager:

@@ -32,7 +32,7 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
 
 2. Deploy the canary TiDB Operator:
 
-    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md). Add the following configuration in the `values.yaml` file, and deploy the canary TiDB Operator **in a different namespace** (such as `tidb-admin-canary`):
+    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md). Add the following configuration in the `values.yaml` file, and deploy the canary TiDB Operator in **a different namespace** (such as `tidb-admin-canary`) with a **different [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)** (such as `helm install tidb-operator-canary ...`):
 
     ```yaml
     controllerManager:
