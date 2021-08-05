@@ -507,6 +507,23 @@ spec:
 
 For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig).
 
+#### Configuring automatic failover threshold of PD, TiDB, TiKV, and TiFlash
+
+By default, the [automatic failover](use-auto-failover.md) feature is enabled in TiDB Operator. When the Pods of PD, TiDB, TiKV, TiFlash or their nodes fail, TiDB Operator will trigger the failover and replenish the number of Pod replicas by scaling out the corresponding components.
+
+To avoid too many Pods created by the failover feature, you can configure the threshold of the number of Pods that TiDB Operator can create during failover for each component. The default number is `3`. If `0` is configured, the failover is disabled for this component. An example configuration is as follows.
+
+```yaml
+  pd:
+    maxFailoverCount: 3
+  tidb:
+    maxFailoverCount: 3
+  tikv:
+    maxFailoverCount: 3
+  tiflash:
+    maxFailoverCount: 3
+```
+
 ### Configure graceful upgrade for TiDB cluster 
 
 When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
