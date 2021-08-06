@@ -39,7 +39,7 @@ In addition, when configuring a TiDB cluster, you can specify `spec.${component}
 
 ## Automatic failover policies
 
-There are six components in a TiDB cluster - PD, TiKV, TiDB, TiFlash, TiCDC, and Pump. Currently, TiCDC and Pump do not support the automatic failover feature, and PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives an in-depth introduction to these policies.
+There are six components in a TiDB cluster: PD, TiKV, TiDB, TiFlash, TiCDC, and Pump. Currently, TiCDC and Pump do not support the automatic failover feature, and PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives an in-depth introduction to these policies.
 
 ### Failover with PD
 
@@ -52,7 +52,7 @@ Take a PD cluster with 3 Pods as an example. If a Pod fails for more than 5 minu
 3. The StatefulSet controller recreates the Pod, and the recreated Pod joins the cluster as a new member.
 4. When calculating the replicas of PD StatefulSet, TiDB Operator takes the deleted `.status.pd.failureMembers` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
-When all the failed Pod in the cluster recovers, TiDB Operator will automatically scale in the newly created Pods, and the number of Pods gets back to the original.
+When all the failed Pods in the cluster recover, TiDB Operator will automatically scale in the newly created Pods, and the number of Pods gets back to the original.
 
 > **Note:**
 >
