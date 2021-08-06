@@ -434,11 +434,11 @@ spec:
 
 For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml).
 
-#### Configuring automatic failover threshold of PD, TiDB, TiKV, and TiFlash
+#### Configuring automatic failover thresholds of PD, TiDB, TiKV, and TiFlash
 
-By default, the [automatic failover](use-auto-failover.md) feature is enabled in TiDB Operator. When the Pods of PD, TiDB, TiKV, TiFlash or their nodes fail, TiDB Operator will trigger the failover and replenish the number of Pod replicas by scaling out the corresponding components.
+By default, the [automatic failover](use-auto-failover.md) feature is enabled in TiDB Operator. When the Pods of PD, TiDB, TiKV, TiFlash fail or the corresponding nodes fail, TiDB Operator performs failover automatically and replenish the number of Pod replicas by scaling the corresponding components.
 
-To avoid too many Pods created by the failover feature, you can configure the threshold of the number of Pods that TiDB Operator can create during failover for each component. The default number is `3`. If `0` is configured, the failover is disabled for this component. An example configuration is as follows.
+To avoid that the automatic failover feature creates too many Pods, you can configure the threshold of the maximum number of Pods that TiDB Operator can create during failover for each component. The default threshold is `3`. If the threshold for a component is configured to `0`, it means that the automatic failover is disabled for this component. An example configuration is as follows:
 
 ```yaml
   pd:
