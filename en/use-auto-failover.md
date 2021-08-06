@@ -30,7 +30,7 @@ controllerManager:
 
 In the example, `pdFailoverPeriod`, `tikvFailoverPeriod`, `tiflashFailoverPeriod` and `tidbFailoverPeriod` indicate the waiting timeout (5 minutes by default) after an instance failure is identified. After the timeout, TiDB Operator starts the automatic failover process.
 
-In addition, when configuring a TiDB cluster, you can specify `spec.${component}.maxFailoverCount` for each component, which is the threshold of the maximum number of Pods that the TiDB Operator can create during automatic failover. For more information, see [TiDB Component Configuration Documentation](configure-a-tidb-cluster.md#configure-automatic-failover-thresholds-of-pd-tidb-tikv-and-tiflash).
+In addition, when configuring a TiDB cluster, you can specify `spec.${component}.maxFailoverCount` for each component, which is the threshold of the maximum number of Pods that the TiDB Operator can create during automatic failover. For more information, see the [TiDB component configuration documentation](configure-a-tidb-cluster.md#configure-automatic-failover-thresholds-of-pd-tidb-tikv-and-tiflash).
 
 > **Note:**
 > 
