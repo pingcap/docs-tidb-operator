@@ -15,4 +15,3 @@ TiDB Operator version: 1.2.1
 ## Improvements
 
 - Support `hostNetwork` for all components ([#4141](https://github.com/pingcap/tidb-operator/pull/4141), [@DanielZhangQD](https://github.com/DanielZhangQD)
-
