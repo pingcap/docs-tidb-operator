@@ -51,7 +51,7 @@ Take a PD cluster with 3 Pods as an example. If a Pod fails for more than 5 minu
 3. The StatefulSet controller recreates the Pod, and the recreated Pod joins the cluster as a new member.
 4. When calculating the replicas of PD StatefulSet, TiDB Operator takes the deleted `.status.pd.failureMembers` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
-When all the failed Pods in the cluster recover, TiDB Operator will automatically scale in the newly created Pods, and the number of Pods gets back to the original.
+When all the failed Pods in the cluster recover, TiDB Operator will automatically remove the newly created Pods, and the number of Pods gets back to the original.
 
 > **Note:**
 >
@@ -67,7 +67,7 @@ Take a TiDB cluster with 3 Pods as an example. If a Pod fails for more than 5 mi
 1. TiDB Operator records the Pod information in the `.status.tidb.failureMembers` field of TidbCluster CR. 
 2. When calculating the replicas of TiDB StatefulSet, TiDB Operator takes the `.status.tidb.failureMembers` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
-When the failed Pod in the cluster recovers, TiDB Operator will automatically scale in the newly created Pod, and the number of Pods gets back to 3.
+When the failed Pod in the cluster recovers, TiDB Operator will automatically remove the newly created Pod, and the number of Pods gets back to 3.
 
 > **Note:**
 >
@@ -82,13 +82,13 @@ Take a TiKV cluster with 3 Pods as an example. When a TiKV Pod fails, the store 
 1. Wait for another 5 minutes (configurable by modifying `tikvFailoverPeriod`), if this TiKV Pod is still not recovered, TiDB Operator records the Pod information in the `.status.tikv.failureStores` field of TidbCluster CR.
 2. When calculating the replicas of TiKV StatefulSet, TiDB Operator takes the `.status.tikv.failureStores` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
-When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** scale in the newly created Pod, but continues to keep 4 Pods. This is because scaling in TiKV Pods will trigger data migration, which might affect the cluster performance.
+When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** remove the newly created Pod, but continues to keep 4 Pods. This is because scaling in TiKV Pods will trigger data migration, which might affect the cluster performance.
 
 > **Note:**
 >
 > For each TiKV cluster, the maximum number of Pods that TiDB Operator can create is `spec.tikv.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover.
 
-If **all** failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the procedure below:
+If **all** failed Pods have recovered, and you want to remove the newly created Pods, you can follow the procedure below:
 
 Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
 
@@ -109,7 +109,7 @@ Take a TiFlash cluster with 3 Pods as an example. When a TiFlash Pod fails, the 
 1. Wait for another 5 minutes (configurable by modifying `tiflashFailoverPeriod`), if the TiFlash Pod is still not recovered, TiDB Operator records the Pod information in the `.status.tiflash.failureStores` field of TidbCluster CR.
 2. When calculating the replicas of TiFlash StatefulSet, TiDB Operator takes the `.status.tiflash.failureStores` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
-When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** scale in the newly created Pod, but continues to keep 4 Pods. This is because scaling in TiFlash Pods will trigger data migration, which might affect the cluster performance.
+When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** remove the newly created Pod, but continues to keep 4 Pods. This is because scaling in TiFlash Pods will trigger data migration, which might affect the cluster performance.
 
 > **Note:**
 >
