@@ -4,7 +4,7 @@ title: TiDB Operator 1.2.1 Release Notes
 
 # TiDB Operator 1.2.1 Release Notes
 
-Release date: August 17, 2021
+Release date: August 18, 2021
 
 TiDB Operator version: 1.2.1
 
