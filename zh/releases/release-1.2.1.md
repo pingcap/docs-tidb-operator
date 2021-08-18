@@ -14,4 +14,4 @@ TiDB Operator 版本：1.2.1
 
 ## Improvements
 
-- 所有组件都支持配置 `hostNetwork` ([#4141](https://github.com/pingcap/tidb-operator/pull/4141), [@DanielZhangQD](https://github.com/DanielZhangQD)
+- TidbCluster 所有组件都支持配置 `hostNetwork` ([#4141](https://github.com/pingcap/tidb-operator/pull/4141), [@DanielZhangQD](https://github.com/DanielZhangQD)
