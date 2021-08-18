@@ -5,7 +5,7 @@ summary: Learn the automatic failover policies of TiDB cluster components on Kub
 
 # Automatic failover
 
-TiDB Operator manages the deployment and scaling of Pods based on `StatefulSet`. When some Pods or nodes fail, `StatefulSet` does not support automatically creating new Pods to replace the failed ones. To solve this issue, TiDB Operator supports the automatic failover feature by scaling Pods automatically.
+TiDB Operator manages the deployment and scaling of Pods based on [`StatefulSet`](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). When some Pods or nodes fail, `StatefulSet` does not support automatically creating new Pods to replace the failed ones. To solve this issue, TiDB Operator supports the automatic failover feature by scaling Pods automatically.
 
 ## Configure automatic failover
 
@@ -34,11 +34,11 @@ In addition, when configuring a TiDB cluster, you can specify `spec.${component}
 
 > **Note:**
 > 
-> If there are not enough resources in the cluster for TiDB Operator to create new Pods, the new scaled Pods will be in the pending status.
+> If there are not enough resources in the cluster for TiDB Operator to create new Pods, the newly scaled Pods will be in the pending status.
 
 ## Automatic failover policies
 
-There are six components in a TiDB cluster: PD, TiKV, TiDB, TiFlash, TiCDC, and Pump. Currently, TiCDC and Pump do not support the automatic failover feature, and PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives an in-depth introduction to these policies.
+There are six components in a TiDB cluster: PD, TiKV, TiDB, TiFlash, TiCDC, and Pump. Currently, TiCDC and Pump do not support the automatic failover feature. PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives a detailed introduction to these policies.
 
 ### Failover with PD
 
