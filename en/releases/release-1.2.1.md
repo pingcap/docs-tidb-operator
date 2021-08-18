@@ -14,4 +14,4 @@ TiDB Operator version: 1.2.1
 
 ## Improvements
 
-- Support `hostNetwork` for all components in TidbCluster ([#4141](https://github.com/pingcap/tidb-operator/pull/4141), [@DanielZhangQD](https://github.com/DanielZhangQD)
+- Support `hostNetwork` for all components in TidbCluster, so all components can use host network ([#4141](https://github.com/pingcap/tidb-operator/pull/4141), [@DanielZhangQD](https://github.com/DanielZhangQD)
