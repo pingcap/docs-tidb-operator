@@ -98,7 +98,7 @@ Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.
 kubectl edit tc -n ${namespace} ${cluster_name}
 ```
 
-TiDB Operator will scale in the newly created Pods automatically. When the scaling in is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
 
 ### Failover with TiFlash
 
@@ -115,7 +115,7 @@ When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** remove t
 >
 > For each TiFlash cluster, the maximum number of Pods that TiDB Operator can create is `spec.tiflash.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover.
 
-If **all** of the failed Pods have recovered, and you want to scale in the newly created Pods, you can follow the procedure below:
+If **all** of the failed Pods have recovered, and you want to remove the newly created Pods, you can follow the procedure below:
 
 Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
 
@@ -125,7 +125,7 @@ Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1
 kubectl edit tc -n ${namespace} ${cluster_name}
 ```
 
-TiDB Operator will scale in the newly created Pods automatically. When the scaling in is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
 
 ### Disable automatic failover
 
