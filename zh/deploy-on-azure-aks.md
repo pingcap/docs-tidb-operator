@@ -98,6 +98,50 @@ az aks nodepool add --name tikv \
 
 该命令需要等待 AKS 集群节点池创建完成，每个节点池耗时约 2~5 分钟。可以参考 [`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。
 
+Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance", consider deploy a node pool in each zone. For example:
+
+Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节点，如果您希望使用 "严格执行区域均衡" (AKS 暂时不支持该策略)，可以考虑在每一个可用区部署一个节点池。 例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+# 在可用区1 创建 tikv 节点池
+az aks nodepool add --name tikv1 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 1 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+
+# 在可用区2 创建 tikv 节点池
+az aks nodepool add --name tikv2 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 2 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+
+# 在可用区3 创建 tikv 节点池
+az aks nodepool add --name tikv3 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 3 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+```
+
 > **警告：**
 >
 > 关于节点池扩缩容：
