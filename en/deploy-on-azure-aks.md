@@ -97,6 +97,48 @@ By default, only two TiDB nodes are required, so you can set the `--node-count` 
 
 Each command above might take several minutes. For more cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest)
 
+Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance" (not supported in AKS now), consider deploy a node pool in each zone. For example:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+# create tikv node pool in zone 1
+az aks nodepool add --name tikv1 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 1 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+
+# create tikv node pool in zone 2
+az aks nodepool add --name tikv2 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 2 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+
+# create tikv node pool in zone 3
+az aks nodepool add --name tikv3 \
+    --cluster-name ${clusterName} \
+    --resource-group ${resourceGroup} \
+    --node-vm-size ${nodeType} \
+    --zones 3 \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+    --node-count 1 \
+    --labels dedicated=tikv \
+    --node-taints dedicated=tikv:NoSchedule \
+    --enable-ultra-ssd
+```
+
 > **Warning:**
 >
 > About node pool scale in:
