@@ -197,7 +197,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 登陆集群节点后，我们可以通过 MySQL 客户端来访问 TiDB 集群。
 
-1. 在集群节点上安装 MySQL 客户端：
+在集群节点上安装 MySQL 客户端：
 
 {{< copyable "shell-regular" >}}
 
@@ -205,7 +205,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 sudo yum install mysql -y
 ```
 
-2. 连接到 TiDB 集群：
+连接到 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
