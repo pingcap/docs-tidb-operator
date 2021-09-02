@@ -17,7 +17,7 @@ summary: 了解如何使用 PD Recover 恢复 PD 集群。
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    `${version}` 是 TiDB 集群版本，例如，`v5.1.1`。
+    `${version}` 是 TiDB 集群版本，例如，`v5.2.0`。
 
 2. 解压安装包：
 
