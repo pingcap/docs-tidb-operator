@@ -76,13 +76,13 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
 2. 设置 `spec.prometheus.config.configMapRef.name` 与 `spec.prometheus.config.configMapRef.namespace` 为自定义 ConfigMap 的名称与所属的 namespace。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 #### 增加额外的命令行参数
 
 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 > **注意：**
 >

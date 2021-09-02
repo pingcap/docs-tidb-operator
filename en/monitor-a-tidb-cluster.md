@@ -78,13 +78,13 @@ You can customize the Prometheus configuration by using a customized configurati
 1. Create a ConfigMap for your customized configuration, and set the key name of `data` to `prometheus-config`.
 2. Set `spec.prometheus.config.configMapRef.name` and `spec.prometheus.config.configMapRef.namespace` to the name and namespace of the customized ConfigMap respectively.
 
-For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md).
+For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md).
 
 #### Add extra options to the command
 
 To add extra options to the command that starts Prometheus, configure `spec.prometheus.config.commandOptions`.
 
-For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md).
+For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md).
 
 > **Note:**
 >
