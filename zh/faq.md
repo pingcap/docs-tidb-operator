@@ -128,3 +128,9 @@ TiDB Operator 部署的 TiDB 集群使用 Kubernetes 集群提供的[持久卷](
 PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的数据在各节点间复制为多副本，以确保某个节点宕机时数据的安全性。
 
 在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当集群中的大多数节点收到此日志时，日志会被提交，状态机会相应作出变更。
+
+## TiDBCluster 的 Ready 项为 false 是否代表集群不可用？
+
+当执行 `kubectl get tc` 命令后，可能会看到某个 TiDBCluster Ready 项为 false。
+
+这不代表对应的 TiDBCluster 不可用，可能是集群处于升级、缩扩容流程中。你可以尝试通过连接 TiDB 来判断 TiDBCluster 是否真正的不可用。
