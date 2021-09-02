@@ -129,7 +129,7 @@ To ensure data safety in case one node is down, PD and TiKV use [Raft Consistenc
 
 In the bottom layer, TiKV replicates data using the log replication and State Machine model. For write requests, data is written to the Leader node first, and then the Leader node replicates the command to its Follower nodes as a log. When most of the Follower nodes in the cluster receive this log from the Leader node, the log is committed and the State Machine changes accordingly.
 
-##  Is the cluster unavailable when the Ready field of TiDBCluster is false?
+## Is the cluster unavailable when the Ready field of TiDBCluster is false?
 
 After execute `kubectl get tc` command, maybe you notice that the Ready field of TiDBCluster false.
 
