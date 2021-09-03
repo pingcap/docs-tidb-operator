@@ -15,7 +15,7 @@ TiDB Operator version: 1.2.2
 
 ## New features
 
-- Support that reload TiDBMonitor configuration dynamically ([#4158](https://github.com/pingcap/tidb-operator/pull/4158), [@mikechengwei](https://github.com/mikechengwei))
+- TiDBMonitor support reloading configuration dynamically ([#4158](https://github.com/pingcap/tidb-operator/pull/4158), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug fixes
 
