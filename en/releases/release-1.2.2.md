@@ -11,7 +11,7 @@ TiDB Operator version: 1.2.2
 ## Rolling update changes
 
 - Upgrading TiDB Operator will cause the recreation of the TiDBMonitor Pod due to [#4158](https://github.com/pingcap/tidb-operator/pull/4158)
-- Upgrading TiDB Operator will cause the recreation of the Tiflash Pod due to [#4152](https://github.com/pingcap/tidb-operator/pull/4152)
+- Upgrading TiDB Operator will cause the recreation of the TiFlash Pod due to [#4152](https://github.com/pingcap/tidb-operator/pull/4152)
 
 ## New features
 
