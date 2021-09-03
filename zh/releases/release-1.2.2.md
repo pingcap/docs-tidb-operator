@@ -19,4 +19,4 @@ TiDB Operator 版本：1.2.2
 
 ## Bug 修复
 
-- 在协调 TiDB 之后协调 TiCDC，以修复 TiCDC 无法升级到 v5.2.0 的问题 ([#4171](https://github.com/pingcap/tidb-operator/pull/4171), [@KanShiori](https://github.com/KanShiori))
+- 修复 TiCDC 无法从低版本升级到 v5.2.0 的问题 ([#4171](https://github.com/pingcap/tidb-operator/pull/4171), [@KanShiori](https://github.com/KanShiori))

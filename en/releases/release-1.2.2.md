@@ -19,4 +19,4 @@ TiDB Operator version: 1.2.2
 
 ## Bug fixes
 
-- Sync TiCDC after TiDB to fix TiCDC v5.2.0 upgrade failure ([#4171](https://github.com/pingcap/tidb-operator/pull/4171), [@KanShiori](https://github.com/KanShiori))
+- Fix TiCDC v5.2.0 upgrade failure from low version ([#4171](https://github.com/pingcap/tidb-operator/pull/4171), [@KanShiori](https://github.com/KanShiori))
