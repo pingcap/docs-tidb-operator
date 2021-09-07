@@ -10,4 +10,4 @@ TiDB Operator version: 1.2.3
 
 ## Bug fixes
 
-- Fix the recreation of the TiFlash Pod after upgrade TiDBOperator to v1.2.2 ([#4181](https://github.com/pingcap/tidb-operator/pull/4181), [@KanShiori](https://github.com/KanShiori))
+- Fix the issue that the TiFlash Pod is recreated after TiDB Operator is upgraded to v1.2.2 ([#4181](https://github.com/pingcap/tidb-operator/pull/4181), [@KanShiori](https://github.com/KanShiori))
