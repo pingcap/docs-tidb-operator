@@ -1,24 +1,6 @@
 version: 2
 
 jobs:
-<<<<<<< HEAD
-  lint:
-    docker:
-      - image: circleci/ruby:2.4.1-node
-    working_directory: ~/pingcap/docs-tidb-operator
-    steps:
-      - checkout
-      - run:
-          name: "Install markdownlint"
-          command: |
-            sudo npm install -g markdownlint-cli@0.17.0
-      - run:
-          name: "Lint"
-          command: |
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/release-1.1..HEAD -- '*.md' '*.yml' '*.yaml')
-
-=======
->>>>>>> 54b88320 (chore: remove markdown lint from circleci (#1383))
   build:
     docker:
       - image: andelf/doc-build:0.1.9
