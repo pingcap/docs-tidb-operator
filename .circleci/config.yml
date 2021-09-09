@@ -1,6 +1,7 @@
 version: 2
 
 jobs:
+<<<<<<< HEAD
   lint:
     docker:
       - image: circleci/ruby:2.4.1-node
@@ -16,6 +17,8 @@ jobs:
           command: |
             markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/release-1.2..HEAD -- '*.md' '*.yml' '*.yaml')
 
+=======
+>>>>>>> 54b88320 (chore: remove markdown lint from circleci (#1383))
   build:
     docker:
       - image: andelf/doc-build:0.1.9
@@ -55,9 +58,6 @@ jobs:
 
 workflows:
   version: 2
-  lint:
-    jobs:
-      - lint
   build:
     jobs:
       - build:
