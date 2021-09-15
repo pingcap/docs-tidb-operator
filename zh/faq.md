@@ -131,6 +131,6 @@ PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的�
 
 ## TiDBCluster 的 Ready 项为 false 是否代表集群不可用？
 
-当执行 `kubectl get tc` 命令后，可能会看到某个 TiDBCluster Ready 项为 false。
+当执行 `kubectl get tc` 命令后，如果输出中显示某个 TiDBCluster 的 Ready 字段为 false，不代表对应的 TiDBCluster 不可用，集群可能处于升级、缩扩容流程中。
 
-这不代表对应的 TiDBCluster 不可用，可能是集群处于升级、缩扩容流程中。你可以尝试通过连接 TiDB 来判断 TiDBCluster 是否真正的不可用。
+要判断 TiDBCluster 是否真正不可用，你可以尝试连接 TiDB。
