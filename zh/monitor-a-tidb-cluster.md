@@ -128,7 +128,7 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-prometheus 9090:9090 &>
 
 ### 设置 kube-prometheus 与 AlertManager
 
-TidbMonitor Grafana 默认内置了 Nodes-Info 与 Pods-Info 监控面板，用于查看 Kubernetes 对应的监控指标。如果需要使用 TidbMonitor Grafana 查看这些监控指标，请先参考 [kube-prometheus](https://github.com/coreos/kube-prometheus) 手动部署 Kubernetes 集群监控，然后设置 `TidbMonitor.spec.kubePrometheusURL` 获取 Kubernetes 监控数据。
+TidbMonitor Grafana 默认内置了 Nodes-Info 与 Pods-Info 监控面板，用于查看 Kubernetes 对应的监控指标。如果需要使用 TidbMonitor Grafana 查看这些监控指标，请先参考 [kube-prometheus 文档](https://github.com/coreos/kube-prometheus) 手动部署 Kubernetes 集群监控，然后设置 `TidbMonitor.spec.kubePrometheusURL` 获取 Kubernetes 监控数据。
 
 同样的，你可以通过设置 TidbMonitor 来将监控推送警报至指定的 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/)。
 
