@@ -130,7 +130,7 @@ You can also set `spec.prometheus.service.type` to `NodePort` or `LoadBalancer`,
 
 ### Set kube-prometheus and AlertManager
 
-Nodes-Info and Pods-Info monitoring dashboards are built into TidbMonitor Grafana by default to view the corresponding monitoring metrics of Kubernetes. To use TidbMonitor Grafana to view these monitoring metrics, see the [kube-prometheus documentation](https://github.com/coreos/kube-prometheus) to manually deploy Kubernetes cluster monitoring, and then set the ` TidbMonitor.spec.kubePrometheusURL` to obtain Kubernetes monitoring data.
+Nodes-Info and Pods-Info monitoring dashboards are built into TidbMonitor Grafana by default to view the corresponding monitoring metrics of Kubernetes. To use TidbMonitor Grafana to view these monitoring metrics, see the [kube-prometheus documentation](https://github.com/coreos/kube-prometheus) to manually deploy Kubernetes cluster monitoring, and then set the `TidbMonitor.spec.kubePrometheusURL` to obtain Kubernetes monitoring data.
 
 Similarly, you can configure TidbMonitor to push the monitoring alert to [AlertManager](https://prometheus.io/docs/alerting/alertmanager/).
 
