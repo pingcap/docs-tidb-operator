@@ -301,7 +301,7 @@ kubectl delete backup ${name} -n ${namespace}
 kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
-If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the backup data when it deletes the CR.
+If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator clean the backup data when it deletes the CR.
 
 In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup`/`BackupSchedule` CRs and then delete the namespace.
 
@@ -316,3 +316,19 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 After deleting the `metadata.finalizers` configuration, you can delete the CR normally.
+
+### Clean backup data
+
+If TiDB Operator version is v1.2.3 or earlier, the way to clean the backup data is: delete the backup files cyclically, one file at a time.
+
+If TiDB Operator version is v1.2.4 or later, the way to clean the backup data is: delete the backup files cyclically, delete files in batch at a time. For each batch deletion, there are multiple methods depending on the type of backend storage.
+
+* delete in batch concurrently: For S3-compatible backend storage, it will start some goroutines, and each goroutine use the batch delete API to delete multiple files.
+* delete concurrently: For other backend storage, it will start some goroutines, and each goroutine delete one file at a time.
+
+There are some fields to control the clean behavior:
+
+* `.spec.cleanOption.pageSize`: The number of files to be deleted in batch at a time.
+* `.spec.cleanOption.disableBatchConcurrency`: If it is true, use the method "delete concurrently" to clean. The default is 10000.
+* `.spec.cleanOption.batchConcurrency`: If the method is "delete in batch concurrently", the number of groutines. The default is 10.
+* `.spec.cleanOption.routineConcurrency`: If the method is "delete concurrently", the number of goroutines. The default is 100.
