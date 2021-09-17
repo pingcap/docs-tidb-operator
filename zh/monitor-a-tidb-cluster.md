@@ -134,7 +134,7 @@ TidbMonitor Grafana 默认内置了 Nodes-Info 与 Pods-Info 监控面板，用�
 
 1. 手动部署 Kubernetes 集群监控。
 
-    Kubernetes 集群监控有多种部署方式。如果要使用 kube-prometheus 部署, 可以参考 [kube-prometheus 文档](https://github.com/coreos/kube-prometheus) 。
+    Kubernetes 集群监控有多种部署方式。如果要使用 kube-prometheus 部署, 可以参考 [kube-prometheus 文档](https://github.com/coreos/kube-prometheus)。
 
 2. 设置 `TidbMonitor.spec.kubePrometheusURL` 获取 Kubernetes 监控数据。
 
