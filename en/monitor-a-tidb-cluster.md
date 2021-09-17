@@ -137,7 +137,7 @@ To view these monitoring metrics in TidbMonitor Grafana, take the following step
 
 1. Deploy Kubernetes cluster monitoring manually.
 
-   There are multiple ways to deploy Kubernetes cluster monitoring. If you are using kube-prometheus for deployment, see the [kube-prometheus documentation](https://github.com/coreos/kube-prometheus).
+   There are multiple ways to deploy Kubernetes cluster monitoring. To use kube-prometheus for deployment, see the [kube-prometheus documentation](https://github.com/coreos/kube-prometheus).
 
 2. Set the `TidbMonitor.spec.kubePrometheusURL` to obtain Kubernetes monitoring data.
 
