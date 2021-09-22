@@ -285,26 +285,12 @@ This section describes how to install TiDB Operator using Helm 3.
     "pingcap" has been added to your repositories
     ```
 
-2. Create a namespace for TiDB Operator:
+2. Install TiDB Operator
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create namespace tidb-admin
-    ```
-
-    Expected output:
-
-    ```
-    namespace/tidb-admin created
-    ```
-
-3. Install TiDB Operator
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3
+    helm install --create-namespace --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3
     ```
 
     If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
@@ -312,7 +298,7 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3 \
+    helm install --create-namespace --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3 \
         --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.3 \
         --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.3 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
@@ -385,8 +371,7 @@ tidbcluster.pingcap.com/basic created
 {{< copyable "shell-regular" >}}
 
 ``` shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
-kubectl -n tidb-cluster apply -f tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
 If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
