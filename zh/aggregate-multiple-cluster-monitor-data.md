@@ -145,3 +145,41 @@ stringData:
         enable: true
       part_size: 41943040
 ```
+
+## RemoteWrite 模式
+除了 Thanos Sidecar PULL 监控聚合模式，RemoteWrite 是一种监控数据 Push 模式。
+在启动 TiDBMonitor 时可以指定 RemoteWrite 配置，示例如下:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbMonitor
+metadata:
+  name: basic
+spec:
+  clusters:
+  - name: basic
+  prometheus:
+    baseImage: prom/prometheus
+    version: v2.18.1
+    remoteWrite:
+      - url: "http://localhost:1234"
+        writeRelabelConfigs:
+          - sourceLabels: [__test]
+            separator: ;
+            regex: (.*)
+            targetLabel: node
+            replacement: $1
+            action: replace
+  grafana:
+    baseImage: grafana/grafana
+    version: 7.5.7
+  initializer:
+    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-initializer
+    version: v5.2.0
+  reloader:
+    baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-reloader
+    version: v1.0.1
+  imagePullPolicy: IfNotPresent
+```
+
+Prometheus 将会把数据推送到 [Thanos Receiver](https://thanos.io/tip/components/receive.md/) 服务，Thanos Receiver 也可以成为 Thanos Query 的 Store 数据源。详情可以参考[Receiver 架构设计](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/)。
