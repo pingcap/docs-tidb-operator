@@ -151,6 +151,7 @@ stringData:
 ## RemoteWrite 模式
 
 除了 Thanos Query 监控聚合模式，也可以通过 Prometheus RemoteWrite 推送监控数据到 Thanos。
+
 在启动 TiDBMonitor 时可以指定 Prometheus RemoteWrite 配置，示例如下:
 
 ```yaml
