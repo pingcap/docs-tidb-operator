@@ -279,7 +279,7 @@ TiDB Operator 使用 Helm 3 安装。
     ```
     "pingcap" has been added to your repositories
     ```
-2. 安装 TiDB Operator
+2. 安装 TiDB Operator：
 
     {{< copyable "shell-regular" >}}
 
