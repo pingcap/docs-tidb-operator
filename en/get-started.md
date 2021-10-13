@@ -285,7 +285,7 @@ This section describes how to install TiDB Operator using Helm 3.
     "pingcap" has been added to your repositories
     ```
 
-2. Install TiDB Operator
+2. Install TiDB Operator:
 
     {{< copyable "shell-regular" >}}
 
