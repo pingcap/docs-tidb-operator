@@ -12,7 +12,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 环境准备：
 
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [`tkctl`](use-tkctl.md)
+- [`tkctl`](use-tkctl.md)(Deprecated)
 - [`jq`](https://stedolan.github.io/jq/download/)
 
 > **注意：**
@@ -131,6 +131,9 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
+    kubectl get pods -o wide | grep tikv | grep ${node_name}
+
+    # or use the deprecated command as below
     tkctl get -A tikv | grep ${node_name}
     ```
 
