@@ -93,6 +93,8 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 
 - 假如是维护短期内可恢复的节点，则不需要迁移 TiKV 节点，在维护结束后原地恢复节点；
 - 假如是维护短期内不可恢复的节点，则需要规划 TiKV 的迁移工作。
+  - 假如节点存储可迁移
+  - 假如节点存储不可迁移
 
 ### 维护短期内可恢复的节点
 
@@ -131,6 +133,98 @@ pd-ctl -d config set max-store-down-time 10m
     ```shell
     tkctl get -A tikv | grep ${node_name}
     ```
+
+#### 如果节点存储可迁移
+
+如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 store，只需要迁移 leader 并重启 pod。
+
+3. 使用 `pd-ctl` 主动驱逐 leader
+
+    查看 TiKV 实例的 `store-id`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
+    ```
+
+    驱逐 leader：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl scheduler add evict-leader-scheduler ${ID}
+    ```
+
+4. 检查 leader 已经全部被迁移走:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .leaderCount'
+    ```
+
+5. 删除 TiKV 实例：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+6. 观察该 TiKV 实例是否正常调度到其它节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+7. 移除 evict-leader-scheduler，等待 leader 自动调度回来：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl scheduler remove evict-leader-scheduler
+    ```
+
+    假如待维护节点上还有其它 TiKV 实例，则重复同样的操作步骤直到所有的 TiKV 实例都迁移到其它节点上。
+
+8. 确认节点不再有 TiKV 实例后，再逐出节点上的其它实例：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl drain ${node_name} --ignore-daemonsets --delete-local-data
+    ```
+
+9. 再次确认节点不再有任何 TiKV、TiDB 和 PD 实例运行：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces | grep ${node_name}
+    ```
+
+10. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete node ${node_name}
+    ```
+
+至此，操作完成。
+
+#### 如果节点存储不可迁移
+
+如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 store。
 
 3. 使用 `pd-ctl` 主动下线 TiKV 实例。
 
