@@ -145,7 +145,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
+    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .id"
     ```
 
     驱逐 leader：
@@ -167,7 +167,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .leaderCount'
+    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .leaderCount"
     ```
 
 5. 删除 TiKV 实例：
@@ -237,7 +237,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
+    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .id"
     ```
 
     下线实例：
