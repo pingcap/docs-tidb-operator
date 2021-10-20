@@ -5,7 +5,7 @@ summary: 介绍如何维护 TiDB 集群所在的 Kubernetes 节点。
 
 # 维护 TiDB 集群所在的 Kubernetes 节点
 
-TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD、TiKV 和 TiDB 实例的不同特性，我们需要采取不同的操作策略。
+TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD、TiKV 和 TiDB Pod 的不同特性，我们需要采取不同的操作策略。
 
 本文档将详细介绍如何对 Kubernetes 节点进行临时或长期的维护操作。
 
@@ -16,124 +16,9 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 > **注意：**
 >
-> 长期维护节点前，需要保证 Kubernetes 集群的剩余资源足够运行 TiDB 集群。
+> 维护节点前，需要保证 Kubernetes 集群的剩余资源足够运行 TiDB 集群。
 
-## 维护 TiDB 实例所在节点
-
-TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节点上的策略进行节点维护：
-
-1. 检查待维护节点上是否有 TiKV 和 PD 实例：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get pod --all-namespaces -o wide | grep ${node_name}
-    ```
-
-    假如存在 TiKV 或 PD 实例，请参考[维护 TiKV 实例所在节点](#维护-tikv-实例所在节点) 和 [维护 PD 实例所在节点](#维护-pd-实例所在节点)。
-
-2. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl cordon ${node_name}
-    ```
-
-3. 使用 `kubectl drain` 命令将待维护节点上的数据库实例迁移到其它节点上：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl drain ${node_name} --ignore-daemonsets --delete-local-data
-    ```
-
-    运行后，该节点上的 TiDB 实例会自动迁移到其它可用节点上
-
-4. 此时，假如希望下线该 Kubernetes 节点，则可以将该节点删除：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl delete node ${node_name}
-    ```
-
-    假如希望恢复 Kubernetes 节点，则需要在恢复节点后确认其健康状态：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    watch kubectl get node ${node_name}
-    ```
-
-    观察到节点进入 `Ready` 状态后，继续操作。
-
-5. 使用 `kubectl uncordon` 命令解除节点的调度限制：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl uncordon ${node_name}
-    ```
-
-6. 观察 Pod 是否全部恢复正常运行：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    watch kubectl get -n $namespace pod -o wide
-    ```
-
-    Pod 恢复正常运行后，操作结束。
-
-## 维护 PD 实例所在的节点
-
-PD 实例下线可能会对集群服务造成一定的影响，因此需要针对不同情况采取不同策略：
-
-- 假如是维护短期内可恢复的节点，则不需要迁移 PD 节点，在维护结束后原地恢复节点；
-- 假如是维护短期内不可恢复的节点，则需要规划 PD 的迁移工作。
-  - 假如节点存储可迁移
-  - 假如节点存储不可迁移
-
-### 维护短期内可恢复的节点
-
-针对短期维护，我们可以简单的将 PD 的 leader 调度走
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pd-ctl member leader show
-```
-
-如果 leader 所在的节点是恰好是要维护的节点，则需要将 leader 先迁移走
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pd-ctl member leader transfer ${POD_NAME}
-```
-
-其中 `POD_NAME` 是其余 PD Pod 的名称
-
-后续的操作方式与[维护 TiDB 实例所在节点](#维护-tidb-实例所在节点)相同
-
-### 维护短期内不可恢复的节点
-
-首先类似[维护短期内可恢复的节点](#维护短期内可恢复的节点-0)，将 leader 调度走，然后根据情况执行不同的策略
-
-#### 如果节点存储可迁移
-
-后续的操作方式与[维护 TiDB 实例所在节点](#维护-tidb-实例所在节点)相同
-
-#### 如果节点存储不可迁移
-
-我们需要主动将 PVC 和 PD 节点解绑定
+## 维护短期内可恢复的节点
 
 1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
 
@@ -143,54 +28,138 @@ pd-ctl member leader transfer ${POD_NAME}
     kubectl cordon ${node_name}
     ```
 
-2. 删除 PD 实例：
+2. 检查待维护节点上是否有 TiKV Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pod ${pod_name}
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. 解除 PD 实例与节点本地盘的绑定。
+    假如存在 TiKV Pod，针对每一个 Pod：
+    
+        1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Region Leader 迁移到其他 Pod。
+        
+        2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
 
-    查询 Pod 使用的 `PesistentVolumeClaim`：
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            pd-ctl config set max-store-down-time 60m
+            ```
+
+            调整 `max-store-down-time` 到合理的值。
+
+3. 检查待维护节点上是否有 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "pd") | .persistentVolumeClaim.claimName'
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-    删除该 `PesistentVolumeClaim`：
+    假如存在 PD Pod，针对每一个 Pod，参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
+
+4. 确认待维护节点上不再有 TiKV 和 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+    kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-4. 观察该 PD 实例是否正常调度到其它节点上：
+5. 使用 `kubectl drain` 命令将待维护节点上的 Pod 迁移到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    kubectl drain ${node_name} --ignore-daemonsets
     ```
 
-5. 确认节点不再有 PD 实例后，再逐出节点上的其它实例：
+    运行后，该节点上的 Pod 会自动迁移到其它可用节点上。
+
+6. 再次确认节点不再有任何 TiKV、TiDB 和 PD Pod 运行：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl drain ${node_name} --ignore-daemonsets --delete-local-data
+    kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-6. 再次确认节点不再有任何 TiKV、TiDB 和 PD 实例运行：
+7. 如果节点维护结束，在恢复节点后确认其健康状态：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod --all-namespaces | grep ${node_name}
+    watch kubectl get node ${node_name}
+    ```
+
+    观察到节点进入 `Ready` 状态后，继续操作。
+
+8. 使用 `kubectl uncordon` 命令解除节点的调度限制：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl uncordon ${node_name}
+    ```
+
+9. 观察 Pod 是否全部恢复正常运行：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name}
+    ```
+
+    Pod 恢复正常运行后，操作结束。
+
+## 维护短期内不可恢复的节点
+
+1. 检查待维护节点上是否有 TiKV Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
+    ```
+
+    假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-TiKV-Pod) 将 Pod 重调度到其他节点。    
+
+3. 检查待维护节点上是否有 PD Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
+    ```
+
+    假如存在 PD Pod，针对每一个 Pod，参考[重调度 PD Pod](#重调度-PD-Pod) 将 Pod 重调度到其他节点。
+
+4. 确认待维护节点上不再有 TiKV 和 PD Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name}
+    ```
+
+5. 使用 `kubectl drain` 命令将待维护节点上的 Pod 迁移到其它节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl drain ${node_name} --ignore-daemonsets
+    ```
+
+    运行后，该节点上的 Pod 会自动迁移到其它可用节点上。
+
+6. 再次确认节点不再有任何 TiKV、TiDB 和 PD Pod 运行：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
 7. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
@@ -201,36 +170,9 @@ pd-ctl member leader transfer ${POD_NAME}
     kubectl delete node ${node_name}
     ```
 
-## 维护 TiKV 实例所在节点
+## 重调度 PD Pod
 
-TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，因此在维护 TiKV 实例所在节点前，需要根据维护需求选择操作策略：
-
-- 假如是维护短期内可恢复的节点，则不需要迁移 TiKV 节点，在维护结束后原地恢复节点；
-- 假如是维护短期内不可恢复的节点，则需要规划 TiKV 的迁移工作。
-  - 假如节点存储可迁移
-  - 假如节点存储不可迁移
-
-### 维护短期内可恢复的节点
-
-针对短期维护，我们可以通过调整 PD 集群的 `max-store-down-time` 配置来增大集群所允许的 TiKV 实例下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV 实例会自动恢复。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pd-ctl -d config set max-store-down-time 10m
-```
-
-调整 `max-store-down-time` 到合理的值后，后续的操作方式与[维护 TiDB 实例所在节点](#维护-tidb-实例所在节点)相同。
-
-### 维护短期内不可恢复的节点
-
-针对短期内不可恢复的节点维护，如节点长期下线等情形，需要使用 `pd-ctl` 主动通知 TiDB 集群下线对应的 TiKV 实例，再手动解除 TiKV 实例与该节点的绑定。
+针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
 
 1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
 
@@ -240,51 +182,21 @@ pd-ctl -d config set max-store-down-time 10m
     kubectl cordon ${node_name}
     ```
 
-2. 查看待维护节点上的 TiKV 实例：
+2. 查看待维护节点上的 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pods -A -o wide | grep tikv | grep ${node_name}
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-#### 如果节点存储可迁移
+### 如果节点存储可迁移
 
-如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 store，只需要迁移 leader 并重启 pod。
+如果节点存储可以自动迁移，比如使用 EBS，则不需要删除 PD Member，只需要迁移 Leader 并删除 Pod。
 
-3. 使用 `pd-ctl` 主动驱逐 leader
+1. 参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
 
-    查看 TiKV 实例的 `store-id`：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .id"
-    ```
-
-    驱逐 leader：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    pd-ctl scheduler add evict-leader-scheduler ${ID}
-    ```
-
-4. 检查 leader 已经全部被迁移走:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .leaderCount"
-    ```
-
-5. 删除 TiKV 实例：
+2. 删除 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -292,7 +204,7 @@ pd-ctl -d config set max-store-down-time 10m
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-6. 观察该 TiKV 实例是否正常调度到其它节点上：
+3. 确认该 PD Pod 正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -300,90 +212,36 @@ pd-ctl -d config set max-store-down-time 10m
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-7. 移除 evict-leader-scheduler，等待 leader 自动调度回来：
+### 如果节点存储不可迁移
+
+如果节点存储不可以自动迁移，比如使用本地存储，则需要删除 PD Member。
+
+1. 参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
+
+2. 下线 PD Pod。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pd-ctl scheduler remove evict-leader-scheduler
+    pd-ctl member delete name ${pod_name}
     ```
 
-    假如待维护节点上还有其它 TiKV 实例，则重复同样的操作步骤直到所有的 TiKV 实例都迁移到其它节点上。
-
-8. 确认节点不再有 TiKV 实例后，再逐出节点上的其它实例：
+3. 确认 PD Member 已删除：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl drain ${node_name} --ignore-daemonsets --delete-local-data
+    pd-ctl member
     ```
 
-9. 再次确认节点不再有任何 TiKV、TiDB 和 PD 实例运行：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get pod --all-namespaces | grep ${node_name}
-    ```
-
-10. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl delete node ${node_name}
-    ```
-
-至此，操作完成。
-
-#### 如果节点存储不可迁移
-
-如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 store。
-
-3. 使用 `pd-ctl` 主动下线 TiKV 实例。
-
-    > **注意：**
-    >
-    > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`）。假如不符合该条件，需要先操作扩容 TiKV。
-
-    查看 TiKV 实例的 `store-id`：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${POD_NAME}\" ) | .id"
-    ```
-
-    下线实例：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    pd-ctl -d store delete ${ID}
-    ```
-
-4. 等待 store 状态（`state_name`）转移为 `Tombstone`：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    watch pd-ctl -d store ${ID}
-    ```
-
-5. 解除 TiKV 实例与节点本地盘的绑定。
+4. 解除 PD Pod 与节点本地盘的绑定。
 
     查询 Pod 使用的 `PesistentVolumeClaim`：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
+    kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
     ```
 
     删除该 `PesistentVolumeClaim`：
@@ -394,7 +252,7 @@ pd-ctl -d config set max-store-down-time 10m
     kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
     ```
 
-6. 删除 TiKV 实例：
+5. 删除 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -402,7 +260,7 @@ pd-ctl -d config set max-store-down-time 10m
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-7. 观察该 TiKV 实例是否正常调度到其它节点上：
+6. 观察该 PD Pod 是否正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -410,30 +268,176 @@ pd-ctl -d config set max-store-down-time 10m
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-    假如待维护节点上还有其它 TiKV 实例，则重复同样的操作步骤直到所有的 TiKV 实例都迁移到其它节点上。
+## 重调度 TiKV Pod
 
-8. 确认节点不再有 TiKV 实例后，再逐出节点上的其它实例：
+针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl drain ${node_name} --ignore-daemonsets --delete-local-data
-    ```
-
-9. 再次确认节点不再有任何 TiKV、TiDB 和 PD 实例运行：
+1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod --all-namespaces | grep ${node_name}
+    kubectl cordon ${node_name}
     ```
 
-10. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
+2. 查看待维护节点上的 TiKV Pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete node ${node_name}
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-至此，操作完成。
+### 如果节点存储可迁移
+
+如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 TiKV Store，只需要迁移 Region Leader 并删除 Pod。
+
+1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Leader 迁移到其他 Pod。
+
+2. 删除 TiKV Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+3. 确认该 TiKV Pod 正常调度到其它节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+4. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl scheduler remove evict-leader-scheduler-${ID}
+    ```
+
+### 如果节点存储不可迁移
+
+如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 TiKV Store。
+
+1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Leader 迁移到其他 Pod。
+
+2. 下线 TiKV Pod。
+
+    > **注意：**
+    >
+    > 下线 TiKV Pod 前，需要保证集群中剩余的 TiKV Pod 数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`，默认值 3）。假如不符合该条件，需要先操作扩容 TiKV。
+
+    查看 TiKV Pod 的 `store-id`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
+    ```
+
+    下线 Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl store delete ${ID}
+    ```
+
+3. 等待 store 状态（`state_name`）转移为 `Tombstone`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    watch pd-ctl store ${ID}
+    ```
+
+4. 解除 TiKV Pod 与节点本地盘的绑定。
+
+    查询 Pod 使用的 `PesistentVolumeClaim`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
+    ```
+
+    删除该 `PesistentVolumeClaim`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+    ```
+
+5. 删除 TiKV Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+6. 观察该 TiKV Pod 是否正常调度到其它节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+7. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl scheduler remove evict-leader-scheduler-${ID}
+    ```
+
+## 迁移 PD Leader
+
+1. 查看 PD Leader
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl member leader show
+    ```
+
+2. 如果 Leader Pod 所在节点是要维护的节点，则需要将 Leader 先迁移到其他节点上的 Pod。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl member leader transfer ${pod_name}
+    ```
+
+    其中 `${pod_name}` 是其他节点上的 PD Pod。
+
+## 迁移 TiKV Region Leader
+
+1. 查看 TiKV Pod 的 `store-id`：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
+    ```
+
+2. 驱逐 Region Leader：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl scheduler add evict-leader-scheduler ${ID}
+    ```
+
+3. 检查 Region Leader 已经全部被迁移走:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    ```
