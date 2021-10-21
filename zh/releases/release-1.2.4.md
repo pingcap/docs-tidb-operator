@@ -14,7 +14,6 @@ TiDB Operator 版本：1.2.4
 
 - TidbMonitor 支持 `enableRules` 字段。当没有配置 AlterManager 时，可以配置该字段为 `true` 来为 Prometheus 添加告警规则 ([#4115](https://github.com/pingcap/tidb-operator/pull/4115), [@mikechengwei](https://github.com/mikechengwei))
 
-
 ## 优化提升
 
 - 升级 `TiFlash` 的过程更加的优雅 ([#4193](https://github.com/pingcap/tidb-operator/pull/4193), [@KanShiori](https://github.com/KanShiori))
