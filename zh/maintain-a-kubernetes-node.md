@@ -40,7 +40,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     假如存在 TiKV Pod，针对每一个 Pod：
     
         1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Region Leader 迁移到其他 Pod。
-        
+
         2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
 
             {{< copyable "shell-regular" >}}
@@ -127,7 +127,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-TiKV-Pod) 将 Pod 重调度到其他节点。    
 
-3. 检查待维护节点上是否有 PD Pod：
+2. 检查待维护节点上是否有 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -137,7 +137,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     假如存在 PD Pod，针对每一个 Pod，参考[重调度 PD Pod](#重调度-PD-Pod) 将 Pod 重调度到其他节点。
 
-4. 确认待维护节点上不再有 TiKV 和 PD Pod：
+3. 确认待维护节点上不再有 TiKV 和 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -145,7 +145,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-5. 使用 `kubectl drain` 命令将待维护节点上的 Pod 迁移到其它节点上：
+4. 使用 `kubectl drain` 命令将待维护节点上的 Pod 迁移到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -155,7 +155,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     运行后，该节点上的 Pod 会自动迁移到其它可用节点上。
 
-6. 再次确认节点不再有任何 TiKV、TiDB 和 PD Pod 运行：
+5. 再次确认节点不再有任何 TiKV、TiDB 和 PD Pod 运行：
 
     {{< copyable "shell-regular" >}}
 
@@ -163,7 +163,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-7. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
+6. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
 
     {{< copyable "shell-regular" >}}
 
