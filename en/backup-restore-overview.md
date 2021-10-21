@@ -319,19 +319,19 @@ After deleting the `metadata.finalizers` configuration, you can delete the CR no
 
 ### Clean backup data
 
-If TiDB Operator version is v1.2.3 or earlier, the way to clean the backup data is: delete the backup files cyclically, one file at a time.
+For TiDB Operator v1.2.3 and earlier versions, TiDB Operator cleans the backup data by deleting the backup files one by one.
 
-If TiDB Operator version is v1.2.4 or later, the way to clean the backup data is: delete the backup files cyclically, delete files in batch at a time. For each batch deletion, there are multiple methods depending on the type of backend storage.
+For TiDB Operator v1.2.4 and later versions, TiDB Operator cleans the backup data by deleting the backup files in batch. For the batch deletion, the deletion methods are different depending on the type of backend storage used for backups.
 
-* delete in batch concurrently: For S3-compatible backend storage, it will start some goroutines, and each goroutine use the batch delete API ["DeleteObjects"](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) to delete multiple files.
-* delete concurrently: For other backend storage, it will start some goroutines, and each goroutine delete one file at a time.
+* For the S3-compatible backend storage, TiDB Operator uses the concurrent batch deletion method, which deletes files in batch concurrently. TiDB Operator starts multiple goroutines concurrently, and each goroutine uses the batch delete API ["DeleteObjects"](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) to delete multiple files.
+* For other types of backend storage, TiDB Operator uses the concurrent deletion method, which deletes files concurrently. TiDB Operator starts multiple goroutines, and each goroutine deletes one file at a time.
 
-There are some fields to control the clean behavior:
+For TiDB Operator v1.2.4 and later versions, you can configure the following fields in the Backup CR to control the clean behavior :
 
-* `.spec.cleanOption.pageSize`: The number of files to be deleted in batch at a time. The default is 10000.
-* `.spec.cleanOption.disableBatchConcurrency`: If it is true, use the method "delete concurrently" to clean.
-  
-    If S3-compatible backend storage doesn't support "DeleteObjects" API, the default method "delete in batch concurrently" will fail, we need to use this field to use the method "delete in batch concurrently".
+* `.spec.cleanOption.pageSize`: Specifies the number of files to be deleted in each batch at a time. The default value is 10000.
+* `.spec.cleanOption.disableBatchConcurrency`: If the value of this field is true, TiDB Operator disables the concurrent batch deletion method and uses the concurrent deletion method.
 
-* `.spec.cleanOption.batchConcurrency`: If the method is "delete in batch concurrently", the number of groutines. The default is 10.
-* `.spec.cleanOption.routineConcurrency`: If the method is "delete concurrently", the number of goroutines. The default is 100.
+    If your S3-compatible backend storage does not support the `DeleteObjects` API, the default concurrent batch deletion method fails. You need to configure this field to `true` to use the concurrent deletion method.
+
+* `.spec.cleanOption.batchConcurrency`: Specifies the number of goroutines to start for the concurrent batch deletion method. The default value is 10.
+* `.spec.cleanOption.routineConcurrency`: Specifies the number of goroutines to start  for the concurrent deletion method. The default value is 100.

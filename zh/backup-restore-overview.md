@@ -315,7 +315,7 @@ TiDB Operator v1.2.4 及以后的版本，清理备份文件的方式为：循�
 对于 TiDB Operator v1.2.4 及以后的版本，你可以使用 Backup CR 中的以下字段控制清理行为：
 
 * `.spec.cleanOption.pageSize`：指定每次批量删除的文件数量。默认值为 10000。
-* `.spec.cleanOption.disableBatchConcurrency`：为 true 时，使用并发删除方式。
+* `.spec.cleanOption.disableBatchConcurrency`：当设置为 true 时，TiDB Operator 会禁用并发批量删除方式，使用并发删除方式。
   
     如果 S3 兼容的后端存储不支持 `DeleteObjects` 接口，默认的并发批量删除会失败，需要配置该字段为 `true` 来使用并发删除方式。
 
