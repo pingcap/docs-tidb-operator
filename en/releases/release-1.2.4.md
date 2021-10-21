@@ -24,5 +24,5 @@ TiDB Operator version: 1.2.4
 
 ## Bug fixes
 
-- Fix the security vulnerabilities in the images `tidb-backup-manager` and `tidb-operator` ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
+- Fix the security vulnerabilities in the `tidb-backup-manager` and `tidb-operator` images ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
 - Fix the issue that backup data maybe remain after deleting running `Backup` ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
