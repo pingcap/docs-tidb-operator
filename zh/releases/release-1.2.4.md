@@ -19,11 +19,10 @@ TiDB Operator 版本：1.2.4
 
 ## 优化提升
 
-- 升级 `TiFlash` 的过程更加的优雅 ([#4193](https://github.com/pingcap/tidb-operator/pull/4193), [@KanShiori](https://github.com/KanShiori))
+- 优化 `TiFlash` 滚动升级流程 ([#4193](https://github.com/pingcap/tidb-operator/pull/4193), [@KanShiori](https://github.com/KanShiori))
 - 支持批量删除备份数据 ([#4095](https://github.com/pingcap/tidb-operator/pull/4095), [@KanShiori](https://github.com/KanShiori))
-- 从 TidbMonitor ConfigMap 分离出单独的 Grafana ConfigMap ([#4108](https://github.com/pingcap/tidb-operator/pull/4108), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug 修复
 
-- 修复镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
-- 当 `Backup` 备份运行时被删除，修复 `Backup` 备份数据可能残留的问题 ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
+- 修复 `tidb-backup-manager` 和 `tidb-operator` 镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
+- 修复当 `Backup` 备份运行时被删除，备份数据可能残留的问题 ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
