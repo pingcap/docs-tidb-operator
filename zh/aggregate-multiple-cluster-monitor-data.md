@@ -27,7 +27,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
     > **注意：**
     >
-    > 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，必须与部署 `TidbCluster` 的 namespace 相同。
+    > 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，可以与部署 `TidbCluster` 的 namespace 不同。TidbMonitor 当前跨 namespace 监控。
 
 2. 部署 Thanos Query 组件。
 
@@ -147,7 +147,8 @@ stringData:
 ```
 
 ## RemoteWrite 模式
-除了 Thanos Sidecar PULL 监控聚合模式，RemoteWrite 是一种监控数据 Push 模式。
+
+除了 Thanos Sidecar PULL 监控聚合模式，我们还支持 RemoteWrite 模式，这种模式不依赖于 Thanos Sidecar，采用主动 Push 数据的方式。
 在启动 TiDBMonitor 时可以指定 RemoteWrite 配置，示例如下:
 
 ```yaml
@@ -162,14 +163,10 @@ spec:
     baseImage: prom/prometheus
     version: v2.18.1
     remoteWrite:
-      - url: "http://localhost:1234"
-        writeRelabelConfigs:
-          - sourceLabels: [__test]
-            separator: ;
-            regex: (.*)
-            targetLabel: node
-            replacement: $1
-            action: replace
+      - url: "http://thanos-receive:19291/api/v1/receive"
+        queue_config:
+          max_samples_per_send: 100
+          max_shards: 100
   grafana:
     baseImage: grafana/grafana
     version: 7.5.7
@@ -183,3 +180,4 @@ spec:
 ```
 
 Prometheus 将会把数据推送到 [Thanos Receiver](https://thanos.io/tip/components/receive.md/) 服务，Thanos Receiver 也可以成为 Thanos Query 的 Store 数据源。详情可以参考[Receiver 架构设计](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/)。
+部署方案可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
