@@ -98,6 +98,7 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 + 版本发布历史
   + v1.1
+    - [1.1.14](releases/release-1.1.14.md)
     - [1.1.13](releases/release-1.1.13.md)
     - [1.1.12](releases/release-1.1.12.md)
     - [1.1.11](releases/release-1.1.11.md)
