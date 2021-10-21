@@ -180,4 +180,5 @@ spec:
 ```
 
 Prometheus 将会把数据推送到 [Thanos Receiver](https://thanos.io/tip/components/receive.md/) 服务，详情可以参考 [Receiver 架构设计](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/)。
+
 部署方案可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
