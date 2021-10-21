@@ -14,7 +14,7 @@ TiDB Operator 版本：1.2.4
 
 ## 新功能
 
-- TidbMonitor 支持用户自定义 Prometheus 告警规则，并且可以动态重新加载 ([#4180](https://github.com/pingcap/tidb-operator/pull/4180), [@mikechengwei](https://github.com/mikechengwei))
+- TidbMonitor 支持用户自定义 Prometheus 告警规则，并且可以动态重新加载告警规则 ([#4180](https://github.com/pingcap/tidb-operator/pull/4180), [@mikechengwei](https://github.com/mikechengwei))
 - TidbMonitor 支持 `enableRules` 字段。当没有配置 AlterManager 时，可以配置该字段为 `true` 来为 Prometheus 添加告警规则 ([#4115](https://github.com/pingcap/tidb-operator/pull/4115), [@mikechengwei](https://github.com/mikechengwei))
 
 ## 优化提升
@@ -25,4 +25,4 @@ TiDB Operator 版本：1.2.4
 ## Bug 修复
 
 - 修复 `tidb-backup-manager` 和 `tidb-operator` 镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
-- 修复当 `Backup` 备份运行时被删除，备份数据可能残留的问题 ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
+- 修复当 `Backup` 备份任务正在运行时，如果 `Backup` CR 被删除，备份数据可能残留的问题 ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
