@@ -16,6 +16,7 @@ TidbMonitor 支持多集群，分片等功能，Prometheus的配置，Rule，`Ta
 ## 如何开启动态配置功能
 
 开启动态配置功能，需要指定 `prometheusReloader` 配置，示例如下:
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
