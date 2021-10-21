@@ -39,7 +39,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     假如存在 TiKV Pod，针对每一个 Pod：
     
-    1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Region Leader 迁移到其他 Pod。
+    1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Region Leader 迁移到其他 Pod。
 
     2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
 
@@ -59,7 +59,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-    假如存在 PD Pod，针对每一个 Pod，参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
+    假如存在 PD Pod，针对每一个 Pod，参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
 4. 确认待维护节点上不再有 TiKV 和 PD Pod：
 
@@ -125,7 +125,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-    假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-TiKV-Pod) 将 Pod 重调度到其他节点。    
+    假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-tikv-pod) 将 Pod 重调度到其他节点。    
 
 2. 检查待维护节点上是否有 PD Pod：
 
@@ -135,7 +135,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-    假如存在 PD Pod，针对每一个 Pod，参考[重调度 PD Pod](#重调度-PD-Pod) 将 Pod 重调度到其他节点。
+    假如存在 PD Pod，针对每一个 Pod，参考[重调度 PD Pod](#重调度-pd-pod) 将 Pod 重调度到其他节点。
 
 3. 确认待维护节点上不再有 TiKV 和 PD Pod：
 
@@ -195,7 +195,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 如果节点存储可以自动迁移，比如使用 EBS，则不需要删除 PD Member，只需要迁移 Leader 并删除 Pod。
 
-1. 参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
+1. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
 2. 删除 PD Pod：
 
@@ -217,7 +217,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 如果节点存储不可以自动迁移，比如使用本地存储，则需要删除 PD Member。
 
-1. 参考[迁移 PD Leader](#迁移-PD-Leader) 将 Leader 迁移到其他 Pod。
+1. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
 2. 下线 PD Pod。
 
@@ -293,7 +293,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 TiKV Store，只需要迁移 Region Leader 并删除 Pod。
 
-1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Leader 迁移到其他 Pod。
+1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
 2. 删除 TiKV Pod：
 
@@ -323,7 +323,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 TiKV Store。
 
-1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Leader 迁移到其他 Pod。
+1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
 2. 下线 TiKV Pod。
 
