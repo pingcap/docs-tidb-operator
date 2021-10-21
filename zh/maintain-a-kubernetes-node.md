@@ -39,17 +39,17 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     假如存在 TiKV Pod，针对每一个 Pod：
     
-        1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Region Leader 迁移到其他 Pod。
+    1. 参考[迁移 TiKV Region Leader](#迁移-TiKV-Region-Leader) 将 Region Leader 迁移到其他 Pod。
 
-        2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
+    2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
 
-            {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-            ```shell
-            pd-ctl config set max-store-down-time 60m
-            ```
+        ```shell
+        pd-ctl config set max-store-down-time 60m
+        ```
 
-            调整 `max-store-down-time` 到合理的值。
+        调整 `max-store-down-time` 到合理的值。
 
 3. 检查待维护节点上是否有 PD Pod：
 
