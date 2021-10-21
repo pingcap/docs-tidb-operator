@@ -15,7 +15,7 @@ TiDB Operator version: 1.2.4
 ## New features
 
 - TidbMonitor supports customizing prometheus rules and reloading configurations dynamically ([#4180](https://github.com/pingcap/tidb-operator/pull/4180), [@mikechengwei](https://github.com/mikechengwei))
-- TidbMonitor supports the `enableRules` field. When AlertManager is not configured, you can configure this field to `true` to add Prometheus rules  ([#4115](https://github.com/pingcap/tidb-operator/pull/4115), [@mikechengwei](https://github.com/mikechengwei))
+- TidbMonitor supports the `enableRules` field. When AlertManager is not configured, you can configure this field to `true` to add Prometheus rules ([#4115](https://github.com/pingcap/tidb-operator/pull/4115), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Improvements
 
