@@ -25,4 +25,4 @@ TiDB Operator version: 1.2.4
 ## Bug fixes
 
 - Fix the security vulnerabilities in the `tidb-backup-manager` and `tidb-operator` images ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
-- Fix the issue that some backup data might retain if the `Backup` CR is deleted when `Backup` job is running ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
+- Fix the issue that some backup data might retain if the `Backup` CR is deleted when the `Backup` job is running ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
