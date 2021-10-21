@@ -27,4 +27,3 @@ TiDB Operator 版本：1.2.4
 - 修复镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
 
 - 当 `Backup` 备份运行时被删除，修复 `Backup` 备份数据可能残留的问题 ([#4133](https://github.com/pingcap/tidb-operator/pull/4133), [@KanShiori](https://github.com/KanShiori))
-
