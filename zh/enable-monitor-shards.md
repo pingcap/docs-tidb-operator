@@ -16,6 +16,7 @@ TidbMonitor 负责单个或者Tidb集群的监控数据采集，当监控数据�
 ## 如何开启动分片功能
 
 开启分片功能，需要指定 `shard` 字段，示例如下:
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
