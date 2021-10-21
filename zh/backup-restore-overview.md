@@ -307,17 +307,17 @@ kubectl edit backup ${name} -n ${namespace}
 
 TiDB Operator v1.2.3 及之前的版本，清理备份文件的方式为：循环删除备份文件，一次删除一个文件。
 
-TiDB Operator v1.2.4 及以后的版本，清理备份文件的方式为：循环删除备份文件，一次批量删除多个文件。对于每次批量删除多个文件的操作，根据备份使用的后端存储类型的不同，有着不同的实现。
+TiDB Operator v1.2.4 及以后的版本，清理备份文件的方式为：循环删除备份文件，一次批量删除多个文件。对于每次批量删除多个文件的操作，根据备份使用的后端存储类型的不同，删除方式不同。
 
-* 并发批量删除方式：对于 S3 兼容的后端存储，启动多个 Go 协程，每个 Go 协程每次调用批量删除接口 ["DeleteObjects"](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) 来删除多个文件。
-* 并发删除方式：对于其他类型的后端存储，启动多个 Go 协程，每个 Go 协程每次删除一个文件。
+* S3 兼容的后端存储采用并发批量删除方式。TiDB Operator 启动多个 Go 协程，每个 Go 协程每次调用批量删除接口 ["DeleteObjects"](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) 来删除多个文件。
+* 其他类型的后端存储采用并发删除方式。TiDB Operator 启动多个 Go 协程，每个 Go 协程每次删除一个文件。
 
-Backup CR 中存在一些字段用以控制清理行为：
+对于 TiDB Operator v1.2.4 及以后的版本，你可以使用 Backup CR 中的以下字段控制清理行为：
 
 * `.spec.cleanOption.pageSize`：指定每次批量删除的文件数量。默认值为 10000。
 * `.spec.cleanOption.disableBatchConcurrency`：为 true 时，使用并发删除方式。
   
-    如果 S3 兼容的后端存储，但是不支持 `DeleteObjects` 接口，默认的并发批量删除会失败，需要配置该字段为 `true` 来使用并发删除方式。
+    如果 S3 兼容的后端存储不支持 `DeleteObjects` 接口，默认的并发批量删除会失败，需要配置该字段为 `true` 来使用并发删除方式。
 
-* `.spec.cleanOption.batchConcurrency`: 并发批量删除方式下，启动的 Go 协程数量。默认值为 10。
-* `.spec.cleanOption.routineConcurrency`: 并发删除方式下，启动的 Go 协程数量。默认值为 100。
+* `.spec.cleanOption.batchConcurrency`: 指定并发批量删除方式下启动的 Go 协程数量。默认值为 10。
+* `.spec.cleanOption.routineConcurrency`: 指定并发删除方式下启动的 Go 协程数量。默认值为 100。
