@@ -10,4 +10,4 @@ TiDB Operator 版本：1.1.14
 
 ## Bug 修复
 
-- 修复镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
+- 修复 `tidb-backup-manager` 和 `tidb-operator` 镜像中的安全漏洞 ([#4217](https://github.com/pingcap/tidb-operator/pull/4217), [@KanShiori](https://github.com/KanShiori))
