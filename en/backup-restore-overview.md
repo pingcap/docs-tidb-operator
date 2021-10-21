@@ -331,6 +331,7 @@ There are some fields to control the clean behavior:
 * `.spec.cleanOption.pageSize`: The number of files to be deleted in batch at a time. The default is 10000.
 * `.spec.cleanOption.disableBatchConcurrency`: If it is true, use the method "delete concurrently" to clean.
   
-  If S3-compatible backend storage doesn't support "DeleteObjects" API, the default method "delete in batch concurrently" will fail, we need to use this field to use the method "delete in batch concurrently".
+    If S3-compatible backend storage doesn't support "DeleteObjects" API, the default method "delete in batch concurrently" will fail, we need to use this field to use the method "delete in batch concurrently".
+
 * `.spec.cleanOption.batchConcurrency`: If the method is "delete in batch concurrently", the number of groutines. The default is 10.
 * `.spec.cleanOption.routineConcurrency`: If the method is "delete concurrently", the number of goroutines. The default is 100.

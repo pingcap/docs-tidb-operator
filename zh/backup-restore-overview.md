@@ -317,6 +317,7 @@ Backup CR 中存在一些字段用以控制清理行为：
 * `.spec.cleanOption.pageSize`：指定每次批量删除的文件数量。默认值为 10000。
 * `.spec.cleanOption.disableBatchConcurrency`：为 true 时，使用并行删除方式。
   
-  如果 S3 兼容的后端存储，但是不支持 DeleteObjects 接口，默认的并发批量删除会失败，需要使用该字段来要求使用并发删除方式。
+    如果 S3 兼容的后端存储，但是不支持 DeleteObjects 接口，默认的并发批量删除会失败，需要使用该字段来要求使用并发删除方式。
+
 * `.spec.cleanOption.batchConcurrency`: 并发批量删除方式下，启动的 Go 协程数量。默认值为 10。
 * `.spec.cleanOption.routineConcurrency`: 并发删除方式下，启动的 Go 协程数量。默认值为 100。
