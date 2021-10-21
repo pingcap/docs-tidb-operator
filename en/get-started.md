@@ -252,7 +252,7 @@ Execute this command to install the CRDs into your cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.13/manifests/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.14/manifests/crd.yaml
 ```
 
 Expected output:
@@ -304,7 +304,7 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.13
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.14
     ```
 
     If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
@@ -312,9 +312,9 @@ This section describes how to install TiDB Operator using Helm 3.
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.13 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.13 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.13 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.1.14 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.1.14 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.1.14 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
