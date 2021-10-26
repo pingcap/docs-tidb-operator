@@ -5,7 +5,7 @@ summary: 动态更新 TidbMonitor 配置
 
 # 开启动态配置功能
 
-本文档介绍如何开启 TidbMonitor 动态配置功能
+本文档介绍如何开启 TidbMonitor 动态配置功能。
 
 ## 功能介绍
 
