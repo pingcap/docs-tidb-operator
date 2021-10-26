@@ -11,7 +11,7 @@ summary: 动态更新 TidbMonitor 配置
 
 TidbMonitor 支持多集群，分片等功能，Prometheus的配置，Rule，`Targets 变更，如果不开启动态配置需要重启才能生效，如果监控数据量很大，恢复 Prometheus 快照数据耗时会比较长。
 
-当开启动态配置功能，TidbMonitor 的配置都可以做到热更新。
+当开启动态配置功能时，TidbMonitor 的配置都可以做到热更新。
 
 ## 如何开启动态配置功能
 
