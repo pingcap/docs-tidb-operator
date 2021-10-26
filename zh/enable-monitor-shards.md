@@ -41,7 +41,7 @@ spec:
 
 > **注意：**
 >
-> Pod 数量取决于 replica 和 shard的乘积。当 replica 为2个副本，shard为2个分片，就会产生 四个 Tidbmonitor 实例。
+> Pod 数量取决于 replica 和 shard 的乘积。当 replica 为 2 个副本，shard 为 2 个分片，就会产生四个 Tidbmonitor 实例。
 > shard 变更后，Targets 会重新分配，但是原本在节点上的监控数据不会重新分配。
 
 可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-shards)。
