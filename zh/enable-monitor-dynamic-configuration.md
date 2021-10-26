@@ -1,5 +1,5 @@
 ---
-title: 开启动态配置功能
+title: TidbMonitor 开启动态配置功能
 summary: 动态更新 TidbMonitor 配置
 ---
 
