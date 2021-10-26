@@ -9,7 +9,7 @@ summary: 如何使用 TidbMonitor 分片功能
 
 ## 功能介绍
 
-TidbMonitor 负责单个或者Tidb集群的监控数据采集，当监控数据量很大的时候，单点计算能力会达到瓶颈。可以采用 `SHARD` 分片功能，对 `__address__`做 `hashmod`，打散 `Targets` 到多个 TidbMonitor 节点上。
+TidbMonitor 负责单个或者多个 TiDB 集群的监控数据采集。当监控数据量很大的时候，单点计算能力会达到瓶颈。可以采用 Prometheus `SHARD` 分片功能，对 `__address__` 做 `hashmod`，打散 `Targets` 到多个 TidbMonitor 节点上。
 
 这种方式需要支持数据聚合方案，我们推荐采用 `Thanos` 方案。
 
