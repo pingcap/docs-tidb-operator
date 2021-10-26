@@ -29,7 +29,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
 
     > **注意：**
     >
-    > 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，可以与部署 `TidbCluster` 的 namespace 不同。TidbMonitor 当前跨 namespace 监控。
+    > 此命令中的 `${namespace}` 表示 TidbMonitor 部署的命名空间，可以与部署 `TidbCluster` 的 namespace 不同。TidbMonitor 当前支持跨 namespace 监控。
 
 2. 部署 Thanos Query 组件。
 
