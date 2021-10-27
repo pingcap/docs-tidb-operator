@@ -193,4 +193,3 @@ spec:
 ## 探索更多
 
 如果你需要在 Kubernetes 上使用 DM 迁移 MySQL 数据到 TiDB 集群，请参考[在 Kubernetes 上部署使用 DM 迁移数据](use-tidb-dm.md)。
-
