@@ -1,6 +1,6 @@
 ---
 title: Use DM in Kubernetes
-summary: Learn how to use TiDB DM cluster in Kubernetes.
+summary: Learn how to migrate MySQL data to TiDB cluster using DM in Kubernetes.
 ---
 
 # Use DM in Kubernetes
