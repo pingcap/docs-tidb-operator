@@ -7,8 +7,7 @@
 
 + 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
-  - [What's New in v1.1](whats-new-in-v1.1.md)
-  - [TiDB Operator v1.1 重要注意事项](notes-tidb-operator-v1.1.md)
+  - [What's New in v1.2](whats-new-in-v1.2.md)
 + [快速上手](get-started.md)
 + 部署
   - 部署 TiDB 集群
@@ -38,6 +37,7 @@
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
   - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
+  - [使用 TiCDC 组件同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
   - [更新和替换 TLS 证书](renew-tls-certificate.md)
   - [以非 root 用户运行 TiDB Operator 和 TiDB 集群](containers-run-as-non-root-user.md)
 + 运维
@@ -91,6 +91,7 @@
   - [Sysbench 性能测试](benchmark-sysbench.md)
   - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
+  - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   + 工具
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
@@ -100,14 +101,21 @@
     - [tidb-backup chart 配置](configure-backup.md)
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
-+ [TiDB Operator Roadmap](roadmap.md)
 + 版本发布历史
   + v1.2
+    - [1.2.4](releases/release-1.2.4.md)
+    - [1.2.3](releases/release-1.2.3.md)
+    - [1.2.2](releases/release-1.2.2.md)
+    - [1.2.1](releases/release-1.2.1.md)
+    - [1.2 GA](releases/release-1.2.0.md)
+    - [1.2.0-rc.2](releases/release-1.2.0-rc.2.md)
     - [1.2.0-rc.1](releases/release-1.2.0-rc.1.md)
     - [1.2.0-beta.2](releases/release-1.2.0-beta.2.md)
     - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
+    - [1.1.14](releases/release-1.1.14.md)
+    - [1.1.13](releases/release-1.1.13.md)
     - [1.1.12](releases/release-1.1.12.md)
     - [1.1.11](releases/release-1.1.11.md)
     - [1.1.10](releases/release-1.1.10.md)
