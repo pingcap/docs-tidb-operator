@@ -31,7 +31,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
 ## 创建 AKS 集群和节点池
 
-根据 AKS 中的[群集隔离的最佳做法](https://docs.microsoft.com/zh-cn/azure/aks/operator-best-practices-cluster-isolation) 推荐，由于 TiDB 集群大部分组件使用 Azure 磁盘作为存储，推荐在创建 AKS 集群的时候组件的节点池使用每一个可用区（至少 3 个可用区）。
+根据 AKS 中的[最佳做法](https://docs.microsoft.com/zh-cn/azure/aks/operator-best-practices-cluster-isolation) 推荐，由于 TiDB 集群大部分组件使用 Azure 磁盘作为存储，推荐在创建 AKS 集群的时候组件的节点池使用每一个可用区（至少 3 个可用区）。
 
 下面的命令会创建 [启用容器存储接口 (CSI) 驱动程序](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers) 的 AKS 集群和组件节点池（TiKV 节点池[启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)）
 
@@ -98,8 +98,6 @@ az aks nodepool add --name tikv \
 
 该命令需要等待 AKS 集群节点池创建完成，每个节点池耗时约 2~5 分钟。可以参考 [`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。
 
-Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance", consider deploy a node pool in each zone. For example:
-
 Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节点，如果您希望使用 "严格执行区域均衡" (AKS 暂时不支持该策略)，可以考虑在每一个可用区部署一个节点池。 例如：
 
 {{< copyable "shell-regular" >}}
@@ -146,8 +144,8 @@ az aks nodepool add --name tikv3 \
 >
 > 关于节点池扩缩容：
 >
-> * 如果资源需要更改应用程序，可以手动缩放 AKS 群集以运行不同数量的节点。 节点数减少时，节点会被仔细 [封锁和排除](https://kubernetes.io/zh/docs/tasks/administer-cluster/safely-drain-node/)，尽量避免对正在运行的应用程序造成中断。参考 [在 Azure Kubernetes 服务 (AKS) 群集中缩放节点数](https://docs.microsoft.com/zh-cn/azure/aks/scale-cluster).
-> * 如果希望使用自动缩放集群，可以[更新现有的 AKS 群集以启用群集自动缩放程序](https://docs.microsoft.com/zh-cn/azure/aks/cluster-autoscaler#change-the-cluster-autoscaler-settings)，然后参考 [启用 TidbCluster 弹性伸缩](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)
+> * 如果应用程序需要更改资源，可以手动缩放 AKS 群集以运行不同数量的节点。 节点数减少时，节点会被 [优雅地清空](https://kubernetes.io/zh/docs/tasks/administer-cluster/safely-drain-node/)，尽量避免对正在运行的应用程序造成中断。参考 [在 AKS 中缩放节点数](https://docs.microsoft.com/zh-cn/azure/aks/scale-cluster).
+> * 如果希望使用自动缩放集群，可以[更改现有 AKS 设置](https://docs.microsoft.com/zh-cn/azure/aks/cluster-autoscaler#change-the-cluster-autoscaler-settings)，然后 [启用 TidbCluster 弹性伸缩功能](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)
 
 ## 部署 TiDB Operator
 
