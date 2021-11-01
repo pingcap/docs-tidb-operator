@@ -188,11 +188,9 @@ spec:
   tikv:
     baseImage: pingcap/tikv
     replicas: 3
-    storageClaims:
-    - resources:
-        requests:
-          storage: 100Gi
-      storageClassName: io1
+    requests:
+      storage: 100Gi
+    storageClassName: io1
 ```
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
