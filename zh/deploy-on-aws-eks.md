@@ -34,7 +34,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 推荐机型方面，出于性能考虑，推荐 PD 所在节点使用 c5.xlarge，TiDB 所在节点使用 c5.2xlarge，TiKV/TiFlash 所在节点使用 r5b.2xlarge。
 
-推荐存储方面，AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 配置，TiKV 推荐 gp3 配置为 400MBps 4000 IOPS，TiFlash 推荐 gp3 配置为 625MBps 6000 IOPS。
+推荐存储方面，AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 配置，TiKV 推荐 gp3 配置为 400MiB/s 4000 IOPS，TiFlash 推荐 gp3 配置为 625MiB/s 6000 IOPS。
 
 ## 创建 EKS 集群和节点池
 
