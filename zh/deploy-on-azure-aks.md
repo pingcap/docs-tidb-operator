@@ -28,6 +28,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 > **注意：**
 >
 > 本文档的操作需要至少具有 [AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
+> 需要在订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能
+
+执行以下命令，在订阅中注册 **EnableAzureDiskFileCSIDriver** 功能
+
+{{< copyable "shell-regular" >}}
+
+```shell
+az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${subscription}
+```
 
 ## 创建 AKS 集群和节点池
 
