@@ -491,11 +491,9 @@ Azure disks supports multiple volume types. If you need low latency and high thr
       tikv:
         baseImage: pingcap/tikv
         replicas: 3
-        storageClaims:
-        - resources:
-          requests:
-            storage: 100Gi
-          storageClassName: ultra
+        storageClassName: ultra
+        requests:
+          storage: "100Gi"
     ```
 
 You can use any supported Azure disk type, It is recommended to use `Premium_LRS` or `UltraSSD_LRS`.
