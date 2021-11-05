@@ -27,6 +27,15 @@ To verify whether AZ CLI is configured correctly, run the `az login` command. If
 > **Note:**
 >
 > The operations described in this document requires these permissions [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
+> need **EnableAzureDiskFileCSIDriver** registered in the subscription
+
+The following command will register **EnableAzureDiskFileCSIDriver** in the subscription
+
+{{< copyable "shell-regular" >}}
+
+```shell
+az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${subscription}
+```
 
 ## Create a AKS cluster and node pools
 
