@@ -488,11 +488,9 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
       tikv:
         baseImage: pingcap/tikv
         replicas: 3
-        storageClaims:
-        - resources:
-          requests:
-            storage: 100Gi
-          storageClassName: ultra
+        storageClassName: ultra
+        requests:
+          storage: "100Gi"
     ```
 
 您可以使用任意 Azure 磁盘类型，推荐使用 `Premium_LRS` 或 `UltraSSD_LRS`。
