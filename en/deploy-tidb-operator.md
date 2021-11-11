@@ -49,7 +49,7 @@ TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 If the server cannot access the Internet, you need to download the `crd.yaml` file on a machine with Internet access before installing:
@@ -58,8 +58,12 @@ If the server cannot access the Internet, you need to download the `crd.yaml` fi
 
 ```shell
 wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
-kubectl apply -f ./crd.yaml
+kubectl create -f ./crd.yaml
 ```
+
+> **Note:**
+>
+> For Kubernetes < 1.16, it only support v1beta1 CRD, so we have to change the file "crd.yaml" in above commands to "crd_v1beta1.yaml".
 
 If the following message is displayed, the CRD installation is successful:
 

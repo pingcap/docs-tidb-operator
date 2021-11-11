@@ -247,7 +247,7 @@ TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 期望输出：
@@ -261,6 +261,10 @@ customresourcedefinition.apiextensions.k8s.io/tidbmonitors.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
+
+> **注意：**
+> 
+> Kubernetes 1.16 之前版本，仅支持 v1beta1 版本的 CRD，需要上述命令中文件 "crd.yaml" 改为 "crd_v1beta1.yaml"。l
 
 ### 安装 TiDB Operator
 

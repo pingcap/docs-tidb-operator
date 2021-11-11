@@ -97,9 +97,13 @@ If you see `Ready` for all nodes, congratulations! You've set up your first Kube
 TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
 kubectl get crd tidbclusters.pingcap.com
 ```
+
+> **Note:**
+>
+> For Kubernetes < 1.16, it only support v1beta1 CRD, so we have to change the file "crd.yaml" in above commands to "crd_v1beta1.yaml".
 
 After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
