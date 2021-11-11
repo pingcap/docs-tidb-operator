@@ -162,11 +162,19 @@ eksctl create cluster -f cluster.yaml
 > * 为已经启动的 EC2 [开启实例缩减保护](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance)，ASG 自身的实例缩减保护不需要打开。
 > * [设置 ASG 终止策略](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy)为 `NewestInstance`。
 
-## 使用其他 EBS 存储类型
+## 配置 StorageClass
 
-如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。
+为了提高存储的 IO 写入性能，推荐设置 StorageClass 的 `mountOptions` 字段，来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)
 
-通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+  - nodelalloc,noatime
+```
+
+如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
 
 ```yaml
 kind: StorageClass
@@ -182,10 +190,6 @@ parameters:
 mountOptions:
   - nodelalloc,noatime
 ```
-
-> **注意：**
->
-> 为了提高存储的 IO 写入性能，推荐设置 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)
 
 然后在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
 
