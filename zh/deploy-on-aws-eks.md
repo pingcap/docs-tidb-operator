@@ -171,8 +171,14 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 # ...
 mountOptions:
-  - nodelalloc,noatime
+- nodelalloc,noatime
 ```
+
+### gp3
+
+如果需要使用推荐的 gp3 类型存储，需要先部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。可以参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 EBS CSI driver。
+
+### io1
 
 如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
 
@@ -188,7 +194,7 @@ parameters:
   iopsPerGB: "10"
   encrypted: "false"
 mountOptions:
-  - nodelalloc,noatime
+- nodelalloc,noatime
 ```
 
 然后在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例使用：
@@ -203,17 +209,13 @@ spec:
     storageClassName: io1
 ```
 
-如果需要使用推荐的 gp3 类型存储，需要先部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。可以参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 EBS CSI driver。
-
-更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
-
-## 使用本地存储
+### 本地存储
 
 请使用 AWS EBS 作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 AWS 部分实例类型提供的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
 
 > **注意：**
 >
-> 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
+> 运行中的 TiDB 集群不能动态更换 storageClass，可创建一个新的 TiDB 集群测试。
 >
 > 由于 EKS 升级过程中节点重建，[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)。由于 EKS 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，因此不建议在生产环境中使用本地盘。
 >
@@ -261,6 +263,10 @@ spec:
 3. 使用本地存储。
 
     完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
+
+### 其他存储类型
+
+更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [EBS 存储类型文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
 ## 部署 TiDB Operator
 
