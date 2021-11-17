@@ -153,7 +153,18 @@ az aks nodepool add --name tikv3 \
 > About node pool scale in:
 >
 > * You can manually scale an AKS cluster to run a different number of nodes. When you scale down, nodes are carefully [cordoned and drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/) to minimize disruption to running applications, refer [Scale the node count in an Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/en-us/azure/aks/scale-cluster).
-> * If you want to use the cluster autoscaler, you can [Change the cluster autoscaler settings](https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler#change-the-cluster-autoscaler-settings) and refer [Enable TidbCluster Auto-scaling](https://docs.pingcap.com/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)
+
+## 配置 StorageClass
+
+for improving IO performance of Disk，it is suggested to add `mountOptions` in the StorageClass，to config `nodelalloc` and `noatime`。refer to the [Mount the data disk ext4 filesystem with options on the target machines that deploy TiKV](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv)
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+- nodelalloc,noatime
+```
 
 ## Deploy TiDB Operator
 
@@ -478,6 +489,8 @@ Azure disks supports multiple volume types. If you need low latency and high thr
     reclaimPolicy: Delete
     allowVolumeExpansion: true
     volumeBindingMode: WaitForFirstConsumer
+    mountOptions:
+    - nodelalloc,noatime
     ```
 
     > you can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) according to your needs.
