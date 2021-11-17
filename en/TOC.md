@@ -100,9 +100,11 @@
     - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
-+ [TiDB Operator Roadmap](roadmap.md)
 + Release Notes
   + v1.2
+    - [1.2.4](releases/release-1.2.4.md)
+    - [1.2.3](releases/release-1.2.3.md)
+    - [1.2.2](releases/release-1.2.2.md)
     - [1.2.1](releases/release-1.2.1.md)
     - [1.2 GA](releases/release-1.2.0.md)
     - [1.2.0-rc.2](releases/release-1.2.0-rc.2.md)
@@ -111,6 +113,7 @@
     - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   + v1.1
+    - [1.1.14](releases/release-1.1.14.md)
     - [1.1.13](releases/release-1.1.13.md)
     - [1.1.12](releases/release-1.1.12.md)
     - [1.1.11](releases/release-1.1.11.md)

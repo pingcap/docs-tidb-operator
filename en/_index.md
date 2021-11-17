@@ -13,7 +13,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB Operator version | Compatible TiDB versions |
 |:---|:---|
 | v1.0 | v2.1, v3.0 |
-| v1.1, v1.2 | v3.0 and later releases |
+| v1.1 | v3.0, v3.1, v4.0, v5.0 |
+| v1.2 | v3.0 and later releases |
 | dev | v3.0 and later releases, dev |
 
 <NavColumns>
@@ -73,7 +74,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 - [TiDB Scheduler](tidb-scheduler.md)
 - [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
 - [Use tkctl](use-tkctl.md)
-- [Confiure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
+- [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
 
 </NavColumn>
 
