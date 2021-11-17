@@ -129,8 +129,12 @@ To ensure data safety in case one node is down, PD and TiKV use [Raft Consistenc
 
 In the bottom layer, TiKV replicates data using the log replication and State Machine model. For write requests, data is written to the Leader node first, and then the Leader node replicates the command to its Follower nodes as a log. When most of the Follower nodes in the cluster receive this log from the Leader node, the log is committed and the State Machine changes accordingly.
 
-## If the Ready field of a TiDBCluster is false, does it mean that the corresponding TiDBCluster is unavailable?
+## If the Ready field of a TidbCluster is false, does it mean that the corresponding TiDBCluster is unavailable?
 
-After you execute the `kubectl get tc` command, if the output shows that the **Ready** field of a TiDBCluster is false, it does not mean that the corresponding TiDBCluster is unavailable, because the cluster might be in the process of upgrading or scaling up.
+After you execute the `kubectl get tc` command, if the output shows that the **Ready** field of a TiDBCluster is false, it does not mean that the corresponding TiDBCluster is unavailable, because the cluster might be in the following status:
 
-To check whether a TiDBCluster is unavailable, you can try connecting to TiDB.
+* Upgrading
+* Scaling
+* Any component pod is unready
+
+To check whether a TiDB Cluster is unavailable, you can try connecting to TiDB.

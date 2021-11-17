@@ -129,8 +129,12 @@ PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的�
 
 在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当集群中的大多数节点收到此日志时，日志会被提交，状态机会相应作出变更。
 
-## TiDBCluster 的 Ready 项为 false 是否代表集群不可用？
+## TidbCluster 的 Ready 项为 false 是否代表集群不可用？
 
-当执行 `kubectl get tc` 命令后，如果输出中显示某个 TiDBCluster 的 Ready 字段为 false，不代表对应的 TiDBCluster 不可用，集群可能处于升级、缩扩容流程中。
+当执行 `kubectl get tc` 命令后，如果输出中显示某个 TiDBCluster 的 Ready 字段为 false，不代表对应的 TiDBCluster 不可用，集群可能处于以下状态：
 
-要判断 TiDBCluster 是否真正不可用，你可以尝试连接 TiDB。
+* 升级中
+* 缩扩容中
+* 任一组件的 Pod 为 unready
+
+要判断 TiDB 集群是否真正不可用，你可以尝试连接 TiDB。
