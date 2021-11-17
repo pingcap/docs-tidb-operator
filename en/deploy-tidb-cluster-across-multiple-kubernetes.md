@@ -572,7 +572,7 @@ When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade 
 
 1. Upgrade PD version in all clusters.
 
-   1.  modify `spec.pd.version` field in cluster #1 spec, then wait for PD Pod to finish rolling upgrade.
+   1. modify `spec.pd.version` field in cluster #1 spec, then wait for PD Pod to finish rolling upgrade.
 
       ```yaml
       apiVersion: pingcap.com/v1alpha1
