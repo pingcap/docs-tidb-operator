@@ -561,6 +561,27 @@ spec:
 EOF
 ```
 
+## 升级 TiDB 集群
+
+当跨 Kubernetes 集群部署一个 TiDB 集群时，为了让 TiDB 集群的各组件 Pod 按照特定顺序进行滚动升级，我们需要修改 TidbCluster 定义中组件的 version 配置以控制升级流程。
+
+1. 升级所有集群的 PD 版本。
+
+   1. 修改集群 1 定义中的 `spec.pd.version` 字段，并等待 PD Pod 滚动升级结束。
+   
+    ```yaml
+    apiVersion: pingcap.com/v1alpha1
+    kind: TidbCluster
+    # ...
+    spec:
+      pd:
+        version: ${version}
+    ```
+
+   2. 按照上一步，升级其他集群的 PD 版本。
+
+2. 以步骤 1 为例，逐一升级所有集群的 TiFlash、TiKV、Pump、TiDB 和 TiCDC 版本。
+
 ## 退出和回收已加入集群
 
 当你需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
