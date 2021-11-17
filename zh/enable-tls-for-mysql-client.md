@@ -9,6 +9,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群开启 MySQL 客户端 TLS。开启步骤为：
 
 1. 为 TiDB Server 颁发一套 Server 端证书，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${cluster_name}-tidb-server-secret` 和  `${cluster_name}-tidb-client-secret`，分别包含前面创建的两套证书；
+
+    > **注意：**
+    >
+    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
+
 2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`；
 3. 配置 MySQL 客户端使用加密连接。
 
@@ -245,7 +250,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     上面的文件创建三个对象：
 
-    - 一个 SelfSigned 类型的 Isser 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
+    - 一个 SelfSigned 类型的 Issuer 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
     - 一个 Certificate 对象，`isCa` 属性设置为 `true`；
     - 一个可以用于颁发 TiDB Server TLS 证书的 Issuer。
 
@@ -529,7 +534,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
          name: ${cluster_name}
          namespace: ${namespace}
         spec:
-         version: v5.1.0
+         version: v5.2.1
          timezone: UTC
          pvReclaimPolicy: Retain
          pd:

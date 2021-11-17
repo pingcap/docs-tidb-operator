@@ -47,7 +47,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.1.0
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -76,13 +76,13 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
 2. 设置 `spec.prometheus.config.configMapRef.name` 与 `spec.prometheus.config.configMapRef.namespace` 为自定义 ConfigMap 的名称与所属的 namespace。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 #### 增加额外的命令行参数
 
 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 > **注意：**
 >
@@ -129,7 +129,15 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-prometheus 9090:9090 &>
 
 ### 设置 kube-prometheus 与 AlertManager
 
-在部分情况下，你可能需要 TidbMonitor 同时获取 Kubernetes 上的监控指标。你可以通过设置 `TidbMonitor.Spec.kubePrometheusURL` 来使其获取 [kube-prometheus](https://github.com/coreos/kube-prometheus) metrics。
+TidbMonitor Grafana 默认内置了 Nodes-Info 与 Pods-Info 监控面板，用于查看 Kubernetes 对应的监控指标。
+
+如需在 TidbMonitor Grafana 中查看这些监控指标，请进行以下操作：
+
+1. 手动部署 Kubernetes 集群监控。
+
+    Kubernetes 集群监控有多种部署方式。如果要使用 kube-prometheus 部署, 可以参考 [kube-prometheus 文档](https://github.com/coreos/kube-prometheus)。
+
+2. 设置 `TidbMonitor.spec.kubePrometheusURL` 获取 Kubernetes 监控数据。
 
 同样的，你可以通过设置 TidbMonitor 来将监控推送警报至指定的 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/)。
 
@@ -155,7 +163,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.1.0
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -207,7 +215,7 @@ spec:
         foo: "bar"
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.1.0
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -244,7 +252,7 @@ spec:
       type: ClusterIP
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.1.0
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -286,7 +294,7 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 ## 多集群监控
 
-从 TiDB Operator 1.2.x 版本起，TidbMonitor 支持跨命名空间的多集群监控。
+从 TiDB Operator 1.2 版本起，TidbMonitor 支持跨命名空间的多集群监控。
 
 ### 使用 YAML 文件配置多集群监控
 
@@ -319,21 +327,21 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.1.0
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
   imagePullPolicy: IfNotPresent
 ```
 
-如需了解完整的配置示例，可参考 TiDB Operator 中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
 
 ### 使用 Grafana 查看多集群监控
 
 当 `tidb-monitor-initializer` 镜像版本在 `< v4.0.14`、`< v5.0.3` 范围时，要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
 
-1. 点击 Grafana Dashboard 中的 `Dashboard settings` 选项，打开 `Settings` 面板。
-2. 在 `Settings` 面板中，选择 `Variables` 中的 `tidb_cluster` 变量，将 `tidb_cluster` 变量的 `Hide` 属性设置为 `空选项`。
-3. 返回当前 Grafana Dashboard (目前无法保存对于 `Hide` 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${name}`。
+1. 点击 Grafana Dashboard 中的 **Dashboard settings** 选项，打开 **Settings** 面板。
+2. 在 **Settings** 面板中，选择 **Variables** 中的 **tidb_cluster** 变量，将 **tidb_cluster** 变量的 **Hide** 属性设置为空选项。
+3. 返回当前 Grafana Dashboard (目前无法保存对于 **Hide** 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${name}`。
 
 如果需要保存对 Grafana Dashboard 的修改， Grafana 必须为 `6.5` 及以上版本，TiDB Operator 必须为 v1.2.0-rc.2 及以上版本。
