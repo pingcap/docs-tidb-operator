@@ -583,7 +583,12 @@ When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade 
           version: ${version}
       ```
 
-    2. Follow the previous step, upgrade PD version in other clusters.
+    2. Follow the previous step, Perform the following operations to upgrade in sequence:
+       1. Upgrade TiFlash in all clusters, if it is deployed.
+       2. Upgrade TiKV in all clusters.
+       3. Upgrade Pump in all clusters, if it is deployed.
+       4. Upgrade TiDB in all clusters.
+       5. Upgrade TiCDC in all clusters, if it is deployed.
 
 2. Take step 1 as an example, upgrade TiFlash, TiKV, Pump, TiDB and TiCDC version in all clusters in sequence.
 
