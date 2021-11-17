@@ -154,7 +154,18 @@ az aks nodepool add --name tikv3 \
 > 关于节点池扩缩容：
 >
 > * 如果应用程序需要更改资源，可以手动缩放 AKS 群集以运行不同数量的节点。 节点数减少时，节点会被 [优雅地清空](https://kubernetes.io/zh/docs/tasks/administer-cluster/safely-drain-node/)，尽量避免对正在运行的应用程序造成中断。参考 [在 AKS 中缩放节点数](https://docs.microsoft.com/zh-cn/azure/aks/scale-cluster).
-> * 如果希望使用自动缩放集群，可以[更改现有 AKS 设置](https://docs.microsoft.com/zh-cn/azure/aks/cluster-autoscaler#change-the-cluster-autoscaler-settings)，然后 [启用 TidbCluster 弹性伸缩功能](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)
+
+## 配置 StorageClass
+
+为了提高存储的 IO 写入性能，推荐设置 StorageClass 的 `mountOptions` 字段，来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+- nodelalloc,noatime
+```
 
 ## 部署 TiDB Operator
 
@@ -477,6 +488,8 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     reclaimPolicy: Delete
     allowVolumeExpansion: true
     volumeBindingMode: WaitForFirstConsumer
+    mountOptions:
+    - nodelalloc,noatime
     ```
 
     > 您可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md)。
