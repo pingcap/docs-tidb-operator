@@ -569,14 +569,14 @@ EOF
 
    1. 修改集群 1 定义中的 `spec.pd.version` 字段，并等待 PD Pod 滚动升级结束。
    
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    # ...
-    spec:
-      pd:
-        version: ${version}
-    ```
+      ```yaml
+      apiVersion: pingcap.com/v1alpha1
+      kind: TidbCluster
+      # ...
+      spec:
+        pd:
+          version: ${version}
+      ```
 
    2. 按照上一步，升级其他集群的 PD 版本。
 
