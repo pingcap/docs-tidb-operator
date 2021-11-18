@@ -563,7 +563,7 @@ EOF
 
 ## 升级 TiDB 集群
 
-当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改 TidbCluster 定义中各组件的 version 配置。
+当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改各集群的 TidbCluster 定义中各组件的 version 配置。
 
 1. 升级所有集群的 PD 版本。
 
