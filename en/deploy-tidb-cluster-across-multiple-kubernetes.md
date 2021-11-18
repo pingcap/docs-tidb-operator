@@ -572,7 +572,7 @@ When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade 
 
 1. Upgrade PD version in all clusters.
 
-   1. modify `spec.pd.version` field in cluster #1 spec, then wait for PD Pod to finish rolling upgrade.
+   1. Modify `spec.pd.version` field in cluster #1 spec.
 
       ```yaml
       apiVersion: pingcap.com/v1alpha1
@@ -583,14 +583,16 @@ When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade 
           version: ${version}
       ```
 
-    2. Follow the previous step, Perform the following operations to upgrade in sequence:
-       1. Upgrade TiFlash in all clusters, if it is deployed.
-       2. Upgrade TiKV in all clusters.
-       3. Upgrade Pump in all clusters, if it is deployed.
-       4. Upgrade TiDB in all clusters.
-       5. Upgrade TiCDC in all clusters, if it is deployed.
+    2. Watch PD Pods, wait for PD Pods in cluster #1 finish rebuilding and become `Running`.
 
-2. Take step 1 as an example, upgrade TiFlash, TiKV, Pump, TiDB and TiCDC version in all clusters in sequence.
+    3. Follow the previous step, upgrade all PD Pods in other clusters.
+
+2. Take step 1 as an example, perform the following upgrade operations in sequence:
+    1. Upgrade TiFlash in all clusters, if it is deployed.
+    2. Upgrade TiKV in all clusters.
+    3. Upgrade Pump in all clusters, if it is deployed.
+    4. Upgrade TiDB in all clusters.
+    5. Upgrade TiCDC in all clusters, if it is deployed.
 
 ## Exit and reclaim clusters that already join a cross-Kubernetes cluster
 

@@ -567,7 +567,7 @@ EOF
 
 1. 升级所有集群的 PD 版本。
 
-   1. 修改集群 1 定义中的 `spec.pd.version` 字段，并等待 PD Pod 滚动升级结束。
+   1. 修改集群 1 定义中的 `spec.pd.version` 字段。
    
       ```yaml
       apiVersion: pingcap.com/v1alpha1
@@ -577,11 +577,12 @@ EOF
         pd:
           version: ${version}
       ```
+    
+   2. 查看 PD Pods 状态，等待集群 1 中的 PD Pod 都重建完毕进入 `Running` 状态。
 
-   2. 按照上一步，升级其他集群的 PD 版本。
+   3. 按照前两步，升级其他集群的 PD 版本。
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
-   
    1. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的集群升级 TiFlash 版本。
    2. 升级所有集群中的 TiKV 版本。
    3. 如果集群中部署了 Pump，为所有部署了 Pump 的集群升级 Pump 版本。
