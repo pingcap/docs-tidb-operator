@@ -563,9 +563,9 @@ EOF
 
 ## 升级 TiDB 集群
 
-当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改各集群的 TidbCluster 定义中各组件的 version 配置。
+当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改各 Kubernetes 集群的 TidbCluster 定义中各组件的 version 配置。
 
-1. 升级所有集群的 PD 版本。
+1. 升级所有 Kubernetes 集群的 PD 版本。
 
    1. 修改集群 1 定义中的 `spec.pd.version` 字段。
    
@@ -583,11 +583,11 @@ EOF
    3. 按照前两步，升级其他集群的 PD 版本。
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
-   1. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的集群升级 TiFlash 版本。
-   2. 升级所有集群中的 TiKV 版本。
-   3. 如果集群中部署了 Pump，为所有部署了 Pump 的集群升级 Pump 版本。
-   4. 升级所有集群中的 TiDB 版本。
-   5. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的集群升级 TiCDC 版本。
+   1. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
+   2. 升级所有 Kubernetes 集群的 TiKV 版本。
+   3. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
+   4. 升级所有 Kubernetes 集群的 TiDB 版本。
+   5. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
 ## 退出和回收已加入集群
 
