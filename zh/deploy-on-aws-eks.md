@@ -179,7 +179,7 @@ mountOptions:
 
 ### io1
 
-如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
+1. 如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
 
 ```yaml
 kind: StorageClass
@@ -224,7 +224,7 @@ spec:
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
-    1. 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
+   1. 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
     ```yaml
       - name: tikv-1a
@@ -239,7 +239,7 @@ spec:
         ...
     ```
 
-    2. 创建附带本地存储的节点组：
+   2. 创建附带本地存储的节点组：
 
     {{< copyable "shell-regular" >}}
 
