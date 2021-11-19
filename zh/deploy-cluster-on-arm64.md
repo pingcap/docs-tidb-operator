@@ -9,7 +9,7 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
 
 ## 前置条件
 
-* 在 ARM64 机器上已经部署了 Kubernetes。
+* 在 ARM64 机器上已经部署了 Kubernetes。如果尚未部署，请参阅[部署 Kubernetes 集群](/deploy-tidb-operator.md#部署-kubernetes-集群)。
 
 ## 部署 TiDB Operator
 
