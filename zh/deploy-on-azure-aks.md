@@ -252,6 +252,10 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 我们为 TiDB 集群创建的是内网 LoadBalancer，可以通过创建[堡垒机](https://docs.microsoft.com/zh-cn/azure/bastion/tutorial-create-host-portal)进入集群节点来访问数据库。
 
+> **注意：**
+>
+> 除使用堡垒机以外，也可以使用 [虚拟网络对等互连](https://docs.microsoft.com/zh-cn/azure/virtual-network/virtual-network-peering-overview) 连接现有机器到集群虚拟网络。若 AKS 创建于已经存在的虚拟网络中，可使用虚拟网络内现有机器。
+
 - 使用 SSH 访问数据库
 
 使用[创建与 Linux 节点的 SSH 连接](https://docs.microsoft.com/zh-cn/azure/aks/ssh#create-the-ssh-connection-to-a-linux-node)从而进入集群节点来访问数据库。
@@ -259,10 +263,6 @@ tidb-tikv-2                       1/1     Running   0          47h
 - 使用 node-shell 访问数据库
 
 简单的使用 [node-shell](https://github.com/kvaps/kubectl-node-shell) 等工具进入集群节点，然后访问数据库。
-
-> **注意：**
->
-> 除使用堡垒机以外，也可以使用 [虚拟网络对等互连](https://docs.microsoft.com/zh-cn/azure/virtual-network/virtual-network-peering-overview) 连接现有机器到集群虚拟网络。若 AKS 创建于已经存在的虚拟网络中，可使用虚拟网络内现有机器。
 
 ### 安装 MySQL 客户端并连接
 
