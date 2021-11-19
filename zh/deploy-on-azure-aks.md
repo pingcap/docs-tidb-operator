@@ -40,14 +40,13 @@ az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.Co
 
 ## 创建 AKS 集群和节点池
 
-根据 AKS 中的[最佳做法](https://docs.microsoft.com/zh-cn/azure/aks/operator-best-practices-cluster-isolation) 推荐，由于 TiDB 集群大部分组件使用 Azure 磁盘作为存储，推荐在创建 AKS 集群的时候组件的节点池使用每一个可用区（至少 3 个可用区）。
+TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[最佳做法](https://docs.microsoft.com/zh-cn/azure/aks/operator-best-practices-cluster-isolation) ，推荐在创建 AKS 集群的时候确保每个节点池使用一个可用区（至少 3 个可用区）。
 
-下面的命令会创建 [启用容器存储接口 (CSI) 驱动程序](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers) 的 AKS 集群和组件节点池（TiKV 节点池[启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)）
+### 创建 [启用容器存储接口 (CSI) 驱动程序](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers) 的 AKS 集群
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-# 创建 AKS 集群
 az aks create \
     --resource-group ${resourceGroup} \
     --name ${clusterName} \
@@ -58,7 +57,6 @@ az aks create \
     --node-count 3 \
     --zones 1 2 3 \
     --aks-custom-headers EnableAzureDiskFileCSIDriver=true
-
 # 创建 operator & monitor 节点池
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
