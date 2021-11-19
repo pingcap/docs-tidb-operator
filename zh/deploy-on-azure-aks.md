@@ -34,7 +34,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${subscription}
 ```
 
@@ -46,7 +46,7 @@ TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[�
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 az aks create \
     --resource-group ${resourceGroup} \
     --name ${clusterName} \
@@ -57,10 +57,14 @@ az aks create \
     --node-count 3 \
     --zones 1 2 3 \
     --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+```
+
 ### 创建组件节点池
 
 集群创建成功后，执行如下命令创建组件节点池，每个节点池创建耗时约 2~5 分钟。可以参考[`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。
 
+
+``` shell
 # 创建 operator & monitor 节点池
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
@@ -111,7 +115,7 @@ Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 # 在可用区1 创建 tikv 节点池 1
 az aks nodepool add --name tikv1 \
     --cluster-name ${clusterName} \
@@ -147,6 +151,7 @@ az aks nodepool add --name tikv3 \
     --labels dedicated=tikv \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
+```
 
 > **警告：**
 >
@@ -194,7 +199,7 @@ kubectl create namespace tidb-cluster
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml &&
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-monitor.yaml
 ```
@@ -209,7 +214,7 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
@@ -222,7 +227,7 @@ kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl get pods -n tidb-cluster
 ```
 
@@ -272,7 +277,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 sudo yum install mysql -y
 ```
 
@@ -280,7 +285,7 @@ sudo yum install mysql -y
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 mysql -h ${tidb-lb-ip} -P 4000 -u root
 ```
 
@@ -288,7 +293,7 @@ mysql -h ${tidb-lb-ip} -P 4000 -u root
 
 以下为一个连接 TiDB 集群的示例：
 
-```shell
+``` shell
 $ mysql -h 20.240.0.7 -P 4000 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1189
@@ -323,7 +328,7 @@ MySQL [(none)]> show status;
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl -n tidb-cluster get svc basic-grafana
 ```
 
@@ -363,7 +368,7 @@ TiKV 扩容需要保证在各可用区均匀扩容。以下是将集群 `${clust
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 az aks nodepool scale \
     --resource-group ${resourceGroup} \
     --cluster-name ${clusterName} \
@@ -391,7 +396,7 @@ az aks nodepool scale \
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 # 创建 tiflash 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置
 az aks nodepool add --name tiflash \
     --cluster-name ${clusterName} \
@@ -419,7 +424,7 @@ az aks nodepool add --name ticdc \
 
 如果要部署 TiFlash，可以在 tidb-cluster.yaml 中配置 `spec.tiflash`，例如：
 
-```yaml
+``` yaml
 spec:
   ...
   tiflash:
@@ -444,7 +449,7 @@ spec:
 
 如果要部署 TiCDC，可以在 tidb-cluster.yaml 中配置 `spec.ticdc`，例如：
 
-```yaml
+``` yaml
 spec:
   ...
   ticdc:
@@ -469,7 +474,7 @@ spec:
 
 例如:
 
-```yaml
+``` yaml
 spec:
   ...
   pd:
@@ -485,7 +490,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
 1. [启用现有群集上的超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) 并创建存储类 `ultra`:
 
-    ```yaml
+    ``` yaml
     apiVersion: storage.k8s.io/v1
     kind: StorageClass
     metadata:
@@ -505,7 +510,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
 2. 然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `ultra` 存储类申请 `UltraSSD` 类型的 Azure 磁盘。可以参考以下 TiKV 配置示例使用：
 
-    ```yaml
+    ``` yaml
     spec:
       tikv:
         baseImage: pingcap/tikv
@@ -537,7 +542,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
  
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     az aks nodepool add --name tikv \
         --cluster-name ${clusterName}  \
         --resource-group ${resourceGroup} \
@@ -558,7 +563,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
