@@ -57,6 +57,10 @@ az aks create \
     --node-count 3 \
     --zones 1 2 3 \
     --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+### 创建组件节点池
+
+集群创建成功后，执行如下命令创建组件节点池，每个节点池创建耗时约 2~5 分钟。可以参考[`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。
+
 # 创建 operator & monitor 节点池
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
@@ -77,7 +81,7 @@ az aks nodepool add --name pd \
     --labels dedicated=pd \
     --node-taints dedicated=pd:NoSchedule
 
-# 创建 tidb 节点池, nodeType 建议为 Standard_F8s_v2 或更高配置
+# 创建 tidb 节点池, nodeType 建议为 Standard_F8s_v2 或更高配置，默认只需要两个 TiDB 节点，因此可以设置 ` `--node-count` 为 `2`，支持修改该参数进行扩容
 az aks nodepool add --name tidb \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -88,7 +92,7 @@ az aks nodepool add --name tidb \
     --labels dedicated=tidb \
     --node-taints dedicated=tidb:NoSchedule
 
-# 创建 tikv 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置
+# 创建 tikv 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置，tikv [启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)
 az aks nodepool add --name tikv \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
