@@ -105,16 +105,14 @@ az aks nodepool add --name tikv \
     --enable-ultra-ssd
 ```
 
-默认只需要两个 TiDB 节点，因此可以设置 `tidb` 节点池的 `--node-count` 为 `2`，后面如果需要可以随时扩容这个节点池。
-
-该命令需要等待 AKS 集群节点池创建完成，每个节点池耗时约 2~5 分钟。可以参考 [`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。
+### 在可用区部署节点池
 
 Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节点，如果您希望使用 "严格执行区域均衡" (AKS 暂时不支持该策略)，可以考虑在每一个可用区部署一个节点池。 例如：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-# 在可用区1 创建 tikv 节点池
+# 在可用区1 创建 tikv 节点池 1
 az aks nodepool add --name tikv1 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -126,7 +124,7 @@ az aks nodepool add --name tikv1 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# 在可用区2 创建 tikv 节点池
+# 在可用区2 创建 tikv 节点池 2
 az aks nodepool add --name tikv2 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -138,7 +136,7 @@ az aks nodepool add --name tikv2 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# 在可用区3 创建 tikv 节点池
+# 在可用区3 创建 tikv 节点池 3
 az aks nodepool add --name tikv3 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -149,7 +147,6 @@ az aks nodepool add --name tikv3 \
     --labels dedicated=tikv \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
-```
 
 > **警告：**
 >
