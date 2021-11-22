@@ -224,7 +224,7 @@ spec:
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
-   1. 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
+    1. 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
     ```yaml
       - name: tikv-1a
@@ -239,7 +239,7 @@ spec:
         ...
     ```
 
-   2. 创建附带本地存储的节点组：
+    2. 创建附带本地存储的节点组：
 
     {{< copyable "shell-regular" >}}
 
