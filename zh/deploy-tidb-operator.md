@@ -63,7 +63,7 @@ kubectl create -f ./crd.yaml
 
 > **注意：**
 > 
-> Kubernetes 1.16 之前版本，仅支持 v1beta1 版本的 CRD，需要上述命令中文件 "crd.yaml" 改为 "crd_v1beta1.yaml"。
+> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 'crd.yaml' 修改为 'crd_v1beta1.yaml'。
 
 如果显示如下信息表示 CRD 安装成功：
 

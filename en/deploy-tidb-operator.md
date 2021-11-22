@@ -63,7 +63,7 @@ kubectl create -f ./crd.yaml
 
 > **Note:**
 >
-> For Kubernetes < 1.16, it only support v1beta1 CRD, so we have to change the file "crd.yaml" in above commands to "crd_v1beta1.yaml".
+> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
 
 If the following message is displayed, the CRD installation is successful:
 
