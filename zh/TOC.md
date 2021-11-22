@@ -1,10 +1,7 @@
-# TiDB in Kubernetes 文档
-
 <!-- markdownlint-disable MD007 -->
-<!-- markdownlint-disable MD032 -->
+<!-- markdownlint-disable MD041 -->
 
-## 文档目录
-
+<<<<<<< HEAD
 - [TiDB Operator 简介](tidb-operator-overview.md)
 + Benchmark
   - [Sysbench](benchmark-sysbench.md)
@@ -30,6 +27,69 @@
 - [监控](monitor-a-tidb-cluster.md)
 + 运维
   - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
+=======
+- 关于 TiDB Operator
+  - [简介](tidb-operator-overview.md)
+  - [What's New in v1.2](whats-new-in-v1.2.md)
+- [快速上手](get-started.md)
+- 部署
+  - 部署 TiDB 集群
+    - [部署到 AWS EKS](deploy-on-aws-eks.md)
+    - [部署到 GCP GKE](deploy-on-gcp-gke.md)
+    - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
+    - 部署到自托管的 Kubernetes
+      - [集群环境要求](prerequisites.md)
+      - [配置 Storage Class](configure-storage-class.md)
+      - [部署 TiDB Operator](deploy-tidb-operator.md)
+      - [配置 TiDB 集群](configure-a-tidb-cluster.md)
+      - [部署 TiDB 集群](deploy-on-general-kubernetes.md)
+      - [初始化 TiDB 集群](initialize-a-cluster.md)
+      - [访问 TiDB 集群](access-tidb.md)
+  - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
+  - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
+  - [部署 TiFlash](deploy-tiflash.md)
+  - [部署 TiCDC](deploy-ticdc.md)
+  - [部署 TiDB Binlog](deploy-tidb-binlog.md)
+  - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
+  - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
+  - 部署 TiDB 集群监控
+    - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
+    - [访问 TiDB Dashboard](access-dashboard.md)
+    - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
+- 安全
+  - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
+  - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
+  - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
+  - [使用 TiCDC 组件同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
+  - [更新和替换 TLS 证书](renew-tls-certificate.md)
+  - [以非 root 用户运行 TiDB Operator 和 TiDB 集群](containers-run-as-non-root-user.md)
+- 运维
+  - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
+  - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
+  - [升级 TiDB Operator](upgrade-tidb-operator.md)
+  - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
+  - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
+  - TiDB 集群伸缩
+    - [手动扩缩容](scale-a-tidb-cluster.md)
+    - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
+  - [使用 DM 迁移 MySQL 数据到 TiDB 集群](deploy-tidb-dm.md)
+  - 备份与恢复
+    - [备份与恢复简介](backup-restore-overview.md)
+    - [远程存储访问授权](grant-permissions-to-remote-storage.md)
+    - 使用 S3 兼容存储备份与恢复
+      - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
+      - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
+      - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
+    - 使用 GCS 备份与恢复
+      - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
+      - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
+      - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
+    - 使用持久卷备份与恢复
+      - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+      - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
+>>>>>>> 82bddd0a (chore: list as the first child in TOC (#1441))
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
   - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
   - [使用 PD Recover 恢复 PD 集群](pd-recover.md)
@@ -38,6 +98,7 @@
     - [使用 TiDB Lightning 恢复集群数据](restore-data-using-tidb-lightning.md)
   - [收集日志](collect-tidb-logs.md)
   - [集群故障自动转移](use-auto-failover.md)
+<<<<<<< HEAD
 - [扩缩容](scale-a-tidb-cluster.md)
 + 升级
   - [TiDB 集群](upgrade-a-tidb-cluster.md)
@@ -51,6 +112,74 @@
 - [常见问题](faq.md)
 + 版本发布历史
   + v1.0
+=======
+  - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
+  - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
+- 灾难恢复
+  - [恢复 PD 集群](pd-recover.md)
+  - [恢复误删的集群](recover-deleted-cluster.md)
+- [导入集群数据](restore-data-using-tidb-lightning.md)
+- 故障诊断
+  - [使用技巧](tips.md)
+  - [部署错误](deploy-failures.md)
+  - [集群异常](exceptions.md)
+  - [网络问题](network-issues.md)
+- [常见问题](faq.md)
+- 参考
+  - 架构
+    - [TiDB Operator 架构](architecture.md)
+    - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
+    - [增强型 StatefulSet 控制器](advanced-statefulset.md)
+    - [准入控制器](enable-admission-webhook.md)
+  - [Sysbench 性能测试](benchmark-sysbench.md)
+  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
+  - [Cheat Sheet](cheat-sheet.md)
+  - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
+  - 工具
+    - [tkctl](use-tkctl.md)
+    - [TiDB Toolkit](tidb-toolkit.md)
+  - 配置
+    - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
+    - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
+    - [tidb-backup chart 配置](configure-backup.md)
+  - [日志收集](logs-collection.md)
+  - [Kubernetes 监控与告警](monitor-kubernetes.md)
+- 版本发布历史
+  - v1.2
+    - [1.2.4](releases/release-1.2.4.md)
+    - [1.2.3](releases/release-1.2.3.md)
+    - [1.2.2](releases/release-1.2.2.md)
+    - [1.2.1](releases/release-1.2.1.md)
+    - [1.2 GA](releases/release-1.2.0.md)
+    - [1.2.0-rc.2](releases/release-1.2.0-rc.2.md)
+    - [1.2.0-rc.1](releases/release-1.2.0-rc.1.md)
+    - [1.2.0-beta.2](releases/release-1.2.0-beta.2.md)
+    - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
+    - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
+  - v1.1
+    - [1.1.14](releases/release-1.1.14.md)
+    - [1.1.13](releases/release-1.1.13.md)
+    - [1.1.12](releases/release-1.1.12.md)
+    - [1.1.11](releases/release-1.1.11.md)
+    - [1.1.10](releases/release-1.1.10.md)
+    - [1.1.9](releases/release-1.1.9.md)
+    - [1.1.8](releases/release-1.1.8.md)
+    - [1.1.7](releases/release-1.1.7.md)
+    - [1.1.6](releases/release-1.1.6.md)
+    - [1.1.5](releases/release-1.1.5.md)
+    - [1.1.4](releases/release-1.1.4.md)
+    - [1.1.3](releases/release-1.1.3.md)
+    - [1.1.2](releases/release-1.1.2.md)
+    - [1.1.1](releases/release-1.1.1.md)
+    - [1.1 GA](releases/release-1.1-ga.md)
+    - [1.1.0-rc.4](releases/release-1.1.0-rc.4.md)
+    - [1.1.0-rc.3](releases/release-1.1.0-rc.3.md)
+    - [1.1.0-rc.2](releases/release-1.1.0-rc.2.md)
+    - [1.1.0-rc.1](releases/release-1.1.0-rc.1.md)
+    - [1.1.0-beta.2](releases/release-1.1.0-beta.2.md)
+    - [1.1.0-beta.1](releases/release-1.1.0-beta.1.md)
+  - v1.0
+>>>>>>> 82bddd0a (chore: list as the first child in TOC (#1441))
     - [1.0.7](releases/release-1.0.7.md)
     - [1.0.6](releases/release-1.0.6.md)
     - [1.0.5](releases/release-1.0.5.md)
@@ -66,7 +195,7 @@
     - [1.0.0-beta.1-p1](releases/release-1.0.0-beta.1-p1.md)
     - [1.0.0-beta.1](releases/release-1.0.0-beta.1.md)
     - [1.0.0-beta.0](releases/release-1.0.0-beta.0.md)
-  + v0
+  - v0
     - [0.4.0](releases/release-0.4.0.md)
     - [0.3.1](releases/release-0.3.1.md)
     - [0.3.0](releases/release-0.3.0.md)
