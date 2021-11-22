@@ -583,6 +583,7 @@ EOF
    3. 按照前两步，升级其他集群的 PD 版本。
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
+
    1. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
    2. 升级所有 Kubernetes 集群的 TiKV 版本。
    3. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。

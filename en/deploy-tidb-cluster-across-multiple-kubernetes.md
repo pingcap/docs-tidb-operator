@@ -568,11 +568,11 @@ EOF
 
 ## Upgrade TiDB Cluster
 
-When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade every component Pod in a specific order, we need to modify the version of every component in TidbCluster spec to control the upgrade process.
+For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upgrade for each component Pod of the TiDB cluster, take the following steps in sequence to modify the version configuration of each component in the TidbCluster spec for each Kubernetes cluster.
 
-1. Upgrade PD version in all clusters.
+1. Upgrade PD versions for all Kubernetes clusters.
 
-   1. Modify `spec.pd.version` field in cluster #1 spec.
+   1. Modify the `spec.pd.version` field in the spec for cluster #1.
 
       ```yaml
       apiVersion: pingcap.com/v1alpha1
@@ -583,16 +583,17 @@ When deploying one TiDB cluster across Kubernetes clusters, in order to upgrade 
           version: ${version}
       ```
 
-    2. Watch PD Pods, wait for PD Pods in cluster #1 finish rebuilding and become `Running`.
+    2. Watch the status of PD Pods and wait for PD Pods in cluster #1 to finish recreation and become `Running`.
 
-    3. Follow the previous step, upgrade all PD Pods in other clusters.
+    3. Repeat the first two substeps to upgrade all PD Pods in other clusters.
 
 2. Take step 1 as an example, perform the following upgrade operations in sequence:
-    1. Upgrade TiFlash in all clusters, if it is deployed.
-    2. Upgrade TiKV in all clusters.
-    3. Upgrade Pump in all clusters, if it is deployed.
-    4. Upgrade TiDB in all clusters.
-    5. Upgrade TiCDC in all clusters, if it is deployed.
+
+    1. If TiFlash is deployed in clusters, upgrade the TiFlash versions for all the Kubernetes clusters that have TiFlash deployed.
+    2. Upgrade TiKV versions for all Kubernetes clusters.
+    3. If Pump is deployed in clusters, upgrade the Pump versions for all the Kubernetes clusters that have Pump deployed.
+    4. Upgrade TiDM versions for all Kubernetes clusters.
+    5. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
 
 ## Exit and reclaim clusters that already join a cross-Kubernetes cluster
 
