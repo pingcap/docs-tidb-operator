@@ -10,7 +10,7 @@
     - [部署到 AWS EKS](deploy-on-aws-eks.md)
     - [部署到 GCP GKE](deploy-on-gcp-gke.md)
     - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
-    * 部署到自托管的 Kubernetes
+    - 部署到自托管的 Kubernetes
       - [集群环境要求](prerequisites.md)
       - [配置 Storage Class](configure-storage-class.md)
       - [部署 TiDB Operator](deploy-tidb-operator.md)
@@ -25,7 +25,7 @@
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
-  * 部署 TiDB 集群监控
+  - 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [访问 TiDB Dashboard](access-dashboard.md)
     - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
@@ -42,24 +42,24 @@
   - [升级 TiDB Operator](upgrade-tidb-operator.md)
   - [灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md)
   - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
-  * TiDB 集群伸缩
+  - TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
     - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
   - [使用 DM 迁移 MySQL 数据到 TiDB 集群](deploy-tidb-dm.md)
-  * 备份与恢复
+  - 备份与恢复
     - [备份与恢复简介](backup-restore-overview.md)
     - [远程存储访问授权](grant-permissions-to-remote-storage.md)
-    * 使用 S3 兼容存储备份与恢复
+    - 使用 S3 兼容存储备份与恢复
       - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
       - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
       - [使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)
-    * 使用 GCS 备份与恢复
+    - 使用 GCS 备份与恢复
       - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
       - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
-    * 使用持久卷备份与恢复
+    - 使用持久卷备份与恢复
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
   - [重启 TiDB 集群](restart-a-tidb-cluster.md)
@@ -71,27 +71,23 @@
 - 灾难恢复
   - [恢复 PD 集群](pd-recover.md)
   - [恢复误删的集群](recover-deleted-cluster.md)
-
-* [导入集群数据](restore-data-using-tidb-lightning.md)
-
+- [导入集群数据](restore-data-using-tidb-lightning.md)
 - 故障诊断
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
   - [集群异常](exceptions.md)
   - [网络问题](network-issues.md)
-
-* [常见问题](faq.md)
-
+- [常见问题](faq.md)
 - 参考
   - 架构
     - [TiDB Operator 架构](architecture.md)
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
-  * [Sysbench 性能测试](benchmark-sysbench.md)
-  * [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
-  * [Cheat Sheet](cheat-sheet.md)
-  * [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
+  - [Sysbench 性能测试](benchmark-sysbench.md)
+  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
+  - [Cheat Sheet](cheat-sheet.md)
+  - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   - 工具
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
@@ -99,8 +95,8 @@
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
     - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
     - [tidb-backup chart 配置](configure-backup.md)
-  * [日志收集](logs-collection.md)
-  * [Kubernetes 监控与告警](monitor-kubernetes.md)
+  - [日志收集](logs-collection.md)
+  - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.2
     - [1.2.4](releases/release-1.2.4.md)
