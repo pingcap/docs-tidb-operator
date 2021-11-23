@@ -131,10 +131,10 @@ In the bottom layer, TiKV replicates data using the log replication and State Ma
 
 ## If the Ready field of a TidbCluster is false, does it mean that the corresponding TiDBCluster is unavailable?
 
-After you execute the `kubectl get tc` command, if the output shows that the **Ready** field of a TiDBCluster is false, it does not mean that the corresponding TiDBCluster is unavailable, because the cluster might be in the following status:
+After you execute the `kubectl get tc` command, if the output shows that the **Ready** field of a TiDBCluster is false, it does not mean that the corresponding TiDBCluster is unavailable, because the cluster might be in any of the following status:
 
 * Upgrading
 * Scaling
 * Any component pod is unready
 
-To check whether a TiDB Cluster is unavailable, you can try connecting to TiDB.
+To check whether a TiDB Cluster is unavailable, you can try connecting to TiDB. If the connection fails, it means that the corresponding TiDBCluster is unavailable.
