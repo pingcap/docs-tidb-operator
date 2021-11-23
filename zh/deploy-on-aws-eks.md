@@ -214,12 +214,9 @@ spec:
 
 > **注意：**
 >
-> 运行中的 TiDB 集群不能动态更换 storageClass，可创建一个新的 TiDB 集群测试。
->
-> 由于 EKS 升级或其他原因造成的节点重建会导致[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)，在重建前你需要提前备份 TiKV 数据，因此不建议在生产环境中使用本地盘。
-
->
-> 为了避免由于节点重建导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
+> - 运行中的 TiDB 集群不能动态更换 storageClass，可创建一个新的 TiDB 集群测试。
+> - 由于 EKS 升级或其他原因造成的节点重建会导致[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)，在重建前你需要提前备份 TiKV 数据，因此不建议在生产环境中使用本地盘。
+> - 为了避免由于节点重建导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
 
 要了解哪些 AWS 实例可提供本地存储卷，可以查看 [AWS 实例类型列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
 
