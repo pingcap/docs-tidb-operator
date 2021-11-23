@@ -22,7 +22,7 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 1. 通过进入 DM-master 或 DM-worker pod 使用 image 内置 dmctl 进行操作。
 
-2. 通过[访问 Kubernetes 上的 DM 集群](/deploy-tidb-dm.md#访问-kubernetes-上的-dm-集群) 暴露 DM-master 服务，在外部使用 dmctl 访问暴露的 DM-master 服务进行操作。
+2. 通过[访问 Kubernetes 上的 DM 集群](deploy-tidb-dm.md#访问-kubernetes-上的-dm-集群) 暴露 DM-master 服务，在外部使用 dmctl 访问暴露的 DM-master 服务进行操作。
 
 建议使用方式 1 进行迁移。下文将以方式 1 为例介绍如何启动 DM 同步任务，方式 2 与其区别为 `source.yaml` 与 `task.yaml` 文件位置不同以及 dmctl 的 `master-addr` 配置项需要填写暴露出来的 DM-master 服务地址。
 
