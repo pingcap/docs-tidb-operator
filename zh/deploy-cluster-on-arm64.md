@@ -13,7 +13,6 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
 
 ## 部署 TiDB Operator
 
-
 在 ARM64 机器上部署 TiDB Operator 的步骤与[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 的步骤相同。唯一区别是，在[自定义部署 TiDB Operator](deploy-tidb-operator.md#自定义部署-tidb-operator) 这一步，当获取到 `tidb-operator` chart 中的 `value.yaml` 文件后，你需要修改文件中的 `operatorImage` 与 `tidbBackupManagerImage` 字段为 ARM64 版本镜像。例如：
 
 ```yaml
