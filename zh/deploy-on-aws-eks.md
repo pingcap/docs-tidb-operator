@@ -173,13 +173,11 @@ mountOptions:
 - nodelalloc,noatime
 ```
 
-### gp3
+### 使用其他存储类型
 
-如果需要使用推荐的 gp3 类型存储，请先在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。详细部署步骤，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
+创建 EKS 集群后默认会存在一个 gp2 存储类型的 StorageClass，如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。
 
-### io1
-
-1. 如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。通过配置 StorageClass 定义中的 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
+1. 创建 StorageClass 定义，使用 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
 
 ```yaml
 kind: StorageClass
@@ -207,6 +205,8 @@ spec:
       storage: 100Gi
     storageClassName: io1
 ```
+
+如果需要使用推荐的 gp3 类型存储，还需要先在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。详细部署步骤，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 
 ### 本地存储
 
