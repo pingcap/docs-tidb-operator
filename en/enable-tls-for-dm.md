@@ -510,7 +510,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.6
+  version: v2.0.7
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -578,7 +578,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.6
+  version: v2.0.7
   pvReclaimPolicy: Retain
   discovery: {}
   tlsClientSecretNames:
@@ -592,7 +592,7 @@ spec:
 
 After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secret objects `${secret_name}` to the path `/var/lib/source-tls/${secret_name}`.
 
-1. Configure `from.security` in the `source1.yaml` file as described in the [data source configuration](deploy-tidb-dm.md#create-data-source):
+1. Configure `from.security` in the `source1.yaml` file as described in the [data source configuration](use-tidb-dm.md#create-data-source):
 
     ``` yaml
     source-id: mysql-replica-01
@@ -608,7 +608,7 @@ After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secr
         ssl-key: /var/lib/source-tls/${mysql_secret_name1}/tls.key
     ```
 
-2. Configure `target-database.security` in the `task.yaml` file as described in the [Configure Migration Tasks](deploy-tidb-dm.md#configure-migration-tasks):
+2. Configure `target-database.security` in the `task.yaml` file as described in the [Configure Migration Tasks](use-tidb-dm.md#configure-migration-tasks):
 
     ``` yaml
     name: test
@@ -636,4 +636,4 @@ After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secr
 
 ### Step 4: Start the migration tasks
 
-Refer to [Start the migration tasks](deploy-tidb-dm.md#startcheckstop-the-migration-tasks).
+Refer to [Start the migration tasks](use-tidb-dm.md#startcheckstop-the-migration-tasks).

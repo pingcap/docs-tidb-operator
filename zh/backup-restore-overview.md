@@ -48,9 +48,9 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     - 使用 BR 备份时，可以用该字段指定 BR 的版本:
 
         - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
-        - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.2.0`，那么使用指定的版本镜像进行备份。
+        - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.2.1`，那么使用指定的版本镜像进行备份。
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
-    - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本，例如， `spec.toolImage: pingcap/dumpling:v5.2.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。           
+    - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本，例如， `spec.toolImage: pingcap/dumpling:v5.2.1`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。           
     - TiDB Operator 从 v1.1.9 版本起支持这项配置。
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
@@ -221,8 +221,8 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。
-    - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.2.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
-    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.2.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
+    - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.2.1`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
+    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.2.1`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
     - TiDB Operator 从 v1.1.9 版本起支持这项配置。
 * `.spec.to.host`：待恢复 TiDB 集群的访问地址。
 * `.spec.to.port`：待恢复 TiDB 集群的访问端口。
@@ -287,7 +287,7 @@ kubectl delete backup ${name} -n ${namespace}
 kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
-如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时删除备份文件。
+如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时清理备份文件。
 
 在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。
 
@@ -302,3 +302,22 @@ kubectl edit backup ${name} -n ${namespace}
 ```
 
 删除 `metadata.finalizers` 配置，即可正常删除 CR。
+
+### 清理备份文件
+
+TiDB Operator v1.2.3 及之前的版本，清理备份文件的方式为：循环删除备份文件，一次删除一个文件。
+
+TiDB Operator v1.2.4 及以后的版本，清理备份文件的方式为：循环删除备份文件，一次批量删除多个文件。对于每次批量删除多个文件的操作，根据备份使用的后端存储类型的不同，删除方式不同。
+
+* S3 兼容的后端存储采用并发批量删除方式。TiDB Operator 启动多个 Go 协程，每个 Go 协程每次调用批量删除接口 ["DeleteObjects"](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) 来删除多个文件。
+* 其他类型的后端存储采用并发删除方式。TiDB Operator 启动多个 Go 协程，每个 Go 协程每次删除一个文件。
+
+对于 TiDB Operator v1.2.4 及以后的版本，你可以使用 Backup CR 中的以下字段控制清理行为：
+
+* `.spec.cleanOption.pageSize`：指定每次批量删除的文件数量。默认值为 10000。
+* `.spec.cleanOption.disableBatchConcurrency`：当设置为 true 时，TiDB Operator 会禁用并发批量删除方式，使用并发删除方式。
+  
+    如果 S3 兼容的后端存储不支持 `DeleteObjects` 接口，默认的并发批量删除会失败，需要配置该字段为 `true` 来使用并发删除方式。
+
+* `.spec.cleanOption.batchConcurrency`: 指定并发批量删除方式下启动的 Go 协程数量。默认值为 10。
+* `.spec.cleanOption.routineConcurrency`: 指定并发删除方式下启动的 Go 协程数量。默认值为 100。

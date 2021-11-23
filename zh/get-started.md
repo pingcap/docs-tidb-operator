@@ -299,7 +299,7 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -307,9 +307,9 @@ TiDB Operator 使用 Helm 3 安装。
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.3 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.3 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.3 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.4 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.4 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
@@ -374,6 +374,10 @@ kubectl create namespace tidb-cluster && \
 namespace/tidb-cluster created
 tidbcluster.pingcap.com/basic created
 ```
+
+> **注意：**
+>
+> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
 ### 部署 TiDB 集群监控
 
