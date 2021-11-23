@@ -37,4 +37,4 @@ spec:
 
 变更后 TidbMonitor 会发生重启，后续针对 Prometheus 的配置变更都会动态更新。
 
-可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-dynamic-configmap)。
+可以参考 [monitor-dynamic-configmap 配置示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-dynamic-configmap)。
