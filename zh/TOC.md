@@ -20,6 +20,10 @@
       - [初始化 TiDB 集群](initialize-a-cluster.md)
       - [访问 TiDB 集群](access-tidb.md)
     - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
+<<<<<<< HEAD
+=======
+  - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
+>>>>>>> 719e8809 (zh: add doc about deploy cluster on ARM64 (#1301))
   - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiFlash](deploy-tiflash.md)
   - [部署 TiCDC](deploy-ticdc.md)
