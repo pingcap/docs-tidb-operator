@@ -379,6 +379,10 @@ namespace/tidb-cluster created
 tidbcluster.pingcap.com/basic created
 ```
 
+> **Note:**
+>
+> If you need to deploy a TiDB cluster on ARM64 machine, refer to [Deploy a TiDB Cluster on ARM64 Machine](deploy-cluster-on-arm64.md).
+
 ### Deploy TiDB monitoring services
 
 {{< copyable "shell-regular" >}}
