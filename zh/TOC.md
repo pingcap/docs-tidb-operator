@@ -32,7 +32,7 @@
     - [访问 TiDB Dashboard](access-dashboard.md)
     - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
     - [TidbMonitor 开启动态配置功能](enable-monitor-dynamic-configuration.md)
-+ 安全
+- 安全
   - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
   - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
   - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
@@ -150,7 +150,7 @@
     - [1.0.0-beta.1-p1](releases/release-1.0.0-beta.1-p1.md)
     - [1.0.0-beta.1](releases/release-1.0.0-beta.1.md)
     - [1.0.0-beta.0](releases/release-1.0.0-beta.0.md)
-  + v0
+  - v0
     - [0.4.0](releases/release-0.4.0.md)
     - [0.3.1](releases/release-0.3.1.md)
     - [0.3.0](releases/release-0.3.0.md)
