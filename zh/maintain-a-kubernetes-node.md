@@ -20,7 +20,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 维护短期内可恢复的节点
 
-1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
+1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -36,11 +36,13 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-    假如存在 TiKV Pod，针对每一个 Pod：
+    假如存在 TiKV Pod，针对每一个 Pod，进行以下操作：
     
     1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Region Leader 迁移到其他 Pod。
 
     2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
+    
+    以调整 `max-store-down-time` 为 ‘60m’ 为例，请使用以下命令：
 
         {{< copyable "shell-regular" >}}
 
@@ -174,7 +176,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
 
-1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
+1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -272,7 +274,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
 
-1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
+1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -398,7 +400,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 迁移 PD Leader
 
-1. 查看 PD Leader
+1. 查看 PD Leader：
 
     {{< copyable "shell-regular" >}}
 
