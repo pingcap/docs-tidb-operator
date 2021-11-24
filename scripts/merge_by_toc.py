@@ -90,7 +90,9 @@ def replace_link_wrap(chapter, name):
         link_name = match.group(1)
         link = match.group(2)
         frag = match.group(3)
-        if link.endswith('.md') or '.md#' in link:
+        if link.startswith('http'):
+            return full
+        elif link.endswith('.md') or '.md#' in link:
             if not frag:
                 relative_path = ''
                 if not link.startswith('.'):
