@@ -179,7 +179,9 @@ mountOptions:
 
 如果需要使用推荐的 gp3 类型存储，还需要先在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。详细部署步骤，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 
-1. 创建 StorageClass 定义，使用 `parameters.type` 字段来指定需要的存储类型。例如，使用 `io1` 类型。
+下面以 `io1` 存储类型为例说明如何创建 StorageClass。
+
+1. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
 ```yaml
 kind: StorageClass
@@ -212,7 +214,7 @@ spec:
 
 ### 本地存储
 
-请使用 AWS EBS 作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以为 TiKV 节点池选择AWS 部分实例类型提供的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)，以提供更高的 IOPS 和更低的延迟。
+请使用 AWS EBS 作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以为 TiKV 节点池选择 AWS 部分实例类型提供的 [NVMe SSD 本地存储卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html)，以提供更高的 IOPS 和更低的延迟。
 
 > **注意：**
 >
@@ -251,13 +253,15 @@ spec:
 
 2. 部署 local volume provisioner。
 
-    为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+    1. 为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。
+    
+    2. 部署并创建一个 `local-storage` 的 Storage Class：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
-    ```
+        ```shell
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+        ```
 
 3. 使用本地存储。
 
