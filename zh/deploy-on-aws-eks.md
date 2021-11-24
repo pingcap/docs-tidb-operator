@@ -228,26 +228,26 @@ spec:
 
     1. 修改 `eksctl` 配置文件中 TiKV 节点组实例类型为 `c5d.4xlarge`：
 
-    ```yaml
-      - name: tikv-1a
-        desiredCapacity: 1
-        privateNetworking: true
-        availabilityZones: ["ap-northeast-1a"]
-        instanceType: c5d.4xlarge
-        labels:
-          dedicated: tikv
-        taints:
-          dedicated: tikv:NoSchedule
-        ...
-    ```
+        ```yaml
+          - name: tikv-1a
+            desiredCapacity: 1
+            privateNetworking: true
+            availabilityZones: ["ap-northeast-1a"]
+            instanceType: c5d.4xlarge
+            labels:
+              dedicated: tikv
+            taints:
+              dedicated: tikv:NoSchedule
+            ...
+        ```
 
     2. 创建附带本地存储的节点组：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    eksctl create nodegroups -f cluster.yaml
-    ```
+        ```shell
+        eksctl create nodegroups -f cluster.yaml
+        ```
 
     若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
 
