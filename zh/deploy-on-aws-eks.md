@@ -183,32 +183,32 @@ mountOptions:
 
 1. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
-```yaml
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: io1
-provisioner: kubernetes.io/aws-ebs
-parameters:
-  type: io1
-  fsType: ext4
-  iopsPerGB: "10"
-  encrypted: "false"
-mountOptions:
-- nodelalloc,noatime
-```
+  ```yaml
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: io1
+  provisioner: kubernetes.io/aws-ebs
+  parameters:
+    type: io1
+    fsType: ext4
+    iopsPerGB: "10"
+    encrypted: "false"
+  mountOptions:
+  - nodelalloc,noatime
+  ```
 
 2. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类来申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
 
-```yaml
-spec:
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 3
-    requests:
-      storage: 100Gi
-    storageClassName: io1
-```
+  ```yaml
+  spec:
+    tikv:
+      baseImage: pingcap/tikv
+      replicas: 3
+      requests:
+        storage: 100Gi
+      storageClassName: io1
+  ```
 
 更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
 
