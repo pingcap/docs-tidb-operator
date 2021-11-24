@@ -150,7 +150,7 @@
     - [1.0.0-beta.1-p1](releases/release-1.0.0-beta.1-p1.md)
     - [1.0.0-beta.1](releases/release-1.0.0-beta.1.md)
     - [1.0.0-beta.0](releases/release-1.0.0-beta.0.md)
-  - v0
+  + v0
     - [0.4.0](releases/release-0.4.0.md)
     - [0.3.1](releases/release-0.3.1.md)
     - [0.3.0](releases/release-0.3.0.md)
