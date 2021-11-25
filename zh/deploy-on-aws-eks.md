@@ -218,7 +218,7 @@ mountOptions:
 
 > **注意：**
 >
-> - 运行中的 TiDB 集群不能动态更换 storageClass，可创建一个新的 TiDB 集群测试。
+> - 运行中的 TiDB 集群不能动态更换 StorageClass，可创建一个新的 TiDB 集群测试。
 > - 由于 EKS 升级或其他原因造成的节点重建会导致[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)，在重建前你需要提前备份 TiKV 数据，因此不建议在生产环境中使用本地盘。
 > - 为了避免由于节点重建导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
 
@@ -249,7 +249,7 @@ mountOptions:
         eksctl create nodegroups -f cluster.yaml
         ```
 
-    若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
+        若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
 
 2. 部署 local volume provisioner。
 
@@ -265,7 +265,7 @@ mountOptions:
 
 3. 使用本地存储。
 
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 `tidb-cluster.yaml` 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 `tidb-cluster.yaml` 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考[部署 TiDB 集群和监控](#部署-tidb-集群和监控)。
 
 ## 部署 TiDB Operator
 
