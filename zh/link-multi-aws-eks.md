@@ -72,6 +72,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     ```
 
     输出类似如下，其中的 `NAME` 项就是我们后续需要使用的 context。
+
     ```
     CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
     *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io

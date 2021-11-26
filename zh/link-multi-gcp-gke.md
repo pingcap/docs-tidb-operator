@@ -143,6 +143,7 @@ gcloud config set core/project <gcp-project>
     ```
 
     输出类似如下，其中的 `NAME` 项就是我们后续需要使用的 context。
+
     ```
     CURRENT   NAME                          CLUSTER                       AUTHINFO                            NAMESPACE
     *         gke_pingcap_us-west1_tidb-1   gke_pingcap_us-west1_tidb-1   gke_pingcap_us-west1_tidb-1
