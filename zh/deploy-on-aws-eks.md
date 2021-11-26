@@ -163,7 +163,11 @@ eksctl create cluster -f cluster.yaml
 
 ## 配置 StorageClass
 
-为了提高存储的 IO 写入性能，推荐设置 StorageClass 的 `mountOptions` 字段，来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+本小节介绍如何为不同的存储类型配置 StorageClass，包括创建 EKS 集群后默认存在的 gp2 存储类型、gp3 存储类型（推荐）或其他 EBS 存储类型、以及用于模拟测试裸机部署性能的本地存储。
+
+### gp2
+
+创建 EKS 集群后默认会存在一个 gp2 存储类型的 StorageClass。为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
 
 ```yaml
 kind: StorageClass
@@ -173,24 +177,23 @@ mountOptions:
 - nodelalloc,noatime
 ```
 
-### 使用其他存储类型
+### gp3 存储类型（推荐）或其他 EBS 存储类型
 
-创建 EKS 集群后默认会存在一个 gp2 存储类型的 StorageClass，如果不想使用默认的存储类型，可以创建其他存储类型 StorageClass。
+如果不想使用默认的 gp2 存储类型，可以创建其他存储类型的 StorageClass，例如 gp3 存储类型（推荐）或者 io1 存储类型。
 
-如果需要使用推荐的 gp3 类型存储，还需要先在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。详细部署步骤，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
+以下步骤以 gp3 存储类型为例说明如何创建并配置 gp3 存储类型的 StorageClass。
 
-下面以 `io1` 存储类型为例说明如何创建 StorageClass。
-
-1. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
+1.对于 gp3 存储类型，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。对于其他存储类型，请跳过此步骤。
+2.创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
     ```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
-      name: io1
+      name: gp3
     provisioner: kubernetes.io/aws-ebs
     parameters:
-      type: io1
+      type: gp3
       fsType: ext4
       iopsPerGB: "10"
       encrypted: "false"
@@ -198,7 +201,7 @@ mountOptions:
     - nodelalloc,noatime
     ```
 
-2. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `io1` 存储类来申请 `io1` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
+3. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
 
     ```yaml
     spec:
@@ -207,10 +210,20 @@ mountOptions:
         replicas: 3
         requests:
           storage: 100Gi
-        storageClassName: io1
+        storageClassName: gp3
     ```
 
-更多存储类配置以及 EBS 存储类型选择，可以查看 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)和 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)。
+4. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+
+    ```yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    # ...
+    mountOptions:
+    - nodelalloc,noatime
+    ```
+
+如果想了解更多EBS 存储类型选择和配置信息，请查看 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html) 和 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
 
 ### 本地存储
 
@@ -254,7 +267,7 @@ mountOptions:
 2. 部署 local volume provisioner。
 
     1. 为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。
-    
+
     2. 部署并创建一个 `local-storage` 的 Storage Class：
 
         {{< copyable "shell-regular" >}}
