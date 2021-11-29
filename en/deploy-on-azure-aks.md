@@ -41,7 +41,7 @@ az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.Co
 
 most of the TiDB cluster components use Azure disk as storage, according to AKS [Best Practice Document](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), it is recommended to create a node pool with every availability zone (at least 3 in total) for each component when creating an AKS cluster.
 
-### create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers).
+### create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers)
 
 {{< copyable "shell-regular" >}}
 
