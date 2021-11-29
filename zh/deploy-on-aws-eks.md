@@ -223,7 +223,7 @@ mountOptions:
     - nodelalloc,noatime
     ```
 
-如果想了解更多EBS 存储类型选择和配置信息，请查看 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html) 和 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
+如果想了解更多 EBS 存储类型选择和配置信息，请查看 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html) 和 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
 
 ### 本地存储
 
@@ -235,7 +235,9 @@ mountOptions:
 > - 由于 EKS 升级或其他原因造成的节点重建会导致[本地盘数据会丢失](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime)，在重建前你需要提前备份 TiKV 数据，因此不建议在生产环境中使用本地盘。
 > - 为了避免由于节点重建导致本地存储数据丢失，请参考 [AWS 文档](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)停止 TiKV 节点组的 `ReplaceUnhealthy` 功能。
 
-要了解哪些 AWS 实例可提供本地存储卷，可以查看 [AWS 实例类型列表](https://aws.amazon.com/ec2/instance-types/)。以下以 `c5d.4xlarge` 为例：
+要了解哪些 AWS 实例可提供本地存储卷，可以查看 [AWS 实例类型列表](https://aws.amazon.com/ec2/instance-types/)。
+
+下面以 `c5d.4xlarge` 为例说明如何为本地存储配置 StorageClass。
 
 1. 为 TiKV 创建附带本地存储的节点组。
 
