@@ -33,19 +33,19 @@ The following command will register **EnableAzureDiskFileCSIDriver** in the subs
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${subscription}
 ```
 
 ## Create a AKS cluster and node pools
 
-According to AKS [Best Practice Document](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), since most of the TiDB cluster components use Azure disk as storage, it is recommended to create a node pool with every availability zone (at least 3 in total) for each component when creating an AKS cluster.
+most of the TiDB cluster components use Azure disk as storage, according to AKS [Best Practice Document](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), it is recommended to create a node pool with every availability zone (at least 3 in total) for each component when creating an AKS cluster.
 
-The following command will create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers) and component node pools (TiKV with [ultra disk enabled](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)).
+### create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers).
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 # create AKS cluster
 az aks create \
     --resource-group ${resourceGroup} \
@@ -57,7 +57,15 @@ az aks create \
     --node-count 3 \
     --zones 1 2 3 \
     --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+```
 
+### create component node pools
+
+After creating AKS cluster, excute below commands to create component node pools, each command might take several minutes. For more cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest). The component node pools have enabled [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster).
+
+{{< copyable "shell-regular" >}}
+
+``` shell
 # create operator & monitor pool
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
@@ -78,7 +86,7 @@ az aks nodepool add --name pd \
     --labels dedicated=pd \
     --node-taints dedicated=pd:NoSchedule
 
-# create tidb node pool, the suggested nodeType is Standard_F8s_v2 or higher
+# create tidb node pool, the suggested nodeType is Standard_F8s_v2 or higher, by default only two TiDB nodes are required, so you can set the `--node-count` of the `tidb` node pool to `2`. You can scale out this node pool any time if necessary
 az aks nodepool add --name tidb \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -102,16 +110,14 @@ az aks nodepool add --name tikv \
     --enable-ultra-ssd
 ```
 
-By default, only two TiDB nodes are required, so you can set the `--node-count` of the `tidb` node pool to `2`. You can scale out this node pool any time if necessary.
+### deploy component node pools in limited zone
 
-Each command above might take several minutes. For more cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest)
-
-Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance" (not supported in AKS now), consider deploy a node pool in each zone. For example:
+Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance" (not supported in AKS now), consider deploy one node pool in each zone. For example:
 
 {{< copyable "shell-regular" >}}
 
-```shell
-# create tikv node pool in zone 1
+``` shell
+# create tikv node pool1 in zone 1
 az aks nodepool add --name tikv1 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -123,7 +129,7 @@ az aks nodepool add --name tikv1 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# create tikv node pool in zone 2
+# create tikv node pool2 in zone 2
 az aks nodepool add --name tikv2 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -135,7 +141,7 @@ az aks nodepool add --name tikv2 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# create tikv node pool in zone 3
+# create tikv node pool3 in zone 3
 az aks nodepool add --name tikv3 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -180,7 +186,7 @@ To create a namespace to deploy the TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl create namespace tidb-cluster
 ```
 
@@ -194,7 +200,7 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml && \
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-monitor.yaml
 ```
@@ -209,7 +215,7 @@ To deploy the `TidbCluster` and `TidbMonitor` CR in the AKS cluster, run the fol
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
@@ -222,7 +228,7 @@ To view the status of the starting TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl get pods -n tidb-cluster
 ```
 
@@ -262,7 +268,7 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     sudo yum install mysql -y
     ```
 
@@ -270,7 +276,7 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     mysql -h ${tidb-lb-ip} -P 4000 -u root
     ```
 
@@ -278,16 +284,16 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
 
     For example:
 
-    ```shell
+    ``` shell
     $ mysql -h 20.240.0.7 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 1189
     Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
+    
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-
+    
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
+    
     MySQL [(none)]> show status;
     +--------------------+--------------------------------------+
     | Variable_name      | Value                                |
@@ -313,7 +319,7 @@ Obtain the LoadBalancer ip of Grafana:
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 kubectl -n tidb-cluster get svc basic-grafana
 ```
 
@@ -351,11 +357,11 @@ This section describes how to scale out the AKS node pool and TiDB components.
 
 ### Scale out AKS node pool
 
-{{< copyable "shell-regular" >}}
-
 When scaling out TiKV, the node pools must be scaled out evenly among the different availability zones. The following example shows how to scale out the TiKV node pool of the `${clusterName}` cluster to 6 nodes:
 
-```shell
+{{< copyable "shell-regular" >}}
+
+``` shell
 az aks nodepool scale \
     --resource-group ${resourceGroup} \
     --cluster-name ${clusterName} \
@@ -383,7 +389,7 @@ add a node pool for TiFlash/TiCDC respectively. `--node-count` is the number of 
 
 {{< copyable "shell-regular" >}}
 
-```shell
+``` shell
 # create tiflash node pool, the suggested nodeType is Standard_E8s_v4 or higher
 az aks nodepool add --name tiflash \
     --cluster-name ${clusterName} \
@@ -531,7 +537,7 @@ For instance types that provide local disk, see [Lsv2-series](https://docs.micro
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     az aks nodepool add --name tikv \
         --cluster-name ${clusterName}  \
         --resource-group ${resourceGroup} \
@@ -552,7 +558,7 @@ For instance types that provide local disk, see [Lsv2-series](https://docs.micro
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ``` shell
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
