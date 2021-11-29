@@ -61,7 +61,7 @@ az aks create \
 
 ### 创建组件节点池
 
-集群创建成功后，执行如下命令创建组件节点池，每个节点池创建耗时约 2~5 分钟。可以参考[`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。组件节点池[启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)。
+集群创建成功后，执行如下命令创建组件节点池，每个节点池创建耗时约 2~5 分钟。可以参考[`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。推荐在 TiKV 组件节点池[启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)。
 
 {{< copyable "shell-regular" >}}
 

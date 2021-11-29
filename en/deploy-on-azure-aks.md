@@ -61,7 +61,7 @@ az aks create \
 
 ### create component node pools
 
-After creating AKS cluster, excute below commands to create component node pools, each command might take several minutes. For more cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest). The component node pools have enabled [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster).
+After creating AKS cluster, excute below commands to create component node pools, each command might take several minutes. For more cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest). It is suggested to enable [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) in TiKV node pool.
 
 {{< copyable "shell-regular" >}}
 
