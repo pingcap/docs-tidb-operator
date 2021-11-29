@@ -282,7 +282,7 @@ mountOptions:
 
     完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。
 
-在 local-volume-provisioner 发现本地盘后，当[部署 TiDB 集群和监控](#部署-tidb-集群和监控) 时，请在 `tidb-cluster.yaml` 中添加 `tikv.storageClassName` 字段并设置为 `local-storage`。
+在 local-volume-provisioner 发现本地盘后，当[部署 TiDB 集群和监控](#部署-tidb-集群和监控)时，请在 `tidb-cluster.yaml` 中添加 `tikv.storageClassName` 字段并设置为 `local-storage`。
 
 ## 部署 TiDB Operator
 
