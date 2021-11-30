@@ -11,7 +11,10 @@ summary: 如何使用 TidbMonitor 分片功能
 
 TidbMonitor 负责单个或者多个 TiDB 集群的监控数据采集。当监控数据量很大的时候，单点计算能力会达到瓶颈。可以采用 Prometheus [Modulus](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) 分片功能，对 `__address__` 做 `hashmod`，打散 `Targets` 到多个 TidbMonitor 节点上。
 
-这种方式需要支持数据聚合方案，我们推荐采用 [Thanos](https://thanos.io/tip/thanos/design.md/) 方案。
+
+## 前提条件
+
+TidbMonitor 分片功能需要支持数据聚合方案。推荐采用 [Thanos](https://thanos.io/tip/thanos/design.md/) 方案。
 
 ## 如何开启分片功能
 
