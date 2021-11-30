@@ -7,13 +7,13 @@ summary: This document describes how to enable dynamic configuration for TidbMon
 
 This document describes how to enable dynamic configuration for TidbMonitor.
 
-TidbMonitor supports monitoring across multiple clusters and shards. However, when the Prometheus configuration, rule, or target changes, without dynamic configuring, such change comes into effect only after a restart. If you are monitoring a large dataset, it might take a long time to recover the Prometheus snapshot data after the restart.
+TidbMonitor supports monitoring across multiple clusters and shards. However, when the Prometheus configuration, rule, or target changes, without dynamic configuration, such change only comes into effect after a restart. If you are monitoring a large dataset, after the restart, it might take a long time to recover the Prometheus snapshot data.
 
 With dynamic configuration enabled, any configuration change of TidbMonitor comes into effect immediately.
 
 ## Enable the dynamic configuration feature
 
-To enable the dynamic configuration feature, you can configure `prometheusReloader` in the `spec` field of TidbMonitor. For example:
+To enable the dynamic configuration feature, configure `prometheusReloader` in the `spec` field of TidbMonitor. For example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -39,4 +39,4 @@ For more examples, refer to [monitor-dynamic-configmap](https://github.com/pingc
 
 ## Disable the dynamic configuration feature
 
-To disable the dynamic configuration feature, you can remove `prometheusReloader` from the `spec` field of TidbMonitor.
+To disable the dynamic configuration feature, remove `prometheusReloader` from the `spec` field of TidbMonitor.
