@@ -487,7 +487,7 @@ This command runs in the background and writes its output to a file called `pf40
 {{< copyable "shell-regular" >}}
 
 ``` shell
-mysql -h 127.0.0.1 -P 4000 -u root
+mysql --comments -h 127.0.0.1 -P 4000 -u root
 ```
 
 Expected output:
@@ -692,7 +692,7 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 {{< copyable "shell-regular" >}}
 
 ```
-mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
 Expected output:
