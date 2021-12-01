@@ -74,7 +74,7 @@ After creating an AKS cluster, run the following commands to create component no
 {{< copyable "shell-regular" >}}
 
 ``` shell
-# create operator & monitor pool
+# create a TiDB Operator & Monitor pool
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
