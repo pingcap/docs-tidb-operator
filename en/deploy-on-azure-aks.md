@@ -285,7 +285,7 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    mysql -h ${tidb-lb-ip} -P 4000 -u root
+    mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
     ```
 
     `${tidb-lb-ip}` is the LoadBalancer ip of the TiDB service. You can view the ip in the `EXTERNAL-IP` field by executing `kubectl get svc basic-tidb -n tidb-cluster`.
