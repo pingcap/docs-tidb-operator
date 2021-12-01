@@ -14,36 +14,35 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 
 Before deploying a TiDB cluster on Azure AKS, make sure the following requirements are satisfied:
 
+* Install [Helm 3](https://helm.sh/docs/intro/install/) for deploying TiDB Operator.
+* [Create a Kubernetes cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and install and configure `az cli`.
+
+    > **Note：**
+    >
+    > To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials succeeds, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
+
+* [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
+
 * Install [Helm 3](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
 * Complete all operations in [Create a Kubernetes cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
+* Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
+* If the cluster's kubernetes version < 1.21 you need install **aks-preview CLI extension** for using Ultra Disks, and need **EnableAzureDiskFileCSIDriver** registered in your subscription
 
-    This guide includes the following contents:
+    The following command will install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
 
-    * Install and configure `az cli` used for creating Kubernetes clusters.
-    * Create the `AKS cluster` with Ultra disks enabled, or enable Ultra disks on an existing cluster.
+    {{< copyable "shell-regular" >}}
 
-To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials successfully, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
+    ``` shell
+    az extension add --name aks-preview
+    ```
 
-> **Note:**
->
-> The operations described in this document requires these permissions [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
-> If the cluster's kubernetes version < 1.21 you need install **aks-preview CLI extension** for using Ultra Disks, and need **EnableAzureDiskFileCSIDriver** registered in your subscription
+    The following command will register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)
 
-The following command will install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
+    {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-az extension add --name aks-preview
-```
-
-The following command will register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
-```
+    ``` shell
+    az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
+    ```
 
 ## Create an AKS cluster and a node pool
 
