@@ -10,41 +10,34 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
 如果需要部署 TiDB Operator 及 TiDB 集群到自托管 Kubernetes 环境，请参考[部署 TiDB Operator](deploy-tidb-operator.md)及[部署 TiDB 集群](deploy-on-general-kubernetes.md)等文档。
 
-## 环境准备
+## 前提条件
 
-部署前，请确认已完成以下环境准备：
+- 已安装 [Helm 3](https://helm.sh/docs/intro/install/)，用于安装 TiDB Operator。
+- 已根据[部署 Azure Kubernetes 服务 (AKS) 群集](https://docs.microsoft.com/zh-cn/azure/aks/tutorial-kubernetes-deploy-cluster) 安装并配置 AKS 的命令行工具 az cli。
 
-- 安装 [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator。
+    > **注意：**
+    >
+    > 可运行 `az login` 命令验证 AZ CLI 的配置是否正确。如果登陆账户成功，则 AZ CLI 的配置是正确的。否则，您需要重新配置 AZ CLI。
 
-- 完成 [部署 Azure Kubernetes 服务 (AKS) 群集](https://docs.microsoft.com/zh-cn/azure/aks/tutorial-kubernetes-deploy-cluster) 和 [使用 Azure Kubernetes 服务上的 Azure 超级磁盘（预览）](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks) 中所有操作。
+- 已根据[使用 Azure Kubernetes 服务上的 Azure 超级磁盘（预览）](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks) 创建可以使用超级磁盘的新集群或启用现有集群上的超级磁盘。
+- 已获取[AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
+- 在 kubernetes 版本 < 1.21 的集群中已安装 **aks-preview CLI 扩展**以使用超级磁盘，并在您的订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能
 
-    该教程包含以下内容：
+    执行以下命令，安装 [aks-preview CLI 扩展](https://docs.microsoft.com/zh-cn/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
 
-    - 安装并配置 AKS 的命令行工具 az cli
-    - 创建可以使用超级磁盘的新集群或启用现有集群上的超级磁盘
+    {{< copyable "shell-regular" >}}
 
-要验证 AZ CLI 的配置是否正确，请运行 `az login` 命令。如果登陆账户成功，则 AZ CLI 的配置是正确的。否则，您需要重新配置 AZ CLI。
+    ``` shell
+    az extension add --name aks-preview
+    ```
 
-> **注意：**
->
-> 本文档的操作需要至少具有 [AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
-> 在 kubernetes 版本 < 1.21 的集群中需要安装 **aks-preview CLI 扩展**以使用超级磁盘，并在您的订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能
+    执行以下命令，在[您的 Azure 订阅](https://docs.microsoft.com/zh-cn/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)中注册 [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) 功能
 
-执行以下命令，安装 [aks-preview CLI 扩展](https://docs.microsoft.com/zh-cn/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
+    {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-az extension add --name aks-preview
-```
-
-执行以下命令，在[您的 Azure 订阅](https://docs.microsoft.com/zh-cn/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)中注册 [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) 功能
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
-```
+    ``` shell
+    az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
+    ```
 
 ## 创建 AKS 集群和节点池
 
