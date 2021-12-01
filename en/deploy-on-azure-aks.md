@@ -129,7 +129,7 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
 {{< copyable "shell-regular" >}}
 
 ``` shell
-# create tikv node pool1 in zone 1
+# Create TiKV node pool1 in zone 1
 az aks nodepool add --name tikv1 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -141,7 +141,7 @@ az aks nodepool add --name tikv1 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# create tikv node pool2 in zone 2
+# Create TiKV node pool2 in zone 2
 az aks nodepool add --name tikv2 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -153,7 +153,7 @@ az aks nodepool add --name tikv2 \
     --node-taints dedicated=tikv:NoSchedule \
     --enable-ultra-ssd
 
-# create tikv node pool3 in zone 3
+# Create TiKV node pool3 in zone 3
 az aks nodepool add --name tikv3 \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
