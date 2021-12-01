@@ -293,7 +293,7 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
     For example:
 
     ``` shell
-    $ mysql -h 20.240.0.7 -P 4000 -u root
+    $ mysql --comments -h 20.240.0.7 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 1189
     Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
