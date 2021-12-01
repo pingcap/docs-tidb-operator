@@ -292,7 +292,7 @@ sudo yum install mysql -y
 {{< copyable "shell-regular" >}}
 
 ``` shell
-mysql -h ${tidb-lb-ip} -P 4000 -u root
+mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
 ```
 
 其中 `${tidb-lb-ip}` 为 TiDB Service 的 LoadBalancer 域名，可以通过命令 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
