@@ -168,9 +168,9 @@ az aks nodepool add --name tikv3 \
 
 > **Warning:**
 >
-> About node pool scale in:
+> About node pool scale-in:
 >
-> * You can manually scale an AKS cluster to run a different number of nodes. When you scale down, nodes are carefully [cordoned and drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/) to minimize disruption to running applications, refer [Scale the node count in an Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/en-us/azure/aks/scale-cluster).
+> * You can manually scale in or out an AKS cluster to run a different number of nodes. When you scale in, nodes are carefully [cordoned and drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/) to minimize disruption to running applications. Refer to [Scale the node count in an Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/en-us/azure/aks/scale-cluster).
 
 ## Configure StorageClass
 
