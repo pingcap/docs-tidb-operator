@@ -52,6 +52,10 @@ TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[�
 
 ### 创建 [启用容器存储接口 (CSI) 驱动程序](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers) 的 AKS 集群
 
+> **注意：**
+>
+> 在 kubernetes 版本 < 1.21 的集群中需要额外使用 **--aks-custom-headers** 标志来启用 **EnableAzureDiskFileCSIDriver** 特性
+
 {{< copyable "shell-regular" >}}
 
 ``` shell

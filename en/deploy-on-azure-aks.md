@@ -51,6 +51,10 @@ Most of the TiDB cluster components use Azure disk as storage. According to AKS 
 
 ### Create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers)
 
+> **Note:**
+>
+> If the cluster's kubernetes version < 1.21 you need use the **--aks-custom-headers** flag to set the **EnableAzureDiskFileCSIDriver** feature
+
 {{< copyable "shell-regular" >}}
 
 ``` shell
