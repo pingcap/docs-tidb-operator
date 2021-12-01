@@ -174,7 +174,7 @@ az aks nodepool add --name tikv3 \
 
 ## Configure StorageClass
 
-for improving IO performance of Disk，it is suggested to add `mountOptions` in the StorageClass，to config `nodelalloc` and `noatime`。refer to the [Mount the data disk ext4 filesystem with options on the target machines that deploy TiKV](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv)
+To improve disk IO performance, it is recommended to add `mountOptions` in `StorageClass` to configure `nodelalloc` and `noatime`. Refer to [Mount the data disk ext4 filesystem with options on the target machines that deploy TiKV](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv)
 
 ```yaml
 kind: StorageClass
