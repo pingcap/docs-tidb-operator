@@ -109,7 +109,7 @@ az aks nodepool add --name tidb \
     --labels dedicated=tidb \
     --node-taints dedicated=tidb:NoSchedule
 
-# create tikv node pool, the suggested nodeType is Standard_E8s_v4 or higher
+# Create a TiKV node pool with `nodeType` being `Standard_E8s_v4` or higher
 az aks nodepool add --name tikv \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
