@@ -87,7 +87,7 @@ az aks nodepool add --name admin \
     --node-count 1 \
     --labels dedicated=admin
 
-# create pd node pool, the suggested nodeType is Standard_F4s_v2 or higher
+# create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher
 az aks nodepool add --name pd \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
