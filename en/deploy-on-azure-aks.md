@@ -22,9 +22,6 @@ Before deploying a TiDB cluster on Azure AKS, make sure the following requiremen
     > To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials succeeds, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
 
 * [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
-
-* Install [Helm 3](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
-* Complete all operations in [Create a Kubernetes cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
 * If the cluster's kubernetes version < 1.21 you need install **aks-preview CLI extension** for using Ultra Disks, and need **EnableAzureDiskFileCSIDriver** registered in your subscription
 
