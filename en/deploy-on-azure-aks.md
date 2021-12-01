@@ -98,7 +98,7 @@ az aks nodepool add --name pd \
     --labels dedicated=pd \
     --node-taints dedicated=pd:NoSchedule
 
-# create tidb node pool, the suggested nodeType is Standard_F8s_v2 or higher, by default only two TiDB nodes are required, so you can set the `--node-count` of the `tidb` node pool to `2`. You can scale out this node pool any time if necessary
+# Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool any time if necessary
 az aks nodepool add --name tidb \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
