@@ -118,9 +118,9 @@ az aks nodepool add --name tikv \
     --enable-ultra-ssd
 ```
 
-### deploy component node pools in limited zone
+### Deploy component node pools in limited zone
 
-Azure AKS cluster deploy nodes across multiple zones using "best effort zone balance", if you need "strict zone balance" (not supported in AKS now), consider deploy one node pool in each zone. For example:
+The Azure AKS cluster deploys nodes across multiple zones using "best effort zone balance". If you want to apply "strict zone balance" (not supported in AKS now), you can deploy one node pool in one zone. For example:
 
 {{< copyable "shell-regular" >}}
 
