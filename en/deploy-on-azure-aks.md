@@ -186,7 +186,7 @@ mountOptions:
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator in the AKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
+Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
