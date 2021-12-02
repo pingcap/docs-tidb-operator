@@ -12,7 +12,7 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 
 ## Prerequisites
 
-Before deploying a TiDB cluster on Azure AKS, make sure the following requirements are satisfied:
+Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/) for deploying TiDB Operator.
 * [Create a Kubernetes cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and install and configure `az cli`.
@@ -23,17 +23,15 @@ Before deploying a TiDB cluster on Azure AKS, make sure the following requiremen
 
 * [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
-* If the cluster's kubernetes version < 1.21 you need install **aks-preview CLI extension** for using Ultra Disks, and need **EnableAzureDiskFileCSIDriver** registered in your subscription
-
-    The following command will install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
-
+* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command: 
+    
     {{< copyable "shell-regular" >}}
 
     ``` shell
     az extension add --name aks-preview
     ```
 
-    The following command will register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)
+* Register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters) by running the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -49,7 +47,7 @@ Most of the TiDB cluster components use Azure disk as storage. According to AKS 
 
 > **Note:**
 >
-> If the cluster's kubernetes version < 1.21 you need use the **--aks-custom-headers** flag to set the **EnableAzureDiskFileCSIDriver** feature
+> If the Kubernetes version of the cluster is earlier than 1.21, you need to create an **--aks-custom-headers** flag to set the **EnableAzureDiskFileCSIDriver** feature by running the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -74,7 +72,7 @@ After creating an AKS cluster, run the following commands to create component no
 {{< copyable "shell-regular" >}}
 
 ``` shell
-# create a TiDB Operator & Monitor pool
+# Create a TiDB Operator & Monitor pool
 az aks nodepool add --name admin \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -83,7 +81,7 @@ az aks nodepool add --name admin \
     --node-count 1 \
     --labels dedicated=admin
 
-# create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher
+# Create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher
 az aks nodepool add --name pd \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -94,7 +92,7 @@ az aks nodepool add --name pd \
     --labels dedicated=pd \
     --node-taints dedicated=pd:NoSchedule
 
-# Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool any time if necessary
+# Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool by modifying this parameter any time if necessary
 az aks nodepool add --name tidb \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -170,7 +168,7 @@ az aks nodepool add --name tikv3 \
 
 ## Configure StorageClass
 
-To improve disk IO performance, it is recommended to add `mountOptions` in `StorageClass` to configure `nodelalloc` and `noatime`. Refer to [Mount the data disk ext4 filesystem with options on the target machines that deploy TiKV](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv)
+To improve disk IO performance, it is recommended to add `mountOptions` in `StorageClass` to configure `nodelalloc` and `noatime`. Refer to [Mount the data disk ext4 filesystem with options on the target machines that deploy TiKV](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
 
 ```yaml
 kind: StorageClass
@@ -200,7 +198,7 @@ kubectl create namespace tidb-cluster
 
 > **Note:**
 >
-> A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. This document takes `tidb-cluster` as an example. If you want to use other namespace, modify the corresponding arguments of `-n` or `--namespace`.
+> A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. This document takes `tidb-cluster` as an example. If you want to use other namespaces, modify the corresponding arguments of `-n` or `--namespace`.
 
 ### Deploy
 
@@ -217,7 +215,7 @@ Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further cu
 
 > **Note:**
 >
-> By default, the configuration in `tidb-cluster.yaml` sets up the LoadBalancer for TiDB with the "internal" scheme. This means that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access cluster internal host or use `kubectl port-forward`. If you want to expose TiDB over the internet and if you are aware of the risks of doing this, you can delete the "internal" schema in the `tidb-cluster.yaml` file and the LoadBalancer will be exposed to public by default.
+> By default, TiDB LoadBalancer in `tidb-cluster.yaml` is set to "internal", indicating that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access the internal host of the cluster or use `kubectl port-forward`. You can delete the "internal" schema in the `tidb-cluster.yaml` file to expose the LoadBalancer publicly by default. However, notice that this practice may expose TiDB to risks. 
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the AKS cluster, run the following command:
 
@@ -232,7 +230,7 @@ After the yaml file above is applied to the Kubernetes cluster, TiDB Operator cr
 
 ### View the cluster status
 
-To view the status of the starting TiDB cluster, run the following command:
+To view the status of the TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -240,7 +238,7 @@ To view the status of the starting TiDB cluster, run the following command:
 kubectl get pods -n tidb-cluster
 ```
 
-When all the Pods are in the `Running` or `Ready` state, the TiDB cluster is successfully started. For example:
+When all the pods are in the `Running` or `Ready` state, the TiDB cluster is successfully started. For example:
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -258,19 +256,19 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 ## Access the database
 
-After you have deployed a TiDB cluster, you can access the TiDB database to test or develop your application.
+Having deployed a TiDB cluster, you can access the TiDB database to test or develop applications.
 
-### SSH to AKS node
+### Access AKS node via SSH
 
-The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You can create a [Bastion](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) in the cluster virtual network to connect to a internal host and then access the database. You can also [Create the SSH connection to a Linux node](https://docs.microsoft.com/en-us/azure/aks/ssh#create-the-ssh-connection-to-a-linux-node) and SSH to the internal host with your authentication or you can simply use tools like [node-shell](https://github.com/kvaps/kubectl-node-shell) and then access the database.
+The LoadBalancer created for your TiDB cluster resides in an intranet. You can create a [Bastion](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) in the cluster virtual network to connect to an internal host and then access the database. 
 
 > **Note:**
 >
-> In addition to the bastion host, you can also connect an existing host to the cluster virtual network by [Peering](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview). If the AKS cluster is created in an existing virtual network, you can use the host in the virtual network.
+> In addition to the bastion host, you can also connect an existing host to the cluster virtual network by [Peering](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview). If the AKS cluster is created in an existing virtual network, you can use hosts in this virtual network to access the database.
 
-### Install the MySQL client and connect
+### Access via the MySQL client
 
-After SSH to the internal host, you can access the TiDB cluster via the MySQL client.
+After access to the internal host via SSH, you can access the TiDB cluster through the MySQL client.
 
 1. Install the MySQL client on the host:
 
@@ -288,7 +286,7 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
     mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
     ```
 
-    `${tidb-lb-ip}` is the LoadBalancer ip of the TiDB service. You can view the ip in the `EXTERNAL-IP` field by executing `kubectl get svc basic-tidb -n tidb-cluster`.
+    `${tidb-lb-ip}` is the LoadBalancer IP address of the TiDB service. To obtain it, run the `kubectl get svc basic-tidb -n tidb-cluster` command. The `EXTERNAL-IP` field returned is the IP address.
 
     For example:
 
@@ -318,12 +316,12 @@ After SSH to the internal host, you can access the TiDB cluster via the MySQL cl
 
 > **Note:**
 >
-> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (cluster version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
+> * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you access the TiDB service (earlier than v4.0.7) by using MySQL 8.0 client via password authentication, you need to specify the `--default-auth=mysql_native_password` parameter.
 > * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
 ## Access the Grafana monitoring dashboard
 
-Obtain the LoadBalancer ip of Grafana:
+Obtain the LoadBalancer IP address of Grafana:
 
 {{< copyable "shell-regular" >}}
 
@@ -339,9 +337,9 @@ NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AG
 basic-grafana   LoadBalancer   10.100.199.42   20.240.0.8    3000:30761/TCP   121m
 ```
 
-In the output above, the `EXTERNAL-IP` column is the LoadBalancer ip.
+In the output above, the `EXTERNAL-IP` column is the LoadBalancer IP address.
 
-You can access the `${grafana-lb}:3000` address using your web browser to view monitoring metrics. Replace `${grafana-lb}` with the LoadBalancer ip.
+You can access the `${grafana-lb}:3000` address using your web browser to view monitoring metrics. Replace `${grafana-lb}` with the LoadBalancer IP address.
 
 > **Note:**
 >
@@ -353,9 +351,9 @@ See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to s
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
+To upgrade the TiDB cluster, edit `spec.version` by running the `kubectl edit tc basic -n tidb-cluster` command.
 
-The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
+The upgrade process does not finish immediately. You can view the upgrade progress by running the `kubectl get pods -n tidb-cluster --watch` command.
 
 ## Scale out
 
@@ -365,7 +363,7 @@ This section describes how to scale out the AKS node pool and TiDB components.
 
 ### Scale out AKS node pool
 
-When scaling out TiKV, the node pools must be scaled out evenly among the different availability zones. The following example shows how to scale out the TiKV node pool of the `${clusterName}` cluster to 6 nodes:
+When scaling out TiKV, the node pools must be scaled out evenly among availability zones. The following example shows how to scale out the TiKV node pool of the `${clusterName}` cluster to 6 nodes:
 
 {{< copyable "shell-regular" >}}
 
@@ -375,13 +373,10 @@ az aks nodepool scale \
     --cluster-name ${clusterName} \
     --name ${nodePoolName} \
     --node-count 6
-```
-
-For more information on managing node pool, refer to [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest).
 
 ### Scale out TiDB components
 
-After scaling out the AKS node pool, execute `kubectl edit tc basic -n tidb-cluster`, and modify component's `replicas` to the desired number of replicas. The scaling-out process is then completed.
+After scaling out the AKS node pool, run the `kubectl edit tc basic -n tidb-cluster` command with `replicas` of each component set to desired value. The scaling-out process is then completed.
 
 ## Deploy TiFlash/TiCDC
 
@@ -393,12 +388,12 @@ The two components are *not required* in the deployment. This section shows a qu
 
 ### Add node pools
 
-add a node pool for TiFlash/TiCDC respectively. `--node-count` is the number of nodes you desire.
+Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as required.
 
 {{< copyable "shell-regular" >}}
 
 ``` shell
-# create tiflash node pool, the suggested nodeType is Standard_E8s_v4 or higher
+# Create a TiFlash node pool with `nodeType` being `Standard_E8s_v4` or higher
 az aks nodepool add --name tiflash \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -409,7 +404,7 @@ az aks nodepool add --name tiflash \
     --labels dedicated=tiflash \
     --node-taints dedicated=tiflash:NoSchedule
 
-# create ticdc node pool, the suggested nodeType is Standard_E16s_v4 or higher
+# Create a TiCDC node pool with `nodeType` being `Standard_E16s_v4` or higher
 az aks nodepool add --name ticdc \
     --cluster-name ${clusterName} \
     --resource-group ${resourceGroup} \
@@ -423,7 +418,7 @@ az aks nodepool add --name ticdc \
 
 ### Configure and deploy
 
-+ To deploy TiFlash, configure `spec.tiflash` in `tidb-cluster.yaml`:
++ To deploy TiFlash, configure `spec.tiflash` in `tidb-cluster.yaml`. Following is an example:
 
     ```yaml
     spec:
@@ -446,9 +441,9 @@ az aks nodepool add --name ticdc \
 
     > **Warning:**
     >
-    > TiDB Operator automatically mount PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
+    > TiDB Operator automatically mounts PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
 
-+ To deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`:
++ To deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`. Following is an example:
 
     ```yaml
     spec:
@@ -463,9 +458,9 @@ az aks nodepool add --name ticdc \
           value: ticdc
     ```
 
-    Modify `replicas` according to your needs.
+    Modify `replicas` as required.
 
-Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
+Finally, run the `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` command to update the TiDB cluster configuration.
 
 For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
@@ -487,7 +482,7 @@ spec:
 
 ## Use other Disk volume types
 
-Azure disks supports multiple volume types. If you need low latency and high throughput, you can choose the `UltraSSD` type. The steps are as follows:
+Azure disks support multiple volume types. Among them, `UltraSSD` delivers low latency and high throughput and can be enabled by performing the following steps:
 
 1. [Enable Ultra disks on an existing cluster](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) and create a storage class for `UltraSSD`:
 
@@ -507,7 +502,7 @@ Azure disks supports multiple volume types. If you need low latency and high thr
     - nodelalloc,noatime
     ```
 
-    > you can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) according to your needs.
+    > you can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) as required.
 
 2. In `tidb-cluster.yaml`, specify the `ultra` storage class to apply for the `UltraSSD` volume type through the `storageClassName` field.
 
@@ -523,21 +518,21 @@ Azure disks supports multiple volume types. If you need low latency and high thr
           storage: "100Gi"
     ```
 
-You can use any supported Azure disk type, It is recommended to use `Premium_LRS` or `UltraSSD_LRS`.
+You can use any supported Azure disk type. It is recommended to use `Premium_LRS` or `UltraSSD_LRS`.
 
 For more information about the storage class configuration and Azure disk types, refer to [Storage Class documentation](https://github.com/kubernetes-sigs/azuredisk-csi-driver) and [Azure Disk Types](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types).
 
 ## Use local storage
 
-Use Azure LRS disk as a primary production configuration. To simulate bare metal performance, some Azure instance types provide additional [NVMe SSD local store volumes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-storage). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+Use Azure LRS disks for storage in production environment. To simulate bare metal performance, use additional [NVMe SSD local store volumes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-storage) provided by some Azure instances. You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
-> You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
+> You cannot dynamically change the storage class of a running TiDB cluster. In this case, create a new cluster for testing.
 >
-> Local NVMe Disks are ephemeral, data will be lost on these disks if you stop/deallocate your node. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
+> Local NVMe Disks are ephemeral, data will be lost on these disks if you stop/deallocate your node. When the node is reconstructed, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in production environment.
 
-For instance types that provide local disk, see [Lsv2-series](https://docs.microsoft.com/en-us/azure/virtual-machines/lsv2-series). Take `Standard_L8s_v2` as an example:
+For instance types that provide local disks, refer to [Lsv2-series](https://docs.microsoft.com/en-us/azure/virtual-machines/lsv2-series). The following takes `Standard_L8s_v2` as an example:
 
 1. Create a node group with local storage for TiKV.
 
@@ -562,7 +557,7 @@ For instance types that provide local disk, see [Lsv2-series](https://docs.micro
 
 2. Deploy the local volume provisioner.
 
-    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. Executing the following command deploys and creates a `local-storage` storage class:
+    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. Run the following command to deploy and create a `local-storage` storage class:
 
     {{< copyable "shell-regular" >}}
 
@@ -570,7 +565,7 @@ For instance types that provide local disk, see [Lsv2-series](https://docs.micro
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
-3. Use the local storage.
+3. Use local storage.
 
     After the steps above, the local volume provisioner can discover all the local NVMe SSD disks in the cluster.
 
