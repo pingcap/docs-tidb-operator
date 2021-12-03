@@ -300,11 +300,11 @@ The LoadBalancer created for your TiDB cluster resides in an intranet. You can c
 
 - Access via SSH
 
-You can [create the SSH connection to a Linux node](https://docs.microsoft.com/en-us/azure/aks/ssh#create-the-ssh-connection-to-a-linux-node) then access to the database.
+You can [create the SSH connection to a Linux node](https://docs.microsoft.com/en-us/azure/aks/ssh#create-the-ssh-connection-to-a-linux-node) to access the database.
 
 - Access via node-shell
 
-You can simply use tools like [node-shell](https://github.com/kvaps/kubectl-node-shell) to connect to nodes in cluster, then access to the database.
+You can simply use tools like [node-shell](https://github.com/kvaps/kubectl-node-shell) to connect to nodes in the cluster, then access the database.
 
 ### Access via the MySQL client
 
@@ -387,7 +387,7 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 
 ## Access TiDB Dashboard
 
-See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to securely allow access to the TiDB Dashboard.
+See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to securely allow access to TiDB Dashboard.
 
 ## Upgrade
 
@@ -582,7 +582,7 @@ Use Azure LRS disks for storage in production environment. To simulate bare-meta
 
 For instance types that provide local disks, refer to [Lsv2-series](https://docs.microsoft.com/en-us/azure/virtual-machines/lsv2-series). The following takes `Standard_L8s_v2` as an example:
 
-1. Create a node group with local storage for TiKV.
+1. Create a node pool with local storage for TiKV.
 
     Modify the instance type of the TiKV node pool in the `az aks nodepool add` command to `Standard_L8s_v2`:
 
