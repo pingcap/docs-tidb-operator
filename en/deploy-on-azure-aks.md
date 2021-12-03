@@ -133,7 +133,7 @@ After creating an AKS cluster, run the following commands to create component no
         --enable-ultra-ssd
     ```
 
-### Deploy component node pools in limited zone
+### Deploy component node pools in availability zones
 
 The Azure AKS cluster deploys nodes across multiple zones using "best effort zone balance". If you want to apply "strict zone balance" (not supported in AKS now), you can deploy one node pool in one zone. For example:
 
