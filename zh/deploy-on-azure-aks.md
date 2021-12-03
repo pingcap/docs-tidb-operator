@@ -427,7 +427,7 @@ az aks nodepool scale \
 
 为 TiFlash/TiCDC 各自新增一个节点池。`--node-count` 决定期望的节点数，根据实际需求而定。
 
--  创建 tiflash 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置：
+- 创建 tiflash 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置：
 
     {{< copyable "shell-regular" >}}
 
