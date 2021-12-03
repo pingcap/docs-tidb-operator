@@ -373,6 +373,7 @@ az aks nodepool scale \
     --cluster-name ${clusterName} \
     --name ${nodePoolName} \
     --node-count 6
+```
 
 ### Scale out TiDB components
 
