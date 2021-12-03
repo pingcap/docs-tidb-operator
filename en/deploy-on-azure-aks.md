@@ -40,7 +40,7 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 ## Create an AKS cluster and a node pool
 
-Most of the TiDB cluster components use Azure disk as storage. According to AKS [Best Practice Document](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), it is recommended to create a node pool with every availability zone (at least 3 in total) for each component when creating an AKS cluster.
+Most of the TiDB cluster components use Azure disk as storage. According to [AKS Best Practices](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), when creating an AKS cluster, it is recommended to ensure that each node pool uses one availability zone (at least 3 in total).
 
 ### Create an AKS cluster with CSI enabled
 
@@ -133,7 +133,7 @@ After creating an AKS cluster, run the following commands to create component no
         --enable-ultra-ssd
     ```
 
-### Deploy component node pools in limited zone
+### Deploy component node pools in availability zones
 
 The Azure AKS cluster deploys nodes across multiple zones using "best effort zone balance". If you want to apply "strict zone balance" (not supported in AKS now), you can deploy one node pool in one zone. For example:
 
