@@ -605,6 +605,6 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
 
     After the steps above, the local volume provisioner can discover all the local NVMe SSD disks in the cluster.
 
-    Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
+    Add the `tikv.storageClassName` field to the `tidb-cluster.yaml` file and set the value of the field to `local-storage`.
 
     For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy)
