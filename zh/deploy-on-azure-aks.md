@@ -27,7 +27,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az extension add --name aks-preview
     ```
 
@@ -35,7 +35,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
     ```
 
@@ -51,7 +51,7 @@ TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[�
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 az aks create \
     --resource-group ${resourceGroup} \
     --name ${clusterName} \
@@ -68,96 +68,123 @@ az aks create \
 
 集群创建成功后，执行如下命令创建组件节点池，每个节点池创建耗时约 2~5 分钟。可以参考[`az aks` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks?view=azure-cli-latest#az_aks_create) 和 [`az aks nodepool` 文档](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest) 了解更多集群配置选项。推荐在 TiKV 组件节点池[启用超级磁盘](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster)。
 
-{{< copyable "shell-regular" >}}
+1. 创建 operator & monitor 节点池：
 
-``` shell
-# 创建 operator & monitor 节点池
-az aks nodepool add --name admin \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=admin
+    {{< copyable "shell-regular" >}}
 
-# 创建 pd 节点池, nodeType 建议为 Standard_F4s_v2 或更高配置
-az aks nodepool add --name pd \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=pd \
-    --node-taints dedicated=pd:NoSchedule
+    ```shell
+    az aks nodepool add --name admin \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=admin
+    ```
 
-# 创建 tidb 节点池, nodeType 建议为 Standard_F8s_v2 或更高配置，默认只需要两个 TiDB 节点，因此可以设置 ` `--node-count` 为 `2`，支持修改该参数进行扩容
-az aks nodepool add --name tidb \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 2 \
-    --labels dedicated=tidb \
-    --node-taints dedicated=tidb:NoSchedule
+2. 创建 pd 节点池, nodeType 建议为 Standard_F4s_v2 或更高配置：
 
-# 创建 tikv 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置
-az aks nodepool add --name tikv \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name pd \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=pd \
+        --node-taints dedicated=pd:NoSchedule
+    ```
+
+3. 创建 tidb 节点池, nodeType 建议为 Standard_F8s_v2 或更高配置，默认只需要两个 TiDB 节点，因此可以设置 `--node-count` 为 `2`，支持修改该参数进行扩容：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name tidb \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 2 \
+        --labels dedicated=tidb \
+        --node-taints dedicated=tidb:NoSchedule
+    ```
+
+4. 创建 tikv 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name tikv \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
 ### 在可用区部署节点池
 
 Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节点，如果您希望使用 "严格执行区域均衡" (AKS 暂时不支持该策略)，可以考虑在每一个可用区部署一个节点池。 例如：
 
-{{< copyable "shell-regular" >}}
+1. 在可用区 1 创建 tikv 节点池 1：
 
-``` shell
-# 在可用区1 创建 tikv 节点池 1
-az aks nodepool add --name tikv1 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
+    {{< copyable "shell-regular" >}}
 
-# 在可用区2 创建 tikv 节点池 2
-az aks nodepool add --name tikv2 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 2 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
+    ```shell
+    az aks nodepool add --name tikv1 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
-# 在可用区3 创建 tikv 节点池 3
-az aks nodepool add --name tikv3 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
-```
+2. 在可用区 2 创建 tikv 节点池 2：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name tikv2 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 2 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
+
+3. 在可用区 3 创建 tikv 节点池 3：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name tikv3 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
 > **警告：**
 >
@@ -205,8 +232,8 @@ kubectl create namespace tidb-cluster
 
 {{< copyable "shell-regular" >}}
 
-``` shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml &&
+```shell
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml && \
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-monitor.yaml
 ```
 
@@ -220,7 +247,7 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
@@ -233,7 +260,7 @@ kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl get pods -n tidb-cluster
 ```
 
@@ -283,7 +310,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 sudo yum install mysql -y
 ```
 
@@ -291,7 +318,7 @@ sudo yum install mysql -y
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
 ```
 
@@ -299,8 +326,8 @@ mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
 
 以下为一个连接 TiDB 集群的示例：
 
-``` shell
-$ mysql --comments -h 20.240.0.7 -P 4000 -u root
+```shell
+mysql --comments -h 20.240.0.7 -P 4000 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1189
 Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
@@ -334,14 +361,14 @@ MySQL [(none)]> show status;
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl -n tidb-cluster get svc basic-grafana
 ```
 
 示例输出：
 
-```
-$ kubectl get svc basic-grafana
+```shell
+kubectl get svc basic-grafana
 NAME            TYPE           CLUSTER-IP      EXTERNAL-IP                                                             PORT(S)          AGE
 basic-grafana   LoadBalancer   10.100.199.42   20.240.0.8    3000:30761/TCP   121m
 ```
@@ -374,7 +401,7 @@ TiKV 扩容需要保证在各可用区均匀扩容。以下是将集群 `${clust
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 az aks nodepool scale \
     --resource-group ${resourceGroup} \
     --cluster-name ${clusterName} \
@@ -400,31 +427,37 @@ az aks nodepool scale \
 
 为 TiFlash/TiCDC 各自新增一个节点池。`--node-count` 决定期望的节点数，根据实际需求而定。
 
-{{< copyable "shell-regular" >}}
+-  创建 tiflash 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置：
 
-``` shell
-# 创建 tiflash 节点池, nodeType 建议为 Standard_E8s_v4 或更高配置
-az aks nodepool add --name tiflash \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=tiflash \
-    --node-taints dedicated=tiflash:NoSchedule
+    {{< copyable "shell-regular" >}}
 
-# 创建 ticdc 节点池, nodeType 建议为 Standard_E16s_v4 或更高配置
-az aks nodepool add --name ticdc \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=ticdc \
-    --node-taints dedicated=ticdc:NoSchedule
-```
+    ```shell
+    az aks nodepool add --name tiflash \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=tiflash \
+        --node-taints dedicated=tiflash:NoSchedule
+    ```
+
+- 创建 ticdc 节点池, nodeType 建议为 Standard_E16s_v4 或更高配置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name ticdc \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=ticdc \
+        --node-taints dedicated=ticdc:NoSchedule
+    ```
 
 ### 配置并部署 TiFlash/TiCDC
 
@@ -512,7 +545,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     - nodelalloc,noatime
     ```
 
-    > 您可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md)。
+    你可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md)。
 
 2. 然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `ultra` 存储类申请 `UltraSSD` 类型的 Azure 磁盘。可以参考以下 TiKV 配置示例使用：
 
@@ -545,10 +578,10 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 1. 为 TiKV 创建附带本地磁盘的节点池。
 
     修改 `az aks nodepool add` 命令中 TiKV 节点池实例类型为 `Standard_L8s_v2`：
- 
+
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az aks nodepool add --name tikv \
         --cluster-name ${clusterName}  \
         --resource-group ${resourceGroup} \
@@ -569,7 +602,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
