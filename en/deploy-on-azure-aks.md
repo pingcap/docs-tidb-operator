@@ -14,13 +14,13 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/) for deploying TiDB Operator.
-* [Create a Kubernetes cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and install and configure `az cli`.
+* [Deploy a Kubernetes (AKS) cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and install and configure `az cli`.
 
     > **Note：**
     >
     > To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials succeeds, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
 
-* [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
+* Ref [use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) to create a new cluster that can use Ultra disks or enable Ultra disks in an exist cluster.
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
 * If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command:
 
