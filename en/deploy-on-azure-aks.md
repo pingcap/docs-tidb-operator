@@ -22,11 +22,11 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 * [Create a new cluster that can use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks).
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
-* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command: 
-    
+* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command:
+
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az extension add --name aks-preview
     ```
 
@@ -34,7 +34,7 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
     ```
 
@@ -52,7 +52,7 @@ To create an AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azu
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 # create AKS cluster
 az aks create \
     --resource-group ${resourceGroup} \
@@ -68,13 +68,12 @@ az aks create \
 
 ### Create component node pools
 
-After creating an AKS cluster, run the following commands to create component node pools. Each node pool may take two to five minutes to create. It is recommended to enable [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) in the TiKV node pool. For more details about cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest). 
-
+After creating an AKS cluster, run the following commands to create component node pools. Each node pool may take two to five minutes to create. It is recommended to enable [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) in the TiKV node pool. For more details about cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest).
 
 1. To create a TiDB Operator and monitor pool:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name admin \
         --cluster-name ${clusterName} \
@@ -88,7 +87,7 @@ After creating an AKS cluster, run the following commands to create component no
 2. Create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name pd \
         --cluster-name ${clusterName} \
@@ -104,7 +103,7 @@ After creating an AKS cluster, run the following commands to create component no
 3. Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool by modifying this parameter at any time if necessary.
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name tidb \
         --cluster-name ${clusterName} \
@@ -120,7 +119,7 @@ After creating an AKS cluster, run the following commands to create component no
 4. Create a TiKV node pool with `nodeType` being `Standard_E8s_v4` or higher:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name tikv \
         --cluster-name ${clusterName} \
@@ -138,11 +137,10 @@ After creating an AKS cluster, run the following commands to create component no
 
 The Azure AKS cluster deploys nodes across multiple zones using "best effort zone balance". If you want to apply "strict zone balance" (not supported in AKS now), you can deploy one node pool in one zone. For example:
 
-
 1. Create TiKV node pool 1 in zone 1:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name tikv1 \
         --cluster-name ${clusterName} \
@@ -159,7 +157,7 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
 2. Create TiKV node pool 2 in zone 2:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name tikv2 \
         --cluster-name ${clusterName} \
@@ -176,7 +174,7 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
 3. Create TiKV node pool 3 in zone 3:
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     az aks nodepool add --name tikv3 \
         --cluster-name ${clusterName} \
@@ -222,7 +220,7 @@ To create a namespace to deploy the TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl create namespace tidb-cluster
 ```
 
@@ -236,7 +234,7 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml && \
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-monitor.yaml
 ```
@@ -245,13 +243,13 @@ Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further cu
 
 > **Note:**
 >
-> By default, TiDB LoadBalancer in `tidb-cluster.yaml` is set to "internal", indicating that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access the internal host of the cluster or use `kubectl port-forward`. You can delete the "internal" schema in the `tidb-cluster.yaml` file to expose the LoadBalancer publicly by default. However, notice that this practice may expose TiDB to risks. 
+> By default, TiDB LoadBalancer in `tidb-cluster.yaml` is set to "internal", indicating that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access the internal host of the cluster or use `kubectl port-forward`. You can delete the "internal" schema in the `tidb-cluster.yaml` file to expose the LoadBalancer publicly by default. However, notice that this practice may expose TiDB to risks.
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the AKS cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
@@ -264,7 +262,7 @@ To view the status of the TiDB cluster, run the following command:
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl get pods -n tidb-cluster
 ```
 
@@ -290,7 +288,7 @@ After deploying a TiDB cluster, you can access the TiDB database to test or deve
 
 ### Access AKS node via SSH
 
-The LoadBalancer created for your TiDB cluster resides in an intranet. You can create a [Bastion](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) in the cluster virtual network to connect to an internal host and then access the database. 
+The LoadBalancer created for your TiDB cluster resides in an intranet. You can create a [Bastion](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) in the cluster virtual network to connect to an internal host and then access the database.
 
 > **Note:**
 >
@@ -304,7 +302,7 @@ After access to the internal host via SSH, you can access the TiDB cluster throu
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     sudo yum install mysql -y
     ```
 
@@ -312,7 +310,7 @@ After access to the internal host via SSH, you can access the TiDB cluster throu
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     mysql --comments -h ${tidb-lb-ip} -P 4000 -u root
     ```
 
@@ -320,16 +318,16 @@ After access to the internal host via SSH, you can access the TiDB cluster throu
 
     For example:
 
-    ``` shell
+    ```shell
     $ mysql --comments -h 20.240.0.7 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 1189
     Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-    
+
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-    
+
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    
+
     MySQL [(none)]> show status;
     +--------------------+--------------------------------------+
     | Variable_name      | Value                                |
@@ -355,14 +353,14 @@ Obtain the LoadBalancer IP address of Grafana:
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 kubectl -n tidb-cluster get svc basic-grafana
 ```
 
 For example:
 
-```
-$ kubectl get svc basic-grafana
+```shell
+kubectl get svc basic-grafana
 NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 basic-grafana   LoadBalancer   10.100.199.42   20.240.0.8    3000:30761/TCP   121m
 ```
@@ -397,7 +395,7 @@ When scaling out TiKV, the node pools must be scaled out evenly among availabili
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 az aks nodepool scale \
     --resource-group ${resourceGroup} \
     --cluster-name ${clusterName} \
@@ -423,31 +421,37 @@ The two components are *not required* in the deployment. This section shows a qu
 
 Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as required.
 
-{{< copyable "shell-regular" >}}
+1. Create a TiFlash node pool with `nodeType` being `Standard_E8s_v4` or higher:
 
-``` shell
-# Create a TiFlash node pool with `nodeType` being `Standard_E8s_v4` or higher
-az aks nodepool add --name tiflash \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=tiflash \
-    --node-taints dedicated=tiflash:NoSchedule
+    {{< copyable "shell-regular" >}}
 
-# Create a TiCDC node pool with `nodeType` being `Standard_E16s_v4` or higher
-az aks nodepool add --name ticdc \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=ticdc \
-    --node-taints dedicated=ticdc:NoSchedule
-```
+    ```shell
+    az aks nodepool add --name tiflash \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=tiflash \
+        --node-taints dedicated=tiflash:NoSchedule
+    ```
+
+2. Create a TiCDC node pool with `nodeType` being `Standard_E16s_v4` or higher:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    az aks nodepool add --name ticdc \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=ticdc \
+        --node-taints dedicated=ticdc:NoSchedule
+    ```
 
 ### Configure and deploy
 
@@ -557,7 +561,7 @@ For more information about the storage class configuration and Azure disk types,
 
 ## Use local storage
 
-Use Azure LRS disks for storage in production environment. To simulate bare metal performance, use additional [NVMe SSD local store volumes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-storage) provided by some Azure instances. You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+Use Azure LRS disks for storage in production environment. To simulate bare-metal performance, use additional [NVMe SSD local store volumes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-storage) provided by some Azure instances. You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
@@ -572,7 +576,7 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     az aks nodepool add --name tikv \
         --cluster-name ${clusterName}  \
         --resource-group ${resourceGroup} \
@@ -593,7 +597,7 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
 
     {{< copyable "shell-regular" >}}
 
-    ``` shell
+    ```shell
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
     ```
 
