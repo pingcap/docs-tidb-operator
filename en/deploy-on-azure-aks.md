@@ -22,21 +22,23 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 * Refer to [use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) to create a new cluster that can use Ultra disks or enable Ultra disks in an exist cluster.
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
-* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command:
+* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks and register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters).
 
-    {{< copyable "shell-regular" >}}
+    - Install the aks-preview CLI extension:
 
-    ```shell
-    az extension add --name aks-preview
-    ```
+      {{< copyable "shell-regular" >}}
 
-    Register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters) by running the following command:
+      ```shell
+      az extension add --name aks-preview
+      ```
 
-    {{< copyable "shell-regular" >}}
+    - Register `EnableAzureDiskFileCSIDriver`:
 
-    ```shell
-    az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
-    ```
+      {{< copyable "shell-regular" >}}
+
+      ```shell
+      az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
+      ```
 
 ## Create an AKS cluster and a node pool
 
