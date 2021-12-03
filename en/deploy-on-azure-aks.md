@@ -20,7 +20,7 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
     >
     > To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials succeeds, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
 
-* Ref [use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) to create a new cluster that can use Ultra disks or enable Ultra disks in an exist cluster.
+* Refer to [use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) to create a new cluster that can use Ultra disks or enable Ultra disks in an exist cluster.
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
 * If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks by running the following command:
 
