@@ -286,13 +286,23 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 After deploying a TiDB cluster, you can access the TiDB database to test or develop applications.
 
-### Access AKS node via SSH
+### Access method
+
+- Access via Bastion
 
 The LoadBalancer created for your TiDB cluster resides in an intranet. You can create a [Bastion](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) in the cluster virtual network to connect to an internal host and then access the database.
 
 > **Note:**
 >
 > In addition to the bastion host, you can also connect an existing host to the cluster virtual network by [Peering](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview). If the AKS cluster is created in an existing virtual network, you can use hosts in this virtual network to access the database.
+
+- Access via SSH
+
+You can [create the SSH connection to a Linux node](https://docs.microsoft.com/en-us/azure/aks/ssh#create-the-ssh-connection-to-a-linux-node) then access to the database.
+
+- Access via node-shell
+
+You can simply use tools like [node-shell](https://github.com/kvaps/kubectl-node-shell) to connect to nodes in cluster, then access to the database.
 
 ### Access via the MySQL client
 
