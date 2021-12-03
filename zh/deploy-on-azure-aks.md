@@ -20,10 +20,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
     > 可运行 `az login` 命令验证 AZ CLI 的配置是否正确。如果登陆账户成功，则 AZ CLI 的配置是正确的。否则，您需要重新配置 AZ CLI。
 
 - 已根据[使用 Azure Kubernetes 服务上的 Azure 超级磁盘（预览）](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks) 创建可以使用超级磁盘的新集群或启用现有集群上的超级磁盘。
-- 已获取[AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
-- 在 kubernetes 版本 < 1.21 的集群中已安装 **aks-preview CLI 扩展**以使用超级磁盘，并在您的订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能
+- 已获取 [AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
+- 在 Kubernetes 版本 < 1.21 的集群中已安装 **aks-preview CLI 扩展**以使用超级磁盘，并在您的订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能。
 
-    执行以下命令，安装 [aks-preview CLI 扩展](https://docs.microsoft.com/zh-cn/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)
+    执行以下命令，安装 [aks-preview CLI 扩展](https://docs.microsoft.com/zh-cn/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)：
 
     {{< copyable "shell-regular" >}}
 
@@ -31,7 +31,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
     az extension add --name aks-preview
     ```
 
-    执行以下命令，在[您的 Azure 订阅](https://docs.microsoft.com/zh-cn/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)中注册 [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) 功能
+    执行以下命令，在[您的 Azure 订阅](https://docs.microsoft.com/zh-cn/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)中注册 [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) 功能：
 
     {{< copyable "shell-regular" >}}
 
@@ -47,7 +47,7 @@ TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[�
 
 > **注意：**
 >
-> 在 kubernetes 版本 < 1.21 的集群中需要额外使用 **--aks-custom-headers** 标志来启用 **EnableAzureDiskFileCSIDriver** 特性
+> 在 Kubernetes 版本 < 1.21 的集群中，需要额外使用 `--aks-custom-headers` 标志来启用 **EnableAzureDiskFileCSIDriver** 特性
 
 {{< copyable "shell-regular" >}}
 
@@ -163,11 +163,11 @@ az aks nodepool add --name tikv3 \
 >
 > 关于节点池扩缩容：
 >
-> * 如果应用程序需要更改资源，可以手动缩放 AKS 群集以运行不同数量的节点。 节点数减少时，节点会被 [优雅地清空](https://kubernetes.io/zh/docs/tasks/administer-cluster/safely-drain-node/)，尽量避免对正在运行的应用程序造成中断。参考 [在 AKS 中缩放节点数](https://docs.microsoft.com/zh-cn/azure/aks/scale-cluster).
+> * 如果应用程序需要更改资源，可以手动缩放 AKS 群集以运行不同数量的节点。节点数减少时，节点会被[优雅地清空](https://kubernetes.io/zh/docs/tasks/administer-cluster/safely-drain-node/)，尽量避免对正在运行的应用程序造成中断。参考[在 AKS 中缩放节点数](https://docs.microsoft.com/zh-cn/azure/aks/scale-cluster)。
 
 ## 配置 StorageClass
 
-为了提高存储的 IO 写入性能，推荐设置 StorageClass 的 `mountOptions` 字段，来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)
+为了提高存储的 IO 写入性能，推荐设置 StorageClass 的 `mountOptions` 字段，来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)
 
 ```yaml
 kind: StorageClass
