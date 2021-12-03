@@ -1,7 +1,6 @@
 ---
 title: Deploy TiDB on Azure AKS
 summary: Learn how to deploy a TiDB cluster on Azure Kubernetes Service (AKS).
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 ---
 
 # Deploy TiDB on Azure AKS
@@ -43,11 +42,13 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 Most of the TiDB cluster components use Azure disk as storage. According to AKS [Best Practice Document](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-isolation), it is recommended to create a node pool with every availability zone (at least 3 in total) for each component when creating an AKS cluster.
 
-### Create AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers)
+### Create an AKS cluster with CSI enabled
+
+To create an AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers), run the following command:
 
 > **Note:**
 >
-> If the Kubernetes version of the cluster is earlier than 1.21, you need to create an **--aks-custom-headers** flag to set the **EnableAzureDiskFileCSIDriver** feature by running the following command:
+> If the Kubernetes version of the cluster is earlier than 1.21, you need to append an `--aks-custom-headers` flag to enable the **EnableAzureDiskFileCSIDriver** feature by running the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -69,96 +70,125 @@ az aks create \
 
 After creating an AKS cluster, run the following commands to create component node pools. Each node pool may take two to five minutes to create. It is recommended to enable [Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks#enable-ultra-disks-on-an-existing-cluster) in the TiKV node pool. For more details about cluster configuration, refer to [`az aks` documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create) and [`az aks nodepool` documentation](https://docs.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest). 
 
-{{< copyable "shell-regular" >}}
 
-``` shell
-# Create a TiDB Operator & Monitor pool
-az aks nodepool add --name admin \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=admin
+1. To create a TiDB Operator and monitor pool:
 
-# Create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher
-az aks nodepool add --name pd \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=pd \
-    --node-taints dedicated=pd:NoSchedule
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name admin \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=admin
+    ```
 
-# Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool by modifying this parameter any time if necessary
-az aks nodepool add --name tidb \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 2 \
-    --labels dedicated=tidb \
-    --node-taints dedicated=tidb:NoSchedule
+2. Create a PD node pool with `nodeType` being `Standard_F4s_v2` or higher:
 
-# Create a TiKV node pool with `nodeType` being `Standard_E8s_v4` or higher
-az aks nodepool add --name tikv \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 3 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
-```
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name pd \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=pd \
+        --node-taints dedicated=pd:NoSchedule
+    ```
+
+3. Create a TiDB node pool with `nodeType` being `Standard_F8s_v2` or higher. You can set `--node-count` to `2` because only two TiDB nodes are required by default. You can also scale out this node pool by modifying this parameter at any time if necessary.
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name tidb \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 2 \
+        --labels dedicated=tidb \
+        --node-taints dedicated=tidb:NoSchedule
+    ```
+
+4. Create a TiKV node pool with `nodeType` being `Standard_E8s_v4` or higher:
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name tikv \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 2 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 3 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
 ### Deploy component node pools in limited zone
 
 The Azure AKS cluster deploys nodes across multiple zones using "best effort zone balance". If you want to apply "strict zone balance" (not supported in AKS now), you can deploy one node pool in one zone. For example:
 
-{{< copyable "shell-regular" >}}
 
-``` shell
-# Create TiKV node pool1 in zone 1
-az aks nodepool add --name tikv1 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 1 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
+1. Create TiKV node pool 1 in zone 1:
 
-# Create TiKV node pool2 in zone 2
-az aks nodepool add --name tikv2 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 2 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name tikv1 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 1 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
-# Create TiKV node pool3 in zone 3
-az aks nodepool add --name tikv3 \
-    --cluster-name ${clusterName} \
-    --resource-group ${resourceGroup} \
-    --node-vm-size ${nodeType} \
-    --zones 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
-    --node-count 1 \
-    --labels dedicated=tikv \
-    --node-taints dedicated=tikv:NoSchedule \
-    --enable-ultra-ssd
-```
+2. Create TiKV node pool 2 in zone 2:
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name tikv2 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 2 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
+
+3. Create TiKV node pool 3 in zone 3:
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    az aks nodepool add --name tikv3 \
+        --cluster-name ${clusterName} \
+        --resource-group ${resourceGroup} \
+        --node-vm-size ${nodeType} \
+        --zones 3 \
+        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
+        --node-count 1 \
+        --labels dedicated=tikv \
+        --node-taints dedicated=tikv:NoSchedule \
+        --enable-ultra-ssd
+    ```
 
 > **Warning:**
 >
@@ -256,7 +286,7 @@ tidb-tikv-2                       1/1     Running   0          47h
 
 ## Access the database
 
-Having deployed a TiDB cluster, you can access the TiDB database to test or develop applications.
+After deploying a TiDB cluster, you can access the TiDB database to test or develop applications.
 
 ### Access AKS node via SSH
 
@@ -345,7 +375,7 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 >
 > The default Grafana username and password are both `admin`.
 
-## Access the TiDB Dashboard
+## Access TiDB Dashboard
 
 See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to securely allow access to the TiDB Dashboard.
 
@@ -374,6 +404,8 @@ az aks nodepool scale \
     --name ${nodePoolName} \
     --node-count 6
 ```
+
+For more information on node pool management, refer to [`az aks nodepool`](https://docs.microsoft.com/zh-cn/cli/azure/aks/nodepool?view=azure-cli-latest).
 
 ### Scale out TiDB components
 
@@ -419,7 +451,7 @@ az aks nodepool add --name ticdc \
 
 ### Configure and deploy
 
-+ To deploy TiFlash, configure `spec.tiflash` in `tidb-cluster.yaml`. Following is an example:
++ To deploy TiFlash, configure `spec.tiflash` in `tidb-cluster.yaml`. The following is an example:
 
     ```yaml
     spec:
@@ -444,7 +476,7 @@ az aks nodepool add --name ticdc \
     >
     > TiDB Operator automatically mounts PVs **in the order of the configuration** in the `storageClaims` list. Therefore, if you need to add disks for TiFlash, make sure that you add the disks **only to the end of the original configuration** in the list. In addition, you must **not** alter the order of the original configuration.
 
-+ To deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`. Following is an example:
++ To deploy TiCDC, configure `spec.ticdc` in `tidb-cluster.yaml`. The following is an example:
 
     ```yaml
     spec:
@@ -503,7 +535,7 @@ Azure disks support multiple volume types. Among them, `UltraSSD` delivers low l
     - nodelalloc,noatime
     ```
 
-    > you can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) as required.
+    You can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) as required.
 
 2. In `tidb-cluster.yaml`, specify the `ultra` storage class to apply for the `UltraSSD` volume type through the `storageClassName` field.
 
@@ -529,9 +561,8 @@ Use Azure LRS disks for storage in production environment. To simulate bare meta
 
 > **Note:**
 >
-> You cannot dynamically change the storage class of a running TiDB cluster. In this case, create a new cluster for testing.
->
-> Local NVMe Disks are ephemeral, data will be lost on these disks if you stop/deallocate your node. When the node is reconstructed, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in production environment.
+> * You cannot dynamically change the storage class of a running TiDB cluster. In this case, create a new cluster for testing.
+> * Local NVMe Disks are ephemeral. Data will be lost on these disks if you stop/deallocate your node. When the node is reconstructed, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in a production environment.
 
 For instance types that provide local disks, refer to [Lsv2-series](https://docs.microsoft.com/en-us/azure/virtual-machines/lsv2-series). The following takes `Standard_L8s_v2` as an example:
 
