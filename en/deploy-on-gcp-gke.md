@@ -115,7 +115,7 @@ After the yaml file above is applied to the Kubernetes cluster, TiDB Operator cr
 
 > **Note:**
 >
-> If you need to deploy a TiDB cluster on ARM64 machine, refer to [Deploy a TiDB Cluster on ARM64 Machine](deploy-cluster-on-arm64.md).
+> If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
 ### View the cluster status
 
