@@ -5,7 +5,7 @@ summary: Learn how to perform backup and restore on the TiDB cluster in Kubernet
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), [Dumpling](https://docs.pingcap.com/stable/dumpling-overview), and [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning).
+This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview), and [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning).
 
 TiDB Operator 1.1 and later versions implement the backup and restore methods using Custom Resource Definition (CRD):
 

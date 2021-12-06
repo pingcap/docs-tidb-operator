@@ -1,10 +1,10 @@
 name: Links
 
-on: [pull_request]
-#  repository_dispatch:
-#  workflow_dispatch:
-#  schedule:
-#    - cron: "0 0 * * 1"
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 2"
 
 jobs:
   linkChecker:
