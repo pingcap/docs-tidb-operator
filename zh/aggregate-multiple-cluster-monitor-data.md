@@ -160,12 +160,12 @@ spec:
   - name: basic
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     remoteWrite:
       - url: "http://thanos-receive:19291/api/v1/receive"
   grafana:
     baseImage: grafana/grafana
-    version: 7.5.7
+    version: 7.5.11
   initializer:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-initializer
     version: v5.2.1
