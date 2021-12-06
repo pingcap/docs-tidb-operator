@@ -7,7 +7,7 @@ https://charts.pingcap.org
 https://download.pingcap.org
 http://thanos-receiver:19291/api/v1/receive
 http://prometheus-k8s.monitoring:9090/
-http://pd1_addr:port
-http://pd2_addr:port
-http://pd3_addr:port
+http:/pd1_addr:port
+http:/pd2_addr:port
+http:/pd3_addr:port
 https:/%7BnodeIP%7D:%7BnodePort%7D/dashboard
