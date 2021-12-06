@@ -15,4 +15,4 @@ http://pd1_addr:port
 http://pd2_addr:port
 http://pd3_addr:port
 
-https://{nodeIP}:{nodePort}/dashboard
+https://\{nodeIP\}:\{nodePort\}/dashboard
