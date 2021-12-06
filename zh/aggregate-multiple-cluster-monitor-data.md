@@ -162,7 +162,7 @@ spec:
     baseImage: prom/prometheus
     version: v2.27.1
     remoteWrite:
-      - url: "http://thanos-receive:19291/api/v1/receive"
+      - url: "http://thanos-receiver:19291/api/v1/receive"
   grafana:
     baseImage: grafana/grafana
     version: 7.5.11
