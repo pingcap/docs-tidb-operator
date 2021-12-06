@@ -1,19 +1,19 @@
 ---
-title: Deploy a TiDB Cluster on ARM64 Machine
-summary: Learn how to deploy a TiDB cluster on ARM64 Machine.
+title: Deploy a TiDB Cluster on ARM64 Machines
+summary: Learn how to deploy a TiDB cluster on ARM64 machines.
 ---
 
-# Deploy a TiDB Cluster on ARM64 Machine
+# Deploy a TiDB Cluster on ARM64 Machines
 
-This document describes how to deploy a TiDB cluster on ARM64 machine.
+This document describes how to deploy a TiDB cluster on ARM64 machines.
 
 ## Prerequisites
 
-Before starting the process, make sure Kubernetes is deployed on your ARM64 machine. If Kubernetes is not deployed, refer to [Deploy the Kubernetes cluster](deploy-tidb-operator.md#deploy-the-kubernetes-cluster).
+Before starting the process, make sure that Kubernetes clusters are deployed on your ARM64 machines. If Kubernetes clusters are not deployed, refer to [Deploy the Kubernetes cluster](deploy-tidb-operator.md#deploy-the-kubernetes-cluster).
 
 ## Deploy TiDB operator
 
-The process of deploying TiDB operator on ARM64 machine is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). The only difference is the following part in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the fields of `operatorImage` and `tidbBackupManagerImage` in that file to the image of ARM64 version. For example:
+The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). The only difference is the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
 
 ```yaml
 # ...
@@ -25,7 +25,7 @@ tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.2.4
 
 ## Deploy a TiDB cluster
 
-The process of deploying a TiDB cluster on ARM64 machine is the same as the process of [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md). The only difference is that you need to set the images of the related components in the TidbCluster definition file to ARM64 version. For example:
+The process of deploying a TiDB cluster on ARM64 machines is the same as the process of [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md). The only difference is that, in the TidbCluster definition file, you need to set the images of the related components to the ARM64 versions. For example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -59,9 +59,9 @@ spec:
     # ...
 ```
 
-## Initialize a TiDB Cluster
+## Initialize a TiDB cluster
 
-The process of initializing a TiDB cluster on ARM64 machine is the same as the process of [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md). The only difference is that you need to modify the field `spec.image` in the TidbInitializer definition file to the image of ARM64 version. For example:
+The process of initializing a TiDB cluster on ARM64 machines is the same as the process of [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md). The only difference is that you need to modify the `spec.image` field in the TidbInitializer definition file to the ARM64 image version. For example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -76,7 +76,7 @@ spec:
 
 ## Deploy monitoring for a TiDB cluster
 
-The process of deploying monitoring for a TiDB cluster on ARM64 machine is the same as the process of [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md). The only difference is that you need to modify the fields of `spec.initializer.baseImage` and `spec.reloader.baseImage` in the TidbMonitor definition file to the image of ARM64 version.
+The process of deploying monitoring for a TiDB cluster on ARM64 machines is the same as the process of [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md). The only difference is that you need to modify the `spec.initializer.baseImage` and `spec.reloader.baseImage` fields in the TidbMonitor definition file to the ARM64 image versions.
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
