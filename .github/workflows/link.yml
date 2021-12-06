@@ -20,12 +20,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-#      - name: Create Issue From File
-#        uses: peter-evans/create-issue-from-file@v3
-#        with:
-#          title: Broken Link Detected
-#          content-filepath: ./lychee/out.md
-#          assignees: ran-huang
+        uses: peter-evans/create-issue-from-file@v3
+      - name: Create Issue From File
+        with:
+          title: Broken Link Detected
+          content-filepath: ./lychee/out.md
+          assignees: ran-huang
 
-      - name: Fail if there were link errors
-        run: exit ${{ steps.lychee.outputs.exit_code }}
+#      - name: Fail if there were link errors
+#        run: exit ${{ steps.lychee.outputs.exit_code }}

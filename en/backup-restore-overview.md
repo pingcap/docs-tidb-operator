@@ -5,7 +5,7 @@ summary: Learn how to perform backup and restore on the TiDB cluster in Kubernet
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview), and [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning).
+This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), [Dumpling](https://docs.pingcap.com/stable/dumpling-overview), and [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning).
 
 TiDB Operator 1.1 and later versions implement the backup and restore methods using Custom Resource Definition (CRD):
 
@@ -232,10 +232,10 @@ To restore data to a TiDB cluster in Kubernetes, you can create a `Restore` CR o
 This section introduces the fields in the `Restore` CR.
 
 * `.spec.metadata.namespace`: The namespace where the `Restore` CR is located.
-* `.spec.toolImage`：The tools image used by `Restore`. 
+* `.spec.toolImage`：The tools image used by `Restore`.
     - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v5.2.1`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
-    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v5.2.1`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default. 
-    - TiDB Operator supports this configuration starting from v1.1.9. 
+    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v5.2.1`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
+    - TiDB Operator supports this configuration starting from v1.1.9.
 * `.spec.to.host`: The address of the TiDB cluster to be restored.
 * `.spec.to.port`: The port of the TiDB cluster to be restored.
 * `.spec.to.user`: The accessing user of the TiDB cluster to be restored.
