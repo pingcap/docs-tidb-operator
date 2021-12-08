@@ -167,7 +167,7 @@ After executing the command above, you need to wait until the EKS cluster is suc
 
 ## Configure StorageClass
 
-This section describes how to configure the storage class for the different storage types. These storage types are:
+This section describes how to configure the storage class for different storage types. These storage types are:
 
 - The default `gp2` storage type after creating the EKS cluster.
 - The `gp3` storage type (recommended).
@@ -241,7 +241,7 @@ For more information on the EBS storage types and configuration, refer to [Amazo
 
 ### Configure local storage
 
-Local storage is used for testing bare-metal performance. For higher IOPS and lower latency, you can choose [NVMe SSD volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html) offered by some AWS instances for the TiKV node pool. However, for the production environment, use AWS EBS as your storage types.
+Local storage is used for testing bare-metal performance. For higher IOPS and lower latency, you can choose [NVMe SSD volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html) offered by some AWS instances for the TiKV node pool. However, for the production environment, use AWS EBS as your storage type.
 
 > **Note:**
 >
@@ -249,13 +249,13 @@ Local storage is used for testing bare-metal performance. For higher IOPS and lo
 > - EKS upgrade or other reasons might cause node reconstruction. In such cases, data in the local storage might be lost. To avoid data loss, you need to back up TiKV data before node reconstruction.
 > - To avoid data loss from node reconstruction, you can disable the `ReplaceUnhealthy` feature of the TiKV node group.
 
-For instance types that provides NVMe SSD volumes, check out [Amazon EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/).
+For instance types that provide NVMe SSD volumes, check out [Amazon EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/).
 
 The following `c5d.4xlarge` example shows how to configure StorageClass for the local storage:
 
 1. Create a node group with local storage for TiKV.
 
-    1. Modify the instance type of the TiKV node group in the `eksctl` configuration file to `c5d.4xlarge`:
+    1. In the `eksctl` configuration file, modify the instance type of the TiKV node group to `c5d.4xlarge`:
 
         ```yaml
           - name: tikv-1a
