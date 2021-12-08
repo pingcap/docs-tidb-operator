@@ -174,6 +174,8 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 重调度 PD Pod
 
+### 如果节点存储可迁移
+
 针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
@@ -192,13 +194,11 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-### 如果节点存储可迁移
-
 如果节点存储可以自动迁移，比如使用 EBS，则不需要删除 PD Member，只需要迁移 Leader 并删除 Pod。
 
-1. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
+3. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
-2. 删除 PD Pod：
+4. 删除 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -206,7 +206,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-3. 确认该 PD Pod 正常调度到其它节点上：
+5. 确认该 PD Pod 正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -216,11 +216,28 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ### 如果节点存储不可迁移
 
+针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
+
+1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl cordon ${node_name}
+    ```
+
+2. 查看待维护节点上的 PD Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
+
 如果节点存储不可以自动迁移，比如使用本地存储，则需要删除 PD Member。
 
-1. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
+3. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
-2. 下线 PD Pod。
+4. 下线 PD Pod。
 
     {{< copyable "shell-regular" >}}
 
@@ -228,7 +245,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl member delete name ${pod_name}
     ```
 
-3. 确认 PD Member 已删除：
+5. 确认 PD Member 已删除：
 
     {{< copyable "shell-regular" >}}
 
@@ -236,7 +253,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl member
     ```
 
-4. 解除 PD Pod 与节点本地盘的绑定。
+6. 解除 PD Pod 与节点本地盘的绑定。
 
     查询 Pod 使用的 `PesistentVolumeClaim`：
 
@@ -254,7 +271,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
     ```
 
-5. 删除 PD Pod：
+7. 删除 PD Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -262,7 +279,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-6. 观察该 PD Pod 是否正常调度到其它节点上：
+8. 观察该 PD Pod 是否正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -271,6 +288,8 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     ```
 
 ## 重调度 TiKV Pod
+
+### 如果节点存储可迁移
 
 针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
 
@@ -290,13 +309,11 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-### 如果节点存储可迁移
-
 如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 TiKV Store，只需要迁移 Region Leader 并删除 Pod。
 
-1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
+3. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
-2. 删除 TiKV Pod：
+4. 删除 TiKV Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -304,7 +321,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-3. 确认该 TiKV Pod 正常调度到其它节点上：
+5. 确认该 TiKV Pod 正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -312,7 +329,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-4. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
+6. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
 
     {{< copyable "shell-regular" >}}
 
@@ -322,11 +339,29 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ### 如果节点存储不可迁移
 
+针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
+
+1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl cordon ${node_name}
+    ```
+
+2. 查看待维护节点上的 TiKV Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
+    ```
+
 如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 TiKV Store。
 
-1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
+3. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
-2. 下线 TiKV Pod。
+4. 下线 TiKV Pod。
 
     > **注意：**
     >
@@ -348,7 +383,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl store delete ${ID}
     ```
 
-3. 等待 store 状态（`state_name`）转移为 `Tombstone`：
+5. 等待 store 状态（`state_name`）转移为 `Tombstone`：
 
     {{< copyable "shell-regular" >}}
 
@@ -356,7 +391,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     watch pd-ctl store ${ID}
     ```
 
-4. 解除 TiKV Pod 与节点本地盘的绑定。
+6. 解除 TiKV Pod 与节点本地盘的绑定。
 
     查询 Pod 使用的 `PesistentVolumeClaim`：
 
@@ -374,7 +409,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
     ```
 
-5. 删除 TiKV Pod：
+7. 删除 TiKV Pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -382,7 +417,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-6. 观察该 TiKV Pod 是否正常调度到其它节点上：
+8. 观察该 TiKV Pod 是否正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
@@ -390,7 +425,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-7. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
+9. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
 
     {{< copyable "shell-regular" >}}
 
