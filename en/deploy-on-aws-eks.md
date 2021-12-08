@@ -169,8 +169,7 @@ After executing the command above, you need to wait until the EKS cluster is suc
 This section describes how to configure the storage class for different storage types. These storage types are:
 
 - The default `gp2` storage type after creating the EKS cluster.
-- The `gp3` storage type (recommended).
-- Other EBS storage types.
+- The `gp3` storage type (recommended) or other EBS storage types.
 - The local storage used for testing bare-metal performance.
 
 ### Configure `gp2`
@@ -245,8 +244,8 @@ Local storage is used for testing bare-metal performance. For higher IOPS and lo
 > **Note:**
 >
 > - You cannot dynamically change StorageClass for a running TiDB cluster. For testing purposes, create a new TiDB cluster with the desired StorageClass.
-> - EKS upgrade or other reasons might cause node reconstruction. In such cases, data in the local storage might be lost. To avoid data loss, you need to back up TiKV data before node reconstruction.
-> - To avoid data loss from node reconstruction, you can disable the `ReplaceUnhealthy` feature of the TiKV node group.
+> - EKS upgrade or other reasons might cause node reconstruction. In such cases, [data in the local storage might be lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime). To avoid data loss, you need to back up TiKV data before node reconstruction.
+> - To avoid data loss from node reconstruction, you can refer to [AWS documentation](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html) and disable the `ReplaceUnhealthy` feature of the TiKV node group.
 
 For instance types that provide NVMe SSD volumes, check out [Amazon EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/).
 
