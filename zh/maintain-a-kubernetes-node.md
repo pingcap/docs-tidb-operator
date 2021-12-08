@@ -175,9 +175,13 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 重调度 PD Pod
 
-### 如果节点存储可迁移
+针对节点长期下线等情形，需要将该节点上的 PD Pod 重调度到其他节点。
 
-针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
+### 如果节点存储可自动迁移
+
+如果节点存储可以自动迁移（比如使用 EBS），你不需要删除 PD Member，只需要迁移 Leader 到其他 Pod 后删除原来的 Pod 就可以实现重调度。
+
+
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
@@ -194,8 +198,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
-
-如果节点存储可以自动迁移，比如使用 EBS，则不需要删除 PD Member，只需要迁移 Leader 并删除 Pod。
 
 3. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
@@ -215,9 +217,9 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-### 如果节点存储不可迁移
+### 如果节点存储不可自动迁移
 
-针对节点长期下线等情形，需要把该节点上的 PD Pod 重调度到其他节点。
+如果节点存储不可以自动迁移（比如使用本地存储），你需要删除 PD Member 以实现重调度。
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
@@ -233,8 +235,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
-
-如果节点存储不可以自动迁移，比如使用本地存储，则需要删除 PD Member。
 
 3. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
@@ -290,9 +290,11 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 重调度 TiKV Pod
 
-### 如果节点存储可迁移
+针对节点长期下线等情形，需要将节点上的 TiKV Pod 重调度到其他节点。
 
-针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
+### 如果节点存储可自动迁移
+
+如果节点存储可以自动迁移（比如使用 EBS），你不需要删除整个 TiKV Store，只需要迁移 Region Leader 到其他 Pod 后删除原来的 Pod 就可以实现重调度。
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
@@ -309,8 +311,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
-
-如果节点存储可以自动迁移，比如使用 EBS，则不需要删除整个 TiKV Store，只需要迁移 Region Leader 并删除 Pod。
 
 3. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
@@ -338,9 +338,9 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl scheduler remove evict-leader-scheduler-${ID}
     ```
 
-### 如果节点存储不可迁移
+### 如果节点存储不可自动迁移
 
-针对节点长期下线等情形，需要把该节点上的 TiKV Pod 重调度到其他节点。
+如果节点存储不可以自动迁移（比如使用本地存储），你需要删除整个 TiKV Store 以实现重调度。
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
@@ -357,8 +357,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
-
-如果节点存储不可以自动迁移，比如使用本地存储，则需要删除整个 TiKV Store。
 
 3. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
 
