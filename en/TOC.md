@@ -20,6 +20,7 @@
       - [Deploy TiDB Cluster](deploy-on-general-kubernetes.md)
       - [Initialize TiDB Cluster](initialize-a-cluster.md)
       - [Access TiDB Cluster](access-tidb.md)
+    - [Deploy TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy Heterogeneous Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiCDC](deploy-ticdc.md)
