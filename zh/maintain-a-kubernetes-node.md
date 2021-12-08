@@ -42,14 +42,13 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
     
-    以调整 `max-store-down-time` 为 ‘60m’ 为例，请使用以下命令：
+        以调整 `max-store-down-time` 为 `60m` 为例，请使用以下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
         pd-ctl config set max-store-down-time 60m
         ```
-
         调整 `max-store-down-time` 到合理的值。
 
 3. 检查待维护节点上是否有 PD Pod：
