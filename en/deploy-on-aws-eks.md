@@ -282,15 +282,21 @@ The following `c5d.4xlarge` example shows how to configure StorageClass for the 
     - Delete the old group and create a new one.
     - Change the group name.
 
-2. Deploy [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner). This tool is used to conveniently discover and manage local storage volumes.
+2. Deploy local volume provisioner.
 
-    To deploy and create a `local-storage` storage class, run the following command:
+    1. To conveniently discover and manage local storage volumes, install [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner).
 
-    {{< copyable "shell-regular" >}}
+    2. [Mount the local storage](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) to the `/mnt/ssd` directory.
 
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
-    ```
+    3. According to the mounting configuration, modify the [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml) file.
+
+    4. Deploy and create a `local-storage` storage class using the modified `local-volume-provisioner.yaml` file.
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl apply -f <local-volume-provisioner.yaml>
+        ```
 
 3. Use the local storage.
 
