@@ -265,7 +265,7 @@ mountOptions:
         eksctl create nodegroups -f cluster.yaml
         ```
 
-        若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
+        若 TiKV 的节点组已存在，为避免名字冲突，可先删除再创建，或者修改节点组的名字。
 
 2. 部署 local volume provisioner。
 
