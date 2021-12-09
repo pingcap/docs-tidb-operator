@@ -277,7 +277,7 @@ The following `c5d.4xlarge` example shows how to configure StorageClass for the 
         eksctl create nodegroups -f cluster.yaml
         ```
 
-    If the `tikv` group already exists, to avoid name conflict, you can take either of the following actions:
+    If the TiKV node group already exists, to avoid name conflict, you can take either of the following actions:
 
     - Delete the old group and create a new one.
     - Change the group name.
