@@ -20,8 +20,7 @@
     - [GCP GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
     - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
-    - In Self-managed Kubernetes
-  - [Deploy TiDB Cluster with HTAP](deploy-tiflash.md)
+  - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
   - [Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
