@@ -12,7 +12,6 @@
     - [Deploy TiDB Operator](deploy-tidb-operator.md)
     - [Configure TiDB Cluster](configure-a-tidb-cluster.md)
     - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
-    - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
     - [Initialize TiDB Cluster](initialize-a-cluster.md)
     - [Access TiDB Cluster](access-tidb.md)
   - In Public Cloud Kubernetes
@@ -20,6 +19,7 @@
     - [GCP GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
     - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+  - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
   - [Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)

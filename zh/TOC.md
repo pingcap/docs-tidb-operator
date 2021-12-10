@@ -12,7 +12,6 @@
     - [部署 TiDB Operator](deploy-tidb-operator.md)
     - [配置 TiDB 集群](configure-a-tidb-cluster.md)
     - [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
-    - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
     - [初始化 TiDB 集群](initialize-a-cluster.md)
     - [访问 TiDB 集群](access-tidb.md)
   - 在公有云 Kubernetes 上部署
@@ -20,6 +19,7 @@
     - [GCP GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
     - [阿里云 ACK](deploy-on-alibaba-cloud.md)
+  - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiFlash 使用 TiDB HTAP 功能](deploy-tiflash.md)
   - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
