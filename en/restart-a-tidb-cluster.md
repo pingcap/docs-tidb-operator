@@ -60,3 +60,28 @@ spec:
     annotations:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```
+
+## Performing a graceful restart of a TiKV Pod
+
+Operator support user to add an annotation to TiKV Pod to trigger a graceful restart.
+
+Annotation key: `tidb.pingcap.com/evict-leader`
+
+The `Value` of annotation controls the behavior when the leader count drops to zero, the valid value is one of:
+
+- `none`: doing nothing.
+- `delete-pod`: delete pod and remove the evict-leader scheduler from PD.
+
+Operator will do the following operations when value is `delete-pod`:
+
+1. Add evict-leader-scheduler for the TiKV store.
+2. Delete the pod to make it recreate when the leader count is 0.
+3. Remove the evict-leader-scheduler when the new pod becomes ready.
+
+An example, you can add annotation with the key `tidb.pingcap.com/restart` to trigger a graceful restart:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate pods <TiKV-pod-name> tidb.pingcap.com/evict-leader="delete-pod"
+```
