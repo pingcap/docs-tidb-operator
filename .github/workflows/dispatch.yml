@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-name: Repsitory dispatch workflow from docs-tidb-operator-release-1.1
-=======
 name: Trigger docs site update
->>>>>>> 7d879b3f (chore: update dispatch for latest docs site (#1480))
 
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - release-1.1
-=======
       - master
       - release-*
->>>>>>> 7d879b3f (chore: update dispatch for latest docs site (#1480))
 
 jobs:
   trigger:
