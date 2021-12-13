@@ -61,7 +61,7 @@ spec:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```
 
-## Performing a graceful restart of a TiKV Pod
+## Performing a graceful restart of a TiKV Pod(TiDB Operator must be v1.2.5 or later)
 
 Operator support user to add an annotation to TiKV Pod to trigger a graceful restart.
 
