@@ -51,9 +51,9 @@ spec:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```
 
-## Performing a graceful restart of a TiKV Pod(TiDB Operator 版本必须是 v1.2.5 或者更加新的版本)
+## 优雅重启 TiKV Pod
 
-Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启。
+从 v1.2.5 起， Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启。
 
 Annotation key: `tidb.pingcap.com/evict-leader`
 
