@@ -198,7 +198,7 @@ mountOptions:
       type: gp3
       fsType: ext4
       iops: "4000"
-      throughput: "600"
+      throughput: "400"
     mountOptions:
     - nodelalloc,noatime
     ```
