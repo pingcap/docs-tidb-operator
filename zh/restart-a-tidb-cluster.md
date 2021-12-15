@@ -63,10 +63,10 @@ spec:
 kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="delete-pod"
 ```
 
-当 TiKV region leader 数掉到 0 时，根据 annotation 的不同值，TiDB Operator 会采取不同的行为。合法的annotation 值如下：
+当 TiKV region leader 数掉到 0 时，根据 annotation 的不同值，TiDB Operator 会采取不同的行为。合法的 annotation 值如下：
 
 - `none`: 无对应行为。
-- `delete-pod`: 删除 Pod，在 Pod 启动并且 Ready 后，删除 PD 的 evict-leader-scheduler。TiDB Operator 的具体行为如下：
+- `delete-pod`: 删除 Pod，TiDB Operator 的具体行为如下：
     1. 调用 PD API，为对应 TiKV store 添加 evict-leader-scheduler。
-    2. 当 leader 数掉到 0 时，删除 Pod 并重建 Pod。
-    3. 当新的 Pod Ready 后，删除对应 PD 的 evict-leader-scheduler。
+    2. 当 TiKV region leader 数掉到 0 时，删除 Pod 并重建 Pod。
+    3. 当新的 Pod Ready 后，调用 PD API 删除对应 TiKV store 的 evict-leader-scheduler。
