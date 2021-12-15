@@ -70,7 +70,7 @@ To trigger a graceful restart, add an annotation with the `tidb.pingcap.com/evic
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl annotate pods <TiKV-pod-name> tidb.pingcap.com/evict-leader="delete-pod"
+kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="delete-pod"
 ```
 
 When the number of TiKV region leaders drops to zero, according to the value of this annotation, TiDB Operator might have different behaviors:
