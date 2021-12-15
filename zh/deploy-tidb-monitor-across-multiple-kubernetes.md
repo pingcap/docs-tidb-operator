@@ -1,3 +1,8 @@
+---
+title: 跨多个 Kubernetes 集群监控 TiDB 集群
+summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控，并集成到常见 Prometheus 多集群监控体系中
+---
+
 # 跨多个 Kubernetes 集群监控 TiDB 集群
 
 本文档介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控，以及如何与几种社区常见的 Prometheus 多集群监控方式进行集成，从而实现统一全局视图进行监控数据访问。
@@ -15,6 +20,7 @@
 多个 Kubernetes 集群间的组件满足以下条件：
 
 - 各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件有能力访问 Thanos Receiver 组件。
+- Grafana 组件有能力访问 Thanos Query 组件。
 
 ### 部署 TiDB 集群监控
 
@@ -31,18 +37,18 @@ remote_write_url="http://thanos-receiver:19291/api/v1/receive"
 执行以下指令，创建`TidbMonitor`：
 
 ```sh
-cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+cat << EOF | kubectl apply -n ${cluster_namespace} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
 metadata:
-  name: ${cluster1_name}
+  name: ${cluster_name}
 spec:
   clusters:
-  - name: ${cluster1_name}
-    namespace: ${cluster1_namespace}
+  - name: ${cluster_name}
+    namespace: ${cluster_namespace}
   externalLabels:
     #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue #4219.
-    kubernetes: ${kubernetes_cluster1_name}
+    kubernetes: ${kubernetes_cluster_name}
     #add other meta labels here
     #region: us-east-1
   initializer:
@@ -66,7 +72,13 @@ spec:
 
 ### 配置 Grafana
 
-为所有 TiDB 集群创建好 `TidbMonitor`后，即可使用通过 Thanos query 组件作为全局统一视图，查看跨 kubernetes 集群的 TiDB 集群监控数据。如果需要通过 Grafana 进行访问，需要添加数据源
+为所有 TiDB 集群部署 `TidbMonitor`后，即可使用 Thanos query 组件作为全局统一视图，查看跨 kubernetes 集群的 TiDB 集群监控数据。若通过 Grafana 进行访问，请进行以下操作：
+
+1. 登陆 Grafana。
+2. 在左侧导航栏中，选择 Configuration > Data Sources。
+3. 添加或修改一个 Prometheus 类型的 DataSource。
+4. 将 HTTP 下面的 URL 设置为 http://thanos-query.${thanos_namespace}:9090
+
 
 ## Pull 方式
 
