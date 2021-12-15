@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
 
 # 重启 Kubernetes 上的 TiDB 集群
 
-在使用 TiDB 集群的过程中，如果你发现某个 Pod 存在内存泄漏等问题，需要对集群进行重启，本文描述了如何优雅滚动重启 TiDB 集群内某个组件的所有 Pod 或通过优雅重启指令来将 TiDB 集群内某个 Pod 优雅下线然后再进行重新启动。
+在使用 TiDB 集群的过程中，如果你发现某个 Pod 存在内存泄漏等问题，需要对集群进行重启，本文描述了如何优雅滚动重启 TiDB 集群内某个组件的所有 Pod，或优雅重启单个 TiKV Pod。
 
 > **警告：**
 >
