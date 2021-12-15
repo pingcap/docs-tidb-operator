@@ -77,8 +77,6 @@
     - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
     - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
-    - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
-    - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
   - 灾难恢复
     - [恢复 PD 集群](pd-recover.md)
     - [恢复误删的集群](recover-deleted-cluster.md)
