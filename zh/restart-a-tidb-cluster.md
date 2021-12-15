@@ -51,18 +51,18 @@ spec:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```
 
-## 优雅重启 TiKV Pod
+## 优雅重启单个 TiKV Pod
 
-从 v1.2.5 起， Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启。
+从 v1.2.5 起， TiDB Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启。
 
 Annotation key: `tidb.pingcap.com/evict-leader`
 
 Annotation 的值控制当 TiKV region leader 数掉到 0 时的行为，合法的值是以下其一：
 
 - `none`: 什么也不做。
-- `delete-pod`: 删除 Pod 并删除 PD 的 evict-leader scheduler。
+- `delete-pod`: 删除 Pod，在 Pod 启动并且 Ready 后删除 PD 的 evict-leader scheduler。
 
-当值是`delete-pod`时 Operator 会做如下操作：
+当值是 `delete-pod` 时 TiDB Operator 会做如下操作：
 
 1. 添加对应 TiKV store 的 evict-leader-scheduler。
 2. 当 leader 数掉到 0 时删除 Pod 让它重建。
@@ -73,5 +73,5 @@ Annotation 的值控制当 TiKV region leader 数掉到 0 时的行为，合法�
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl annotate pods <TiKV-pod-name> tidb.pingcap.com/evict-leader="delete-pod"
+kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="delete-pod"
 ```
