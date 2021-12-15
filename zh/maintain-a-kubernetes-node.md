@@ -50,6 +50,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
         ```shell
         pd-ctl config set max-store-down-time 60m
         ```
+
         调整 `max-store-down-time` 到合理的值。
 
 3. 检查待维护节点上是否有 PD Pod：
@@ -179,8 +180,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 ### 如果节点存储可自动迁移
 
 如果节点存储可以自动迁移（比如使用 EBS），你不需要删除 PD Member，只需要迁移 Leader 到其他 Pod 后删除原来的 Pod 就可以实现重调度。
-
-
 
 1. 使用 `kubectl cordon` 命令标记待维护节点为不可调度，防止新的 Pod 调度到待维护节点上：
 
