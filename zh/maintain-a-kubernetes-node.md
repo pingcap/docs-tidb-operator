@@ -233,6 +233,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
+    ```
 
 3. 参考[迁移 PD Leader](#迁移-pd-leader) 将 Leader 迁移到其他 Pod。
 
