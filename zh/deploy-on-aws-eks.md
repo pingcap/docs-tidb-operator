@@ -191,12 +191,14 @@ mountOptions:
     apiVersion: storage.k8s.io/v1
     metadata:
       name: gp3
-    provisioner: kubernetes.io/aws-ebs
+    provisioner: ebs.csi.aws.com
+    allowVolumeExpansion: true
+    volumeBindingMode: WaitForFirstConsumer
     parameters:
       type: gp3
       fsType: ext4
-      iopsPerGB: "10"
-      encrypted: "false"
+      iops: "4000"
+      throughput: "400"
     mountOptions:
     - nodelalloc,noatime
     ```
@@ -264,18 +266,22 @@ mountOptions:
         eksctl create nodegroups -f cluster.yaml
         ```
 
-        若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
+        若 TiKV 的节点组已存在，为避免名字冲突，可先删除再创建，或者修改节点组的名字。
 
 2. 部署 local volume provisioner。
 
     1. 为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。
 
-    2. 部署并创建一个 `local-storage` 的 Storage Class：
+    2. 通过[普通挂载方式](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)将本地存储挂载到 `/mnt/ssd` 目录。
+
+    3. 根据本地存储的挂载情况，修改 [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml) 文件。
+
+    4. 使用修改后的 `local-volume-provisioner.yaml`，部署并创建一个 `local-storage` 的 Storage Class：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+        kubectl apply -f <local-volume-provisioner.yaml>
         ```
 
 3. 使用本地存储。
@@ -411,7 +417,7 @@ sudo yum install mysql -y
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
 ```
 
 其中 `${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer 域名，可以通过命令 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
@@ -419,7 +425,7 @@ mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
 以下为一个连接 TiDB 集群的示例：
 
 ```shell
-$ mysql -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
+$ mysql --comments -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1189
 Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
