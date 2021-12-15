@@ -28,7 +28,7 @@
   - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
 - 迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
-  - 从 MySQL 迁移到 TiDB
+  - 从 MySQL 迁移
     - [部署 DM](deploy-tidb-dm.md)
     - [使用 DM 迁移 MySQL 数据到 TiDB 集群](use-tidb-dm.md)
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
