@@ -6,15 +6,15 @@
   - [What's New in v1.2](whats-new-in-v1.2.md)
 - [快速上手](get-started.md)
 - 部署
-  - On-Premises 部署
+  - 自托管的 Kubernetes
     - [集群环境要求](prerequisites.md)
     - [配置 Storage Class](configure-storage-class.md)
     - [部署 TiDB Operator](deploy-tidb-operator.md)
     - [配置 TiDB 集群](configure-a-tidb-cluster.md)
-    - [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
+    - [部署 TiDB 集群](deploy-on-general-kubernetes.md)
     - [初始化 TiDB 集群](initialize-a-cluster.md)
     - [访问 TiDB 集群](access-tidb.md)
-  - 在公有云 Kubernetes 上部署
+  - 公有云的 Kubernetes
     - [Amazon EKS](deploy-on-aws-eks.md)
     - [GCP GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
@@ -28,7 +28,7 @@
   - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
 - 迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
-  - 从 MySQL 迁移
+  - 从 MySQL 迁移到 TiDB
     - [部署 DM](deploy-tidb-dm.md)
     - [使用 DM 迁移 MySQL 数据到 TiDB 集群](use-tidb-dm.md)
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)

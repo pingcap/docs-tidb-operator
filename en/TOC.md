@@ -6,14 +6,14 @@
   - [What's New in v1.2](whats-new-in-v1.2.md)
 - [Get Started](get-started.md)
 - Deploy
-  - On-Premises
+  - In Self-Managed Kubernetes
     - [Prerequisites](prerequisites.md)
     - [Configure Storage Class](configure-storage-class.md)
     - [Deploy TiDB Operator](deploy-tidb-operator.md)
-    - [Configure TiDB Cluster](configure-a-tidb-cluster.md)
-    - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
-    - [Initialize TiDB Cluster](initialize-a-cluster.md)
-    - [Access TiDB Cluster](access-tidb.md)
+    - [Configure a TiDB Cluster](configure-a-tidb-cluster.md)
+    - [Deploy a TiDB Cluster](deploy-on-general-kubernetes.md)
+    - [Initialize a TiDB Cluster](initialize-a-cluster.md)
+    - [Access a TiDB Cluster](access-tidb.md)
   - In Public Cloud Kubernetes
     - [Amazon EKS](deploy-on-aws-eks.md)
     - [GCP GKE](deploy-on-gcp-gke.md)
