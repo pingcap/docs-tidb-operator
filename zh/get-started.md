@@ -359,7 +359,7 @@ kubectl create namespace tidb-cluster && \
     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
 ```
 
-如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
 
 {{< copyable "shell-regular" >}}
 
@@ -387,7 +387,7 @@ tidbcluster.pingcap.com/basic created
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
-如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
 
 {{< copyable "shell-regular" >}}
 
