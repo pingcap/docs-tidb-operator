@@ -53,7 +53,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
 
 In Thanos Query, a Prometheus instance corresponds to a store and also corresponds to a TidbMonitor. After deploying Thanos Query, you can provide a uniform query interface for monitoring data through Thanos Query's API.
 
-### Access the Thanos Query Panel
+### Access the Thanos Query panel
 
 To access the Thanos Query panel, execute the following command, and then access <http://127.0.0.1:9090> in your browser:
 
@@ -146,7 +146,7 @@ stringData:
 
 ## RemoteWrite mode
 
-Apart from aggregating data via Thanos Query, you can also push monitoring data to Thanos using Prometheus' RemoteWrite feature.
+Besides aggregating data via Thanos Query, you can also push monitoring data to Thanos using Prometheus' RemoteWrite feature.
 
 To enable the RemoteWrite mode, specify the Prometheus RemoteWrite configuration when you create the TidbMonitor CR. For example:
 
