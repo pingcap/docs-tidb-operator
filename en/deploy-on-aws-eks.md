@@ -27,9 +27,19 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 
 > **Note:**
 >
-> The operations described in this document requires at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
+> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
 
-## Create a EKS cluster and a node pool
+## Recommended instance types and storage
+
+- Instance types: to gain better performance, the following is recommended:
+    - PD nodes: `c5.xlarge`
+    - TiDB nodes: `c5.2xlarge`
+    - TiKV or TiFlash nodes: `r5b.2xlarge`
+- Storage: Because AWS supports the [EBS `gp3`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) volume type, it is recommended to use EBS `gp3`. For `gp3` provisioning, the following is recommended:
+    - TiKV: 400 MiB/s, 4000 IOPS
+    - TiFlash: 625 MiB/s, 6000 IOPS
+
+## Create an EKS cluster and a node pool
 
 According to AWS [Official Blog](https://aws.amazon.com/blogs/containers/amazon-eks-cluster-multi-zone-auto-scaling-groups/) recommendation and EKS [Best Practice Document](https://aws.github.io/aws-eks-best-practices/reliability/docs/dataplane/#ensure-capacity-in-each-az-when-using-ebs-volumes), since most of the TiDB cluster components use EBS volumes as storage, it is recommended to create a node pool in each availability zone (at least 3 in total) for each component when creating an EKS.
 
@@ -55,6 +65,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -63,6 +74,7 @@ nodeGroups:
     desiredCapacity: 0
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -71,6 +83,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: c5.2xlarge
     labels:
       dedicated: tidb
     taints:
@@ -80,6 +93,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -88,6 +102,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -96,6 +111,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: c5.xlarge
     labels:
       dedicated: pd
     taints:
@@ -105,6 +121,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1a"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -113,6 +130,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1d"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -121,6 +139,7 @@ nodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ap-northeast-1c"]
+    instanceType: r5b.2xlarge
     labels:
       dedicated: tikv
     taints:
@@ -146,6 +165,145 @@ After executing the command above, you need to wait until the EKS cluster is suc
 > * [Enable the instance scale-in protection](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection-instance) for all the EC2s that have been started. The instance scale-in protection for the ASG is not required.
 > * [Set termination policy](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#custom-termination-policy) to `NewestInstance` for the ASG.
 
+## Configure StorageClass
+
+This section describes how to configure the storage class for different storage types. These storage types are:
+
+- The default `gp2` storage type after creating the EKS cluster.
+- The `gp3` storage type (recommended) or other EBS storage types.
+- The local storage used for testing bare-metal performance.
+
+### Configure `gp2`
+
+After you create an EKS cluster, the default StorageClass is `gp2`. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+- nodelalloc,noatime
+```
+
+For more information on the mount options, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
+
+### Configure `gp3` (recommended) or other EBS storage types
+
+If you do not want to use the default `gp2` storage type, you can create StorageClass for other storage types. For example, you can use the `gp3` (recommended) or `io1` storage type.
+
+The following example shows how to create and configure a StorageClass for the `gp3` storage type:
+
+1. Deploy the [AWS EBS Container Storage Interface (CSI) driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on the EKS cluster. If you are using a storage type other than `gp3`, skip this step.
+
+2. Create a `StorageClass` resource. In the resource definition, specify your desired storage type in the `parameters.type` field.
+
+    ```yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: gp3
+    provisioner: kubernetes.io/aws-ebs
+    parameters:
+      type: gp3
+      fsType: ext4
+      iopsPerGB: "10"
+      encrypted: "false"
+    mountOptions:
+    - nodelalloc,noatime
+    ```
+
+3. In the TidbCluster YAML file, configure `gp3` in the `storageClassName` field. For example:
+
+    ```yaml
+    spec:
+      tikv:
+        baseImage: pingcap/tikv
+        replicas: 3
+        requests:
+          storage: 100Gi
+        storageClassName: gp3
+    ```
+
+4. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
+
+    ```yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    # ...
+    mountOptions:
+    - nodelalloc,noatime
+    ```
+
+    For more information on the mount options, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
+
+For more information on the EBS storage types and configuration, refer to [Amazon EBS volume types](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html) and [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+
+### Configure local storage
+
+Local storage is used for testing bare-metal performance. For higher IOPS and lower latency, you can choose [NVMe SSD volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html) offered by some AWS instances for the TiKV node pool. However, for the production environment, use AWS EBS as your storage type.
+
+> **Note:**
+>
+> - You cannot dynamically change StorageClass for a running TiDB cluster. For testing purposes, create a new TiDB cluster with the desired StorageClass.
+> - EKS upgrade or other reasons might cause node reconstruction. In such cases, [data in the local storage might be lost](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-lifetime). To avoid data loss, you need to back up TiKV data before node reconstruction.
+> - To avoid data loss from node reconstruction, you can refer to [AWS documentation](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html) and disable the `ReplaceUnhealthy` feature of the TiKV node group.
+
+For instance types that provide NVMe SSD volumes, check out [Amazon EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/).
+
+The following `c5d.4xlarge` example shows how to configure StorageClass for the local storage:
+
+1. Create a node group with local storage for TiKV.
+
+    1. In the `eksctl` configuration file, modify the instance type of the TiKV node group to `c5d.4xlarge`:
+
+        ```yaml
+          - name: tikv-1a
+            desiredCapacity: 1
+            privateNetworking: true
+            availabilityZones: ["ap-northeast-1a"]
+            instanceType: c5d.4xlarge
+            labels:
+              dedicated: tikv
+            taints:
+              dedicated: tikv:NoSchedule
+            ...
+        ```
+
+    2. Create a node group with local storage:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        eksctl create nodegroups -f cluster.yaml
+        ```
+
+    If the TiKV node group already exists, to avoid name conflict, you can take either of the following actions:
+
+    - Delete the old group and create a new one.
+    - Change the group name.
+
+2. Deploy local volume provisioner.
+
+    1. To conveniently discover and manage local storage volumes, install [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner).
+
+    2. [Mount the local storage](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) to the `/mnt/ssd` directory.
+
+    3. According to the mounting configuration, modify the [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml) file.
+
+    4. Deploy and create a `local-storage` storage class using the modified `local-volume-provisioner.yaml` file.
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl apply -f <local-volume-provisioner.yaml>
+        ```
+
+3. Use the local storage.
+
+    After you complete the previous step, local-volume-provisioner can discover all the local NVMe SSD volumes in the cluster.
+
+After local-volume-provisioner discovers the local volumes, when you [Deploy a TiDB cluster and the monitoring component](#deploy-a-tidb-cluster-and-the-monitoring-component), you need to add the `tikv.storageClassName` field to `tidb-cluster.yaml` and set the field value to `local-storage`.
+
 ## Deploy TiDB Operator
 
 To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
@@ -166,7 +324,7 @@ kubectl create namespace tidb-cluster
 
 > **Note:**
 >
-> A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. This document takes `tidb-cluster` as an example. If you want to use other namespace, modify the corresponding arguments of `-n` or `--namespace`.
+> A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. This document takes `tidb-cluster` as an example. If you want to use another namespace, modify the corresponding arguments of `-n` or `--namespace`.
 
 ### Deploy
 
@@ -194,7 +352,7 @@ kubectl apply -f tidb-cluster.yaml -n tidb-cluster && \
 kubectl apply -f tidb-monitor.yaml -n tidb-cluster
 ```
 
-After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
+After the YAML file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the YAML file.
 
 > **Note:**
 >
@@ -501,6 +659,7 @@ spec:
   tikv:
     baseImage: pingcap/tikv-enterprise
 ```
+<<<<<<< HEAD
 
 ## Use other EBS volume types
 
@@ -597,3 +756,5 @@ For instance types that provide local volumes, see [AWS Instance Types](https://
     Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
 
     For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy)
+=======
+>>>>>>> bba5b475 (en: add aws instance type recommendation (#1465))
