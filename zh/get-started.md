@@ -8,10 +8,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 本文档介绍了如何创建一个简单的 Kubernetes 集群，部署 TiDB Operator，并使用 TiDB Operator 部署 TiDB 集群。
 
-> **警告：**
->
-> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅**部署** > **部署 TiDB 集群**章节。
-
 基本步骤如下：
 
 1. [创建 Kubernetes 测试集群](#步骤-1：创建-kubernetes-测试集群)
@@ -21,6 +17,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 5. [升级 TiDB 集群](#步骤-5：升级-tidb-集群)
 6. [销毁 TiDB 集群](#步骤-6：销毁-tidb-集群和-kubernetes-集群)
 
+> **警告：**
+>
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[探索更多](#探索更多)。
+
 ## 步骤 1：创建 Kubernetes 测试集群
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
@@ -29,10 +29,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 - [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
-
-> **警告：**
->
-> kind 和 minikube 集群仅用于测试目的，**不要**直接用于生产环境。
 
 <SimpleTab>
 <div label="Kind">
@@ -710,9 +706,7 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 ### 转发 TiDB 服务端口
 
-当所有 Pods 都重启后，将看到版本号已更改。
-
-需要注意的是，由于相关 Pods 已被销毁重建，这里需要重新设置端口转发。如果 `kubeclt port-forward` 进程仍然在运行，请结束进程后再转发端口。
+当所有 Pods 都重启后，将看到版本号已更改。需要注意的是，由于相关 Pods 已被销毁重建，这里需要重新设置端口转发。如果 `kubeclt port-forward` 进程仍然在运行，请结束进程后再转发端口。
 
 {{< copyable "shell-regular" >}}
 
