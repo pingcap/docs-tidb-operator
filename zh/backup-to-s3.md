@@ -11,14 +11,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-s3/']
 
 本文档介绍的备份方法基于 TiDB Operator（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现，底层使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 工具获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
 
+Dumpling 是一款数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
+
 ## 使用场景
 
-本文档介绍以下备份场景：
-
-- [Ad-hoc 全量备份](#ad-hoc-全量备份)
-- [定时全量备份](#定时全量备份)
-
-本文档介绍的数据备份方案基于 Dumpling 工具。如果你对数据备份有以下需求，可考虑本文介绍的备份方案：
+如果你需要将 TiDB 集群数据以 [Ad-hoc 全量备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至兼容 S3 的存储上，并且对数据备份有以下要求，可考虑本文介绍的备份方案：
 
 - 导出 SQL 或 CSV 格式的数据
 - 对备份数据进行筛选
@@ -89,12 +86,12 @@ GRANT
 >         - --ignore-checksum
 >     ```
 >
-> - 如下所示，本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
+> - 本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
 >
->     - 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
->     - 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
->     - 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
->     - 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
+>    - 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
+>    - 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
+>    - 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
+>    - 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
 
 
 
