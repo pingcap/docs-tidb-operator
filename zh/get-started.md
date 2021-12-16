@@ -42,9 +42,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 - [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes)
 - [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
-您也可以使用 Google Cloud Shell 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群：
+您也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
 
-- [打开 Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
+<SimpleTab>
+<div label="Kind">
 
 ### 使用 kind 创建 Kubernetes 集群
 
@@ -104,7 +105,7 @@ Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-  </code></pre>
+</code></pre>
 </details>
 
 现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
@@ -116,6 +117,9 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ``` shell
 kind delete cluster
 ```
+
+<SimpleTab>
+<div label="minikube">
 
 ### 使用 minikube 创建 Kubernetes 集群
 
@@ -231,6 +235,9 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ``` shell
 minikube delete
 ```
+
+</div>
+</SimpleTab>
 
 ## 部署 TiDB Operator
 
