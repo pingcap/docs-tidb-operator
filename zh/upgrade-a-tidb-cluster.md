@@ -82,3 +82,5 @@ Kubernetes 提供[滚动更新功能](https://kubernetes.io/docs/tutorials/kuber
     ```shell
     kubectl annotate tc ${cluster_name} -n ${namespace} tidb.pingcap.com/force-upgrade-
     ```
+
+完成上述步骤后，TiDB 集群功能将恢复正常，可以正常进行升级。
