@@ -32,6 +32,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
 
+> **警告：**
+>
+> kind 和 minikube 集群仅用于测试目的，**不要**直接用于生产环境。
+
 <SimpleTab>
 <div label="Kind">
 
@@ -40,10 +44,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 目前比较通用的方式是使用 kind 部署 Kubernetes 集群。
 
 [kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，您可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
-
-> **警告：**
->
-> kind 集群仅用于测试目的，**不要**直接用于生产环境。
 
 部署前，请确保满足以下要求：
 
@@ -107,14 +107,9 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 [minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群，可在 macOS, Linux 和 Windows 上运行。
 
-> **警告：**
->
-> minikube 集群仅用于测试目的，**不要**直接用于生产环境。
-
 部署前，请确保满足以下要求：
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0+
-    - minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
+- [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0 及以上。minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.12
 
 > **注意：**
@@ -335,8 +330,8 @@ TiDB Operator 使用 Helm 3 安装。
     kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
     ```
 
-</code></pre>
-</details>
+    </code></pre>
+    </details>
 
 使用以下命令检查 TiDB Operator 组件是否运行起来：
 
