@@ -71,23 +71,25 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 kind create cluster
 ```
 
-期望输出：
+<details>
+  <summary>点击查看期望输出</summary>
+  <pre><code>
+    Creating cluster "kind" ...
+    ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+    ✓ Preparing nodes 📦
+    ✓ Writing configuration 📜
+    ✓ Starting control-plane 🕹️
+    ✓ Installing CNI 🔌
+    ✓ Installing StorageClass 💾
+    Set kubectl context to "kind-kind"
+    You can now use your cluster with:
 
-```
-Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
- ✓ Preparing nodes 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
-Set kubectl context to "kind-kind"
-You can now use your cluster with:
+    kubectl cluster-info --context kind-kind
 
-kubectl cluster-info --context kind-kind
+    Thanks for using kind! 😊
+  </code></pre>
+</details>
 
-Thanks for using kind! 😊
-```
 
 检查集群是否创建成功：
 
@@ -97,14 +99,14 @@ Thanks for using kind! 😊
 kubectl cluster-info
 ```
 
-期望输出：
-
-```
-Kubernetes master is running at https://127.0.0.1:51026
-KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-```
+<details>
+  <summary>点击查看期望输出</summary>
+  <pre><code>
+    Kubernetes master is running at https://127.0.0.1:51026
+    KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+    To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+  </code></pre>
+</details>
 
 现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
 
