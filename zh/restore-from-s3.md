@@ -78,10 +78,10 @@ TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，�
 >
 > - 本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
 >
->    - 通过 AccessKey 和 SecretKey 授权的方式由 Ceph 恢复数据的方法
->    - 通过 AccessKey 和 SecretKey 授权的方式从 Amazon S3 恢复数据的方法
->    - 通过绑定 IAM 与 Pod 的方式从 Amazon S3 恢复数据的方法
->    - 通过绑定 IAM 与 ServiceAccount 的方式从 Amazon S3 恢复数据的方法
+>     - 通过 AccessKey 和 SecretKey 授权的方式由 Ceph 恢复数据的方法
+>     - 通过 AccessKey 和 SecretKey 授权的方式从 Amazon S3 恢复数据的方法
+>     - 通过绑定 IAM 与 Pod 的方式从 Amazon S3 恢复数据的方法
+>     - 通过绑定 IAM 与 ServiceAccount 的方式从 Amazon S3 恢复数据的方法
 
 1. 创建 Restore customer resource (CR)，将制定备份数据恢复至 TiDB 集群。
 
