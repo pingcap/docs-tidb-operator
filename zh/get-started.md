@@ -72,7 +72,7 @@ kind create cluster
 ```
 
 <details>
-  <summary>点击查看期望输出</summary>
+  <summary><font color=Blue>点击查看期望输出</font></summary>
   <pre><code>
     Creating cluster "kind" ...
     ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -100,7 +100,7 @@ kubectl cluster-info
 ```
 
 <details>
-  <summary>点击查看期望输出</summary>
+   <summary><font color=Blue>点击查看期望输出</font></summary>
   <pre><code>
     Kubernetes master is running at https://127.0.0.1:51026
     KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
