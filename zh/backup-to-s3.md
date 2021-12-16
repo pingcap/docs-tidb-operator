@@ -95,7 +95,7 @@ GRANT
 
 
 
-+ 方法 1. 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
++ 方法 1. 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -137,7 +137,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 2. 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
++ 方法 2. 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -176,7 +176,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 3. 创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
++ 方法 3. 创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -220,7 +220,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 4. 创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
++ 方法 4. 创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
