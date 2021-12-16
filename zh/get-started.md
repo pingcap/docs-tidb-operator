@@ -14,20 +14,20 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 基本步骤如下：
 
-1. [创建 Kubernetes 测试集群](#创建-kubernetes-测试集群)
-2. [部署 TiDB Operator](#部署-tidb-operator)
-3. [部署 TiDB 集群和监控](#部署-tidb-集群和监控)
-4. [连接 TiDB 集群](#连接-tidb-集群)
-5. [升级 TiDB 集群](#升级-tidb-集群)
-6. [销毁 TiDB 集群](#销毁-tidb-集群)
-
-如果您已经有一个 Kubernetes 集群，可直接[部署 TiDB Operator](#部署-tidb-operator)。
+1. [创建 Kubernetes 测试集群](#步骤-1：创建-kubernetes-测试集群)
+2. [部署 TiDB Operator](#步骤-2：部署-tidb-operator)
+3. [部署 TiDB 集群和监控](#步骤-3：部署-tidb-集群和监控)
+4. [连接 TiDB 集群](#步骤-4：连接-tidb-集群)
+5. [升级 TiDB 集群](#步骤-5：升级-tidb-集群)
+6. [销毁 TiDB 集群](#步骤-6：销毁-tidb-集群和-kubernetes-集群)
 
 ## 步骤 1：创建 Kubernetes 测试集群
 
+如果你已经有一个 Kubernetes 集群，可直接跳到[步骤2：部署 TiDB Operator](#部署-tidb-operator)。
+
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
-- [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes)
+- [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes) 这是目前比较通用的部署方式。
 - [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
@@ -43,7 +43,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 目前比较通用的方式是使用 kind 部署 Kubernetes 集群。
 
-[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，您可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
+[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，你可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
 部署前，请确保满足以下要求：
 
@@ -114,7 +114,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 > **注意：**
 >
-> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果您想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑[使用 kind](#使用-kind-创建-kubernetes-集群)。
+> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑[使用 kind](#使用-kind-创建-kubernetes-集群)。
 
 安装完 minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
 
@@ -166,7 +166,7 @@ minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_conta
 
 或者给 Docker 配置 HTTP/HTTPS 代理。
 
-将下面命令中的 `127.0.0.1:1086` 替换为您自己的 HTTP/HTTPS 代理地址：
+将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址：
 
 {{< copyable "shell-regular" >}}
 
@@ -177,7 +177,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 > **注意：**
 >
-> 由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为您的主机的实际 IP。
+> 由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
 
 参考 [minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
@@ -443,7 +443,7 @@ basic-pd-0                        1/1     Running           0          29s
 </code></pre>
 </details>
 
-等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
+等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
@@ -463,11 +463,11 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 ## 步骤 4：连接 TiDB 集群
 
-由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此您可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
+由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此你可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
 
 ### 安装 `mysql` 命令行工具
 
-要连接到 TiDB，您需要在使用 `kubectl` 的主机上安装与 MySQL 兼容的命令行客户端。可以安装 MySQL Server，MariaDB Server，Percona Server 的 mysql 可执行文件，也可以从操作系统软件仓库中安装。
+要连接到 TiDB，你需要在使用 `kubectl` 的主机上安装与 MySQL 兼容的命令行客户端。可以安装 MySQL Server，MariaDB Server，Percona Server 的 mysql 可执行文件，也可以从操作系统软件仓库中安装。
 
 ### 转发 TiDB 服务 4000 端口
 
@@ -670,7 +670,7 @@ STATUS_ADDRESS: 0.0.0.0:20180
 
 ### 访问 Grafana 面板
 
-您可以转发 Grafana 服务端口，以便本地访问 Grafana 面板。
+你可以转发 Grafana 服务端口，以便本地访问 Grafana 面板。
 
 {{< copyable "shell-regular" >}}
 
@@ -678,7 +678,7 @@ STATUS_ADDRESS: 0.0.0.0:20180
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果您是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。默认用户名和密码都是 "admin" 。
+Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。默认用户名和密码都是 "admin" 。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
@@ -713,7 +713,7 @@ tidbcluster.pingcap.com/basic patched
 
 ### 等待 Pods 重启
 
-执行以下命令以了解集群升级组件时的进度。您可以看到某些 Pods 进入 `Terminating` 状态后，又回到 `ContainerCreating`，最后重新进入 `Running` 状态。
+执行以下命令以了解集群升级组件时的进度。你可以看到某些 Pods 进入 `Terminating` 状态后，又回到 `ContainerCreating`，最后重新进入 `Running` 状态。
 
 {{< copyable "shell-regular" >}}
 
@@ -777,10 +777,10 @@ Check Table Before Drop: false
 </code></pre>
 </details>
 
-## 步骤 6：销毁 TiDB 集群 Kubernetes 集群
+## 步骤 6：销毁 TiDB 集群和 Kubernetes 集群
 
 ### 销毁 TiDB 集群
-完成测试后，您可能希望销毁 TiDB 集群。
+完成测试后，你可能希望销毁 TiDB 集群。
 
 #### 删除 TiDB Cluster
 
@@ -802,7 +802,7 @@ kubectl delete tidbmonitor basic -n tidb-cluster
 
 #### 删除 PV 数据
 
-如果您的部署使用持久性数据存储，则删除 TiDB 集群将不会删除集群的数据。如果不再需要数据，可以运行以下命令来清理数据：
+如果你的部署使用持久性数据存储，则删除 TiDB 集群将不会删除集群的数据。如果不再需要数据，可以运行以下命令来清理数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -813,7 +813,7 @@ kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/man
 
 #### 删除命名空间
 
-为确保没有残余资源，您可以删除用于 TiDB 集群的命名空间。
+为确保没有残余资源，你可以删除用于 TiDB 集群的命名空间。
 
 {{< copyable "shell-regular" >}}
 
@@ -823,7 +823,7 @@ kubectl delete namespace tidb-cluster
 
 #### 停止 `kubectl` 的端口转发
 
-如果您仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
+如果你仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
 
 {{< copyable "shell-regular" >}}
 
