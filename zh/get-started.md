@@ -23,14 +23,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 ## 步骤 1：创建 Kubernetes 测试集群
 
-如果你已经有一个 Kubernetes 集群，可直接跳到[步骤2：部署 TiDB Operator](#部署-tidb-operator)。
-
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
 - [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes) 这是目前比较通用的部署方式。
 - [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
-你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
+你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
 
 > **警告：**
 >
@@ -41,9 +39,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 ### 使用 kind 创建 Kubernetes 集群
 
-目前比较通用的方式是使用 kind 部署 Kubernetes 集群。
-
-[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，你可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
+目前比较通用的方式是使用 kind 部署本地测试 Kubernetes 集群。[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，你可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
 部署前，请确保满足以下要求：
 
@@ -103,8 +99,6 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 ### 使用 minikube 创建 Kubernetes 集群
 
-本节介绍如何使用 minikube 部署 Kubernetes 集群。
-
 [minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群，可在 macOS, Linux 和 Windows 上运行。
 
 部署前，请确保满足以下要求：
@@ -156,7 +150,7 @@ minikube start
 </code></pre>
 </details>
 
-对于中国大陆用户，可以使用国内 gcr.io mirror 仓库，例如 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
+中国大陆用户可以使用国内 gcr.io mirror 仓库，例如 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
 
 {{< copyable "shell-regular" >}}
 
@@ -164,9 +158,7 @@ minikube start
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-或者给 Docker 配置 HTTP/HTTPS 代理。
-
-将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址：
+或者给 Docker 配置 HTTP/HTTPS 代理。将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址。由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
 
 {{< copyable "shell-regular" >}}
 
@@ -174,10 +166,6 @@ minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_conta
 minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
     --docker-env http_proxy=http://127.0.0.1:1086
 ```
-
-> **注意：**
->
-> 由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
 
 参考 [minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
@@ -390,9 +378,7 @@ tidbcluster.pingcap.com/basic created
 </code></pre>
 </details>
 
-> **注意：**
->
-> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
+如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
 ### 部署 TiDB 集群监控
 
@@ -434,22 +420,6 @@ watch kubectl get po -n tidb-cluster
 <pre><code>
 
 ```
-NAME                              READY   STATUS            RESTARTS   AGE
-basic-discovery-6bb656bfd-kjkxw   1/1     Running           0          29s
-basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
-basic-pd-0                        1/1     Running           0          29s
-```
-
-</code></pre>
-</details>
-
-等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
-
-<details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
-
-```
 NAME                              READY   STATUS    RESTARTS   AGE
 basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m9s
 basic-monitor-5fc8589c89-gvgjj    3/3     Running   0          8m58s
@@ -461,6 +431,8 @@ basic-tikv-0                      1/1     Running   0          8m13s
 </code></pre>
 </details>
 
+等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
+
 ## 步骤 4：连接 TiDB 集群
 
 由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此你可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
@@ -471,7 +443,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 ### 转发 TiDB 服务 4000 端口
 
-首先，将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。 我们先获取 tidb-cluster 命名空间中的服务列表：
+首先，将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。先获取 tidb-cluster 命名空间中的服务列表：
 
 {{< copyable "shell-regular" >}}
 
@@ -507,7 +479,7 @@ basic-tikv-peer          ClusterIP   None             <none>        20160/TCP   
 kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 ```
 
-命令会运行在后台，并将输出转发到文件 `pf4000.out`。所以我们可以继续在当前 shell 会话中执行命令。
+命令会运行在后台，并将输出转发到文件 `pf4000.out`。所以你可以继续在当前 shell 会话中执行命令。
 
 ### 连接 TiDB 服务
 
@@ -686,9 +658,9 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 
 TiDB Operator 还可简化 TiDB 集群的滚动升级。以下展示使用 kubectl 命令行工具更新 TiDB 版本到 nightly 版本的过程。在此之前，先简要介绍一下用到的 kubectl 子命令。
 
-`kubectl edit` 在交互式文本编辑器中打开资源，管理员可以在其中进行更改并保存。如果更改有效，它们将被提交到集群。如果更改无效，它们将会被拒绝并显示一条错误消息。请注意，目前尚不对所有字段进行验证。保存某些更改后，即使更改被接受也不一定会对集群生效。
+- `kubectl edit` 在交互式文本编辑器中打开资源，管理员可以在其中进行更改并保存。如果更改有效，它们将被提交到集群。如果更改无效，它们将会被拒绝并显示一条错误消息。请注意，目前尚不对所有字段进行验证。保存某些更改后，即使更改被接受也不一定会对集群生效。
 
-`kubectl patch` 可直接应用补丁。Kubernetes 支持几种不同的补丁策略，每种策略有不同的功能、格式等。可参考 [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) 了解更多细节。
+- `kubectl patch` 可直接应用补丁。Kubernetes 支持几种不同的补丁策略，每种策略有不同的功能、格式等。可参考 [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) 了解更多细节。
 
 ### 修改 TiDB 集群版本
 
@@ -758,7 +730,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-注意： `release-4.0-nightly` 不是固定版本，不同时间会有不同结果
+注意 `release-4.0-nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 <pre><code>
 
 ```
