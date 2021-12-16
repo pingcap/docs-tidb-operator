@@ -72,22 +72,20 @@ kind create cluster
 ```
 
 <details>
-  <summary><font color=Blue>点击查看期望输出</font></summary>
-  <pre><code>
-    Creating cluster "kind" ...
-    ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
-    ✓ Preparing nodes 📦
-    ✓ Writing configuration 📜
-    ✓ Starting control-plane 🕹️
-    ✓ Installing CNI 🔌
-    ✓ Installing StorageClass 💾
-    Set kubectl context to "kind-kind"
-    You can now use your cluster with:
-
-    kubectl cluster-info --context kind-kind
-
-    Thanks for using kind! 😊
-  </code></pre>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
+Creating cluster "kind" ...
+✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+✓ Preparing nodes 📦
+✓ Writing configuration 📜
+✓ Starting control-plane 🕹️
+✓ Installing CNI 🔌
+✓ Installing StorageClass 💾
+Set kubectl context to "kind-kind"
+You can now use your cluster with:
+kubectl cluster-info --context kind-kind
+Thanks for using kind! 😊
+</code></pre>
 </details>
 
 
@@ -100,11 +98,12 @@ kubectl cluster-info
 ```
 
 <details>
-   <summary><font color=Blue>点击查看期望输出</font></summary>
-  <pre><code>
-    Kubernetes master is running at https://127.0.0.1:51026
-    KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-    To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
+Kubernetes master is running at https://127.0.0.1:51026
+KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
   </code></pre>
 </details>
 
