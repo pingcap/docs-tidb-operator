@@ -678,9 +678,7 @@ STATUS_ADDRESS: 0.0.0.0:20180
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果您是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。
-
-默认用户名和密码都是 "admin" 。
+Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果您是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。默认用户名和密码都是 "admin" 。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
@@ -779,11 +777,12 @@ Check Table Before Drop: false
 </code></pre>
 </details>
 
-## 步骤 6：销毁 TiDB 集群
+## 步骤 6：销毁 TiDB 集群 Kubernetes 集群
 
+### 销毁 TiDB 集群
 完成测试后，您可能希望销毁 TiDB 集群。
 
-### 删除 TiDB Cluster
+#### 删除 TiDB Cluster
 
 {{< copyable "shell-regular" >}}
 
@@ -793,7 +792,7 @@ kubectl delete tc basic -n tidb-cluster
 
 此命令中，`tc` 为 tidbclusters 的简称。
 
-### 删除 TiDB Monitor
+#### 删除 TiDB Monitor
 
 {{< copyable "shell-regular" >}}
 
@@ -801,7 +800,7 @@ kubectl delete tc basic -n tidb-cluster
 kubectl delete tidbmonitor basic -n tidb-cluster
 ```
 
-### 删除 PV 数据
+#### 删除 PV 数据
 
 如果您的部署使用持久性数据存储，则删除 TiDB 集群将不会删除集群的数据。如果不再需要数据，可以运行以下命令来清理数据：
 
@@ -812,7 +811,7 @@ kubectl delete pvc -n tidb-cluster -l app.kubernetes.io/instance=basic,app.kuber
 kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=basic -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```
 
-### 删除命名空间
+#### 删除命名空间
 
 为确保没有残余资源，您可以删除用于 TiDB 集群的命名空间。
 
@@ -822,7 +821,7 @@ kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/man
 kubectl delete namespace tidb-cluster
 ```
 
-### 停止 `kubectl` 的端口转发
+#### 停止 `kubectl` 的端口转发
 
 如果您仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
 
@@ -851,7 +850,7 @@ kind delete cluster
 
 <div label="minikube">
 
-如果使用了 kind 创建的 minikube 集群，测试完成后，执行下面命令来销毁集群：
+如果使用了 minikube 创建的 minikube 集群，测试完成后，执行下面命令来销毁集群：
 
 {{< copyable "shell-regular" >}}
 
