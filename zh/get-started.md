@@ -23,26 +23,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 如果您已经有一个 Kubernetes 集群，可直接[部署 TiDB Operator](#部署-tidb-operator)。
 
-如果您想做生产部署，参考以下文档：
-
-- 公有云
-    - [AWS 部署文档](deploy-on-aws-eks.md)
-    - [GKE 部署文档 (beta)](deploy-on-gcp-gke.md)
-    - [阿里云部署文档](deploy-on-alibaba-cloud.md)
-- 自托管 Kubernetes 集群
-    - [集群环境要求](prerequisites.md)
-    - 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)让 TiKV 使用高性能本地存储
-    - [在 Kubernetes 部署 TiDB Operator](deploy-tidb-operator.md)
-    - [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
-
-## 创建 Kubernetes 测试集群
+## 步骤 1：创建 Kubernetes 测试集群
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
 - [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes)
 - [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
 
-您也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
+你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群，并遵循教程来部署 TiDB Operator 和 TiDB 集群。
 
 <SimpleTab>
 <div label="Kind">
@@ -89,7 +77,6 @@ Thanks for using kind! 😊
 </code></pre>
 </details>
 
-
 检查集群是否创建成功：
 
 {{< copyable "shell-regular" >}}
@@ -110,15 +97,8 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
 
-测试完成后，执行下面命令来销毁集群：
+</div>
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-kind delete cluster
-```
-
-<SimpleTab>
 <div label="minikube">
 
 ### 使用 minikube 创建 Kubernetes 集群
@@ -149,7 +129,10 @@ kind delete cluster
 minikube start
 ```
 
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
 如果一切运行正常，会看到类似下面的输出，根据操作系统和使用的 hypervisor 会有些许差异。
+<pre><code>
 
 ```
 😄  minikube v1.10.1 on Darwin 10.15.4
@@ -161,7 +144,6 @@ minikube start
 
     $ sudo chown root:wheel /Users/user/.minikube/bin/docker-machine-driver-hyperkit
     $ sudo chmod u+s /Users/user/.minikube/bin/docker-machine-driver-hyperkit
-
 
 💿  Downloading VM boot image ...
     > minikube-v1.10.0.iso.sha256: 65 B / 65 B [-------------] 100.00% ? p/s 0s
@@ -175,6 +157,9 @@ minikube start
 🌟  Enabled addons: default-storageclass, storage-provisioner
 🏄  Done! kubectl is now configured to use "minikube"
 ```
+
+</code></pre>
+</details>
 
 对于中国大陆用户，可以使用国内 gcr.io mirror 仓库，例如 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
 
@@ -217,7 +202,9 @@ alias kubectl='minikube kubectl --'
 kubectl cluster-info
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 Kubernetes master is running at https://192.168.64.2:8443
@@ -226,20 +213,15 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
+</code></pre>
+</details>
+
 现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
-
-测试完成后，执行下面命令来销毁集群：
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-minikube delete
-```
 
 </div>
 </SimpleTab>
 
-## 部署 TiDB Operator
+## 步骤 2：部署 TiDB Operator
 
 开始之前，确保以下要求已满足：
 
@@ -258,7 +240,9 @@ TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
@@ -269,6 +253,9 @@ customresourcedefinition.apiextensions.k8s.io/tidbmonitors.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
+
+</code></pre>
+</details>
 
 ### 安装 TiDB Operator
 
@@ -282,11 +269,16 @@ TiDB Operator 使用 Helm 3 安装。
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-    期望输出：
+    <details>
+    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <pre><code>
 
     ```
     "pingcap" has been added to your repositories
     ```
+
+    </code></pre>
+    </details>
 
 2. 为 TiDB Operator 创建一个命名空间
 
@@ -296,11 +288,16 @@ TiDB Operator 使用 Helm 3 安装。
     kubectl create namespace tidb-admin
     ```
 
-    期望输出：
+    <details>
+    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <pre><code>
 
     ```
     namespace/tidb-admin created
     ```
+
+    </code></pre>
+    </details>
 
 3. 安装 TiDB Operator
 
@@ -321,7 +318,9 @@ TiDB Operator 使用 Helm 3 安装。
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
-    期望输出：
+    <details>
+    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <pre><code>
 
     ```
     NAME: tidb-operator
@@ -333,8 +332,11 @@ TiDB Operator 使用 Helm 3 安装。
     NOTES:
     Make sure tidb-operator components are running:
 
-        kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
     ```
+
+</code></pre>
+</details>
 
 使用以下命令检查 TiDB Operator 组件是否运行起来：
 
@@ -344,7 +346,9 @@ TiDB Operator 使用 Helm 3 安装。
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -352,9 +356,12 @@ tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
 tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
 
+</code></pre>
+</details>
+
 当所有的 pods 都处于 Running 状态时，可进行下一步操作。
 
-## 部署 TiDB 集群和监控
+## 步骤 3：部署 TiDB 集群和监控
 
 下面分别介绍 TiDB 集群和监控的部署方法。
 
@@ -376,12 +383,17 @@ kubectl create namespace tidb-cluster && \
     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 namespace/tidb-cluster created
 tidbcluster.pingcap.com/basic created
 ```
+
+</code></pre>
+</details>
 
 > **注意：**
 >
@@ -403,11 +415,16 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 tidbmonitor.pingcap.com/basic created
 ```
+
+</code></pre>
+</details>
 
 ### 查看 Pod 状态
 
@@ -417,7 +434,9 @@ tidbmonitor.pingcap.com/basic created
 watch kubectl get po -n tidb-cluster
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 NAME                              READY   STATUS            RESTARTS   AGE
@@ -426,9 +445,14 @@ basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
 basic-pd-0                        1/1     Running           0          29s
 ```
 
+</code></pre>
+</details>
+
 等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，您可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步：[连接到 TiDB 集群](#连接-tidb-集群)。
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -439,7 +463,10 @@ basic-tidb-0                      2/2     Running   0          7m14s
 basic-tikv-0                      1/1     Running   0          8m13s
 ```
 
-## 连接 TiDB 集群
+</code></pre>
+</details>
+
+## 步骤 4：连接 TiDB 集群
 
 由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此您可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
 
@@ -457,7 +484,9 @@ basic-tikv-0                      1/1     Running   0          8m13s
 kubectl get svc -n tidb-cluster
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
@@ -471,6 +500,9 @@ basic-tidb               ClusterIP   10.99.24.91      <none>        4000/TCP,100
 basic-tidb-peer          ClusterIP   None             <none>        10080/TCP            8m40s
 basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
 ```
+
+</code></pre>
+</details>
 
 这个例子中，TiDB **Service** 是 **basic-tidb**。使用以下命令转发本地端口到集群：
 
@@ -494,7 +526,9 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 mysql --comments -h 127.0.0.1 -P 4000 -u root
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -512,110 +546,132 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
+</code></pre>
+</details>
+
 以下是一些可以用来验证集群功能的命令。
 
-- 创建 `hello_world` 表：
+<details>
+<summary><font color=Blue>创建 `hello_world` 表</font></summary>
+<pre><code>
 
-    ```sql
-    mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-    Query OK, 0 rows affected (0.17 sec)
+```sql
+mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
+Query OK, 0 rows affected (0.17 sec)
 
-    mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-    *************************** 1. row ***************************
-            REGION_ID: 2
-            START_KEY: 7480000000000000FF3700000000000000F8
-                END_KEY:
-            TABLE_ID: 55
-                DB_NAME: test
-            TABLE_NAME: hello_world
-            IS_INDEX: 0
-            INDEX_ID: NULL
-            INDEX_NAME: NULL
-        EPOCH_CONF_VER: 5
-        EPOCH_VERSION: 23
-        WRITTEN_BYTES: 0
-            READ_BYTES: 0
-    APPROXIMATE_SIZE: 1
-    APPROXIMATE_KEYS: 0
-    1 row in set (0.03 sec)
-    ```
+mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
+*************************** 1. row ***************************
+        REGION_ID: 2
+        START_KEY: 7480000000000000FF3700000000000000F8
+            END_KEY:
+        TABLE_ID: 55
+            DB_NAME: test
+        TABLE_NAME: hello_world
+        IS_INDEX: 0
+        INDEX_ID: NULL
+        INDEX_NAME: NULL
+    EPOCH_CONF_VER: 5
+    EPOCH_VERSION: 23
+    WRITTEN_BYTES: 0
+        READ_BYTES: 0
+APPROXIMATE_SIZE: 1
+APPROXIMATE_KEYS: 0
+1 row in set (0.03 sec)
+```
 
-- 查询 TiDB 版本号：
+</code></pre>
+</details>
 
-    ```sql
-    mysql> select tidb_version()\G
-    *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0
-    Edition: Community
-    Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    Git Branch: heads/refs/tags/v4.0.0
-    UTC Build Time: 2020-05-28 01:37:40
-    GoVersion: go1.13
-    Race Enabled: false
-    TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
-    Check Table Before Drop: false
-    1 row in set (0.00 sec)
-    ```
+<details>
+<summary><font color=Blue>查询 TiDB 版本号</font></summary>
+<pre><code>
 
-- 查询 TiKV 存储状态：
+```sql
+mysql> select tidb_version()\G
+*************************** 1. row ***************************
+tidb_version(): Release Version: v4.0.0
+Edition: Community
+Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
+Git Branch: heads/refs/tags/v4.0.0
+UTC Build Time: 2020-05-28 01:37:40
+GoVersion: go1.13
+Race Enabled: false
+TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+Check Table Before Drop: false
+1 row in set (0.00 sec)
+```
 
-    ```sql
-    mysql> select * from information_schema.tikv_store_status\G
-    *************************** 1. row ***************************
-                STORE_ID: 4
-                ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-            STORE_STATE: 0
-        STORE_STATE_NAME: Up
-                LABEL: null
-                VERSION: 4.0.0
-                CAPACITY: 58.42GiB
-            AVAILABLE: 36.18GiB
-            LEADER_COUNT: 3
-        LEADER_WEIGHT: 1
-            LEADER_SCORE: 3
-            LEADER_SIZE: 3
-            REGION_COUNT: 21
-        REGION_WEIGHT: 1
-            REGION_SCORE: 21
-            REGION_SIZE: 21
-                START_TS: 2020-05-28 22:48:21
-    LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-                UPTIME: 3m40.598302151s
-    1 rows in set (0.01 sec)
-    ```
+</code></pre>
+</details>
 
-- 查询 TiDB 集群基本信息：
+<details>
+<summary><font color=Blue>查询 TiKV 存储状态</font></summary>
+<pre><code>
 
-    （该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#升级-tidb-集群)。）
-
-    ```sql
-    mysql> select * from information_schema.cluster_info\G
-    *************************** 1. row ***************************
-                TYPE: tidb
-            INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-    STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-            VERSION: 5.7.25-TiDB-v4.0.0
-            GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-        START_TIME: 2020-05-28T22:50:11Z
-            UPTIME: 3m21.459090928s
-    *************************** 2. row ***************************
-                TYPE: pd
-            INSTANCE: basic-pd:2379
-    STATUS_ADDRESS: basic-pd:2379
+``sql
+mysql> select * from information_schema.tikv_store_status\G
+*************************** 1. row ***************************
+            STORE_ID: 4
+            ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+        STORE_STATE: 0
+    STORE_STATE_NAME: Up
+            LABEL: null
             VERSION: 4.0.0
-            GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-        START_TIME: 2020-05-28T22:45:04Z
-            UPTIME: 8m28.459091915s
-    *************************** 3. row ***************************
-                TYPE: tikv
-            INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-    STATUS_ADDRESS: 0.0.0.0:20180
-            VERSION: 4.0.0
-            GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-        START_TIME: 2020-05-28T22:48:21Z
-            UPTIME: 5m11.459102648s
-    3 rows in set (0.01 sec)
-    ```
+            CAPACITY: 58.42GiB
+        AVAILABLE: 36.18GiB
+        LEADER_COUNT: 3
+    LEADER_WEIGHT: 1
+        LEADER_SCORE: 3
+        LEADER_SIZE: 3
+        REGION_COUNT: 21
+    REGION_WEIGHT: 1
+        REGION_SCORE: 21
+        REGION_SIZE: 21
+            START_TS: 2020-05-28 22:48:21
+LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
+            UPTIME: 3m40.598302151s
+1 rows in set (0.01 sec)
+```
+
+</code></pre>
+</details>
+
+<details>
+<summary><font color=Blue>查询 TiDB 集群基本信息</font></summary>
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#升级-tidb-集群)。
+<pre><code>
+
+```sql
+mysql> select * from information_schema.cluster_info\G
+*************************** 1. row ***************************
+            TYPE: tidb
+        INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
+STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
+        VERSION: 5.7.25-TiDB-v4.0.0
+        GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
+    START_TIME: 2020-05-28T22:50:11Z
+        UPTIME: 3m21.459090928s
+*************************** 2. row ***************************
+            TYPE: pd
+        INSTANCE: basic-pd:2379
+STATUS_ADDRESS: basic-pd:2379
+        VERSION: 4.0.0
+        GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
+    START_TIME: 2020-05-28T22:45:04Z
+        UPTIME: 8m28.459091915s
+*************************** 3. row ***************************
+            TYPE: tikv
+        INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+STATUS_ADDRESS: 0.0.0.0:20180
+        VERSION: 4.0.0
+        GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
+    START_TIME: 2020-05-28T22:48:21Z
+        UPTIME: 5m11.459102648s
+3 rows in set (0.01 sec)
+```
+
+</code></pre>
+</details>
 
 ### 访问 Grafana 面板
 
@@ -633,7 +689,7 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
-## 升级 TiDB 集群
+## 步骤 5：升级 TiDB 集群
 
 TiDB Operator 还可简化 TiDB 集群的滚动升级。以下展示使用 kubectl 命令行工具更新 TiDB 版本到 nightly 版本的过程。在此之前，先简要介绍一下用到的 kubectl 子命令。
 
@@ -651,11 +707,16 @@ TiDB Operator 还可简化 TiDB 集群的滚动升级。以下展示使用 kubec
 kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "release-4.0-nightly"} }'
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 tidbcluster.pingcap.com/basic patched
 ```
+
+</code></pre>
+</details>
 
 ### 等待 Pods 重启
 
@@ -667,7 +728,9 @@ tidbcluster.pingcap.com/basic patched
 watch kubectl get po -n tidb-cluster
 ```
 
-期望输出：
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -676,6 +739,9 @@ basic-pd-0                        1/1     Terminating   0          5m31s
 basic-tidb-0                      2/2     Running       0          2m19s
 basic-tikv-0                      1/1     Running       0          4m13s
 ```
+
+</code></pre>
+</details>
 
 ### 转发 TiDB 服务端口
 
@@ -697,11 +763,10 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
-期望输出：
-
-> **注意：**
->
-> `release-4.0-nightly` 不是固定版本，不同时间会有不同结果
+<details>
+<summary><font color=Blue>点击查看期望输出</font></summary>
+注意： `release-4.0-nightly` 不是固定版本，不同时间会有不同结果
+<pre><code>
 
 ```
 *************************** 1. row ***************************
@@ -716,11 +781,12 @@ TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 ```
 
-## 销毁 TiDB 集群
+</code></pre>
+</details>
+
+## 步骤 6：销毁 TiDB 集群
 
 完成测试后，您可能希望销毁 TiDB 集群。
-
-销毁 Kubernetes 集群的方法取决于其创建方式，您可参考前面 Kubernetes 创建文档说明。以下是销毁 TiDB 集群的步骤，并不会影响 Kubernetes 集群本身。
 
 ### 删除 TiDB Cluster
 
@@ -771,11 +837,49 @@ kubectl delete namespace tidb-cluster
 pgrep -lfa kubectl
 ```
 
+### 销毁 Kubernetes 集群
+
+销毁 Kubernetes 集群的方法取决于其创建方式。以下是销毁 Kubernetes 集群的步骤。
+
+<SimpleTab>
+<div label="kind">
+
+如果使用了 kind 创建的 Kubernetes 集群，在测试完成后，执行下面命令来销毁集群：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kind delete cluster
+```
+
+</div>
+
+<div label="minikube">
+
+如果使用了 kind 创建的 minikube 集群，测试完成后，执行下面命令来销毁集群：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+minikube delete
+```
+
+</div>
+</SimpleTab>
+
 ## 探索更多
 
-如果你已经准备好在生产环境的 Kubernetes 上部署 TiDB 集群，可参阅以下文档：
+如果你想在生产环境部署 ，请参考以下文档：
 
-- [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
-- [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
+在公有云上部署：
+
+- [在 AWS EKD 上部署 TiDB 集群](deploy-on-aws-eks.md)
 - [在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
 - [在阿里云上部署 TiDB 集群](deploy-on-alibaba-cloud.md)
+
+自托管 Kubernetes 集群：
+
+- [集群环境要求](prerequisites.md)
+- 参考[本地 PV 配置](configure-storage-class.md#本地-pv-配置)让 TiKV 使用高性能本地存储
+- [在 Kubernetes 部署 TiDB Operator](deploy-tidb-operator.md)
+- [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)
