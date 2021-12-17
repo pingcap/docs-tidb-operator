@@ -108,7 +108,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库，或者为 Docker 配置 HTTP/HTTPS 代理。以下分别对这几种方法进行介绍。
 
-#### 使用 minikube start 直接启动 Kubernetes 集群
+#### 使用 minikube start 直接启动
 
 安装完 minikube 后，可以执行下面命令启动 Kubernetes 集群：
 
@@ -214,11 +214,6 @@ Kubernetes 集群部署完成，现在就可以开始[部署 TiDB Operator](#部
 
 ## 步骤 2：部署 TiDB Operator
 
-开始之前，确保以下要求已满足：
-
-- 可以使用 `kubectl` 访问的 Kubernetes 集群
-- 已安装 [Helm 3](https://helm.sh/docs/intro/install/)
-
 部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。
 
 ### 安装 TiDB Operator CRDs
@@ -250,9 +245,9 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 ### 安装 TiDB Operator
 
-TiDB Operator 使用 Helm 3 安装。
+使用 [Helm 3](https://helm.sh/docs/intro/install/) 安装 TiDB Operator。
 
-1. 添加 PingCAP 仓库
+1. 添加 PingCAP 仓库。
 
     {{< copyable "shell-regular" >}}
 
@@ -271,7 +266,7 @@ TiDB Operator 使用 Helm 3 安装。
     </code></pre>
     </details>
 
-2. 为 TiDB Operator 创建一个命名空间
+2. 为 TiDB Operator 创建一个命名空间。
 
     {{< copyable "shell-regular" >}}
 
@@ -290,7 +285,7 @@ TiDB Operator 使用 Helm 3 安装。
     </code></pre>
     </details>
 
-3. 安装 TiDB Operator
+3. 安装 TiDB Operator。
 
     {{< copyable "shell-regular" >}}
 
@@ -329,7 +324,7 @@ TiDB Operator 使用 Helm 3 安装。
     </code></pre>
     </details>
 
-使用以下命令检查 TiDB Operator 组件是否运行起来：
+检查 TiDB Operator 组件是否正常运行起来：
 
 {{< copyable "shell-regular" >}}
 
@@ -350,7 +345,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 </code></pre>
 </details>
 
-当所有的 pods 都处于 Running 状态时，可进行下一步操作。
+当所有的 pods 都处于 Running 状态时，继续下一步。
 
 ## 步骤 3：部署 TiDB 集群和监控
 
