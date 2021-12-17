@@ -207,10 +207,7 @@ mountOptions:
     ```yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
-        requests:
-          storage: 100Gi
+        ...
         storageClassName: gp3
     ```
 
@@ -588,6 +585,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:

@@ -35,7 +35,7 @@ spec:
 >
 > 以下教程仅为演示如何快速访问 TiDB Dashboard，请勿在生产环境中直接使用以下方法。
 
-`TiDB Dashboard` 目前在 4.0.0 版本及以上中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 4.0.4 版本的 TiDB 集群。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
+`TiDB Dashboard` 目前在 4.0.0 版本及以上中已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 TiDB 集群。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -49,18 +49,21 @@ spec:
   pd:
     enableDashboardInternalProxy: true
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
-      storage: "1Gi"
+      storage: "100Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP

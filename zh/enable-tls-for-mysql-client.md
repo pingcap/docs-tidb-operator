@@ -538,19 +538,22 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
          pvReclaimPolicy: Retain
          pd:
            baseImage: pingcap/pd
+           maxFailoverCount: 0
            replicas: 1
            requests:
-             storage: "1Gi"
+             storage: "10Gi"
            config: {}
            tlsClientSecretName: ${cluster_name}-pd-dashboard-client-secret
          tikv:
            baseImage: pingcap/tikv
+           maxFailoverCount: 0
            replicas: 1
            requests:
-             storage: "1Gi"
+             storage: "100Gi"
            config: {}
          tidb:
            baseImage: pingcap/tidb
+           maxFailoverCount: 0
            replicas: 1
            service:
              type: ClusterIP

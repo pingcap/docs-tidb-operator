@@ -117,7 +117,7 @@ Three possible reasons:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get deployment --all-namespaces |grep tidb-scheduler
+    kubectl get deployment --all-namespaces | grep tidb-scheduler
     ```
 
 ## How does TiDB ensure data safety and reliability? 

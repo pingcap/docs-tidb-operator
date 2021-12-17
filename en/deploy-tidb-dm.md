@@ -55,13 +55,14 @@ spec:
   discovery: {}
   master:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     imagePullPolicy: IfNotPresent
     service:
       type: NodePort
       # Configures masterNodePort when you need to expose the DM-master service to a fixed NodePort
       # masterNodePort: 30020
     replicas: 1
-    storageSize: "1Gi"
+    storageSize: "10Gi"
     requests:
       cpu: 1
     config:
@@ -83,8 +84,9 @@ spec:
   ...
   worker:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     replicas: 1
-    storageSize: "1Gi"
+    storageSize: "100Gi"
     requests:
       cpu: 1
     config:
@@ -99,6 +101,7 @@ By configuring `topologySpreadConstraints`, you can make pods evenly spread in d
 > **Note:**
 >
 > To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
+> If Kubernetes version >= v1.18 && <v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) is enabled or Kubernetes version >= v1.19, no need to use `tidb-scheduler`. Using `default-scheduler` and configuring [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) can realize the function of `tidb-scheduler`.
 
 You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
@@ -127,10 +130,6 @@ topologySpreadConstrains:
   whenUnsatisfiable: DoNotSchedule
   labelSelector: <object>
 ```
-
-> **Note:**
->
-> You can use this feature to replace [TiDB Scheduler](tidb-scheduler.md) for evenly scheduling.
 
 ## Deploy the DM cluster
 
