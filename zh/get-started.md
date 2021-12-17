@@ -35,7 +35,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 ### 使用 kind 创建 Kubernetes 集群
 
-目前比较通用的方式是使用 kind 部署本地测试 Kubernetes 集群。[kind](https://kind.sigs.k8s.io/) 是用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群的工具，是为测试本地 Kubernetes 集群而开发的。Kubernetes 集群版本取决于 kind 使用的节点镜像，你可以指定要用于节点的镜像并选择任何发布的版本。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
+目前比较通用的方式是使用 kind 部署本地测试 Kubernetes 集群。[kind](https://kind.sigs.k8s.io/) 适用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
 部署前，请确保满足以下要求：
 
@@ -87,7 +87,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre>
 </details>
 
-现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
+Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 </div>
 
@@ -97,16 +97,20 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 [minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群，可在 macOS, Linux 和 Windows 上运行。
 
+> **注意：**
+>
+> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑使用 kind 创建 Kubernetes 集群。
+
 部署前，请确保满足以下要求：
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0 及以上。minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.12
 
-> **注意：**
->
-> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑[使用 kind](#使用-kind-创建-kubernetes-集群)。
+你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库，或者为 Docker 配置 HTTP/HTTPS 代理。以下分别对这几种方法进行介绍。
 
-安装完 minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
+#### 使用 minikube start 直接启动 Kubernetes 集群
+
+安装完 minikube 后，可以执行下面命令启动 Kubernetes 集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -146,6 +150,8 @@ minikube start
 </code></pre>
 </details>
 
+#### 使用 gcr.io mirror 仓库
+
 中国大陆用户可以使用国内 gcr.io mirror 仓库，例如 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
 
 {{< copyable "shell-regular" >}}
@@ -154,7 +160,11 @@ minikube start
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-或者给 Docker 配置 HTTP/HTTPS 代理。将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址。由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
+#### 为 Docker 配置 HTTP/HTTPS 代理
+
+你也可以给 Docker 配置 HTTP/HTTPS 代理来启动 Kubernetes 集群。
+
+将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址。由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
 
 {{< copyable "shell-regular" >}}
 
@@ -164,6 +174,8 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 ```
 
 参考 [minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
+
+#### 使用 `kubectl` 进行集群操作
 
 你可以使用 `minikube` 的子命令 `kubectl` 来进行集群操作。要使 `kubectl` 命令生效，你需要在 shell 配置文件中添加以下别名设置命令，或者在打开一个新的 shell 后执行以下别名设置命令。
 
@@ -195,7 +207,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre>
 </details>
 
-现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
+Kubernetes 集群部署完成，现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
 
 </div>
 </SimpleTab>
