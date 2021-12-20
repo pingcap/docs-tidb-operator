@@ -206,7 +206,7 @@ mountOptions:
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#步骤-2部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
