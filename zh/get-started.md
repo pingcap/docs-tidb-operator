@@ -8,7 +8,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 本文档介绍了如何创建一个简单的 Kubernetes 集群，部署 TiDB Operator，并使用 TiDB Operator 部署 TiDB 集群。
 
-基本步骤如下：
+> **警告：**
+>
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[探索更多](#探索更多)。
+
+部署的基本步骤如下：
 
 1. [创建 Kubernetes 测试集群](#步骤-1创建-kubernetes-测试集群)
 2. [部署 TiDB Operator](#步骤-2部署-tidb-operator)
@@ -16,10 +20,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 4. [连接 TiDB 集群](#步骤-4连接-tidb-集群)
 5. [升级 TiDB 集群](#步骤-5升级-tidb-集群)
 6. [销毁 TiDB 集群](#步骤-6销毁-tidb-集群和-kubernetes-集群)
-
-> **警告：**
->
-> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[探索更多](#探索更多)。
 
 ## 步骤 1：创建 Kubernetes 测试集群
 
@@ -164,7 +164,11 @@ minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_conta
 
 你也可以给 Docker 配置 HTTP/HTTPS 代理来启动 Kubernetes 集群。
 
-将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址。由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
+将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址。
+
+> **注意：**
+>
+> 由于 minikube（默认）通过虚拟机运行，`127.0.0.1` 指向虚拟机本身，所以在有些情况下可能需要将代理修改为你的主机的实际 IP。
 
 {{< copyable "shell-regular" >}}
 
@@ -653,7 +657,7 @@ STATUS_ADDRESS: 0.0.0.0:20180
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。默认用户名和密码都是 "admin" 。
+Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000> 访问。默认用户名和密码都是 "admin" 。请注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
