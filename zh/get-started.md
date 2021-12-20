@@ -578,7 +578,7 @@ Check Table Before Drop: false
 <summary><font color=Blue>查询 TiKV 存储状态</font></summary>
 <pre><code>
 
-``sql
+```sql
 mysql> select * from information_schema.tikv_store_status\G
 *************************** 1. row ***************************
             STORE_ID: 4
@@ -753,6 +753,7 @@ Check Table Before Drop: false
 ## 步骤 6：销毁 TiDB 集群和 Kubernetes 集群
 
 ### 销毁 TiDB 集群
+
 完成测试后，你可能希望销毁 TiDB 集群。
 
 #### 删除 TiDB Cluster
