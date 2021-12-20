@@ -16,6 +16,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 
 > **注意：**
 >
+<<<<<<< HEAD
 > 下文用 `values.yaml` 指代要修改的 TiDB 集群配置文件。
 
 | 参数名 | 说明 | 默认值 |
@@ -121,6 +122,175 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 ## 资源配置说明
 
 部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，其中 PD、TiKV、TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置还需要按组件要求指定，具体参考：[资源配置推荐](https://pingcap.com/docs-cn/v3.0/how-to/deploy/hardware-recommendations)。
+=======
+> - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
+> - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
+
+#### 配置 TiFlash 配置参数
+
+你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  tiflash:
+    config:
+      config: |
+        [flash]
+          [flash.flash_cluster]
+            log = "/data0/logs/flash_cluster_manager.log"
+        [logger]
+          count = 10
+          level = "information"
+          errorlog = "/data0/logs/error.log"
+          log = "/data0/logs/server.log"
+```
+
+获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)
+
+#### 配置 TiCDC 启动参数
+
+你可以通过 TidbCluster CR 的 `spec.ticdc.config` 来配置 TiCDC 启动参数。
+
+对于 TiDB Operator v1.2.0-rc.2 及之后版本，请使用 TOML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  ticdc:
+    config: |
+      gc-ttl = 86400
+      log-level = "info"
+```
+
+对于 TiDB Operator v1.2.0-rc.2 之前版本，请使用 YAML 格式配置：
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  ...
+  ticdc:
+    config:
+      timezone: UTC
+      gcTTL: 86400
+      logLevel: info
+```
+
+获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tiflow/blob/bf29e42c75ae08ce74fbba102fe78a0018c9d2ea/pkg/cmd/util/ticdc.toml)。
+
+#### 配置 PD、TiDB、TiKV、TiFlash 故障自动转移阈值
+
+[故障自动转移](use-auto-failover.md)功能在 TiDB Operator 中默认开启。当 PD、TiDB、TiKV、TiFlash 这些组件的 Pod 或者其所在节点发生故障时，TiDB Operator 会触发故障自动转移，通过扩容相应组件补齐 Pod 副本数。
+
+为避免故障自动转移功能创建太多 Pod，可以为每个组件配置故障自动转移时能扩容的 Pod 数量阈值，默认为 `3`。如果配置为 `0`，代表关闭这个组件的故障自动转移功能。配置示例如下：
+
+```yaml
+  pd:
+    maxFailoverCount: 3
+  tidb:
+    maxFailoverCount: 3
+  tikv:
+    maxFailoverCount: 3
+  tiflash:
+    maxFailoverCount: 3
+```
+
+### 配置 TiDB 平滑升级
+
+滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
+
+通过配置下面两个属性来实现平滑升级 TiDB 集群：
+
+- `spec.tidb.terminationGracePeriodSeconds`：滚动更新的时候，删除旧的 TiDB Pod 最多容忍的时间，即过了这个时间，TiDB Pod 会被强制删除；
+- `spec.tidb.lifecycle`：设置 TiDB Pod 的 `preStop` Hook，在 TiDB server 停止之前执行的操作。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: basic
+spec:
+  version: v5.2.1
+  pvReclaimPolicy: Retain
+  discovery: {}
+  pd:
+    baseImage: pingcap/pd
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tikv:
+    baseImage: pingcap/tikv
+    replicas: 1
+    requests:
+      storage: "1Gi"
+    config: {}
+  tidb:
+    baseImage: pingcap/tidb
+    replicas: 1
+    service:
+      type: ClusterIP
+    config: {}
+    terminationGracePeriodSeconds: 60
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /bin/sh
+          - -c
+          - "sleep 10 && kill -QUIT 1"
+```
+
+上述 YAML 文件中：
+
+- 设置了删除 TiDB Pod 的最多容忍时间为 60 秒，如果 60 秒之内客户端仍然没有关闭连接的话，那么这些连接将会强制关闭。这个时间可根据需要进行调整；
+- 设置 `preStop` Hook 为 `sleep 10 && kill -QUIT 1`，这里 Pid 1 为 TiDB Pod 内 TiDB server 进程的 Pid。TiDB server 进程收到这个信号之后，会等待所有连接被客户端关闭之后才会退出。
+
+Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
+
+### 配置 TiKV 平滑升级
+
+TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 10 分钟）后，TiKV Pod 才会重启。
+
+如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
+
+> **警告：**
+>
+> 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大（推荐大于 `1500m`），以保证 TiKV Pod 上所有的 Region Leader 能在设置的时间内驱逐完毕。
+
+### 配置 TiDB 慢查询日志持久卷
+
+默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
+
+> **警告：**
+>
+> 默认配置下，使用 `EmptyDir` 卷存储的慢查询日志会在 Pod 被删除（例如，滚动升级）后丢失。请确保 Kubernetes 集群内已经部署日志收集方案用于收集所有容器的日志。如果没有部署日志收集方案，请**务必**通过下面配置使用持久卷来存储慢查询日志。
+
+如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+
+#### spec.tidb.storageVolumes 配置
+
+按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
+
+{{< copyable "" >}}
+>>>>>>> 0b4bb8f2 (changed github.com/pingcap/ticdc to github.com/pingcap/tiflow (#1482))
 
 为了保证 TiDB 集群的组件在 Kubernetes 中合理的调度和稳定的运行，建议为其设置 Guaranteed 级别的 QoS，通过在配置资源时让 limits 等于 requests 来实现, 具体参考：[配置 QoS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)。
 
