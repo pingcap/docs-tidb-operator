@@ -54,6 +54,7 @@ kind create cluster
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
+<pre><code>
 Creating cluster "kind" ...
 ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
 ✓ Preparing nodes 📦
@@ -65,6 +66,7 @@ Set kubectl context to "kind-kind"
 You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 Thanks for using kind! 😊
+</pre></code>
 </details>
 
 检查集群是否创建成功：
