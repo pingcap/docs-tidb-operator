@@ -197,7 +197,6 @@ kubectl cluster-info
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 Kubernetes master is running at https://192.168.64.2:8443
@@ -206,7 +205,6 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-</code></pre>
 </details>
 
 Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
