@@ -482,19 +482,15 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root
 <summary><font color=Blue>点击查看期望输出</font></summary>
 
 ```
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 76
-Server version: 5.7.25-TiDB-v4.0.0 MySQL Community Server (Apache License 2.0)
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 178505
+Server version: 5.7.25-TiDB-v5.2.1 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql>
+MySQL [(none)]> 
 ```
 
 </details>
@@ -536,16 +532,16 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-tidb_version(): Release Version: v4.0.0
+tidb_version(): Release Version: v5.2.1
 Edition: Community
-Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
-Git Branch: heads/refs/tags/v4.0.0
-UTC Build Time: 2020-05-28 01:37:40
-GoVersion: go1.13
+Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
+Git Branch: heads/refs/tags/v5.2.1
+UTC Build Time: 2021-09-08 02:32:56
+GoVersion: go1.16.4
 Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
-1 row in set (0.00 sec)
+1 row in set (0.01 sec)
 ```
 
 </details>
@@ -561,7 +557,7 @@ mysql> select * from information_schema.tikv_store_status\G
         STORE_STATE: 0
     STORE_STATE_NAME: Up
             LABEL: null
-            VERSION: 4.0.0
+            VERSION: 5.2.1
             CAPACITY: 58.42GiB
         AVAILABLE: 36.18GiB
         LEADER_COUNT: 3
@@ -590,7 +586,7 @@ mysql> select * from information_schema.cluster_info\G
             TYPE: tidb
         INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
 STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-        VERSION: 5.7.25-TiDB-v4.0.0
+        VERSION: 5.2.1
         GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
     START_TIME: 2020-05-28T22:50:11Z
         UPTIME: 3m21.459090928s
@@ -598,7 +594,7 @@ STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
             TYPE: pd
         INSTANCE: basic-pd:2379
 STATUS_ADDRESS: basic-pd:2379
-        VERSION: 4.0.0
+        VERSION: 5.2.1
         GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
     START_TIME: 2020-05-28T22:45:04Z
         UPTIME: 8m28.459091915s
@@ -606,7 +602,7 @@ STATUS_ADDRESS: basic-pd:2379
             TYPE: tikv
         INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
 STATUS_ADDRESS: 0.0.0.0:20180
-        VERSION: 4.0.0
+        VERSION: 5.2.1
         GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
     START_TIME: 2020-05-28T22:48:21Z
         UPTIME: 5m11.459102648s
@@ -699,16 +695,16 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-注意 `release-4.0-nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
+注意 `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v4.0.0-6-gdec49a126
+tidb_version(): Release Version: v5.4.0-alpha-445-g778e188fa
 Edition: Community
-Git Commit Hash: dec49a12654c4f09f6fedfd2a0fb0154fc095449
-Git Branch: release-4.0
-UTC Build Time: 2020-06-01 10:07:32
-GoVersion: go1.13
+Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
+Git Branch: master
+UTC Build Time: 2021-12-17 17:02:49
+GoVersion: go1.16.4
 Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
