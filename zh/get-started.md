@@ -121,7 +121,6 @@ minikube start
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
 如果一切运行正常，会看到类似下面的输出，根据操作系统和使用的 hypervisor 会有些许差异。
-<pre><code>
 
 ```
 😄  minikube v1.10.1 on Darwin 10.15.4
@@ -146,8 +145,6 @@ minikube start
 🌟  Enabled addons: default-storageclass, storage-provisioner
 🏄  Done! kubectl is now configured to use "minikube"
 ```
-
-</code></pre>
 
 </details>
 
@@ -614,7 +611,6 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 <details>
 <summary><font color=Blue>查询 TiDB 集群基本信息</font></summary>
 该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#升级-tidb-集群)。
-<pre><code>
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -644,8 +640,6 @@ STATUS_ADDRESS: 0.0.0.0:20180
         UPTIME: 5m11.459102648s
 3 rows in set (0.01 sec)
 ```
-
-</code></pre>
 
 </details>
 
@@ -738,7 +732,6 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
 注意 `release-4.0-nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
-<pre><code>
 
 ```
 *************************** 1. row ***************************
@@ -752,8 +745,6 @@ Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 ```
-
-</code></pre>
 
 </details>
 
