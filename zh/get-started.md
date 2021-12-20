@@ -228,7 +228,6 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
@@ -240,7 +239,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com creat
 customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
 
-</code></pre>
 </details>
 
 ### 安装 TiDB Operator
@@ -257,13 +255,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
     <details>
     <summary><font color=Blue>点击查看期望输出</font></summary>
-    <pre><code>
 
     ```
     "pingcap" has been added to your repositories
     ```
 
-    </code></pre>
     </details>
 
 2. 为 TiDB Operator 创建一个命名空间。
@@ -276,13 +272,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
     <details>
     <summary><font color=Blue>点击查看期望输出</font></summary>
-    <pre><code>
 
     ```
     namespace/tidb-admin created
     ```
 
-    </code></pre>
     </details>
 
 3. 安装 TiDB Operator。
@@ -306,7 +300,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
     <details>
     <summary><font color=Blue>点击查看期望输出</font></summary>
-    <pre><code>
 
     ```
     NAME: tidb-operator
@@ -321,7 +314,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
     ```
 
-    </code></pre>
     </details>
 
 检查 TiDB Operator 组件是否正常运行起来：
@@ -334,7 +326,6 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -342,7 +333,6 @@ tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
 tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
 
-</code></pre>
 </details>
 
 当所有的 pods 都处于 Running 状态时，继续下一步。
@@ -371,14 +361,12 @@ kubectl create namespace tidb-cluster && \
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 namespace/tidb-cluster created
 tidbcluster.pingcap.com/basic created
 ```
 
-</code></pre>
 </details>
 
 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
@@ -401,13 +389,11 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 tidbmonitor.pingcap.com/basic created
 ```
 
-</code></pre>
 </details>
 
 ### 查看 Pod 状态
@@ -420,7 +406,6 @@ watch kubectl get po -n tidb-cluster
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -431,7 +416,6 @@ basic-tidb-0                      2/2     Running   0          7m14s
 basic-tikv-0                      1/1     Running   0          8m13s
 ```
 
-</code></pre>
 </details>
 
 等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
@@ -456,7 +440,6 @@ kubectl get svc -n tidb-cluster
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
@@ -471,7 +454,6 @@ basic-tidb-peer          ClusterIP   None             <none>        10080/TCP   
 basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
 ```
 
-</code></pre>
 </details>
 
 这个例子中，TiDB **Service** 是 **basic-tidb**。使用以下命令转发本地端口到集群：
@@ -498,7 +480,6 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -516,14 +497,12 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-</code></pre>
 </details>
 
 以下是一些可以用来验证集群功能的命令。
 
 <details>
 <summary><font color=Blue>创建 `hello_world` 表</font></summary>
-<pre><code>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -549,12 +528,10 @@ APPROXIMATE_KEYS: 0
 1 row in set (0.03 sec)
 ```
 
-</code></pre>
 </details>
 
 <details>
 <summary><font color=Blue>查询 TiDB 版本号</font></summary>
-<pre><code>
 
 ```sql
 mysql> select tidb_version()\G
@@ -571,12 +548,10 @@ Check Table Before Drop: false
 1 row in set (0.00 sec)
 ```
 
-</code></pre>
 </details>
 
 <details>
 <summary><font color=Blue>查询 TiKV 存储状态</font></summary>
-<pre><code>
 
 ```sql
 mysql> select * from information_schema.tikv_store_status\G
@@ -603,7 +578,6 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 1 rows in set (0.01 sec)
 ```
 
-</code></pre>
 </details>
 
 <details>
@@ -675,13 +649,11 @@ kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "re
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 tidbcluster.pingcap.com/basic patched
 ```
 
-</code></pre>
 </details>
 
 ### 等待 Pods 重启
@@ -696,7 +668,6 @@ watch kubectl get po -n tidb-cluster
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-<pre><code>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -706,7 +677,6 @@ basic-tidb-0                      2/2     Running       0          2m19s
 basic-tikv-0                      1/1     Running       0          4m13s
 ```
 
-</code></pre>
 </details>
 
 ### 转发 TiDB 服务端口
