@@ -10,12 +10,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 基本步骤如下：
 
-1. [创建 Kubernetes 测试集群](#步骤-1：创建-kubernetes-测试集群)
-2. [部署 TiDB Operator](#步骤-2：部署-tidb-operator)
-3. [部署 TiDB 集群和监控](#步骤-3：部署-tidb-集群和监控)
-4. [连接 TiDB 集群](#步骤-4：连接-tidb-集群)
-5. [升级 TiDB 集群](#步骤-5：升级-tidb-集群)
-6. [销毁 TiDB 集群](#步骤-6：销毁-tidb-集群和-kubernetes-集群)
+1. [创建 Kubernetes 测试集群](#步骤-1创建-kubernetes-测试集群)
+2. [部署 TiDB Operator](#步骤-2部署-tidb-operator)
+3. [部署 TiDB 集群和监控](#步骤-3部署-tidb-集群和监控)
+4. [连接 TiDB 集群](#步骤-4连接-tidb-集群)
+5. [升级 TiDB 集群](#步骤-5升级-tidb-集群)
+6. [销毁 TiDB 集群](#步骤-6销毁-tidb-集群和-kubernetes-集群)
 
 > **警告：**
 >
@@ -207,7 +207,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre>
 </details>
 
-Kubernetes 集群部署完成，现在就可以开始[部署 TiDB Operator](#部署-tidb-operator) 了！
+Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 </div>
 </SimpleTab>
