@@ -69,7 +69,7 @@ gcloud config set compute/region <gcp-region>
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#step-2deploy-tidb-operator).
+To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 

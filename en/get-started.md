@@ -14,12 +14,12 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 These are the steps this document follows:
 
-1. [Step 1: Create a Kubernetes test cluster](#step-1create-a-kubernetes-test-cluster)
-2. [Step 2: Deploy TiDB Operator](#step-2deploy-tidb-operator)
-3. [Step 3: Deploy a TiDB cluster and its monitoring services](#step-3deploy-a-tidb-cluster-and-its-monitoring-services)
-4. [Step 4: Connect to a TiDB cluster](#step-4connect-to-tidb)
-5. [Step 5: Upgrade a TiDB cluster](#step-5upgrade-a-tidb-cluster)
-6. [Step 6: Destroy a TiDB cluster](#step-6destroy-a-tidb-cluster)
+1. [Step 1: Create a Kubernetes test cluster](#step-1-create-a-kubernetes-test-cluster)
+2. [Step 2: Deploy TiDB Operator](#step-2-deploy-tidb-operator)
+3. [Step 3: Deploy a TiDB cluster and its monitoring services](#step-3-deploy-a-tidb-cluster-and-its-monitoring-services)
+4. [Step 4: Connect to a TiDB cluster](#step-4-connect-to-tidb)
+5. [Step 5: Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
+6. [Step 6: Destroy a TiDB cluster](#step-6-destroy-a-tidb-cluster)
 
 ## Step 1: Create a Kubernetes test cluster
 
@@ -95,7 +95,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre>
 </details>
 
-You're now ready to [deploy TiDB Operator](#deploy-tidb-operator).
+You're now ready to deploy TiDB Operator.
 
 </div>
 
@@ -218,7 +218,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 </details>
 
-You are now ready to [deploy TiDB Operator](#deploy-tidb-operator).
+You are now ready to deploy TiDB Operator.
 
 </div>
 </SimpleTab>
@@ -432,7 +432,7 @@ basic-pd-0                        1/1     Running           0          29s
 
 </details>
 
-Wait until all Pods for all services are started. As soon as you see Pods of each type (`-pd`, `-tikv`, and `-tidb`) are in the "Running" state, you can press <kbd>Ctrl</kbd>+<kbd>C</kbd> to get back to the command line and go on to [connect to your TiDB cluster](#connect-to-tidb).
+Wait until all Pods for all services are started. As soon as you see Pods of each type (`-pd`, `-tikv`, and `-tidb`) are in the "Running" state, you can press <kbd>Ctrl</kbd>+<kbd>C</kbd> to get back to the command line and go on to connect to your TiDB cluster.
 
 <details>
 <summary><font color=Blue>Expected output</font></summary>
@@ -529,7 +529,7 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can execute the following commands to verify some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#upgrade-a-tidb-cluster) section).
+After connecting to the cluster, you can execute the following commands to verify some of the functionality available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
 
 <details>
 <summary><font color=Blue>Create a `hello_world` table</font></summary>

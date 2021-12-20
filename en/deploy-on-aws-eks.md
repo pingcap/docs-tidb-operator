@@ -306,7 +306,7 @@ After local-volume-provisioner discovers the local volumes, when you [Deploy a T
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#step-2deploy-tidb-operator) in Getting Started.
+To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#step-2-deploy-tidb-operator) in Getting Started.
 
 ## Deploy a TiDB cluster and the monitoring component
 
