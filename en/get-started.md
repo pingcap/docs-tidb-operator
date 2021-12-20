@@ -612,7 +612,7 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 
 <details>
 <summary><font color=Blue>Query the TiDB cluster information</font></summary>
-(This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#upgrade-a-tidb-cluster).)
+This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -686,7 +686,7 @@ kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "ni
 tidbcluster.pingcap.com/basic patched
 ```
 
-<details>
+</details>
 
 ### Wait for Pods to restart
 
