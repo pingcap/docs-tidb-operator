@@ -14,29 +14,16 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 These are the steps this document follows:
 
-1. [Create a Kubernetes test cluster](#create-a-kubernetes-test-cluster)
-2. [Deploy TiDB Operator](#deploy-tidb-operator)
-3. [Deploy a TiDB cluster and its monitoring services](#deploy-a-tidb-cluster-and-its-monitoring-services)
-4. [Connect to a TiDB cluster](#connect-to-tidb)
-5. [Upgrade a TiDB cluster](#upgrade-a-tidb-cluster)
-6. [Destroy a TiDB cluster](#destroy-a-tidb-cluster)
+1. [Step 1: Create a Kubernetes test cluster](#step-1create-a-kubernetes-test-cluster)
+2. [Step 2: Deploy TiDB Operator](#step-2deploy-tidb-operator)
+3. [Step 3: Deploy a TiDB cluster and its monitoring services](#step-3deploy-a-tidb-cluster-and-its-monitoring-services)
+4. [Step 4: Connect to a TiDB cluster](#step-4connect-to-tidb)
+5. [Step 5: Upgrade a TiDB cluster](#step-5upgrade-a-tidb-cluster)
+6. [Step 6: Destroy a TiDB cluster](#step-6destroy-a-tidb-cluster)
 
 If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
 
-If you want to do a production-grade deployment, refer to one of these resources:
-
-+ On public cloud:
-    - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
-    - [Deploy TiDB on GCP GKE (beta)](deploy-on-gcp-gke.md)
-    - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
-
-+ In a self-managed Kubernetes cluster:
-    - Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
-    - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
-    - [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
-    - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
-
-## Create a Kubernetes test cluster
+## Step 1: Create a Kubernetes test cluster
 
 This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
@@ -231,7 +218,7 @@ To destroy the Kubernetes cluster, run the following command:
 minikube delete
 ```
 
-## Deploy TiDB Operator
+## Step1: Deploy TiDB Operator
 
 Before proceeding, make sure the following requirements are satisfied:
 
@@ -351,7 +338,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 As soon as all Pods are in the "Running" state, proceed to the next step.
 
-## Deploy a TiDB cluster and its monitoring services
+## Step 3: Deploy a TiDB cluster and its monitoring services
 
 This section describes how to deploy a TiDB cluster and its monitoring services.
 
@@ -437,7 +424,7 @@ basic-tidb-0                      2/2     Running   0          7m14s
 basic-tikv-0                      1/1     Running   0          8m13s
 ```
 
-## Connect to TiDB
+## Step 4: Connect to TiDB
 
 Because TiDB supports the MySQL protocol and most of its syntax, you can connect to TiDB using the MySQL client.
 
@@ -542,20 +529,20 @@ After connecting to the cluster, you can execute the following commands to verif
 
 - Query the TiDB version:
 
-    ```sql
-    mysql> select tidb_version()\G
-    *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0
-    Edition: Community
-    Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    Git Branch: heads/refs/tags/v4.0.0
-    UTC Build Time: 2020-05-28 01:37:40
-    GoVersion: go1.13
-    Race Enabled: false
-    TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
-    Check Table Before Drop: false
-    1 row in set (0.00 sec)
-    ```
+```sql
+mysql> select tidb_version()\G
+*************************** 1. row ***************************
+tidb_version(): Release Version: v5.2.1
+Edition: Community
+Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
+Git Branch: heads/refs/tags/v5.2.1
+UTC Build Time: 2021-09-08 02:32:56
+GoVersion: go1.16.4
+Race Enabled: false
+TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+Check Table Before Drop: false
+1 row in set (0.01 sec)
+```
 
 - Query the TiKV store status:
 
@@ -633,7 +620,7 @@ The default username and password in Grafana are both `admin`.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
-## Upgrade a TiDB cluster
+## Step 5: Upgrade a TiDB cluster
 
 TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
@@ -650,7 +637,7 @@ In this case, you can use a JSON merge patch to update the version of the TiDB c
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "release-4.0-nightly"} }'
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "nightly"} }'
 ```
 
 Expected output:
@@ -703,12 +690,12 @@ Expected output:
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v4.0.0-6-gdec49a126
+tidb_version(): Release Version: v5.4.0-alpha-445-g778e188fa
 Edition: Community
-Git Commit Hash: dec49a12654c4f09f6fedfd2a0fb0154fc095449
-Git Branch: release-4.0
-UTC Build Time: 2020-06-01 10:07:32
-GoVersion: go1.13
+Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
+Git Branch: master
+UTC Build Time: 2021-12-17 17:02:49
+GoVersion: go1.16.4
 Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
@@ -716,11 +703,11 @@ Check Table Before Drop: false
 
 > **Note:**
 >
-> `release-4.0-nightly` is not a fixed version. Running the command above at different time might return different results.
+> `nightly` is not a fixed version. Running the command above at different time might return different results.
 
 For more details about upgrading the TiDB cluster running in TiDB Operator, refer to [Upgrade the TiDB cluster](upgrade-a-tidb-cluster.md).
 
-## Destroy a TiDB cluster
+## Step 6: Destroy a TiDB cluster
 
 After you've finished testing, you may wish to destroy the TiDB cluster.
 
@@ -781,9 +768,16 @@ For more information about destroying a TiDB cluster running in TiDB Operator, c
 
 ## What’s next
 
-If you are ready to deploy a TiDB cluster in Kubernetes for the production environment, refer to the following documents:
+If you want to do a production-grade deployment, refer to one of these resources:
 
-- [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
-- [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
-- [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md)
-- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
++ On public cloud:
+    - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
+    - [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md)
+    - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
+    - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+
++ In a self-managed Kubernetes cluster:
+    - Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
+    - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
+    - [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
+    - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)

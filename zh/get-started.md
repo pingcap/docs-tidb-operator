@@ -19,7 +19,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 3. [部署 TiDB 集群和监控](#步骤-3部署-tidb-集群和监控)
 4. [连接 TiDB 集群](#步骤-4连接-tidb-集群)
 5. [升级 TiDB 集群](#步骤-5升级-tidb-集群)
-6. [销毁 TiDB 集群](#步骤-6销毁-tidb-集群和-kubernetes-集群)
+6. [销毁 TiDB 集群和 Kubernetes 集群](#步骤-6销毁-tidb-集群和-kubernetes-集群)
 
 ## 步骤 1：创建 Kubernetes 测试集群
 
