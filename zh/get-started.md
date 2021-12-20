@@ -148,6 +148,7 @@ minikube start
 ```
 
 </code></pre>
+
 </details>
 
 #### 使用 gcr.io mirror 仓库
@@ -645,6 +646,7 @@ STATUS_ADDRESS: 0.0.0.0:20180
 ```
 
 </code></pre>
+
 </details>
 
 ### 访问 Grafana 面板
@@ -752,6 +754,7 @@ Check Table Before Drop: false
 ```
 
 </code></pre>
+
 </details>
 
 ## 步骤 6：销毁 TiDB 集群和 Kubernetes 集群
