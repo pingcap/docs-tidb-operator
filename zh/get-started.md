@@ -640,7 +640,7 @@ TiDB Operator 还可简化 TiDB 集群的滚动升级。以下展示使用 kubec
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "release-4.0-nightly"} }'
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "nightly"} }'
 ```
 
 <details>
