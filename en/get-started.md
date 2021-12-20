@@ -10,7 +10,7 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 > **Warning:**
 >
-> This document is for demonstration purposes only. **Do not** follow it in production environments. For production environments, see the instructions in **Deploy** > **Deploy TiDB Cluster**.
+> This document is for demonstration purposes only. **Do not** follow it in production environments. For production environments, see the instructions in [See also](#see-also).
 
 These are the steps this document follows:
 
@@ -21,18 +21,17 @@ These are the steps this document follows:
 5. [Step 5: Upgrade a TiDB cluster](#step-5upgrade-a-tidb-cluster)
 6. [Step 6: Destroy a TiDB cluster](#step-6destroy-a-tidb-cluster)
 
-If you have already created a Kubernetes cluster, you can skip to step 2, [Deploy TiDB Operator](#deploy-tidb-operator).
-
 ## Step 1: Create a Kubernetes test cluster
 
-This section covers 2 different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
+This section covers two different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
 - [Using kind](#create-a-kubernetes-cluster-using-kind) (Kubernetes in Docker)
 - [Using minikube](#create-a-kubernetes-cluster-using-minikube) (Kubernetes running locally in a VM)
 
-You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the Google Cloud Shell, and follow an integrated tutorial to deploy TiDB Operator and the TiDB cluster:
+You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
-- [Open in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md)
+<SimpleTab>
+<div label="Kind">
 
 ### Create a Kubernetes cluster using kind
 
@@ -59,9 +58,9 @@ The following is an example of using `kind` v0.8.1:
 kind create cluster
 ```
 
-Expected output:
-
-```
+<details>
+<summary><font color=Blue>Expected output</font></summary>
+<pre><code>
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
  ✓ Preparing nodes 📦
@@ -75,7 +74,8 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 
 Thanks for using kind! 😊
-```
+</pre></code>
+</details>
 
 Check whether the cluster is successfully created:
 
@@ -85,24 +85,21 @@ Check whether the cluster is successfully created:
 kubectl cluster-info
 ```
 
-Expected output:
-
-```
+<details>
+<summary><font color=Blue>Expected output</font></summary>
+<pre><code>
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-```
+</code></pre>
+</details>
 
 You're now ready to [deploy TiDB Operator](#deploy-tidb-operator).
 
-To destroy the Kubernetes cluster, run the following command:
+</div>
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-kind delete cluster
-```
+<div label="minikube">
 
 ### Create a Kubernetes cluster using minikube
 
@@ -110,9 +107,9 @@ This section describes how to deploy a Kubernetes cluster using minikube.
 
 [Minikube](https://minikube.sigs.k8s.io/docs/start/) can start a local Kubernetes cluster inside a VM on your laptop. It works on macOS, Linux, and Windows.
 
-> **Warning:**
+> **Note:**
 >
-> The minikube cluster is for test purposes only. **Do not use** it for production.
+> Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and might not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
 Before deployment, make sure the following requirements are satisfied:
 
@@ -120,9 +117,9 @@ Before deployment, make sure the following requirements are satisfied:
     - minikube requires a compatible hypervisor. For details, refer to minikube's installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
-> **Note:**
->
-> Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and might not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
+You can start a Kubernetes cluster directly using minikube start. Mainland China users can mirror the repository through gcr.io. You can also configure an HTTP/HTTPS proxy for Docker. Each of these methods is described below.
+
+### Start a Kubernetes cluster using minikube start
 
 After minikube is installed, execute the following command to start a minikube Kubernetes cluster:
 
@@ -132,6 +129,8 @@ After minikube is installed, execute the following command to start a minikube K
 minikube start
 ```
 
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 You should see output like this, with some differences depending on your OS and hypervisor:
 
 ```
@@ -159,6 +158,10 @@ You should see output like this, with some differences depending on your OS and 
 🏄  Done! kubectl is now configured to use "minikube"
 ```
 
+</details>
+
+#### Use a local gcr.io mirror
+
 If you have trouble accessing Docker Hub, you might use your local gcr.io mirrors such as `registry.cn-hangzhou.aliyuncs.com/google_containers`.
 
 {{< copyable "shell-regular" >}}
@@ -167,7 +170,9 @@ If you have trouble accessing Docker Hub, you might use your local gcr.io mirror
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-Or you can configure HTTP/HTTPS proxy environments in your Docker:
+#### Configure HTTP/HTTPS proxy environments in your Docker
+
+You can configure HTTP/HTTPS proxy environments in your Docker:
 
 {{< copyable "shell-regular" >}}
 
@@ -182,6 +187,8 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 > Because minikube is running on VMs (by default), `127.0.0.1` is the IP address of the VM itself. You might need to modify the proxy to use the real IP address of the host machine in some cases.
 
 See [minikube setup](https://kubernetes.io/docs/setup/minikube/) for more options to configure your virtual machine and Kubernetes cluster.
+
+#### Use `kubectl` to interact with the cluster
 
 To interact with the cluster, you can use `kubectl`, which is included as a sub-command in `minikube`. To make the `kubectl` command available, you can either add the following alias definition command to your shell profile or execute the following alias definition command after opening a new shell.
 
@@ -199,7 +206,8 @@ Execute this command to check the status of your Kubernetes and make sure `kubec
 kubectl cluster-info
 ```
 
-Expect this output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 Kubernetes master is running at https://192.168.64.2:8443
@@ -208,27 +216,19 @@ KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
+</details>
+
 You are now ready to [deploy TiDB Operator](#deploy-tidb-operator).
 
-To destroy the Kubernetes cluster, run the following command:
+</div>
+</SimpleTab>
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-minikube delete
-```
-
-## Step1: Deploy TiDB Operator
-
-Before proceeding, make sure the following requirements are satisfied:
-
-- A running Kubernetes cluster that `kubectl` can connect to
-- [Helm 3](https://helm.sh/docs/intro/install/) is installed
+## Step 2: Deploy TiDB Operator
 
 Deploy TiDB Operator takes two steps:
 
-- [Install TiDB Operator CRDs](#install-tidb-operator-crds)
-- [Install TiDB Operator](#install-tidb-operator)
+1. [Install TiDB Operator CRDs](#install-tidb-operator-crds)
+2. [Install TiDB Operator](#install-tidb-operator)
 
 ### Install TiDB Operator CRDs
 
@@ -242,7 +242,8 @@ Execute this command to install the CRDs into your cluster:
 kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
@@ -254,9 +255,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com creat
 customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
 
+</details>
+
 ### Install TiDB Operator
 
-This section describes how to install TiDB Operator using Helm 3.
+This section describes how to install TiDB Operator using [Helm 3](https://helm.sh/docs/intro/install/).
 
 1. Add the PingCAP repository:
 
@@ -266,11 +269,14 @@ This section describes how to install TiDB Operator using Helm 3.
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-    Expected output:
+    <details>
+    <summary><font color=Blue>Expected output</font></summary>
 
     ```
     "pingcap" has been added to your repositories
     ```
+
+    </details>
 
 2. Create a namespace for TiDB Operator:
 
@@ -280,11 +286,14 @@ This section describes how to install TiDB Operator using Helm 3.
     kubectl create namespace tidb-admin
     ```
 
-    Expected output:
+    <details>
+    <summary><font color=Blue>Expected output</font></summary>
 
     ```
     namespace/tidb-admin created
     ```
+
+    </details>
 
 3. Install TiDB Operator
 
@@ -305,7 +314,8 @@ This section describes how to install TiDB Operator using Helm 3.
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
-    Expected output:
+    <details>
+    <summary><font color=Blue>Expected output</font></summary>
 
     ```
     NAME: tidb-operator
@@ -320,6 +330,8 @@ This section describes how to install TiDB Operator using Helm 3.
         kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
     ```
 
+    </details>
+
 To confirm that the TiDB Operator components are running, execute the following command:
 
 {{< copyable "shell-regular" >}}
@@ -328,13 +340,16 @@ To confirm that the TiDB Operator components are running, execute the following 
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
 tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
 tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
+
+</details>
 
 As soon as all Pods are in the "Running" state, proceed to the next step.
 
@@ -360,27 +375,27 @@ kubectl create namespace tidb-cluster && \
     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 namespace/tidb-cluster created
 tidbcluster.pingcap.com/basic created
 ```
 
-> **Note:**
->
-> If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
+</details>
+
+If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
 ### Deploy TiDB monitoring services
 
 {{< copyable "shell-regular" >}}
 
 ``` shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
-kubectl -n tidb-cluster apply -f tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
-If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
+If you have trouble accessing Docker Hub, you can try images hosted in UCloud:
 
 {{< copyable "shell-regular" >}}
 
@@ -388,11 +403,14 @@ If you have trouble accessing Docker Hub, you can try images hosted in Alibaba C
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 tidbmonitor.pingcap.com/basic created
 ```
+
+</details>
 
 ### View the Pod status
 
@@ -402,7 +420,8 @@ tidbmonitor.pingcap.com/basic created
 watch kubectl get po -n tidb-cluster
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 NAME                              READY   STATUS            RESTARTS   AGE
@@ -411,9 +430,12 @@ basic-monitor-5fc8589c89-2mwx5    0/3     PodInitializing   0          20s
 basic-pd-0                        1/1     Running           0          29s
 ```
 
+</details>
+
 Wait until all Pods for all services are started. As soon as you see Pods of each type (`-pd`, `-tikv`, and `-tidb`) are in the "Running" state, you can press <kbd>Ctrl</kbd>+<kbd>C</kbd> to get back to the command line and go on to [connect to your TiDB cluster](#connect-to-tidb).
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -423,6 +445,8 @@ basic-pd-0                        1/1     Running   0          9m8s
 basic-tidb-0                      2/2     Running   0          7m14s
 basic-tikv-0                      1/1     Running   0          8m13s
 ```
+
+</details>
 
 ## Step 4: Connect to TiDB
 
@@ -444,7 +468,8 @@ First, get a list of services in the `tidb-cluster` namespace:
 kubectl get svc -n tidb-cluster
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
@@ -458,6 +483,8 @@ basic-tidb               ClusterIP   10.99.24.91      <none>        4000/TCP,100
 basic-tidb-peer          ClusterIP   None             <none>        10080/TCP            8m40s
 basic-tikv-peer          ClusterIP   None             <none>        20160/TCP            9m39s
 ```
+
+</details>
 
 In this case, the TiDB **service** is called **basic-tidb**. Run the following command to forward this port from the local host to the cluster:
 
@@ -481,7 +508,8 @@ This command runs in the background and writes its output to a file called `pf40
 mysql --comments -h 127.0.0.1 -P 4000 -u root
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -499,35 +527,41 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
+</details>
+
 After connecting to the cluster, you can execute the following commands to verify some of the functionality available in TiDB. (Some of these require TiDB 4.0; if you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#upgrade-a-tidb-cluster) section).
 
-- Create a `hello_world` table:
+<details>
+<summary><font color=Blue>Create a `hello_world` table</font></summary>
 
-    ```sql
-    mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-    Query OK, 0 rows affected (0.17 sec)
+```sql
+mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
+Query OK, 0 rows affected (0.17 sec)
 
-    mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-    *************************** 1. row ***************************
-           REGION_ID: 2
-           START_KEY: 7480000000000000FF3700000000000000F8
-             END_KEY:
-            TABLE_ID: 55
-             DB_NAME: test
-          TABLE_NAME: hello_world
-            IS_INDEX: 0
-            INDEX_ID: NULL
-          INDEX_NAME: NULL
-      EPOCH_CONF_VER: 5
-       EPOCH_VERSION: 23
-       WRITTEN_BYTES: 0
-          READ_BYTES: 0
-    APPROXIMATE_SIZE: 1
-    APPROXIMATE_KEYS: 0
-    1 row in set (0.03 sec)
-    ```
+mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
+*************************** 1. row ***************************
+       REGION_ID: 2
+       START_KEY: 7480000000000000FF3700000000000000F8
+         END_KEY:
+        TABLE_ID: 55
+         DB_NAME: test
+      TABLE_NAME: hello_world
+        IS_INDEX: 0
+        INDEX_ID: NULL
+      INDEX_NAME: NULL
+  EPOCH_CONF_VER: 5
+   EPOCH_VERSION: 23
+   WRITTEN_BYTES: 0
+      READ_BYTES: 0
+APPROXIMATE_SIZE: 1
+APPROXIMATE_KEYS: 0
+1 row in set (0.03 sec)
+```
 
-- Query the TiDB version:
+</details>
+
+<details>
+<summary><font color=Blue>Query the TiDB version</font></summary>
 
 ```sql
 mysql> select tidb_version()\G
@@ -544,65 +578,72 @@ Check Table Before Drop: false
 1 row in set (0.01 sec)
 ```
 
-- Query the TiKV store status:
+</details>
 
-    ```sql
-    mysql> select * from information_schema.tikv_store_status\G
-    *************************** 1. row ***************************
-             STORE_ID: 4
-              ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-          STORE_STATE: 0
-     STORE_STATE_NAME: Up
-                LABEL: null
-              VERSION: 4.0.0
-             CAPACITY: 58.42GiB
-            AVAILABLE: 36.18GiB
-         LEADER_COUNT: 3
-        LEADER_WEIGHT: 1
-         LEADER_SCORE: 3
-          LEADER_SIZE: 3
-         REGION_COUNT: 21
-        REGION_WEIGHT: 1
-         REGION_SCORE: 21
-          REGION_SIZE: 21
-             START_TS: 2020-05-28 22:48:21
-    LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-               UPTIME: 3m40.598302151s
-    1 rows in set (0.01 sec)
-    ```
+<details>
+<summary><font color=Blue>Query the TiKV store status</font></summary>
 
-- Query the TiDB cluster information:
+```sql
+mysql> select * from information_schema.tikv_store_status\G
+*************************** 1. row ***************************
+         STORE_ID: 4
+          ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+      STORE_STATE: 0
+ STORE_STATE_NAME: Up
+            LABEL: null
+          VERSION: 4.0.0
+         CAPACITY: 58.42GiB
+        AVAILABLE: 36.18GiB
+     LEADER_COUNT: 3
+    LEADER_WEIGHT: 1
+     LEADER_SCORE: 3
+      LEADER_SIZE: 3
+     REGION_COUNT: 21
+    REGION_WEIGHT: 1
+     REGION_SCORE: 21
+      REGION_SIZE: 21
+         START_TS: 2020-05-28 22:48:21
+LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
+           UPTIME: 3m40.598302151s
+1 rows in set (0.01 sec)
+```
 
-    (This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#upgrade-a-tidb-cluster).)
+</details>
 
-    ```sql
-    mysql> select * from information_schema.cluster_info\G
-    *************************** 1. row ***************************
-              TYPE: tidb
-          INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-    STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-           VERSION: 5.7.25-TiDB-v4.0.0
-          GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-        START_TIME: 2020-05-28T22:50:11Z
-            UPTIME: 3m21.459090928s
-    *************************** 2. row ***************************
-              TYPE: pd
-          INSTANCE: basic-pd:2379
-    STATUS_ADDRESS: basic-pd:2379
-           VERSION: 4.0.0
-          GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-        START_TIME: 2020-05-28T22:45:04Z
-            UPTIME: 8m28.459091915s
-    *************************** 3. row ***************************
-              TYPE: tikv
-          INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-    STATUS_ADDRESS: 0.0.0.0:20180
-           VERSION: 4.0.0
-          GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-        START_TIME: 2020-05-28T22:48:21Z
-            UPTIME: 5m11.459102648s
-    3 rows in set (0.01 sec)
-    ```
+<details>
+<summary><font color=Blue>Query the TiDB cluster information</font></summary>
+(This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#upgrade-a-tidb-cluster).)
+
+```sql
+mysql> select * from information_schema.cluster_info\G
+*************************** 1. row ***************************
+          TYPE: tidb
+      INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
+STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
+       VERSION: 5.7.25-TiDB-v4.0.0
+      GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
+    START_TIME: 2020-05-28T22:50:11Z
+        UPTIME: 3m21.459090928s
+*************************** 2. row ***************************
+          TYPE: pd
+      INSTANCE: basic-pd:2379
+STATUS_ADDRESS: basic-pd:2379
+       VERSION: 4.0.0
+      GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
+    START_TIME: 2020-05-28T22:45:04Z
+        UPTIME: 8m28.459091915s
+*************************** 3. row ***************************
+          TYPE: tikv
+      INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+STATUS_ADDRESS: 0.0.0.0:20180
+       VERSION: 4.0.0
+      GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
+    START_TIME: 2020-05-28T22:48:21Z
+        UPTIME: 5m11.459102648s
+3 rows in set (0.01 sec)
+```
+
+</details>
 
 ### Access Grafana dashboard
 
@@ -614,9 +655,7 @@ You can forward the port for Grafana so that you can access Grafana dashboard lo
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. Note that if you are not running `kubectl` on the same host (for example, in a Docker container or on a remote host), you cannot access Grafana dashboard at <http://localhost:3000> from your browser.
-
-The default username and password in Grafana are both `admin`.
+You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`. Note that if you are not running `kubectl` on the same host (for example, in a Docker container or on a remote host), you cannot access Grafana dashboard at <http://localhost:3000> from your browser.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
@@ -640,15 +679,18 @@ In this case, you can use a JSON merge patch to update the version of the TiDB c
 kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "nightly"} }'
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 tidbcluster.pingcap.com/basic patched
 ```
 
+<details>
+
 ### Wait for Pods to restart
 
-To follow the progress of the cluster as its components are upgraded, execute the following command. You should see some Pods transiting to "Terminating" and then back to "ContainerCreating" and then to "Running". Note that the value in the "AGE" pod column to see which pods have restarted.
+To follow the progress of the cluster as its components are upgraded, execute the following command. You should see some Pods transiting to `Terminating` and then back to `ContainerCreating` and then to `Running`. Note that the value in the `AGE` pod column to see which pods have restarted.
 
 {{< copyable "shell-regular" >}}
 
@@ -656,7 +698,8 @@ To follow the progress of the cluster as its components are upgraded, execute th
 watch kubectl get po -n tidb-cluster
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -665,6 +708,8 @@ basic-pd-0                        1/1     Terminating   0          5m31s
 basic-tidb-0                      2/2     Running       0          2m19s
 basic-tikv-0                      1/1     Running       0          4m13s
 ```
+
+</details>
 
 ### Forward the TiDB service port
 
@@ -686,7 +731,9 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
-Expected output:
+<details>
+<summary><font color=Blue>Expected output</font></summary>
+`nightly` is not a fixed version. Running the command above at different time might return different results.
 
 ```
 *************************** 1. row ***************************
@@ -701,21 +748,17 @@ TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 ```
 
-> **Note:**
->
-> `nightly` is not a fixed version. Running the command above at different time might return different results.
+</details>
 
-For more details about upgrading the TiDB cluster running in TiDB Operator, refer to [Upgrade the TiDB cluster](upgrade-a-tidb-cluster.md).
+## Step 6: Destroy the TiDB cluster the Kubernetes cluster
 
-## Step 6: Destroy a TiDB cluster
+After you've finished testing, you can destroy the TiDB cluster and the Kubernetes cluster.
 
-After you've finished testing, you may wish to destroy the TiDB cluster.
+### Destroy the TiDB cluster
 
-Instructions for destroying the Kubernetes cluster depend on how the cluster is created. Refer to [Create a Kubernetes test cluster](#create-a-kubernetes-test-cluster) for more details.
+This section introduces how to destroy the TiDB cluster.
 
-The following steps show how to destroy the TiDB cluster, but do not affect the Kubernetes cluster itself.
-
-### Delete the TiDB cluster
+#### Delete the TiDB cluster
 
 {{< copyable "shell-regular" >}}
 
@@ -725,7 +768,7 @@ kubectl delete tc basic -n tidb-cluster
 
 The `tc` in this command is a short name for tidbclusters.
 
-### Delete TiDB monitoring services
+#### Delete TiDB monitoring services
 
 {{< copyable "shell-regular" >}}
 
@@ -733,7 +776,7 @@ The `tc` in this command is a short name for tidbclusters.
 kubectl delete tidbmonitor basic -n tidb-cluster
 ```
 
-### Delete PV data
+#### Delete PV data
 
 If your deployment has persistent data storage, deleting the TiDB cluster does not remove the cluster's data. If you do not need the data anymore, run the following commands to clean the data and the dynamically created persistent disks:
 
@@ -744,7 +787,7 @@ kubectl delete pvc -n tidb-cluster -l app.kubernetes.io/instance=basic,app.kuber
 kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=basic -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```
 
-### Delete namespaces
+#### Delete namespaces
 
 To make sure there are no lingering resources, you can delete the namespace used for your TiDB cluster.
 
@@ -754,7 +797,7 @@ To make sure there are no lingering resources, you can delete the namespace used
 kubectl delete namespace tidb-cluster
 ```
 
-### Stop `kubectl` port forwarding
+#### Stop `kubectl` port forwarding
 
 If you still have running `kubectl` processes that are forwarding ports, end them:
 
@@ -764,20 +807,50 @@ If you still have running `kubectl` processes that are forwarding ports, end the
 pgrep -lfa kubectl
 ```
 
-For more information about destroying a TiDB cluster running in TiDB Operator, consult [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md).
+### Destroy the Kubernetes cluster
 
-## What’s next
+The method of destroying a Kubernetes cluster depends on how you create it. Here are the steps for destroying a Kubernetes cluster.
 
-If you want to do a production-grade deployment, refer to one of these resources:
+<SimpleTab>
+<div label="kind">
 
-+ On public cloud:
-    - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
-    - [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md)
-    - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
-    - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+If you use kind to create the Kubernetes cluster, run the following command to destroy it:
 
-+ In a self-managed Kubernetes cluster:
-    - Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
-    - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
-    - [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
-    - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
+{{< copyable "shell-regular" >}}
+
+``` shell
+kind delete cluster
+```
+
+</div>
+
+<div label="minikube">
+
+If you use minikube to create the Kubernetes cluster, run the following command to destroy it:
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+minikube delete
+```
+
+</div>
+</SimpleTab>
+
+## See also
+
+If you want to do a production-grade deployment, refer to the following resources:
+
+On public cloud:
+
+- [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
+- [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md)
+- [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
+- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+
+In a self-managed Kubernetes cluster:
+
+- Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
+- [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
+- [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
+- [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)

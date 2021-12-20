@@ -214,7 +214,10 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 ## 步骤 2：部署 TiDB Operator
 
-部署 TiDB Operator 的过程分为两步：安装 TiDB Operator CRDs、安装 TiDB Operator。
+部署 TiDB Operator 的过程分为两步：
+
+1. 安装 TiDB Operator CRDs
+2. 安装 TiDB Operator。
 
 ### 安装 TiDB Operator CRDs
 
@@ -490,7 +493,7 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MySQL [(none)]> 
+MySQL [(none)]>
 ```
 
 </details>
@@ -714,9 +717,11 @@ Check Table Before Drop: false
 
 ## 步骤 6：销毁 TiDB 集群和 Kubernetes 集群
 
+完成测试后，你可能希望销毁 TiDB 集群和 Kubernetes 集群。
+
 ### 销毁 TiDB 集群
 
-完成测试后，你可能希望销毁 TiDB 集群。
+销毁 TiDB 集群的步骤如下。
 
 #### 删除 TiDB Cluster
 
