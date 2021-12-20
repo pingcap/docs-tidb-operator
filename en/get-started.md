@@ -19,7 +19,7 @@ These are the steps this document follows:
 3. [Step 3: Deploy a TiDB cluster and its monitoring services](#step-3-deploy-a-tidb-cluster-and-its-monitoring-services)
 4. [Step 4: Connect to a TiDB cluster](#step-4-connect-to-tidb)
 5. [Step 5: Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
-6. [Step 6: Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-Kubernetes-cluster)
+6. [Step 6: Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
 
 ## Step 1: Create a Kubernetes test cluster
 
