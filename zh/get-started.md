@@ -25,8 +25,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
-- [使用 kind](#使用-kind-创建-kubernetes-集群) (在 Docker 中运行 Kubernetes) 这是目前比较通用的部署方式。
-- [使用 minikube](#使用-minikube-创建-kubernetes-集群) (在虚拟机中运行 Kubernetes)
+- [使用 kind](#使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
+- [使用 minikube](#使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
 
@@ -99,7 +99,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 > **注意：**
 >
-> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑使用 kind 创建 Kubernetes 集群。
+> - 尽管 minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚未针对 TiDB Operator 做全面的测试，所以 TiDB Operator 可能会无法正常工作。如果你想在不支持虚拟化的系统（例如 VPS）上试用 TiDB Operator，可以考虑使用 kind 创建 Kubernetes 集群。
 
 部署前，请确保满足以下要求：
 
@@ -108,7 +108,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库，或者为 Docker 配置 HTTP/HTTPS 代理。以下分别对这几种方法进行介绍。
 
-#### 使用 minikube start 直接启动
+#### 使用 minikube start 启动 Kubernetes 集群
 
 安装完 minikube 后，可以执行下面命令启动 Kubernetes 集群：
 
@@ -148,7 +148,7 @@ minikube start
 
 </details>
 
-#### 使用 gcr.io mirror 仓库
+#### 使用 gcr.io mirror 仓库启动 Kubernetes 集群
 
 中国大陆用户可以使用国内 gcr.io mirror 仓库，例如 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
 
@@ -158,7 +158,7 @@ minikube start
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-#### 为 Docker 配置 HTTP/HTTPS 代理
+#### 通过 Docker HTTP/HTTPS 代理启动 Kubernetes 集群
 
 你也可以给 Docker 配置 HTTP/HTTPS 代理来启动 Kubernetes 集群。
 
@@ -421,7 +421,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 </details>
 
-等待所有组件 Pods 都启动，看到每种类型（`pd`、`tikv` 和 `tidb`）都处于 Running 状态时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
+所有组件的 Pod 都启动后，每种类型组件（`pd`、`tikv` 和 `tidb`）都会处于 Running 状态。此时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
 
 ## 步骤 4：连接 TiDB 集群
 
@@ -429,11 +429,12 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 ### 安装 `mysql` 命令行工具
 
-要连接到 TiDB，你需要在使用 `kubectl` 的主机上安装与 MySQL 兼容的命令行客户端。可以安装 MySQL Server，MariaDB Server，Percona Server 的 mysql 可执行文件，也可以从操作系统软件仓库中安装。
+要连接到 TiDB，你需要在使用 `kubectl` 的主机上安装与 MySQL 兼容的命令行客户端。可以安装 MySQL Server、MariaDB Server 和 Percona Server 的 MySQL 可执行文件，也可以从操作系统软件仓库中安装。
 
 ### 转发 TiDB 服务 4000 端口
 
-首先，将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。先获取 tidb-cluster 命名空间中的服务列表：
+本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。
+首先，获取 tidb-cluster 命名空间中的服务列表：
 
 {{< copyable "shell-regular" >}}
 
@@ -459,7 +460,9 @@ basic-tikv-peer          ClusterIP   None             <none>        20160/TCP   
 
 </details>
 
-这个例子中，TiDB **Service** 是 **basic-tidb**。使用以下命令转发本地端口到集群：
+这个例子中，TiDB **Service** 是 **basic-tidb**。
+
+然后，使用以下命令转发本地端口到集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -467,7 +470,7 @@ basic-tikv-peer          ClusterIP   None             <none>        20160/TCP   
 kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
 ```
 
-命令会运行在后台，并将输出转发到文件 `pf4000.out`。所以你可以继续在当前 shell 会话中执行命令。
+命令会在后台运行，并将输出转发到文件 `pf4000.out`。所以，你可以继续在当前 shell 会话中执行命令。
 
 ### 连接 TiDB 服务
 
@@ -581,7 +584,7 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 
 <details>
 <summary><font color=Blue>查询 TiDB 集群基本信息</font></summary>
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#升级-tidb-集群)。
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#步骤-5升级-tidb-集群)。
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -698,7 +701,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary><font color=Blue>点击查看期望输出</font></summary>
-注意 `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
+注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
 *************************** 1. row ***************************
