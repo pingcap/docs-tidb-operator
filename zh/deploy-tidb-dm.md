@@ -96,10 +96,11 @@ spec:
 
 配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
 
+另外，配置 `topologySpreadConstraints`，需要使用 `default-scheduler` 而不能使用 `tidb-scheduler`，详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
+
 > **注意：**
 >
 > 配置 `topologySpreadConstraints` 前，你需要开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或者 `EvenPodsSpread` feature gate 未开启，`topologySpreadConstraints` 的配置将不会生效。
-> 如果 Kubernetes 版本 >= v1.18 && < v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) 已开启或者 Kubernetes 版本 >= v1.19，不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`，并为组件配置 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布) 即可实现 `tidb-scheduler` 的均匀调度功能。
 
 `topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
 

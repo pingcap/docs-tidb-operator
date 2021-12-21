@@ -32,10 +32,8 @@ The following components are responsible for the orchestration and scheduling lo
 
 > **Note:**
 >
-> You can directly use `default-scheduler` instead of `tidb-scheduler`, if your cluster meets either of the following situations:
->
-> - v1.18 <= your Kubernetes version < v1.19, and [the `EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) is enabled.
-> - Your Kubernetes version >= v1.19.
+> `tidb-scheduler` is not mandatory, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) for details.
+
 ## Control flow
 
 The following diagram is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR. 

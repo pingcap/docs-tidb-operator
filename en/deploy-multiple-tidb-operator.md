@@ -7,12 +7,13 @@ summary: Learn how to deploy multiple sets of TiDB Operator to manage different 
 
 This document describes how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
+When using TiDB Operator, `tidb-scheduler` is not necessary, you can refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`. If you don't need it, you can configure `scheduler.create: false` in the `values.yaml` file to not deploy `tidb-scheduler` during the deployment of TiDB Operator.
+
 > **Note:**
 >
 > - Currently, you can only deploy multiple sets of `tidb-controller-manager` and `tidb-scheduler`. Deploying multiple sets of AdvancedStatefulSet controller and `tidb-admission-webhook` is not supported.
 > - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
 > - This feature is supported since v1.1.10.
-> - If Kubernetes version >= v1.18 && <v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) is enabled or Kubernetes version >= v1.19, no need to use `tidb-scheduler`. Using `default-scheduler` and configuring [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) can realize the function of `tidb-scheduler`. In the process of deploying TiDB Operator, you can configure `scheduler.create: false` in the `values.yaml` file to disable `tidb-scheduler`.
 
 ## Related parameters
 

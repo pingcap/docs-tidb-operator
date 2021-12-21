@@ -82,7 +82,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 创建 CRDs 之后，在 Kubernetes 集群上部署 TiDB Operator有两种方式：在线和离线部署。
 
-如果 Kubernetes 版本 >= v1.18 && < v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) 已开启或者 Kubernetes 版本 >= v1.19，不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`，并为组件配置 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布) 即可实现 `tidb-scheduler` 的功能。在部署 TiDB Operator 过程中，可以通过在 `values.yaml` 文件中配置 `scheduler.create: false` 不部署 `tidb-scheduler`。
+TiDB Operator 使用过程中，`tidb-scheduler` 并不是必须使用，可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler) 确认是否需要部署 `tidb-scheduler`。如果不需要，在部署 TiDB Operator 过程中，可以通过在 `values.yaml` 文件中配置 `scheduler.create: false` 不部署 `tidb-scheduler`。
 
 #### 在线部署 TiDB Operator
 
