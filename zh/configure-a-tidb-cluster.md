@@ -346,8 +346,9 @@ spec:
 
 > **注意：**
 > 
-> 对于以下情况，请显示设置 `maxFailoverCount: 0`：
-> - 如果集群中没有足够的资源以供 TiDB Operator 扩容新 Pod，否则扩容出的 Pod 会处于 Pending 状态。
+> 对于以下情况，请显式设置 `maxFailoverCount: 0`：
+>
+> - 集群中没有足够的资源以供 TiDB Operator 扩容新 Pod。该情况下，扩容出的 Pod 会处于 Pending 状态。
 > - 不希望开启故障自动转移功能。
 
 ### 配置 TiDB 平滑升级

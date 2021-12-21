@@ -27,8 +27,14 @@ TiDB 集群的编排和调度逻辑则由下列组件负责：
 
 * `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态，并根据其他 CR 完成相应的控制逻辑；
 * `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiDB 集群特有的调度逻辑。
-  * 如果 Kubernetes 版本 >= v1.18 && < v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) 已开启或者 Kubernetes 版本 >= v1.19，不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`。
 * `tidb-admission-webhook` 是一个 Kubernetes 动态准入控制器，完成 Pod、StatefulSet 等相关资源的修改、验证与运维。
+
+> **注意：**
+>
+> 如果你的 Kubernetes 集群满足以下任一条件，则不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`：
+> 
+> - v1.18 <= Kubernetes 版本 < v1.19，且已开启 [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
+> - Kubernetes 版本 >= v1.19。
 
 ## 流程解析
 

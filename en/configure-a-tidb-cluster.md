@@ -361,10 +361,10 @@ To avoid that the automatic failover feature creates too many Pods, you can conf
 
 > **Note:**
 >
-> For the following cases, please configure `maxFailoverCount: 0` explicitly:
+> For the following cases, configure `maxFailoverCount: 0` explicitly:
 >
-> - If there are not enough resources in the Kubernetes cluster for TiDB Operator to scale out the new Pod, otherwise the new Pod will be in the Pending state.
-> - Do not want to enable the automatic failover function.
+> - The Kubernetes cluster does not have enough resources for TiDB Operator to scale out the new Pod. In such cases, the new Pod will be in the Pending state.
+> - You do not want to enable the automatic failover function.
 
 ### Configure graceful upgrade for TiDB cluster 
 

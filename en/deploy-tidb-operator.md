@@ -100,8 +100,6 @@ If Kubernetes version >= v1.18 && <v1.19 && [`EvenPodsSpread` feature gate](http
 
 2. Configure TiDB Operator
 
-    If you need to deploy `tidb-scheduler`, TiDB Operator will use the `k8s.gcr.io/kube-scheduler` image. If you cannot download the image, you can modify the `scheduler.kubeSchedulerImageName` in the `${HOME}/tidb-operator/values-tidb-operator.yaml` file to `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`.
-
     TiDB Operator manages all TiDB clusters in the Kubernetes cluster by default. If you only need it to manage clusters in a specific namespace, you can set `clusterScoped: false` in `values.yaml`.
 
     > **Note:**
@@ -204,7 +202,7 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
 
 3. Configure TiDB Operator
 
-    TiDB Operator embeds a `kube-scheduler` to implement a custom scheduler, if you need to deploy `tidb-scheduler`, modify the `./tidb-operator/values.yaml` file to configure the Docker image's name and version of this built-in `kube-scheduler` component. For example, if `kube-scheduler` in your Kubernetes cluster uses the image `k8s.gcr.io/kube-scheduler:v1.16.9`, set `./tidb-operator/values.yaml` as follows:
+    TiDB Operator embeds a `kube-scheduler` to implement a custom scheduler. If you need to deploy `tidb-scheduler`, modify the `./tidb-operator/values.yaml` file to configure the Docker image's name and version of this built-in `kube-scheduler` component. For example, if `kube-scheduler` in your Kubernetes cluster uses the image `k8s.gcr.io/kube-scheduler:v1.16.9`, set `./tidb-operator/values.yaml` as follows:
 
     ```shell
     ...
