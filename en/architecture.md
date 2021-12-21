@@ -32,11 +32,11 @@ The following components are responsible for the orchestration and scheduling lo
 
 > **Note:**
 >
-> `tidb-scheduler` is not mandatory, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) for details.
+> `tidb-scheduler` is not mandatory. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) for details.
 
 ## Control flow
 
-The following diagram is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR. 
+The following diagram is the analysis of the control flow of TiDB Operator. Starting from TiDB Operator v1.1, the TiDB cluster, monitoring, initialization, backup, and other components are deployed and managed using CR.
 
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow-1.1.png)
 

@@ -7,7 +7,7 @@ summary: Learn how to deploy multiple sets of TiDB Operator to manage different 
 
 This document describes how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
-When using TiDB Operator, `tidb-scheduler` is not necessary, you can refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`. If you don't need it, you can configure `scheduler.create: false` in the `values.yaml` file to not deploy `tidb-scheduler` during the deployment of TiDB Operator.
+When you use TiDB Operator, `tidb-scheduler` is not necessary. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`.
 
 > **Note:**
 >
@@ -103,7 +103,7 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
       - user=qa
     appendReleaseSuffix: true
     scheduler:
-      create: false
+      create: false # If you do not need tidb-scheduler, set this value to false.
     advancedStatefulset:
       create: false
     admissionWebhook:
