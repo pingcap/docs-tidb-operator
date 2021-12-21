@@ -5,7 +5,7 @@ summary: 了解如何修改部署在 Kubernetes 上的 TiDB 的集群配置。
 
 # 修改 TiDB 集群配置
 
-TiDB 集群自身支持通过 SQL 对各组件进行[在线配置变更](https://docs.pingcap.com/zh/tidb/stable/dynamic-config)，无需重启集群组件。但是，对于部署在 Kubernetes 中的 TiDB 集群，部分组件在升级后，配置项会被 TidbCluster CR 中的配置项覆盖，导致在线变更的配置失效。
+TiDB 集群自身支持通过 SQL 对各组件进行[在线配置变更](https://docs.pingcap.com/zh/tidb/stable/dynamic-config)，无需重启集群组件。但是，对于部署在 Kubernetes 中的 TiDB 集群，部分组件在升级或者重启后，配置项会被 TidbCluster CR 中的配置项覆盖，导致在线变更的配置失效。
 
 本文介绍如何修改部署在 Kubernetes 上的 TiDB 的集群配置。由于 PD 的特殊性，需要分别对 PD 和其他组件进行配置。
 
