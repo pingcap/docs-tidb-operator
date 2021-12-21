@@ -39,4 +39,4 @@ TiDB 集群自身支持通过 SQL 对各组件进行[在线配置变更](https:/
 
 PD 中[支持在线修改的配置项](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)里，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过 TidbCluster CR 进行修改。
 
-对于部署在 Kubernetes 中的 TiDB 集群，如需修改 PD 配置参数，需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。//TODO：提供 SQL、pd-ctl 或 PD server API 的使用方式或文档链接
+对于部署在 Kubernetes 中的 TiDB 集群，如需修改 PD 配置参数，需要使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config/#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/zh/tidb/dev/pd-control/#config-show--set-option-value--placement-rules) 或 PD server API 来动态进行修改。

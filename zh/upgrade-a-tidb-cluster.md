@@ -73,7 +73,7 @@ Kubernetes 提供[滚动更新功能](https://kubernetes.io/docs/tutorials/kuber
     kubectl annotate --overwrite tc ${cluster_name} -n ${namespace} tidb.pingcap.com/force-upgrade=true
     ```
 
-2. 修改 PD 相关配置，确保 PD 进入正常状态。// TODO：这里是否要 refer 到[修改 TiDB 集群配置](zh/modify-tidb-configuration.md) 这个文档？
+2. 修改 PD 相关配置，确保 PD 进入正常状态。
 
 3. 修复 PD 配置后，**必须**执行下面命令，禁用强制升级功能，否则下次升级过程可能会出现异常：
 
