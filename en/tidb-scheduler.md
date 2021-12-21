@@ -7,13 +7,26 @@ summary: Learn what is TiDB Scheduler and how it works.
 
 TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md). TiDB Scheduler is used to add new scheduling rules to Kubernetes. This document introduces these new scheduling rules and how TiDB Scheduler works.
 
+## tidb-scheduler and default-scheduler
+
+A [kube-scheduler](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/kube-scheduler/) will be deployed by default in the Kubernetes cluster for Pod scheduling. The default scheduler name is `default-scheduler`.
+
+In the early Kubernetes versions, the `default-scheduler` was not flexible enough to support Pod even scheduling. Therefore, we implemented the TiDB Scheduler named `tidb-scheduler` to extend the scheduling rules of the `default-scheduler` to support even scheduling for the TiDB cluster Pods.
+
+Starting from Kubernetes v1.16, the `default-scheduler` has introduced the [`EvenPodsSpread` feature](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) to control how Pods are spread across your Kubernetes cluster among failure-domains, which is beta in v1.18, and officially GA in v1.19.
+
+Therefore, if the Kubernetes cluster meets one of the following conditions, you do not need to use `tidb-scheduler`, use `default-scheduler` directly, and configure the [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) to make pods evenly spread in different topologies.
+
+- Kubernetes version v1.18.x and [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/) has been enabled.
+- Kubernetes version >= v1.19.
+
 > **Note:**
 >
-> If Kubernetes version >= v1.18 && <v1.19 && [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) is enabled or Kubernetes version >= v1.19, no need to use `tidb-scheduler`. Using `default-scheduler` and configuring [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) can realize the function of `tidb-scheduler`.
+> Updating the existing TiDB clusters from using `tidb-scheduler` to using `default-scheduler` will trigger rolling update of the TiDB clusters.
 
 ## TiDB cluster scheduling requirements
 
-A TiDB cluster includes three key components: PD, TiKV, and TiDB. Each consists of multiple nodes: PD is a Raft cluster, and TiKV is a multi-Raft group cluster. PD and TiKV components are stateful. If the `EvenPodsSpread` feature gate is not enabled, the default scheduling rules of the Kubernetes scheduler cannot meet the high availability scheduling requirements of the TiDB cluster, so the Kubernetes scheduling rules need to be extended.
+A TiDB cluster includes three key components: PD, TiKV, and TiDB. Each consists of multiple nodes: PD is a Raft cluster, and TiKV is a multi-Raft group cluster. PD and TiKV components are stateful. If the `EvenPodsSpread` feature gate is not enabled in the Kubernetes cluster, the default scheduling rules of the Kubernetes scheduler cannot meet the high availability scheduling requirements of the TiDB cluster, so the Kubernetes scheduling rules need to be extended.
 
 Currently, pods can be scheduled according to specific dimensions by modifying `metadata.annotations` in TidbCluster, such as:
 

@@ -31,10 +31,7 @@ TiDB 集群的编排和调度逻辑则由下列组件负责：
 
 > **注意：**
 >
-> 如果你的 Kubernetes 集群满足以下任一条件，则不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`：
-> 
-> - v1.18 <= Kubernetes 版本 < v1.19，且已开启 [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
-> - Kubernetes 版本 >= v1.19。
+> `tidb-scheduler` 并不是必须使用，详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
 
 ## 流程解析
 
