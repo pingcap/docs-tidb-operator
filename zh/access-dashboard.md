@@ -11,7 +11,6 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 - 在测试环境中，你可以[通过端口转发访问 TiDB Dashboard](#方法-1-通过端口转发访问-tidb-dashboard)。
 - 在生产环境中，推荐[通过 Ingress 访问 TiDB Dashboard](#方法-2-通过-ingress-访问-tidb-dashboard)，并选择开启 TLS 加密传输，见[使用 Ingress 并开启 TLS](#使用-ingress-并开启-tls)。
 - 如果需要使用非域名的方式访问 TiDB Dashboard，可以选择[使用 NodePort Service](#方法-3-使用-nodeport-service)。
-- 如果需要已经运行的 TiDB 集群上开启快捷访问 TiDB Dashboard 功能，参见[更新 TiDB 集群](#方法-4-更新-tidb-集群)。
 
 > **注意：**
 >
@@ -191,21 +190,6 @@ spec:
 当 `Service` 部署完成后，可以通过 <https://{nodeIP}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
 
 需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
-
-## 方法 4. 更新 TiDB 集群
-
-如果你是在一个已经运行的 TiDB 集群上进行更新来开启快捷访问 `Dashboard` 功能，以下两项配置都需要更新:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  configUpdateStrategy: RollingUpdate
-  pd:
-    enableDashboardInternalProxy: true
-```
 
 ## TiDB Operator 中不支持的 Dashboard 功能
 
