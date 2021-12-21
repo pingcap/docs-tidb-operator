@@ -170,24 +170,6 @@ If you have trouble accessing Docker Hub, you might use your local gcr.io mirror
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-#### Configure HTTP/HTTPS proxy environments in your Docker
-
-You can configure HTTP/HTTPS proxy environments in your Docker:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-# change 127.0.0.1:1086 to your http/https proxy server IP:PORT
-minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
-    --docker-env http_proxy=http://127.0.0.1:1086
-```
-
-> **Note:**
->
-> Because minikube is running on VMs (by default), `127.0.0.1` is the IP address of the VM itself. You might need to modify the proxy to use the real IP address of the host machine in some cases.
-
-See [minikube setup](https://kubernetes.io/docs/setup/minikube/) for more options to configure your virtual machine and Kubernetes cluster.
-
 #### Use `kubectl` to interact with the cluster
 
 To interact with the cluster, you can use `kubectl`, which is included as a sub-command in `minikube`. To make the `kubectl` command available, you can either add the following alias definition command to your shell profile or execute the following alias definition command after opening a new shell.
