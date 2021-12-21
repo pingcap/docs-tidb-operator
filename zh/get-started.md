@@ -95,7 +95,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
 ### 使用 minikube 创建 Kubernetes 集群
 
-[minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群，可在 macOS, Linux 和 Windows 上运行。
+[minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群。minikube 可在 macOS, Linux 和 Windows 上运行。
 
 > **注意：**
 >
