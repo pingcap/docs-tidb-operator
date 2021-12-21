@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 ## 前置检查
 
-升级 TiDB Operator 前，确保当前 Helm 支持你需要升级的 TiDB Operator 版本。通过以下命令查看 Helm 支持的 TiDB Operator 版本：
+升级 TiDB Operator 前，确保 Helm repo 包含你需要升级的 TiDB Operator 版本。通过以下命令查看 Helm repo 包含的 TiDB Operator 版本：
 
 {{< copyable "shell-regular" >}}
 
@@ -33,7 +33,7 @@ helm search repo -l tidb-operator
     kubectl get crd tidbclusters.pingcap.com
     ```
 
-    本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorImage}` 为你要升级到的 TiDB Operator 版本。
+    本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorVersion}` 为你要升级到的 TiDB Operator 版本。
 
 2. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -91,7 +91,7 @@ helm search repo -l tidb-operator
         wget https://raw.githubusercontent.com/pingcap/tidb-operator/${operatorImage}/manifests/crd.yaml
         ```
 
-        本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorImage}` 为你要升级到的 TiDB Operator 版本。
+        本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorVersion}` 为你要升级到的 TiDB Operator 版本。
 
     2. 下载 `tidb-operator` chart 包文件：
 
