@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 1. [创建 Kubernetes 测试集群](#第-1-步创建-kubernetes-测试集群)
 2. [部署 TiDB Operator](#第-2-步部署-tidb-operator)
-3. [部署 TiDB 集群和监控](#第-3步部署-tidb-集群和监控)
+3. [部署 TiDB 集群和监控](#第-3-步部署-tidb-集群和监控)
 4. [连接 TiDB 集群](#第-4-步连接-tidb-集群)
 5. [升级 TiDB 集群](#第-5-步升级-tidb-集群)
 6. [销毁 TiDB 集群和 Kubernetes 集群](#第-6-步销毁-tidb-集群和-kubernetes-集群)
@@ -569,7 +569,7 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 
 <details>
 <summary><font color=Blue>查询 TiDB 集群基本信息</font></summary>
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#步骤-5升级-tidb-集群)。
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#第-5-步升级-tidb-集群)。
 
 ```sql
 mysql> select * from information_schema.cluster_info\G

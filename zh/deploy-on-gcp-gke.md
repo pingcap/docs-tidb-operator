@@ -67,7 +67,7 @@ gcloud config set compute/region <gcp-region>
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#步骤-2部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
