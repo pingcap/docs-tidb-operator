@@ -27,11 +27,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operatorVersion}/manifests/crd.yaml && \
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
     kubectl get crd tidbclusters.pingcap.com
     ```
 
-    本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorVersion}` 为你要升级到的 TiDB Operator 版本。
+    本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
 
 3. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -86,10 +86,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         {{< copyable "shell-regular" >}}
 
         ```shell
-        wget https://raw.githubusercontent.com/pingcap/tidb-operator/${operatorVersion}/manifests/crd.yaml
+        wget https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
         ```
 
-        本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operatorVersion}` 为你要升级到的 TiDB Operator 版本。
+        本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
 
     2. 下载 `tidb-operator` chart 包文件：
 
