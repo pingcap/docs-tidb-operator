@@ -12,18 +12,18 @@ TiDB Scheduler 是 [Kubernetes 调度器扩展](https://github.com/kubernetes/co
 
 Kubernetes 集群中默认会部署一个 [kube-scheduler](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/kube-scheduler/)，用于 Pod 调度，默认调度器名字为 `default-scheduler`。
 
-在早期 Kubernetes 版本中，默认调度器对于 Pod 均匀调度支持不够灵活，因此我们实现了 TiDB Scheduler 用于扩展 Kubernetes 默认调度器的调度规则，支持 TiDB 集群 Pod 的均匀调度，名字为 `tidb-scheduler`。
+在早期 Kubernetes 版本中 (< v1.16)，默认调度器对于 Pod 均匀调度支持不够灵活，因此我们实现了 TiDB Scheduler 用于扩展 Kubernetes 默认调度器的调度规则，支持 TiDB 集群 Pod 的均匀调度，名字为 `tidb-scheduler`。
 
-从 Kubernetes v1.16 开始，Kubernetes 默认调度器引入了 [`EvenPodsSpread` feature](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)，控制 Pod 在集群内故障域之间的分布，并在 v1.18 进入 beta，在 v1.19 正式 GA。
+从 Kubernetes v1.16 开始，Kubernetes 默认调度器引入了 [`EvenPodsSpread` 特性](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)，控制 Pod 在集群内故障域之间的分布。该特性在 v1.18 进入 beta，在 v1.19 正式 GA。
 
-因此，如果 Kubernetes 集群满足下面条件之一，就不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`，并为组件配置 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布) 即可实现 `tidb-scheduler` 的均匀调度功能。
+因此，如果 Kubernetes 集群满足下面条件之一，就不需要使用 `tidb-scheduler`，直接使用 `default-scheduler`。你需要为组件配置 [`topologySpreadConstraints`](configure-a-tidb-cluster.md#通过-topologyspreadconstraints-实现-pod-均匀分布)，即可实现 `tidb-scheduler` 的均匀调度功能。
 
 - Kubernetes 版本为 v1.18.x 并且已开启 [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/)。
 - Kubernetes 版本 >= v1.19。
 
 > **注意：**
 >
-> 已经部署的 TiDB 集群从使用 `tidb-scheduler` 更新为使用 `default-scheduler` 会触发集群滚动更新。
+> 当你把已经部署的 TiDB 集群从使用 `tidb-scheduler` 更新为使用 `default-scheduler` 时，会触发集群滚动更新。
 
 ## TiDB 集群调度需求
 

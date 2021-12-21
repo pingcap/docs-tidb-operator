@@ -8,7 +8,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/canary-deployment-tidb-operator/']
 
 本文介绍如何部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
 
-TiDB Operator 使用过程中，`tidb-scheduler` 并不是必须使用，可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler) 确认是否需要部署 `tidb-scheduler`。如果不需要，在部署 TiDB Operator 过程中，可以通过在 `values.yaml` 文件中配置 `scheduler.create: false` 不部署 `tidb-scheduler`。
+在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
 
 > **注意：**
 >
@@ -100,6 +100,7 @@ TiDB Operator 使用过程中，`tidb-scheduler` 并不是必须使用，可以�
       - user=qa
     appendReleaseSuffix: true
     scheduler:
+      # 如果你不需要 `tidb-scheduler`，将这个值设置为 false
       create: false
     advancedStatefulset:
       create: false
