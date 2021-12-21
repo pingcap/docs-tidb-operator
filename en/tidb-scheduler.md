@@ -9,20 +9,20 @@ TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https
 
 ## tidb-scheduler and default-scheduler
 
-A [kube-scheduler](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/kube-scheduler/) will be deployed by default in the Kubernetes cluster for Pod scheduling. The default scheduler name is `default-scheduler`.
+A [kube-scheduler](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/kube-scheduler/) is deployed by default in the Kubernetes cluster for Pod scheduling. The default scheduler name is `default-scheduler`.
 
-In the early Kubernetes versions, the `default-scheduler` was not flexible enough to support Pod even scheduling. Therefore, we implemented the TiDB Scheduler named `tidb-scheduler` to extend the scheduling rules of the `default-scheduler` to support even scheduling for the TiDB cluster Pods.
+In the early Kubernetes versions (<= v1.16), the `default-scheduler` was not flexible enough to support even scheduling for Pods. Therefore, to support even scheduling for the TiDB cluster Pods, TiDB Operator uses a TiDB Scheduler (`tidb-scheduler`) to extend the scheduling rules of the `default-scheduler`.
 
-Starting from Kubernetes v1.16, the `default-scheduler` has introduced the [`EvenPodsSpread` feature](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) to control how Pods are spread across your Kubernetes cluster among failure-domains, which is beta in v1.18, and officially GA in v1.19.
+Starting from Kubernetes v1.16, the `default-scheduler` has introduced the [`EvenPodsSpread` feature](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/). This feature controls how Pods are spread across your Kubernetes cluster among failure-domains. It is in the beta phase in v1.18, and became generally available in v1.19.
 
-Therefore, if the Kubernetes cluster meets one of the following conditions, you do not need to use `tidb-scheduler`, use `default-scheduler` directly, and configure the [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) to make pods evenly spread in different topologies.
+Therefore, if the Kubernetes cluster meets one of the following conditions, you can use `default-scheduler` directly instead of `tidb-scheduler`. You need to configure [`topologySpreadConstraints`](configure-a-tidb-cluster.md#use-topologyspreadconstraints-to-make-pods-evenly-spread) to make Pods evenly spread in different topologies.
 
-- Kubernetes version v1.18.x and [`EvenPodsSpread` feature gate](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/) has been enabled.
-- Kubernetes version >= v1.19.
+- The Kubernetes version is v1.18.x and [the `EvenPodsSpread` feature gate](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/) is enabled.
+- The Kubernetes version >= v1.19.
 
 > **Note:**
 >
-> Updating the existing TiDB clusters from using `tidb-scheduler` to using `default-scheduler` will trigger rolling update of the TiDB clusters.
+> When you change an existing TiDB clusters from using `tidb-scheduler` to using `default-scheduler`, it triggers the rolling update of the TiDB clusters.
 
 ## TiDB cluster scheduling requirements
 
@@ -85,7 +85,7 @@ TiDB Scheduler adds customized scheduling rules by implementing Kubernetes [Sche
 
 The TiDB Scheduler component is deployed as one or more Pods, though only one Pod is working at the same time. Each Pod has two Containers inside: one Container is a native `kube-scheduler`, and the other is a `tidb-scheduler` implemented as a Kubernetes scheduler extender.
 
-If you configure the cluster to use`tidb-scheduler` in the `TidbCluster` CR, the `.spec.schedulerName` attribute of PD, TiDB, and TiKV Pods created by TiDB Operator is set to `tidb-scheduler`. This means that the TiDB Scheduler is used for the scheduling.
+If you configure the cluster to use `tidb-scheduler` in the `TidbCluster` CR, the `.spec.schedulerName` attribute of PD, TiDB, and TiKV Pods created by TiDB Operator is set to `tidb-scheduler`. This means that the TiDB Scheduler is used for the scheduling.
 
 The scheduling process of a Pod is as follows:
 
