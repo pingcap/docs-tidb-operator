@@ -419,6 +419,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 ### 转发 TiDB 服务 4000 端口
 
 本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。
+
 首先，获取 tidb-cluster 命名空间中的服务列表：
 
 {{< copyable "shell-regular" >}}
