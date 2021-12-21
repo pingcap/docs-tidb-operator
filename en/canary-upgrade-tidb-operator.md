@@ -7,7 +7,7 @@ summary: Learn how to perform a canary upgrade on TiDB Operator in Kubernetes.
 
 This document describes how to perform a canary upgrade on TiDB Operator. Using canary upgrades, you can prevent normal TiDB Operator upgrade from causing an unexpected impact on all the TiDB clusters in Kubernetes. After you confirm the impact of TiDB Operator upgrade or that the upgraded TiDB Operator works stably, you can normally upgrade TiDB Operator.
 
-When you use TiDB Operator, `tidb-scheduler` is not necessary. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`.
+When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`.
 
 > **Note:**
 >
@@ -42,7 +42,8 @@ To support canary upgrade, some parameters are added to the `values.yaml` file i
       - version=canary
     appendReleaseSuffix: true
     #scheduler:
-    #  create: false # If you do not need tidb-scheduler, set this value to false.
+    # If you do not need tidb-scheduler, set this value to false.
+    #  create: false
     advancedStatefulset:
       create: false
     admissionWebhook:
