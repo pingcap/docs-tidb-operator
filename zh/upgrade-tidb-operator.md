@@ -169,6 +169,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     image: docker.io/pingcap/tidb-operator:v1.2.4
     ```
 
-   > **注意：**
-   >
-   > TiDB Operator 升级之后，所有 TiDB 集群中的 `discovery` Deployment 都会自动升级到对应的 TiDB Operator 版本。
+    > **注意：**
+    >
+    > TiDB Operator 升级之后，所有 TiDB 集群中的 `discovery` Deployment 都会自动升级到对应的 TiDB Operator 版本。

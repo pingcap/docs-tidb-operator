@@ -8,11 +8,6 @@ aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 This document describes how to upgrade TiDB Operator to a specific version. You can choose either [online upgrade](#online-upgrade) or [offline upgrade](#offline-upgrade).
 
-> **Note:**
->
-> You can check the currently supported versions of TiDB Operator using the `helm search repo -l tidb-operator` command.
-> If the command output does not include the latest version, update the repo using the `helm repo update` command. For details, refer to [Configure the Help repo](tidb-toolkit.md#configure-the-helm-repo).
-
 ## Online upgrade
 
 If your server has access to the internet, you can perform online upgrade by taking the following steps:
@@ -151,7 +146,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
 
 5. Perform upgrade:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     helm upgrade tidb-operator ./tidb-operator --version=v1.2.4 -f ${HOME}/tidb-operator/v1.2.4/values-tidb-operator.yaml
@@ -159,13 +154,13 @@ If your server cannot access the Internet, you can offline upgrade by taking the
 
 6. After all the Pods start normally, check the image version of TiDB Operator:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-   If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.2.4` represents the TiDB Operator version you have upgraded to.
+    If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.2.4` represents the TiDB Operator version you have upgraded to.
 
     ```
     image: pingcap/tidb-operator:v1.2.4
@@ -174,6 +169,6 @@ If your server cannot access the Internet, you can offline upgrade by taking the
     image: docker.io/pingcap/tidb-operator:v1.2.4
     ```
 
-   > **Note:**
-   >
-   > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
+    > **Note:**
+    >
+    > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
