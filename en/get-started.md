@@ -14,14 +14,14 @@ This document explains how to create a simple Kubernetes cluster and use it to d
 
 These are the steps this document follows:
 
-1. [Step 1: Create a Kubernetes test cluster](#step-1-create-a-kubernetes-test-cluster)
-2. [Step 2: Deploy TiDB Operator](#step-2-deploy-tidb-operator)
-3. [Step 3: Deploy a TiDB cluster and its monitoring services](#step-3-deploy-a-tidb-cluster-and-its-monitoring-services)
-4. [Step 4: Connect to a TiDB cluster](#step-4-connect-to-tidb)
-5. [Step 5: Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
-6. [Step 6: Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
+1. [Create a Kubernetes test cluster](#step-1-create-a-kubernetes-test-cluster)
+2. [Deploy TiDB Operator](#step-2-deploy-tidb-operator)
+3. [Deploy a TiDB cluster and its monitoring services](#step-3-deploy-a-tidb-cluster-and-its-monitoring-services)
+4. [Connect to a TiDB cluster](#step-4-connect-to-tidb)
+5. [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
+6. [Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
 
-## Step 1: Create a Kubernetes test cluster
+## Step 1. Create a Kubernetes test cluster
 
 This section covers two different ways to create a simple Kubernetes cluster that can be used to test a TiDB cluster running under TiDB Operator. Choose whichever best matches your environment or experience level.
 
@@ -37,7 +37,7 @@ You can alternatively deploy a Kubernetes cluster in Google Kubernetes Engine in
 
 This section shows how to deploy a Kubernetes cluster using kind.
 
-[kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker containers as cluster nodes. It is developed for testing local Kubernetes clusters. The Kubernetes cluster version depends on the node image that kind uses, and you can specify the image to be used for the nodes and choose any other published version. Refer to [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.
+[kind](https://kind.sigs.k8s.io/) is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. See [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.The latest version of kind is used by default.
 
 > **Warning:**
 >
@@ -205,7 +205,7 @@ You are now ready to deploy TiDB Operator.
 </div>
 </SimpleTab>
 
-## Step 2: Deploy TiDB Operator
+## Step 2. Deploy TiDB Operator
 
 Deploy TiDB Operator takes two steps:
 
@@ -221,7 +221,7 @@ Execute this command to install the CRDs into your cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 <details>
@@ -238,6 +238,10 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 ```
 
 </details>
+
+> **Note:**
+>
+> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
 
 ### Install TiDB Operator
 
@@ -335,7 +339,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 As soon as all Pods are in the "Running" state, proceed to the next step.
 
-## Step 3: Deploy a TiDB cluster and its monitoring services
+## Step 3. Deploy a TiDB cluster and its monitoring services
 
 This section describes how to deploy a TiDB cluster and its monitoring services.
 
@@ -430,7 +434,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 </details>
 
-## Step 4: Connect to TiDB
+## Step 4. Connect to TiDB
 
 Because TiDB supports the MySQL protocol and most of its syntax, you can connect to TiDB using the MySQL client.
 
@@ -641,7 +645,7 @@ You can access Grafana dashboard at <http://localhost:3000> on the host where yo
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
-## Step 5: Upgrade a TiDB cluster
+## Step 5. Upgrade a TiDB cluster
 
 TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
@@ -732,7 +736,7 @@ Check Table Before Drop: false
 
 </details>
 
-## Step 6: Destroy the TiDB cluster and the Kubernetes cluster
+## Step 6. Destroy the TiDB cluster and the Kubernetes cluster
 
 After you've finished testing, you can destroy the TiDB cluster and the Kubernetes cluster.
 

@@ -14,14 +14,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 部署的基本步骤如下：
 
-1. [创建 Kubernetes 测试集群](#步骤-1创建-kubernetes-测试集群)
-2. [部署 TiDB Operator](#步骤-2部署-tidb-operator)
-3. [部署 TiDB 集群和监控](#步骤-3部署-tidb-集群和监控)
-4. [连接 TiDB 集群](#步骤-4连接-tidb-集群)
-5. [升级 TiDB 集群](#步骤-5升级-tidb-集群)
-6. [销毁 TiDB 集群和 Kubernetes 集群](#步骤-6销毁-tidb-集群和-kubernetes-集群)
+1. [创建 Kubernetes 测试集群](#第-1-步创建-kubernetes-测试集群)
+2. [部署 TiDB Operator](#第-2-步部署-tidb-operator)
+3. [部署 TiDB 集群和监控](#第-3步部署-tidb-集群和监控)
+4. [连接 TiDB 集群](#第-4-步连接-tidb-集群)
+5. [升级 TiDB 集群](#第-5-步升级-tidb-集群)
+6. [销毁 TiDB 集群和 Kubernetes 集群](#第-6-步销毁-tidb-集群和-kubernetes-集群)
 
-## 步骤 1：创建 Kubernetes 测试集群
+## 第 1 步：创建 Kubernetes 测试集群
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
@@ -35,7 +35,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 ### 使用 kind 创建 Kubernetes 集群
 
-目前比较通用的方式是使用 kind 部署本地测试 Kubernetes 集群。[kind](https://kind.sigs.k8s.io/) 适用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
+目前比较通用的方式是使用 [kind](https://kind.sigs.k8s.io/) 部署本地测试 Kubernetes 集群。kind 适用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
 部署前，请确保满足以下要求：
 
@@ -193,7 +193,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 </div>
 </SimpleTab>
 
-## 步骤 2：部署 TiDB Operator
+## 第 2 步：部署 TiDB Operator
 
 部署 TiDB Operator 的过程分为两步：
 
@@ -207,7 +207,7 @@ TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 ```
 
 <details>
@@ -224,6 +224,10 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 ```
 
 </details>
+
+> **注意：**
+>
+> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 ### 安装 TiDB Operator
 
@@ -321,7 +325,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 当所有的 pods 都处于 Running 状态时，继续下一步。
 
-## 步骤 3：部署 TiDB 集群和监控
+## 第 3 步：部署 TiDB 集群和监控
 
 下面分别介绍 TiDB 集群和监控的部署方法。
 
@@ -404,7 +408,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 所有组件的 Pod 都启动后，每种类型组件（`pd`、`tikv` 和 `tidb`）都会处于 Running 状态。此时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
 
-## 步骤 4：连接 TiDB 集群
+## 第 4 步：连接 TiDB 集群
 
 由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此你可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
 
@@ -612,7 +616,7 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
-## 步骤 5：升级 TiDB 集群
+## 第 5 步：升级 TiDB 集群
 
 TiDB Operator 还可简化 TiDB 集群的滚动升级。以下展示使用 kubectl 命令行工具更新 TiDB 版本到 nightly 版本的过程。在此之前，先简要介绍一下用到的 kubectl 子命令。
 
@@ -699,7 +703,7 @@ Check Table Before Drop: false
 
 </details>
 
-## 步骤 6：销毁 TiDB 集群和 Kubernetes 集群
+## 第 6 步：销毁 TiDB 集群和 Kubernetes 集群
 
 完成测试后，你可能希望销毁 TiDB 集群和 Kubernetes 集群。
 
