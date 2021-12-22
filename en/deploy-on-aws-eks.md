@@ -196,8 +196,15 @@ The following example shows how to create and configure a StorageClass for the `
 
 2. Set ebs-csi-node `toleration`.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
+    ```
+
+   Expected output:
+
+    ```
     daemonset.apps/ebs-csi-node patched
     ```
 
