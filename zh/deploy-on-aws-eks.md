@@ -199,7 +199,7 @@ mountOptions:
     daemonset.apps/ebs-csi-node patched
     ```
 
-4. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
+3. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
     ```yaml
     kind: StorageClass
@@ -218,7 +218,7 @@ mountOptions:
     - nodelalloc,noatime
     ```
 
-5. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
+4. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
 
     ```yaml
     spec:
@@ -227,7 +227,7 @@ mountOptions:
         storageClassName: gp3
     ```
 
-6. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+5. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
 
     ```yaml
     kind: StorageClass
