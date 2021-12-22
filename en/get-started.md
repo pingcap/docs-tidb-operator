@@ -116,10 +116,6 @@ Before deployment, make sure the following requirements are satisfied:
 - [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0+ .minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
-You can start a Kubernetes cluster directly using minikube start. Mainland China users can mirror the repository through gcr.io. Each of these methods is described below.
-
-#### Start a Kubernetes cluster using minikube start
-
 After minikube is installed, run the following command to start a minikube Kubernetes cluster:
 
 {{< copyable "shell-regular" >}}
@@ -158,16 +154,6 @@ You should see output like this, with some differences depending on your OS and 
 ```
 
 </details>
-
-#### Use a local gcr.io mirror
-
-If you have trouble accessing Docker Hub, you might use your local gcr.io mirrors such as `registry.cn-hangzhou.aliyuncs.com/google_containers`.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-```
 
 #### Use `kubectl` to interact with the cluster
 
