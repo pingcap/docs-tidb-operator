@@ -216,10 +216,7 @@ The following example shows how to create and configure a StorageClass for the `
     ```yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
-        requests:
-          storage: 100Gi
+        ...
         storageClassName: gp3
     ```
 
@@ -604,6 +601,7 @@ Depending on the EKS cluster status, use different commands:
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:

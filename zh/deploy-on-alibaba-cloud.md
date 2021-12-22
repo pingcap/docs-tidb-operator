@@ -174,7 +174,7 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
       ...
       tiflash:
         baseImage: pingcap/tiflash
-        maxFailoverCount: 3
+        maxFailoverCount: 0
         nodeSelector:
           dedicated: TIDB_CLUSTER_NAME-tiflash
         replicas: 1

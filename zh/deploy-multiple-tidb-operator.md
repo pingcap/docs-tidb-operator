@@ -7,11 +7,13 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
 
 本文介绍如何部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
 
+在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
+
 > **注意：**
 >
 > - 目前仅支持部署多套 tidb-controller-manager 和 tidb-scheduler，不支持部署多套 AdvancedStatefulSet controller 和 AdmissionWebhook。
 > - 如果部署了多套 TiDB Operator，有的开启了 [`Advanced StatefulSet`](advanced-statefulset.md)，有的没有开启，那么同一个 TidbCluster Custom Resource (CR) 不能在这些 TiDB Operator 之间切换。
-> - v1.1.10 开始支持此项功能
+> - v1.1.10 开始支持此项功能。
 
 ## 相关参数
 
@@ -97,6 +99,7 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
       - user=qa
     appendReleaseSuffix: true
     scheduler:
+      # 如果你不需要 `tidb-scheduler`，将这个值设置为 false
       create: false
     advancedStatefulset:
       create: false

@@ -31,7 +31,7 @@ kubectl edit tc ${cluster_name} -n ${namespace}
 spec:
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -57,7 +57,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:

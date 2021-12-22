@@ -33,7 +33,7 @@ Add the TiFlash configuration as follows:
 spec:
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -59,7 +59,7 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
