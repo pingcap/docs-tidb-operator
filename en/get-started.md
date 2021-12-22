@@ -10,23 +10,23 @@ This document introduces how to create a simple Kubernetes cluster and use it to
 
 > **Warning:**
 >
-> This document is for demonstration purposes only. **Do not** follow it in production environments. For production environments, see the instructions in [See also](#see-also).
+> This document is for demonstration purposes only. **Do not** follow it in production environments. For deployment in production environments, see the instructions in [See also](#see-also).
 
 You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 
-1. [Create a Kubernetes test cluster](#step-1-create-a-kubernetes-test-cluster)
+1. [Create a test Kubernetes cluster](#step-1-create-a-test-kubernetes-cluster)
 2. [Deploy TiDB Operator](#step-2-deploy-tidb-operator)
 3. [Deploy a TiDB cluster and its monitoring services](#step-3-deploy-a-tidb-cluster-and-its-monitoring-services)
 4. [Connect to a TiDB cluster](#step-4-connect-to-tidb)
 5. [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
 6. [Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
 
-## Step 1. Create a Kubernetes test cluster
+## Step 1. Create a test Kubernetes cluster
 
 This section describes two different ways to create a simple Kubernetes cluster, and then you can use TiDB Operator to deploy a TiDB cluster on it. Choose whichever best matches your environment.
 
-- [Using kind](#create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
-- [Using minikube](#create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
+- [Use kind](#create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
+- [Use minikube](#create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
 
 Alternatively, you can deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
@@ -37,18 +37,18 @@ Alternatively, you can deploy a Kubernetes cluster in Google Kubernetes Engine i
 
 This section shows how to deploy a Kubernetes cluster using [kind](https://kind.sigs.k8s.io/).
 
-kind is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. See [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags.The latest version of kind is used by default.
+kind is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. See [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags. The latest version of kind is used by default.
 
 > **Warning:**
 >
-> The kind cluster is for test purposes only. **Do not use** in production.
+> The kind cluster is for test purposes only. **Do not use it** in production environments.
 
 Before deployment, make sure the following requirements are satisfied:
 
 - [Docker](https://docs.docker.com/install/): version >= 17.03
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.8.0
-- If you use Linux, the value of the sysctl parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`.
+- For Linux, the value of the sysctl parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`.
 
 The following is an example of using `kind` v0.8.1:
 
@@ -95,7 +95,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre>
 </details>
 
-You're now ready to deploy TiDB Operator.
+You are now ready to deploy TiDB Operator.
 
 </div>
 
@@ -105,7 +105,7 @@ You're now ready to deploy TiDB Operator.
 
 This section describes how to deploy a Kubernetes cluster using minikube.
 
-[minikube](https://minikube.sigs.k8s.io/docs/start/) can start a local Kubernetes cluster inside a VM on your laptop. It works on macOS, Linux, and Windows.
+[minikube](https://minikube.sigs.k8s.io/docs/start/) can start a local Kubernetes cluster inside a VM on your computer. It supports macOS, Linux, and Windows.
 
 > **Note:**
 >
@@ -113,14 +113,14 @@ This section describes how to deploy a Kubernetes cluster using minikube.
 
 Before deployment, make sure the following requirements are satisfied:
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0+ .minikube requires a compatible hypervisor. For details, refer to minikube's installation instructions.
+- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0+ .minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
 You can start a Kubernetes cluster directly using minikube start. Mainland China users can mirror the repository through gcr.io. Each of these methods is described below.
 
 #### Start a Kubernetes cluster using minikube start
 
-After minikube is installed, execute the following command to start a minikube Kubernetes cluster:
+After minikube is installed, run the following command to start a minikube Kubernetes cluster:
 
 {{< copyable "shell-regular" >}}
 
@@ -171,7 +171,7 @@ minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_conta
 
 #### Use `kubectl` to interact with the cluster
 
-To interact with the cluster, you can use `kubectl`, which is included as a sub-command in `minikube`. To make the `kubectl` command available, you can either add the following alias definition command to your shell profile or execute the following alias definition command after opening a new shell.
+To interact with the cluster, you can use `kubectl`, which is included as a sub-command in `minikube`. To make the `kubectl` command available, you can either add the following alias definition command to your shell profile, or run the following alias definition command after opening a new shell.
 
 {{< copyable "shell-regular" >}}
 
@@ -179,7 +179,7 @@ To interact with the cluster, you can use `kubectl`, which is included as a sub-
 alias kubectl='minikube kubectl --'
 ```
 
-Execute this command to check the status of your Kubernetes and make sure `kubectl` can connect to it:
+Run this command to check the status of Kubernetes and make sure `kubectl` can connect to it:
 
 {{< copyable "shell-regular" >}}
 
@@ -424,7 +424,7 @@ Because TiDB supports the MySQL protocol and most of its syntax, you can connect
 
 ### Install the MySQL client
 
-To connect to TiDB, you need a MySQL-compatible client installed on the host where `kubectl` is installed. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from the package repository of your operating system.
+To connect to TiDB, you need a MySQL-compatible client installed on the host where `kubectl` is installed. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from the package of your operating system.
 
 ### Forward port 4000
 
@@ -499,7 +499,7 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can run the following commands to verify some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you've deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
+After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
 
 <details>
 <summary><font color=Blue>Create a `hello_world` table</font></summary>
@@ -625,7 +625,7 @@ You can forward the port for Grafana to access Grafana dashboard locally:
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`. Note that if you are not running `kubectl` on the same host (for example, in a Docker container or on a remote host), you cannot access Grafana dashboard at <http://localhost:3000> from your browser.
+You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`. Note that if you want to access Grafana dashboard at <http://localhost:3000> from your browser, you must run `kubectl` on the same host, not in a Docker container or on a remote host.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
@@ -635,7 +635,7 @@ TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluste
 
 Before that, you need to get familiar with two `kubectl` sub-commands:
 
-- `kubectl edit` opens a resource specification in an interactive text editor, where an administrator can make changes and save them. If the changes are valid, they'll be propagated to the cluster resources; if they're invalid, they'll be rejected with an error message. Note that not all elements of the specification are validated at this time. It's possible to save changes that may not be applied to the cluster even though they're accepted.
+- `kubectl edit` opens a resource specification in an interactive text editor, where an administrator can make changes and save them. If the changes are valid, they'll be propagated to the cluster resources; if they're invalid, they'll be rejected with an error message. Note that not all elements of the specification are validated at this time. It's possible to save changes that may not be applied to the cluster even though they are accepted.
 
 - `kubectl patch` applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
 
