@@ -140,7 +140,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
-    `${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
+    `${cluster_id}` 是[获取 Cluster ID](#步骤-1-获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#步骤-2-获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
 
     `pd-recover` 命令执行成功后，会打印如下输出：
 
@@ -168,7 +168,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID：
+3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#步骤-1-获取-cluster-id) 步骤中获取的 Cluster ID：
 
     {{< copyable "shell-regular" >}}
 
