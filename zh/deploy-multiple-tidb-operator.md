@@ -8,7 +8,7 @@ aliases: ['/zh/tidb-in-kubernetes/dev/canary-deployment-tidb-operator/']
 
 你可使用一套 TiDB Operator 管理多个 TiDB 集群。如果你有以下业务需求，可以部署多套 TiDB Operator 分别管理不同的 TiDB 集群：
 
-- 业务中有多个版本的 TiDB 集群，需要单独管理不同版本的集群
+- 需要灰度升级 TiDB Operator 至新版本，避免新版本存在潜在问题影响业务
 - 业务中有多个 TiDB 集群，且每个集群归属不同业务部门，各部门需要单独管理各自的集群
 
 本文介绍如何部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
