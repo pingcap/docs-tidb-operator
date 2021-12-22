@@ -194,7 +194,13 @@ The following example shows how to create and configure a StorageClass for the `
 
 1. Deploy the [AWS EBS Container Storage Interface (CSI) driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on the EKS cluster. If you are using a storage type other than `gp3`, skip this step.
 
-2. Create a `StorageClass` resource. In the resource definition, specify your desired storage type in the `parameters.type` field.
+2. Set ebs-csi-node `toleration`
+    ```bash
+    kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
+    daemonset.apps/ebs-csi-node patched
+    ```
+
+4. Create a `StorageClass` resource. In the resource definition, specify your desired storage type in the `parameters.type` field.
 
     ```yaml
     kind: StorageClass
@@ -211,7 +217,7 @@ The following example shows how to create and configure a StorageClass for the `
     - nodelalloc,noatime
     ```
 
-3. In the TidbCluster YAML file, configure `gp3` in the `storageClassName` field. For example:
+5. In the TidbCluster YAML file, configure `gp3` in the `storageClassName` field. For example:
 
     ```yaml
     spec:
@@ -220,7 +226,7 @@ The following example shows how to create and configure a StorageClass for the `
         storageClassName: gp3
     ```
 
-4. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
+6. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
 
     ```yaml
     kind: StorageClass
