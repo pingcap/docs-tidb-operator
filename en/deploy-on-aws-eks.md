@@ -203,7 +203,7 @@ The following example shows how to create and configure a StorageClass for the `
     kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
     ```
 
-   Expected output:
+    Expected output:
 
     ```
     daemonset.apps/ebs-csi-node patched
