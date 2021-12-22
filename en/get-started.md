@@ -273,17 +273,6 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4
     ```
 
-    If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
-
-    {{< copyable "shell-regular" >}}
-
-    ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.2.4 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.2.4 \
-        --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
-    ```
-
     <details>
     <summary><font color=Blue>Expected output</font></summary>
 
@@ -334,15 +323,6 @@ This section describes how to deploy a TiDB cluster and its monitoring services.
 ``` shell
 kubectl create namespace tidb-cluster && \
     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
-```
-
-If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
-
-{{< copyable "shell-regular" >}}
-
-```
-kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
 ```
 
 <details>
