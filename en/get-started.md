@@ -345,14 +345,6 @@ If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB 
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
-If you have trouble accessing Docker Hub, you can try images hosted in UCloud:
-
-{{< copyable "shell-regular" >}}
-
-```
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
-```
-
 <details>
 <summary><font color=Blue>Expected output</font></summary>
 
