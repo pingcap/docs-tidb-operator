@@ -24,12 +24,23 @@ If your server has access to the internet, you can perform online upgrade by tak
 
 2. Update [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) (CRD) for Kubernetes:
 
-    {{< copyable "shell-regular" >}}
+    * If your Kubernetes version >= v1.16:
 
-    ```bash
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-    kubectl get crd tidbclusters.pingcap.com
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
+        kubectl get crd tidbclusters.pingcap.com
+        ```
+
+    * If your Kubernetes version < v1.16:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
+        kubectl get crd tidbclusters.pingcap.com
+        ```
 
     This document takes TiDB v1.2.4 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
@@ -83,11 +94,21 @@ If your server cannot access the Internet, you can offline upgrade by taking the
 
     1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
-        {{< copyable "shell-regular" >}}
+        * If your Kubernetes version >= v1.16:
 
-        ```bash
-        wget https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
+            ```
+
+        * If your Kubernetes version < v1.16:
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml
+            ```
 
         This document takes TiDB v1.2.4 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
@@ -118,7 +139,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         {{< copyable "shell-regular" >}}
 
         ```bash
-        kubectl apply -f ./crd.yaml
+        kubectl replace -f ./crd.yaml
         ```
 
     2. Unpack the `tidb-operator` chart package file, and copy the `values.yaml` file to the directory of the new TiDB Operator:

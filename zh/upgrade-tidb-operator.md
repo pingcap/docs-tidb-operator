@@ -24,12 +24,23 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 2. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
 
-    {{< copyable "shell-regular" >}}
+    * 如果 Kubernetes 版本大于等于 1.16:
 
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-    kubectl get crd tidbclusters.pingcap.com
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
+        kubectl get crd tidbclusters.pingcap.com
+        ```
+
+    * 如果 Kubernetes 版本小于 1.16:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
+        kubectl get crd tidbclusters.pingcap.com
+        ```
 
     本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
 
@@ -83,11 +94,21 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     1. 下载 TiDB Operator 需要的 `crd.yaml` 文件。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
 
-        {{< copyable "shell-regular" >}}
+        * 如果 Kubernetes 版本大于等于 1.16:
 
-        ```shell
-        wget https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
+            ```
+
+        * 如果 Kubernetes 版本小于 1.16:
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml
+            ```
 
         本文以 TiDB Operator v1.2.4 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
 
@@ -118,7 +139,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl apply -f ./crd.yaml
+        kubectl replace -f ./crd.yaml
         ```
 
     2. 解压 `tidb-operator` chart 包文件，并拷贝 `values.yaml` 文件到升级目录：
