@@ -7,7 +7,7 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
 
 你可使用一套 TiDB Operator 管理多个 TiDB 集群。如果你有以下业务需求，可以部署多套 TiDB Operator 分别管理不同的 TiDB 集群：
 
-- 需要灰度升级 TiDB Operator 至新版本，避免新版本存在潜在问题影响业务
+- 需要[灰度升级 TiDB Operator](canary-upgrade-tidb-operator.md) 至新版本，避免新版本存在潜在问题影响业务
 - 业务中有多个 TiDB 集群，且每个集群归属不同业务部门，各部门需要单独管理各自的集群
 
 本文介绍如何部署多套 TiDB Operator，分别管理不同的 TiDB 集群。
@@ -157,7 +157,7 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
 
 - `appendReleaseSuffix`
 
-    如果配置为 `true`，部署时会自动为 `tidb-controller-manager` 和 `tidb-scheduler` 相关的资源名称添加后缀 `-{{ .Release.Name }}`，例如，通过 `helm install canary pingcap/tidb-operator ...` 命令部署的 `tidb-controller-manager` deployment 名称为：`tidb-controller-manager-canary`，如果要部署多套 TiDB Operator 需要开启此参数。
+    如果配置为 `true`，部署时会自动为 `tidb-controller-manager` 和 `tidb-scheduler` 相关的资源名称添加后缀 `-{{ .Release.Name }}`。例如，通过 `helm install canary pingcap/tidb-operator ...` 命令部署的 `tidb-controller-manager` deployment 名称为：`tidb-controller-manager-canary`。如果要部署多套 TiDB Operator，需要开启此参数。
 
     默认值：`false`。
 
@@ -184,6 +184,6 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
 
 - `scheduler.create`
 
-    控制是否创建 `tidb-scheduler`。
+    控制是否创建 `tidb-scheduler`。在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
 
     默认值：`true`。
