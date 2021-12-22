@@ -78,8 +78,8 @@
     - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
     - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
   - 灾难恢复
+    - [恢复误删的 TiDB 集群](recover-deleted-cluster.md)
     - [恢复 PD 集群](pd-recover.md)
-    - [恢复误删的集群](recover-deleted-cluster.md)
 - 故障诊断
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
