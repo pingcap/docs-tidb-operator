@@ -103,18 +103,20 @@ You are now ready to deploy TiDB Operator.
 
 ### Create a Kubernetes cluster using minikube
 
-This section describes how to deploy a Kubernetes cluster using minikube.
-
 [minikube](https://minikube.sigs.k8s.io/docs/start/) can start a local Kubernetes cluster inside a VM on your computer. It supports macOS, Linux, and Windows.
 
 > **Note:**
 >
 > Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and might not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
+#### Prerequisites
+
 Before deployment, make sure the following requirements are satisfied:
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0+ .minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
+
+#### Start a minikube Kubernetes cluster
 
 After minikube is installed, run the following command to start a minikube Kubernetes cluster:
 
