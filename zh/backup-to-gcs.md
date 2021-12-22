@@ -13,7 +13,7 @@ Dumpling 是一款数据导出工具，该工具可以把存储在 TiDB/MySQL �
 
 ## 使用场景
 
-如果你需要将 TiDB 集群数据以 [Ad-hoc 全量备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至 GCS，并且对数据备份有以下要求，可考虑本文介绍的备份方案：
+如果你需要将 TiDB 集群数据以 [Ad-hoc 全量备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至 GCS，并且对数据备份有以下要求，可使用本文介绍的备份方案：
 
 - 导出 SQL 或 CSV 格式的数据
 - 对单条 SQL 语句的内存进行限制
@@ -35,7 +35,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
-### 第 1 步. Ad-hoc 全量备份环境准备
+### 第 1 步：Ad-hoc 全量备份环境准备
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
