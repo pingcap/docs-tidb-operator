@@ -11,11 +11,7 @@ summary: 介绍如何灰度升级 TiDB Operator，避免 TiDB Operator 升级对
 
 本文介绍如何灰度升级 TiDB Operator。
 
-## 相关参数
-
-`tidb-operator` chart 的 `values.yaml` 文件中，部分参数与灰度升级 TiDB Operator 相关，详细信息可参考[相关参数](deploy-multiple-tidb-operator.md#相关参数)。
-
-## 第 1 步. 为当前 TiDB Operator 配置 selector
+## 第 1 步：为当前 TiDB Operator 配置 selector
 
 参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)，在 `values.yaml` 中添加如下配置，升级当前 TiDB Operator：
 
@@ -25,7 +21,7 @@ controllerManager:
   - version!=canary
 ```
 
-## 第 2 步. 部署灰度的 TiDB Operator
+## 第 2 步：部署灰度的 TiDB Operator
 
 1. 参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置。
 
@@ -35,7 +31,7 @@ controllerManager:
       - version=canary
     appendReleaseSuffix: true
     #scheduler:
-    #  create: false # TODO：这里为什么要注释掉？如果不配置 scheduler.create，默认的行为是什么？
+    #  create: false # 如果不需要使用 tidb-scheduler，则设置为 false
     advancedStatefulset:
       create: false
     admissionWebhook:
@@ -48,19 +44,19 @@ controllerManager:
 
     由于灰度升级不支持增强型 StatefulSet 控制器和准入控制器，必须配置 `advancedStatefulset.create: false` 和 `admissionWebhook.create: false`。
 
+    如需了解灰度部署相关参数的详细信息，可参考[使用多套 TiDB Operator 单独管理不同的 TiDB 集群 - 相关参数](deploy-multiple-tidb-operator.md#相关参数)。
+
 2. 在**不同的 namespace** 中（例如 `tidb-admin-canary`），使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度的 TiDB Operator：
 
-    // TODO： 这个命令是从《部署 TiDB Operator 文档》中复制过来的，需要检查一下是否有问题。
-
     ```bash
-    helm upgrade tidb-operator pingcap/tidb-operator --version=${TIDB_OPERATOR_VERSION} -f ${HOME}/tidb-operator/${TIDB_OPERATOR_VERSION}/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator --version=${operator_version} -f ${HOME}/tidb-operator/${operator_version}/values-tidb-operator.yaml
     ```
 
-    将 `${TIDB_OPERATOR_VERSION}` 替换为需要灰度升级到的 TiDB Operator 版本号。
+    将 `${operator_version}` 替换为你需要灰度升级到的 TiDB Operator 版本号。
 
     建议在单独的 namespace 部署新的 TiDB Operator。
 
-## 第 3 步. 测试灰度的 TiDB Operator (可选)
+## 第 3 步：测试灰度的 TiDB Operator (可选)
 
 在正常升级 TiDB Operator 前，可以测试灰度部署的 TiDB Operator 是否稳定工作。支持测试的组件有 tidb-controller-manager 和 tidb-scheduler。
 
@@ -130,7 +126,9 @@ controllerManager:
     kubectl -n ${namespace} edit tc ${cluster_name}
     ```
 
-## 第 4 步. 正常升级 TiDB Operator
+## 第 4 步：正常升级 TiDB Operator
+
+确认灰度部署的 TiDB Operator 已经正常工作后，可以正常升级 TiDB Operator。
 
 1. 删除灰度部署的 TiDB Operator：
 
@@ -138,4 +136,4 @@ controllerManager:
     helm -n tidb-admin-canary uninstall ${release_name}
     ```
 
-2. 正常[升级 TiDB Operator 文档](upgrade-tidb-operator.md)。
+2. 正常[升级 TiDB Operator](upgrade-tidb-operator.md)。
