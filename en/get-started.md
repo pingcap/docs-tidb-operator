@@ -593,11 +593,7 @@ For more information about monitoring the TiDB cluster in TiDB Operator, refer t
 
 TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
-Before that, you need to get familiar with two `kubectl` sub-commands:
-
-- `kubectl edit` opens a resource specification in an interactive text editor, where an administrator can make changes and save them. If the changes are valid, they'll be propagated to the cluster resources; if they're invalid, they'll be rejected with an error message. Note that not all elements of the specification are validated at this time. It's possible to save changes that may not be applied to the cluster even though they are accepted.
-
-- `kubectl patch` applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
+Before that, you need to get familiar with a `kubectl` sub-command `kubectl patch`. It applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
 
 ### Modify the TiDB cluster version
 
