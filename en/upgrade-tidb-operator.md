@@ -14,8 +14,6 @@ If your server has access to the internet, you can perform online upgrade by tak
 
 1. Before upgrading TiDB Operator, make sure that the Helm repo contains the TiDB Operator version you want to upgrade to. To check the TiDB Operator versions in the Helm repo, run the following command:
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     helm search repo -l tidb-operator
     ```

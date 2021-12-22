@@ -14,8 +14,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 1. 升级 TiDB Operator 前，确保 Helm repo 包含你需要升级的 TiDB Operator 版本。通过以下命令查看 Helm repo 包含的 TiDB Operator 版本：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     helm search repo -l tidb-operator
     ```
