@@ -26,7 +26,7 @@ TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，�
 
 在进行数据恢复前，你需要准备恢复环境，并拥有数据库的相关权限。
 
-### 环境准备
+### 准备恢复环境
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
@@ -48,7 +48,7 @@ TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，�
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=${password} --namespace=test2
     ```
 
-### 所需的数据库权限
+### 获取所需的数据库权限
 
 使用 TiDB Lightning 将 Amazon S3 上的备份数据恢复至 TiDB 集群前，确保你拥有备份数据库的以下权限：
 
