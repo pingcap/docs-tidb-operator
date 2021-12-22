@@ -11,7 +11,8 @@ TiDB 集群自身支持通过 SQL 对各组件进行[在线配置变更](https:/
 
 ## 修改 TiDB/TiKV 等组件配置
 
-除 PD 外的组件（TiDB、TiKV、TiFlash、TiCDC 等），升级后配置项会被 TidbCluster CR 中的配置项覆盖，导致在线变更的配置失效。因此，对于这些组件，你需要在 TidbCluster CR 中直接修改配置项。
+对于 TiDB 和 TiKV，如果通过 SQL 进行[在线配置变更](https://docs.pingcap.com/zh/tidb/stable/dynamic-config)，在升级或者重启后，配置项会被 TidbCluster CR 中的配置项覆盖，导致在线变更的配置失效。因此，如果需要持久化修改配置，你需要在 TidbCluster CR 中直接修改配置项。
+对于 TiFlash、TiCDC 和 Pump，目前只能通过在 TidbCluster CR 中修改配置项。
 
 在 TidbCluster CR 中修改配置项的步骤如下：
 
