@@ -57,7 +57,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
     ```
 
-### 第 2 步. 备份数据到 GCS
+### 第 2 步：备份数据到 GCS
 
 1. 创建 `Backup` CR，并将数据备份到 GCS：
 
@@ -127,11 +127,11 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
-### 第 1 步. 定时全量备份环境准备
+### 第 1 步：定时全量备份环境准备
 
 同 [Ad-hoc 全量备份环境准备](#第-1-步ad-hoc-全量备份环境准备)。
 
-### 第 2 步. 定时全量备份数据到 GCS
+### 第 2 步：定时全量备份数据到 GCS
 
 1. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
 
