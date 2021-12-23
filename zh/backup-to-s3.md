@@ -135,7 +135,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 2. 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph。
++ 方法 2：创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -174,7 +174,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 3. 创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3。
++ 方法 3：创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -218,7 +218,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 方法 4. 创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3。
++ 方法 4：创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -291,7 +291,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 
 如果要再次运行 Ad-hoc 备份，你需要[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr) 并重新创建。
 
-## 场景 2. 定时全量备份
+## 场景 2：定时全量备份
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
@@ -316,7 +316,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 >       - --ignore-checksum
 > ```
 
-+ 方法 1. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
++ 方法 1：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -363,7 +363,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 方法 2. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
++ 方法 2：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
 
     {{< copyable "shell-regular" >}}
 
@@ -407,7 +407,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 方法 3. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
++ 方法 3：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -455,7 +455,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 方法 4. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
++ 方法 4：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
