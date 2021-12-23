@@ -7,7 +7,6 @@ summary: 介绍如何灰度升级 TiDB Operator，避免 TiDB Operator 升级对
 
 灰度升级可以控制 TiDB Operator 升级的影响范围，避免 TiDB Operator 升级对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响。使用灰度升级后，你可以在灰度部署的集群中确认 TiDB Operator 升级的影响，在确认 TiDB Operator 新版本稳定工作后，再[正常升级 TiDB Operator](upgrade-tidb-operator.md)。
 
-
 灰度升级功能仅支持 [tidb-controller-manager](architecture.md) 和 [tidb-scheduler](tidb-scheduler.md)，不支持[增强型 StatefulSet 控制器](advanced-statefulset.md)和[准入控制器](enable-admission-webhook.md)。
 
 在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
