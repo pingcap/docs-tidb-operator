@@ -214,15 +214,12 @@ customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com creat
 customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
 
-<<<<<<< HEAD
-=======
 </details>
 
 > **Note:**
 >
 > For Kubernetes earlier than 1.16, only v1beta1 CRD is supported. Therefore, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
 
->>>>>>> d572553a (Refine get-started.md (#1499))
 ### Install TiDB Operator
 
 This section describes how to install TiDB Operator using [Helm 3](https://helm.sh/docs/intro/install/).
