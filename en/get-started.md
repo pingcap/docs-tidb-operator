@@ -39,7 +39,6 @@ This section shows how to deploy a Kubernetes cluster using [kind](https://kind.
 
 kind is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. For available tags, see [Docker Hub](https://hub.docker.com/r/kindest/node/tags). The latest version of kind is used by default.
 
-
 Before deployment, make sure the following requirements are satisfied:
 
 - [Docker](https://docs.docker.com/install/): version >= 17.03
