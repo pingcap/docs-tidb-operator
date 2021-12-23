@@ -41,7 +41,6 @@ kind is a popular tool for running local Kubernetes clusters using Docker contai
 
 > **Warning:**
 >
-> The kind cluster is for test purposes only. **Do not use it** in production environments.
 
 Before deployment, make sure the following requirements are satisfied:
 
