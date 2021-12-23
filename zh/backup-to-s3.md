@@ -48,7 +48,7 @@ GRANT
   TO 'backup'@'%';
 ```
 
-### 第 1 步. Ad-hoc 全量备份环境准备
+### 第 1 步：Ad-hoc 全量备份环境准备
 
 1. 执行以下命令，根据 [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml) 在 `tidb-cluster` 命名空间创建基于角色的访问控制 (RBAC) 资源。
 
@@ -70,7 +70,7 @@ GRANT
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=tidb-cluster
     ```
 
-### 第 2 步. 备份数据到兼容 S3 的存储
+### 第 2 步：备份数据到兼容 S3 的存储
 
 > **注意：**
 >
@@ -295,11 +295,11 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
-### 第 1 步. 定时全量备份环境准备
+### 第 1 步：定时全量备份环境准备
 
-同 [Ad-hoc 全量备份环境准备](#第-1-步-ad-hoc-全量备份环境准备)。
+同 [Ad-hoc 全量备份环境准备](#第-1-步ad-hoc-全量备份环境准备)。
 
-### 第 2 步. 定时全量备份数据到 S3 兼容存储
+### 第 2 步：定时全量备份数据到 S3 兼容存储
 
 > **注意：**
 >
