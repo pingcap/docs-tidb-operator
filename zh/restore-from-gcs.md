@@ -9,7 +9,7 @@ summary: 介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份数据�
 
 本文使用的恢复方式基于 TiDB Operator v1.1 及以上的 CustomResourceDefinition (CRD) 实现，底层通过使用 [TiDB Lightning TiDB-backend](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-tidb-backend) 来恢复数据。
 
-TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，可用于从本地盘、Google Cloud Storage (GCS) 或 Amazon S3 云盘读取数据。目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend`、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参阅[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
+TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，可用于从本地盘、Google Cloud Storage (GCS) 或 Amazon S3 云盘读取数据。目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend`、`TiDB-backend`。本文介绍的方法使用 `TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参阅[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
 
 以下示例将存储在 [GCS](https://cloud.google.com/storage/docs/) 上指定路径上的集群备份数据恢复到 TiDB 集群。
 
