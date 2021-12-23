@@ -23,7 +23,7 @@ You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 
 ## Step 1. Create a test Kubernetes cluster
 
-This section describes two different ways to create a simple Kubernetes cluster, and then you can use TiDB Operator to deploy a TiDB cluster on it. Choose whichever best matches your environment.
+This section describes two ways to create a simple Kubernetes cluster. After creating a Kubernetes cluster, you can use it to test TiDB clusters managed by TiDB Operator. Choose whichever best matches your environment.
 
 - [Use kind](#create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
 - [Use minikube](#create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
@@ -37,7 +37,7 @@ Alternatively, you can deploy a Kubernetes cluster in Google Kubernetes Engine i
 
 This section shows how to deploy a Kubernetes cluster using [kind](https://kind.sigs.k8s.io/).
 
-kind is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. See [Docker Hub](https://hub.docker.com/r/kindest/node/tags) to see available tags. The latest version of kind is used by default.
+kind is a popular tool for running local Kubernetes clusters using Docker containers as cluster nodes. For available tags, see [Docker Hub](https://hub.docker.com/r/kindest/node/tags). The latest version of kind is used by default.
 
 > **Warning:**
 >
@@ -103,17 +103,16 @@ You are now ready to deploy TiDB Operator.
 
 ### Create a Kubernetes cluster using minikube
 
-[minikube](https://minikube.sigs.k8s.io/docs/start/) can start a local Kubernetes cluster inside a VM on your computer. It supports macOS, Linux, and Windows.
+You can create a Kubernetes cluster in a VM using [minikube](https://minikube.sigs.k8s.io/docs/start/), which supports macOS, Linux, and Windows.
 
 > **Note:**
 >
-> Although minikube supports `--vm-driver=none` that uses host Docker instead of VM, it is not fully tested with TiDB Operator and might not work. If you want to try TiDB Operator on a system without virtualization support (for example, on a VPS), you might consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
+> minikube supports `--vm-driver=none` that uses a host Docker instead of a VM. However, this function is not yet fully tested on TiDB Operator and may result in operational failures. If you want to try TiDB Operator in a non-virtualized system (for example, in a VPS), consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
-#### Prerequisites
 
 Before deployment, make sure the following requirements are satisfied:
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0+ .minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
+- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
 #### Start a minikube Kubernetes cluster
@@ -167,7 +166,7 @@ To interact with the cluster, you can use `kubectl`, which is included as a sub-
 alias kubectl='minikube kubectl --'
 ```
 
-Run this command to check the status of Kubernetes and make sure `kubectl` can connect to it:
+Run the following command to check the status of Kubernetes and ensure that `kubectl` can connect to it:
 
 {{< copyable "shell-regular" >}}
 
@@ -200,7 +199,7 @@ You need to install TiDB Operator CRDs first, and then install TiDB Operator.
 
 TiDB Operator includes a number of Custom Resource Definitions (CRDs) that implement different components of the TiDB cluster.
 
-Run this command to install the CRDs into your cluster:
+Run the following command to install the CRDs into your cluster:
 
 {{< copyable "shell-regular" >}}
 
@@ -225,7 +224,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 > **Note:**
 >
-> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
+> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported. Therefore, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
 
 ### Install TiDB Operator
 
@@ -335,7 +334,7 @@ tidbcluster.pingcap.com/basic created
 
 </details>
 
-If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
+If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
 ### Deploy TiDB monitoring services
 
@@ -542,7 +541,7 @@ LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
 
 <details>
 <summary><font color=Blue>Query the TiDB cluster information</font></summary>
-This command requires TiDB 4.0 or later versions. If you've deployed an earlier version, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
+This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -593,7 +592,7 @@ For more information about monitoring the TiDB cluster in TiDB Operator, refer t
 
 TiDB Operator also makes it easy to perform a rolling upgrade of the TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
-Before that, you need to get familiar with a `kubectl` sub-command `kubectl patch`. It applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats.
+Before that, you need to get familiar with a `kubectl` sub-command `kubectl patch`. It applies a specification change directly to the running cluster resources. There are several different patch strategies, each of which has various capabilities, limitations, and allowed formats. For details, see [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
 
 ### Modify the TiDB cluster version
 
@@ -616,7 +615,7 @@ tidbcluster.pingcap.com/basic patched
 
 ### Wait for Pods to restart
 
-To follow the progress of the cluster as its components are upgraded, run the following command. You should see some Pods transiting to `Terminating` and then back to `ContainerCreating` and then to `Running`. Pay attention to the value in the `AGE` pod column to see which pods have restarted.
+To follow the progress of the cluster as its components are upgraded, run the following command. You should see some Pods transiting to `Terminating` and then back to `ContainerCreating` and then to `Running`.
 
 {{< copyable "shell-regular" >}}
 
@@ -682,7 +681,7 @@ After you finish testing, you can destroy the TiDB cluster and the Kubernetes cl
 
 ### Destroy the TiDB cluster
 
-This section introduces how to destroy the TiDB cluster.
+This section introduces how to destroy a TiDB cluster.
 
 #### Delete the TiDB cluster
 
@@ -704,7 +703,7 @@ kubectl delete tidbmonitor basic -n tidb-cluster
 
 #### Delete PV data
 
-If your deployment has persistent data storage, deleting the TiDB cluster does not remove the data in the cluster. If you do not need the data, run the following commands to clean the data and the dynamically created persistent disks:
+If your deployment has persistent data storage, deleting the TiDB cluster does not remove the data in the cluster. If you do not need the data, run the following commands to clean it:
 
 {{< copyable "shell-regular" >}}
 
@@ -715,7 +714,7 @@ kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/man
 
 #### Delete namespaces
 
-To make sure there are no lingering resources, delete the namespace used for your TiDB cluster.
+To ensure that there are no lingering resources, delete the namespace used for your TiDB cluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -740,7 +739,7 @@ The method of destroying a Kubernetes cluster depends on how you create it. Here
 <SimpleTab>
 <div label="kind">
 
-If you use kind to create the Kubernetes cluster, run the following command to destroy it:
+To destroy a Kubernetes cluster created using kind, run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -752,7 +751,7 @@ kind delete cluster
 
 <div label="minikube">
 
-If you use minikube to create the Kubernetes cluster, run the following command to destroy it:
+To destroy a Kubernetes cluster created using minikube, run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -765,7 +764,7 @@ minikube delete
 
 ## See also
 
-If you want to do a production-grade deployment, refer to the following resources:
+If you want to deploy a TiDB cluster in production environments, refer to the following documents:
 
 On public clouds:
 
