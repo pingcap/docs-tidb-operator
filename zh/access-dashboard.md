@@ -92,9 +92,6 @@ spec:
 
 3. 在浏览器中访问 <http://localhost:10262/dashboard>，即可访问到 TiDB Dashboard。
 
-> **注意：**
->
-
 ## 方法 2. 通过 Ingress 访问 TiDB Dashboard
 
 > **注意：**
