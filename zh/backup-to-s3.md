@@ -85,12 +85,13 @@ GRANT
 >         - --ignore-checksum
 >     ```
 >
-> - 本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
->
->     - 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
->     - 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
->     - 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
->     - 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
+
+- 本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
+
+    - 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
+    - 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
+    - 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
+    - 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
 
 + 方法 1：创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3。
 
