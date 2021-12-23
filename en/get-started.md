@@ -109,7 +109,6 @@ You can create a Kubernetes cluster in a VM using [minikube](https://minikube.si
 >
 > minikube supports `--vm-driver=none` that uses a host Docker instead of a VM. However, this function is not yet fully tested on TiDB Operator and may result in operational failures. If you want to try TiDB Operator in a non-virtualized system (for example, in a VPS), consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
 
-
 Before deployment, make sure the following requirements are satisfied:
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
