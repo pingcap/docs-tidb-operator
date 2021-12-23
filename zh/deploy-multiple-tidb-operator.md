@@ -153,7 +153,7 @@ summary: 介绍如何部署多套 TiDB Operator 分别管理不同的 TiDB 集�
 
 ## 相关参数
 
-为了支持部署多套 TiDB Operator，`tidb-operator` chart 中 `values.yaml` 文件里面添加了以下参数。
+`tidb-operator` chart 的 `values.yaml` 文件里，有以下参数与部署多套 TiDB Operator 相关。
 
 - `appendReleaseSuffix`
 
