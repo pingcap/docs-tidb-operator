@@ -52,12 +52,10 @@ controllerManager:
 2. 在**不同的 namespace** 中（例如 `tidb-admin-canary`），使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度的 TiDB Operator：
 
     ```bash
-    helm upgrade tidb-operator pingcap/tidb-operator --version=${operator_version} -f ${HOME}/tidb-operator/${operator_version}/values-tidb-operator.yaml
+    helm install tidb-operator-canary pingcap/tidb-operator --namespace=tidb-admin-canary --version=${operator_version} -f ${HOME}/tidb-operator/${operator_version}/values-tidb-operator.yaml
     ```
 
     将 `${operator_version}` 替换为你需要灰度升级到的 TiDB Operator 版本号。
-
-    建议在单独的 namespace 部署新的 TiDB Operator。
 
 ## 第 3 步：测试灰度的 TiDB Operator (可选)
 
