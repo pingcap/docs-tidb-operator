@@ -77,7 +77,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 ### 自定义部署 TiDB Operator
 
-若需要快速部署 TiDB Operator，可参考快速上手中[部署 TiDB Operator文档](get-started.md#部署-tidb-operator)。本节介绍自定义部署 TiDB Operator 的配置方式。
+若需要快速部署 TiDB Operator，可参考快速上手中[部署 TiDB Operator文档](get-started.md#第-2-步部署-tidb-operator)。本节介绍自定义部署 TiDB Operator 的配置方式。
 
 创建 CRDs 之后，在 Kubernetes 集群上部署 TiDB Operator有两种方式：在线和离线部署。
 
