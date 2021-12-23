@@ -89,7 +89,6 @@ spec:
     
     `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
 
-
 3. 在浏览器中访问 <http://localhost:10262/dashboard>，即可访问到 TiDB Dashboard。
 
 ## 方法 2. 通过 Ingress 访问 TiDB Dashboard
