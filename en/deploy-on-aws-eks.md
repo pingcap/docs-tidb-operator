@@ -216,12 +216,14 @@ The following example shows how to create and configure a StorageClass for the `
     apiVersion: storage.k8s.io/v1
     metadata:
       name: gp3
-    provisioner: kubernetes.io/aws-ebs
+    provisioner: ebs.csi.aws.com
+    allowVolumeExpansion: true
+    volumeBindingMode: WaitForFirstConsumer
     parameters:
       type: gp3
       fsType: ext4
-      iopsPerGB: "10"
-      encrypted: "false"
+      iops: "4000"
+      throughput: "400"
     mountOptions:
     - nodelalloc,noatime
     ```
