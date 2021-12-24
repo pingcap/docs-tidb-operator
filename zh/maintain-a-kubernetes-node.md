@@ -315,7 +315,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     {{< copyable "shell-regular" >}}
    
-    ```shell
+    ```bash
     kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="delete-pod"
     ```
 
@@ -447,7 +447,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     {{< copyable "shell-regular" >}}
    
-    ```shell
+    ```bash
     kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
