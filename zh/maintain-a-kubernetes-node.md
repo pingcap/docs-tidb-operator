@@ -316,7 +316,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     {{< copyable "shell-regular" >}}
    
     ```bash
-    kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="delete-pod"
+    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="delete-pod"
     ```
 
 4. 确认该 TiKV Pod 正常调度到其它节点上：
@@ -456,7 +456,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     {{< copyable "shell-regular" >}}
    
     ```bash
-    kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-leader="none"
+    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
 2. 检查 Region Leader 已经全部被迁移走:
