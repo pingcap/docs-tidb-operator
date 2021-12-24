@@ -55,7 +55,7 @@ kind create cluster
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 <pre><code>
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -82,7 +82,7 @@ kubectl cluster-info
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 <pre><code>
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -121,7 +121,7 @@ minikube start
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 You should see output like this, with some differences depending on your OS and hypervisor:
 
 ```
@@ -170,7 +170,7 @@ kubectl cluster-info
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 Kubernetes master is running at https://192.168.64.2:8443
@@ -203,7 +203,7 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
@@ -234,7 +234,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     ```
 
     <details>
-    <summary><font color=Blue>Expected output</font></summary>
+    <summary>Expected output</summary>
 
     ```
     "pingcap" has been added to your repositories
@@ -251,7 +251,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     ```
 
     <details>
-    <summary><font color=Blue>Expected output</font></summary>
+    <summary>Expected output</summary>
 
     ```
     namespace/tidb-admin created
@@ -268,7 +268,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     ```
 
     <details>
-    <summary><font color=Blue>Expected output</font></summary>
+    <summary>Expected output</summary>
 
     ```
     NAME: tidb-operator
@@ -294,7 +294,7 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -320,7 +320,7 @@ kubectl create namespace tidb-cluster && \
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 namespace/tidb-cluster created
@@ -340,7 +340,7 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 tidbmonitor.pingcap.com/basic created
@@ -357,7 +357,7 @@ watch kubectl get po -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -393,7 +393,7 @@ kubectl get svc -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
@@ -433,7 +433,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -456,7 +456,7 @@ mysql>
 After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
 
 <details>
-<summary><font color=Blue>Create a `hello_world` table</font></summary>
+<summary>Create a `hello_world` table</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -485,18 +485,18 @@ APPROXIMATE_KEYS: 0
 </details>
 
 <details>
-<summary><font color=Blue>Query the TiDB version</font></summary>
+<summary>Query the TiDB version</summary>
 
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-tidb_version(): Release Version: v5.2.1
-Edition: Community
-Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
-Git Branch: heads/refs/tags/v5.2.1
-UTC Build Time: 2021-09-08 02:32:56
-GoVersion: go1.16.4
-Race Enabled: false
+  tidb_version(): Release Version: v5.2.1
+         Edition: Community
+ Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
+      Git Branch: heads/refs/tags/v5.2.1
+  UTC Build Time: 2021-09-08 02:32:56
+       GoVersion: go1.16.4
+    Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 1 row in set (0.01 sec)
@@ -505,7 +505,7 @@ Check Table Before Drop: false
 </details>
 
 <details>
-<summary><font color=Blue>Query the TiKV store status</font></summary>
+<summary>Query the TiKV store status</summary>
 
 ```sql
 mysql> select * from information_schema.tikv_store_status\G
@@ -535,7 +535,7 @@ mysql> select * from information_schema.tikv_store_status\G
 </details>
 
 <details>
-<summary><font color=Blue>Query the TiDB cluster information</font></summary>
+<summary>Query the TiDB cluster information</summary>
 This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
@@ -600,7 +600,7 @@ kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "ni
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 tidbcluster.pingcap.com/basic patched
@@ -619,7 +619,7 @@ watch kubectl get po -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -652,7 +652,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
 <details>
-<summary><font color=Blue>Expected output</font></summary>
+<summary>Expected output</summary>
 Note that `nightly` is not a fixed version. Running the command above at different time might return different results.
 
 ```

@@ -53,7 +53,7 @@ kind create cluster
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 <pre><code>
 Creating cluster "kind" ...
 ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -78,7 +78,7 @@ kubectl cluster-info
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 <pre><code>
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -119,7 +119,7 @@ minikube start
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 如果一切运行正常，会看到类似下面的输出，根据操作系统和使用的 hypervisor 会有些许差异。
 
 ```
@@ -177,7 +177,7 @@ kubectl cluster-info
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 Kubernetes master is running at https://192.168.64.2:8443
@@ -211,7 +211,7 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 customresourcedefinition.apiextensions.k8s.io/tidbclusters.pingcap.com created
@@ -226,7 +226,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 </details>
 
 > **注意：**
-> 
+>
 > 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 ### 安装 TiDB Operator
@@ -242,7 +242,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     ```
 
     <details>
-    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <summary>点击查看期望输出</summary>
 
     ```
     "pingcap" has been added to your repositories
@@ -259,7 +259,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     ```
 
     <details>
-    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <summary>点击查看期望输出</summary>
 
     ```
     namespace/tidb-admin created
@@ -287,7 +287,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     ```
 
     <details>
-    <summary><font color=Blue>点击查看期望输出</font></summary>
+    <summary>点击查看期望输出</summary>
 
     ```
     NAME: tidb-operator
@@ -313,7 +313,7 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -348,7 +348,7 @@ kubectl create namespace tidb-cluster && \
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 namespace/tidb-cluster created
@@ -376,7 +376,7 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 tidbmonitor.pingcap.com/basic created
@@ -393,7 +393,7 @@ watch kubectl get po -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -429,7 +429,7 @@ kubectl get svc -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
@@ -471,7 +471,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -490,7 +490,7 @@ MySQL [(none)]>
 以下是一些可以用来验证集群功能的命令。
 
 <details>
-<summary><font color=Blue>创建 `hello_world` 表</font></summary>
+<summary>创建 `hello_world` 表</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -500,38 +500,38 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 *************************** 1. row ***************************
         REGION_ID: 2
         START_KEY: 7480000000000000FF3700000000000000F8
-            END_KEY:
-        TABLE_ID: 55
-            DB_NAME: test
-        TABLE_NAME: hello_world
-        IS_INDEX: 0
-        INDEX_ID: NULL
-        INDEX_NAME: NULL
-    EPOCH_CONF_VER: 5
+          END_KEY:
+         TABLE_ID: 55
+          DB_NAME: test
+       TABLE_NAME: hello_world
+         IS_INDEX: 0
+         INDEX_ID: NULL
+       INDEX_NAME: NULL
+   EPOCH_CONF_VER: 5
     EPOCH_VERSION: 23
     WRITTEN_BYTES: 0
-        READ_BYTES: 0
-APPROXIMATE_SIZE: 1
-APPROXIMATE_KEYS: 0
+       READ_BYTES: 0
+ APPROXIMATE_SIZE: 1
+ APPROXIMATE_KEYS: 0
 1 row in set (0.03 sec)
 ```
 
 </details>
 
 <details>
-<summary><font color=Blue>查询 TiDB 版本号</font></summary>
+<summary>查询 TiDB 版本号</summary>
 
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-tidb_version(): Release Version: v5.2.1
-Edition: Community
-Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
-Git Branch: heads/refs/tags/v5.2.1
-UTC Build Time: 2021-09-08 02:32:56
-GoVersion: go1.16.4
-Race Enabled: false
-TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+         tidb_version(): Release Version: v5.2.1
+                Edition: Community
+        Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
+             Git Branch: heads/refs/tags/v5.2.1
+         UTC Build Time: 2021-09-08 02:32:56
+              GoVersion: go1.16.4
+           Race Enabled: false
+       TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 1 row in set (0.01 sec)
 ```
@@ -539,37 +539,37 @@ Check Table Before Drop: false
 </details>
 
 <details>
-<summary><font color=Blue>查询 TiKV 存储状态</font></summary>
+<summary>查询 TiKV 存储状态</summary>
 
 ```sql
 mysql> select * from information_schema.tikv_store_status\G
 *************************** 1. row ***************************
-            STORE_ID: 4
+           STORE_ID: 4
             ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
         STORE_STATE: 0
-    STORE_STATE_NAME: Up
-            LABEL: null
+   STORE_STATE_NAME: Up
+              LABEL: null
             VERSION: 5.2.1
-            CAPACITY: 58.42GiB
-        AVAILABLE: 36.18GiB
-        LEADER_COUNT: 3
-    LEADER_WEIGHT: 1
-        LEADER_SCORE: 3
+           CAPACITY: 58.42GiB
+          AVAILABLE: 36.18GiB
+       LEADER_COUNT: 3
+      LEADER_WEIGHT: 1
+       LEADER_SCORE: 3
         LEADER_SIZE: 3
-        REGION_COUNT: 21
-    REGION_WEIGHT: 1
-        REGION_SCORE: 21
+       REGION_COUNT: 21
+      REGION_WEIGHT: 1
+       REGION_SCORE: 21
         REGION_SIZE: 21
-            START_TS: 2020-05-28 22:48:21
-LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-            UPTIME: 3m40.598302151s
+           START_TS: 2020-05-28 22:48:21
+  LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
+             UPTIME: 3m40.598302151s
 1 rows in set (0.01 sec)
 ```
 
 </details>
 
 <details>
-<summary><font color=Blue>查询 TiDB 集群基本信息</font></summary>
+<summary>查询 TiDB 集群基本信息</summary>
 该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#第-5-步升级-tidb-集群)。
 
 ```sql
@@ -577,27 +577,27 @@ mysql> select * from information_schema.cluster_info\G
 *************************** 1. row ***************************
             TYPE: tidb
         INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-        VERSION: 5.2.1
+  STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
+         VERSION: 5.2.1
         GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    START_TIME: 2020-05-28T22:50:11Z
-        UPTIME: 3m21.459090928s
+      START_TIME: 2020-05-28T22:50:11Z
+          UPTIME: 3m21.459090928s
 *************************** 2. row ***************************
             TYPE: pd
         INSTANCE: basic-pd:2379
-STATUS_ADDRESS: basic-pd:2379
-        VERSION: 5.2.1
+  STATUS_ADDRESS: basic-pd:2379
+         VERSION: 5.2.1
         GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-    START_TIME: 2020-05-28T22:45:04Z
-        UPTIME: 8m28.459091915s
+      START_TIME: 2020-05-28T22:45:04Z
+          UPTIME: 8m28.459091915s
 *************************** 3. row ***************************
             TYPE: tikv
         INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-STATUS_ADDRESS: 0.0.0.0:20180
-        VERSION: 5.2.1
+  STATUS_ADDRESS: 0.0.0.0:20180
+         VERSION: 5.2.1
         GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-    START_TIME: 2020-05-28T22:48:21Z
-        UPTIME: 5m11.459102648s
+      START_TIME: 2020-05-28T22:48:21Z
+          UPTIME: 5m11.459102648s
 3 rows in set (0.01 sec)
 ```
 
@@ -632,7 +632,7 @@ kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "ni
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 tidbcluster.pingcap.com/basic patched
@@ -651,7 +651,7 @@ watch kubectl get po -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -682,7 +682,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
