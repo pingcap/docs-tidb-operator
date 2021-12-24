@@ -323,7 +323,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
