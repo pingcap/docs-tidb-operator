@@ -511,7 +511,7 @@ Check Table Before Drop: false
 mysql> select * from information_schema.tikv_store_status\G
 *************************** 1. row ***************************
             STORE_ID: 4
-             ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.      svc:20160
+             ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
          STORE_STATE: 0
     STORE_STATE_NAME: Up
                LABEL: null
