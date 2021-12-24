@@ -577,27 +577,27 @@ mysql> select * from information_schema.cluster_info\G
 *************************** 1. row ***************************
             TYPE: tidb
         INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-        VERSION: 5.2.1
+  STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
+         VERSION: 5.2.1
         GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    START_TIME: 2020-05-28T22:50:11Z
-        UPTIME: 3m21.459090928s
+      START_TIME: 2020-05-28T22:50:11Z
+          UPTIME: 3m21.459090928s
 *************************** 2. row ***************************
             TYPE: pd
         INSTANCE: basic-pd:2379
-STATUS_ADDRESS: basic-pd:2379
-        VERSION: 5.2.1
+  STATUS_ADDRESS: basic-pd:2379
+         VERSION: 5.2.1
         GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-    START_TIME: 2020-05-28T22:45:04Z
-        UPTIME: 8m28.459091915s
+      START_TIME: 2020-05-28T22:45:04Z
+          UPTIME: 8m28.459091915s
 *************************** 3. row ***************************
             TYPE: tikv
         INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-STATUS_ADDRESS: 0.0.0.0:20180
-        VERSION: 5.2.1
+  STATUS_ADDRESS: 0.0.0.0:20180
+         VERSION: 5.2.1
         GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-    START_TIME: 2020-05-28T22:48:21Z
-        UPTIME: 5m11.459102648s
+      START_TIME: 2020-05-28T22:48:21Z
+          UPTIME: 5m11.459102648s
 3 rows in set (0.01 sec)
 ```
 
@@ -632,7 +632,7 @@ kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec": {"version": "ni
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 tidbcluster.pingcap.com/basic patched
@@ -651,7 +651,7 @@ watch kubectl get po -n tidb-cluster
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 
 ```
 NAME                              READY   STATUS        RESTARTS   AGE
@@ -682,7 +682,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
 <details>
-<summary><font color=Blue>点击查看期望输出</font></summary>
+<summary>点击查看期望输出</summary>
 注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
