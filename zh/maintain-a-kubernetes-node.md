@@ -327,6 +327,14 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
+5. 检查 Region Leader 已经开始迁回:
+
+   {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    ```
+
 ### 如果节点存储不可自动迁移
 
 如果节点存储不可以自动迁移（比如使用本地存储），你需要删除整个 TiKV Store 以实现重调度。
@@ -455,6 +463,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
