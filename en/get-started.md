@@ -69,7 +69,7 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 
 Thanks for using kind! 😊
-</pre></code>
+</code></pre>
 </details>
 
 Check whether the cluster is successfully created:

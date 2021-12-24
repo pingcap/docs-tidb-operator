@@ -66,7 +66,7 @@ Set kubectl context to "kind-kind"
 You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 Thanks for using kind! 😊
-</pre></code>
+</code></pre>
 </details>
 
 检查集群是否创建成功：
