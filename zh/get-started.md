@@ -544,27 +544,6 @@ Check Table Before Drop: false
 ```sql
 mysql> select * from information_schema.tikv_store_status\G
 *************************** 1. row ***************************
-<<<<<<< HEAD
-            STORE_ID: 4
-             ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-         STORE_STATE: 0
-    STORE_STATE_NAME: Up
-               LABEL: null
-             VERSION: 5.2.1
-            CAPACITY: 58.42GiB
-           AVAILABLE: 36.18GiB
-        LEADER_COUNT: 3
-       LEADER_WEIGHT: 1
-        LEADER_SCORE: 3
-         LEADER_SIZE: 3
-        REGION_COUNT: 21
-       REGION_WEIGHT: 1
-        REGION_SCORE: 21
-         REGION_SIZE: 21
-            START_TS: 2020-05-28 22:48:21
-   LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-              UPTIME: 3m40.598302151s
-=======
            STORE_ID: 4
             ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
         STORE_STATE: 0
@@ -584,7 +563,6 @@ mysql> select * from information_schema.tikv_store_status\G
            START_TS: 2020-05-28 22:48:21
   LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
              UPTIME: 3m40.598302151s
->>>>>>> 2e7a5568 (deleted font tags (#1522))
 1 rows in set (0.01 sec)
 ```
 
