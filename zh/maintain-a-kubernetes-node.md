@@ -332,7 +332,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
    {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
 
 ### 如果节点存储不可自动迁移
@@ -464,5 +464,5 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
