@@ -8,7 +8,7 @@ summary: Learn how to deploy multiple sets of TiDB Operator to manage different 
 You can use one set of TiDB Operator to manage multiple TiDB clusters. If you have the following application needs, you can deploy multiple sets of TiDB Operator to manage different TiDB clusters:
 
 - You need to [perform a canary upgrade on TiDB Operator](canary-upgrade-tidb-operator.md) so that the potential issues of the new version do not affect your application.
-- Multiple TiDB clusters exist in your organization, and each cluster belongs to different teams. Each team needs to manage their own cluster.
+- Multiple TiDB clusters exist in your organization, and each cluster belongs to different teams. Each team needs to manage their own cluster. 
 
 This document describes how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
