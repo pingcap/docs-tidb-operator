@@ -210,7 +210,7 @@ mountOptions:
 
 ## Deploy TiDB Operator
 
-Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator).
+Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* section](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
@@ -474,6 +474,7 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:
@@ -560,11 +561,8 @@ Azure disks support multiple volume types. Among them, `UltraSSD` delivers low l
     ```yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
+        ...
         storageClassName: ultra
-        requests:
-          storage: "100Gi"
     ```
 
 You can use any supported Azure disk type. It is recommended to use `Premium_LRS` or `UltraSSD_LRS`.

@@ -69,7 +69,7 @@ gcloud config set compute/region <gcp-region>
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#deploy-tidb-operator).
+To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
@@ -321,6 +321,7 @@ The two components are *not required* in the deployment. This section shows a qu
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:

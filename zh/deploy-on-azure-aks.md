@@ -206,7 +206,7 @@ mountOptions:
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -468,6 +468,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -552,11 +553,8 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     ``` yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
+        ...
         storageClassName: ultra
-        requests:
-          storage: "100Gi"
     ```
 
 您可以使用任意 Azure 磁盘类型，推荐使用 `Premium_LRS` 或 `UltraSSD_LRS`。
