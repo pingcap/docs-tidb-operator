@@ -45,7 +45,7 @@ spec:
     metadata:
       name: basic
     spec:
-      version: v5.2.1
+      version: v5.3.0
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
