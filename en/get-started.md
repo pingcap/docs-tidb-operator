@@ -56,7 +56,8 @@ kind create cluster
 
 <details>
 <summary>Expected output</summary>
-<pre><code>
+
+```
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
  ✓ Preparing nodes 📦
@@ -70,7 +71,8 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 
 Thanks for using kind! 😊
-</code></pre>
+```
+
 </details>
 
 Check whether the cluster is successfully created:
@@ -83,12 +85,14 @@ kubectl cluster-info
 
 <details>
 <summary>Expected output</summary>
-<pre><code>
+
+```
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-</code></pre>
+```
+
 </details>
 
 You are now ready to deploy TiDB Operator.
@@ -453,10 +457,10 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
+After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 <details>
-<summary>Create a `hello_world` table</summary>
+<summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -536,7 +540,8 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>Query the TiDB cluster information</summary>
-This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
+
+This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, you need to [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
 mysql> select * from information_schema.cluster_info\G

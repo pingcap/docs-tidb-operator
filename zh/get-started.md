@@ -54,7 +54,8 @@ kind create cluster
 
 <details>
 <summary>点击查看期望输出</summary>
-<pre><code>
+
+```
 Creating cluster "kind" ...
 ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
 ✓ Preparing nodes 📦
@@ -66,7 +67,8 @@ Set kubectl context to "kind-kind"
 You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 Thanks for using kind! 😊
-</code></pre>
+```
+
 </details>
 
 检查集群是否创建成功：
@@ -79,12 +81,14 @@ kubectl cluster-info
 
 <details>
 <summary>点击查看期望输出</summary>
-<pre><code>
+
+```
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-</code></pre>
+```
+
 </details>
 
 Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
@@ -490,7 +494,7 @@ MySQL [(none)]>
 以下是一些可以用来验证集群功能的命令。
 
 <details>
-<summary>创建 `hello_world` 表</summary>
+<summary>创建 <code>hello_world</code> 表</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -570,7 +574,8 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>查询 TiDB 集群基本信息</summary>
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请[升级集群](#第-5-步升级-tidb-集群)。
+
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先[升级 TiDB 集群](#第-5-步升级-tidb-集群)
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
