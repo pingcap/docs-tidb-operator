@@ -113,6 +113,10 @@ kubectl create -f tidb-monitor.yaml -n tidb-cluster
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
 
+> **Note:**
+>
+> If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
+
 ### View the cluster status
 
 To view the status of the starting TiDB cluster, run the following command:
@@ -186,7 +190,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+    mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
     ```
 
     `${tidb-nlb-dnsname}` is the LoadBalancer IP of the TiDB service. You can view the IP in the `EXTERNAL-IP` field of the `kubectl get svc basic-tidb -n tidb-cluster` execution result.
@@ -194,7 +198,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     For example:
 
     ```shell
-    $ mysql -h 10.128.15.243 -P 4000 -u root
+    $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
     Server version: 5.7.25-TiDB-v4.0.4 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
