@@ -28,7 +28,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 前置条件
 
-使用 Dumpling 备份 TiDB 集群数据到 GCS 前，确保你拥有备份数据库的以下权限：
+使用 Dumpling 备份 TiDB 集群数据到 S3 前，确保你拥有备份数据库的以下权限：
 
 * `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
 * 全局权限：`SELECT`、`RELOAD`、`LOCK TABLES`、和 `REPLICATION CLIENT`。
@@ -83,7 +83,6 @@ GRANT
 >         options:
 >         - --ignore-checksum
 >     ```
->
 
 本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
 
