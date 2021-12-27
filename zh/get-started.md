@@ -54,7 +54,8 @@ kind create cluster
 
 <details>
 <summary>点击查看期望输出</summary>
-<pre><code>
+
+```
 Creating cluster "kind" ...
 ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
 ✓ Preparing nodes 📦
@@ -66,7 +67,8 @@ Set kubectl context to "kind-kind"
 You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 Thanks for using kind! 😊
-</code></pre>
+```
+
 </details>
 
 检查集群是否创建成功：
@@ -79,12 +81,14 @@ kubectl cluster-info
 
 <details>
 <summary>点击查看期望输出</summary>
-<pre><code>
+
+```
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-</code></pre>
+```
+
 </details>
 
 Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
