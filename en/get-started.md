@@ -540,7 +540,8 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>Query the TiDB cluster information</summary>
-This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, you need to <a href="#step-5-upgrade-a-tidb-cluster">upgrade the TiDB cluster</a>.
+
+This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, you need to [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
