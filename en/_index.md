@@ -38,12 +38,12 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <NavColumn>
 <ColumnTitle>Deploy TiDB</ColumnTitle>
 
-- [On AWS EKS](deploy-on-aws-eks.md)
+- [On Amazon EKS](deploy-on-aws-eks.md)
 - [On GCP GKE](deploy-on-gcp-gke.md)
+- [On Azure AKS](deploy-on-azure-aks.md)
 - [On Alibaba ACK](deploy-on-alibaba-cloud.md)
 - [On Self-managed Kubernetes](deploy-on-general-kubernetes.md)
-- [Deploy TiFlash](deploy-tiflash.md)
-- [Deploy Monitoring Services](monitor-a-tidb-cluster.md)
+- [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
 
 </NavColumn>
 
@@ -52,17 +52,21 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
-- [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
+- [Enable TLS for TiDB Data Migration](enable-tls-for-dm.md)
+- [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
+- [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
+- [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
 
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>Maintain</ColumnTitle>
+<ColumnTitle>Manage</ColumnTitle>
 
 - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
 - [Scale a TiDB Cluster](scale-a-tidb-cluster.md)
 - [Backup and Restore](backup-restore-overview.md)
+- [Deploy Monitoring and Alerts](monitor-a-tidb-cluster.md)
 - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
 - [Use Automatic Failover](use-auto-failover.md)
 

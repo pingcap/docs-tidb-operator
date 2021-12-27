@@ -40,12 +40,12 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 <NavColumn>
 <ColumnTitle>部署集群</ColumnTitle>
 
-- [部署到 AWS EKS](deploy-on-aws-eks.md)
+- [部署到 Amazon EKS](deploy-on-aws-eks.md)
 - [部署到 GCP GKE](deploy-on-gcp-gke.md)
+- [部署到 Azure AKS](deploy-on-azure-aks.md)
 - [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
 - [部署到自托管的 Kubernetes](prerequisites.md)
-- [部署 TiFlash](deploy-tiflash.md)
-- [部署 TiDB 集群监控](monitor-a-tidb-cluster.md)
+- [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
 
 </NavColumn>
 
@@ -54,17 +54,21 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-- [以非 root 用户运行 TiDB Operator 和 TiDB 集群](containers-run-as-non-root-user.md)
+- [为 TiDB DM 组件开启 TLS](enable-tls-for-dm.md)
+- [同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
+- [更新和替换 TLS 证书](renew-tls-certificate.md)
+- [以非 root 用户运行容器](containers-run-as-non-root-user.md)
 
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>运维</ColumnTitle>
+<ColumnTitle>管理</ColumnTitle>
 
 - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
 - [升级 TiDB Operator](upgrade-tidb-operator.md)
 - [集群扩缩容](scale-a-tidb-cluster.md)
 - [备份与恢复](backup-restore-overview.md)
+- [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
 - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)
 - [集群故障自动转移](use-auto-failover.md)
 

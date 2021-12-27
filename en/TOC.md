@@ -21,9 +21,9 @@
     - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
   - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
-  - [Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
-  - [Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
-  - [TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
+  - [Deploy across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
+  - [Deploy a Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
+  - [Deploy the TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
 - Migrate
@@ -38,7 +38,7 @@
     - [Enable TLS between TiDB Components](enable-tls-between-components.md)
     - [Enable TLS for DM](enable-tls-for-dm.md)
     - [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
-    - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
+    - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
     - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
   - Scale
     - [Manually Scale](scale-a-tidb-cluster.md)
