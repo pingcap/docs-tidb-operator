@@ -70,7 +70,7 @@
     - [查看 TiDB 日志](view-logs.md)
     - [配置集群故障自动转移](use-auto-failover.md)
     - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
-    - [部署多套 TiDB Operator 维护多个 TiDB 集群](deploy-multiple-tidb-operator.md)
+    - [使用多套 TiDB Operator 单独管理不同的 TiDB 集群](deploy-multiple-tidb-operator.md)
     - [维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
     - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
   - 监控与告警

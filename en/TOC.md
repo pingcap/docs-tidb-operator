@@ -70,7 +70,7 @@
     - [View TiDB Logs](view-logs.md)
     - [Configure Automatic Failover](use-auto-failover.md)
     - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
-    - [Maintain Multiple TiDB Clusters Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
+    - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
   - Monitor and Alert
