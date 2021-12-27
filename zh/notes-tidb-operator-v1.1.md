@@ -86,7 +86,7 @@ spec
 
 升级到 TiDB Operator v1.1 之后，可以通过 BackupSchedule CR 配置定时全量备份：
 
-- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling 定时全量备份](backup-to-s3.md#场景-2-定时全量备份)
+- 如果 TiDB 集群版本 < v3.1，可以参考 [Dumpling 定时全量备份](backup-to-s3.md#场景-2定时全量备份)
 - 如果 TiDB 集群版本 >= v3.1，可以参考 [BR 定时全量备份](backup-to-aws-s3-using-br.md#定时全量备份)
 
 > **注意：**
