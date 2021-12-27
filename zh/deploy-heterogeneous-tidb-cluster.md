@@ -30,7 +30,7 @@ metadata:
   name: ${heterogeneous_cluster_name}
 spec:
   configUpdateStrategy: RollingUpdate
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -95,7 +95,7 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v5.2.1
+    version: v5.3.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -134,7 +134,7 @@ spec:
   tlsCluster:
     enabled: true
   configUpdateStrategy: RollingUpdate
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}

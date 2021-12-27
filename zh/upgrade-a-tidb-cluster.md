@@ -25,7 +25,7 @@ summary: 介绍如何滚动升级 Kubernetes 上的 TiDB 集群。
 
     `version` 字段格式如下：
 
-    - `spec.version`，格式为 `imageTag`，例如 `v5.2.1`
+    - `spec.version`，格式为 `imageTag`，例如 `v5.3.0`
     - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v3.1.0`
 
     {{< copyable "shell-regular" >}}
