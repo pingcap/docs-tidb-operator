@@ -41,7 +41,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
             log = "/data0/logs/server.log"
     ```
 
-    要获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)
+    要获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
 
     > **注意:**
     >
@@ -98,7 +98,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     > - 建议第一次部署 TiFlash 规划好使用几个 PV，配置好 `storageClaims` 中`resources` 项的个数。
     > - 当 TiFlash 组件部署完成后，如果你需要为 TiFlash 挂载额外的 PV，直接更新 `storageClaims` 添加磁盘不会生效。因为 TiDB Operator 是通过创建 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 管理 TiFlash 的，而 `StatefulSet` 创建后不支持修改 `volumeClaimTemplates`。
 
-当 TiFlash 组件部署完成后，如果你需要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
+当 TiFlash 组件部署完成后，如果要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
 
 > **警告**:
 >
