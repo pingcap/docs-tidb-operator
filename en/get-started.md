@@ -457,10 +457,10 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to upgrade the TiDB cluster.
+After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to <a href="#第-5-步升级-tidb-集群">upgrade the TiDB cluster</a>.
 
 <details>
-<summary>Create a `hello_world` table</summary>
+<summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -540,7 +540,7 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>Query the TiDB cluster information</summary>
-This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
+This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, you need to <a href="#step-5-upgrade-a-tidb-cluster">upgrade the TiDB cluster</a>.
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
