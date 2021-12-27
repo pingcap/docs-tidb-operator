@@ -11,14 +11,14 @@ TiDB Dashboard is a visualized tool introduced since TiDB v4.0 and is used to mo
 This document describes how to access TiDB Dashboard in Kubernetes.
 
 - In a test environment, you can [access TiDB Dashboard by port forward](#method-1-access-tidb-dashboard-by-port-forward).
-- In a production environment, it is recommended to [access TiDB Dashboard by Ingress](#method-2-access-tidb-dashboard-by-ingress). You can also enable the TLS transfer. See [Enable Ingress TLS](#enable-ingress-tls) for details.
+- In a production environment, it is recommended to [access TiDB Dashboard by Ingress](#method-2-access-tidb-dashboard-by-ingress). You can also enable the TLS transfer. See [Use Ingress with TLS](#use-ingress-with-tls) for details.
 - To access TiDB Dashboard without a domain name, you can [use NodePort Service](#method-3-use-nodeport-service).
 
 > **Note:**
 >
 > Due to the special environment of Kubernetes, some features of TiDB Dashboard are not supported in TiDB Operator. See [Unsupported TiDB Dashboard features](#unsupported-tidb-dashboard-features) for details.
 
-In this document, TiDB Dashboard is accessed using the Discovery service. TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. The Discovery service can also send proxy requests to the TiDB Dashboard.
+In this document, you can use the Discovery service to access TiDB Dashboard. TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery service can return the corresponding startup parameters for each PD Pod to support the startup of the PD cluster. The Discovery service can also send proxy requests to the TiDB Dashboard.
 
 > **Warning:**
 >
@@ -91,7 +91,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     kubectl port-forward svc/basic-discovery -n ${namespace} 10262:10262
     ```
 
-    By default, `port-forward` binds to the IP address 127.0.0.1. If you need to use another IP address to access the machine running the `port-forward` command, you can add the `-address` option and specify the IP address to be bound.
+    By default, `port-forward` binds to the IP address 127.0.0.1. If you need to use another IP address to access the machine running the `port-forward` command, you can add the `--address` option and specify the IP address to be bound.
 
 3. Visit <http://localhost:10262/dashboard> in your browser to access TiDB Dashboard.
 
