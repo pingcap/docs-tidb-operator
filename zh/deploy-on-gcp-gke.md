@@ -67,7 +67,7 @@ gcloud config set compute/region <gcp-region>
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -110,6 +110,10 @@ kubectl create -f tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
+
+> **注意：**
+>
+> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
 ### 查看 TiDB 集群启动状态
 
@@ -182,7 +186,7 @@ gcloud compute instances create bastion \
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+    mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
     ```
 
     `${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer IP，可以通过 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
@@ -190,10 +194,10 @@ gcloud compute instances create bastion \
     示例：
 
     ```shell
-    $ mysql -h 10.128.15.243 -P 4000 -u root
+    $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v4.0.10 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v5.2.1 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -307,6 +311,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:

@@ -14,6 +14,11 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 1. 为即将被创建的 DM 集群的每个组件生成证书：
     - 为 DM-master/DM-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-dm-client-secret`
+
+    > **注意：**
+    >
+    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 DM 集群部署失败。
+
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
 3. 配置 `dmctl` 连接集群。
 
@@ -478,12 +483,12 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.0-rc.2
+  version: v2.0.7
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   master:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     replicas: 1
     storageSize: "1Gi"
     config:
@@ -491,6 +496,7 @@ spec:
         - TiDB
   worker:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     replicas: 1
     storageSize: "1Gi"
     config:
@@ -545,10 +551,9 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.0-rc.2
+  version: v2.0.7
   pvReclaimPolicy: Retain
-  discovery:
-    address: "http://${tidb_cluster_name}-discovery.${tidb_namespace}:10261"
+  discovery: {}
   tlsClientSecretNames:
     - ${mysql_secret_name1}
     - ${tidb_secret_name}
@@ -560,10 +565,11 @@ spec:
 
 设置 `spec.tlsClientSecretNames` 选项后，TiDB Operator 会将 Secret 对象 ${secret_name} 挂载到 `/var/lib/source-tls/${secret_name}` 路径。
 
-1. 填写[数据源配置](deploy-tidb-dm.md#创建数据源) `source1.yaml` 的 `from.security` 选项：
+1. 填写[数据源配置](use-tidb-dm.md#创建数据源) `source1.yaml` 的 `from.security` 选项：
 
     ``` yaml
     source-id: mysql-replica-01
+    relay-dir: /var/lib/dm-worker/relay
     from:
       host: ${mysql_host1}
       user: dm
@@ -575,13 +581,13 @@ spec:
         ssl-key: /var/lib/source-tls/${mysql_secret_name1}/tls.key
     ```
 
-2. 填写[同步任务配置](deploy-tidb-dm.md#配置同步任务) `task.yaml` 的 `target-database.security` 选项：
+2. 填写[同步任务配置](use-tidb-dm.md#配置同步任务) `task.yaml` 的 `target-database.security` 选项：
 
     ``` yaml
     name: test
     task-mode: all
     is-sharding: false
-    
+
     target-database:
       host: ${tidb_host}
       port: 4000
@@ -591,8 +597,16 @@ spec:
         ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
         ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
         ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
+
+    mysql-instances:
+    - source-id: "replica-01"
+      loader-config-name: "global"
+
+    loaders:
+      global:
+        dir: "/var/lib/dm-worker/dumped_data"
     ```
 
 ### 第四步：启动同步任务
 
-参考[启动同步任务](deploy-tidb-dm.md#启动查询停止同步任务)。
+参考[启动同步任务](use-tidb-dm.md#启动查询停止同步任务)。

@@ -7,9 +7,11 @@ summary: 介绍如何灰度升级 TiDB Operator。
 
 本文介绍如何灰度升级 TiDB Operator。灰度升级可以控制 TiDB Operator 升级的影响范围，避免由于 TiDB Operator 升级导致对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响，在确认 TiDB Operator 升级的影响或者确认 TiDB Operator 新版本能正常稳定工作后再正常升级 TiDB Operator。
 
+在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
+
 > **注意：**
 >
-> - 目前仅支持灰度升级 tidb-controller-manager 和 tidb-scheduler。
+> - 目前仅支持灰度升级 tidb-controller-manager 和 tidb-scheduler，不支持灰度升级 AdvancedStatefulSet controller 和 AdmissionWebhook。
 > - v1.1.10 开始支持此项功能，所以当前 TiDB Operator 版本需 >= v1.1.10。
 
 ## 相关参数
@@ -32,7 +34,7 @@ summary: 介绍如何灰度升级 TiDB Operator。
 
 2. 部署灰度 TiDB Operator。
 
-    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，**在不同的 namespace** 中（例如 `tidb-admin-canary`）部署灰度 TiDB Operator：
+    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，在**不同的 namespace** 中（例如 `tidb-admin-canary`）使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度 TiDB Operator：
 
     ```yaml
     controllerManager:
@@ -40,7 +42,11 @@ summary: 介绍如何灰度升级 TiDB Operator。
       - version=canary
     appendReleaseSuffix: true
     #scheduler:
-    #  create: false
+    #  create: false # 如果你不需要 `tidb-scheduler`，将这个值设置为 false
+    advancedStatefulset:
+      create: false
+    admissionWebhook:
+      create: false
     ```
 
     > **注意：**
@@ -49,6 +55,7 @@ summary: 介绍如何灰度升级 TiDB Operator。
     > * `appendReleaseSuffix` 需要设置为 `true`。
     > * 如果不需要灰度升级 tidb-scheduler，可以设置 `scheduler.create: false`。
     > * 如果配置 `scheduler.create: true`，会创建一个名字为 `{{ .scheduler.schedulerName }}-{{.Release.Name}}` 的 scheduler，要使用这个 scheduler，需要配置 TidbCluster CR 中的 `spec.schedulerName` 为这个 scheduler。
+    > * 由于不支持灰度升级 AdvancedStatefulSet controller 和 AdmissionWebhook，需要配置 `advancedStatefulset.create: false` 和 `admissionWebhook.create: false`。
 
 3. 如果需要测试 tidb-controller-manager 灰度升级，通过如下命令为某个 TiDB 集群设置 label：
 

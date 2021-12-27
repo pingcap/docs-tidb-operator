@@ -12,6 +12,10 @@ To enable TLS for the MySQL client, perform the following steps:
 
 1. [Issue two sets of certificates](#issue-two-sets-of-certificates-for-the-tidb-cluster): a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`, respectively including these two sets of certificates.
 
+    > **Note:**
+    >
+    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB cluster will fail.
+
     Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
     - [Using the `cfssl` system](#using-cfssl)
@@ -533,26 +537,29 @@ In this step, you create a TiDB cluster and perform the following operations:
         kind: TidbCluster
         metadata:
           name: ${cluster_name}
-          amespace: ${namespace}
+          namespace: ${namespace}
         spec:
-          version: v4.0.10
+          version: v5.2.1
           timezone: UTC
           pvReclaimPolicy: Retain
           pd:
             baseImage: pingcap/pd
+            maxFailoverCount: 0
             replicas: 1
             requests:
-              storage: "1Gi"
+              storage: "10Gi"
             config: {}
             tlsClientSecretName: ${cluster_name}-pd-dashboard-client-secret
           tikv:
             baseImage: pingcap/tikv
+            maxFailoverCount: 0
             replicas: 1
             requests:
-              storage: "1Gi"
+              storage: "100Gi"
             config: {}
           tidb:
             baseImage: pingcap/tidb
+            maxFailoverCount: 0
             replicas: 1
             service:
               type: ClusterIP
@@ -674,7 +681,7 @@ kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpat
 {{< copyable "shell-regular" >}}
 
 ``` shell
-mysql -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
+mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
 > **Note:**

@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v4.0.10`
+- `spec.version`，格式为 `imageTag`，例如 `v5.2.1`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v4.0.10`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.2.1`
 
 ### 推荐配置
 
@@ -53,9 +53,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 #### enableDynamicConfiguration
 
-建议设置 `spec.enableDynamicConfiguration: true`，开启动态配置特性。
+建议通过设置 `spec.enableDynamicConfiguration: true` 配置 TiKV 的 `--advertise-status-addr` 启动参数。
 
-版本支持：TiDB v4.0.1 及更高版本，TiDB Operator v1.1.1 及更高版本。
+版本支持：TiDB v4.0.1 及更高版本。
 
 #### pvReclaimPolicy
 
@@ -69,13 +69,9 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 #### 存储类型
 
-如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](configure-storage-class.md)，请联系系统管理员确定。
+如果需要设置存储类型，可以修改 `${cluster_name}/tidb-cluster.yaml` 中各组件的 `storageClassName` 字段。关于 Kubernetes 集群支持哪些[存储类型](https://kubernetes.io/zh/docs/concepts/storage/storage-classes/)，请联系系统管理员确定。
 
-另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，为 TiDB 集群各组件选择合适的存储类型，
-
-生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。
-
-对于演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。
+另外，TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前，要根据当前 Kubernetes 集群支持的存储类型以及使用场景，参考[存储配置文档](configure-storage-class.md)为 TiDB 集群各组件选择合适的存储类型。
 
 > **注意：**
 >
@@ -83,9 +79,13 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 #### 多盘挂载
 
-TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用途的数据写入。
+TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于不同用途的数据写入。
 
 每个组件都可以配置 `storageVolumes` 字段，用于描述用户自定义的多个 PV。
+
+> **注意：**
+>
+> 你需要在集群创建之前配置 `storageVolumes`。集群创建完成后，不支持添加或者删除 `storageVolumes`。对于已经配置的 `storageVolumes`，除增大 `storageVolume.storageSize` 外，其他项不支持修改。如果要增大 `storageVolume.storageSize`，需要对应的 StorageClass 支持[动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
 
 相关字段的含义如下：
 
@@ -99,58 +99,20 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 {{< copyable "" >}}
 
 ```yaml
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      log:
-        file:
-          filename: /var/log/pdlog/pd.log
-        level: "warn"
-    storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/pdlog"
-  tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      log:
-        file:
-          filename: /var/log/tidblog/tidb.log
-        level: "warn"
-    storageVolumes:
-      - name: log
-        storageSize: "2Gi"
-        mountPath: "/var/log/tidblog"
   tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      storage:
-        # In basic examples, you can set this to avoid using too much storage.
-        reserve-space: "0MB"
-      rocksdb:
-        wal-dir: "/data_sbi/tikv/wal"
-      titan:
-        dirname: "/data_sbj/titan/data"
+    ...
+    config: |
+      [rocksdb]
+        wal-dir = "/data_sbi/tikv/wal"
+      [titan]
+        dirname = "/data_sbj/titan/data"
     storageVolumes:
-      - name: wal
-        storageSize: "2Gi"
-        mountPath: "/data_sbi/tikv/wal"
-      - name: titan
-        storageSize: "2Gi"
-        mountPath: "/data_sbj/titan/data"
+    - name: wal
+      storageSize: "2Gi"
+      mountPath: "/data_sbi/tikv/wal"
+    - name: titan
+      storageSize: "2Gi"
+      mountPath: "/data_sbj/titan/data"
 ```
 
 > **注意：**
@@ -161,6 +123,22 @@ TiDB Operator 支持为 PD、TiDB、TiKV 挂载多块 PV，可以用于不同用
 
 PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
 
+### Discovery
+
+TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。你可以通过 `spec.discovery` 配置 Discovery 服务的资源，详见[容器资源管理](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)。
+
+`spec.discovery` 配置示例：
+
+```yaml
+spec:
+  discovery:
+    limits:
+      cpu: "0.2"
+    requests:
+      cpu: "0.2"
+  ...
+```
+
 ### 集群拓扑
 
 #### PD/TiKV/TiDB
@@ -169,7 +147,7 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
 
 > **注意：**
 >
-> 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD 和 TiKV Pod 个数都减小到 1 个。
+> 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD Pod 个数减小到 1 个。
 
 #### 部署 TiFlash
 
@@ -177,14 +155,13 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
 
 ```yaml
   pd:
-    config:
+    config: |
       ...
-      replication:
-        enable-placement-rules: true
-        ...
+      [replication]
+      enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -193,12 +170,12 @@ PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上�
       storageClassName: local-storage
 ```
 
-TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多项，每一项可以分别配置 `storage reqeust` 和 `storageClassName`，例如：
+TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多项，每一项可以分别配置 `storage request` 和 `storageClassName`，例如：
 
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -245,52 +222,18 @@ spec:
 
 ### 配置 TiDB 组件
 
-本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项，目前 TiDB Operator 1.1 版本支持了 TiDB 集群 4.0 版本参数。
+本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项。
 
 #### 配置 TiDB 配置参数
 
 你可以通过 TidbCluster CR 的 `spec.tidb.config` 来配置 TiDB 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tidb:
-    image: pingcap/tidb:v4.0.10
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      split-table: true
-      oom-action: "log"
-    requests:
-      cpu: 1
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-....
-  tidb:
-    image: pingcap/tidb:v4.0.10
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
     config: |
       split-table = true
       oom-action = "log"
-    requests:
-      cpu: 1
 ```
 
 获取所有可以配置的 TiDB 配置参数，请参考 [TiDB 配置文档](https://pingcap.com/docs-cn/stable/tidb-configuration-file/)。
@@ -304,37 +247,12 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.tikv.config` 来配置 TiKV 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tikv:
-    image: pingcap/tikv:v4.0.10
-    config: {}
-    replicas: 1
-    requests:
-      cpu: 2
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-....
-  tikv:
-    image: pingcap/tikv:v4.0.10
     config: |
-      #  [storage]
-      #    reserve-space = "2MB"
-    replicas: 1
-    requests:
-      cpu: 2
+      [storage]
+        [storage.block-cache]
+          capacity = "16GB"
 ```
 
 获取所有可以配置的 TiKV 配置参数，请参考 [TiKV 配置文档](https://pingcap.com/docs-cn/stable/tikv-configuration-file/)
@@ -348,30 +266,8 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.pd.config` 来配置 PD 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-.....
   pd:
-    image: pingcap/pd:v4.0.10
-    config:
-      lease: 3
-      enable-prevote: true
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-.....
-  pd:
-    image: pingcap/pd:v4.0.10
     config: |
       lease = 3
       enable-prevote = true
@@ -389,34 +285,7 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
-  tiflash:
-    config:
-      config:
-        flash:
-          flash_cluster:
-            log: "/data0/logs/flash_cluster_manager.log"
-        logger:
-          count: 10
-          level: information
-          errorlog: "/data0/logs/error.log"
-          log: "/data0/logs/server.log"
-```
-
-自 v1.1.6 版本起支持透传 TOML 配置给组件:
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
-spec:
-  ...
   tiflash:
     config:
       config: |
@@ -436,13 +305,20 @@ spec:
 
 你可以通过 TidbCluster CR 的 `spec.ticdc.config` 来配置 TiCDC 启动参数。
 
+对于 TiDB Operator v1.2.0-rc.2 及之后版本，请使用 TOML 格式配置：
+
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
+  ticdc:
+    config: |
+      gc-ttl = 86400
+      log-level = "info"
+```
+
+对于 TiDB Operator v1.2.0-rc.2 之前版本，请使用 YAML 格式配置：
+
+```yaml
+spec:
   ticdc:
     config:
       timezone: UTC
@@ -450,44 +326,45 @@ spec:
       logLevel: info
 ```
 
-获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#ticdcconfig)。
+获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tiflow/blob/bf29e42c75ae08ce74fbba102fe78a0018c9d2ea/pkg/cmd/util/ticdc.toml)。
+
+#### 配置 PD、TiDB、TiKV、TiFlash 故障自动转移阈值
+
+[故障自动转移](use-auto-failover.md)功能在 TiDB Operator 中默认开启。当 PD、TiDB、TiKV、TiFlash 这些组件的 Pod 或者其所在节点发生故障时，TiDB Operator 会触发故障自动转移，通过扩容相应组件补齐 Pod 副本数。
+
+为避免故障自动转移功能创建太多 Pod，可以为每个组件配置故障自动转移时能扩容的 Pod 数量阈值，默认为 `3`。如果配置为 `0`，代表关闭这个组件的故障自动转移功能。配置示例如下：
+
+```yaml
+  pd:
+    maxFailoverCount: 3
+  tidb:
+    maxFailoverCount: 3
+  tikv:
+    maxFailoverCount: 3
+  tiflash:
+    maxFailoverCount: 3
+```
+
+> **注意：**
+>
+> 对于以下情况，请显式设置 `maxFailoverCount: 0`：
+>
+> - 集群中没有足够的资源以供 TiDB Operator 扩容新 Pod。该情况下，扩容出的 Pod 会处于 Pending 状态。
+> - 不希望开启故障自动转移功能。
 
 ### 配置 TiDB 平滑升级
 
 滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
 
-从 v1.1.2 版本开始，TiDB Operator 已经支持平滑升级 TiDB 集群。通过配置下面两个属性来实现平滑升级 TiDB 集群：
+通过配置下面两个属性来实现平滑升级 TiDB 集群：
 
 - `spec.tidb.terminationGracePeriodSeconds`：滚动更新的时候，删除旧的 TiDB Pod 最多容忍的时间，即过了这个时间，TiDB Pod 会被强制删除；
 - `spec.tidb.lifecycle`：设置 TiDB Pod 的 `preStop` Hook，在 TiDB server 停止之前执行的操作。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  version: v4.0.10
-  pvReclaimPolicy: Retain
-  discovery: {}
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
   tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config: {}
+    ...
     terminationGracePeriodSeconds: 60
     lifecycle:
       preStop:
@@ -505,11 +382,33 @@ spec:
 
 Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service 的 Endpoints 中移除。这样就可以保证新的连接不会连接到该 TiDB 节点，但是由于此过程是异步的，所以可以在发送 Kill 信号之前 sleep 几秒钟，确保该 TiDB 节点从 Endpoints 中去掉。
 
+### 配置 TiKV 平滑升级
+
+TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 10 分钟）后，TiKV Pod 才会重启。
+
+如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+
+```
+spec:
+  tikv:
+    evictLeaderTimeout: 10000m
+```
+
+> **警告：**
+>
+> 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大（推荐大于 `1500m`），以保证 TiKV Pod 上所有的 Region Leader 能在设置的时间内驱逐完毕。
+
 ### 配置 TiDB 慢查询日志持久卷
 
-默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`。如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
 
-#### Spec.tidb.storageVolumes 配置
+> **警告：**
+>
+> 默认配置下，使用 `EmptyDir` 卷存储的慢查询日志会在 Pod 被删除（例如，滚动升级）后丢失。请确保 Kubernetes 集群内已经部署日志收集方案用于收集所有容器的日志。如果没有部署日志收集方案，请**务必**通过下面配置使用持久卷来存储慢查询日志。
+
+如果想使用单独的持久卷来存储慢查询日志，可以通过配置 `spec.tidb.slowLogVolumeName` 单独指定存储慢查询日志的持久卷名称，并在 `spec.tidb.storageVolumes` 或 `spec.tidb.additionalVolumes` 配置持久卷信息。下面分别演示使用 `spec.tidb.storageVolumes` 和 `spec.tidb.additionalVolumes` 配置持久卷。
+
+#### spec.tidb.storageVolumes 配置
 
 按照如下示例配置 `TidbCluster` CR，TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。`spec.tidb.storageVolumes` 字段的具体配置方式可参考[多盘挂载](#多盘挂载)。
 
@@ -528,7 +427,7 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
         mountPath: ${mountPath}
 ```
 
-#### Spec.tidb.additionalVolumes 配置
+#### spec.tidb.additionalVolumes 配置
 
 下面以 NFS 为例配置 `spec.tidb.additionalVolumes`。TiDB Operator 将使用持久卷 `${volumeName}` 存储慢查询日志，日志文件路径为：`${mountPath}/${volumeName}`。具体支持的持久卷类型可参考 [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。
 
@@ -561,7 +460,6 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       type: ClusterIP
@@ -573,7 +471,6 @@ spec:
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       type: NodePort
@@ -598,7 +495,6 @@ NodePort 有两种模式：
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       annotations:
@@ -619,7 +515,9 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 ### TiDB 服务高可用
 
-其它层面的高可用（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+#### 通过 affinity 调度实例
+
+配置 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的。关于 Affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
 
 下面是一个典型的高可用设置例子：
 
@@ -669,6 +567,43 @@ affinity:
        topologyKey: "kubernetes.io/hostname"
        namespaces:
        - ${namespace}
+```
+
+#### 通过 topologySpreadConstraints 实现 Pod 均匀分布
+
+配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
+
+如需使用 `topologySpreadConstraints`，需要满足以下条件：
+
+* Kubernetes 集群使用 `default-scheduler`，而不是 `tidb-scheduler`。详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
+* Kubernetes 集群开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或集群未开启 `EvenPodsSpread` feature gate，`topologySpreadConstraints` 的配置将不会生效。
+
+`topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
+
+以下是一个配置示例：
+
+{{< copyable "" >}}
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+- topologyKey: topology.kubernetes.io/zone
+```
+
+该配置能让同一组件的不同实例均匀分布在不同 zone 和节点上。
+
+当前 `topologySpreadConstraints` 仅支持 `topologyKey` 配置。在 Pod spec 中，上述示例配置会自动展开成如下配置：
+
+```yaml
+topologySpreadConstraints:
+- topologyKey: kubernetes.io/hostname
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
+- topologyKey: topology.kubernetes.io/zone
+  maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector: <object>
 ```
 
 ### 数据的高可用

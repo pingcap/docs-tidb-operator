@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 
 > **警告：**
 >
-> 对于生产环境，不要使用此方式进行部署。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 GCP 上通过 Kubernetes 部署 TiDB 集群](deploy-on-gcp-gke.md)。
 
 ## 选择一个项目
 
@@ -94,15 +94,19 @@ kubectl get nodes
 TiDB Operator 使用 [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) 扩展 Kubernetes，所以要使用 TiDB Operator，必须先创建 `TidbCluster` 等各种自定义资源类型：
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
 kubectl get crd tidbclusters.pingcap.com
 ```
+
+> **注意：**
+> 
+> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 创建 `TidbCluster` 自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator。
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0-beta.1
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -154,7 +158,7 @@ kubectl -n demo port-forward svc/basic-tidb 4000:4000 &>/tmp/pf4000.log &
 
 ``` shell
 sudo apt-get install -y mysql-client && \
-mysql -h 127.0.0.1 -u root -P 4000
+mysql --comments -h 127.0.0.1 -u root -P 4000
 ```
 
 在 MySQL 终端中输入一条 MySQL 命令：
@@ -233,7 +237,3 @@ kubectl get pv -l app.kubernetes.io/namespace=demo,app.kubernetes.io/managed-by=
 ``` shell
 gcloud container clusters delete tidb
 ```
-
-## 更多信息
-
-了解更多在 GKE 生成环境部署，可以参考我们的 [GKE 部署文档](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-gcp-gke)。

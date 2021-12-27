@@ -44,17 +44,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/']
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v4.0.10）：
+    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v5.2.1）：
 
     ```shell
-    pingcap/pd:v4.0.10
-    pingcap/tikv:v4.0.10
-    pingcap/tidb:v4.0.10
-    pingcap/tidb-binlog:v4.0.10
-    pingcap/ticdc:v4.0.10
-    pingcap/tiflash:v4.0.10
+    pingcap/pd:v5.2.1
+    pingcap/tikv:v5.2.1
+    pingcap/tidb:v5.2.1
+    pingcap/tidb-binlog:v5.2.1
+    pingcap/ticdc:v5.2.1
+    pingcap/tiflash:v5.2.1
     pingcap/tidb-monitor-reloader:v1.0.1
-    pingcap/tidb-monitor-initializer:v4.0.10
+    pingcap/tidb-monitor-initializer:v5.2.1
     grafana/grafana:6.0.1
     prom/prometheus:v2.18.1
     busybox:1.26.2
@@ -65,26 +65,26 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/pd:v4.0.10
-    docker pull pingcap/tikv:v4.0.10
-    docker pull pingcap/tidb:v4.0.10
-    docker pull pingcap/tidb-binlog:v4.0.10
-    docker pull pingcap/ticdc:v4.0.10
-    docker pull pingcap/tiflash:v4.0.10
+    docker pull pingcap/pd:v5.2.1
+    docker pull pingcap/tikv:v5.2.1
+    docker pull pingcap/tidb:v5.2.1
+    docker pull pingcap/tidb-binlog:v5.2.1
+    docker pull pingcap/ticdc:v5.2.1
+    docker pull pingcap/tiflash:v5.2.1
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-    docker pull pingcap/tidb-monitor-initializer:v4.0.10
+    docker pull pingcap/tidb-monitor-initializer:v5.2.1
     docker pull grafana/grafana:6.0.1
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
-    docker save -o pd-v4.0.10.tar pingcap/pd:v4.0.10
-    docker save -o tikv-v4.0.10.tar pingcap/tikv:v4.0.10
-    docker save -o tidb-v4.0.10.tar pingcap/tidb:v4.0.10
-    docker save -o tidb-binlog-v4.0.10.tar pingcap/tidb-binlog:v4.0.10
-    docker save -o ticdc-v4.0.10.tar pingcap/ticdc:v4.0.10
-    docker save -o tiflash-v4.0.10.tar pingcap/tiflash:v4.0.10
+    docker save -o pd-v5.2.1.tar pingcap/pd:v5.2.1
+    docker save -o tikv-v5.2.1.tar pingcap/tikv:v5.2.1
+    docker save -o tidb-v5.2.1.tar pingcap/tidb:v5.2.1
+    docker save -o tidb-binlog-v5.2.1.tar pingcap/tidb-binlog:v5.2.1
+    docker save -o ticdc-v5.2.1.tar pingcap/ticdc:v5.2.1
+    docker save -o tiflash-v5.2.1.tar pingcap/tiflash:v5.2.1
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-    docker save -o tidb-monitor-initializer-v4.0.10.tar pingcap/tidb-monitor-initializer:v4.0.10
+    docker save -o tidb-monitor-initializer-v5.2.1.tar pingcap/tidb-monitor-initializer:v5.2.1
     docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
@@ -95,14 +95,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i pd-v4.0.10.tar
-    docker load -i tikv-v4.0.10.tar
-    docker load -i tidb-v4.0.10.tar
-    docker load -i tidb-binlog-v4.0.10.tar
-    docker load -i ticdc-v4.0.10.tar
-    docker load -i tiflash-v4.0.10.tar
+    docker load -i pd-v5.2.1.tar
+    docker load -i tikv-v5.2.1.tar
+    docker load -i tidb-v5.2.1.tar
+    docker load -i tidb-binlog-v5.2.1.tar
+    docker load -i ticdc-v5.2.1.tar
+    docker load -i tiflash-v5.2.1.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
-    docker load -i tidb-monitor-initializer-v4.0.10.tar
+    docker load -i tidb-monitor-initializer-v5.2.1.tar
     docker load -i grafana-6.0.1.tar
     docker load -i prometheus-v2.18.1.tar
     docker load -i busybox-1.26.2.tar
@@ -117,6 +117,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/']
     ```
 
 单个 Kubernetes 集群中可以利用 TiDB Operator 部署管理多套 TiDB 集群，重复以上步骤并将 `cluster_name` 替换成不同名字即可。不同集群既可以在相同 `namespace` 中，也可以在不同 `namespace` 中，可根据实际需求进行选择。
+
+> **注意：**
+>
+> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
 ## 初始化 TiDB 集群
 

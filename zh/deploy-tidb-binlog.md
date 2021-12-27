@@ -26,7 +26,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v4.0.10
+    version: v5.2.1
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -45,7 +45,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v4.0.10
+    version: v5.2.1
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -192,10 +192,11 @@ spec:
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v4.0.10
+    clusterVersion: v5.2.1
     baseImage: pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
+    initialCommitTs: "-1"
     config: |
       detect-interval = 10
       [syncer]
@@ -214,6 +215,8 @@ spec:
 
     `clusterName` 和 `clusterVersion` 必须匹配所需的源 TiDB 集群。
 
+    `initialCommitTs` 为 drainer 没有 checkpoint 时数据同步的起始 commit timestamp。该参数值必须以 string 类型配置，如 `"424364429251444742"`。
+
     有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](configure-tidb-binlog-drainer.md)。
 
     值得注意的是，如果需要部署企业版的 Drainer，需要将 上述 yaml 中 `baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
@@ -222,7 +225,7 @@ spec:
 
     ```yaml
     ...
-    clusterVersion: v4.0.10
+    clusterVersion: v5.2.1
     baseImage: pingcap/tidb-binlog-enterprise
     ...
     ```
@@ -428,7 +431,7 @@ spec:
 
 2. 删除对应的 Drainer Pod：
 
-    运行 `helm uninstall ${release_name}` 指令即可删除 Drainer Pod。
+    运行 `helm uninstall ${release_name} -n ${namespace}` 指令即可删除 Drainer Pod。
 
     如果不再使用 Drainer，使用 `kubectl delete pvc data-${drainer_node_id} -n ${namespace}` 指令删除该 Drainer 的 PVC 资源。
 

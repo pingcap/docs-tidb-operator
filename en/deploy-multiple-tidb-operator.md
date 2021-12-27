@@ -7,9 +7,11 @@ summary: Learn how to deploy multiple sets of TiDB Operator to manage different 
 
 This document describes how to deploy multiple sets of TiDB Operator to manage different TiDB clusters.
 
+When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`.
+
 > **Note:**
 >
-> - Currently, you can only deploy multiple `tidb-controller-manager`s and `tidb-scheduler`s.
+> - Currently, you can only deploy multiple sets of `tidb-controller-manager` and `tidb-scheduler`. Deploying multiple sets of AdvancedStatefulSet controller and `tidb-admission-webhook` is not supported.
 > - If you have deployed multiple sets of TiDB Operator and only some of them enable [Advanced StatefulSet](advanced-statefulset.md), the same TidbCluster Custom Resource (CR) cannot be switched among these TiDB Operator.
 > - This feature is supported since v1.1.10.
 
@@ -93,7 +95,7 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
 
 3. Deploy the second TiDB Operator.
 
-    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) to deploy the second TiDB Operator without `tidb-scheduler`. Add the following configuration in the `values.yaml` file, and deploy the second TiDB Operator (without `tidb-scheduler`) **in a different namespace** (such as `tidb-admin-qa`):
+    Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) to deploy the second TiDB Operator without `tidb-scheduler`. Add the following configuration in the `values.yaml` file, and deploy the second TiDB Operator (without `tidb-scheduler`) in **a different namespace** (such as `tidb-admin-qa`) with a **different [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)** (such as `helm install tidb-operator-qa ...`):
 
     ```yaml
     controllerManager:
@@ -101,6 +103,11 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
       - user=qa
     appendReleaseSuffix: true
     scheduler:
+      # If you do not need tidb-scheduler, set this value to false.
+      create: false
+    advancedStatefulset:
+      create: false
+    admissionWebhook:
       create: false
     ```
 
@@ -109,6 +116,7 @@ To support deploying multiple sets of TiDB Operator, the following parameters ar
     > * It is recommended to deploy the new TiDB Operator in a separate namespace.
     > * Set `appendReleaseSuffix` to `true`.
     > * If you configure `scheduler.create: true`, a `tidb-scheduler` named `{{ .scheduler.schedulerName }}-{{.Release.Name}}` is created. To use this `tidb-scheduler`, you need to configure `spec.schedulerName` in the `TidbCluster` CR to the name of this scheduler.
+    > * You need to set `advancedStatefulset.create: false` and `admissionWebhook.create: false`, because deploying multiple sets of AdvancedStatefulSet controller and `tidb-admission-webhook` is not supported.
 
 4. Deploy the TiDB cluster.
 

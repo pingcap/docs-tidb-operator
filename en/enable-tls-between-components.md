@@ -15,6 +15,10 @@ To enable TLS between TiDB components, perform the following steps:
    - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
+    > **Note:**
+    >
+    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB components will fail.
+
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
@@ -703,7 +707,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In `cert-manager`, the Certificate resource represents the certificate interface. This certificate is issued and updated by the Issuer created in Step 2.
 
-    According to [Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/stable/how-to/secure/enable-tls-between-components/), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
+    According to [Enable TLS Authentication](https://docs.pingcap.com/tidb/stable/enable-tls-between-components), each component needs a server-side certificate, and all components need a shared client-side certificate for their clients.
 
     - PD
 
@@ -1315,29 +1319,32 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v4.0.10
+     version: v5.2.1
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
        baseImage: pingcap/pd
+       maxFailoverCount: 0
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "10Gi"
        config:
          security:
            cert-allowed-cn:
              - TiDB
      tikv:
        baseImage: pingcap/tikv
+       maxFailoverCount: 0
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "100Gi"
        config:
          security:
            cert-allowed-cn:
              - TiDB
      tidb:
        baseImage: pingcap/tidb
+       maxFailoverCount: 0
        replicas: 1
        service:
          type: ClusterIP
@@ -1349,7 +1356,7 @@ In this step, you need to perform the following operations:
        baseImage: pingcap/tidb-binlog
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "100Gi"
        config:
          security:
            cert-allowed-cn:
@@ -1365,13 +1372,13 @@ In this step, you need to perform the following operations:
      - name: ${cluster_name}
      prometheus:
        baseImage: prom/prometheus
-       version: v2.11.1
+       version: v2.27.1
      grafana:
        baseImage: grafana/grafana
-       version: 6.0.1
+       version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v4.0.10
+       version: v5.2.1
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1

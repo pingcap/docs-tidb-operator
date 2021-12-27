@@ -30,7 +30,7 @@ metadata:
   name: ${heterogeneous_cluster_name}
 spec:
   configUpdateStrategy: RollingUpdate
-  version: v4.0.10
+  version: v5.2.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -38,27 +38,28 @@ spec:
     name: ${origin_cluster_name}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
     # storageClassName: local-storage
     requests:
-      storage: "1Gi"
+      storage: "100Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
     config: {}
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 1
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
       - resources:
           requests:
-            storage: 1Gi
-        storageClassName: standard
+            storage: 100Gi
 ```
 
 执行以下命令创建集群：
@@ -94,7 +95,7 @@ spec:
     version: 6.1.6
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v4.0.10
+    version: v5.2.1
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -133,7 +134,7 @@ spec:
   tlsCluster:
     enabled: true
   configUpdateStrategy: RollingUpdate
-  version: v4.0.10
+  version: v5.2.1
   timezone: UTC
   pvReclaimPolicy: Delete
   discovery: {}
@@ -141,17 +142,16 @@ spec:
     name: ${origin_cluster_name}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
     # storageClassName: local-storage
     requests:
-      storage: "1Gi"
-    config:
-      storage:
-        # In basic examples, we set this to avoid using too much storage.
-        reserve-space: "0MB"
+      storage: "100Gi"
+    config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -160,13 +160,12 @@ spec:
       enabled: true
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 1
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
       - resources:
           requests:
-            storage: 1Gi
-        storageClassName: standard
+            storage: 100Gi
 ```
 
 `spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。

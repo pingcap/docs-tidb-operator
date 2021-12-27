@@ -11,6 +11,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
     - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
+
+    > **注意：**
+    >
+    > 创建的 Secret 对象必须符合上述命名规范，否则将导致各组件部署失败。
+
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
@@ -472,7 +477,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
         ```
 
-    - TiDB Lightning Server 端证书      
+    - TiDB Lightning Server 端证书
 
         如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
 
@@ -677,7 +682,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     其中 `${cluster_name}` 为集群的名字，上面的文件创建三个对象：
 
-    - 一个 SelfSigned 类型的 Isser 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
+    - 一个 SelfSigned 类型的 Issuer 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
     - 一个 Certificate 对象，`isCa` 属性设置为 `true`；
     - 一个可以用于颁发 TiDB 组件间 TLS 证书的 Issuer。
 
@@ -693,7 +698,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
 
-    根据官网文档：[Enable TLS Authentication | TiDB Documentation](https://pingcap.com/docs/v3.0/how-to/secure/enable-tls-between-components/)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
+    根据官网文档：[Enable TLS Authentication](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components)，我们需要为每个组件创建一个 Server 端证书，并且为他们的 Client 创建一套公用的 Client 端证书。
 
     - PD 组件的 Server 端证书。
 
@@ -1291,29 +1296,32 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     spec:
      tlsCluster:
        enabled: true
-     version: v4.0.10
+     version: v5.2.1
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
        baseImage: pingcap/pd
+       maxFailoverCount: 0
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "10Gi"
        config:
          security:
            cert-allowed-cn:
              - TiDB
      tikv:
        baseImage: pingcap/tikv
+       maxFailoverCount: 0
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "100Gi"
        config:
          security:
            cert-allowed-cn:
              - TiDB
      tidb:
        baseImage: pingcap/tidb
+       maxFailoverCount: 0
        replicas: 1
        service:
          type: ClusterIP
@@ -1325,7 +1333,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
        baseImage: pingcap/tidb-binlog
        replicas: 1
        requests:
-         storage: "1Gi"
+         storage: "100Gi"
        config:
          security:
            cert-allowed-cn:
@@ -1341,13 +1349,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
      - name: ${cluster_name}
      prometheus:
        baseImage: prom/prometheus
-       version: v2.11.1
+       version: v2.27.1
      grafana:
        baseImage: grafana/grafana
-       version: 6.0.1
+       version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v4.0.10
+       version: v5.2.1
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1

@@ -28,7 +28,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v4.0.10
+        version: v5.2.1
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -47,7 +47,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v4.0.10
+        version: v5.2.1
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -198,10 +198,11 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v4.0.10
+    clusterVersion: v5.2.1
     baseImage:pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
+    initialCommitTs: "-1"
     config: |
       detect-interval = 10
       [syncer]
@@ -220,6 +221,8 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     The `clusterName` and `clusterVersion` must match the desired source TiDB cluster.
 
+    The `initialCommitTs` is the starting commit timestamp of data replication when Drainer has no checkpoint. The value must be set as a string type, such as `"424364429251444742"`.
+
     For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](configure-tidb-binlog-drainer.md).
 
     To deploy Enterprise Edition of Drainer, edit the YAML file above to set `baseImage` to the enterprise image (`pingcap/tidb-binlog-enterprise`).
@@ -228,7 +231,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     ...
-    clusterVersion: v4.0.10
+    clusterVersion: v5.2.1
     baseImage: pingcap/tidb-binlog-enterprise
     ...
     ```
@@ -447,7 +450,7 @@ The steps are as follows:
 
 2. Delete the corresponding Drainer Pod:
 
-    Execute `helm uninstall ${release_name}` to delete the Drainer Pod.
+    Execute `helm uninstall ${release_name} -n ${namespace}` to delete the Drainer Pod.
 
     If you no longer need Drainer, execute `kubectl delete pvc data-${drainer_node_id} -n ${namespace}` to delete the PVC resources of Drainer.
 
