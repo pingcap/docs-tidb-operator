@@ -6,11 +6,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 # 在 Kubernetes 上部署 TiDB HTAP 存储引擎 TiFlash
 
-本文介绍如何在现有的 TiDB 集群上新增或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了强一致性。
+本文介绍在现有的 TiDB 集群上如何新增或删除 TiDB HTAP 存储引擎 TiFlash。
+
+TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性，适用于 HTAP 场景（例如，在线实时分析处理的混合负载场景、实时流处理场景、或者数据中枢场景）。
 
 > **注意**:
 >
-> 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，而无需参考本文中新增 TiFlash 组件的步骤。
+> 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，因此无需参考本文。
 
 ## 前置条件
 
@@ -18,40 +20,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 ## 在现有 TiDB 集群上新增 TiFlash 组件
 
-当 TiDB 集群已经部署完成时，如果你需要将 TiDB 应用于 HTAP 场景（例如在线实时分析处理的混合负载场景、实时流处理场景、或者数据中枢场景），你可以在现有 TiDB 集群上新增 TiFlash 组件。
+当 TiDB 集群已经部署完成时，如果你需要在现有 TiDB 集群上新增 TiFlash 组件，请进行以下操作：
 
 > **注意:**
 >
 > 如果服务器没有外网，请参考[部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群)在有外网的机器上将 `pingcap/tiflash` Docker 镜像下载下来并上传到服务器上, 然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-1. 在 TidbCluster CR 的 `spec.tiflash.config` 文档中配置 TiFlash 相关参数。
-
-    ```yaml
-    spec:
-    tiflash:
-        config:
-        config: |
-            [flash]
-            [flash.flash_cluster]
-                log = "/data0/logs/flash_cluster_manager.log"
-            [logger]
-            count = 10
-            level = "information"
-            errorlog = "/data0/logs/error.log"
-            log = "/data0/logs/server.log"
-    ```
-
-    要获取所有可以配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
-
-    > **注意:**
-    >
-    > 针对不同 TiFlash 版本，请注意以下不同配置：
-    >
-    > - 如果 TiFlash 版本 <= v4.0.4，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr` 为 `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930`。其中，`${clusterName}` 和 `${namespace}` 需要根据实际情况替换。
-    > - 如果 TiFlash 版本 >= v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
-    > - 如果从小于等于 v4.0.4 的 TiFlash 版本升级到大于等于 v4.0.5 TiFlash 版本，需要删除 TidbCluster CR 中 `spec.tiflash.config.config.flash.service_addr` 的配置。
-
-2. 编辑 TidbCluster Custom Resource：
+1. 编辑 TidbCluster Custom Resource (CR)：
 
     {{< copyable "shell-regular" >}}
 
@@ -59,7 +34,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-3. 按照如下示例增加 TiFlash 配置：
+2. 按照如下示例增加 TiFlash 配置：
 
     ```yaml
     spec:
@@ -75,7 +50,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
         storageClassName: local-storage
     ```
 
-4. TiFlash 支持挂载多个 PV。如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多个 `resources` 项，每个 `resources` 项可以分别配置 `storage request` 和 `storageClassName`，例如：
+3. TiFlash 支持挂载多个 PV。如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多个 `resources` 项，每个 `resources` 项可以分别配置 `storage request` 和 `storageClassName`，例如：
 
     ```yaml
     tiflash:
@@ -95,8 +70,35 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
     > **注意**:
     >
-    > - 建议第一次部署 TiFlash 规划好使用几个 PV，配置好 `storageClaims` 中`resources` 项的个数。
+    > - 建议第一次部署 TiFlash 时规划好使用几个 PV，配置好 `storageClaims` 中`resources` 项的个数。
     > - 当 TiFlash 组件部署完成后，如果你需要为 TiFlash 挂载额外的 PV，直接更新 `storageClaims` 添加磁盘不会生效。因为 TiDB Operator 是通过创建 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 管理 TiFlash 的，而 `StatefulSet` 创建后不支持修改 `volumeClaimTemplates`。
+
+4. 配置 TidbCluster CR 中 `spec.tiflash.config` 的相关参数。例如：
+
+    ```yaml
+    spec:
+    tiflash:
+        config:
+        config: |
+            [flash]
+            [flash.flash_cluster]
+                log = "/data0/logs/flash_cluster_manager.log"
+            [logger]
+            count = 10
+            level = "information"
+            errorlog = "/data0/logs/error.log"
+            log = "/data0/logs/server.log"
+    ```
+
+    要获取所有可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
+
+    > **注意:**
+    >
+    > 针对不同 TiFlash 版本，请注意以下不同配置：
+    >
+    > - 如果 TiFlash 版本 <= v4.0.4，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr` 为 `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930`。其中，`${clusterName}` 和 `${namespace}` 需要根据实际情况替换。
+    > - 如果 TiFlash 版本 >= v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
+    > - 如果从小于等于 v4.0.4 的 TiFlash 版本升级到大于等于 v4.0.5 TiFlash 版本，需要删除 TidbCluster CR 中 `spec.tiflash.config.config.flash.service_addr` 的配置。
 
 当 TiFlash 组件部署完成后，如果要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
 
