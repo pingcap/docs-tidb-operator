@@ -494,7 +494,7 @@ MySQL [(none)]>
 以下是一些可以用来验证集群功能的命令。
 
 <details>
-<summary>创建 `hello_world` 表</summary>
+<summary>创建 <code>hello_world</code> 表</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -574,7 +574,7 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>查询 TiDB 集群基本信息</summary>
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先升级集群。
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先<a href="#第-5-步升级-tidb-集群">升级集群</a>。
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
