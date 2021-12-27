@@ -34,7 +34,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 本小节详细介绍如何使用 PD Recover 来恢复 PD 集群。
 
-### 步骤 1. 获取 Cluster ID
+### 第 1 步：获取 Cluster ID
 
 使用以下命令获取 PD 集群的 Cluster ID：
 
@@ -51,7 +51,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 6821434242797747735
 ```
 
-### 步骤 2. 获取 Alloc ID
+### 第 2 步：获取 Alloc ID
 
 使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`。`alloc-id` 的值是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
 
@@ -61,7 +61,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 3. 将查询结果中的最大值乘以 `100`，作为使用 `pd-recover` 时指定的 `alloc-id`。
 
-### 步骤 3. 恢复 PD 集群 Pod
+### 第 3 步：恢复 PD 集群 Pod
 
 1. 删除 PD 集群 Pod。
 
@@ -123,7 +123,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl get pod -n ${namespace}
     ```
 
-### 步骤 4. 使用 PD Recover 恢复 PD 集群
+### 第 4 步：使用 PD Recover 恢复 PD 集群
 
 1. 通过 `port-forward` 暴露 PD 服务：
 
@@ -141,7 +141,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
-    `${cluster_id}` 是[获取 Cluster ID](#步骤-1-获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#步骤-2-获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
+    `${cluster_id}` 是[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#第-2-步获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
 
     `pd-recover` 命令执行成功后，会打印如下输出：
 
@@ -151,7 +151,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
-### 步骤 5. 重启 PD Pod
+### 第 5 步：重启 PD Pod
 
 1. 删除 PD Pod：
 
@@ -169,7 +169,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#步骤-1-获取-cluster-id) 步骤中获取的 Cluster ID：
+3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID：
 
     {{< copyable "shell-regular" >}}
 
@@ -179,7 +179,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 4. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
-### 步骤 6. 扩容 PD 集群
+### 第 6 步：扩容 PD 集群
 
 通过如下命令设置 `spec.pd.replicas` 为期望的 Pod 数量：
 
@@ -189,7 +189,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
-### 步骤 7. 重启 TiDB 和 TiKV
+### 第 7 步：重启 TiDB 和 TiKV
 
 使用以下命令重启 TiDB 和 TiKV 实例：
 
