@@ -79,14 +79,14 @@ spec:
         config: {}
     ```
 
-2. 当集群创建完毕时，可以通过以下命令将 `TiDB Dashboard` 暴露在本地机器:
+2. 当集群创建完毕时，可以通过以下命令将 TiDB Dashboard 暴露在本地机器:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl port-forward svc/basic-discovery -n ${namespace} 10262:10262
     ```
-    
+
     `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
 
 3. 在浏览器中访问 <http://localhost:10262/dashboard>，即可访问到 TiDB Dashboard。
@@ -95,15 +95,15 @@ spec:
 
 > **注意：**
 >
-> 推荐在生产环境、关键环境内使用 `Ingress` 来暴露 `TiDB Dashboard` 服务。
+> 推荐在生产环境、关键环境内使用 Ingress 来暴露 TiDB Dashboard 服务。
 
 ### 环境准备
 
-使用 `Ingress` 前需要 Kubernetes 集群安装有 `Ingress` 控制器，仅创建 `Ingress` 资源无效。你可能需要部署 `Ingress` 控制器，例如 [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)。你可以从许多 [Ingress 控制器](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) 中进行选择。
+使用 Ingress 前需要 Kubernetes 集群安装有 Ingress 控制器，仅创建 Ingress 资源无效。你可能需要部署 Ingress 控制器，例如 [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)。你可以从许多 [Ingress 控制器](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) 中进行选择。
 
 ### 使用 Ingress
 
-你可以通过 `Ingress` 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 `Ingress` 的信息。以下是一个使用 `Ingress` 访问 `TiDB Dashboard` 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
+你可以通过 Ingress 来将 TiDB Dashboard 服务暴露到 Kubernetes 集群外，从而在 Kubernetes 集群外通过 http/https 的方式访问服务。你可以通过 [Ingress](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/) 了解更多关于 Ingress 的信息。以下是一个使用 Ingress 访问 TiDB Dashboard 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -167,9 +167,9 @@ type: kubernetes.io/tls
 
 ## 方法 3. 使用 NodePort Service
 
-由于 `Ingress` 必需使用域名访问，在某些场景下可能难以使用，此时可以通过添加一个 `NodePort` 类型的 `Service` 来访问和使用 `TiDB Dashboard`。
+由于 Ingress 必需使用域名访问，在某些场景下可能难以使用，此时可以通过添加一个 `NodePort` 类型的 `Service` 来访问和使用 TiDB Dashboard。
 
-以下是一个使用 `NodePort` 类型的 `Service` 访问 `TiDB Dashboard` 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
+以下是一个使用 `NodePort` 类型的 `Service` 访问 TiDB Dashboard 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
 ```yaml
 apiVersion: v1
