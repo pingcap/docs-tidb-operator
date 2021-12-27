@@ -80,8 +80,8 @@
     - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
     - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
   - 灾难恢复
+    - [恢复误删的 TiDB 集群](recover-deleted-cluster.md)
     - [恢复 PD 集群](pd-recover.md)
-    - [恢复误删的集群](recover-deleted-cluster.md)
 - 故障诊断
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
