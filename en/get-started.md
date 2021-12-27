@@ -456,7 +456,7 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to <a href="#第-5-步升级-tidb-集群">upgrade the TiDB cluster</a>.
+After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 <details>
 <summary>Create a <code>hello_world</code> table</summary>
