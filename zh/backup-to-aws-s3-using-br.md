@@ -7,11 +7,17 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的�
 
 # 使用 BR 备份 TiDB 集群数据到兼容 S3 的存储
 
-本文详细描述了如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
+本文介绍如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。
 
-本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现。
+本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现，底层使用[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群的逻辑备份，然后再将备份数据上传到 AWS 的存储上。
 
-## Ad-hoc 备份
+BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+
+## 使用场景
+
+相比 dumpling，BR 更适合大数据量的场景。
+
+## 场景 1：Ad-hoc 备份
 
 Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个自定义的 `Backup` Custom Resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
