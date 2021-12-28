@@ -14,7 +14,7 @@ Dumpling is a data export tool that exports stored in TiDB/MySQL as SQL or CSV d
 
 ## User scenarios
 
-You can use the backup method described in this document if you want to make an [ad-hoc full backup](#scenario-1-ad-hoc-full-backup-to-gcs) or [scheduled full backup](#scenario-2-scheduled-full-backup-to-gcs) of the TiDB cluster data to GCS with the following needs:
+You can use the backup method described in this document if you want to make an [ad-hoc full backup](#ad-hoc-full-backup-to-gcs) or [scheduled full backup](#scheduled-full-backup-to-gcs) of the TiDB cluster data to GCS with the following needs:
 
 - To export SQL or CSV files
 - To limit the memory usage of a single SQL statement
@@ -30,7 +30,7 @@ Before you use Dumpling to back up the TiDB cluster data to GCS, make sure that 
 * LOCK TABLES
 * REPLICATION CLIENT
 
-## Scenario 1. Ad-hoc full backup to GCS
+## Ad-hoc full backup to GCS
 
 Ad-hoc full backup describes a backup operation by creating a `Backup` custom resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry and you need to handle this error manually.
 
@@ -124,7 +124,7 @@ To better explain how to perform the backup operation, this document shows an ex
     kubectl get bk -n test1 -owide
     ```
 
-## Scenario 2. Scheduled full backup to GCS
+## Scheduled full backup to GCS
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 

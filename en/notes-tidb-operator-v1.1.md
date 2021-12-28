@@ -92,7 +92,7 @@ You can modify `version`, `replicas`, `storageClassName`, `requests.storage`, an
 
 After TiDB Operator is upgraded to v1.1, you can configure the scheduled full backup using BackupSchedule CR:
 
-- If the TiDB cluster version < v3.1, refer to [Scheduled backup using Dumpling](backup-to-s3.md#scenario-2-scheduled-full-backup-to-s3-compatible-storage)
+- If the TiDB cluster version < v3.1, refer to [Scheduled backup using Dumpling](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage)
 - If the TiDB cluster version >= v3.1, refer to [Scheduled backup using BR](backup-to-aws-s3-using-br.md#scheduled-full-backup)
 
 > **Note:**
@@ -119,7 +119,7 @@ This section describes how to switch other components and features managed by th
 
 After TiDB Operator is upgraded to v1.1, you can perform backup using the Backup CR. Backup with Dumpling supports full backup, and backup with BR supports both full backup and incremental backup.
 
-- If the TiDB cluster version < v3.1, refer to [Ad-hoc full backup using Dumpling](backup-to-s3.md#scenario-1-ad-hoc-full-backup-to-s3-compatible-storage).
+- If the TiDB cluster version < v3.1, refer to [Ad-hoc full backup using Dumpling](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage).
 - If the TiDB cluster version >= v3.1, refer to [Ad-hoc backup using BR](backup-to-aws-s3-using-br.md#ad-hoc-backup).
 
 > **Note:**
