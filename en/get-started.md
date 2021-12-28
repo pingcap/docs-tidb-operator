@@ -657,7 +657,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary>Expected output</summary>
-Note that `nightly` is not a fixed version. Running the command above at different time might return different results.
+
+Note that `nightly` is not a fixed version. Running the command above at a different time might return different results.
 
 ```
 *************************** 1. row ***************************
