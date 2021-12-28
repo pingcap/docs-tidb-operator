@@ -154,7 +154,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
                 storage: 100Gi
     ```
 
-    其中，`spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。
+    其中，`spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。详细的异构 TLS 集群配置示例，请参阅 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
 
 2. 依据需要，修改异构集群配置文件中各节点的配置项。
 
@@ -167,8 +167,6 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     ```shell
     kubectl create -f cluster.yaml -n ${namespace}
     ```
-
-    详细的异构 TLS 集群配置示例，请参阅 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
 
 ## 部署集群监控
 
