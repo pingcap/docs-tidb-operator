@@ -13,13 +13,13 @@ Dumpling is a data export tool that exports stored in TiDB/MySQL as SQL or CSV d
 
 ## User scenarios
 
-You can use the backup method described in this document if you want to make an [ad-hoc full backup](#scenario-1-ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scenario-2-scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages with the following needs:
+You can use the backup method described in this document if you want to make an [ad-hoc full backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages with the following needs:
 
 - To export SQL or CSV files
 - To limit the memory usage of a single SQL statement
 - To export the historical data snapshot of TiDB
 
-## Scenario 1. Ad-hoc full backup to S3-compatible storage
+## Ad-hoc full backup to S3-compatible storage
 
 Ad-hoc full backup describes the backup by creating a `Backup` custom resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry and you need to handle this error manually.
 
@@ -298,7 +298,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 
 To run ad-hoc backup again, you need to [delete the backup CR](backup-restore-overview.md#delete-the-backup-cr) and create it again.
 
-## Scenario 2. Scheduled full backup to S3-compatible storage
+## Scheduled full backup to S3-compatible storage
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
