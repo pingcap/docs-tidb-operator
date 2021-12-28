@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/pd-recover/']
 
 # 使用 PD Recover 恢复 PD 集群
 
-[PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover) 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。
+PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。该工具的详细介绍参见 [TiDB 文档 - PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover)。本文档介绍如何下载 PD Recover 工具，以及如何使用该工具恢复 PD 集群。
 
 ## 下载 PD Recover
 
@@ -18,7 +18,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/pd-recover/']
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    `${version}` 是 TiDB 集群版本，例如，`v5.2.1`。
+    `${version}` 是 TiDB 集群版本，例如，`v5.3.0`。
 
 2. 解压安装包：
 
@@ -34,7 +34,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/pd-recover/']
 
 本小节详细介绍如何使用 PD Recover 来恢复 PD 集群。
 
-### 获取 Cluster ID
+### 第 1 步：获取 Cluster ID
+
+使用以下命令获取 PD 集群的 Cluster ID：
 
 {{< copyable "shell-regular" >}}
 
@@ -49,9 +51,9 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 6821434242797747735
 ```
 
-### 获取 Alloc ID
+### 第 2 步：获取 Alloc ID
 
-使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`。`alloc-id` 的值需要是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
+使用 `pd-recover` 恢复 PD 集群时，需要指定 `alloc-id`。`alloc-id` 的值是一个比当前已经分配的最大的 `Alloc ID` 更大的值。
 
 1. 参考[访问 Prometheus 监控数据](monitor-a-tidb-cluster.md#访问-prometheus-监控数据)打开 TiDB 集群的 Prometheus 访问页面。
 
@@ -59,7 +61,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 3. 将查询结果中的最大值乘以 `100`，作为使用 `pd-recover` 时指定的 `alloc-id`。
 
-### 恢复 PD 集群 Pod
+### 第 3 步：恢复 PD 集群 Pod
 
 1. 删除 PD 集群 Pod。
 
@@ -121,7 +123,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl get pod -n ${namespace}
     ```
 
-### 使用 PD Recover 恢复集群
+### 第 4 步：使用 PD Recover 恢复 PD 集群
 
 1. 通过 `port-forward` 暴露 PD 服务：
 
@@ -139,7 +141,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
-    `${cluster_id}` 是[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
+    `${cluster_id}` 是[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#第-2-步获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
 
     `pd-recover` 命令执行成功后，会打印如下输出：
 
@@ -149,7 +151,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
-### 重启 PD Pod
+### 第 5 步：重启 PD Pod
 
 1. 删除 PD Pod：
 
@@ -167,7 +169,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#获取-cluster-id) 步骤中获取的 Cluster ID：
+3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID：
 
     {{< copyable "shell-regular" >}}
 
@@ -177,7 +179,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 4. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
-### 扩容 PD 集群
+### 第 6 步：扩容 PD 集群
 
 通过如下命令设置 `spec.pd.replicas` 为期望的 Pod 数量：
 
@@ -187,11 +189,13 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
-### 重启 TiDB 和 TiKV
+### 第 7 步：重启 TiDB 和 TiKV
+
+使用以下命令重启 TiDB 和 TiKV 实例：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} && 
+kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} &&
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```

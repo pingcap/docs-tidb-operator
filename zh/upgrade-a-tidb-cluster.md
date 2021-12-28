@@ -40,7 +40,7 @@ Kubernetes 提供[滚动更新功能](https://kubernetes.io/docs/tutorials/kuber
 
     `version` 字段格式如下：
 
-    - `spec.version`，格式为 `imageTag`，例如 `v5.2.1`。
+    - `spec.version`，格式为 `imageTag`，例如 `v5.3`。
     - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v3.1.0`。
 
 2. 查看升级进度：

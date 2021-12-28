@@ -510,7 +510,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v2.0.7
+  version: v5.3.0
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -580,7 +580,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.7
+  version: v5.3.0
   pvReclaimPolicy: Retain
   discovery: {}
   tlsClientSecretNames:
