@@ -24,7 +24,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 ## 第二步：如果原集群开启了 TLS，为克隆集群签发证书
 
-如果原集群没有开启 TLS 请忽略次步骤。
+如果原集群没有开启 TLS 请忽略此步骤。
 
 ### 使用 cfssl 系统签发
 
@@ -36,6 +36,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
 ### 使用 cert-manager 系统签发
+
 如果你使用 cert-manager，必须使用和原集群相同的 Issuer（${cluster_name}-tidb-issuer） 来创建 Certificate。你需要执行为 TiDB 组件间开启 TLS 文档中第 3 步，完成新集群组件间证书签发。
 
 3. 在 `tidb-cluster-clone.yaml` 中 `spec` 下加入如下内容，先加入原 TiDB 集群：
