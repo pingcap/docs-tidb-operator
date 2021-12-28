@@ -17,10 +17,10 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 1. 克隆原 TiDB 集群 `tidb-cluster.yaml` 为 `tidb-cluster-clone.yaml`。
 2. 为 `tidb-cluster-clone.yaml` 中 `metadata.name` 换一个新名字。
 
-> **注意：**
->
-> * 可能需要修改克隆集群中的 TiKV replicas，因为克隆集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于等于 3。
-> * 克隆集群 namespace 保持不变
+    > **注意：**
+    >
+    > * 可能需要修改克隆集群中的 TiKV replicas，因为克隆集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于等于 3。
+    > * 克隆集群 namespace 保持不变。
 
 3. 在 `tidb-cluster-clone.yaml` 中 `spec` 下加入如下内容，先加入原 TiDB 集群：
 
@@ -30,11 +30,11 @@ metadata:
   name: ${clone-cluster-name}
 spec:
    cluster:
-   name: ${orginal-cluster-name}
+   name: ${origin-cluster-name}
 ...
 ```
 
-其中 `${clone-cluster-name}` 是克隆集群的新名字，`${orginal-cluster-name}` 是原集群名字。
+其中 `${clone-cluster-name}` 是克隆集群的新名字，`${origin-cluster-name}` 是原集群名字。
 
 ## 第二步：如果原集群开启了 TLS，为克隆集群签发证书
 
@@ -57,11 +57,11 @@ spec:
 
 1. 执行命令：
 
-{{< copyable "shell-regular" >}}
-
-```bash
-kubectl apply -f tidb-cluster-clone.yaml
-```
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    kubectl apply -f tidb-cluster-clone.yaml
+    ```
 
 2. 确认克隆 TiDB 集群与原 TiDB 集群组成的新集群正常运行：
 
@@ -109,12 +109,16 @@ kubectl patch -n ${namespace} tc ${clone-cluster-name} --type=json -p '[{"op":"r
 
 其中 `${namespace}` 是克隆集群的命名空间（不变），`${clone-cluster-name}` 是克隆集群名字。
 
-## 第八步：删除原 TiDB 集群
+## 第八步：删除原 TiDB 集群及数据
 
-{{< copyable "shell-regular" >}}
+1. 删除原集群 `TidbCluster`：
 
-```bash
-kubectl delete -n ${namespace} tc ${orginal-cluster-name}
-```
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    kubectl delete -n ${namespace} tc ${origin-cluster-name}
+    ```
+    
+    其中 `${namespace}` 是原集群的命名空间（不变），`${origin-cluster-name}` 是原集群名字。
 
-其中 `${namespace}` 是原集群的命名空间（不变），`${orginal-cluster-name}` 是原集群名字。
+2. 删除原集群数据，请参考[删除 PV 以及对应的数据](configure-storage-class.md)一节。
