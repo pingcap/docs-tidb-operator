@@ -57,7 +57,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
    {{< copyable "shell-regular" >}}
 
-   ```shell
+   ```bash
    eksctl create cluster -f cluster-1.yaml
    ```
 
@@ -73,7 +73,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 {{< copyable "shell-regular" >}}
 
-```shell
+```bash
 kubectl config get-contexts
 ```
 
@@ -99,7 +99,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
    
     {{< copyable "shell-regular" >}}
     
-    ```shell
+    ```bash
     eksctl get cluster ${cluster_1} --region ${region_1}
     ```
 
@@ -184,7 +184,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
    {{< copyable "shell-regular" >}}
 
-   ```shell
+   ```bash
    kubectl --context ${context_1} apply -f dns-lb.yaml
 
    kubectl --context ${context_2} apply -f dns-lb.yaml
@@ -254,7 +254,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
       {{< copyable "shell-regular" >}}
 
-      ```shell
+      ```bash
       kubectl --context ${context_1} -n kube-system get configmap coredns -o yaml > ${cluster_1}-coredns.yaml.bk
       ```
 
@@ -262,7 +262,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
       {{< copyable "shell-regular" >}}
 
-      ```shell
+      ```bash
       kubectl --context ${context_1} -n kube-system edit configmap coredns
       ```
 
@@ -277,31 +277,31 @@ CURRENT   NAME                                 CLUSTER                      AUTH
       kind: ConfigMap
       # ...
       data:
-      Corefile: |
-         .:53 {
-            # ... 默认配置不修改
-         }
-         ${namspeace_2}.svc.cluster.local:53 {
-             errors
-             cache 30
-             forward . ${lb_ip_list_2} {
-                 force_tcp
-             }
-         }  
-         ${namspeace_3}.svc.cluster.local:53 {
-             errors
-             cache 30
-             forward . ${lb_ip_list_3} {
-                 force_tcp
-             }
-         }
+        Corefile: |
+           .:53 {
+              # ... 默认配置不修改
+           }
+           ${namspeace_2}.svc.cluster.local:53 {
+               errors
+               cache 30
+               forward . ${lb_ip_list_2} {
+                   force_tcp
+               }
+           }  
+           ${namspeace_3}.svc.cluster.local:53 {
+               errors
+               cache 30
+               forward . ${lb_ip_list_3} {
+                   force_tcp
+               }
+           }
       ```
    
    3. 等待 CoreDNS 重新加载配置，大约需要 30s 左右。
 
 2. 以步骤 1 为例，修改集群 2 和集群 3 的 CoreDNS 配置。
 
-   对于每个集群，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要运行 Pod 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
+   对于每个集群的 CoreDNS 配置，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
 
 后文中，使用 `${namspeace_1}`、`${namspeace_2}` 与 `${namspeace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
 

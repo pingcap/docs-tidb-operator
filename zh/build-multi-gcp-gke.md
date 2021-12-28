@@ -21,7 +21,7 @@ summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes
 
 {{< copyable "shell-regular" >}}
 
-```shell
+```bash
 gcloud config set core/project <gcp-project>
 ```
 
@@ -33,7 +33,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud compute networks create ${network_name} --subnet-mode=custom
     ```
 
@@ -41,7 +41,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud compute networks subnets create ${subnet_1} \
         --region=${region_1} \
         --network=${network_name} \
@@ -51,7 +51,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud compute networks subnets create ${subnet_1} \
         --region=${region_1} \
         --network=${network_name} \
@@ -61,7 +61,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
         gcloud compute networks subnets create ${subnet_1} \
         --region=${region_1} \
         --network=${network_name} \
@@ -81,7 +81,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud beta container clusters create ${cluster_1} \
         --region ${region_1} --num-nodes 1 \
         --network ${network_name} --subnetwork ${subnet_1} \
@@ -93,7 +93,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud beta container clusters create ${cluster_2} \
         --region ${region_2} --num-nodes 1 \
         --network ${network_name} --subnetwork ${subnet_2} \
@@ -105,7 +105,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud beta container clusters create ${cluster_3} \
         --region ${region_2} --num-nodes 1 \
         --network ${network_name} --subnetwork ${subnet_3} \
@@ -125,7 +125,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     gcloud container node-pools create pd --cluster ${cluster_1} --machine-type n1-standard-4 --num-nodes=1 \
         --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
     gcloud container node-pools create tikv --cluster ${cluster_1}  --machine-type n1-highmem-8 --num-nodes=1 \
@@ -138,7 +138,7 @@ gcloud config set core/project <gcp-project>
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl config get-contexts
     ```
 
@@ -161,7 +161,7 @@ gcloud config set core/project <gcp-project>
         
         {{< copyable "shell-regular" >}}
 
-        ```shell
+        ```bash
         gcloud compute firewall-rules list --filter='name~gke-${cluster_1}-.*-all'
         ```
 
@@ -176,7 +176,7 @@ gcloud config set core/project <gcp-project>
 
         {{< copyable "shell-regular" >}}
 
-        ```shell
+        ```bash
         gcloud compute firewall-rules update ${firewall_rule_name} --source-ranges 10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
         ```
 
@@ -184,7 +184,7 @@ gcloud config set core/project <gcp-project>
 
         {{< copyable "shell-regular" >}}
 
-        ```shell
+        ```bash
         gcloud compute firewall-rules describe ${firewall_rule_name}
         ```
 
