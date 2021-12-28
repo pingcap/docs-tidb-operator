@@ -10,13 +10,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性，适用于 HTAP 场景（例如，在线实时分析处理的混合负载场景、实时流处理场景、或者数据中枢场景）。
 
+## 前置条件
+
+* 已经存在一个 TiDB 集群。
+
 > **注意**:
 >
 > 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，因此无需参考本文。
-
-## 前置条件
-
-* TiDB Operator [部署](deploy-tidb-operator.md)完成。
 
 ## 部署 TiFlash
 
