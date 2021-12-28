@@ -1,20 +1,20 @@
 ---
-title: Kubernetes 上的 TiDB 集群扩缩容
-summary: 介绍如何在 Kubernetes 中对 TiDB 集群扩缩容。
+title: 手动扩缩容 Kubernetes 上的 TiDB 集群
+summary: 了解如何在 Kubernetes 上对 TiDB 集群手动扩缩容。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 ---
 
-# Kubernetes 上的 TiDB 集群扩缩容
+# 手动扩缩容 Kubernetes 上的 TiDB 集群
 
-本文介绍 TiDB 在 Kubernetes 中如何进行水平扩缩容和垂直扩缩容。
+本文介绍如何对部署在 Kubernetes 上的 TiDB 集群进行手动水平扩缩容和垂直扩缩容。
 
 ## 水平扩缩容
 
-TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 进行顺序扩缩容操作。扩容操作按照节点编号由小到大增加节点，缩容操作按照节点编号由大到小删除节点。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
+TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。扩容操作按照节点编号由小到大增加节点，缩容操作按照节点编号由大到小删除节点。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
 
 ### 扩缩容 PD、TiDB、TiKV
 
-使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
+如果要对 PD、TiDB、TiKV 进行水平扩缩容，使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
 
 同样，你可以使用以下命令在线修改 Kubernetes 集群中的 `TidbCluster` 定义。
 
@@ -24,7 +24,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 kubectl edit tidbcluster ${cluster_name} -n ${namespace}
 ```
 
-你可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
+你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
 
 {{< copyable "shell-regular" >}}
 
@@ -32,7 +32,7 @@ kubectl edit tidbcluster ${cluster_name} -n ${namespace}
 kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
 ```
 
-如果上述指令输出的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下指令来观察 `TidbCluster` Pod 是否新增或者减少。对于 PD 和 TiDB 而言，会需要 10 到 30 秒左右的时间进行扩容或者缩容。对于 TiKV 组件，由于涉及到数据搬迁，可能会需要 3 到 5 分钟来进行扩容或者缩容。
+如果上述命令输出的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下命令来观察 `TidbCluster` Pod 是否新增或者减少。PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
 
 {{< copyable "shell-regular" >}}
 
@@ -40,15 +40,11 @@ kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
 watch kubectl -n ${namespace} get pod -o wide
 ```
 
-#### 扩容 TiFlash
+### 扩缩容 TiFlash
 
 如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.replicas` 对 TiFlash 进行扩容。
 
-#### 扩缩容 TiCDC
-
-如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。
-
-#### 缩容 TiFlash
+如果要对 TiFlash 进行水平缩容，执行以下步骤：
 
 1. 通过 `port-forward` 暴露 PD 服务：
 
@@ -78,7 +74,7 @@ watch kubectl -n ${namespace} get pod -o wide
     alter table <db_name>.<table_name> set tiflash replica 0;
     ```
 
-5. 等待相关表的 TiFlash 副本被删除。
+5. 等待并确认相关表的 TiFlash 副本被删除。
 
     连接到 TiDB 服务，执行如下命令，查不到相关表的同步信息时即为副本被删除：
 
@@ -90,13 +86,17 @@ watch kubectl -n ${namespace} get pod -o wide
 
 6. 修改 `spec.tiflash.replicas` 对 TiFlash 进行缩容。
 
-    你可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下指令输出内容中，`spec.tiflash.replicas` 的值是否符合预期值。
+    你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下命令输出内容中，`spec.tiflash.replicas` 的值是否符合预期值。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
     ```
+
+### 扩缩容 TiCDC
+
+如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。
 
 ### 查看集群水平扩缩容状态
 
@@ -117,17 +117,13 @@ watch kubectl -n ${namespace} get pod -o wide
 > - TiFlash 组件缩容处理逻辑和 TiKV 组件相同。
 > - PD、TiKV、TiFlash 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。
 
-### 水平扩缩容故障
-
-无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [Pod 处于 Pending 状态](deploy-failures.md#pod-处于-pending-状态)。
-
 ## 垂直扩缩容
 
 垂直扩缩容操作指的是通过增加或减少节点的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是节点滚动升级的过程。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
 
 ### 垂直扩缩容操作
 
-通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+如果要对 PD、TiDB、TiKV 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
 
 如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。
 
@@ -146,8 +142,8 @@ watch kubectl -n ${namespace} get pod -o wide
 > **注意：**
 >
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
-> - TiDB 作为一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
+> - TiDB 是一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
 
-## 垂直扩缩容故障
+## 扩缩容故障诊断
 
 无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [Pod 处于 Pending 状态](deploy-failures.md#pod-处于-pending-状态)。

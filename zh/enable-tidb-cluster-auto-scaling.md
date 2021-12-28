@@ -1,28 +1,24 @@
 ---
-title: 启用 TidbCluster 弹性伸缩
-summary: 介绍如何使用 TidbCluster 的弹性伸缩能力。
+title: 对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩
+summary: 介绍如何对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 ---
 
-# 启用 TidbCluster 弹性伸缩
+# 对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩
 
-在 Kubernetes 平台上，有原生的弹性伸缩 API: [Horizontal Pod Autoscaler](https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/)。基于 Kubernetes，TiDB 5.0 起支持了全新的弹性调度算法。与之相应的，在 TiDB Operator 1.2 及以上版本中，TiDB 集群可以凭借 Kubernetes 平台本身的特性来开启弹性调度的能力。本篇文章将会介绍如何开启并使用 TidbCluster 的弹性伸缩能力。
-
-## 开启弹性伸缩特性
+Kubernetes 平台上有原生的弹性伸缩 API：[Horizontal Pod Autoscaler](https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/)。基于 Kubernetes，TiDB 自 v5.0 起支持了全新的弹性调度算法。相应地，在 TiDB Operator 1.2 及以上版本中，TiDB 集群可以凭借 Kubernetes 平台本身的特性支持开启弹性调度。本文介绍如何对 Kubernetes 上的 TiDB 集群开启和使用自动弹性伸缩。
 
 > **警告：**
 >
-> * TidbCluster 弹性伸缩目前仍处于 Alpha 阶段，我们极其不推荐在关键、生产环境开启这个特性。
-> * 我们推荐你在测试环境对这个特性进行体验，并反馈相关的建议与问题给我们，帮助我们更好地提高这一特性能力。
+> * Kubernetes 上的 TiDB 集群弹性伸缩目前仍处于 Alpha 阶段，极其不推荐在关键、生产环境开启该特性。
+> * 推荐在测试环境中体验该特性，并反馈相关的建议与问题，帮助我们更好地提高这一特性。
 > * 目前仅支持基于 CPU 利用率的弹性伸缩。
 
-开启弹性伸缩特性需要主动开启 TiDB Operator 相关配置，默认情况下 TiDB Operator 的弹性伸缩特性是关闭的。
+## 开启弹性伸缩特性
 
-你可以通过以下方式来开启弹性调度特性:
+TiDB Operator 的弹性伸缩特性默认关闭，要启用弹性伸缩特性，请执行以下步骤：
 
-1. 修改 TiDB Operator 的 `values.yaml`
-
-    在 `features` 选项中开启 AutoScaling：
+1. 修改 TiDB Operator 的 `values.yaml` 文件，在 `features` 选项中开启 `AutoScaling`。
 
     ```yaml
     features:
