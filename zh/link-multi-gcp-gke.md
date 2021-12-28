@@ -1,5 +1,5 @@
 ---
-title: 构建多个 GCP GKE 集群互通网络
+title: 构建多个 GCP GKE 集群
 summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
@@ -194,11 +194,12 @@ gcloud config set core/project <gcp-project>
 
 每个集群的 TidbCluster 定义由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
-每个集群的部署步骤参考快速上手中[**部署 TiDB Operator**](get-started.md#部署-tidb-operator)。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 操作各个集群。
+每个集群的部署步骤参考文档[**在 Kubernetes 上部署 TiDB Operator**](deploy-tidb-operator.md)。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 操作各个集群。
 
 ## 部署 TiDB 集群
 
-参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义。需要注意的是，在配置 TidbCluster 定义时使用的 `clusterDomain` 字段需要和 [启动 Kubernetes 集群](#启动-kubernetes-集群) 定义的一致。
+参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义。需要注意的是：
+* 在配置 TidbCluster 定义时使用的 `clusterDomain` 字段需要和 [启动 Kubernetes 集群](#启动-kubernetes-集群) 一节定义的一致。
 
 例如，部署初始集群 TidbCluster 定义时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
 
