@@ -51,7 +51,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
      cidr: ${cidr_block_1}
    ```
 
-   节点池 `nodeGroups` 字段的配置可以参考 [创建 EKS 集群和节点池](deploy-on-aws-eks##创建-eks-集群和节点池) 一节。
+   节点池 `nodeGroups` 字段的配置可以参考 [创建 EKS 集群和节点池](deploy-on-aws-eks.md#创建-eks-集群和节点池) 一节。
 
    执行以下命令创建集群 1 ：
 
