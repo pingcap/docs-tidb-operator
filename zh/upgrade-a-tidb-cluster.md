@@ -6,13 +6,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster/']
 
 # 升级 Kubernetes 上的 TiDB 集群
 
-如果你使用 TiDB Operator 部署管理 Kubernetes 上的 TiDB 集群，你可以通过滚动更新来升级 TiDB 集群的版本，减少对业务的影响。
-
-本文介绍如何使用滚动更新来升级 Kubernetes 上的 TiDB 集群。
+如果你使用 TiDB Operator 部署管理 Kubernetes 上的 TiDB 集群，可以通过滚动更新来升级 TiDB 集群的版本，减少对业务的影响。本文介绍如何使用滚动更新来升级 Kubernetes 上的 TiDB 集群。
 
 ## 功能介绍
 
-Kubernetes 提供[滚动更新功能](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)，在不影响应用可用性的前提下执行更新。
+Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)，在不影响应用可用性的前提下执行更新。
 
 使用滚动更新时，TiDB Operator 会按 PD、TiKV、TiDB 的顺序，串行地删除旧版本的 Pod，并创建新版本的 Pod。当新版本的 Pod 正常运行后，再处理下一个 Pod。
 
