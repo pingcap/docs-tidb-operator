@@ -575,7 +575,7 @@ mysql> select * from information_schema.tikv_store_status\G
 <details>
 <summary>查询 TiDB 集群基本信息</summary>
 
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先[升级 TiDB 集群](#第-5-步升级-tidb-集群)
+该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先[升级 TiDB 集群](#第-5-步升级-tidb-集群)。
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -688,6 +688,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary>点击查看期望输出</summary>
+
 注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
