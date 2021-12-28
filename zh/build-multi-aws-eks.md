@@ -194,7 +194,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 3. 获取各集群的 Load Balancer 的名字，并等待所有集群的 Load Balancer 变为 `Active` 状态。
 
-   以集群 1 为例，我们可以使用以下命令来查询我们部署的 Load Balancer 的名字。
+   使用以下命令来查询三个集群的 Load Balancer 的名字。
 
    {{< copyable "shell-regular" >}}
    
