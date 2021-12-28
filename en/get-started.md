@@ -56,7 +56,8 @@ kind create cluster
 
 <details>
 <summary>Expected output</summary>
-<pre><code>
+
+```
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
  ✓ Preparing nodes 📦
@@ -70,7 +71,8 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 
 Thanks for using kind! 😊
-</code></pre>
+```
+
 </details>
 
 Check whether the cluster is successfully created:
@@ -83,12 +85,14 @@ kubectl cluster-info
 
 <details>
 <summary>Expected output</summary>
-<pre><code>
+
+```
 Kubernetes master is running at https://127.0.0.1:51026
 KubeDNS is running at https://127.0.0.1:51026/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-</code></pre>
+```
+
 </details>
 
 You are now ready to deploy TiDB Operator.
@@ -264,7 +268,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.4
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.5
     ```
 
     <details>
@@ -453,10 +457,10 @@ mysql>
 
 </details>
 
-After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, upgrade by consulting the [Upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster) section.
+After connecting to the cluster, you can run the following commands to verify that some features available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 <details>
-<summary>Create a `hello_world` table</summary>
+<summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
@@ -490,11 +494,11 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-  tidb_version(): Release Version: v5.2.1
+  tidb_version(): Release Version: v5.3.0
          Edition: Community
- Git Commit Hash: cd8fb24c5f7ebd9d479ed228bb41848bd5e97445
-      Git Branch: heads/refs/tags/v5.2.1
-  UTC Build Time: 2021-09-08 02:32:56
+ Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
+      Git Branch: heads/refs/tags/v5.3.0
+  UTC Build Time: 2021-11-24 13:32:39
        GoVersion: go1.16.4
     Race Enabled: false
 TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
@@ -536,7 +540,8 @@ mysql> select * from information_schema.tikv_store_status\G
 
 <details>
 <summary>Query the TiDB cluster information</summary>
-This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
+
+This command is effective only in TiDB 4.0 or later versions. If your TiDB does not support the command, you need to [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
@@ -653,7 +658,8 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary>Expected output</summary>
-Note that `nightly` is not a fixed version. Running the command above at different time might return different results.
+
+Note that `nightly` is not a fixed version. Running the command above at a different time might return different results.
 
 ```
 *************************** 1. row ***************************
