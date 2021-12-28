@@ -3,11 +3,11 @@ title: 构建多个 GCP GKE 集群
 summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
-# 构建多个 GCP GKE 集群互通网络
+# 构建多个 GCP GKE 集群
 
-本文介绍了如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+本文介绍了如何构建多个 GCP GKE 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
-如果仅需要部署一个 TiDB 集群到一个 GCP GKE 集群，请参考[部署到 GCP GKE](deploy-on-gcp-gke.md)文档。
+如果仅需要部署一个 TiDB 集群到一个 GCP GKE 集群，请参考[在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)文档。
 
 ## 环境准备
 
@@ -199,6 +199,7 @@ gcloud config set core/project <gcp-project>
 ## 部署 TiDB 集群
 
 参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义。需要注意的是：
+
 * 在配置 TidbCluster 定义时使用的 `clusterDomain` 字段需要和 [启动 Kubernetes 集群](#启动-kubernetes-集群) 一节定义的一致。
 
 例如，部署初始集群 TidbCluster 定义时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
@@ -211,3 +212,7 @@ spec:
   #..
   clusterDomain: "${cluster_domain_1}"
 ```
+
+## 接下来
+
+* 阅读文档 [**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md) 了解如何管理跨 Kubernetes 集群的 TiDB 集群。

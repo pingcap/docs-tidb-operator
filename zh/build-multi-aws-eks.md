@@ -3,9 +3,9 @@ title: 构建多个 AWS EKS 集群
 summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
-# 构建多个 AWS EKS 集群互通网络
+# 构建多个 AWS EKS 集群
 
-本文介绍了如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+本文介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
 如果仅需要部署一个 TiDB 集群到一个 AWS EKS 集群，请参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)文档。
 
@@ -36,6 +36,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 1. 定义集群 1 的配置文件，并创建集群 1 。
    
    将如下配置保存为 `cluster-1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
+
    ```yaml
    apiVersion: eksctl.io/v1alpha5
    kind: ClusterConfig
@@ -313,6 +314,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 ## 部署 TiDB 集群
 
 参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义，需要注意的是：
+
 * **必须**将各集群的 TidbCluster 部署到 [配置 CoreDNS](#配置-coredns) 一节中对应的 namespace 下，否则 TiDB 集群运行将会失败。
 * 各集群的 cluster domain **必须** 设置为 "cluster.local"。
 
@@ -329,3 +331,6 @@ spec:
   clusterDomain: "cluster.local"
 ```
 
+## 接下来
+
+* 阅读文档 [**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md) 了解如何管理跨 Kubernetes 集群的 TiDB 集群。
