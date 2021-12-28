@@ -770,7 +770,7 @@ pgrep -lfa kubectl
 <SimpleTab>
 <div label="kind">
 
-如果使用了 kind 创建的 Kubernetes 集群，在测试完成后，执行下面命令来销毁集群：
+如果使用了 kind 创建 Kubernetes 集群，在测试完成后，执行下面命令来销毁集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -782,7 +782,7 @@ kind delete cluster
 
 <div label="minikube">
 
-如果使用了 minikube 创建的 minikube 集群，测试完成后，执行下面命令来销毁集群：
+如果使用了 minikube 创建 Kubernetes 集群，测试完成后，执行下面命令来销毁集群：
 
 {{< copyable "shell-regular" >}}
 
