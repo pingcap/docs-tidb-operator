@@ -6,9 +6,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 # 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
 
-本文介绍如何在已有的 TiDB 集群上部署或删除 TiDB HTAP 存储引擎 TiFlash。
+本文介绍如何在已有的 TiDB 集群上部署或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性。
 
-TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性，适用于 HTAP 场景（例如，在线实时分析处理的混合负载场景、实时流处理场景、或者数据中枢场景）。
+## 适用场景
+
+适用于需要用到 HTAP 的场景，例如：
+
+- 在线实时分析处理的混合负载场景
+- 实时流处理场景
+- 数据中枢场景
 
 ## 前置条件
 
