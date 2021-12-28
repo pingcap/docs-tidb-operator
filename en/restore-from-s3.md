@@ -10,9 +10,21 @@ This document describes how to restore the TiDB cluster data backed up using TiD
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. For the underlying implementation, [TiDB Lightning TiDB-backend](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends#tidb-lightning-tidb-backend) is used to perform the restore.
 
-TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends). To import data using `Importer-backend` or `Local-backend`, see [Import Data](restore-data-using-tidb-lightning.md).
+TiDB Lightning is a tool used for fast full import of large amounts of data into a TiDB cluster. It is used to read data from local disks, Google Cloud Storage (GCS) or Amazon S3. TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and `TiDB-backend`. In this document, `TiDB-backend` is used. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends). To import data using `Importer-backend` or `Local-backend`, see [Import Data](restore-data-using-tidb-lightning.md).
+
+## User scenarios
+
+You can use the restore solution introduced in this document if you need to export the backup data from S3 to a TiDB cluster, with the following requirements:
+
+- To restore data with lower resource usage and lower network bandwidth usage. A restore speed of 50 GB/h is acceptable.
+- To import data into the cluster with ACID appliance.
+- The TiDB cluster can still provide services during the restore process.
 
 ## Prerequisites
+
+Before you perform the data restore, you need to prepare the restore environment and get the required database account privileges.
+
+### Prepare the restore environment
 
 1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
@@ -36,7 +48,9 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
     ```
 
-## Required database account privileges
+### Get the required database account privileges
+
+Before you use TiDB Lightning to restore the backup data in S3 to the TiDB cluster, make sure that you have the following database account privileges:
 
 | Privileges | Scope |
 |:----|:------|
@@ -63,140 +77,149 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
 >     - --ignore-checksum
 > ```
 
-+ Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
+This section lists multiple storage access methods. Only follow the method that matches your situation. The methods are as follows:
 
-    {{< copyable "shell-regular" >}}
+- Amazon S3 by importing AccessKey and SecretKey
+- Ceph by importing AccessKey and SecretKey
+- Amazon S3 by binding IAM with Pod
+- Amazon S3 by binding IAM with ServiceAccount
 
-    ```shell
-    kubectl apply -f restore.yaml
-    ```
+1. Create Restore customer resource (CR) and restore the specified backup data to the TiDB cluster.
 
-    The content of `restore.yaml` is as follows:
+    + Method 1: Create the `Restore` CR, and restore the cluster data from Ceph by importing AccessKey and SecretKey to grant permissions:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Restore
-    metadata:
-      name: demo2-restore
-      namespace: test2
-    spec:
-      backupType: full
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
-      s3:
-        provider: ceph
-        endpoint: ${endpoint}
-        secretName: s3-secret
-        path: s3://${backup_path}
-      # storageClassName: local-storage
-      storageSize: 1Gi
-    ```
+        {{< copyable "shell-regular" >}}
 
-+ Create the `Restore` CR, and restore the cluster data from Amazon S3 by importing AccessKey and SecretKey to grant permissions:
+        ```shell
+        kubectl apply -f restore.yaml
+        ```
 
-    {{< copyable "shell-regular" >}}
+        The content of `restore.yaml` is as follows:
 
-    ```shell
-    kubectl apply -f restore.yaml
-    ```
+        ```yaml
+        ---
+        apiVersion: pingcap.com/v1alpha1
+        kind: Restore
+        metadata:
+          name: demo2-restore
+          namespace: test2
+        spec:
+          backupType: full
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: ceph
+            endpoint: ${endpoint}
+            secretName: s3-secret
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
+        ```
 
-    The `restore.yaml` file has the following content:
+    + Method 2: Create the `Restore` CR, and restore the cluster data from Amazon S3 by importing AccessKey and SecretKey to grant permissions:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Restore
-    metadata:
-      name: demo2-restore
-      namespace: test2
-    spec:
-      backupType: full
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
-      s3:
-        provider: aws
-        region: ${region}
-        secretName: s3-secret
-        path: s3://${backup_path}
-      # storageClassName: local-storage
-      storageSize: 1Gi
-    ```
+        {{< copyable "shell-regular" >}}
 
-+ Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with Pod to grant permissions:
+        ```shell
+        kubectl apply -f restore.yaml
+        ```
 
-    {{< copyable "shell-regular" >}}
+        The `restore.yaml` file has the following content:
 
-    ```shell
-    kubectl apply -f restore.yaml
-    ```
+        ```yaml
+        ---
+        apiVersion: pingcap.com/v1alpha1
+        kind: Restore
+        metadata:
+          name: demo2-restore
+          namespace: test2
+        spec:
+          backupType: full
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: aws
+            region: ${region}
+            secretName: s3-secret
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
+        ```
 
-    The content of `restore.yaml` is as follows:
+    + Method 3: Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with Pod to grant permissions:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Restore
-    metadata:
-      name: demo2-restore
-      namespace: test2
-      annotations:
-        iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
-    spec:
-      backupType: full
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
-      s3:
-        provider: aws
-        region: ${region}
-        path: s3://${backup_path}
-      # storageClassName: local-storage
-      storageSize: 1Gi
-    ```
+        {{< copyable "shell-regular" >}}
 
-+ Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with ServiceAccount to grant permissions:
+        ```shell
+        kubectl apply -f restore.yaml
+        ```
 
-    {{< copyable "shell-regular" >}}
+        The content of `restore.yaml` is as follows:
 
-    ```shell
-    kubectl apply -f restore.yaml
-    ```
+        ```yaml
+        ---
+        apiVersion: pingcap.com/v1alpha1
+        kind: Restore
+        metadata:
+          name: demo2-restore
+          namespace: test2
+          annotations:
+            iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
+        spec:
+          backupType: full
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: aws
+            region: ${region}
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
+        ```
 
-    The content of `restore.yaml` is as follows:
+    + Method 4: Create the `Restore` CR, and restore the cluster data from Amazon S3 by binding IAM with ServiceAccount to grant permissions:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Restore
-    metadata:
-      name: demo2-restore
-      namespace: test2
-    spec:
-      backupType: full
-      serviceAccount: tidb-backup-manager
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
-      s3:
-        provider: aws
-        region: ${region}
-        path: s3://${backup_path}
-      # storageClassName: local-storage
-      storageSize: 1Gi
-    ```
+        {{< copyable "shell-regular" >}}
 
-After creating the `Restore` CR, execute the following command to check the restore status:
+        ```shell
+        kubectl apply -f restore.yaml
+        ```
+
+        The content of `restore.yaml` is as follows:
+
+        ```yaml
+        ---
+        apiVersion: pingcap.com/v1alpha1
+        kind: Restore
+        metadata:
+          name: demo2-restore
+          namespace: test2
+        spec:
+          backupType: full
+          serviceAccount: tidb-backup-manager
+          to:
+            host: ${tidb_host}
+            port: ${tidb_port}
+            user: ${tidb_user}
+            secretName: restore-demo2-tidb-secret
+          s3:
+            provider: aws
+            region: ${region}
+            path: s3://${backup_path}
+          # storageClassName: local-storage
+          storageSize: 1Gi
+        ```
+
+2. After creating the `Restore` CR, execute the following command to check the restore status:
 
 {{< copyable "shell-regular" >}}
 
