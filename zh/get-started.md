@@ -688,6 +688,7 @@ mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 
 <details>
 <summary>点击查看期望输出</summary>
+
 注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
 
 ```
