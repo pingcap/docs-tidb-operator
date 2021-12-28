@@ -10,7 +10,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 ## 前置条件
 
 - 已经存在一个原 TiDB 集群，可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
-- 新的节点已经准备就绪，并加入原 TiDB Kubernetes 集群。
+- 新的节点准备就绪，并已加入原 TiDB Kubernetes 集群。
 
 ## 第一步：克隆原 TiDB 集群配置
 
@@ -21,6 +21,20 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 >
 > * 可能需要修改克隆集群中的 TiKV replicas，因为克隆集群中 TiKV 副本数应大于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于等于 3。
 > * 克隆集群 namespace 保持不变
+
+3. 在 `tidb-cluster-clone.yaml` 中 `spec` 下加入如下内容，先加入原 TiDB 集群：
+
+```yaml
+kind: TidbCluster
+metadata:
+  name: ${clone-cluster-name}
+spec:
+   cluster:
+   name: ${orginal-cluster-name}
+...
+```
+
+其中 `${clone-cluster-name}` 是克隆集群的新名字，`${orginal-cluster-name}` 是原集群名字。
 
 ## 第二步：如果原集群开启了 TLS，为克隆集群签发证书
 
@@ -38,20 +52,6 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 ### 使用 cert-manager 系统签发
 
 如果你使用 cert-manager，必须使用和原集群相同的 Issuer（${cluster_name}-tidb-issuer） 来创建 Certificate。你需要执行为 TiDB 组件间开启 TLS 文档中第 3 步，完成新集群组件间证书签发。
-
-3. 在 `tidb-cluster-clone.yaml` 中 `spec` 下加入如下内容，先加入原 TiDB 集群：
-
-```yaml
-kind: TidbCluster
-metadata:
-  name: ${clone-cluster-name}
-spec:
-   cluster:
-   name: ${orginal-cluster-name}
-...
-```
-
-其中 `${clone-cluster-name}` 是克隆集群的新名字，`${orginal-cluster-name}` 是原集群名字。
 
 ## 第三步：创建克隆 TiDB 集群
 
