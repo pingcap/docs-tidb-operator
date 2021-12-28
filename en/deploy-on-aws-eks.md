@@ -195,24 +195,40 @@ The following example shows how to create and configure a StorageClass for the `
 
 1. Deploy the [AWS EBS Container Storage Interface (CSI) driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on the EKS cluster. If you are using a storage type other than `gp3`, skip this step.
 
-2. Create a `StorageClass` resource. In the resource definition, specify your desired storage type in the `parameters.type` field.
+2. Set ebs-csi-node `toleration`.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
+    ```
+
+    Expected output:
+
+    ```
+    daemonset.apps/ebs-csi-node patched
+    ```
+
+3. Create a `StorageClass` resource. In the resource definition, specify your desired storage type in the `parameters.type` field.
 
     ```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
       name: gp3
-    provisioner: kubernetes.io/aws-ebs
+    provisioner: ebs.csi.aws.com
+    allowVolumeExpansion: true
+    volumeBindingMode: WaitForFirstConsumer
     parameters:
       type: gp3
       fsType: ext4
-      iopsPerGB: "10"
-      encrypted: "false"
+      iops: "4000"
+      throughput: "400"
     mountOptions:
     - nodelalloc,noatime
     ```
 
-3. In the TidbCluster YAML file, configure `gp3` in the `storageClassName` field. For example:
+4. In the TidbCluster YAML file, configure `gp3` in the `storageClassName` field. For example:
 
     ```yaml
     spec:
@@ -221,7 +237,7 @@ The following example shows how to create and configure a StorageClass for the `
         storageClassName: gp3
     ```
 
-4. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
+5. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
 
     ```yaml
     kind: StorageClass
@@ -303,7 +319,7 @@ After local-volume-provisioner discovers the local volumes, when you [Deploy a T
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator) in Getting Started.
+To deploy TiDB Operator in the EKS cluster, refer to the [*Deploy TiDB Operator* section](get-started.md#step-2-deploy-tidb-operator) in Getting Started.
 
 ## Deploy a TiDB cluster and the monitoring component
 
