@@ -35,25 +35,20 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 1. 定义集群 1 的配置文件，并创建集群 1 。
    
-   将如下配置保存为 `cluster-1.yaml` 文件：
+   将如下配置保存为 `cluster-1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
    ```yaml
    apiVersion: eksctl.io/v1alpha5
    kind: ClusterConfig
 
    metadata:
-     name: feat-orchestration-ysh-test-1
-     region: us-west-1
+     name: ${cluster_1}
+     region: ${region_1}
 
    # nodeGroups ...
 
-   kubernetesNetworkConfig:
-     serviceIPv4CIDR: 10.11.0.0/16
-
    vpc:
-     cidr: 10.1.0.0/16
+     cidr: ${cidr_block_1}
    ```
-
-   我们定义了名为 `feat-orchestration-ysh-test-1` 的 EKS 集群，其集群所属的 VPC 的 CIDR block 为 `10.1.0.0/16`，集群下的 service 的 CIDR block 为 `10.11.0.0/16`。
 
    节点池 `nodeGroups` 字段的配置可以参考 [创建 EKS 集群和节点池](deploy-on-aws-eks#创建-eks-集群和节点池) 一节。
 
@@ -71,7 +66,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
    
    需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
 
-   后文中，我们使用 `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表各个集群的名字。使用 `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表各个集群所属的 VPC 的 CIDR block。
+后文中，我们使用 `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，使用 `${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，使用 `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
 在所有集群创建完毕后，我们需要获取每个集群的 Kubernetes Context，以方便后续我们使用 `kubectl` 命令操作每个集群。
 
@@ -108,7 +103,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
     ```
 
    <details>
-   <summary>点击查看输出，其中 `VPC` 项就是该集群所在 VPC 的 ID。</summary>
+   <summary>点击查看示例输出，其中 `VPC` 项就是该集群所在 VPC 的 ID。</summary>
    <pre><code>
    CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
    *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
@@ -224,7 +219,9 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
    <details>
    <summary>点击查看期望输出</summary>
-   <pre><code>active</code></pre>
+   <pre><code>active
+   active
+   active</code></pre>
    </details>
 
 4. 查询各集群的 Load Balancer 关联的 IP 地址。
@@ -240,9 +237,9 @@ CURRENT   NAME                                 CLUSTER                      AUTH
    <pre><code>10.1.175.233 10.1.144.196</code></pre>
    </details>
 
-   后文中，我们将各集群的 Load Balancer 关联的 ENI 的 IP 地址称为 `${ip_list_1}`、`${ip_list_2}` 与 `${ip_list_3}`。
+   后文中，我们将各集群的 Load Balancer 关联 IP 地址称为 `${lb_ip_list_1}`、`${lb_ip_list_2}` 与 `${lb_ip_list_3}`。
    
-   不同 Region 的 Load Balancer 可能有着不同数量的 IP 地址。例如上述示例中，`${ip_list_1}` 就是 `10.1.175.233 10.1.144.196` 。
+   不同 Region 的 Load Balancer 可能有着不同数量的 IP 地址。例如上述示例中，`${lb_ip_list_1}` 就是 `10.1.175.233 10.1.144.196` 。
 
 ### 配置 CoreDNS
 
@@ -286,14 +283,14 @@ CURRENT   NAME                                 CLUSTER                      AUTH
          ${namspeace_2}.svc.cluster.local:53 {
              errors
              cache 30
-             forward . ${ip_list_2} {
+             forward . ${lb_ip_list_2} {
                  force_tcp
              }
          }  
          ${namspeace_3}.svc.cluster.local:53 {
              errors
              cache 30
-             forward . ${ip_list_3} {
+             forward . ${lb_ip_list_3} {
                  force_tcp
              }
          }
