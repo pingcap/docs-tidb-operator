@@ -721,6 +721,16 @@ Check Table Before Drop: false
 
 完成测试后，你可能希望销毁 TiDB 集群和 Kubernetes 集群。
 
+#### 停止 `kubectl` 的端口转发
+
+如果你仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+pgrep -lfa kubectl
+```
+
 ### 销毁 TiDB 集群
 
 销毁 TiDB 集群的步骤如下。
@@ -762,16 +772,6 @@ kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/man
 
 ```shell
 kubectl delete namespace tidb-cluster
-```
-
-#### 停止 `kubectl` 的端口转发
-
-如果你仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pgrep -lfa kubectl
 ```
 
 ### 销毁 Kubernetes 集群
