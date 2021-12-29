@@ -10,16 +10,16 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 
 ## 水平扩缩容
 
-TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。
+TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 `replicas` 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。
 
-* 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 replicas 值相等。
-* 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 replicas 值相等。
+* 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
+* 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
 ### 扩缩容 PD、TiDB、TiKV
 
 如果要对 PD、TiDB、TiKV 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
 
-例如，执行以下命令可将 PD 的 replicas 值设置为 3：
+例如，执行以下命令可将 PD 的 `replicas` 值设置为 3：
 
 {{< copyable "shell-regular" >}}
 
@@ -27,7 +27,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pd":{"replicas":3}}}'
 ```
 
-你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
+你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你期望的配置。
 
 {{< copyable "shell-regular" >}}
 
@@ -45,7 +45,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 扩缩容 TiFlash
 
-如果要对 TiFlash 进行水平扩容，可以通过修改 `spec.tiflash.replicas` 来实现。例如，执行以下命令可将 TiFlash 的 replicas 值设置为 3：
+如果要对 TiFlash 进行水平扩容，可以通过修改 `spec.tiflash.replicas` 来实现。例如，执行以下命令可将 TiFlash 的 `replicas` 值设置为 3：
 
 {{< copyable "shell-regular" >}}
 
@@ -105,7 +105,7 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
 
 ### 扩缩容 TiCDC
 
-如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。例如，执行以下命令可将 TiCDC 的 replicas 值设置为 3：
+如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。例如，执行以下命令可将 TiCDC 的 `replicas` 值设置为 3：
 
 {{< copyable "shell-regular" >}}
 
@@ -134,7 +134,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ## 垂直扩缩容
 
-垂直扩缩容操作指的是通过增加或减少节点的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是节点滚动升级的过程。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
+垂直扩缩容操作指的是通过增加或减少 Pod 的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是 Pod 滚动升级的过程。
 
 ### 垂直扩缩容操作
 
@@ -161,4 +161,4 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ## 扩缩容故障诊断
 
-无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [Pod 处于 Pending 状态](deploy-failures.md#pod-处于-pending-状态)。
+无论是水平扩缩容、或者是垂直扩缩容，都可能遇到资源不够时造成 Pod 出现 Pending 的情况。可以参考 [Pod 处于 Pending 状态](deploy-failures.md#pod-处于-pending-状态)来进行处理。

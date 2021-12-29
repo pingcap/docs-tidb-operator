@@ -186,7 +186,7 @@ TiDB Operator 会根据 `TidbClusterAutoScaler` CR 的配置，向 PD 发起请�
     [ 10s ] thds: 20 tps: 38487.20 qps: 38487.20 (r/w/o: 38487.20/0.00/0.00) lat (ms,95%): 0.95 err/s: 0.00 reconn/s: 0.00
     ```
 
-4. 新开一个会话终端，通过以下命令观察 TiDB 集群的 Pod 变化情况。
+4. 新建一个会话终端，通过以下命令观察 TiDB 集群的 Pod 变化情况。
 
     {{< copyable "shell-regular" >}}
 
