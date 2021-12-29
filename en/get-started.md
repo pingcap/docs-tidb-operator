@@ -575,9 +575,9 @@ mysql> select * from information_schema.cluster_info\G
 
 </details>
 
-### Access Grafana dashboard
+### Access the Grafana dashboard
 
-You can forward the port for Grafana to access Grafana dashboard locally:
+You can forward the port for Grafana to access the Grafana dashboard locally:
 
 {{< copyable "shell-regular" >}}
 
@@ -585,9 +585,9 @@ You can forward the port for Grafana to access Grafana dashboard locally:
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`.
+You can access the Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`.
 
-Note that if you run `kubectl` in a Docker container or on a remote host instead of your local host, you can not access Grafana dashboard at <http://localhost:3000> from your browser. In this case, you can run the following command to monitor all addresses.
+Note that if you run `kubectl` in a Docker container or on a remote host instead of your local host, you can not access the Grafana dashboard at <http://localhost:3000> from your browser. In this case, you can run the following command to monitor all addresses.
 
 ```bash
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
