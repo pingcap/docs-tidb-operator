@@ -176,7 +176,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 4. Go back to the window where the `port-forward` command is executed, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
-### Step 6: Increase the capacity of the PD cluster
+### Step 6. Scale out the PD cluster
 
 Execute the following command to set the value of `spec.pd.replicas` to the desired number of Pods:
 
