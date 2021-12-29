@@ -9,13 +9,13 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的�
 
 本文介绍如何将运行在 AWS Kubernetes 环境中的 TiDB 集群数据备份到 AWS 的存储上。
 
-本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现，底层使用[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群的原始数据，然后再将数据上传到 AWS 的存储上。
+本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到 AWS 的存储上。
 
 BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-全量备份)或[定时全量备份](#场景-2定时全量备份)的方式备份至兼容 S3 的存储上：
+如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至兼容 S3 的存储上：
 
 - 需要备份的数据量较大，而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
@@ -51,7 +51,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 授予远程存储访问授权。
+2. 授予远程存储访问权限。
 
     如果使用 Amazon S3 来备份集群，可以使用三种权限授予方式授予权限，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)授权访问兼容 S3 的远程存储；使用 Ceph 作为后端存储测试备份时，是通过 AccessKey 和 SecretKey 模式授权，设置方式可参考[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
