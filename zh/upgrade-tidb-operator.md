@@ -21,14 +21,6 @@ summary: 介绍如何升级 TiDB Operator。
 
 2. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
 
-<<<<<<< HEAD
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.4/manifests/crd.yaml && \
-    kubectl get crd tidbclusters.pingcap.com
-    ```
-=======
     * 如果 Kubernetes 版本大于等于 1.16:
 
         {{< copyable "shell-regular" >}}
@@ -48,7 +40,6 @@ summary: 介绍如何升级 TiDB Operator。
         ```
 
     本文以 TiDB Operator v1.2.5 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
->>>>>>> 972ce953 (en, zh: optimize upgrade-tidb-operator (#1503))
 
 3. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -99,14 +90,9 @@ summary: 介绍如何升级 TiDB Operator。
 1. 使用有外网的机器，下载升级所需的文件和镜像。
 
     1. 下载 TiDB Operator 需要的 `crd.yaml` 文件。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
-   
+
         {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
-        ```shell
-        wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.4/manifests/crd.yaml
-        ```
-=======
         * 如果 Kubernetes 版本大于等于 1.16:
 
             {{< copyable "shell-regular" >}}
@@ -124,7 +110,6 @@ summary: 介绍如何升级 TiDB Operator。
             ```
 
         本文以 TiDB Operator v1.2.5 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
->>>>>>> 972ce953 (en, zh: optimize upgrade-tidb-operator (#1503))
 
     2. 下载 `tidb-operator` chart 包文件：
 
