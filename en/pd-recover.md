@@ -146,7 +146,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     recover success! please restart the PD cluster
     ```
 
-3. Go back to the window where the `port-forward` command is executed, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
+3. Go back to the window where the `port-forward` command is executed, and then press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
 ### Step 5: Restart the PD Pod
 
