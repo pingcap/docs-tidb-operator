@@ -6,9 +6,29 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 # 使用 BR 备份 TiDB 集群到 GCS
 
-本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。[`BR`](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 会在底层获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
+本文介绍如何将运行在 Kubernetes 上的 TiDB 集群数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。
 
-本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
+本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到远端 GCS。
+
+BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+
+## 使用场景
+
+如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至兼容 S3 的存储上：
+
+- 需要备份的数据量较大，而且要求备份速度较快
+- 需要直接备份数据的 SST 文件（键值对）
+
+> **注意：**
+>
+> - BR 只支持 TiDB v3.1 及以上版本。
+> - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
+
+## 前置条件
+
+使用 BR 备份 TiDB 集群数据到 AWS 的存储前，确保你拥有备份数据库的以下权限：
+
+* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
 
 ## Ad-hoc 备份
 
@@ -16,7 +36,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
-### Ad-hoc 备份环境准备
+### 第 1 步：准备 Ad-hoc 备份环境
 
 > **注意：**
 >
@@ -30,11 +50,11 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 远程存储访问授权。
+2. 授予远程存储访问权限。
 
     参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)授权访问 GCS 远程存储。
 
-3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
+3. 创建 `backup-demo1-tidb-secret` secret 用于存放访问 TiDB 集群的 root 账号和密钥。
 
     {{< copyable "shell-regular" >}}
 
@@ -42,11 +62,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
-### 数据库账户权限
-
-* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
-
-### Ad-hoc 备份过程
+### 第 2 步：备份数据到 GCS
 
 1. 创建 `Backup` CR，并将数据备份到 GCS：
 
@@ -96,13 +112,12 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # objectAcl: private
     ```
 
-    以上示例中，`spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+    在配置 `backup-aws-s3.yaml` 文件时，请参考以下信息：
 
-    自 v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
-
-    该示例将 TiDB 集群的数据全量导出备份到 GCS。`spec.gcs` 中的一些参数项均可省略，如 `location`、`objectAcl`、`storageClass`。GCS 存储相关配置参考 [GCS 存储字段介绍](backup-restore-overview.md#gcs-存储字段介绍)。
-
-    更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
+    - `spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+    - 自 v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+    - `spec.gcs` 中的一些参数项均可省略，如 `location`、`objectAcl`、`storageClass`。GCS 存储相关配置参考 [GCS 存储字段介绍](backup-restore-overview.md#gcs-存储字段介绍)。
+    - 更多 `Backup` CR 字段的详细解释，请参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
 
 2. 创建好 `Backup` CR 后，可通过以下命令查看备份状态：
 
@@ -116,11 +131,11 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
-### 定时全量备份环境准备
+### 第 1 步：定时全量备份环境准备
 
-同 [Ad-hoc 全量备份环境准备](#ad-hoc-备份环境准备)。
+同 [Ad-hoc 全量备份环境准备](#第-1-步准备ad-hoc-备份环境)。
 
-### 定时全量备份过程
+### 第 2 步：定时备份数据到 GCS
 
 1. 创建 `BackupSchedule` CR，开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
 
@@ -190,7 +205,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ## 删除备份的 Backup CR
 
-删除备份的 Backup CR 可参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
+备份完成后，如果要删除备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
 
 ## 故障诊断
 
