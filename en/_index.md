@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/']
 
 # TiDB in Kubernetes Documentation
 
-You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB clusters in Kubernetes. [TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for TiDB clusters in Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB clusters in Kubernetes. TiDB Operator is an automatic operation system for TiDB clusters in Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
