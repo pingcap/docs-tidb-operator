@@ -12,8 +12,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 
 TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。
 
-* 如果要进行扩容操作，可将某个组件的 replicas 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 replicas 值相等。
-* 如果要进行缩容操作，可将某个组件的 replicas 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 replicas 值相等。
+* 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 replicas 值相等。
+* 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 replicas 值相等。
 
 ### 扩缩容 PD、TiDB、TiKV
 
