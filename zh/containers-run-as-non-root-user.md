@@ -23,7 +23,7 @@ controllerManager:
 
 ## 配置按照 CR 生成的容器
 
-对于按照 CR 生成的容器，你同样可以在任意一种 CR (`TidbCluster`/`DMCluster`/`TiInitializer`/`TiMonitor`/`Backup`/`BackupSchedule`/`Restore`) 中配置安全上下文 (security context)。
+对于按照 CR 生成的容器，你同样可以在任意一种 CR (`TidbCluster`/`DmCluster`/`TidbInitializer`/`TidbMonitor`/`Backup`/`BackupSchedule`/`Restore`) 中配置安全上下文 (security context)。
 
 你可以采用以下两种 `podSecurityContext` 配置。如果同时配置了集群级别和组件级别，则该组件以组件级别的配置为准。
 
@@ -37,7 +37,7 @@ controllerManager:
         fsGroup: 2000
     ```
 
-- 配置在组件级别，仅对该组件生效。 例如，配置 `TidbCluster` 的 `spec.tidb.podSecurityContext`，配置 `DMCluster` 的 `spec.master.podSecurityContext`)。配置示例如下：
+- 配置在组件级别，仅对该组件生效。例如，为 PD 组件配置 `spec.pd.podSecurityContext`，为 TiDB 组件配置 `spec.tidb.podSecurityContext`。配置示例如下：
 
     ```yaml
     spec:
