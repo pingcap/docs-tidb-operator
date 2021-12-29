@@ -1,9 +1,9 @@
 ---
-title: 构建多个 GCP GKE 集群
+title: 构建多个网络互通的 GCP GKE 集群
 summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
-# 构建多个 GCP GKE 集群
+# 构建多个网络互通的 GCP GKE 集群
 
 本文介绍了如何构建多个 GCP GKE 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 

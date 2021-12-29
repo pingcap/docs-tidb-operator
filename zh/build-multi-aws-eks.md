@@ -1,9 +1,9 @@
 ---
-title: 构建多个 AWS EKS 集群
+title: 构建多个网络互通的 AWS EKS 集群
 summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
-# 构建多个 AWS EKS 集群
+# 构建多个网络互通的 AWS EKS 集群
 
 本文介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
@@ -106,10 +106,8 @@ CURRENT   NAME                                 CLUSTER                      AUTH
    <details>
    <summary>点击查看示例输出，其中 `VPC` 项就是该集群所在 VPC 的 ID。</summary>
    <pre><code>
-   CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
-   *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
-            pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
-            pingcap@tidb-3.us-east-1.eksctl.io   tidb-2.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
+   NAME          VERSION STATUS  CREATED                 VPC                      SUBNETS                                                                                                                  SECURITYGROUPS
+   tidb-1        1.20    ACTIVE  2021-11-22T06:40:20Z    vpc-0b15ed35c02af5288   subnet-058777d55881c4095,subnet-06def2041b6fa3fa0,subnet-0869c7e73e09c3174,subnet-099d10845f6cbaf82,subnet-0a1a58db5cb087fed,subnet-0f68b302678c4d36b     sg-0cb299e7ec153c595
    </code></pre>
    </details>
 
