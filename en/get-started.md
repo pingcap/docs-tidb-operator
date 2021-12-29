@@ -419,10 +419,10 @@ In this case, the TiDB **service** is called **basic-tidb**. Run the following c
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+kubectl port-forward -n tidb-cluster svc/basic-tidb 14000:4000 > pf14000.out &
 ```
 
-This command runs in the background and writes its output to a file called `pf4000.out`, so you can continue working in the same shell session.
+If the port `14000` is already occupied, you can replace it with an available port. This command runs in the background and writes its output to a file named `pf14000.out`. You can continue to run the command in the current shell session.
 
 ### Connect to the TiDB service
 
@@ -433,7 +433,7 @@ This command runs in the background and writes its output to a file called `pf40
 {{< copyable "shell-regular" >}}
 
 ``` shell
-mysql --comments -h 127.0.0.1 -P 4000 -u root
+mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 
 <details>
@@ -463,6 +463,7 @@ After connecting to the cluster, you can run the following commands to verify th
 <summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
+mysql> use test;
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
 Query OK, 0 rows affected (0.17 sec)
 
@@ -574,9 +575,9 @@ mysql> select * from information_schema.cluster_info\G
 
 </details>
 
-### Access Grafana dashboard
+### Access the Grafana dashboard
 
-You can forward the port for Grafana to access Grafana dashboard locally:
+You can forward the port for Grafana to access the Grafana dashboard locally:
 
 {{< copyable "shell-regular" >}}
 
@@ -584,7 +585,15 @@ You can forward the port for Grafana to access Grafana dashboard locally:
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`. Note that if you want to access Grafana dashboard at <http://localhost:3000> from your browser, you must run `kubectl` on the same host, not in a Docker container or on a remote host.
+You can access the Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`.
+
+Note that if you run `kubectl` in a Docker container or on a remote host instead of your local host, you can not access the Grafana dashboard at <http://localhost:3000> from your browser. In this case, you can run the following command to listen on all addresses.
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
+```
+
+Then access Grafana through <http://${remote-server-IP}:3000>.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
@@ -640,20 +649,22 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 After all Pods have been restarted, you can see that the version number of the cluster has changed.
 
-Note that you need to reset any port forwarding you set up in a previous step, because the pods they forwarded to have been destroyed and recreated. If the `kubectl port-forward` process is still running in your shell, end it before forwarding the port again.
+Note that you need to reset any port forwarding you set up in a previous step, because the pods they forwarded to have been destroyed and recreated.
 
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
 ```
+
+If the port `24000` is already occupied, you can replace it with an available port.
 
 ### Check the TiDB cluster version
 
 {{< copyable "shell-regular" >}}
 
 ```
-mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 ```
 
 <details>
@@ -683,6 +694,16 @@ After you finish testing, you can destroy the TiDB cluster and the Kubernetes cl
 ### Destroy the TiDB cluster
 
 This section introduces how to destroy a TiDB cluster.
+
+#### Stop `kubectl` port forwarding
+
+If you still have running `kubectl` processes that are forwarding ports, end them:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+pgrep -lfa kubectl
+```
 
 #### Delete the TiDB cluster
 
@@ -721,16 +742,6 @@ To ensure that there are no lingering resources, delete the namespace used for y
 
 ```shell
 kubectl delete namespace tidb-cluster
-```
-
-#### Stop `kubectl` port forwarding
-
-If you still have running `kubectl` processes that are forwarding ports, end them:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pgrep -lfa kubectl
 ```
 
 ### Destroy the Kubernetes cluster
