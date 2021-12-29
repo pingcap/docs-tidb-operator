@@ -432,11 +432,7 @@ If the port `14000` is already occupied, you can replace it with an available po
 {{< copyable "shell-regular" >}}
 
 ``` shell
-<<<<<<< HEAD
-mysql -h 127.0.0.1 -P 4000 -u root
-=======
 mysql --comments -h 127.0.0.1 -P 14000 -u root
->>>>>>> bf7addbc (Verified the doc and made changes (#1557))
 ```
 
 <details>
@@ -667,11 +663,7 @@ If the port `24000` is already occupied, you can replace it with an available po
 {{< copyable "shell-regular" >}}
 
 ```
-<<<<<<< HEAD
-mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
-=======
 mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
->>>>>>> bf7addbc (Verified the doc and made changes (#1557))
 ```
 
 <details>
