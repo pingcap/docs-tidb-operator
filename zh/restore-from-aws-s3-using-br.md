@@ -5,7 +5,7 @@ summary: 介绍如何使用 BR 恢复 Amazon S3 兼容存储上的备份数据�
 
 # 使用 BR 恢复 S3 兼容存储上的备份数据
 
-本文介绍如何将存储在 Amazon S3 存储（指定路径）上的 SST 备份数据恢复到 AWS Kubernetes 环境中的 TiDB 集群，
+本文介绍如何将存储在 Amazon S3 存储上的 SST 备份数据恢复到 AWS Kubernetes 环境中的 TiDB 集群，
 
 本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 Custom Resource Definition (CRD) 实现，底层通过使用 [BR](https://pingcap.com/docs-cn/stable/br/backup-and-restore-tool/) 进行数据恢复。
 
@@ -189,9 +189,9 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
 在配置 `restore-aws-s3.yaml` 文件时，请参考以下信息：
 
-- 兼容 S3 的存储相关配置参考 [S3 存储字段介绍](backup-restore-overview.md#s3-存储字段介绍)。
-- `.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
-- 更多 `restore` CR 字段的详细解释参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+- 关于兼容 S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-overview.md#s3-存储字段介绍)。
+- `.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+- 更多 `restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
