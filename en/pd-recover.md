@@ -49,7 +49,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 6821434242797747735
 ```
 
-### Step 2: Get Alloc ID
+### Step 2. Get Alloc ID
 
 When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id`. The value of `alloc-id` must be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
@@ -59,7 +59,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 3. Multiply the largest value in the query result by `100`. Use the multiplied value as the `alloc-id` value specified when using `pd-recover`.
 
-### Step 3: Recover the PD Pod
+### Step 3. Recover the PD Pod
 
 1. Delete the Pod of the PD cluster.
 
@@ -121,7 +121,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl get pod -n ${namespace}
     ```
 
-### Step 4: Recover the cluster
+### Step 4. Recover the cluster
 
 1. Execute the `port-forward` command to expose the PD service:
 
@@ -149,7 +149,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 3. Go back to the window where the `port-forward` command is executed, and then press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
-### Step 5: Restart the PD Pod
+### Step 5. Restart the PD Pod
 
 1. Delete the PD Pod:
 
@@ -187,7 +187,7 @@ Execute the following command to set the value of `spec.pd.replicas` to the desi
 kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
-### Step 7: Restart TiDB and TiKV
+### Step 7. Restart TiDB and TiKV
 
 Use the following commands to restart the TiDB and TiKV clusters:
 
