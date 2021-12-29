@@ -10,18 +10,21 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 
 ## 水平扩缩容
 
-TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。扩容操作按照节点编号由小到大增加节点，缩容操作按照节点编号由大到小删除节点。目前 TiDB 集群使用 TidbCluster Custom Resource (CR) 管理方式。
+TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 replicas 值，对 PD、TiKV、TiDB 按顺序进行扩缩容操作。
+
+* 如果要进行扩容操作，可将某个组件的 replicas 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 replicas 值相等。
+* 如果要进行缩容操作，可将某个组件的 replicas 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 replicas 值相等。
 
 ### 扩缩容 PD、TiDB、TiKV
 
-如果要对 PD、TiDB、TiKV 进行水平扩缩容，使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
+如果要对 PD、TiDB、TiKV 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
 
-同样，你可以使用以下命令在线修改 Kubernetes 集群中的 `TidbCluster` 定义。
+例如，执行以下命令可将 PD 的 replicas 值设置为 3：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pd":{"replicas":3}}}'
 ```
 
 你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。
@@ -42,7 +45,13 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 扩缩容 TiFlash
 
-如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.replicas` 对 TiFlash 进行扩容。
+如果要对 TiFlash 进行水平扩容，可以通过修改 `spec.tiflash.replicas` 来实现。例如，执行以下命令可将 TiFlash 的 replicas 值设置为 3：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}'
+```
 
 如果要对 TiFlash 进行水平缩容，执行以下步骤：
 
@@ -96,7 +105,13 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 扩缩容 TiCDC
 
-如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。
+如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。例如，执行以下命令可将 TiCDC 的 replicas 值设置为 3：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}'
+```
 
 ### 查看集群水平扩缩容状态
 
