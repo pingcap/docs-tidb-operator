@@ -80,12 +80,13 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
     {{< copyable "sql" >}}
 
     ```sql
-    alter table <db_name>.<table_name> set tiflash replica 0;
+    alter table <db_name>.<table_name> set tiflash replica M;
     ```
 
-5. 等待并确认相关表的 TiFlash 副本被删除。
+    `M` 为缩容 TiFlash 后，TiFlash 集群剩余 Pod 数。
+5. 等待并确认相关表的 TiFlash 副本数更新。
 
-    连接到 TiDB 服务，执行如下命令，查不到相关表的同步信息时即为副本被删除：
+    连接到 TiDB 服务，执行如下命令，查询相关表的 TiFlash 副本数：
 
     {{< copyable "sql" >}}
 
