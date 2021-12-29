@@ -115,7 +115,7 @@ gcloud config set core/project <gcp-project>
         --cluster-secondary-range-name=pods --services-secondary-range-name=services
     ```
 
-    上述命令中，`${cluster-domain-n}` 表示第 n 个集群的 cluster domain。在后续部署 TiDB 集群时，需要配置部署的 TidbCluster 定义中的 `spec.clusterDomain`。
+    上述命令中，`${cluster_domain_n}` 表示第 n 个集群的 cluster domain。在后续部署 TiDB 集群时，需要配置部署的 TidbCluster CR 中的 `spec.clusterDomain`。
 
     我们使用 VPC 范围的 [**Cloud DNS 服务**](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns)，使得集群可以解析其他集群的 Pod 和 Service 地址。
 

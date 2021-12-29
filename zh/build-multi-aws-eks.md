@@ -7,7 +7,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 本文介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
-如果仅需要部署一个 TiDB 集群到一个 AWS EKS 集群，请参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)文档。
+如果仅需要部署 TiDB 集群到一个 AWS EKS 集群，请参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)文档。
 
 ## 环境准备
 
@@ -83,7 +83,7 @@ kubectl config get-contexts
 CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
 *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
          pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
-         pingcap@tidb-3.us-east-1.eksctl.io   tidb-2.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
+         pingcap@tidb-3.us-east-1.eksctl.io   tidb-3.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
 </code></pre>
 </details>
 
@@ -129,8 +129,8 @@ CURRENT   NAME                                 CLUSTER                      AUTH
    
    | Destination     | Target           | Status | Propagated |
    | --------------- | ---------------- | ------ | ---------- |
-   | ${cidr_block_2} | ${vpc_peering_1} | Active | No         |
-   | ${cidr_block_3} | ${vpc_peering_2} | Active | No         |
+   | ${cidr_block_2} | ${vpc_peering_id_12} | Active | No         |
+   | ${cidr_block_3} | ${vpc_peering_id_13} | Active | No         |
 
    每个路由项的 **Destination** 为另一个集群的 CIDR block，**Target** 为这两个集群的 VPC peering ID。
 
@@ -270,7 +270,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
       > **警告：**
       >
-      > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namspeace_1}`、`${namspeace_2}` 和 `${namspeace_3}` **必须** 不一样。
+      > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namspeace_1}`、`${namspeace_2}` 和 `${namspeace_3}` **必须**不一样。
 
       ```yaml
       apiVersion: v1
