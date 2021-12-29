@@ -7,9 +7,7 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
 
 本文档介绍如何将存储在[持久卷](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/)上的备份数据恢复到 Kubernetes 环境中的 TiDB 集群。本文描述的持久卷指任何 [Kubernetes 支持的持久卷类型](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。本文以从网络文件系统 (NFS) 存储恢复数据到 TiDB 为例。
 
-本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具来恢复数据。
-
-BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具来恢复数据。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
@@ -17,6 +15,8 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
 - 需要恢复的数据量较大，而且要求恢复速度较快
 - 数据格式为 SST 文件（键值对）
+
+如有其他恢复需求，参考[备份与恢复简介](backup-restore-overview.md)选择合适的恢复方式。
 
 > **注意：**
 >

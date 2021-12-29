@@ -7,9 +7,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到持久卷。
 
 本文档介绍如何将 Kubernetes 上 TiDB 集群的数据备份到[持久卷](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/)上。本文描述的持久卷，指任何 [Kubernetes 支持的持久卷类型](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。本文以备份数据到网络文件系统 (NFS) 存储为例。
 
-本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具获取集群的逻辑备份，然后再将备份数据存储到持久卷。
-
-BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具获取集群的逻辑备份，然后再将备份数据存储到持久卷。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
@@ -17,6 +15,8 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
 - 需要备份的数据量较大，而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
+
+如有其他备份需求，参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
 
 > **注意：**
 >
@@ -86,8 +86,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl apply -f backup-nfs.yaml
     ```
 
-    `backup-nfs.yaml` 文件内容如下，
-    该示例将 TiDB 集群的数据全量导出备份到 NFS：
+    `backup-nfs.yaml` 文件内容如下，该示例将 TiDB 集群的数据全量导出备份到 NFS：
 
     {{< copyable "" >}}
 
@@ -221,9 +220,9 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 从以上示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。
 
-`backupTemplate` 指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
+* `backupTemplate` 指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
 
-`backupSchedule` 独有的配置项具体介绍可参考 [BackupSchedule CR 字段介绍](backup-restore-overview.md#backupschedule-cr-字段介绍)。
+* `backupSchedule` 独有的配置项具体介绍可参考 [BackupSchedule CR 字段介绍](backup-restore-overview.md#backupschedule-cr-字段介绍)。
 
 ## 删除备份的 Backup CR
 
