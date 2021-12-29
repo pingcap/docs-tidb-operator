@@ -721,7 +721,7 @@ Check Table Before Drop: false
 
 完成测试后，你可能希望销毁 TiDB 集群和 Kubernetes 集群。
 
-#### 停止 `kubectl` 的端口转发
+### 停止 `kubectl` 的端口转发
 
 如果你仍在运行正在转发端口的 `kubectl` 进程，请终止它们：
 
@@ -806,7 +806,7 @@ minikube delete
 
 ## 探索更多
 
-如果你想在生产环境部署 ，请参考以下文档：
+如果你想在生产环境部署，请参考以下文档：
 
 在公有云上部署：
 
