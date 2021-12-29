@@ -623,11 +623,11 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 
 请注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost:3000` 访问，可以通过下面命令监听所有地址：
 
-``` bash
+```bash
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-然后通过 <http://远程服务器 IP:3000> 访问 Grafana。
+然后通过 <http://${远程服务器IP}:3000> 访问 Grafana。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
