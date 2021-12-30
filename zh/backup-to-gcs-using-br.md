@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份到 GCS 上：
+如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份到 GCS 上：
 
 - 需要备份的数据量较大，而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
@@ -31,10 +31,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 本文档假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份。下面是具体的操作过程。
 
 ### 第 1 步：准备 Ad-hoc 备份环境
-
-> **注意：**
->
-> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Backup CR 中配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段，并且可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
