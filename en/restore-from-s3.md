@@ -222,11 +222,11 @@ This section lists multiple storage access methods. Only follow the method that 
 
 2. After creating the `Restore` CR, execute the following command to check the restore status:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get rt -n test2 -owide
-```
+    ```shell
+    kubectl get rt -n test2 -owide
+    ```
 
 The example above restores data from the `spec.s3.path` path on S3-compatible storage to the `spec.to.host` TiDB cluster. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
 
