@@ -4,9 +4,9 @@ summary: Learn how to use the TidbCluster auto-scaling feature.
 aliases: ['/docs/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 ---
 
-# Enable TiDB Cluster Autoscaling in Kubernetes
+# Enable TiDB Cluster Auto-scaling in Kubernetes
 
-TiDB has implemented an auto-scaling mechanism since v5.0 based on Kubernetes. Correspondingly, you can enable the auto-scaling feature in TiDB Operator 1.2 and later versions. This document introduces how to enable and use the auto-scaling feature for a TiDB cluster in Kubernetes.
+TiDB has implemented an auto-scaling mechanism since v5.0 based on Kubernetes. Correspondingly, you can enable the auto-scaling feature in TiDB Operator v1.2 and later versions. This document introduces how to enable and use the auto-scaling feature for a TiDB cluster in Kubernetes.
 
 > **Warning:**
 >
