@@ -21,17 +21,15 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 > - BR 只支持 TiDB v3.1 及以上版本。
 > - BR 恢复的数据无法被同步到下游，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
 
-为了更好地描述恢复数据要做的操作，本文档提供如下恢复示例，假设将存储在 GCS 上指定路径 `spec.gcs.bucket` 存储桶中 `spec.gcs.prefix` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。
+本文假设将存储在 GCS 上指定路径 `spec.gcs.bucket` 存储桶中 `spec.gcs.prefix` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。
 
 ## 恢复前的准备
 
 在进行数据恢复前，你需要准备恢复环境，并拥有数据库的相关权限。
 
-### 准备恢复环境
+### 第 1 步：准备恢复环境
 
-> **注意：**
->
-> 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
+使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
@@ -45,21 +43,19 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
     参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)授权访问 GCS 远程存储。
 
-3. 创建 `restore-demo2-tidb-secret` secret 用于存放访问 TiDB 集群的 root 账号和密钥：
+3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过此步骤。
 
-    {{< copyable "shell-regular" >}}
+    1. 确保你拥有恢复数据库 `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限，用于恢复前后调整 GC 时间。
 
-    ```shell
-    kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
-    ```
+    2. 创建 `restore-demo2-tidb-secret` secret 用于存放访问 TiDB 集群的 root 账号和密钥：
 
-### 所需的数据库权限
+        {{< copyable "shell-regular" >}}
 
-使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，确保你拥有恢复数据库的以下权限：
+        ```shell
+        kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
+        ```
 
-* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，Restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
-
-## 将指定备份数据恢复到 TiDB 集群
+## 第 2 步：将指定备份数据恢复到 TiDB 集群
 
 1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
@@ -109,6 +105,7 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
     - 关于 GCS 存储相关配置，请参考 [GCS 存储字段介绍](backup-restore-overview.md#gcs-存储字段介绍)。
     - `.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+    - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
     - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
 
 2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
