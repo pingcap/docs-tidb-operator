@@ -99,7 +99,7 @@ TiDB Operator 会根据 `TidbClusterAutoScaler` CR 的配置，向 PD 发起请�
 * `spec.cluster`：需要被弹性调度的 TiDB 集群。
 
     * `name`：TiDB 集群名称。
-    * `namespace`：TiDB 集群所在的 namespace。如果没有配置 namespace，会默认设置为和 TidbClusterAutoScaler CR 相同的 namespace。
+    * `namespace`：TiDB 集群所在的命名空间。如果没有配置 `namespace`，会默认设置为和 `TidbClusterAutoScaler` CR 相同的命名空间。
 
 * `spec.tikv`：TiKV 弹性调度相关配置。
 * `spec.tikv.resources`：TiKV 弹性调度可以选择的资源配置类型。如果没有配置，会默认设置为 `spec.cluster` 对应的 TidbCluster CR 中的 `spec.tikv.requests` 资源配置。

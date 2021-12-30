@@ -60,7 +60,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}'
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}}'
 ```
 
 #### 水平缩容 TiFlash
@@ -96,10 +96,10 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
         {{< copyable "sql" >}}
 
         ```sql
-        alter table <db_name>.<table_name> set tiflash replica M;
+        alter table <db_name>.<table_name> set tiflash replica ${pod_number};
         ```
 
-        `M` 为缩容 TiFlash 后，TiFlash 集群的剩余 Pod 数。
+        `${pod_number}` 为缩容 TiFlash 后，TiFlash 集群的剩余 Pod 数。
 
 5. 等待并确认相关表的 TiFlash 副本数更新。
 
@@ -128,7 +128,7 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}'
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}}'
 ```
 
 ### 查看集群水平扩缩容状态

@@ -18,9 +18,9 @@ Horizontally scaling TiDB means that you scale TiDB out or in by adding or remov
 
 ### Horizontally scale PD, TiKV, and TiDB
 
-To scale PD, TiKV, or TiDB horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, and `spec.tidb.replicas` in the `TidbCluster` object of the cluster to a desired value. You can modify the values in the local file or using online command.
+To scale PD, TiKV, or TiDB horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, and `spec.tidb.replicas` in the `TidbCluster` object of the cluster to a desired value.
 
-1. Modify the `replicas` value of a component as needed. For example, running the following command can dynamically configure the `replicas` value of PD to 3:
+1. Modify the `replicas` value of a component as needed. For example, configure the `replicas` value of PD to 3:
 
     {{< copyable "shell-regular" >}}
 
@@ -36,7 +36,7 @@ To scale PD, TiKV, or TiDB horizontally, use kubectl to modify `spec.pd.replicas
     kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
     ```
 
-    In the `TidbCluster` file output by the command above, the values of `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` are expected to be consistent with the values you have configured.
+    If your configuration is successfully updated, in the `TidbCluster` CR output by the command above, the values of `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` are consistent with the values you have configured.
 
 3. Check whether the number of `TidbCluster` Pods has increased or decreased.
 
@@ -63,7 +63,7 @@ For example, running the following command can dynamically configure the `replic
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}'
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}}'
 ```
 
 #### Horizontally scale in TiFlash
@@ -99,10 +99,10 @@ To scale in TiFlash horizontally, perform the following steps:
         {{< copyable "sql" >}}
 
         ```sql
-        alter table <db_name>.<table_name> set tiflash replica M;
+        alter table <db_name>.<table_name> set tiflash replica ${pod_number};
         ```
 
-        `M` indicates the number of remaining Pods in the TiFlash cluster after scaling in.
+        `${pod_number}` indicates the number of remaining Pods in the TiFlash cluster after scaling in.
 
 5. Wait for the number of TiFlash replicas in the related tables to be updated.
 
@@ -135,7 +135,7 @@ For example, running the following command can configure the `replicas` value of
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}'
+kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}}'
 ```
 
 ### View the horizontal scaling status
@@ -165,7 +165,7 @@ Vertically scaling TiDB means that you scale TiDB up or down by increasing or de
 
 ### Vertically scale components
 
-This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiFlash, TiCDC.
+This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiFlash, and TiCDC.
 
 - To scale up or scale down PD, TiKV, TiDB, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to a desired value.
 
