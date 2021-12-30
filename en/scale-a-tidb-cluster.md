@@ -165,11 +165,13 @@ Vertically scaling TiDB means that you scale TiDB up or down by increasing or de
 
 ### Vertically scale components
 
-Modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to the desired values using kubectl.
+This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiFlash, TiCDC.
 
-If TiFlash is deployed in the cluster, you can scale up and down TiFlash by modifying `spec.tiflash.resources`.
+- To scale up or scale down PD, TiKV, TiDB, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to a desired value.
 
-If TiCDC is deployed in the cluster, you can scale up and down TiCDC by modifying `spec.ticdc.resources`.
+- To scale up or scale down TiFlash, modify the value of `spec.tiflash.resources`.
+
+- To scale up or scale down TiCDC, modify the value of `spec.ticdc.resources`.
 
 ### View the vertical scaling progress
 
