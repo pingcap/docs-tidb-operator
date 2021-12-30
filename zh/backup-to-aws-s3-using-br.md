@@ -49,11 +49,9 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     - 如果使用 Amazon S3 来备份集群，可以使用三种方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
     - 如果使用其他兼容 S3 的存储来备份集群，例如 Ceph、MinIO，可以使用 AccessKey 和 SecretKey 授权的方式，可参考文档[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
-3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过此步骤。
+3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过这些步骤。
 
-    1. 确保你拥有备份数据库的以下权限。
-
-        * `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
+    1. 确保你拥有备份数据库 `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限，用于备份前后调整 GC 时间。
 
     2. 创建 `backup-demo1-tidb-secret` secret 用于存放访问 TiDB 集群的用户所对应的密码。
 
@@ -396,7 +394,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 删除备份的 Backup CR
 
-备份完成后，如果要删除备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
+如果需要删除备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
 
 ## 故障诊断
 
