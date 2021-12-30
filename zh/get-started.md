@@ -21,6 +21,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 5. [升级 TiDB 集群](#第-5-步升级-tidb-集群)
 6. [销毁 TiDB 集群和 Kubernetes 集群](#第-6-步销毁-tidb-集群和-kubernetes-集群)
 
+你可以先观看下面视频（时长约 12 分钟）。该视频完整的演示了快速上手的操作流程。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/Operator+quick+start+(11+mins).mp4" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+TiDB+operator.png" width="600px" height="450px" controls="controls"></video>
+
 ## 第 1 步：创建 Kubernetes 测试集群
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
