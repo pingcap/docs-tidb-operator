@@ -217,4 +217,3 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
         version: v1.0.1
     imagePullPolicy: IfNotPresent
     ```
-
