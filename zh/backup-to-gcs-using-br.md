@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 本文介绍如何将运行在 Kubernetes 上的 TiDB 集群数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。
 
-本文使用的备份方式基于 TiDB Operator v1.1 及以上版本的 Custom Resource Definition(CRD) 实现，底层通过使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到远端 GCS。
+本文使用的备份方式基于 TiDB Operator 的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到远端 GCS。
 
 BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
@@ -18,6 +18,8 @@ BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具
 
 - 需要备份的数据量较大，而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
+
+如有其他备份需求，请参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
 
 > **注意：**
 >
