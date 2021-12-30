@@ -8,21 +8,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 本文介绍如何在已有的 TiDB 集群上部署或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性。
 
+> **注意**:
+>
+> 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，因此无需参考本文。
+
 ## 适用场景
 
-适用于需要用到 HTAP 的场景，例如：
+适用于已经有一个 TiDB 集群，需要通过部署 TiFlash 使用 TiDB HTAP 功能的场景，例如：
 
 - 在线实时分析处理的混合负载场景
 - 实时流处理场景
 - 数据中枢场景
-
-## 前置条件
-
-* 已经存在一个 TiDB 集群。
-
-> **注意**:
->
-> 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，因此无需参考本文。
 
 ## 部署 TiFlash
 
@@ -53,7 +49,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
         - resources:
             requests:
               storage: 100Gi
-        storageClassName: local-storage
+          storageClassName: local-storage
     ```
 
 3. TiFlash 支持挂载多个 PV。如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多个 `resources` 项，每个 `resources` 项可以分别配置 `storage request` 和 `storageClassName`，例如：
@@ -67,11 +63,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
         - resources:
             requests:
                 storage: 100Gi
-        storageClassName: local-storage
+          storageClassName: local-storage
         - resources:
             requests:
                 storage: 100Gi
-        storageClassName: local-storage
+          storageClassName: local-storage
     ```
 
     > **注意**:
@@ -83,17 +79,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
     ```yaml
     spec:
-    tiflash:
+      tiflash:
         config:
-        config: |
+          config: |
             [flash]
-            [flash.flash_cluster]
+              [flash.flash_cluster]
                 log = "/data0/logs/flash_cluster_manager.log"
             [logger]
-            count = 10
-            level = "information"
-            errorlog = "/data0/logs/error.log"
-            log = "/data0/logs/server.log"
+              count = 10
+              level = "information"
+              errorlog = "/data0/logs/error.log"
+              log = "/data0/logs/server.log"
     ```
 
     要获取所有可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
@@ -106,13 +102,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     > - 如果 TiFlash 版本 >= v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
     > - 如果从小于等于 v4.0.4 的 TiFlash 版本升级到大于等于 v4.0.5 TiFlash 版本，需要删除 TidbCluster CR 中 `spec.tiflash.config.config.flash.service_addr` 的配置。
 
+## 为 TiFlash 新增 PV
+
 当 TiFlash 组件部署完成后，如果要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
 
 > **警告**:
 >
 > 删除 TiFlash StatefulSet 将会导致 TiFlash 集群在删除期间不可用并影响相关业务，请谨慎选择是否要进行以下操作。
 
-1. 编辑 TidbCluster Custom Resource：
+1. 编辑 TidbCluster Custom Resource (CR)：
 
     {{< copyable "shell-regular" >}}
 
@@ -131,15 +129,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
         - resources:
             requests:
                 storage: 100Gi
-        storageClassName: local-storage
+          storageClassName: local-storage
         - resources:
             requests:
                 storage: 100Gi
-        storageClassName: local-storage
+          storageClassName: local-storage
         - resources: #新增
             requests:  #新增
                 storage: 100Gi  #新增
-        storageClassName: local-storage  #新增
+          storageClassName: local-storage  #新增
     ```
 
 3. 手动删除 TiFlash StatefulSet，等待 TiDB Operator 重新创建 TiFlash StatefulSet。

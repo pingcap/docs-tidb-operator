@@ -27,6 +27,9 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 - 部署未开启 TLS 的异构集群
 - 部署开启 TLS 的异构集群
 
+<SimpleTab>
+<div label="非 TLS">
+
 ### 部署未开启 TLS 的异构集群
 
 要部署一个异构集群，请进行以下操作：
@@ -91,6 +94,10 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     ```shell
     kubectl create -f cluster.yaml -n ${namespace}
     ```
+
+</div>
+
+<div label="TLS">
 
 ### 部署开启 TLS 的异构集群
 
@@ -167,6 +174,9 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     ```shell
     kubectl create -f cluster.yaml -n ${namespace}
     ```
+
+</div>
+</SimpleTab>
 
 ## 部署集群监控
 
