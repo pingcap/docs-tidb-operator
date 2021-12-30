@@ -6,9 +6,19 @@ category: how-to
 
 # 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
 
-本文详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`Dumpling`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
+本文档介绍如何将 Kubernetes 上 TiDB 集群的数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（即 Ad-hoc 全量备份和定时全量备份）。
 
-本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。
+本文档介绍的备份方法基于 TiDB Operator（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现，底层使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 工具获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
+
+Dumpling 是一款数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
+
+## 使用场景
+
+如果你需要将 TiDB 集群数据以 [Ad-hoc 全量备份](#ad-hoc-全量备份)或[定时全量备份](#定时全量备份)的方式备份至兼容 S3 的存储上，并且对数据备份有以下要求，可考虑本文介绍的备份方案：
+
+- 导出 SQL 或 CSV 格式的数据
+- 对单条 SQL 语句的内存进行限制
+- 导出 TiDB 的历史数据快照
 
 ## Ad-hoc 全量备份
 
@@ -16,7 +26,28 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 目前兼容 S3 的存储中，Ceph 和 Amazon S3 经测试可正常工作。下文提供了如何将 TiDB 集群的数据备份到 Ceph 和 Amazon S3 这两种存储的示例。示例假设对部署在 Kubernetes `tidb-cluster` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，以下是具体的操作过程。
 
-### Ad-hoc 全量备份环境准备
+### 前置条件
+
+使用 Dumpling 备份 TiDB 集群数据到 S3 前，确保你拥有备份数据库的以下权限：
+
+* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
+* 全局权限：`SELECT`、`RELOAD`、`LOCK TABLES`、和 `REPLICATION CLIENT`。
+
+以下是如何创建一个备份用户的示例:
+
+```sql
+CREATE USER 'backup'@'%' IDENTIFIED BY '...';
+GRANT
+  SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
+  ON *.*
+  TO 'backup'@'%';
+GRANT
+  UPDATE, SELECT
+  ON mysql.tidb
+  TO 'backup'@'%';
+```
+
+### 第 1 步：Ad-hoc 全量备份环境准备
 
 1. 执行以下命令，根据 [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml) 在 `tidb-cluster` 命名空间创建基于角色的访问控制 (RBAC) 资源。
 
@@ -38,50 +69,29 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=tidb-cluster
     ```
 
-### 数据库账户权限
-
-* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
-* 全局权限：`SELECT`、`RELOAD`、`LOCK TABLES`、和 `REPLICATION CLIENT`。
-
-以下是如何创建一个备份用户的示例:
-
-```sql
-CREATE USER 'backup'@'%' IDENTIFIED BY '...';
-GRANT
-  SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
-  ON *.*
-  TO 'backup'@'%';
-GRANT
-  UPDATE, SELECT
-  ON mysql.tidb
-  TO 'backup'@'%';
-```
-
-### 备份数据到兼容 S3 的存储
+### 第 2 步：备份数据到兼容 S3 的存储
 
 > **注意：**
 >
-> 由于 `rclone` 存在[问题](https://rclone.org/s3/#key-management-system-kms)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在本节示例中的 yaml 文件里添加如下 `spec.s3.options` 配置以保证备份成功：
+> - 由于 `rclone` 存在[问题](https://rclone.org/s3/#key-management-system-kms)，如果使用 Amazon S3 存储备份，并且 Amazon S3 开启了 `AWS-KMS` 加密，需要在本节示例中的 yaml 文件里添加如下 `spec.s3.options` 配置以保证备份成功：
 >
-> ```yaml
-> spec:
->   ...
->   s3:
->     ...
->     options:
->     - --ignore-checksum
-> ```
+>     ```yaml
+>     spec:
+>       ...
+>       s3:
+>         ...
+>         options:
+>         - --ignore-checksum
+>     ```
 
-> **注意：**
->
-> 如下所示，本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
-> 
-> - 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
-> - 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
-> - 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
-> - 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
+本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
 
-+ 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
+- 通过导入 AccessKey 和 SecretKey 备份到 Amazon S3 的方法
+- 通过导入 AccessKey 和 SecretKey 备份到 Ceph 的方法
+- 通过绑定 IAM 与 Pod 的方式备份到 Amazon S3 的方法
+- 通过绑定 IAM 与 ServiceAccount 的方式备份到 Amazon S3 的方法
+
++ 方法 1：创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -123,7 +133,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
++ 方法 2：创建 `Backup` CR，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -162,7 +172,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
++ 方法 3：创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -206,7 +216,7 @@ GRANT
       storageSize: 10Gi
     ```
 
-+ 创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
++ 方法 4：创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -283,11 +293,11 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
-### 定时全量备份环境准备
+### 第 1 步：定时全量备份环境准备
 
-同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
+同 [Ad-hoc 全量备份环境准备](#第-1-步ad-hoc-全量备份环境准备)。
 
-### 定时全量备份数据到 S3 兼容存储
+### 第 2 步：定时全量备份数据到 S3 兼容存储
 
 > **注意：**
 >
@@ -304,7 +314,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
 >       - --ignore-checksum
 > ```
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
++ 方法 1：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -351,7 +361,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
++ 方法 2：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 AccessKey 和 SecretKey 授权的方式将数据备份到 Ceph：
 
     {{< copyable "shell-regular" >}}
 
@@ -395,7 +405,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
++ 方法 3：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 Pod 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -443,7 +453,7 @@ kubectl describe bk -n tidb-cluster $backup_job_name
         storageSize: 10Gi
     ```
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
++ 方法 4：创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -516,7 +526,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 删除备份的 Backup CR
 
-删除备份的 Backup CR 可参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
+备份完成后，你可能需要删除备份的 Backup CR。删除方法可参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
 
 ## 故障诊断
 
