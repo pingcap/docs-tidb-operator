@@ -15,35 +15,45 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
-### 扩缩容 PD、TiDB、TiKV
+### 水平扩缩容 PD、TiKV、TiDB
 
-如果要对 PD、TiDB、TiKV 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值。
+如果要对 PD、TiKV、TiDB 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tikv.replicas`、`spec.tidb.replicas` 至期望值。
 
-例如，执行以下命令可将 PD 的 `replicas` 值设置为 3：
+1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 PD 的 `replicas` 值设置为 3：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pd":{"replicas":3}}}'
-```
+    ```shell
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pd":{"replicas":3}}}'
+    ```
 
-你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你期望的配置。
+2. 查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你期望的配置。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
-```
+    ```shell
+    kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
+    ```
 
-如果上述命令输出的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值和你之前更新的值一致，那么可以通过以下命令来观察 `TidbCluster` Pod 是否新增或者减少。PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
+    上述命令输出的 `TidbCluster` 中，`spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 的值预期应与你之前配置的值一致。
 
-{{< copyable "shell-regular" >}}
+3. 观察 `TidbCluster` Pod 是否新增或者减少。
 
-```shell
-watch kubectl -n ${namespace} get pod -o wide
-```
+    {{< copyable "shell-regular" >}}
 
-### 扩缩容 TiFlash
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+    PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。
+
+    TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
+
+### 水平扩缩容 TiFlash
+
+如果你部署了 TiFlash，想对 TiFlash 进行水平扩缩容，请参照本小节的步骤进行操作。
+
+#### 水平扩容 TiFlash
 
 如果要对 TiFlash 进行水平扩容，可以通过修改 `spec.tiflash.replicas` 来实现。例如，执行以下命令可将 TiFlash 的 `replicas` 值设置为 3：
 
@@ -52,6 +62,8 @@ watch kubectl -n ${namespace} get pod -o wide
 ```shell
 kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"tiflash":{"replicas":3}}'
 ```
+
+#### 水平缩容 TiFlash
 
 如果要对 TiFlash 进行水平缩容，执行以下步骤：
 
@@ -75,15 +87,19 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
 
 3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止 `port-forward`。
 
-4. 如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数大于等于所有数据表的最大副本数 N，直接进行下面第 6 步。如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数小于所有数据表的最大副本数 N，参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务，并针对所有副本数大于集群剩余 TiFlash Pod 数的表执行如下命令：
+4. 如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数大于等于所有数据表的最大副本数 N，则直接进行下面第 6 步。如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数小于所有数据表的最大副本数 N，则执行以下步骤：
 
-    {{< copyable "sql" >}}
+    1. 参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务。
 
-    ```sql
-    alter table <db_name>.<table_name> set tiflash replica M;
-    ```
+    2. 针对所有副本数大于集群剩余 TiFlash Pod 数的表执行如下命令：
 
-    `M` 为缩容 TiFlash 后，TiFlash 集群的剩余 Pod 数。
+        {{< copyable "sql" >}}
+
+        ```sql
+        alter table <db_name>.<table_name> set tiflash replica M;
+        ```
+
+        `M` 为缩容 TiFlash 后，TiFlash 集群的剩余 Pod 数。
 
 5. 等待并确认相关表的 TiFlash 副本数更新。
 
@@ -138,9 +154,9 @@ watch kubectl -n ${namespace} get pod -o wide
 
 垂直扩缩容操作指的是通过增加或减少 Pod 的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是 Pod 滚动升级的过程。
 
-### 垂直扩缩容操作
+### 垂直扩缩容各组件
 
-如果要对 PD、TiDB、TiKV 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+如果要对 PD、TiKV、TiDB 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
 
 如果集群中部署了 TiFlash，可以通过修改 `spec.tiflash.resources` 对 TiFlash 进行垂直扩缩容。
 
