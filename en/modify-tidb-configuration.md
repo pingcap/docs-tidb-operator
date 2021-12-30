@@ -1,9 +1,9 @@
 ---
-title: Modify TiDB cluster configuration
+title: Modify TiDB Cluster Configuration
 summary: Learn how to modify the configuration of TiDB clusters deployed in Kubernetes.
 ---
 
-# Modify TiDB cluster configuration
+# Modify TiDB Cluster Configuration
 
 For a TiDB cluster, you can [update the configuration of components](https://docs.pingcap.com/tidb/stable/dynamic-config/) online using SQL statements, including TiDB, TiKV, and PD, without restarting the cluster components. However, for TiDB clusters deployed in Kubernetes, after you upgrade or restart the cluster, the configurations of some components might be overwritten by the `TidbCluster` CR. This leads to invalid online configuration update.
 
@@ -11,7 +11,7 @@ This document describes how to modify the configuration of TiDB clusters deploye
 
 ## Modify configuration for TiDB, TiKV, and other components
 
-For TiDB and TiKV, if you [dynamically modify their configuration](https://docs.pingcap.com/tidb/stable/dynamic-config/) using SQL statements, after you upgrade or restart the cluster, the configurations of some components might be overwritten by the `TidbCluster` CR. This leads to invalid online configuration update. Therefore, to persist the configuration, you must directly modify their configurations in the `TidbCluster` CR.
+For TiDB and TiKV, if you [dynamically modify their configuration](https://docs.pingcap.com/tidb/stable/dynamic-config/) using SQL statements, after you upgrade or restart the cluster, the configurations will be overwritten by those in the `TidbCluster` CR. This leads to the online configuration update being invalid. Therefore, to persist the configuration, you must directly modify their configurations in the `TidbCluster` CR.
 
 For TiFlash, TiCDC, and Pump, you can only modify their configurations in the `TidbCluster` CR.
 
@@ -37,8 +37,8 @@ To modify the configuration in the `TidbCluster` CR, take the following steps:
 
 ## Modify PD configuration
 
-After PD is started for the first time, some PD configuration items are persisted in etcd. The persisted configuration in etcd takes precedence over the configuration in PD. Therefore, after the first start, you cannot modify some PD configuration by using the `TidbCluster` CR.
+After PD is started for the first time, some PD configuration items are persisted in etcd. The persisted configuration in etcd takes precedence over the configuration file in PD. Therefore, after the first start, you cannot modify some PD configuration by using the `TidbCluster` CR.
 
 Among all the PD configuration items listed in [Modify PD configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), after the first start, only `log.level` can be modified by using the `TidbCluster` CR. Other configurations cannot be modified by using CR.
 
-For TiDB clusters deployed in Kubernetes, if you need to modify the PD configuration, you  can dynamically modify the configuration using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), [pd-ctl](https://docs.pingcap.com/tidb/dev/pd-control/#config-show--set-option-value--placement-rules), or PD server API.
+For TiDB clusters deployed in Kubernetes, if you need to modify the PD configuration, you can dynamically modify the configuration using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), [pd-ctl](https://docs.pingcap.com/tidb/dev/pd-control/#config-show--set-option-value--placement-rules), or PD server API.
