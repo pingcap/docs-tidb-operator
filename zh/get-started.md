@@ -23,7 +23,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 你可以先观看下面视频（时长约 12 分钟）。该视频完整的演示了快速上手的操作流程。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/Operator+quick+start+(11+mins).mp4" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+TiDB+operator.png" width="600px" height="450px" controls="controls"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/Operator+quick+start+(11+mins).mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+TiDB+operator.png"></video>
 
 ## 第 1 步：创建 Kubernetes 测试集群
 
