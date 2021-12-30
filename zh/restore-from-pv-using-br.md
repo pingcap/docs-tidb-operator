@@ -25,10 +25,6 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
 
 ## 第 1 步：准备恢复环境
 
-> **注意：**
->
-> 如果使用 TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
-
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) 到执行恢复的服务器。
 
 2. 执行以下命令在 `test2` 这个命名空间中创建恢复所需的 RBAC 相关资源：
@@ -39,23 +35,23 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-3. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 服务的账号的密码：
+3. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器。
 
-    {{< copyable "shell-regular" >}}
+4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过此步骤。
 
-    ```shell
-    kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
-    ```
+    1. 确保你拥有待恢复数据库的以下权限：
 
-4. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器。
+        - `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，Restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
 
-## 第 2 步：获取数据库权限
+    2. 创建 `restore-demo2-tidb-secret` secret：
 
-使用 BR 从持久卷恢复 TiDB 集群数据前，确保你拥有待恢复数据库的以下权限：
+        {{< copyable "shell-regular" >}}
 
-- `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，Restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
+        ```shell
+        kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
+        ```
 
-## 第 3 步：从持久卷恢复数据
+## 第 2 步：从持久卷恢复数据
 
 1. 创建 Restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
@@ -102,6 +98,16 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
           mountPath: /nfs
     ```
 
+    在配置 `restore.yaml` 文件时，请参考以下信息：
+
+    - 以上示例中，存储在 NFS 上 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` 文件夹下的备份数据，被恢复到 `test2` 命名空间中的 TiDB 集群 `demo2`。更多持久卷存储相关配置，参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
+
+    - `.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+
+    - 如果使用 TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
+
+    - 更多 `Restore` CR 字段的详细解释，参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+
 2. 创建好 Restore CR 后，通过以下命令查看恢复的状态：
 
     {{< copyable "shell-regular" >}}
@@ -109,12 +115,6 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
     ```shell
     kubectl get rt -n test2 -owide
     ```
-
-以上示例将存储在 NFS 上指定路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` 文件夹下的备份数据恢复到 `test2` 命名空间中的 TiDB 集群 `demo2`。更多持久卷存储相关配置，参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
-
-以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
-
-更多 `Restore` CR 字段的详细解释，参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
 
 ## 故障诊断
 

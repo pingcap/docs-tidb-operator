@@ -23,23 +23,13 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到持久卷。
 > - BR 只支持 TiDB v3.1 及以上版本。
 > - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
 
-## 前置条件
-
-使用 BR 备份 TiDB 集群数据到持久卷前，确保你拥有备份数据库的以下权限：
-
-* `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
-
-## 场景 1：Ad-hoc 备份
+## Ad-hoc 备份
 
 Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
-为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个命名空间中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
+本文档假设对部署在 Kubernetes `test1` 这个命名空间中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
 ### 第 1 步：准备 Ad-hoc 全量备份环境
-
-> **注意：**
->
-> 如果 TiDB 集群版本 >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Backup CR 中配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。此外，还可以省略以下创建 `backup-demo1-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
 
@@ -51,15 +41,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-3. 创建 `backup-demo1-tidb-secret` secret，该 secret 存放用于访问 TiDB 集群的账号的密码。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
-    ```
-
-4. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器，并且你已经配置了 TiKV 挂载跟备份任务相同的 NFS 共享目录到相同的本地目录。TiKV 挂载 NFS 的具体配置方法可以参考如下配置：
+3. 确认可以从 Kubernetes 集群中访问用于存储备份数据的 NFS 服务器，并且你已经配置了 TiKV 挂载跟备份任务相同的 NFS 共享目录到相同的本地目录。TiKV 挂载 NFS 的具体配置方法可以参考如下配置：
 
     ```yaml
     spec:
@@ -75,6 +57,20 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         - name: nfs
           mountPath: /nfs
     ```
+
+4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过此步骤。
+
+    1. 确保你拥有备份数据库的以下权限。
+
+        * `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：备份前后，Backup CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间。
+
+    2. 创建 `backup-demo1-tidb-secret` secret 用于存放访问 TiDB 集群的用户所对应的密码。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
+        ```
 
 ### 第 2 步：备份数据到持久卷
 
@@ -127,13 +123,17 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
           mountPath: /nfs
     ```
 
-    以上示例中，`.spec.local` 表示持久卷相关配置，详细解释参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
+    在配置 `backup-nfs.yaml` 文件时，请参考以下信息：
 
-    以上示例中，`spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+    - `.spec.local` 表示持久卷相关配置，详细解释参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
 
-    如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+    - `spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
 
-    更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
+    - 如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+
+    - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
+
+    - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
 
 2. 创建好 `Backup` CR 后，可通过以下命令查看备份状态：
 
@@ -143,7 +143,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl get bk -n test1 -owide
     ```
 
-## 场景 2：定时全量备份
+## 定时全量备份
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
 
