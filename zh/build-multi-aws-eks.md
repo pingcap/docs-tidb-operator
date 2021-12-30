@@ -31,11 +31,11 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 ## 启动 Kubernetes 集群
 
-定义三个 EKS 集群的配置文件分别为 `cluster-1.yaml`、`cluster-2.yaml` 和 `cluster-3.yaml`，并使用 `eksctl` 命令创建三个 EKS 集群。
+定义三个 EKS 集群的配置文件分别为 `cluster_1.yaml`、`cluster_2.yaml` 和 `cluster_3.yaml`，并使用 `eksctl` 命令创建三个 EKS 集群。
 
 1. 定义集群 1 的配置文件，并创建集群 1 。
    
-   将如下配置保存为 `cluster-1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
+   将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
 
    ```yaml
    apiVersion: eksctl.io/v1alpha5
@@ -58,7 +58,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
    {{< copyable "shell-regular" >}}
 
    ```bash
-   eksctl create cluster -f cluster-1.yaml
+   eksctl create cluster -f cluster_1.yaml
    ```
 
    该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~20 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
@@ -123,10 +123,10 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 4. 按照[更新路由表文档](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html)，更新三个集群的路由表。
 
-   你需要更新集群使用的所有 Subnet 的路由表。每个路由表需要添加两个路由项，以集群 1 为例：
+   你需要更新集群使用的所有 Subnet 的路由表。每个路由表需要添加两个路由项，以集群 1 的某个路由表为例：
    
-   | Destination     | Target           | Status | Propagated |
-   | --------------- | ---------------- | ------ | ---------- |
+   | Destination     | Target               | Status | Propagated |
+   | --------------- | -------------------- | ------ | ---------- |
    | ${cidr_block_2} | ${vpc_peering_id_12} | Active | No         |
    | ${cidr_block_3} | ${vpc_peering_id_13} | Active | No         |
 
@@ -146,8 +146,6 @@ CURRENT   NAME                                 CLUSTER                      AUTH
       | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
 
 2. 按照步骤 1 更新集群 2 与集群 3 的安全组。
-
-到这里，我们已经打通了三个集群之间的网络，可以尝试在各个集群中部署 Pod 并相互 ping 来验证网络是否成功互通。
 
 ### 配置负载均衡器
 
@@ -302,6 +300,75 @@ CURRENT   NAME                                 CLUSTER                      AUTH
    对于每个集群的 CoreDNS 配置，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
 
 后文中，使用 `${namspeace_1}`、`${namspeace_2}` 与 `${namspeace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
+
+## 验证网络连通性
+
+在部署 TiDB 集群之前，我们需要先验证一下多个集群之间的网络连通性。
+
+1. 集群 1 与集群 2 的网络连通性为例。
+   
+   1. 在集群 1 中部署 busybox。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_1} apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/hack/testdata/recursive/pod/pod/busybox.yaml
+      ```
+   
+   2. 在集群 2 中 `${namspeace_2}` 命名空间下部署 nginx。
+
+      将下面文件保存到 `sample-nginx.yaml` 文件。
+
+      ```yaml
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: sample-nginx
+        labels:
+          app: sample-nginx
+      spec:
+        hostname: sample-nginx
+        subdomain: sample-nginx-peer
+        containers:
+        - image: public.ecr.aws/nginx/nginx:1.19
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          ports:
+            - name: http
+              containerPort: 80
+        restartPolicy: Always
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: sample-nginx-peer
+      spec:
+        ports:
+          - port: 80
+        selector:
+          app: sample-nginx
+        clusterIP: None
+      ```
+
+      执行下面命令部署 nginx 服务。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
+      ```
+   
+   3. 通过集群 1 的 busybox 访问集群 2 的 nginx 服务，来测试集群 1 到集群 2 的网络是否连通。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_1} exec busybox1 -- wget -q -O - http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+      ```
+
+   4. 按照上述步骤，测试集群 2 到集群 1 的网络是否连通。
+
+5. 按照步骤 1，测试集群 1 与集群 3，集群 2 与集群 3 之间的网络是否连通。
 
 ## 部署 TiDB Operator
 

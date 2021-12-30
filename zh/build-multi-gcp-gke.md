@@ -148,7 +148,7 @@ gcloud config set core/project <gcp-project>
     CURRENT   NAME                          CLUSTER                       AUTHINFO                            NAMESPACE
     *         gke_pingcap_us-west1_tidb-1   gke_pingcap_us-west1_tidb-1   gke_pingcap_us-west1_tidb-1
               gke_pingcap_us-west2_tidb-2   gke_pingcap_us-west2_tidb-2   gke_pingcap_us-west2_tidb-2
-              gke_pingcap_us-west3_tidb-3   gke_pingcap_us-west3_tidb-2   gke_pingcap_us-west3_tidb-3
+              gke_pingcap_us-west3_tidb-3   gke_pingcap_us-west3_tidb-3   gke_pingcap_us-west3_tidb-3
     ```
 
     后文中，使用 `${context_1}`、`${context_2}` 与 `${context_3}` 分别代表各个集群的 context。
@@ -189,6 +189,75 @@ gcloud config set core/project <gcp-project>
         ```
 
 2. 按照步骤 1，更新集群 2 与集群 3 的防火墙规则。
+
+## 验证网络连通性
+
+在部署 TiDB 集群之前，我们需要先验证一下各个集群之间网络是否正常连通。
+
+1. 集群 1 与集群 2 的网络连通性为例。
+   
+   1. 在集群 1 中部署 busybox。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_1} apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/hack/testdata/recursive/pod/pod/busybox.yaml
+      ```
+   
+   2. 在集群 2 中部署 nginx。
+
+      将下面文件保存到 `sample-nginx.yaml` 文件。
+
+      ```yaml
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: sample-nginx
+        labels:
+          app: sample-nginx
+      spec:
+        hostname: sample-nginx
+        subdomain: sample-nginx-peer
+        containers:
+        - image: public.ecr.aws/nginx/nginx:1.19
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          ports:
+            - name: http
+              containerPort: 80
+        restartPolicy: Always
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: sample-nginx-peer
+      spec:
+        ports:
+          - port: 80
+        selector:
+          app: sample-nginx
+        clusterIP: None
+      ```
+
+      执行下面命令部署 nginx 服务。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
+      ```
+   
+   3. 通过集群 1 的 busybox 访问集群 2 的 nginx 服务，来测试集群 1 到集群 2 的网络是否连通。
+
+      {{< copyable "shell-regular" >}}
+
+      ```bash
+      kubectl --context ${context_1} exec busybox1 -- wget -q -O - http://sample-nginx.sample-nginx-peer.default.svc.${cluster.local}:80
+      ```
+
+   4. 按照上述步骤，测试集群 2 到集群 1 的网络是否连通。
+
+2. 按照步骤 1，测试集群 1 与集群 3，集群 2 与集群 3 之间的网络是否连通。
 
 ## 部署 TiDB Operator
 
