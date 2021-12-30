@@ -512,7 +512,7 @@ See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to s
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
+To upgrade the TiDB cluster, executing command `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
 
 The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 

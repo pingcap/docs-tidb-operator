@@ -23,7 +23,7 @@ Modify `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` in the
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
     ```
 
 Check whether the TiDB cluster in Kubernetes has updated to your desired definition by running the following command:

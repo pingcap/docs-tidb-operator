@@ -21,7 +21,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
 ```
 
 你可以通过以下指令查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你的期望定义。

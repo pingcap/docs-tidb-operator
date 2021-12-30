@@ -188,7 +188,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值进行水平扩容。
 
 ``` shell
-kubectl -n demo edit tc basic
+kubectl -n demo patch tc basic --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
 ```
 
 ## 访问 Grafana 面板

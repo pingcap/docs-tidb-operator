@@ -312,10 +312,8 @@ To address this issue, delete `finalizers` by running the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit backup ${name} -n ${namespace}
+kubectl patch -n ${namespace} backup ${name} --type merge -p '{"metadata":{"finalizers":[]}}'
 ```
-
-After deleting the `metadata.finalizers` configuration, you can delete the CR normally.
 
 ### Clean backup data
 
