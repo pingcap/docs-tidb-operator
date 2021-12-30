@@ -9,7 +9,7 @@ This document describes how to back up the data of the TiDB cluster in Kubernete
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. For the underlying implementation, [Dumpling](https://docs.pingcap.com/tidb/dev/export-or-backup-using-dumpling) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the S3-compatible storage.
 
-Dumpling is a data export tool that exports stored in TiDB/MySQL as SQL or CSV data files and can be used to make a logical full backup or export.
+Dumpling is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV files and can be used to make a logical full backup or export.
 
 ## User scenarios
 
