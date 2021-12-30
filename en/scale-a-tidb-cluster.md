@@ -58,7 +58,7 @@ This section describes how to horizontally scale out or scale in TiFlash if you 
 
 To scale out TiFlash horizontally, you can modify `spec.tiflash.replicas`.
 
-For example, running the following command can dynamically configure the `replicas` value of TiFlash to 3:
+For example, configure the `replicas` value of TiFlash to 3:
 
 {{< copyable "shell-regular" >}}
 
@@ -130,7 +130,7 @@ To scale in TiFlash horizontally, perform the following steps:
 
 If TiCDC is deployed in the cluster, you can horizontally scale out or scale in TiCDC by modifying the value of `spec.ticdc.replicas`.
 
-For example, running the following command can configure the `replicas` value of TiCDC to 3:
+For example, configure the `replicas` value of TiCDC to 3:
 
 {{< copyable "shell-regular" >}}
 
