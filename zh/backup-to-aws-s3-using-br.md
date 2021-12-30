@@ -48,7 +48,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     - 如果使用 Amazon S3 来备份集群，可以使用三种方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
     - 如果使用其他兼容 S3 的存储来备份集群，例如 Ceph、MinIO，可以使用 AccessKey 和 SecretKey 授权的方式，可参考文档[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
 
-3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过这些步骤。
+3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
     1. 确保你拥有备份数据库 `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限，用于备份前后调整 GC 时间。
 
@@ -62,7 +62,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ### 第 2 步：备份数据到兼容 S3 的存储
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到 Amazon S3 存储上。
+根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到 Amazon S3 存储上：
 
 + 方法 1：创建 `Backup` CR，通过 accessKey 和 secretKey 授权的方式备份集群:
 
