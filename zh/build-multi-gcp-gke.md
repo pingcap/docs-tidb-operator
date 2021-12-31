@@ -27,7 +27,7 @@ gcloud config set core/project <gcp-project>
 
 使用以上命令，设置好你的 GCP 项目。
 
-## 创建网络
+## 第 1 步：创建网络
 
 1. 创建一个自定义子网的 VPC 网络。
 
@@ -73,7 +73,7 @@ gcloud config set core/project <gcp-project>
   
     参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中的指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD 块，我们将会在后面使用到。
 
-## 启动 Kubernetes 集群
+## 第 2 步：启动 Kubernetes 集群
 
 创建三个 GKE 集群，每个集群使用上述创建的子网。
 
@@ -257,13 +257,13 @@ gcloud config set core/project <gcp-project>
 
    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
 
-## 部署 TiDB Operator
+## 第 3 步：部署 TiDB Operator
 
 每个集群的 TidbCluster 定义由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
 每个集群的部署步骤参考文档[**在 Kubernetes 上部署 TiDB Operator**](deploy-tidb-operator.md)。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 操作各个集群。
 
-## 部署 TiDB 集群
+## 第 4 步：部署 TiDB 集群
 
 参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义。需要注意的是：
 
@@ -280,6 +280,6 @@ spec:
   clusterDomain: "${cluster_domain_1}"
 ```
 
-## 接下来
+## 探索更多
 
 * 阅读文档 [**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md) 了解如何管理跨 Kubernetes 集群的 TiDB 集群。

@@ -23,11 +23,9 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     - 安装并配置创建 Kubernetes 集群的命令行工具 eksctl
     - 安装 Kubernetes 命令行工具 kubectl
 
-要验证 AWS CLI 的配置是否正确，请运行 `aws configure list` 命令。如果此命令的输出显示了 `access_key` 和 `secret_key` 的值，则 AWS CLI 的配置是正确的。否则，你需要重新配置 AWS CLI。
+- AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
-> **注意：**
->
-> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+要验证 AWS CLI 的配置是否正确，请运行 `aws configure list` 命令。如果此命令的输出显示了 `access_key` 和 `secret_key` 的值，则 AWS CLI 的配置是正确的。否则，你需要重新配置 AWS CLI。
 
 ## 第 1 步：启动 Kubernetes 集群
 
@@ -35,37 +33,37 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 1. 定义集群 1 的配置文件，并创建集群 1 。
    
-   将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
+    将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`$ {cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
 
-   ```yaml
-   apiVersion: eksctl.io/v1alpha5
-   kind: ClusterConfig
+    ```yaml
+    apiVersion: eksctl.io/v1alpha5
+    kind: ClusterConfig
 
-   metadata:
-     name: ${cluster_1}
-     region: ${region_1}
+    metadata:
+      name: ${cluster_1}
+      region: ${region_1}
+    
+    # nodeGroups ...
+    
+    vpc:
+      cidr: ${cidr_block_1}
+    ```
 
-   # nodeGroups ...
+    节点池 `nodeGroups` 字段的配置可以参考 [创建 EKS 集群和节点池](deploy-on-aws-eks.md#创建-eks-集群和节点池) 一节。
 
-   vpc:
-     cidr: ${cidr_block_1}
-   ```
+    执行以下命令创建集群 1 ：
 
-   节点池 `nodeGroups` 字段的配置可以参考 [创建 EKS 集群和节点池](deploy-on-aws-eks.md#创建-eks-集群和节点池) 一节。
+    {{< copyable "shell-regular" >}}
 
-   执行以下命令创建集群 1 ：
+    ```bash
+    eksctl create cluster -f cluster_1.yaml
+    ```
 
-   {{< copyable "shell-regular" >}}
-
-   ```bash
-   eksctl create cluster -f cluster_1.yaml
-   ```
-
-   该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~20 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
+    该命令需要等待 EKS 集群创建完成，以及节点组创建完成并加入进去，耗时约 5~20 分钟。可参考 [eksctl 文档](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files)了解更多集群配置选项。
 
 2. 以集群 1 的配置文件为例，定义集群 2 与集群 3 的配置文件，并通过 `eksctl` 命令创建集群 2 与集群 3 。
    
-   需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
+    需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
 
 后文中，我们使用 `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，使用 `${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，使用 `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
@@ -77,17 +75,17 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     kubectl config get-contexts
     ```
 
-<details>
-<summary>点击查看输出，其中的 `NAME` 项就是我们需要使用的 context 。</summary>
-<pre><code>
-CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
-*         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
-         pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
-         pingcap@tidb-3.us-east-1.eksctl.io   tidb-3.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
-</code></pre>
-</details>
+    <details>
+    <summary>点击查看输出，其中的 `NAME` 项就是我们需要使用的 context 。</summary>
+    <pre><code>
+    CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
+    *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
+             pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
+             pingcap@tidb-3.us-east-1.eksctl.io   tidb-3.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
+    </code></pre>
+    </details>
 
-后文中，我们使用 `${context_1}`、`${context_2}` 与 `${context_3}` 分别代表各个集群的 context。
+    后文中，我们使用 `${context_1}`、`${context_2}` 与 `${context_3}` 分别代表各个集群的 context。
 
 ## 第 2 步：配置网络
 
@@ -103,47 +101,47 @@ CURRENT   NAME                                 CLUSTER                      AUTH
     eksctl get cluster ${cluster_1} --region ${region_1}
     ```
 
-   <details>
-   <summary>点击查看示例输出，其中 `VPC` 项就是该集群所在 VPC 的 ID。</summary>
-   <pre><code>
-   NAME          VERSION STATUS  CREATED                 VPC                      SUBNETS                                                                                                                  SECURITYGROUPS
-   tidb-1        1.20    ACTIVE  2021-11-22T06:40:20Z    vpc-0b15ed35c02af5288   subnet-058777d55881c4095,subnet-06def2041b6fa3fa0,subnet-0869c7e73e09c3174,subnet-099d10845f6cbaf82,subnet-0a1a58db5cb087fed,subnet-0f68b302678c4d36b     sg-0cb299e7ec153c595
-   </code></pre>
-   </details>
+    <details>
+    <summary>点击查看示例输出，其中 `VPC` 项就是该集群所在 VPC 的 ID。</summary>
+    <pre><code>
+    NAME          VERSION STATUS  CREATED                 VPC                       SUBNETS                                                                                                                   SECURITYGROUPS
+    tidb-1        1.20    ACTIVE  2021-11-22T06:40:20Z    vpc-0b15ed35c02af5288   subnet-058777d55881c4095, subnet-06def2041b6fa3fa0,subnet-0869c7e73e09c3174,subnet-099d10845f6cbaf82,subnet-0a1a58db5cb087fed, subnet-0f68b302678c4d36b     sg-0cb299e7ec153c595
+    </code></pre>
+    </details>
 
-   后文中，我们使用 `${vpc_id_1}`、`${vpc_id_2}` 与 `${vpc_id_3}` 分别代表各个集群所在的 VPC 的 ID。
+    后文中，我们使用 `${vpc_id_1}`、`${vpc_id_2}` 与 `${vpc_id_3}` 分别代表各个集群所在的 VPC 的 ID。
 
 2. 构建集群 1 与集群 2 的 VPC peering。
 
-   1. 按照 [AWS VPC peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local)创建 VPC peering。`${vpc_id_1}` 作为 requester VPC，`${vpc_id_2}` 作为 accepter VPC 。
+    1. 按照 [AWS VPC peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local)创建 VPC peering。`${vpc_id_1}` 作为 requester VPC，`${vpc_id_2}` 作为 accepter VPC 。
 
-   2. 按照 [AWS VPC Peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection)完成 VPC peering 的构建。
+    2. 按照 [AWS VPC Peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection)完成 VPC peering 的构建。
 
 3. 以步骤 2 为例，构建集群 1 与集群 3，以及集群 2 与集群 3 的 VPC peering。
 
 4. 按照[更新路由表文档](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html)，更新三个集群的路由表。
 
-   你需要更新集群使用的所有 Subnet 的路由表。每个路由表需要添加两个路由项，以集群 1 的某个路由表为例：
+    你需要更新集群使用的所有 Subnet 的路由表。每个路由表需要添加两个路由项，以集群 1 的某个路由表为例：
    
-   | Destination     | Target               | Status | Propagated |
-   | --------------- | -------------------- | ------ | ---------- |
-   | ${cidr_block_2} | ${vpc_peering_id_12} | Active | No         |
-   | ${cidr_block_3} | ${vpc_peering_id_13} | Active | No         |
+    | Destination     | Target               | Status | Propagated |
+    | --------------- | -------------------- | ------ | ---------- |
+    | ${cidr_block_2} | ${vpc_peering_id_12} | Active | No         |
+    | ${cidr_block_3} | ${vpc_peering_id_13} | Active | No         |
 
-   每个路由项的 **Destination** 为另一个集群的 CIDR block，**Target** 为这两个集群的 VPC peering ID。
+    每个路由项的 **Destination** 为另一个集群的 CIDR block，**Target** 为这两个集群的 VPC peering ID。
 
 ### 更新实例的安全组
 
 1. 更新集群 1 的安全组
    
-   1. 进入 [**AWS Security Groups 控制台**](https://us-west-2.console.aws.amazon.com/ec2/v2/home#SecurityGroups)，找到集群 1 的安全组，其安全组命名类似于 `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
+    1. 进入 [**AWS Security Groups 控制台**](https://us-west-2.console.aws.amazon.com/ec2/v2/home#SecurityGroups)，找到集群 1 的安全组，其安全组命名类似于 `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
 
-   2. 添加 Inbound rules 到安全组，以允许来自集群 2 和集群 3 的流量：
+    2. 添加 Inbound rules 到安全组，以允许来自集群 2 和集群 3 的流量：
 
-      | Type        | Protocol | Port range | Source                 | Descrption                                    |
-      | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
-      | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
-      | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
+        | Type        | Protocol | Port range | Source                 | Descrption                                    |
+        | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
+        | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
 
 2. 按照步骤 1 更新集群 2 与集群 3 的安全组。
 
@@ -153,90 +151,91 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 1. 创建 Load Balancer Service 定义文件 `dns-lb.yaml`，其文件内容如下：
    
-   ```yaml
-   apiVersion: v1
-   kind: Service
-   metadata:
-     labels:
-       k8s-app: kube-dns
-     name: across-cluster-dns-tcp
-     namespace: kube-system
-     annotations:
-       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
-       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
-   spec:
-     ports:
-     - name: dns
-       port: 53
-       protocol: TCP
-       targetPort: 53
-     selector:
-       k8s-app: kube-dns
-     type: LoadBalancer
-   ```
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        k8s-app: kube-dns
+      name: across-cluster-dns-tcp
+      namespace: kube-system
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+        service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+        service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    spec:
+      ports:
+      - name: dns
+        port: 53
+        protocol: TCP
+        targetPort: 53
+      selector:
+        k8s-app: kube-dns
+      type: LoadBalancer
+    ```
 
 2. 在每个集群中部署 Load Balancer Service。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```bash
-   kubectl --context ${context_1} apply -f dns-lb.yaml
-
-   kubectl --context ${context_2} apply -f dns-lb.yaml
-
-   kubectl --context ${context_3} apply -f dns-lb.yaml
-   ```
+    ```bash
+    kubectl --context ${context_1} apply -f dns-lb.yaml
+    
+    kubectl --context ${context_2} apply -f dns-lb.yaml
+    
+    kubectl --context ${context_3} apply -f dns-lb.yaml
+    ```
 
 3. 获取各集群的 Load Balancer 的名字，并等待所有集群的 Load Balancer 变为 `Active` 状态。
 
-   使用以下命令来查询三个集群的 Load Balancer 的名字。
+    使用以下命令来查询三个集群的 Load Balancer 的名字。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
    
-   ```bash
-   lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
+    ```bash
+    lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    
+    lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    
+    lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    ```
 
-   lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
+    执行以下命名来查看三个集群的 Load Balancer 的状态，所有的命令输出结果都为 "active" 时，表明 Load Balancer 为 `Active` 状态。
 
-   lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
-   ```
+    {{< copyable "shell-regular" >}}
 
-   执行以下命名来查看三个集群的 Load Balancer 的状态，所有的命令输出结果都为 "active" 时，表明 Load Balancer 为 `Active` 状态。
+    ```bash
+    aws elbv2 describe-load-balancers --names ${lb_name_1} --region ${region_1} --query 'LoadBalancers[*].State' --output text
+    
+    aws elbv2 describe-load-balancers --names ${lb_name_2} --region ${region_2} --query 'LoadBalancers[*].State' --output text
+    
+    aws elbv2 describe-load-balancers --names ${lb_name_3} --region ${region_3} --query 'LoadBalancers[*].State' --output text
+    ```
 
-   {{< copyable "shell-regular" >}}
-
-   ```bash
-   aws elbv2 describe-load-balancers --names ${lb_name_1} --region ${region_1} --query 'LoadBalancers[*].State' --output text
-
-   aws elbv2 describe-load-balancers --names ${lb_name_2} --region ${region_2} --query 'LoadBalancers[*].State' --output text
-
-   aws elbv2 describe-load-balancers --names ${lb_name_3} --region ${region_3} --query 'LoadBalancers[*].State' --output text
-   ```
-
-   <details>
-   <summary>点击查看期望输出</summary>
-   <pre><code>active
-   active
-   active</code></pre>
-   </details>
+    <details>
+    <summary>点击查看期望输出</summary>
+    <pre><code>
+    active
+    active
+    active</code></pre>
+    </details>
 
 4. 查询各集群的 Load Balancer 关联的 IP 地址。
 
-   以集群 1 为例，执行下面命令查询集群 1 的 Load Balancer 关联的所有 IP 地址。
+    以集群 1 为例，执行下面命令查询集群 1 的 Load Balancer 关联的所有 IP 地址。
 
-   ```bash
-   aws ec2 describe-network-interfaces --region ${region_1} --filters Name=description,Values="ELB net/${lb_name_1}*" --query 'NetworkInterfaces[*].PrivateIpAddress' --output text
-   ```
+    ```bash
+    aws ec2 describe-network-interfaces --region ${region_1} --filters Name=description,Values="ELB net/${lb_name_1}*" --query  'NetworkInterfaces[*].PrivateIpAddress' --output text
+    ```
 
-   <details>
-   <summary>点击查看期望输出</summary>
-   <pre><code>10.1.175.233 10.1.144.196</code></pre>
-   </details>
+    <details>
+    <summary>点击查看期望输出</summary>
+    <pre><code>10.1.175.233 10.1.144.196</code></pre>
+    </details>
 
-   后文中，我们将各集群的 Load Balancer 关联 IP 地址称为 `${lb_ip_list_1}`、`${lb_ip_list_2}` 与 `${lb_ip_list_3}`。
+    后文中，我们将各集群的 Load Balancer 关联 IP 地址称为 `${lb_ip_list_1}`、`${lb_ip_list_2}` 与 `${lb_ip_list_3}`。
    
-   不同 Region 的 Load Balancer 可能有着不同数量的 IP 地址。例如上述示例中，`${lb_ip_list_1}` 就是 `10.1.175.233 10.1.144.196` 。
+    不同 Region 的 Load Balancer 可能有着不同数量的 IP 地址。例如上述示例中，`${lb_ip_list_1}` 就是 `10.1.175.233 10.1.144.196` 。
 
 ### 配置 CoreDNS
 
@@ -246,58 +245,58 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 1. 修改集群 1 的 CoreDNS 配置
 
-   1. 备份当前的 CoreDNS 配置
+    1. 备份当前的 CoreDNS 配置
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```bash
-      kubectl --context ${context_1} -n kube-system get configmap coredns -o yaml > ${cluster_1}-coredns.yaml.bk
-      ```
+        ```bash
+        kubectl --context ${context_1} -n kube-system get configmap coredns -o yaml > ${cluster_1}-coredns.yaml.bk
+        ```
 
-   2. 修改 ConfigMap
+    2. 修改 ConfigMap
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```bash
-      kubectl --context ${context_1} -n kube-system edit configmap coredns
-      ```
+        ```bash
+        kubectl --context ${context_1} -n kube-system edit configmap coredns
+        ```
 
-      修改 `data.Corefile` 字段如下，其中 `${namspeace_2}` 和 `${namspeace_3}` 分别为集群 2 和集群 3 将要部署的 TidbCluster 所在的 namespace。
+        修改 `data.Corefile` 字段如下，其中 `${namspeace_2}` 和 `${namspeace_3}` 分别为集群 2 和集群 3 将要部署的 TidbCluster 所在 的  namespace。
 
-      > **警告：**
-      >
-      > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namspeace_1}`、`${namspeace_2}` 和 `${namspeace_3}` **必须**不一样。
+        > **警告：**
+        >
+        > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namspeace_1}`、 `$ {namspeace_2}` 和 `${namspeace_3}` **必须**不一样。
 
-      ```yaml
-      apiVersion: v1
-      kind: ConfigMap
-      # ...
-      data:
-        Corefile: |
-           .:53 {
-              # ... 默认配置不修改
-           }
-           ${namspeace_2}.svc.cluster.local:53 {
-               errors
-               cache 30
-               forward . ${lb_ip_list_2} {
-                   force_tcp
-               }
-           }  
-           ${namspeace_3}.svc.cluster.local:53 {
-               errors
-               cache 30
-               forward . ${lb_ip_list_3} {
-                   force_tcp
-               }
-           }
-      ```
-   
-   3. 等待 CoreDNS 重新加载配置，大约需要 30s 左右。
+        ```yaml
+        apiVersion: v1
+        kind: ConfigMap
+        # ...
+        data:
+          Corefile: |
+             .:53 {
+                # ... 默认配置不修改
+             }
+             ${namspeace_2}.svc.cluster.local:53 {
+                 errors
+                 cache 30
+                 forward . ${lb_ip_list_2} {
+                     force_tcp
+                 }
+             }  
+             ${namspeace_3}.svc.cluster.local:53 {
+                 errors
+                 cache 30
+                 forward . ${lb_ip_list_3} {
+                     force_tcp
+                 }
+             }
+        ```
+
+    3. 等待 CoreDNS 重新加载配置，大约需要 30s 左右。
 
 2. 以步骤 1 为例，修改集群 2 和集群 3 的 CoreDNS 配置。
 
-   对于每个集群的 CoreDNS 配置，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
+    对于每个集群的 CoreDNS 配置，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
 
 后文中，使用 `${namspeace_1}`、`${namspeace_2}` 与 `${namspeace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
 
@@ -307,66 +306,66 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 1. 将下面定义保存到 `sample-nginx.yaml` 文件。
 
-   ```yaml
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: sample-nginx
-     labels:
-       app: sample-nginx
-   spec:
-     hostname: sample-nginx
-     subdomain: sample-nginx-peer
-     containers:
-     - image: k8s.gcr.io/nginx-slim:0.8
-       imagePullPolicy: IfNotPresent
-       name: nginx
-       ports:
-         - name: http
-           containerPort: 80
-     - image: busybox
-       imagePullPolicy: IfNotPresent
-       name: busybox
-       command:
-       - sleep
-       - "36000"
-     restartPolicy: Always
-   ---
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: sample-nginx-peer
-   spec:
-     ports:
-       - port: 80
-     selector:
-       app: sample-nginx
-     clusterIP: None 
-   ```
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: sample-nginx
+      labels:
+        app: sample-nginx
+    spec:
+      hostname: sample-nginx
+      subdomain: sample-nginx-peer
+      containers:
+      - image: k8s.gcr.io/nginx-slim:0.8
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        ports:
+          - name: http
+            containerPort: 80
+      - image: busybox
+        imagePullPolicy: IfNotPresent
+        name: busybox
+        command:
+        - sleep
+        - "36000"
+      restartPolicy: Always
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: sample-nginx-peer
+    spec:
+      ports:
+        - port: 80
+      selector:
+        app: sample-nginx
+      clusterIP: None 
+    ```
 
 2. 在三个集群对应的命名空间下部署 nginx 服务。
    
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```bash
-   kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
-
-   kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
-
-   kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
-   ```
+    ```bash
+    kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
+    
+    kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
+    
+    kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
+    ```
 
 3. 通过访问其他集群的 nginx 服务，来验证网络是否连通。
    
-   以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
+    以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```bash
-   kubectl --context ${context_1} exec sample-nginx -c busybox -- wget -q -O - http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
-   ```
+    ```bash
+    kubectl --context ${context_1} exec sample-nginx -c busybox -- wget -q -O - http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+    ```
 
-   如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
+    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
 
 ## 第 3 步：部署 TiDB Operator
 
