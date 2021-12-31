@@ -5,7 +5,7 @@ summary: 介绍如何使用 BR 恢复 Amazon S3 兼容存储上的备份数据�
 
 # 使用 BR 恢复 S3 兼容存储上的备份数据
 
-本文介绍如何将 S3 兼容存储上的 SST 备份数据恢复到 AWS Kubernetes 环境中的 TiDB 集群，
+本文介绍如何将 S3 兼容存储上的 SST 备份数据恢复到 AWS Kubernetes 环境中的 TiDB 集群。
 
 本文使用的恢复方式基于 TiDB Operator 的 Custom Resource Definition (CRD) 实现，底层使用 [BR](https://pingcap.com/docs-cn/stable/br/backup-and-restore-tool/) 进行数据恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
