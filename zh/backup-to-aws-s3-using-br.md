@@ -225,7 +225,7 @@ kubectl get bk -n test1 -o wide
 
 ### 第 2 步：定时备份数据到兼容 S3 的存储
 
-你可以通过以下三种授权方法定时备份数据到 Amazon S3 存储上。
+依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Amazon S3 存储上：
 
 + 方法 1：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份，通过 accessKey 和 secretKey 授权的方式备份集群：
 
