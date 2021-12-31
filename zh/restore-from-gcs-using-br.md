@@ -21,13 +21,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 本文假设将存储在 GCS 上指定路径 `spec.gcs.bucket` 存储桶中 `spec.gcs.prefix` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。
 
-## 恢复前的准备
+## 第 1 步：准备恢复环境
 
-在进行数据恢复前，你需要准备恢复环境，并拥有数据库的相关权限。
-
-### 第 1 步：准备恢复环境
-
-使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
+使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，你需要准备恢复环境，并拥有数据库的相关权限。
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
