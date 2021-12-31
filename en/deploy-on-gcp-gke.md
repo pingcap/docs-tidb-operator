@@ -254,7 +254,13 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 
 ## Upgrade
 
-To upgrade the TiDB cluster, executing command `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+To upgrade the TiDB cluster, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+```
 
 The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 
