@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 
 # 对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩
 
-基于 Kubernetes，TiDB 自 v5.0 起支持了全新的弹性伸缩算法。相应地，在 TiDB Operator 1.2 及以上版本中，TiDB 集群可以凭借 Kubernetes 平台本身的特性支持开启自动弹性伸缩。本文介绍如何对 Kubernetes 上的 TiDB 集群开启和使用自动弹性伸缩。
+基于 Kubernetes，TiDB 自 v5.0 起支持了全新的弹性伸缩算法，支持在 TiDB Operator 中开启自动弹性伸缩。本文介绍如何对 Kubernetes 上的 TiDB 集群开启和使用自动弹性伸缩。
 
 > **警告：**
 >
