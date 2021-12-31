@@ -273,7 +273,7 @@ gcloud config set core/project <gcp-project>
 
 参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义。需要注意的是：
 
-* 在配置 TidbCluster 定义时使用的 `clusterDomain` 字段需要和 [启动 Kubernetes 集群](#启动-kubernetes-集群) 一节定义的一致。
+* 在配置 TidbCluster 定义时使用的 `clusterDomain` 字段需要和 [第 2 步：启动 Kubernetes 集群](#第-2-步启动-kubernetes-集群) 一节定义的一致。
 
 例如，部署初始集群 TidbCluster 定义时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
 
