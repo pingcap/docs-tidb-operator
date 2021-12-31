@@ -22,8 +22,8 @@
   - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
   - 跨多个 Kubernetes 集群部署 TiDB 集群
-    - [多个 AWS EKS 集群互通](build-multi-aws-eks.md)
-    - [多个 GCP GKE 集群互通](build-multi-gcp-gke.md)
+    - [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md)
+    - [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)
     - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)

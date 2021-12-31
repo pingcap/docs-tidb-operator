@@ -5,7 +5,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 # 构建多个网络互通的 AWS EKS 集群
 
-本文介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+本文以构建 3 个集群为例，介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
 如果仅需要部署 TiDB 集群到一个 AWS EKS 集群，请参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)文档。
 
@@ -29,7 +29,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 >
 > 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
 
-## 启动 Kubernetes 集群
+## 第 1 步：启动 Kubernetes 集群
 
 定义三个 EKS 集群的配置文件分别为 `cluster_1.yaml`、`cluster_2.yaml` 和 `cluster_3.yaml`，并使用 `eksctl` 命令创建三个 EKS 集群。
 
@@ -69,13 +69,13 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 后文中，我们使用 `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，使用 `${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，使用 `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
-在所有集群创建完毕后，我们需要获取每个集群的 Kubernetes Context，以方便后续我们使用 `kubectl` 命令操作每个集群。
+3. 在所有集群创建完毕后，我们需要获取每个集群的 Kubernetes Context，以方便后续我们使用 `kubectl` 命令操作每个集群。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-kubectl config get-contexts
-```
+    ```bash
+    kubectl config get-contexts
+    ```
 
 <details>
 <summary>点击查看输出，其中的 `NAME` 项就是我们需要使用的 context 。</summary>
@@ -89,7 +89,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 后文中，我们使用 `${context_1}`、`${context_2}` 与 `${context_3}` 分别代表各个集群的 context。
 
-## 配置网络
+## 第 2 步：配置网络
 
 ### 设置 VPC peering
 
@@ -115,9 +115,9 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 2. 构建集群 1 与集群 2 的 VPC peering。
 
-   1. 按照 [AWS VPC peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local)  创建 VPC peering。`${vpc_id_1}` 作为 requester VPC，`${vpc_id_2}` 作为 accepter VPC 。
+   1. 按照 [AWS VPC peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local)创建 VPC peering。`${vpc_id_1}` 作为 requester VPC，`${vpc_id_2}` 作为 accepter VPC 。
 
-   2. 按照 [AWS VPC Peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) 完成 VPC peering 的构建。
+   2. 按照 [AWS VPC Peering 文档](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection)完成 VPC peering 的构建。
 
 3. 以步骤 2 为例，构建集群 1 与集群 3，以及集群 2 与集群 3 的 VPC peering。
 
@@ -240,9 +240,9 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 ### 配置 CoreDNS
 
-为了能够让集群中的 Pod 访问其他集群的 Service，我们需要配置每个集群的 CoreDNS 服务以能够转发 DNS 请求给其他集群的 CoreDNS 服务。
+为了能够让集群中的 Pod 访问其他集群的 Service，你需要配置每个集群的 CoreDNS 服务，使其能够转发 DNS 请求给其他集群的 CoreDNS 服务。
 
-我们通过修改 CoreDNS 对应的 ConfigMap 来进行配置，更多配置项可以参考文档 [Customizing DNS Service](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns)。
+你可以通过修改 CoreDNS 对应的 ConfigMap 来进行配置，更多配置项参考文档 [Customizing DNS Service](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns)。
 
 1. 修改集群 1 的 CoreDNS 配置
 
@@ -303,7 +303,7 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
 ## 验证网络连通性
 
-在部署 TiDB 集群之前，我们需要先验证一下多个集群之间的网络连通性。
+在部署 TiDB 集群之前，你需要先验证多个集群之间的网络连通性。
 
 1. 将下面定义保存到 `sample-nginx.yaml` 文件。
 
@@ -368,13 +368,13 @@ CURRENT   NAME                                 CLUSTER                      AUTH
 
    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
 
-## 部署 TiDB Operator
+## 第 3 步：部署 TiDB Operator
 
 每个集群的 TidbCluster 定义由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
 每个集群的部署步骤参考文档[**在 Kubernetes 上部署 TiDB Operator**](deploy-tidb-operator.md)。区别在于，我们需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 来为每个 EKS 集群部署 TiDB Operator。
 
-## 部署 TiDB 集群
+## 第 4 步：部署 TiDB 集群
 
 参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义，需要注意的是：
 
@@ -394,6 +394,6 @@ spec:
   clusterDomain: "cluster.local"
 ```
 
-## 接下来
+## 探索更多
 
 * 阅读文档 [**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md) 了解如何管理跨 Kubernetes 集群的 TiDB 集群。
