@@ -1,20 +1,20 @@
 ---
-title: Replicate Data to TLS-enabled Downstream Services Using TiCDC Components
-summary: Learn how to get TiCDC components to replicate data to TLS-enabled downstream services.
+title: Replicate Data to TLS-enabled Downstream Services
+summary: Learn how to replicate data to TLS-enabled downstream services.
 ---
 
-# Replicate Data to TLS-enabled Downstream Services with TiCDC Components
+# Replicate Data to TLS-enabled Downstream Services
 
-This document describes how to get the TiCDC components to replicate data to TLS-enabled downstream services on Kubernetes.
+This document describes how to replicate data to TLS-enabled downstream services on Kubernetes.
 
 ## Preparations
 
 Before you begin, do the following preparations:
 
-- Deploy a downstream service, and enable the TLS authentication on the client.
-- Generate the key file required for the client to access the downstream service.
+1. Deploy a downstream service, and enable the TLS authentication on the client.
+2. Generate the key file required for the client to access the downstream service.
 
-## Configure TiCDC to replicate data to a TLS-enabled downstream service
+## Steps
 
 1. Create a Kubernetes Secret object that contains a client TLS certificate used to access the downstream service. You can get the certificate from the key file you generated for the client.
 
@@ -24,7 +24,7 @@ Before you begin, do the following preparations:
       kubectl create secret generic ${secret_name} --namespace=${cluster_namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-2. Mount the certificate file to the TiCDC Pod.
+2. Mount the certificate file to the [TiCDC](deploy-ticdc.md) Pod.
 
     * If you have not deployed a TiDB cluster yet, add the `spec.ticdc.tlsClientSecretNames` field to the TidbCluster CR definition, and then deploy the TiDB cluster.
 
