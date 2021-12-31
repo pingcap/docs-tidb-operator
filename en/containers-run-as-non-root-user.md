@@ -23,7 +23,7 @@ controllerManager:
 
 ## Configure containers controlled by CR
 
-For the containers controlled by CR, you can configure security context in any CRs (`TidbCluster`/`DmCluster`/`TidbInitializer`/`TidbMonitor`/`Backup`/`BackupSchedule`/`Restore`) to make the containers run as a non-root user.
+For the containers controlled by Custom Resource (CR), you can configure security context in any CRs (`TidbCluster`/`DmCluster`/`TidbInitializer`/`TidbMonitor`/`Backup`/`BackupSchedule`/`Restore`) to make the containers run as a non-root user.
 
 You can use either of the following two types of configuration. If you configure both the cluster level and the component level for a component, only the configuration of the component level takes effect.
 
