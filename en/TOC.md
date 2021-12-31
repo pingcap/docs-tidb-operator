@@ -108,6 +108,7 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
   - v1.2
+    - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
     - [1.2.3](releases/release-1.2.3.md)
     - [1.2.2](releases/release-1.2.2.md)
