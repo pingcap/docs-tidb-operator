@@ -65,7 +65,6 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
    
     需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
 
-
     后文中，我们使用 `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，使用 `${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，使用 `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
 3. 在所有集群创建完毕后，我们需要获取每个集群的 Kubernetes Context，以方便后续我们使用 `kubectl` 命令操作每个集群。
