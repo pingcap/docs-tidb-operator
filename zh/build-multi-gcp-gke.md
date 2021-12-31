@@ -196,60 +196,72 @@ gcloud config set core/project <gcp-project>
 
 1. 将下面定义保存到 `sample-nginx.yaml` 文件。
 
-   ```yaml
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: sample-nginx
-     labels:
-       app: sample-nginx
-   spec:
-     hostname: sample-nginx
-     subdomain: sample-nginx-peer
-     containers:
-     - image: nginx:1.21.5
-       imagePullPolicy: IfNotPresent
-       name: nginx
-       ports:
-         - name: http
-           containerPort: 80
-     restartPolicy: Always
-   ---
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: sample-nginx-peer
-   spec:
-     ports:
-       - port: 80
-     selector:
-       app: sample-nginx
-     clusterIP: None 
-   ```
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: sample-nginx
+      labels:
+        app: sample-nginx
+    spec:
+      hostname: sample-nginx
+      subdomain: sample-nginx-peer
+      containers:
+      - image: nginx:1.21.5
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        ports:
+          - name: http
+            containerPort: 80
+      restartPolicy: Always
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: sample-nginx-peer
+    spec:
+      ports:
+        - port: 80
+      selector:
+        app: sample-nginx
+      clusterIP: None 
+    ```
 
 2. 在三个集群对应的命名空间下部署 nginx 服务。
    
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```bash
-   kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-
-   kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-
-   kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
-   ```
+    ```bash
+    kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
+    
+    kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
+     
+    kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
+    ```
 
 3. 通过访问其他集群的 nginx 服务，来验证网络是否连通。
    
-   以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
+    以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```bash
-   kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.default.svc.${cluster_domain_2}:80
-   ```
+    ```bash
+    kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.default.svc.${cluster_domain_2}:80
+    ```
 
-   如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
+    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
+
+4. 验证完成后，执行以下命令删除 nginx 服务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
+    
+    kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
+     
+    kubectl --context ${context_3} -n default delete -f sample-nginx.yaml
+    ```
 
 ## 第 3 步：部署 TiDB Operator
 

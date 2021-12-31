@@ -362,6 +362,18 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
     如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
 
+4. 验证完成后，执行以下命令删除 nginx 服务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_2} -n ${namespace_2} delete -f sample-nginx.yaml
+    
+    kubectl --context ${context_2} -n ${namespace_2} delete -f sample-nginx.yaml
+    
+    kubectl --context ${context_3} -n ${namespace_3} delete -f sample-nginx.yaml
+    ```
+
 ## 第 3 步：部署 TiDB Operator
 
 每个集群的 TidbCluster 定义由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
