@@ -42,7 +42,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 2. 授予远程存储访问权限。
 
-    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)授权访问 GCS 远程存储。
+    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，授权访问 GCS 远程存储。
 
 3. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
