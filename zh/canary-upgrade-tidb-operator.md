@@ -11,10 +11,9 @@ TiDB Operator 目前只支持对部分组件进行灰度升级，即 [tidb-contr
 
 在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
 
-
 ## 第 1 步：为当前 TiDB Operator 配置 selector
 
-参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)，在 `values.yaml` 中添加如下配置，升级当前 TiDB Operator：
+在当前 TiDB Operator 的 `values.yaml` 中，添加如下 selector 配置：
 
 ```yaml
 controllerManager:
@@ -24,7 +23,7 @@ controllerManager:
 
 ## 第 2 步：部署灰度的 TiDB Operator
 
-1. 参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置。
+1. 参考[在线部署 TiDB Operator](deploy-tidb-operator.md#在线部署-tidb-operator) 的第 1 步和第 2 步，获取想要部署的灰度版本 TiDB Operator 的 `values.yaml` 文件，并在 `values.yaml` 中添加如下配置。
 
     ```yaml
     controllerManager:
