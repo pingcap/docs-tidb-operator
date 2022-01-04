@@ -8,9 +8,9 @@ aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 # Back up Data to S3-Compatible Storage Using BR
 
-This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage using Helm charts. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the AWS storage.
+This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage.
 
-The backup method described in this document is implemented using Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
+In this document, the backup implementation method is the Custom Resource Definition (CRD) of TiDB Operator, and the backup tool is [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), which gets the backup data of the TiDB cluster, and then sends the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
 ## Ad-hoc backup
 
