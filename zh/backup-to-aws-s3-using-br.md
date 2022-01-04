@@ -62,7 +62,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到兼容 S3 的存储上：
 
-+ 方法 1：创建 `Backup` CR，通过 accessKey 和 secretKey 授权的方式备份集群:
++ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Backup` CR:
 
     {{< copyable "shell-regular" >}}
 
@@ -107,7 +107,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         prefix: my-folder
     ```
 
-+ 方法 2：创建 `Backup` CR，通过 IAM 绑定 Pod 授权的方式备份集群:
++ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Backup` CR:
 
     {{< copyable "shell-regular" >}}
 
@@ -153,7 +153,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         prefix: my-folder
     ```
 
-+ 方法 3：创建 `Backup` CR，通过 IAM 绑定 ServiceAccount 授权的方式备份集群:
++ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Backup` CR:
 
     {{< copyable "shell-regular" >}}
 
@@ -226,7 +226,7 @@ kubectl get bk -n test1 -o wide
 
 依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Amazon S3 存储上：
 
-+ 方法 1：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份，通过 accessKey 和 secretKey 授权的方式备份集群：
++ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -274,7 +274,7 @@ kubectl get bk -n test1 -o wide
           prefix: my-folder
     ```
 
-+ 方法 2：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份，通过 IAM 绑定 Pod 授权的方式备份集群：
++ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -323,7 +323,7 @@ kubectl get bk -n test1 -o wide
           prefix: my-folder
     ```
 
-+ 方法 3：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式备份集群：
++ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -394,7 +394,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 删除备份的 Backup CR
 
-如果需要删除备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
+如果你不再需要已备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
 
 ## 故障诊断
 
