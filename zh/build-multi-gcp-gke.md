@@ -37,7 +37,7 @@ gcloud config set core/project <gcp-project>
     gcloud compute networks create ${network_name} --subnet-mode=custom
     ```
 
-2. 在新创建的 VPC 网络下创建三个属于不同 Region 的子网，子网的 CIDR 块相互不重叠。
+2. 在新创建的 VPC 网络下创建三个属于不同 Region 的子网，子网的 CIDR block 相互不重叠。
 
     {{< copyable "shell-regular" >}}
 
@@ -71,7 +71,7 @@ gcloud config set core/project <gcp-project>
 
     `${subnet_1}`、`${subnet_2}` 和 `${subnet_3}` 为三个不同子网的名字。
 
-    参数 `--range=10.0.0.0/16` 指定集群的子网的 CIRD 块，所有集群的子网的 CIDR 块**必须**不相互重叠。
+    参数 `--range=10.0.0.0/16` 指定集群的子网的 CIRD 块，所有集群的子网的 CIDR block **必须**不相互重叠。
   
     参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD 块，我们将会在后面使用到。
 
@@ -174,7 +174,7 @@ gcloud config set core/project <gcp-project>
         gke-${cluster_1}-b8b48366-all  ${network}  INGRESS    1000      tcp,udp,icmp,esp,ah,sctp            False
         ```
 
-   2. 更新该防火墙规则的 source range，加上另外两个集群的 Pod 网络的 CIDR 块。
+   2. 更新该防火墙规则的 source range，加上另外两个集群的 Pod 网络的 CIDR block。
 
         {{< copyable "shell-regular" >}}
 
