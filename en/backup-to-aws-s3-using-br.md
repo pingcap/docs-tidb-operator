@@ -14,17 +14,17 @@ The backup method described in this document is implemented based on CustomResou
 
 ## User scenarios
 
-For the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages.
+If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages.
 
-- To back up a large volume of data and expect a fast backup speed
+- To back up a large volume of data at a fast backup speed
 - To get a direct backup of data as SST files (key-value pairs)
 
-For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
+Otherwise, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
 
 > **Note:**
 >
 > - BR is only applicable to TiDB v3.1 or later releases.
-> - Data that is backed up using BR can only be restored to TiDB, not to other databases.
+> - Data that is backed up using BR can only be restored to TiDB instead of other databases.
 
 ## Ad-hoc backup
 
@@ -32,7 +32,7 @@ Ad-hoc backup supports both full backup and incremental backup. It describes the
 
 This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to AWS storage. The following are the detailed steps.
 
-### Step 1: Prepare for ad-hoc backup
+### Step 1: Prepare for an ad-hoc backup
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -49,8 +49,8 @@ This document provides an example about how to back up the data of the `demo1` T
 
 3. For a TiDB version earlier than v4.0.8, you also need to complete the following steps. For TiDB v4.0.8 or a later version, skip these steps.
 
-    1. Make sure you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
-    2. Create the `backup-demo1-tidb-secret` secret that stores the account and password needed to access the TiDB cluster:
+    1. Make sure that you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
+    2. Create the `backup-demo1-tidb-secret` secret to store the account and password to access the TiDB cluster:
 
         {{< copyable "shell-regular" >}}
 
@@ -60,7 +60,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 2: Perform an ad-hoc backup
 
-Depending on which method you choose to grant permissions to the remote storage, you need to export your data to a S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage when prepare for the ad-hoc backup, export your data to a S3-compatible storage by doing one of the following:
 
 - Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
@@ -226,11 +226,11 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 
 ### Step 1: Prepare for a scheduled full backup
 
-The steps to prepare a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-for-ad-hoc-backup).
+The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-for-ad-hoc-backup).
 
 ### Step 2: Perform a scheduled full backup
 
-Depending on which method you choose to grant permissions to the remote storage, you need to export your data to a S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage, export your data to a S3-compatible storage by doing one of the following:
 
 + Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
 
@@ -383,7 +383,7 @@ Depending on which method you choose to grant permissions to the remote storage,
           prefix: my-folder
     ```
 
-From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
+From the above content in `backup-scheduler-aws-s3.yaml`, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
 
 - For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
 - `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields).
@@ -411,8 +411,3 @@ If you no longer need the backup CR, refer to [Delete the Backup CR](backup-rest
 ## Troubleshooting
 
 If you encounter any problem during the backup process, refer to [Common Deployment Failures](deploy-failures.md).
-
-
-> **Note:**
->
-> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR. In addition, you can skip the steps of creating the `backup-demo1-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
