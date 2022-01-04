@@ -5,7 +5,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 # 构建多个网络互通的 AWS EKS 集群
 
-本文以构建 3 个集群为例，介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+本文以构建 3 个集群为例，介绍了如何构建多个 AWS EKS 集群，并配置集群之间的网络互通，为[跨 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)作准备。
 
 如果仅需要部署 TiDB 集群到一个 AWS EKS 集群，请参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)文档。
 

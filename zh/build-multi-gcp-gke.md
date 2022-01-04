@@ -62,7 +62,7 @@ gcloud config set core/project <gcp-project>
     {{< copyable "shell-regular" >}}
 
     ```bash
-        gcloud compute networks subnets create ${subnet_1} \
+    gcloud compute networks subnets create ${subnet_1} \
         --region=${region_1} \
         --network=${network_name} \
         --range=10.2.0.0/16 \
@@ -71,7 +71,7 @@ gcloud config set core/project <gcp-project>
 
     参数 `--range=10.0.0.0/16` 指定集群的子网的 CIRD 块，所有集群的子网的 CIDR 块**必须**不相互重叠。
   
-    参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中的指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD 块，我们将会在后面使用到。
+    参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD 块，我们将会在后面使用到。
 
 ## 第 2 步：启动 Kubernetes 集群
 
