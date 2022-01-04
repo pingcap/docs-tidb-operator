@@ -72,8 +72,8 @@ gcloud config set core/project <gcp-project>
     `${subnet_1}`、`${subnet_2}` 和 `${subnet_3}` 为三个不同子网的名字。
 
     参数 `--range=10.0.0.0/16` 指定集群的子网的 CIRD 块，所有集群的子网的 CIDR block **必须**不相互重叠。
-  
-    参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD 块，我们将会在后面使用到。
+
+    参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD block，将会在后面使用到。
 
 ## 第 2 步：启动 Kubernetes 集群
 
@@ -119,7 +119,7 @@ gcloud config set core/project <gcp-project>
 
     上述命令中，`${cluster_domain_n}` 表示第 n 个集群的 cluster domain。在后续部署 TiDB 集群时，需要配置部署的 TidbCluster CR 中的 `spec.clusterDomain`。
 
-    我们使用 VPC 范围的 [**Cloud DNS 服务**](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns)，使得集群可以解析其他集群的 Pod 和 Service 地址。
+    使用 VPC 范围的 [**Cloud DNS 服务**](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns)，使得集群可以解析其他集群的 Pod 和 Service 地址。
 
 2. 为每个集群创建 PD、TiKV 和 TiDB 使用的独立的节点池。
 
@@ -136,7 +136,7 @@ gcloud config set core/project <gcp-project>
         --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
-3. 获取每个集群的 Kubenetes context，后续当我们需要使用 `kubectl` 命令操作特定的集群时，需要指定对应的 context。
+3. 获取每个集群的 Kubenetes context，后续当你使用 `kubectl` 命令操作特定的集群时，需要指定对应的 context。
 
     {{< copyable "shell-regular" >}}
 
@@ -144,7 +144,7 @@ gcloud config set core/project <gcp-project>
     kubectl config get-contexts
     ```
 
-    输出类似如下，其中的 `NAME` 项就是我们后续需要使用的 context。
+    输出类似如下，其中的 `NAME` 项就是你后续需要使用的 context。
 
     ```
     CURRENT   NAME                          CLUSTER                       AUTHINFO                            NAMESPACE
@@ -157,10 +157,10 @@ gcloud config set core/project <gcp-project>
 
 ### 配置防火墙规则
 
-1. 更新集群 1 的防火墙规则
-   
+1. 更新集群 1 的防火墙规则。
+
    1. 找到用于 GKE Pod 间通信的防火墙规则的名字，防火墙规则命名规则类似于：`gke-${cluster_1}-${hash}-all`
-        
+
         {{< copyable "shell-regular" >}}
 
         ```bash
@@ -194,7 +194,7 @@ gcloud config set core/project <gcp-project>
 
 ## 验证网络连通性
 
-在部署 TiDB 集群之前，我们需要先验证一下多个集群之间的网络连通性。
+在部署 TiDB 集群之前，你需要先验证多个集群之间的网络连通性。
 
 1. 将下面定义保存到 `sample-nginx.yaml` 文件。
 
@@ -226,23 +226,23 @@ gcloud config set core/project <gcp-project>
         - port: 80
       selector:
         app: sample-nginx
-      clusterIP: None 
+      clusterIP: None
     ```
 
 2. 在三个集群对应的命名空间下部署 nginx 服务。
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-    
+
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-     
+
     kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
     ```
 
 3. 通过访问其他集群的 nginx 服务，来验证网络是否连通。
-   
+
     以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
 
     {{< copyable "shell-regular" >}}
@@ -259,9 +259,9 @@ gcloud config set core/project <gcp-project>
 
     ```bash
     kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
-    
+
     kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
-     
+
     kubectl --context ${context_3} -n default delete -f sample-nginx.yaml
     ```
 
@@ -269,15 +269,15 @@ gcloud config set core/project <gcp-project>
 
 每个集群的 TidbCluster CR 由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
-每个集群的部署步骤参考文档[**在 Kubernetes 上部署 TiDB Operator**](deploy-tidb-operator.md)。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 操作各个集群。
+参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 部署 TiDB Operator 到每个 GKE 集群。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 为每个 GKE 集群部署 TiDB Operator。
 
 ## 第 4 步：部署 TiDB 集群
 
-参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster CR 。需要注意的是：
+参考[跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster CR。需要注意的是：
 
-* 在配置 TidbCluster CR 时使用的 `clusterDomain` 字段需要和 [第 2 步：启动 Kubernetes 集群](#第-2-步启动-kubernetes-集群) 一节定义的一致。
+* 在配置 TidbCluster CR 时使用的 `spec.clusterDomain` 字段需要和[第 2 步：启动 Kubernetes 集群](#第-2-步启动-kubernetes-集群)一节定义的 `${cluster_domain_n}` 一致。
 
-例如，部署初始集群 TidbCluster CR 时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
+例如，部署初始集群 TidbCluster CR 到集群 1 时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -290,4 +290,4 @@ spec:
 
 ## 探索更多
 
-* 阅读文档 [**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md) 了解如何管理跨 Kubernetes 集群的 TiDB 集群。
+* 阅读[跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)，了解如何管理跨 Kubernetes 集群的 TiDB 集群。
