@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs-using-br/']
 
 ## 使用场景
 
-当使用 BR 将 TiDB 集群数据备份到 GCS 后，如果需要从 GCS 将备份的 SST （键值对） 文件恢复到 TiDB 集群，请参考本文使用 BR 进行恢复。
+当使用 BR 将 TiDB 集群数据备份到 GCS 后，如果需要从 GCS 将备份的 SST（键值对）文件恢复到 TiDB 集群，请参考本文使用 BR 进行恢复。
 
 > **注意：**
 >
