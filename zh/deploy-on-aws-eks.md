@@ -27,7 +27,7 @@ summary: 介绍如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集
 
 > **注意：**
 >
-> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account)。
 
 ## 推荐机型及存储
 
