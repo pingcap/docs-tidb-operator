@@ -184,7 +184,22 @@ mountOptions:
 以下步骤以 gp3 存储类型为例说明如何创建并配置 gp3 存储类型的 StorageClass。
 
 1. 对于 gp3 存储类型，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。对于其他存储类型，请跳过此步骤。
-2. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
+
+2. 设置 ebs-csi-node `toleration`。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
+    ```
+
+    期望输出：
+
+    ```
+    daemonset.apps/ebs-csi-node patched
+    ```
+
+3. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
     ```yaml
     kind: StorageClass
@@ -203,7 +218,7 @@ mountOptions:
     - nodelalloc,noatime
     ```
 
-3. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
+4. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
 
     ```yaml
     spec:
@@ -212,7 +227,7 @@ mountOptions:
         storageClassName: gp3
     ```
 
-4. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+5. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
 
     ```yaml
     kind: StorageClass
@@ -289,7 +304,7 @@ mountOptions:
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
