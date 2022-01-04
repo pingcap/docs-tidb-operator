@@ -10,21 +10,29 @@ aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 This document describes how to back up the data of a TiDB cluster in AWS Kubernetes to the AWS storage.
 
-In this document, the backup implementation method is the Custom Resource Definition (CRD) of TiDB Operator, and the backup tool is [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), which gets the backup data of the TiDB cluster, and then sends the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+
+## User scenarios
+
+For the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages.
+
+- To back up a large volume of data and expect a fast backup speed
+- To get a direct backup of data as SST files (key-value pairs)
+
+For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
+
+> **Note:**
+>
+> - BR is only applicable to TiDB v3.1 or later releases.
+> - Data that is backed up using BR can only be restored to TiDB, not to other databases.
 
 ## Ad-hoc backup
 
 Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-To better describe the backup process, this document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to AWS storage.
+This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to AWS storage. The following are the detailed steps.
 
-### Prerequisites for ad-hoc backup
-
-Before you perform ad-hoc backup, AWS account permissions need to be granted. This section describes three methods to grant AWS account permissions.
-
-> **Note:**
->
-> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR. In addition, you can skip the steps of creating the `backup-demo1-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
+### Step 1: Prepare for ad-hoc backup
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -36,25 +44,25 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
 
 2. Grant permissions to the remote storage.
 
-    To grant permissions to access the S3-compatible remote storage, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    - If you are using Amazon S3 to backup your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    - If you are using other S3-compatible storage (such as Ceph and MinIO) to backup your cluster, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
-    If you use Ceph as the backend storage for testing, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
+3. For a TiDB version earlier than v4.0.8, you also need to complete the following steps. For TiDB v4.0.8 or a later version, skip these steps.
 
-3. Create the `backup-demo1-tidb-secret` secret which stores the account and password needed to access the TiDB cluster:
+    1. Make sure you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
+    2. Create the `backup-demo1-tidb-secret` secret that stores the account and password needed to access the TiDB cluster:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
-    ```
+        ```shell
+        kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
+        ```
 
-### Required database account privileges
+### Step 2: Perform an ad-hoc backup
 
-* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
+Depending on which method you choose to grant permissions to the remote storage in the previous step, you need to export your data to a S3-compatible storage by doing one of the following:
 
-### Process of ad-hoc backup
-
-- If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
+- Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -101,7 +109,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         prefix: my-folder
     ```
 
-- If you grant permissions by associating IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
+- Method 2: If you grant permissions by associating IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -149,7 +157,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         prefix: my-folder
     ```
 
-- If you grant permissions by associating IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
+- Method 3: If you grant permissions by associating IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -195,6 +203,7 @@ Before you perform ad-hoc backup, AWS account permissions need to be granted. Th
         bucket: my-bucket
         prefix: my-folder
     ```
+
 
 The three examples above use three methods to grant permissions to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
 
@@ -400,3 +409,8 @@ Refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr)
 ## Troubleshooting
 
 If you encounter any problem during the backup process, refer to [Common Deployment Failures](deploy-failures.md).
+
+
+> **Note:**
+>
+> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR. In addition, you can skip the steps of creating the `backup-demo1-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
