@@ -22,7 +22,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
 ## 部署异构集群
 
-依据你是否需要为异构集群开启 TLS，请选择以下方案之一：
+依据你是否需要为异构集群开启 TLS （Transport Layer Security，安全传输层协议），请选择以下方案之一：
 
 - 部署未开启 TLS 的异构集群
 - 部署开启 TLS 的异构集群
@@ -61,7 +61,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
         baseImage: pingcap/tikv
         maxFailoverCount: 0
         replicas: 1
-        # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+        # 如果不设置 storageClassName，TiDB Operator 将使用 Kubernetes 集群默认的 Storage Class
         # storageClassName: local-storage
         requests:
           storage: "100Gi"
@@ -83,6 +83,8 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
                 storage: 100Gi
     ```
 
+    TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](/configure-a-tidb-cluster.md)。
+
 2. 依据需要，修改异构集群配置文件中各节点的配置项。
 
     例如，你可以修改 `cluster.yaml` 文件中各组件的 `replicas` 数量，或者删除不需要的组件。
@@ -94,6 +96,8 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     ```shell
     kubectl create -f cluster.yaml -n ${namespace}
     ```
+
+    TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
 
 </div>
 
@@ -137,7 +141,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
         baseImage: pingcap/tikv
         maxFailoverCount: 0
         replicas: 1
-        # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
+        # 如果不设置 storageClassName，TiDB Operator 将使用 Kubernetes 集群默认的 Storage Class
         # storageClassName: local-storage
         requests:
           storage: "100Gi"
@@ -161,7 +165,11 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
                 storage: 100Gi
     ```
 
-    其中，`spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。详细的异构 TLS 集群配置示例，请参阅 ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
+    其中，`spec.tlsCluster.enabled` 表示组件间是否开启 TLS，`spec.tidb.tlsClient.enabled` 表示 MySQL 客户端是否开启 TLS。
+
+    - 详细的异构 TLS 集群配置示例，请参阅 [`heterogeneous-tls`](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
+
+    - TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](/configure-a-tidb-cluster.md)。
 
 2. 依据需要，修改异构集群配置文件中各节点的配置项。
 
@@ -174,6 +182,8 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     ```shell
     kubectl create -f cluster.yaml -n ${namespace}
     ```
+
+    TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
 
 </div>
 </SimpleTab>
