@@ -109,7 +109,7 @@ gcloud config set core/project <gcp-project>
 
     ```bash
     gcloud beta container clusters create ${cluster_3} \
-        --region ${region_2} --num-nodes 1 \
+        --region ${region_3} --num-nodes 1 \
         --network ${network_name} --subnetwork ${subnet_3} \
         --cluster-dns clouddns --cluster-dns-scope vpc \
         --cluster-dns-domain ${cluster_domain_3}
