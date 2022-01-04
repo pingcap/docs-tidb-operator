@@ -300,7 +300,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 后文中，使用 `${namspeace_1}`、`${namspeace_2}` 与 `${namspeace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
 
-## 验证网络连通性
+## 第 3 步：验证网络连通性
 
 在部署 TiDB 集群之前，你需要先验证多个集群之间的网络连通性。
 
@@ -373,13 +373,13 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     kubectl --context ${context_3} -n ${namespace_3} delete -f sample-nginx.yaml
     ```
 
-## 第 3 步：部署 TiDB Operator
+## 第 4 步：部署 TiDB Operator
 
 每个集群的 TidbCluster CR 由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
 参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 部署 TiDB Operator 到每个 EKS 集群。区别在于，你需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 来为每个 EKS 集群部署 TiDB Operator。
 
-## 第 4 步：部署 TiDB 集群
+## 第 5 步：部署 TiDB 集群
 
 参考[跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)，为每个集群部署一个 TidbCluster CR。需要注意的是：
 
