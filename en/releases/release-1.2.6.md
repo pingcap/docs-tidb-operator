@@ -3,7 +3,7 @@ title: TiDB Operator 1.2.6 Release Notes
 ---
 # TiDB Operator 1.2.6 Release Notes
 
-Release date: January 4, 2021
+Release date: January 4, 2022
 
 TiDB Operator version: 1.2.6
 
