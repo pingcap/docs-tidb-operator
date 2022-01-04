@@ -97,7 +97,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     kubectl create -f cluster.yaml -n ${namespace}
     ```
 
-    TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
+    如果执行成功，输出会提示 `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`。TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
 
 </div>
 
@@ -183,7 +183,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     kubectl create -f cluster.yaml -n ${namespace}
     ```
 
-    TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
+    如果执行成功，输出会提示 `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`。TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
 
 </div>
 </SimpleTab>
