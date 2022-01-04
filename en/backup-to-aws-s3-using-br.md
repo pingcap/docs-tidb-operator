@@ -59,7 +59,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 2: Perform an ad-hoc backup
 
-Depending on which method you choose to grant permissions to the remote storage in the previous step, you need to export your data to a S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage, you need to export your data to a S3-compatible storage by doing one of the following:
 
 - Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
@@ -203,14 +203,13 @@ Depending on which method you choose to grant permissions to the remote storage 
         prefix: my-folder
     ```
 
+    When configuring the `backup-aws-s3.yaml`, note the following:
 
-The three examples above use three methods to grant permissions to back up data to Amazon S3 storage. The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
-
-In the examples above, some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
-
-Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
-
-For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
+    - Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
+    - The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
+    - Some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
+    - For v4.0.8 or a later release, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
+    - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
 
 After you create the `Backup` CR, view the backup status by running the following command:
 
@@ -224,13 +223,15 @@ kubectl get bk -n test1 -o wide
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
-### Prerequisites for scheduled full backup
+### Step 1: Prepare for a scheduled full backup
 
-The prerequisites for the scheduled full backup is the same as the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
+The steps to prepare a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-for-ad-hoc-backup).
 
-### Process of scheduled full backup
+### Step 2: Perform a scheduled full backup
 
-+ If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
+Depending on which method you choose to grant permissions to the remote storage, you need to export your data to a S3-compatible storage by doing one of the following:
+
++ Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -280,7 +281,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           prefix: my-folder
     ```
 
-+ If you grant permissions by associating IAM with the Pod, create the `BackupSchedule` CR, and back up cluster data as described below:
++ Method 2: If you grant permissions by associating IAM with the Pod, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -331,7 +332,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           prefix: my-folder
     ```
 
-+ If you grant permissions by associating IAM with ServiceAccount, create the `BackupSchedule` CR, and back up cluster data as described below:
++ Method 3: If you grant permissions by associating IAM with ServiceAccount, create the `BackupSchedule` CR, and back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -381,6 +382,11 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
           prefix: my-folder
     ```
 
+From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
+
+- For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
+- `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields).
+
 After creating the scheduled full backup, use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
@@ -397,13 +403,9 @@ You can use the following command to check all the backup items:
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
 ```
 
-From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
-
-`backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields). For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
-
 ## Delete the backup CR
 
-Refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
+If you no longer need the backup CR, refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
 
 ## Troubleshooting
 
