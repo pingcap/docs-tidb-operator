@@ -23,7 +23,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     - 安装并配置创建 Kubernetes 集群的命令行工具 eksctl
     - 安装 Kubernetes 命令行工具 kubectl
 
-- AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+- AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account)。
 
 要验证 AWS CLI 的配置是否正确，请运行 `aws configure list` 命令。如果此命令的输出显示了 `access_key` 和 `secret_key` 的值，则 AWS CLI 的配置是正确的。否则，你需要重新配置 AWS CLI。
 
@@ -375,18 +375,18 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 ## 第 3 步：部署 TiDB Operator
 
-每个集群的 TidbCluster 定义由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
+每个集群的 TidbCluster CR 由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
 
 每个集群的部署步骤参考文档[**在 Kubernetes 上部署 TiDB Operator**](deploy-tidb-operator.md)。区别在于，我们需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 来为每个 EKS 集群部署 TiDB Operator。
 
 ## 第 4 步：部署 TiDB 集群
 
-参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster 定义，需要注意的是：
+参考[**跨多个 Kubernetes 集群部署 TiDB 集群**](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster CR ，需要注意的是：
 
 * **必须**将各集群的 TidbCluster 部署到 [配置 CoreDNS](#配置-coredns) 一节中对应的 namespace 下，否则 TiDB 集群运行将会失败。
 * 各集群的 cluster domain **必须** 设置为 "cluster.local"。
 
-例如，部署初始集群的 TidbCluster 定义到集群 1 时，将 `metadata.namespace` 指定为 `${namespace_1}`:
+例如，部署初始集群的 TidbCluster CR 到集群 1 时，将 `metadata.namespace` 指定为 `${namespace_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
