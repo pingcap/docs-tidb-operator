@@ -323,7 +323,7 @@ kubectl get bk -n test1 -o wide
           prefix: my-folder
     ```
 
-+ 方法 3：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份， 通过 IAM 绑定 ServiceAccount 授权的方式备份集群：
++ 方法 3：创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份，通过 IAM 绑定 ServiceAccount 授权的方式备份集群：
 
     {{< copyable "shell-regular" >}}
 
