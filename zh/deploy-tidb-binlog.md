@@ -332,6 +332,7 @@ spec:
 ```
 
 ### 缩容 Pump 节点
+
 1. 缩容 Pump Pod，执行下面命令：
 
     {{< copyable "shell-regular" >}}
