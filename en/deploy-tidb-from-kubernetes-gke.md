@@ -191,7 +191,7 @@ Congratulations, you are now up and running with a distributed TiDB database com
 To scale out the TiDB cluster, modify `spec.pd.replicas`, `spec.tidb.replicas`, and `spec.tikv.replicas` in the `TidbCluster` object of the cluster to your desired value using kubectl.
 
 ``` shell
-kubectl -n demo edit tc basic
+kubectl -n demo patch tc basic --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
 ```
 
 ## Access the Grafana dashboard
