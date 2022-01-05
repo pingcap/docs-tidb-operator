@@ -15,7 +15,7 @@ summary: 介绍如何为使用云上存储的 TiDB 集群更换节点。
 
 ## 前置条件
 
-- 云上已经存在一个 TiDB 集群，可以参考 [Amazon EKS](deploy-on-aws-eks.md)进行部署。
+- 云上已经存在一个 TiDB 集群。如果没有，可参考 [Amazon EKS](deploy-on-aws-eks.md) 进行部署。
 - TiDB 集群使用云上存储作为数据盘。
 
 ## 第一步：创建新的节点组
