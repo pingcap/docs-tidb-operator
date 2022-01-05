@@ -26,7 +26,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-br/']
 
 ## Ad-hoc 备份
 
-Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
+Ad-hoc 备份支持全量备份与增量备份。
+
+要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` custom resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
 本文档假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份。下面是具体的操作过程。
 
@@ -58,7 +60,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ### 第 2 步：备份数据到 GCS
 
-1. 创建 `Backup` CR，并将数据备份到 GCS：
+1. 创建 `Backup` CR，将数据备份到 GCS：
 
     {{< copyable "shell-regular" >}}
 
@@ -114,7 +116,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
     - 更多 `Backup` CR 字段的详细解释，请参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
 
-2. 创建好 `Backup` CR 后，可通过以下命令查看备份状态：
+2. 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过以下命令查看备份状态：
 
     {{< copyable "shell-regular" >}}
 
@@ -203,7 +205,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ## 删除备份的 Backup CR
 
-如果需要删除备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
+如果你不再需要已备份的 Backup CR，请参考[删除备份的 Backup CR](backup-restore-overview.md#删除备份的-backup-cr)。
 
 ## 故障诊断
 

@@ -54,7 +54,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
-+ 方法 1: 创建 `Restore` CR，通过 accessKey 和 secretKey 授权的方式恢复集群：
++ 方法 1: 如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -96,7 +96,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
         prefix: my-folder
     ```
 
-+ 方法 2: 创建 `Restore` CR，通过 IAM 绑定 Pod 授权的方式备份集群：
++ 方法 2: 如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -139,7 +139,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
         prefix: my-folder
     ```
 
-+ 方法 3: 创建 `Restore` CR，通过 IAM 绑定 ServiceAccount 授权的方式备份集群：
++ 方法 3: 如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
