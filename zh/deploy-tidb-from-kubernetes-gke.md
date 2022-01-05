@@ -99,14 +99,14 @@ kubectl get crd tidbclusters.pingcap.com
 ```
 
 > **注意：**
-> 
+>
 > 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 创建 `TidbCluster` 自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator。
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.5
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.6
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 

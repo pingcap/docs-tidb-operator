@@ -41,7 +41,7 @@ spec:
 
 ## 优雅重启单个 TiKV Pod
 
-从 v1.2.5 起，TiDB Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启单个 TiKV Pod。
+从 v1.2.6 起，TiDB Operator 支持给 TiKV Pod 添加 annotation 来触发优雅重启单个 TiKV Pod。
 
 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启：
 
