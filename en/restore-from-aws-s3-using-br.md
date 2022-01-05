@@ -51,7 +51,7 @@ Before restoring backup data on a S3-compatible storage to TiDB using BR, take t
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
         ```
 
-## Step 2: Restore the backup data to TiDB cluster
+## Step 2: Restore the backup data to a TiDB cluster
 
 Depending on which method you choose to grant permissions to the remote storage when preparing the restore environment, you can restore the data by doing one of the following:
 

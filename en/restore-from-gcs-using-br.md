@@ -48,7 +48,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
         ```
 
-## Step 2: Restore the backup data to TiDB cluster
+## Step 2: Restore the backup data to a TiDB cluster
 
 1. Create the `Restore` custom resource (CR) to restore the specified data to your cluster:
 
