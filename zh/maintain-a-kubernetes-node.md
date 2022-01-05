@@ -311,7 +311,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启，TiDB Operator 会在迁移完 TiKV region leader 后删掉 Pod：
+3. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启，TiDB Operator 会在迁移完 TiKV Region Leader 后删掉 Pod：
 
     {{< copyable "shell-regular" >}}
    
