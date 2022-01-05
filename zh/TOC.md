@@ -21,7 +21,10 @@
     - [阿里云 ACK](deploy-on-alibaba-cloud.md)
   - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
-  - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
+  - 跨多个 Kubernetes 集群部署 TiDB 集群
+    - [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md)
+    - [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)
+    - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
@@ -109,6 +112,7 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.2
+    - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
     - [1.2.3](releases/release-1.2.3.md)
