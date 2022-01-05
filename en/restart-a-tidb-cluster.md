@@ -51,7 +51,7 @@ spec:
 
 ## Perform a graceful restart to a single TiKV Pod
 
-Starting from v1.2.6, TiDB Operator supports graceful restart for a single TiKV Pod.
+Starting from v1.2.5, TiDB Operator supports graceful restart for a single TiKV Pod.
 
 To trigger a graceful restart, add an annotation with the `tidb.pingcap.com/evict-leader` key:
 
