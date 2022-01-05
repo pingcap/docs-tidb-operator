@@ -53,7 +53,15 @@ spec:
 
 如果你使用 cert-manager，必须使用和原集群相同的 Issuer（${cluster_name}-tidb-issuer） 来创建 Certificate。你需要执行为 TiDB 组件间开启 TLS 文档中第 3 步，完成新集群组件间证书签发。
 
-## 第三步：创建克隆 TiDB 集群
+## 第三步：使用 `kubectl cordon` 命令把需要更换的节点标记为不可调度，防止新的 Pod 调度上去
+
+{{< copyable "shell-regular" >}}
+
+```bash
+kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
+```
+
+## 第四步：创建克隆 TiDB 集群
 
 1. 执行命令：
 
@@ -78,7 +86,7 @@ spec:
 
    - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](access-tidb.md)。
 
-## 第四步：缩容原集群 TiDB 节点
+## 第五步：缩容原集群 TiDB 节点
 
 将原集群的 TiDB 节点缩容至 0 个，参考[水平扩缩容](scale-a-tidb-cluster.md#水平扩缩容)一节
 
@@ -86,7 +94,7 @@ spec:
 >
 > 若通过负载均衡或数据库访问层中间件的方式接入待迁移 TiDB 集群，则先修改配置，将业务流量迁移至目标 TiDB 集群，避免影响业务。
 
-## 第五步：缩容待迁移集群 TiKV 节点
+## 第六步：缩容待迁移集群 TiKV 节点
 
 将原集群的 TiKV 节点缩容至 0 个，参考[水平扩缩容](scale-a-tidb-cluster.md#水平扩缩容)一节
 
@@ -95,11 +103,11 @@ spec:
 > * 依次缩容待迁移集群的 TiKV 节点，等待上一个 TiKV 节点对应的 store 状态变为 "tombstone" 后，再执行下一个 TiKV 节点的缩容操作。
 > * 可通过 PD Control 工具查看 store 状态。
 
-## 第六步：缩容原集群 PD 节点
+## 第七步：缩容原集群 PD 节点
 
 将原集群的 PD 节点缩容至 0 个，参考[水平扩缩容](scale-a-tidb-cluster.md#水平扩缩容)一节
 
-## 第七步：删除克隆集群中 `spec.cluster` 字段
+## 第八步：删除克隆集群中 `spec.cluster` 字段
 
 {{< copyable "shell-regular" >}}
 
@@ -109,7 +117,7 @@ kubectl patch -n ${namespace} tc ${clone-cluster-name} --type=json -p '[{"op":"r
 
 其中 `${namespace}` 是克隆集群的命名空间（不变），`${clone-cluster-name}` 是克隆集群名字。
 
-## 第八步：删除原 TiDB 集群及数据
+## 第九步：删除原 TiDB 集群、数据、节点
 
 1. 删除原集群 `TidbCluster`：
 
@@ -122,3 +130,10 @@ kubectl patch -n ${namespace} tc ${clone-cluster-name} --type=json -p '[{"op":"r
     其中 `${namespace}` 是原集群的命名空间（不变），`${origin-cluster-name}` 是原集群名字。
 
 2. 删除原集群数据，请参考[删除 PV 以及对应的数据](configure-storage-class.md)一节。
+3. 将需要更换的节点从 Kubernetes 集群中删除：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl delete node ${replace_nodename1} ${replace_nodename2} ...
+    ```
