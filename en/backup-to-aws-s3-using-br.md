@@ -19,7 +19,7 @@ If you have the following backup needs, you can use BR to make an [ad-hoc backup
 - To back up a large volume of data at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
 
-For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
+For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to choose an appropriate backup method.
 
 > **Note:**
 >
@@ -44,12 +44,12 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. Grant permissions to the remote storage to access.
+2. Grant permissions to the remote storage.
 
     - If you are using Amazon S3 to backup your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
     - If you are using other S3-compatible storage (such as Ceph and MinIO) to backup your cluster, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
-3. For a TiDB version earlier than v4.0.8, you also need to complete the following steps. For TiDB v4.0.8 or a later version, skip these steps.
+3. For a TiDB version earlier than v4.0.8, you also need to complete the following preparation steps. For TiDB v4.0.8 or a later version, skip these preparation steps.
 
     1. Make sure that you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
     2. Create the `backup-demo1-tidb-secret` secret to store the account and password to access the TiDB cluster:
@@ -62,9 +62,9 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 2: Perform an ad-hoc backup
 
-Depending on which method you choose to grant permissions to the remote storage when prepare for the ad-hoc backup, export your data to the S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage when preparing for the ad-hoc backup, export your data to the S3-compatible storage by doing one of the following:
 
-- Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
+- Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR to back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -111,7 +111,7 @@ Depending on which method you choose to grant permissions to the remote storage 
         prefix: my-folder
     ```
 
-- Method 2: If you grant permissions by associating IAM with Pod, create the `Backup` CR, and back up cluster data as described below:
+- Method 2: If you grant permissions by associating IAM with Pod, create the `Backup` CR to back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -159,7 +159,7 @@ Depending on which method you choose to grant permissions to the remote storage 
         prefix: my-folder
     ```
 
-- Method 3: If you grant permissions by associating IAM with ServiceAccount, create the `Backup` CR, and back up cluster data as described below:
+- Method 3: If you grant permissions by associating IAM with ServiceAccount, create the `Backup` CR to back up cluster data as described below:
 
     {{< copyable "shell-regular" >}}
 
@@ -206,13 +206,13 @@ Depending on which method you choose to grant permissions to the remote storage 
         prefix: my-folder
     ```
 
-    When configuring the `backup-aws-s3.yaml`, note the following:
+When configuring `backup-aws-s3.yaml`, note the following:
 
-    - Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
-    - The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
-    - Some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
-    - For v4.0.8 or a later release, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
-    - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
+- Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
+- The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
+- Some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
+- For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
+- For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
 
 After you create the `Backup` CR, TiDB Operator starts the backup automatically. You can view the backup status by running the following command:
 
