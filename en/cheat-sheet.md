@@ -229,6 +229,14 @@ This document is an overview of the commands used for TiDB cluster management.
 
 ### Patch Resources
 
+* Patch TidbCluster:
+
+  {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n ${namespace} patch tc ${name} --type merge -p '${json_path}'
+    ```
+
 * Patch PV ReclaimPolicy:
 
     {{< copyable "shell-regular" >}}

@@ -67,7 +67,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 0}}}'
     ```
 
     Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `0`.
@@ -75,7 +75,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 0}}'
     ```
 
     Execute the following command to confirm that the PD Pod is deleted:
@@ -101,7 +101,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 1}}}'
     ```
 
     Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `1`.
@@ -109,7 +109,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
     Execute the following command to confirm that the PD Pod is started:
@@ -183,7 +183,7 @@ Execute the following command to set the value of `spec.pd.replicas` to the desi
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc ${cluster_name} -n ${namespace}
+kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}
 ```
 
 ### Step 7. Restart TiDB and TiKV

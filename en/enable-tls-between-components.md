@@ -1514,7 +1514,7 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"mountClusterClientSecret": true},"tikv":{"mountClusterClientSecret": true}}}'
     ```
 
     > **Note:**

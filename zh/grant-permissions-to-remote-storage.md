@@ -43,10 +43,10 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc demo1 -n test1
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tikv":{"annotations":{"iam.amazonaws.com/role":"arn:aws:iam::123456789012:role/user"}}}}'
     ```
 
-    找到 `spec.tikv.annotations`，增加 annotation `iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user`，然后退出编辑，等到 TiKV Pod 重启后，查看 Pod 是否加上了这个 annotation。
+    等到 TiKV Pod 重启后，查看 Pod 是否加上了这个 annotation。
 
 > **注意：**
 >
@@ -79,7 +79,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc demo1 -n test1
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tikv":{"serviceAccount": "tidb-backup-manager"}}}'
     ```
 
     将 `spec.tikv.serviceAccount` 修改为 tidb-backup-manager，等到 TiKV Pod 重启后，查看 Pod 的 `serviceAccountName` 是否有变化。

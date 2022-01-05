@@ -95,7 +95,7 @@ Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc -n ${namespace} ${cluster_name}
+kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
 ```
 
 TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
@@ -122,7 +122,7 @@ Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc -n ${namespace} ${cluster_name}
+kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
 ```
 
 TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
