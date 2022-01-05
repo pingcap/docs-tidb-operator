@@ -5,7 +5,7 @@ summary: Learn how to modify the configuration of TiDB clusters deployed in Kube
 
 # Modify TiDB Cluster Configuration
 
-For a TiDB cluster, you can [update the configuration of components](https://docs.pingcap.com/tidb/stable/dynamic-config/) online using SQL statements, including TiDB, TiKV, and PD, without restarting the cluster components. However, for TiDB clusters deployed in Kubernetes, after you upgrade or restart the cluster, the configurations of some components might be overwritten by the `TidbCluster` CR. This leads to invalid online configuration update.
+For a TiDB cluster, you can [update the configuration of components](https://docs.pingcap.com/tidb/stable/dynamic-config/) online using SQL statements, including TiDB, TiKV, and PD, without restarting the cluster components. However, for TiDB clusters deployed in Kubernetes, after you upgrade or restart the cluster, the configurations updated using SQL statements will be overwritten by those in the `TidbCluster` CR. This leads to the online configuration update being invalid.
 
 This document describes how to modify the configuration of TiDB clusters deployed in Kubernetes. Due to the special nature of PD, you need to separately modify the configuration of PD and other components.
 
