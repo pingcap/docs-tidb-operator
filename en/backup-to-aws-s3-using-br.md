@@ -16,10 +16,10 @@ The backup method described in this document is implemented based on CustomResou
 
 If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to S3-compatible storages.
 
-- To back up a large volume of data at a fast backup speed
+- To back up a large volume of data at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
 
-Otherwise, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
+For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to select an appropriate backup method.
 
 > **Note:**
 >
@@ -30,7 +30,7 @@ Otherwise, refer to [Backup and Restore Overview](backup-restore-overview.md) to
 
 Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
-This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to AWS storage. The following are the detailed steps.
+This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to the AWS storage. The following are the detailed steps.
 
 ### Step 1: Prepare for an ad-hoc backup
 
@@ -42,7 +42,7 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. Grant permissions to the remote storage.
+2. Grant permissions to the remote storage to access.
 
     - If you are using Amazon S3 to backup your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
     - If you are using other S3-compatible storage (such as Ceph and MinIO) to backup your cluster, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
@@ -60,7 +60,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 2: Perform an ad-hoc backup
 
-Depending on which method you choose to grant permissions to the remote storage when prepare for the ad-hoc backup, export your data to a S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage when prepare for the ad-hoc backup, export your data to the S3-compatible storage by doing one of the following:
 
 - Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `Backup` CR, and back up cluster data as described below:
 
@@ -209,7 +209,7 @@ Depending on which method you choose to grant permissions to the remote storage 
     - Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
     - The `acl`, `endpoint`, `storageClass` configuration items of Amazon S3 can be ignored. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
     - Some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
-    - For v4.0.8 or a later release, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
+    - For v4.0.8 or a later release, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
     - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
 
 After you create the `Backup` CR, view the backup status by running the following command:
@@ -226,11 +226,11 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 
 ### Step 1: Prepare for a scheduled full backup
 
-The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-for-ad-hoc-backup).
+The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
 
 ### Step 2: Perform a scheduled full backup
 
-Depending on which method you choose to grant permissions to the remote storage, export your data to a S3-compatible storage by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage, perform a scheduled full backup by doing one of the following:
 
 + Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
 
