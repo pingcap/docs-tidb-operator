@@ -29,8 +29,8 @@ kind: TidbCluster
 metadata:
   name: ${clone-cluster-name}
 spec:
-   cluster:
-   name: ${origin-cluster-name}
+  cluster:
+  name: ${origin-cluster-name}
 ...
 ```
 
