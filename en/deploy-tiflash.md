@@ -116,7 +116,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tiflash":{"replicas": 0}}}
     ```
 
 4. Check the state of TiFlash Pods and TiFlash stores.
@@ -170,7 +170,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiflash"}]'
     ```
 
    To delete the TiFlash StatefulSet, run the following command:

@@ -229,6 +229,14 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
 
 ### Patch 资源
 
+* Patch TidbCluster:
+
+  {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n ${namespace} patch tc ${name} --type merge -p '${json_path}'
+    ```
+
 * Patch PV ReclaimPolicy：
 
     {{< copyable "shell-regular" >}}

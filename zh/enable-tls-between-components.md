@@ -1490,7 +1490,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"mountClusterClientSecret": true},"tikv":{"mountClusterClientSecret": true}}}'
     ```
 
     > **注意：**
