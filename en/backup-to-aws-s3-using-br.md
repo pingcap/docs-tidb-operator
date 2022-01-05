@@ -27,7 +27,9 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 
 ## Ad-hoc backup
 
-Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+Ad-hoc backup supports both full backup and incremental backup.
+
+To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
 This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to the AWS storage. The following are the detailed steps.
 
@@ -211,7 +213,7 @@ Depending on which method you choose to grant permissions to the remote storage 
     - For v4.0.8 or a later release, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
     - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
 
-After you create the `Backup` CR, view the backup status by running the following command:
+After you create the `Backup` CR, TiDB Operator starts the backup automatically. You can view the backup status by running the following command:
 
 {{< copyable "shell-regular" >}}
 
