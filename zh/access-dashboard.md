@@ -204,9 +204,12 @@ spec:
 
 2. 部署 TidbNGMonitoring CR。
     
-    将如下配置保存为 `tidb_ng_monitoring.yaml` 文件，其中 `${cluster_name}` 为 TidbCluster CR 的名字，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
+    执行下面命令来部署 TidbNGMonitoring CR，其中 `${cluster_name}` 为 TidbCluster CR 的名字，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
 
-    ```yaml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF | kubectl apply -n ${ns} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbNGMonitoring
     metadata:
@@ -221,14 +224,6 @@ spec:
           storage: 10Gi
         version: v5.4.0
         baseImage: pingcap/ng-monitoring
-    ```
-
-    执行下面命令来部署 TidbNGMonitoring CR：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    kubectl apply -f tidb_ng_monitoring.yaml
     ```
 
     关于 TidbNGMonitoring CR 的更多配置项可以参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
