@@ -39,7 +39,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
 
     If any TiKV Pod is found, for each TiKV Pod, perform the following operations:
 
-    1. [Migrate the TiKV region leader](#migrate-tikv-region-leader) to another Pod.
+    1. [Evict the TiKV Region Leader](#Evict-tikv-region-leader) to another Pod.
 
     2. Increase the maximum offline duration for TiKV Pods by configuring `max-store-down-time` of PD. After you maintain and recover the Kubernetes node within that duration, all TiKV Pods on that node will be automatically recovered.
 
@@ -59,7 +59,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-    If any PD Pod is found, for each PD Pod, [migrate the PD leader](#migrate-pd-leader) to other Pods.
+    If any PD Pod is found, for each PD Pod, [transfer the PD leader](#transfer-pd-leader) to other Pods.
 
 4. Confirm that the node to be maintained no longer has any TiKV Pod or PD Pod:
 
@@ -87,7 +87,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
     kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-7. When the maintenance is completed, after you recover the node, you need to make sure that the node is in a healthy state:
+7. When the maintenance is completed, after you recover the node, make sure that the node is in a healthy state:
 
     {{< copyable "shell-regular" >}}
 
@@ -95,7 +95,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
     watch kubectl get node ${node_name}
     ```
 
-    After the node goes into the `Ready` state, you can proceed with the following operations.
+    After the node goes into the `Ready` state, proceed with the following operations.
 
 8. Lift the scheduling restriction on the node:
 
@@ -105,7 +105,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
     kubectl uncordon ${node_name}
     ```
 
-9. See whether all Pods get back to normal and are running:
+9. Confirm that all Pods are running normally:
 
     {{< copyable "shell-regular" >}}
 
@@ -177,7 +177,7 @@ If a node will be offline for a long time, to minimize the impact on your applic
 
 ### If the node storage can be automatically migrated
 
-If the node storage can be automatically migrated (such as EBS), to reschedule the PD Pod, you do not need to delete the PD member. You can achieve rescheduling by migrating the PD Leader to another Pod and then deleting the old Pod.
+If the node storage can be automatically migrated (such as EBS), to reschedule the PD Pod, you do not need to delete the PD member. You only need to transfer the PD Leader to another Pod and delete the old Pod.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -195,7 +195,7 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-3. [Migrate the PD Leader](#migrate-pd-leader) to another Pod.
+3. [Transfer the PD Leader](#transfer-pd-leader) to another Pod.
 
 4. Delete the old PD Pod:
 
@@ -233,7 +233,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep pd
     ```
 
-3. [Migrate the PD Leader](#migrate-pd-leader) to another Pod.
+3. [Transfer the PD Leader](#transfer-pd-leader) to another Pod.
 
 4. Take the PD Pod offline:
 
@@ -243,7 +243,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     pd-ctl member delete name ${pod_name}
     ```
 
-5. Confirm that the PD Member is deleted:
+5. Confirm that the PD member is deleted:
 
     {{< copyable "shell-regular" >}}
 
@@ -291,7 +291,7 @@ If a node will be offline for a long time, to minimize the impact on your applic
 
 ### If the node storage can be automatically migrated
 
-If the node storage can be automatically migrated (such as EBS), to reschedule the TiKV Pod, you do not need to delete the whole TiKV store. You can achieve rescheduling by migrating the Region Leader to another Pod and then deleting the old Pod.
+If the node storage can be automatically migrated (such as EBS), to reschedule the TiKV Pod, you do not need to delete the whole TiKV store. You only need to evict the TiKV Region Leader to another Pod and delete the old Pod.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -309,7 +309,7 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. [Migrate the TiKV Region Leader](#migrate-tikv-region-leader) to another Pod.
+3. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
 
 4. Delete the old TiKV Pod:
 
@@ -355,7 +355,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. [Migrate the TiKV Region Leader](#migrate-tikv-region-leader) to another Pod.
+3. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
 
 4. Take the TiKV Pod offline.
 
@@ -429,7 +429,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     pd-ctl scheduler remove evict-leader-scheduler-${ID}
     ```
 
-## Migrate PD Leader
+## Transfer PD Leader
 
 1. Check the PD Leader:
 
@@ -439,7 +439,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     pd-ctl member leader show
     ```
 
-2. If the Leader Pod is on the node to be maintained, you need to migrate the PD Leader to another Pod:
+2. If the Leader Pod is on the node to be maintained, you need to transfer the PD Leader to a Pod on another node:
 
     {{< copyable "shell-regular" >}}
 
@@ -449,7 +449,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
     `${pod_name}` is the name of the PD Pod on another node.
 
-## Migrate TiKV Region Leader
+## Evict TiKV Region Leader
 
 1. Check `store-id` of the TiKV Pod:
 
