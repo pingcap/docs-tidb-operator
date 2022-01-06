@@ -11,7 +11,7 @@ summary: 介绍如何为使用云上存储的 TiDB 集群更换节点。
 
 > **注意：**
 >
-> 其它云上环境请参考[GCP GKE](deploy-on-gcp-gke.md)、[Azure AKS](deploy-on-azure-aks.md)、[阿里云 ACK](deploy-on-alibaba-cloud.md)。
+> 其它公有云环境请参考[GCP GKE](deploy-on-gcp-gke.md)、[Azure AKS](deploy-on-azure-aks.md)、[阿里云 ACK](deploy-on-alibaba-cloud.md) 操作节点组。
 
 ## 前置条件
 
