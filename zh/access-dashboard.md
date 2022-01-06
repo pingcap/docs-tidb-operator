@@ -198,9 +198,9 @@ spec:
 
 持续性能分析允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据，并且持久监控节点。收集到的性能数据可显示为火焰图、有向无环图等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例 CPU 资源消耗细节。
 
-你需要使用 v1.3.0 版本及以上的 TiDB Operator 以及 v5.4.0 版本及以上的 TiDB 集群，并使用 TiDB Operator 部署 TidbNGMonitoring CR 才可以开启持续分析功能。
+你需要使用 v1.3.0 版本及以上的 TiDB Operator 部署 TidbNGMonitoring CR 才可以开启持续分析功能。
 
-1. 部署 TiDB 集群。
+1. 参照[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)部署 TidbMonitor CR。
 
 2. 部署 TidbNGMonitoring CR。
     
@@ -233,7 +233,7 @@ spec:
 
     关于 TidbNGMonitoring CR 的更多配置项可以参考 [tidb-operator 中的示例](TODO)。
 
-3. 启用持续性能分析。
+2. 启用持续性能分析。
    
     1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
     2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
