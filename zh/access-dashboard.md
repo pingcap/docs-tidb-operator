@@ -231,6 +231,8 @@ spec:
     kubectl apply -f tidb_ng_monitoring.yaml
     ```
 
+    关于 TidbNGMonitoring CR 的更多配置项可以参考 [tidb-operator 中的示例](TODO)。
+
 3. 启用持续性能分析。
    
     1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
