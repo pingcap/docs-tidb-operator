@@ -39,7 +39,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
 
     If any TiKV Pod is found, for each TiKV Pod, perform the following operations:
 
-    1. [Evict the TiKV Region Leader](#Evict-tikv-region-leader) to another Pod.
+    1. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
 
     2. Increase the maximum offline duration for TiKV Pods by configuring `max-store-down-time` of PD. After you maintain and recover the Kubernetes node within that duration, all TiKV Pods on that node will be automatically recovered.
 
