@@ -203,7 +203,7 @@ spec:
 1. 参照[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)部署 TidbMonitor CR。
 
 2. 部署 TidbNGMonitoring CR。
-    
+
     执行以下命令部署 TidbNGMonitoring CR，其中， `${cluster_name}` 为 TidbCluster CR 的名称，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
 
     {{< copyable "shell-regular" >}}
@@ -218,7 +218,7 @@ spec:
       clusters:
       - name: ${cluster_name}
         ns: ${cluster_ns}
-      
+
       ngMonitoring:
         requests:
           storage: 10Gi
@@ -229,8 +229,8 @@ spec:
     关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
 
 3. 启用持续性能分析。
-   
-    1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
+
+    1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
     2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
     3. 点击**保存** (Save)。
 
