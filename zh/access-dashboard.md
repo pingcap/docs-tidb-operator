@@ -204,7 +204,7 @@ spec:
 
 2. 部署 TidbNGMonitoring CR。
     
-    执行下面命令来部署 TidbNGMonitoring CR，其中 `${cluster_name}` 为 TidbCluster CR 的名字，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
+    执行以下命令部署 TidbNGMonitoring CR，其中， `${cluster_name}` 为 TidbCluster CR 的名称，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
 
     {{< copyable "shell-regular" >}}
 
@@ -226,7 +226,7 @@ spec:
         baseImage: pingcap/ng-monitoring
     ```
 
-    关于 TidbNGMonitoring CR 的更多配置项可以参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
+    关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
 
 3. 启用持续性能分析。
    
