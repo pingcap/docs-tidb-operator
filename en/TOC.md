@@ -68,6 +68,7 @@
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
     - [View TiDB Logs](view-logs.md)
+    - [Modify TiDB Cluster Configuration](modify-tidb-configuration.md)
     - [Configure Automatic Failover](use-auto-failover.md)
     - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
