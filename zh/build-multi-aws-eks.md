@@ -33,7 +33,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 1. 定义集群 1 的配置文件，并创建集群 1。
 
-    将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`$ {cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
+    将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
 
     ```yaml
     apiVersion: eksctl.io/v1alpha5
@@ -65,7 +65,11 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
     需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
 
-    后文中，`${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，`${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，`${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
+    后文中：
+
+    - `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字。
+    - `${region_1}`、`${region_2}` 与 `${region_3}` 分别代表三个集群所处的 Region。
+    - `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
 3. 在所有集群创建完毕后，你需要获取每个集群的 Kubernetes Context，以方便后续使用 `kubectl` 命令操作每个集群。
 
