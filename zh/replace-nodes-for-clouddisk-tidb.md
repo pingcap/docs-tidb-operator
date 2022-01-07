@@ -56,7 +56,6 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
     > **注意：**
     >
     > * `availabilityZones` 需要和要替换的节点组保持一致。
-    > * 新节点 Kubernetes 版本和 `Kubernetes Control Plane` 版本相同
     > * 本例仅以 `tidb-1b-new`、`tikv-1a-new` 节点组为例，请自行配置参数。
 
     如果要升级节点规格修改 `instanceType`。如果要升级节点 Kubernetes 版本，请先升级 `Kubernetes Control Plane` 版本，可以参考[更新集群](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html)
