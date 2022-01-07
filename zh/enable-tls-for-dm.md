@@ -15,9 +15,9 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
     - 为 DM-master/DM-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-dm-client-secret`
 
-    > **注意：**
-    >
-    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 DM 集群部署失败。
+   > **注意：**
+   >
+   > 创建的 Secret 对象必须符合上述命名规范，否则将导致 DM 集群部署失败。
 
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
 3. 配置 `dmctl` 连接集群。
@@ -35,7 +35,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 1. 首先下载 `cfssl` 软件并初始化证书颁发机构：
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p ~/bin
@@ -109,7 +109,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 4. 使用定义的选项生成 CA：
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
@@ -117,19 +117,19 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 5. 生成 Server 端证书。
 
-    这里需要为每个 DM 集群的组件生成一套 Server 端证书。
+   这里需要为每个 DM 集群的组件生成一套 Server 端证书。
 
     - DM-master Server 端证书
 
-        首先生成默认的 `dm-master-server.json` 文件：
+      首先生成默认的 `dm-master-server.json` 文件：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         cfssl print-defaults csr > dm-master-server.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+      然后编辑这个文件，修改 `CN`，`hosts` 属性：
 
         ``` json
         ...
@@ -150,11 +150,11 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         ...
         ```
 
-        其中 `${cluster_name}` 为 DM 集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+      其中 `${cluster_name}` 为 DM 集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 DM-master Server 端证书：
+      最后生成 DM-master Server 端证书：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal dm-master-server.json | cfssljson -bare dm-master-server
@@ -162,15 +162,15 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     - DM-worker Server 端证书
 
-        首先生成默认的 `dm-worker-server.json` 文件：
+      首先生成默认的 `dm-worker-server.json` 文件：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         cfssl print-defaults csr > dm-worker-server.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+      然后编辑这个文件，修改 `CN`，`hosts` 属性：
 
         ``` json
         ...
@@ -191,11 +191,11 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         ...
         ```
 
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+      其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 DM 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 DM-worker Server 端证书：
+      最后生成 DM-worker Server 端证书：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal dm-worker-server.json | cfssljson -bare dm-worker-server
@@ -203,15 +203,15 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 6. 生成 Client 端证书。
 
-    首先生成默认的 `client.json` 文件：
+   首先生成默认的 `client.json` 文件：
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > client.json
     ```
 
-    然后编辑这个文件，修改 `CN`，`hosts` 属性，`hosts` 可以留空：
+   然后编辑这个文件，修改 `CN`，`hosts` 属性，`hosts` 可以留空：
 
     ``` json
     ...
@@ -220,7 +220,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
     ...
     ```
 
-    最后生成 Client 端证书：
+   最后生成 Client 端证书：
 
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
@@ -228,11 +228,11 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 7. 创建 Kubernetes Secret 对象。
 
-    假设你已经按照上述文档为每个组件创建了一套 Server 端证书，并为各个客户端创建了一套 Client 端证书。通过下面的命令为 DM 集群创建这些 Secret 对象：
+   假设你已经按照上述文档为每个组件创建了一套 Server 端证书，并为各个客户端创建了一套 Client 端证书。通过下面的命令为 DM 集群创建这些 Secret 对象：
 
     * DM-master 集群证书 Secret：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         kubectl create secret generic ${cluster_name}-dm-master-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-master-server.pem --from-file=tls.key=dm-master-server-key.pem --from-file=ca.crt=ca.pem
@@ -240,7 +240,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     * DM-worker 集群证书 Secret：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         kubectl create secret generic ${cluster_name}-dm-worker-cluster-secret --namespace=${namespace} --from-file=tls.crt=dm-worker-server.pem --from-file=tls.key=dm-worker-server-key.pem --from-file=ca.crt=ca.pem
@@ -248,37 +248,37 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
     * Client 证书 Secret：
 
-        {{< copyable "shell-regular" >}}
+      {{< copyable "shell-regular" >}}
 
         ``` shell
         kubectl create secret generic ${cluster_name}-dm-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    这里给 DM-master/DM-worker 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
+   这里给 DM-master/DM-worker 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
 #### 使用 `cert-manager` 系统颁发证书
 
 1. 安装 cert-manager。
 
-    请参考官网安装：[cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
+   请参考官网安装：[cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
 
 2. 创建一个 Issuer 用于给 DM 集群颁发证书。
 
-    为了配置 `cert-manager` 颁发证书，必须先创建 Issuer 资源。
+   为了配置 `cert-manager` 颁发证书，必须先创建 Issuer 资源。
 
-    首先创建一个目录保存 `cert-manager` 创建证书所需文件：
+   首先创建一个目录保存 `cert-manager` 创建证书所需文件：
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p cert-manager
     cd cert-manager
     ```
 
-    然后创建一个 `dm-cluster-issuer.yaml` 文件，输入以下内容：
+   然后创建一个 `dm-cluster-issuer.yaml` 文件，输入以下内容：
 
     ``` yaml
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -286,7 +286,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -301,7 +301,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-dm-issuer
@@ -311,15 +311,15 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
         secretName: ${cluster_name}-ca-secret
     ```
 
-    其中 `${cluster_name}` 为集群的名字，上面的文件创建三个对象：
+   其中 `${cluster_name}` 为集群的名字，上面的文件创建三个对象：
 
     - 一个 SelfSigned 类型的 Isser 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
     - 一个 Certificate 对象，`isCa` 属性设置为 `true`；
     - 一个可以用于颁发 DM 组件间 TLS 证书的 Issuer。
 
-    最后执行下面的命令进行创建：
+   最后执行下面的命令进行创建：
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f dm-cluster-issuer.yaml
@@ -327,14 +327,14 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
 
 3. 创建 Server 端证书。
 
-    在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
+   在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
 
-    我们需要为每个组件创建一个 Server 端证书，并且为它们的 Client 创建一套公用的 Client 端证书。
+   我们需要为每个组件创建一个 Server 端证书，并且为它们的 Client 创建一套公用的 Client 端证书。
 
     - DM-master 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-master-cluster-secret
@@ -343,8 +343,9 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
           secretName: ${cluster_name}-dm-master-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -368,7 +369,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
             group: cert-manager.io
         ```
 
-        其中 `${cluster_name}` 为集群的名字：
+      其中 `${cluster_name}` 为集群的名字：
 
         - `spec.secretName` 请设置为 `${cluster_name}-dm-master-cluster-secret`；
         - `usages` 请添加上  `server auth` 和 `client auth`；
@@ -377,14 +378,14 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-master-cluster-secret` 的 Secret 对象供 DM 集群的 DM-master 组件使用。
+      创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-master-cluster-secret` 的 Secret 对象供 DM 集群的 DM-master 组件使用。
 
     - DM-worker 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-worker-cluster-secret
@@ -393,8 +394,9 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
           secretName: ${cluster_name}-dm-worker-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -418,7 +420,7 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
             group: cert-manager.io
         ```
 
-        其中 `${cluster_name}` 为集群的名字：
+      其中 `${cluster_name}` 为集群的名字：
 
         - `spec.secretName` 请设置为 `${cluster_name}-dm-worker-cluster-secret`；
         - `usages` 请添加上  `server auth` 和 `client auth`；
@@ -427,14 +429,14 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-cluster-secret` 的 Secret 对象供 DM 集群的 DM-worker 组件使用。
+      创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-dm-cluster-secret` 的 Secret 对象供 DM 集群的 DM-worker 组件使用。
 
     - 一套 DM 集群组件的 Client 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-client-secret
@@ -443,8 +445,9 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
           secretName: ${cluster_name}-dm-client-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - client auth
@@ -454,15 +457,15 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
             group: cert-manager.io
         ```
 
-        其中 `${cluster_name}` 为集群的名字：
+      其中 `${cluster_name}` 为集群的名字：
 
         - `spec.secretName` 请设置为 `${cluster_name}-dm-client-secret`；
         - `usages` 请添加上  `client auth`；
         - `dnsNames` 和 `ipAddresses` 不需要填写；
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-cluster-client-secret` 的 Secret 对象供 DM 组件的 Client 使用。
+      创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-cluster-client-secret` 的 Secret 对象供 DM 组件的 Client 使用。
 
 ### 第二步：部署 DM 集群
 
@@ -529,7 +532,7 @@ cd /var/lib/dm-master-tls
 
 下面部分主要介绍如何配置 DM 同步开启了 MySQL 客户端 TLS 验证的 MySQL/TiDB 数据库。如需了解如何为 TiDB 的 MySQL 客户端开启 TLS，可以参考[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
-### 第一步：创建各 MySQL 客户端 TLS 的 Kubernetes Secret 对象 
+### 第一步：创建各 MySQL 客户端 TLS 的 Kubernetes Secret 对象
 
 到这里假设你已经部署了开启 MySQL 客户端 TLS 的 MySQL/TiDB 数据库。通过下面的命令为 TiDB 集群创建 Secret 对象：
 
