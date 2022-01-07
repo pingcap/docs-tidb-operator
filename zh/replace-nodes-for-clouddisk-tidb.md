@@ -67,7 +67,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 
 4. `cluster.yaml` 中删除**不要更换**的节点组（留下要更换的原节点组，因为这些最后要被删除）
 
-   本例中留下 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行删除。
+   本例中留下 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行调整。
 
 5. 执行命令：
 
@@ -81,6 +81,18 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
     >
     > 该命令只创建新的节点组，已经存在的节点组会忽略，不会重复创建，更不会删除不存在的节点组。
 
+6. 执行下面命令，确认新节点已加入：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl get no -l alpha.eksctl.io/nodegroup-name=${new_nodegroup1}
+    kubectl get no -l alpha.eksctl.io/nodegroup-name=${new_nodegroup2}
+    ...
+    ```
+
+    其中 `${new_nodegroup}` 是新节点组名称，本例中是 `tidb-1b-new`、`tikv-1a-new`，请根据情况自行调整。
+
 ## 第二步：使用 `kubectl cordon` 命令标记原节点组节点为不可调度，防止新的 Pod 调度上去
 
 {{< copyable "shell-regular" >}}
@@ -91,7 +103,7 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 ...
 ```
 
-其中 `${origin_nodegroup}` 是原节点组名称，本例中是 `tidb-1b`、`tikv-1a`，请根据情况自行删除。
+其中 `${origin_nodegroup}` 是原节点组名称，本例中是 `tidb-1b`、`tikv-1a`，请根据情况自行调整。
 
 ## 第三步：滚动重启 TiDB 集群
 
