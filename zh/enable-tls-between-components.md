@@ -16,6 +16,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致各组件部署失败。
 
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
+
+    > **注意：**
+    >
+    > 不能在集群创建后修改此字段，否则将导致集群升级失败。
+
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
 > **注意：**
