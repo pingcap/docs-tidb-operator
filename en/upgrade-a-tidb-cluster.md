@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Perform a Rolling Update to a TiDB Cluster in Kubernetes
-summary: Learn how to perform a rolling update to a TiDB cluster in Kubernetes.
-=======
 title: Upgrade a TiDB Cluster in Kubernetes
 summary: Learn how to upgrade a TiDB cluster in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster/']
->>>>>>> 4275df0d (en, zh: optimize upgrade-a-tidb-cluster (#1502))
 ---
 
 # Upgrade a TiDB Cluster in Kubernetes
