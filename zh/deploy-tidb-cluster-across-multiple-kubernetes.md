@@ -190,7 +190,7 @@ EOF
 
     ```bash
     cat <<EOF | kubectl apply -f -
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -198,7 +198,7 @@ EOF
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -269,7 +269,7 @@ EOF
 
         ```bash
         cat << EOF | kubectl apply -f -
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
           name: ${cluster_name}-tidb-issuer
@@ -298,7 +298,7 @@ EOF
 
        ```bash
        cat << EOF | kubectl apply -f -
-       apiVersion: cert-manager.io/v1alpha2
+       apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
          name: ${cluster_name}-tidb-issuer
@@ -386,7 +386,7 @@ cluster_domain="cluster2.com"
 
 ```bash
 cat << EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${cluster_name}-pd-cluster-secret
@@ -395,8 +395,9 @@ spec:
   secretName: ${cluster_name}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
-  organization:
-  - PingCAP
+  subject:
+    organizations:
+    - PingCAP
   commonName: "TiDB"
   usages:
     - server auth
