@@ -69,7 +69,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 
    本例中留下 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行删除。
 
-6. 执行命令：
+5. 执行命令：
 
     {{< copyable "shell-regular" >}}
 
