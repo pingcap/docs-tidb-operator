@@ -1,11 +1,11 @@
 ---
-title: 为使用云上存储的 TiDB 集群更换节点
-summary: 介绍如何为使用云上存储的 TiDB 集群更换节点。
+title: 为使用云存储的 TiDB 集群更换节点
+summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 ---
 
-# 为使用云上存储的 TiDB 集群更换节点
+# 为使用云存储的 TiDB 集群更换节点
 
-本文介绍一种在不停机情况下为使用云上存储的 TiDB 集群更换、升级节点的方法。
+本文介绍一种在不停机情况下为使用云存储的 TiDB 集群更换、升级节点的方法。你可以为 TiDB 集群更换更高节点规格，也可以为节点升级新版本 Kubernetes。
 
 本文以 `Amazon EKS` 为例，介绍了如何创建新的节点组，然后使用滚动重启迁移 TiDB 集群到新节点组。
 
@@ -16,11 +16,11 @@ summary: 介绍如何为使用云上存储的 TiDB 集群更换节点。
 ## 前置条件
 
 - 云上已经存在一个 TiDB 集群。如果没有，可参考 [Amazon EKS](deploy-on-aws-eks.md) 进行部署。
-- TiDB 集群使用云上存储作为数据盘。
+- TiDB 集群使用云存储作为数据盘。
 
 ## 第一步：创建新的节点组
 
-1. 找到云上 TiDB 集群的 `eksctl` 部署配置文件 `cluster.yaml`, 并拷贝保存为 `cluster-new.yaml`
+1. 找到云上 TiDB 集群的 `eksctl` 部署配置文件 `cluster.yaml`, 并拷贝保存为 `cluster-new.yaml`。
 
 2. `cluster-new.yaml` 加入新节点组 `tidb-1b-new`、`tikv-1a-new`：
 
@@ -56,15 +56,20 @@ summary: 介绍如何为使用云上存储的 TiDB 集群更换节点。
     > **注意：**
     >
     > * `availabilityZones` 不能修改。
+    > * 新节点 Kubernetes 版本和 `Kubernetes Control Plane` 版本相同
     > * 本例仅以 `tidb-1b-new`、`tikv-1a-new` 节点组为例，请自行配置参数。
+
+    如果要升级节点规格修改 `instanceType`。如果要升级节点 Kubernetes 版本，请先升级 `Kubernetes Control Plane` 版本，可以参考[更新集群](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html)
 
 3. `cluster-new.yaml` 中删除要更换的原节点组
 
     本例中删除 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行删除。
 
-4. `cluster.yaml` 中删除需要保留的节点组（留下要更换的原节点组，因为这些最后要被删除）
+4. `cluster.yaml` 中删除**不要更换**的节点组（留下要更换的原节点组，因为这些最后要被删除）
 
-5. 执行命令：
+   本例中留下 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行删除。
+
+6. 执行命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -90,12 +95,22 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 
 ## 第三步：滚动重启 TiDB 集群
 
-参考[重启 Kubernetes 上的 TiDB 集群](restart-a-tidb-cluster.md)滚动重启 TiDB 集群。
+参考[重启 Kubernetes 上的 TiDB 集群](restart-a-tidb-cluster.md#优雅滚动重启-tidb-集群组件的所有-pod)滚动重启 TiDB 集群。
 
 ## 第四步：删除原来节点组
+
+通过下面命令确认是否有 TiDB/PD/TiKV Pod 遗留在原节点组节点上：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-eksctl delete nodegroup -f cluster.yaml
+kubectl get po -n ${namespace} -owide
+```
+
+最后，运行下面命令删除原节点组：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+eksctl delete nodegroup -f cluster.yaml --approve
 ```
