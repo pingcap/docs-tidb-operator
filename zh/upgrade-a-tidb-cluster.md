@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 滚动升级 Kubernetes 上的 TiDB 集群
-summary: 介绍如何滚动升级 Kubernetes 上的 TiDB 集群。
-=======
 title: 升级 Kubernetes 上的 TiDB 集群
 summary: 介绍如何升级 Kubernetes 上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster/']
->>>>>>> 4275df0d (en, zh: optimize upgrade-a-tidb-cluster (#1502))
 ---
 
 # 升级 Kubernetes 上的 TiDB 集群
