@@ -22,6 +22,11 @@ To enable TLS between components of the DM cluster, perform the following steps:
     > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the DM cluster will fail.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
+
+    > **Note:**
+    >
+    > This field can't be modified after the cluster is created, otherwise the cluster upgrade will fail.
+
 3. Configure `dmctl` to connect to the cluster.
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the DM cluster:

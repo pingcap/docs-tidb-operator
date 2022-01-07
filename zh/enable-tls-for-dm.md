@@ -15,11 +15,16 @@ TiDB Operator 从 v1.2 开始已经支持为 Kubernetes 上 DM 集群组件间�
     - 为 DM-master/DM-worker 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-dm-client-secret`
 
-   > **注意：**
-   >
-   > 创建的 Secret 对象必须符合上述命名规范，否则将导致 DM 集群部署失败。
+    > **注意：**
+    >
+    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 DM 集群部署失败。
 
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
+
+    > **注意：**
+    >
+    > 不能在集群创建后修改此字段，否则将导致集群升级失败。
+
 3. 配置 `dmctl` 连接集群。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 DM 集群颁发证书，这两种方式分别为：
