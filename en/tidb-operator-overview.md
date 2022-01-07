@@ -44,7 +44,7 @@ After the deployment is complete, see the following documents to use, operate, a
 
 + [Access the TiDB Cluster](access-tidb.md)
 + [Scale TiDB Cluster](scale-a-tidb-cluster.md)
-+ [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-using-tidbcluster-cr)
++ [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 + [Change the Configuration of TiDB Cluster](configure-a-tidb-cluster.md)
 + [Back up and Restore a TiDB Cluster](backup-restore-overview.md)
 + [Automatic Failover](use-auto-failover.md)
