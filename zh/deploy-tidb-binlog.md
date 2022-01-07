@@ -343,7 +343,7 @@ spec:
 
     其中 `${pump_replicas}` 是你想缩容至的目标副本数。
 
-2. 等待 Pump Pod 自动下线被删除。运行以下命令查看 Pod 状态：
+2. 等待 Pump Pod 自动下线被删除，运行以下命令观察：
 
    {{< copyable "shell-regular" >}}
 
