@@ -7,7 +7,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 
 本文介绍一种在不停机情况下为使用云存储的 TiDB 集群更换、升级节点的方法。你可以为 TiDB 集群更换更高节点规格，也可以为节点升级新版本 Kubernetes。
 
-本文以 `Amazon EKS` 为例，介绍了如何创建新的节点组，然后使用滚动重启迁移 TiDB 集群到新节点组。
+本文以 `Amazon EKS` 为例，介绍了如何创建新的节点组，然后使用滚动重启迁移 TiDB 集群到新节点组，用于 TiKV 或者 TiDB 更换计算资源更多的节点组，EKS 升级等场景。
 
 > **注意：**
 >
@@ -55,7 +55,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
     
     > **注意：**
     >
-    > * `availabilityZones` 不能修改。
+    > * `availabilityZones` 需要和要替换的节点组保持一致。
     > * 新节点 Kubernetes 版本和 `Kubernetes Control Plane` 版本相同
     > * 本例仅以 `tidb-1b-new`、`tikv-1a-new` 节点组为例，请自行配置参数。
 
