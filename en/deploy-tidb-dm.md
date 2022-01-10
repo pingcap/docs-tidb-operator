@@ -195,4 +195,4 @@ For more service exposure methods, refer to [Access the TiDB Cluster](access-tid
 ## What’s next
 
 - To migrate MySQL data to your TiDB cluster using DM in Kubernetes, see [Migrate MySQL Data to TiDB Cluster Using DM](use-tidb-dm.md).
-- - To enable TLS between components of the DM cluster in Kubernetes, see [Enable TLS for DM](enable-tls-for-dm.md).
+- To enable TLS between components of the DM cluster in Kubernetes, see [Enable TLS for DM](enable-tls-for-dm.md).
