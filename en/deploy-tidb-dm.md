@@ -51,6 +51,7 @@ metadata:
   namespace: ${namespace}
 spec:
   version: v5.3.0
+  configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -65,9 +66,8 @@ spec:
     storageSize: "10Gi"
     requests:
       cpu: 1
-    config:
-      rpc-timeout: 40s
-
+    config: |
+      rpc-timeout = "40s"
 ```
 
 #### Configure DM-worker
@@ -89,8 +89,8 @@ spec:
     storageSize: "100Gi"
     requests:
       cpu: 1
-    config:
-      keepalive-ttl: 15
+    config: |
+      keepalive-ttl = 15
 
 ```
 
