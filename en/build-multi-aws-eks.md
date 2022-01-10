@@ -137,3 +137,273 @@ To connect the three clusters, you need to create a VPC peering connection betwe
 ### Update the security groups for the instances
 
 1. Update the security group for Cluster 1.
+
+    1. Enter the AWS Security Groups Console and select the security group of Cluster 1. The name of the security group is similar to `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
+    2. Add inbound rules in the security group to allow traffic from Cluster 2 and Cluster 3.
+
+        | Type        | Protocol | Port range | Source                 | Descrption                                    |
+        | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
+        | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
+
+2. Follow the same procedure in Step 1 for Cluster 2 and Cluster 3.
+
+### Configure load balancers
+
+Each cluster needs to expose its CoreDNS service to other clusters via a load balancer. This sections describes how to configure load balancers.
+
+1. Create the load balancer service definition file `dns-lb.yaml` as follows:
+
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        k8s-app: kube-dns
+      name: across-cluster-dns-tcp
+      namespace: kube-system
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+        service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+        service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    spec:
+      ports:
+      - name: dns
+        port: 53
+        protocol: TCP
+        targetPort: 53
+      selector:
+        k8s-app: kube-dns
+      type: LoadBalancer
+    ```
+
+2. Deploy the load balancer service in each cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_1} apply -f dns-lb.yaml
+    kubectl --context ${context_2} apply -f dns-lb.yaml
+    kubectl --context ${context_3} apply -f dns-lb.yaml
+    ```
+
+3. Obtain the load balancer name of each cluster, and wait for all load balancers to become `Active`.
+
+    Obtain the load balancer names by running the following commands:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    ```
+
+    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", the load balancer is in `Active` state.
+
+    {{< copyable "shell-regular" >}}
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    aws elbv2 describe-load-balancers --names ${lb_name_1} --region ${region_1} --query 'LoadBalancers[*].State' --output text
+    aws elbv2 describe-load-balancers --names ${lb_name_2} --region ${region_2} --query 'LoadBalancers[*].State' --output text
+    aws elbv2 describe-load-balancers --names ${lb_name_3} --region ${region_3} --query 'LoadBalancers[*].State' --output text
+    ```
+
+    <details>
+    <summary>Expected output</summary>
+    <pre><code>
+    active
+    active
+    active</code></pre>
+    </details>
+
+4. Check the IP address associated with the load balancer of each cluster.
+
+    Check the IP address associated with the load balancer of Cluster 1:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    aws ec2 describe-network-interfaces --region ${region_1} --filters Name=description,Values="ELB net/${lb_name_1}*" --query  'NetworkInterfaces[*].PrivateIpAddress' --output text
+    ```
+
+    <details>
+    <summary>Expected output</summary>
+    <pre><code>10.1.175.233 10.1.144.196</code></pre>
+    </details>
+
+    Repeat the same step for Cluster 2 and Cluster 3.
+
+    In the following sections, `${lb_ip_list_1}`, `${lb_ip_list_2}`, and `${lb_ip_list_3}` refer to the IP address associated with the load balancer of each cluster.
+
+    Load balancers in different Region might have different numbers of IP addresses. For example, in the above example, `${lb_ip_list_1}` is `10.1.175.233 10.1.144.196`.
+
+### Configure CoreDNS
+
+To allow Pods in a cluster to access services in other clusters, you need to configure CoreDNS for each cluster to forward DNS requests to the CoreDNS services of other clusters.
+
+You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDNS. For information on more configuration items, refer to [Customizing DNS Service](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns).
+
+1. Modify the CoreDNS configuration of Cluster 1.
+
+    1. Back up the current CoreDNS configuration:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        kubectl --context ${context_1} -n kube-system get configmap coredns -o yaml > ${cluster_1}-coredns.yaml.bk
+        ```
+
+    2. Modify the ConfigMap:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        kubectl --context ${context_1} -n kube-system edit configmap coredns
+        ```
+
+        Modify the `data.Corefile` field as follows. In the example below, `${namespace_2}` and `${namespace_3}` are the namespaces that Cluster 2 and Cluster 3 will deploy TidbCluster in.
+
+        > **Warning:**
+        >
+        > Because you cannot modify the cluster domain of an EKS cluster, the namespace is required as an identifier for forwarding DNS requests. Therefore, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` **must not** be the same.
+
+        ```yaml
+        apiVersion: v1
+        kind: ConfigMap
+        # ...
+        data:
+          Corefile: |
+             .:53 {
+                # The default configuration. Do not modify.
+             }
+             ${namspeace_2}.svc.cluster.local:53 {
+                 errors
+                 cache 30
+                 forward . ${lb_ip_list_2} {
+                     force_tcp
+                 }
+             }
+             ${namspeace_3}.svc.cluster.local:53 {
+                 errors
+                 cache 30
+                 forward . ${lb_ip_list_3} {
+                     force_tcp
+                 }
+             }
+        ```
+
+    3. Wait for the CoreDNS to reload the configuration. It might take around 30 seconds.
+
+2. Follow the procedures in Step 1, and modify the CoreDNS configuration of Cluster 2 and Cluster 3.
+
+    In the CoreDNS configuration of each cluster, you need to perform the following operations:
+
+    - Configure `${namespace_2}` and `${namespace_3}` to the namespace of each cluster.
+    - Configure the IP address to the IP addresses of the load balancers of other two clusters.
+
+In the following sections, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` refer to the namespaces that each cluster will deploy TidbCluster in.
+
+## Step 3. Verify the network connectivity
+
+Before you deploy the TiDB cluster, you need to verify that the network between EKS clusters is connected.
+
+1. Save the following content in the `sample-nginx.yaml` file.
+
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: sample-nginx
+      labels:
+        app: sample-nginx
+    spec:
+      hostname: sample-nginx
+      subdomain: sample-nginx-peer
+      containers:
+      - image: nginx:1.21.5
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        ports:
+          - name: http
+            containerPort: 80
+      restartPolicy: Always
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: sample-nginx-peer
+    spec:
+      ports:
+        - port: 80
+      selector:
+        app: sample-nginx
+      clusterIP: None
+    ```
+
+2. Deploy the nginx service in the namespaces of three clusters.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_1} -n ${namespace_1} apply -f sample-nginx.yaml
+
+    kubectl --context ${context_2} -n ${namespace_2} apply -f sample-nginx.yaml
+
+    kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
+    ```
+
+3. Access the nginx services of other clusters to verify the network connectivity.
+
+    The following command verifies the network from Cluster 1 to Cluster 2:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+    ```
+
+    If the output is the welcome page of nginx, the network is connected.
+
+4. After the verification, delete the nginx services:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl --context ${context_1} -n ${namespace_1} delete -f sample-nginx.yaml
+    kubectl --context ${context_2} -n ${namespace_2} delete -f sample-nginx.yaml
+    kubectl --context ${context_3} -n ${namespace_3} delete -f sample-nginx.yaml
+    ```
+
+## Step 4. Deploy TiDB Operator
+
+The `TidbCluster` CR of each cluster is managed by TiDB Operator of the cluster. Therefore, you must deploy TiDB Operator for each cluster.
+
+Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and deploy TiDB Operator in each EKS cluster. Note that you need to use `kubectl --context ${context}` and `helm --kube-context ${context}` in the commands to deploy TiDB Operator for each EKS cluster.
+
+## Step 5. Deploy TiDB clusters
+
+Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md), and deploy a TidbCluster CR for each EKS cluster. Note the following operations:
+
+* You must deploy the TidbCluster CR in the corresponding namespace configured in the [Configure CoreDNS](#configure-coredns) section. Otherwise, the TiDB cluster will fail to start.
+
+* The cluster domain of each cluster must be set to "cluster.local".
+
+Take Cluster 1 as an example. When deploy the `TidbCluster` CR to Cluster 1, specify `metadata.namespace` as `${namespace_1}`:
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+   name: ${tc_name}
+   namespace: ${namespace_1}
+spec:
+  # ...
+  clusterDomain: "cluster.local"
+```
+
+## What's next
+
+* Read [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md) to learn how to manage a TiDB cluster across multiple Kubernetes clusters.
