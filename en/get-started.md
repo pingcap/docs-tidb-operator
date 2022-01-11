@@ -106,7 +106,7 @@ You can create a Kubernetes cluster in a VM using [minikube](https://minikube.si
 
 Before deployment, make sure the following requirements are satisfied:
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. We recommend upgrading to the newer versions like v1.24. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
+- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. Newer versions like v1.24 is recommended. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
 #### Start a minikube Kubernetes cluster
