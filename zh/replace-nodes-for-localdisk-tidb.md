@@ -7,16 +7,18 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 本文介绍一种在不停机情况下为使用本地存储的 TiDB 集群更换、升级节点的方法。
 
+> **注意：**
+>
+> * 如果你只需要维护 TiDB 集群中个别节点，可以参考[维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node)。
+
 ## 前置条件
 
-- 已经存在一个原 TiDB 集群，可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
+- 已经存在一个原 TiDB 集群，可以参考[在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
 - 新的节点准备就绪，并已加入原 TiDB Kubernetes 集群。
 
 ## 第一步：克隆原 TiDB 集群配置
 
-1. 克隆原 TiDB 集群 `tidb-cluster.yaml` 为 `tidb-cluster-clone.yaml`。
-
-    如果找不到原 TiDB 集群 `tidb-cluster.yaml`，可以执行下面命令导出克隆文件：
+1. 导出克隆集群文件 `tidb-cluster-clone.yaml`，可以执行下面命令：
 
     {{< copyable "shell-regular" >}}
     
@@ -53,11 +55,11 @@ spec:
 
 ### 使用 cfssl 系统签发
 
-如果你使用 cfssl，必须使用和原集群相同的 CA (Certification Authority) 颁发。你需要执行为 [TiDB 组件间开启 TLS](enable-tls-between-components.md) 文档中 5 ～ 7 步，完成新集群组件间证书签发。
+如果你使用 cfssl，必须使用和原集群相同的 CA (Certification Authority) 颁发。你需要执行[使用 cfssl 系统颁发证书](enable-tls-between-components.md#使用-cfssl-系统颁发证书)文档中 5 ～ 7 步，完成新集群组件间证书签发。
 
 ### 使用 cert-manager 系统签发
 
-如果你使用 cert-manager，必须使用和原集群相同的 Issuer（${cluster_name}-tidb-issuer） 来创建 Certificate。你需要执行为 [TiDB 组件间开启 TLS](enable-tls-between-components.md) 文档中第 3 步，完成新集群组件间证书签发。
+如果你使用 cert-manager，必须使用和原集群相同的 Issuer（${cluster_name}-tidb-issuer） 来创建 Certificate。你需要执行[使用 cert-manager 系统颁发证书](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)文档中第 3 步，完成新集群组件间证书签发。
 
 ## 第三步：使用 `kubectl cordon` 命令把需要更换的节点标记为不可调度，防止新的 Pod 调度上去
 
