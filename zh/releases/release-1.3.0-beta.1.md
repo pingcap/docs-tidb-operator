@@ -9,14 +9,14 @@ TiDB Operator 版本：1.3.0-beta.1
 
 ## 滚动升级改动
 
-- 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用 v1.2.x 版本 TiDB Operator 部署了 v5.4.x 及更新版本的 TiDB 集群，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiFlash 组件滚动更新
+- 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用 v1.2 版本 TiDB Operator 部署了 v5.4 及更新版本的 TiDB 集群，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiFlash 组件滚动更新。建议在升级 TiDB 集群到 v5.4.0 或更新版本之前，先升级 TiDB Operator 到 v1.3 及以上版本。
 - 由于 [#4169](https://github.com/pingcap/tidb-operator/pull/4169) 的变更，如果部署了 v5.0.x 及更新版本的 TiDB 集群，并且设置了 `spec.tikv.seperateRocksDBLog: true` 或者 `spec.tikv.separateRaftLog: true`，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiKV 组件滚动更新
 
 ## 新功能
 
 - 支持为 TiFlash 的 init container 配置资源使用量 ([#4304](https://github.com/pingcap/tidb-operator/pull/4304), [@KanShiori](https://github.com/KanShiori))
 - 支持为 TiDB 集群开启[持续性能分析](access-dashboard.md#启用持续性能分析) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
-- 支持通过配置 annotation 的方式优雅重启 TiKV 组件 ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
+- 支持通过配置 annotation 的方式优雅重启单个 TiKV Pod ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
 - 支持为 Discovery 组件配置 PodSecurityContext ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 TidbCluster CR 配置 PodManagementPolicy ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
 - 支持为 Discovery 组件自定义更多配置 ([#4208](https://github.com/pingcap/tidb-operator/pull/4208), [@KanShiori](https://github.com/KanShiori))
