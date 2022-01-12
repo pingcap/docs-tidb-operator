@@ -112,6 +112,8 @@
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
+  - v1.3
+    - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)
