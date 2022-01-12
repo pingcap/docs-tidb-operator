@@ -105,13 +105,9 @@ You are now ready to deploy TiDB Operator.
 
 You can create a Kubernetes cluster in a VM using [minikube](https://minikube.sigs.k8s.io/docs/start/), which supports macOS, Linux, and Windows.
 
-> **Note:**
->
-> minikube supports `--vm-driver=none` that uses a host Docker instead of a VM. However, this function is not yet fully tested on TiDB Operator and may result in operational failures. If you want to try TiDB Operator in a non-virtualized system (for example, in a VPS), consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
-
 Before deployment, make sure the following requirements are satisfied:
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
+- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. Newer versions like v1.24 is recommended. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
 #### Start a minikube Kubernetes cluster
@@ -129,28 +125,22 @@ minikube start
 You should see output like this, with some differences depending on your OS and hypervisor:
 
 ```
-😄  minikube v1.10.1 on Darwin 10.15.4
-✨  Automatically selected the hyperkit driver. Other choices: docker, vmwarefusion
-💾  Downloading driver docker-machine-driver-hyperkit:
-    > docker-machine-driver-hyperkit.sha256: 65 B / 65 B [---] 100.00% ? p/s 0s
-    > docker-machine-driver-hyperkit: 10.90 MiB / 10.90 MiB  100.00% 1.76 MiB p
-🔑  The 'hyperkit' driver requires elevated permissions. The following commands will be executed:
-
-    $ sudo chown root:wheel /Users/user/.minikube/bin/docker-machine-driver-hyperkit
-    $ sudo chmod u+s /Users/user/.minikube/bin/docker-machine-driver-hyperkit
-
-
-💿  Downloading VM boot image ...
-    > minikube-v1.10.0.iso.sha256: 65 B / 65 B [-------------] 100.00% ? p/s 0s
-    > minikube-v1.10.0.iso: 174.99 MiB / 174.99 MiB [] 100.00% 6.63 MiB p/s 27s
+😄  minikube v1.24.0 on Darwin 12.1
+✨  Automatically selected the docker driver. Other choices: hyperkit, virtualbox, ssh
 👍  Starting control plane node minikube in cluster minikube
-💾  Downloading Kubernetes v1.18.2 preload ...
-    > preloaded-images-k8s-v3-v1.18.2-docker-overlay2-amd64.tar.lz4: 525.43 MiB
-🔥  Creating hyperkit VM (CPUs=2, Memory=4000MB, Disk=20000MB) ...
-🐳  Preparing Kubernetes v1.18.2 on Docker 19.03.8 ...
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.22.3 preload ...
+    > gcr.io/k8s-minikube/kicbase: 355.78 MiB / 355.78 MiB  100.00% 4.46 MiB p/
+    > preloaded-images-k8s-v13-v1...: 501.73 MiB / 501.73 MiB  100.00% 5.18 MiB
+🔥  Creating docker container (CPUs=2, Memory=1985MB) ...
+🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
 🔎  Verifying Kubernetes components...
-🌟  Enabled addons: default-storageclass, storage-provisioner
-🏄  Done! kubectl is now configured to use "minikube"
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
 </details>
