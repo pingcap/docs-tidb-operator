@@ -28,14 +28,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
    其中 `${origin_cluster_name}` 是原集群名字，`${namespace}` 是原集群命名空间。
 
-2. 为 `tidb-cluster-clone.yaml` 中 `metadata.name` 换一个新名字。
-
-    > **注意：**
-    >
-    > * 可能需要修改克隆集群中的 TiKV replicas，因为克隆集群中 TiKV 副本数应大于等于 PD 中设置的 max-replicas 数量，默认情况下 TiKV 副本数量需要大于等于 3。
-    > * 克隆集群 namespace 保持不变。
-
-3. 在 `tidb-cluster-clone.yaml` 中 `spec` 下加入如下内容，先加入原 TiDB 集群：
+2. 修改 `tidb-cluster-clone.yaml`，让新克隆集群加入原 TiDB 集群：
 
 ```yaml
 kind: TidbCluster
