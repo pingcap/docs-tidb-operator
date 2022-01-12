@@ -15,7 +15,7 @@ TiDB Operator 版本：1.3.0-beta.1
 ## 新功能
 
 - 支持为 TiFlash 的 init container 配置资源使用量 ([#4304](https://github.com/pingcap/tidb-operator/pull/4304), [@KanShiori](https://github.com/KanShiori))
-- 支持 Operator 部署的 TiDB 集群开启持续性能分析，见[文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
+- 支持为 TiDB 集群开启[持续性能分析](access-dashboard.md#启用持续性能分析) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
 - 支持通过配置 annotation 的方式优雅重启 TiKV 组件 ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
 - 支持为 Discovery 组件配置 PodSecurityContext ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 TidbCluster CR 配置 PodManagementPolicy ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
@@ -45,7 +45,7 @@ TiDB Operator 版本：1.3.0-beta.1
 - 将拆分 `pkg/apis` 和 `pkg/client` 为 golang 子模块 ([#4134](https://github.com/pingcap/tidb-operator/pull/4134), [@KanShiori](https://github.com/KanShiori))
 - 允许所有组件的最小副本数为 0 ([#4288](https://github.com/pingcap/tidb-operator/pull/4288), [@handlerww](https://github.com/handlerww))
 - 使用新版本的 busybox 镜像作为 helper 镜像 ([#4260](https://github.com/pingcap/tidb-operator/pull/4260), [@dveeden](https://github.com/dveeden))
-- 由于安全问题升级 Grafana 镜像版本为 7.5.11 ([#4212](https://github.com/pingcap/tidb-operator/pull/4212), [@makocchi-git](https://github.com/makocchi-git))
+- 升级 Grafana 镜像版本为 7.5.11，提升安全性 ([#4212](https://github.com/pingcap/tidb-operator/pull/4212), [@makocchi-git](https://github.com/makocchi-git))
 - 删除不再使用的函数 SyncAutoScalerAnn 和相关代码([#4192](https://github.com/pingcap/tidb-operator/pull/4192), [@mianhk](https://github.com/mianhk))
 - 升级 Kubernetes 的依赖为 v1.19.14 ([#4161](https://github.com/pingcap/tidb-operator/pull/4161), [@KanShiori](https://github.com/KanShiori))
 - Helm chart 支持配置 tidb-controller-manager 的 workers 数量 ([#4111](https://github.com/pingcap/tidb-operator/pull/4111), [@mianhk](https://github.com/mianhk))
