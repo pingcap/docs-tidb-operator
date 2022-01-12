@@ -26,9 +26,6 @@ TiDB Operator version: 1.3.0-beta.1
 ## Improvements
 
 - Remove and change some default configurations for TiFlash due to config change about v5.4.0 TiFlash. If deploy v5.4 tidb cluster by v1.2 operator, upgrade operator will cause rolling upgrade of tiflash ([#4358](https://github.com/pingcap/tidb-operator/pull/4358), [@KanShiori](https://github.com/KanShiori))
-- Add e2e cases for multi-kubernetes tidbcluster ([#4354](https://github.com/pingcap/tidb-operator/pull/4354), [#4352](https://github.com/pingcap/tidb-operator/pull/4352), [#4314](https://github.com/pingcap/tidb-operator/pull/4314), [#4300](https://github.com/pingcap/tidb-operator/pull/4300), [@just1900](https://github.com/just1900))
-- Add e2e case for deploy and delete a cluster on multi-cluster kubernetes ([#4289](https://github.com/pingcap/tidb-operator/pull/4289), [@handlerww](https://github.com/handlerww))
-- Optimize: Deprecate pod validating and mutating webhook ([#4209](https://github.com/pingcap/tidb-operator/pull/4209), [@mianhk](https://github.com/mianhk))
 - Remove dependency with the firstTC and firstDC in the TidbMonitor controller. ([#4272](https://github.com/pingcap/tidb-operator/pull/4272), [@mikechengwei](https://github.com/mikechengwei))
 - Read tls cert from local TC when TC is heterogeneous or across-kubernetes ([#4249](https://github.com/pingcap/tidb-operator/pull/4249), [@KanShiori](https://github.com/KanShiori))
 - Separate dm and tidb monitor code logic. ([#4243](https://github.com/pingcap/tidb-operator/pull/4243), [@mikechengwei](https://github.com/mikechengwei))
@@ -45,6 +42,7 @@ TiDB Operator version: 1.3.0-beta.1
 - Separate package `pkg/apis` and `pkg/client` into submodules ([#4134](https://github.com/pingcap/tidb-operator/pull/4134), [@KanShiori](https://github.com/KanShiori))
 - set all components minimum replicas to 0 ([#4288](https://github.com/pingcap/tidb-operator/pull/4288), [@handlerww](https://github.com/handlerww))
 - The helper image was updated to a newer version of busybox ([#4260](https://github.com/pingcap/tidb-operator/pull/4260), [@dveeden](https://github.com/dveeden))
+- Deprecate pod validating and mutating webhook ([#4209](https://github.com/pingcap/tidb-operator/pull/4209), [@mianhk](https://github.com/mianhk))
 - Update grafana images in examples to 7.5.11 due to security issue. ([#4212](https://github.com/pingcap/tidb-operator/pull/4212), [@makocchi-git](https://github.com/makocchi-git))
 - remove unused func SyncAutoScalerAnn ([#4192](https://github.com/pingcap/tidb-operator/pull/4192), [@mianhk](https://github.com/mianhk))
 - Update kubernetes dependency to v1.19.14 ([#4161](https://github.com/pingcap/tidb-operator/pull/4161), [@KanShiori](https://github.com/KanShiori))
