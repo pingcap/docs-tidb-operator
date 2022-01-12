@@ -9,13 +9,13 @@ TiDB Operator 版本：1.3.0-beta.1
 
 ## 滚动升级改动
 
-- 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用 v1.2 operator 部署了 v5.4 版本的 TidbCluster，升级 Operator 到 1.3.0-beta.1 版本会导致 Tiflash 组件滚动升级
-- 由于 [#4169](https://github.com/pingcap/tidb-operator/pull/4169) 的变更，如果部署了高于 v5.0.0 版本的 TidbCluster 并且设置了 `seperateRocksDBLog` 字段值为`true`，升级 Operator 到 1.3.0-beta.1 版本会导致 TiKV 组件滚动升级
+- 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用小于或等与 v1.2 operator 部署了 v5.4 版本的 TidbCluster，升级 Operator 到 1.3.0-beta.1 版本会导致 Tiflash 组件滚动升级
+- 由于 [#4169](https://github.com/pingcap/tidb-operator/pull/4169) 的变更，如果部署了大于或等于 v5.0.0 版本的 TidbCluster 并且设置了 `seperateRocksDBLog` 字段值为`true`，升级 Operator 到 1.3.0-beta.1 版本会导致 TiKV 组件滚动升级
 
 ## 新功能
 
 - 支持为 TiFlash 的 init container 配置资源使用量 ([#4304](https://github.com/pingcap/tidb-operator/pull/4304), [@KanShiori](https://github.com/KanShiori))
-- 支持通过 TiDBNGMonitoring CRD 部署 NGMonitor 组件 ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
+- 支持 Operator 部署的 TiDB 集群开启持续性能分析，见[文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
 - 支持通过配置 annotation 的方式优雅重启 TiKV 组件 ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
 - 支持为 Discovery 组件配置 PodSecurityContext ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 TidbCluster CR 配置 PodManagementPolicy ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
