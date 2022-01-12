@@ -9,7 +9,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 > **注意：**
 >
-> * 如果你只需要维护 TiDB 集群中个别节点，可以参考[维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node)。
+> * 如果你只需要维护 TiDB 集群中个别节点，可以参考[维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)。
 
 ## 前置条件
 
