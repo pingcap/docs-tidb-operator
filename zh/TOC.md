@@ -77,7 +77,7 @@
     - [使用多套 TiDB Operator 单独管理不同的 TiDB 集群](deploy-multiple-tidb-operator.md)
     - [维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
     - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
-    - [为使用本地存储的 TiDB 集群更换节点](replace-nodes-for-localdisk-tidb.md)
+    - [为使用本地存储的 TiDB 集群更换节点](replace-nodes-for-local-disk.md)
   - 监控与告警
     - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
