@@ -18,7 +18,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 ## 第一步：克隆原 TiDB 集群配置
 
-1. 导出克隆集群文件 `tidb-cluster-clone.yaml`，可以执行下面命令：
+1. 执行以下命令，导出克隆集群文件 `tidb-cluster-clone.yaml`：
 
     {{< copyable "shell-regular" >}}
     
