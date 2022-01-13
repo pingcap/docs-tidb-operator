@@ -1,25 +1,25 @@
 ---
-title: 构建多个网络互通的 GCP GKE 集群
-summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
+title: Build Multiple Connected GCP GKE Clusters
+summary: Learn how to build multiple connected GCP GKE clusters and prepare for deploying a TiDB cluster across multiple GKE clusters.
 ---
 
-# 构建多个网络互通的 GCP GKE 集群
+# Build Multiple Connected GCP GKE Clusters
 
-本文介绍了如何构建多个 GCP GKE 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+This document describes how to create multiple GCP GKE clusters and configure network connections between the clusters. The connected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to build three connected GKE clusters.
 
-如果仅需要部署一个 TiDB 集群到一个 GCP GKE 集群，请参考[在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)文档。
+If you need to deploy TiDB on a single GCP GKE cluster, refer to [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
 
-## 环境准备
+## Prerequisites
 
-部署前，请确认已完成以下环境准备：
+Before you start building multiple connected GKE clusters, make sure you have completed the following preparations:
 
-* [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
-* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
-* 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
+* Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
+* Install [gcloud](https://cloud.google.com/sdk/gcloud): `gcloud` is the CLI for creating and managing GCP services
+* Complete the *Before you begin* section in [GKE Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin).
 
-## 配置 GCP 服务
+## Configure GCP service
 
-使用以下命令，设置好你的 GCP 项目：
+Configure your GCP project by running the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -27,9 +27,9 @@ summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes
 gcloud config set core/project <gcp-project>
 ```
 
-## 第 1 步：创建网络
+## Step 1. Create the network
 
-1. 创建一个自定义子网的 VPC 网络。
+1. Create a VPC network for the custom subnet:
 
     {{< copyable "shell-regular" >}}
 
@@ -37,7 +37,7 @@ gcloud config set core/project <gcp-project>
     gcloud compute networks create ${network_name} --subnet-mode=custom
     ```
 
-2. 在新创建的 VPC 网络下创建三个属于不同 Region 的子网，子网的 CIDR block 相互不重叠。
+2. In the VPC network created above, create three subnets that belong to different Regions. The CIDR block of each subnet does not overlap with that of each other.
 
     {{< copyable "shell-regular" >}}
 
@@ -69,17 +69,17 @@ gcloud config set core/project <gcp-project>
         --secondary-range pods=10.12.0.0/16,services=10.102.0.0/16
     ```
 
-    `${subnet_1}`、`${subnet_2}` 和 `${subnet_3}` 为三个不同子网的名字。
+    `${subnet_1}`, `${subnet_2}`, and `${subnet_3}` refer to the name of the three subnets.
 
-    参数 `--range=10.0.0.0/16` 指定集群的子网的 CIRD 块，所有集群的子网的 CIDR block **必须**不相互重叠。
+    `--range=10.0.0.0/16` specifies the CIDR block of the subnet in the cluster. The CIDR block of the subnet of all clusters **must not** overlap with that of each other.
 
-    参数 `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` 中指定了 Kubernetes 的 Pod 与 Service 使用的 CIRD block，将会在后面使用到。
+    `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` specifies the CIRD block used by Kubernetes Pods and Services. The CIRD block will be used later.
 
-## 第 2 步：启动 Kubernetes 集群
+## Step 2. Start the Kubernetes cluster
 
-创建三个 GKE 集群，每个集群使用上述创建的子网。
+Create three GKE clusters, and each cluster uses the subnet created in the previous step.
 
-1. 创建三个 GKE 集群，每个集群有一个默认的节点池：
+1. Create three GKE clusters. Each cluster has a default node pool.
 
     {{< copyable "shell-regular" >}}
 
@@ -117,13 +117,13 @@ gcloud config set core/project <gcp-project>
         --cluster-secondary-range-name=pods --services-secondary-range-name=services
     ```
 
-    上述命令中，`${cluster_domain_n}` 表示第 n 个集群的 cluster domain。在后续部署 TiDB 集群时，需要配置部署的 TidbCluster CR 中的 `spec.clusterDomain`。
+    In the commands above, `${cluster_domain_n}` refers to the domain name of the `n`th cluster. In the following deployment steps, you need to configure `spec.clusterDomain` in TidbCluster CR to `${cluster_domain_n}`.
 
-    使用 VPC 范围的 [**Cloud DNS 服务**](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns)，使得集群可以解析其他集群的 Pod 和 Service 地址。
+    In the commands above, the [Cloud DNS](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-dns) in VPC scope is used so that the cluster can parse the Pod and Service addresses in other clusters.
 
-2. 为每个集群创建 PD、TiKV 和 TiDB 使用的独立的节点池。
+2. Create the dedicated node pools used by PD, TiKV, and TiDB for each cluster.
 
-    以集群 1 为例：
+    Take Cluster 1 as an example:
 
     {{< copyable "shell-regular" >}}
 
@@ -136,7 +136,7 @@ gcloud config set core/project <gcp-project>
         --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
-3. 获取每个集群的 Kubenetes context，后续当你使用 `kubectl` 命令操作特定的集群时，需要指定对应的 context。
+3. Obtain the Kubernetes context of each cluster. The context will be used in the subsequent `kubectl` commands.
 
     {{< copyable "shell-regular" >}}
 
@@ -144,7 +144,7 @@ gcloud config set core/project <gcp-project>
     kubectl config get-contexts
     ```
 
-    输出类似如下，其中的 `NAME` 项就是你后续需要使用的 context。
+    The expexted output is as follows. The context is in the `NAME` column.
 
     ```
     CURRENT   NAME                          CLUSTER                       AUTHINFO                            NAMESPACE
@@ -153,13 +153,13 @@ gcloud config set core/project <gcp-project>
               gke_pingcap_us-west3_tidb-3   gke_pingcap_us-west3_tidb-3   gke_pingcap_us-west3_tidb-3
     ```
 
-    后文中，使用 `${context_1}`、`${context_2}` 与 `${context_3}` 分别代表各个集群的 context。
+    In the following sections, `${context_1}`, `${context_2}`, and `${context_3}` refer to the context of each cluster.
 
-### 配置防火墙规则
+### Configure the firewall rules
 
-1. 更新集群 1 的防火墙规则。
+1. Update the firewall rules for Cluster 1.
 
-   1. 找到用于 GKE Pod 间通信的防火墙规则的名字，防火墙规则命名规则类似于：`gke-${cluster_1}-${hash}-all`
+    1. Obtain the name of the firewall rule used for communication between GKE Pods. The name of the firewall rule is similar to `gke-${cluster_1}-${hash}-all`.
 
         {{< copyable "shell-regular" >}}
 
@@ -167,14 +167,14 @@ gcloud config set core/project <gcp-project>
         gcloud compute firewall-rules list --filter='name~gke-${cluster_1}-.*-all'
         ```
 
-        输出类似如下，其 `NAME` 项为规则的名字。
+        The expexted output is as follows. The rule name is in the `NAME` column.
 
         ```
         NAME                           NETWORK     DIRECTION  PRIORITY  ALLOW                         DENY  DISABLED
         gke-${cluster_1}-b8b48366-all  ${network}  INGRESS    1000      tcp,udp,icmp,esp,ah,sctp            False
         ```
 
-   2. 更新该防火墙规则的 source range，加上另外两个集群的 Pod 网络的 CIDR block。
+    2. Add the CIDR block of Pod network of other two clusters to the source range of the firewall rule:
 
         {{< copyable "shell-regular" >}}
 
@@ -182,7 +182,7 @@ gcloud config set core/project <gcp-project>
         gcloud compute firewall-rules update ${firewall_rule_name} --source-ranges 10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
         ```
 
-        你可以通过以下命令检查防火墙规则是否成功更新。
+        Run the folllowing command to check whether the firwall rule is successfully updated:
 
         {{< copyable "shell-regular" >}}
 
@@ -190,13 +190,13 @@ gcloud config set core/project <gcp-project>
         gcloud compute firewall-rules describe ${firewall_rule_name}
         ```
 
-2. 按照步骤 1，更新集群 2 与集群 3 的防火墙规则。
+2. Follow the same steps to update the firewall rules for Cluster 2 and Cluster 3.
 
-## 第 3 步：验证网络连通性
+## Step 3. Verify the network connectivity
 
-在部署 TiDB 集群之前，你需要先验证多个集群之间的网络连通性。
+Before you deploy the TiDB cluster, you need to verify the network connectivity between the clusters.
 
-1. 将下面定义保存到 `sample-nginx.yaml` 文件。
+1. Save the following content in the `sample-nginx.yaml` file.
 
     ```yaml
     apiVersion: v1
@@ -229,21 +229,19 @@ gcloud config set core/project <gcp-project>
       clusterIP: None
     ```
 
-2. 在三个集群对应的命名空间下部署 nginx 服务。
+2. Deploy the nginx service in the namespaces of three clusters.
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-
     kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
     ```
 
-3. 通过访问其他集群的 nginx 服务，来验证网络是否连通。
+3. Access the nginx services of other clusters to verify the network connectivity.
 
-    以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
+    The following command verifies the network from Cluster 1 to Cluster 2:
 
     {{< copyable "shell-regular" >}}
 
@@ -251,33 +249,31 @@ gcloud config set core/project <gcp-project>
     kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.default.svc.${cluster_domain_2}:80
     ```
 
-    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
+    If the output is the welcome page of nginx, the network is connected.
 
-4. 验证完成后，执行以下命令删除 nginx 服务。
+4. After the verification, delete the nginx services:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_1} -n default delete -f sample-nginx.yaml
-
     kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
-
+    kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
     kubectl --context ${context_3} -n default delete -f sample-nginx.yaml
     ```
 
-## 第 4 步：部署 TiDB Operator
+## Step 4. Deploy TiDB Operator
 
-每个集群的 TidbCluster CR 由当前集群的 TiDB Operator 管理，因此每个集群都需要部署 TiDB Operator。
+The `TidbCluster` CR of each cluster is managed by TiDB Operator of the cluster. Therefore, you must deploy TiDB Operator for each cluster.
 
-参考[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 部署 TiDB Operator 到每个 GKE 集群。区别在于，需要通过命令 `kubectl --context ${context}` 与 `helm --kube-context ${context}` 为每个 GKE 集群部署 TiDB Operator。
+Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and deploy TiDB Operator in each GKE cluster. Note that you need to use `kubectl --context ${context}` and `helm --kube-context ${context}` in the commands to deploy TiDB Operator for each GKE cluster.
 
-## 第 5 步：部署 TiDB 集群
+## Step 5. Deploy TiDB clusters
 
-参考[跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)为每个集群部署一个 TidbCluster CR。需要注意的是：
+Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md), and deploy a TidbCluster CR for each GKE cluster.
 
-* 在配置 TidbCluster CR 时使用的 `spec.clusterDomain` 字段需要和[第 2 步：启动 Kubernetes 集群](#第-2-步启动-kubernetes-集群)一节定义的 `${cluster_domain_n}` 一致。
+In the `TidbCluster` CR, the `spec.clusterDomain` field must be the same as `${cluster_domain_n}` defined in [Step 2](#step-2-start-the-kubernetes-cluster).
 
-例如，部署初始集群 TidbCluster CR 到集群 1 时，将 `spec.clusterDomain` 指定为 `${cluster_domain_1}`:
+For example, when you deploy the `TidbCluster` CR to Cluster 1, specify `spec.clusterDomain` as `${cluster_domain_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -288,6 +284,6 @@ spec:
   clusterDomain: "${cluster_domain_1}"
 ```
 
-## 探索更多
+## What's next
 
-* 阅读[跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)，了解如何管理跨 Kubernetes 集群的 TiDB 集群。
+* Read [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md) to learn how to manage a TiDB cluster across multiple Kubernetes clusters.
