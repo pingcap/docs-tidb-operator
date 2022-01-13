@@ -34,30 +34,10 @@ Here are some cases where you might need to pause sync of a TiDB cluster in Kube
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": true}}'
     ```
 
-2. Configure `spec.paused: true` as follows, and save changes. The sync of TiDB cluster components (PD, TiKV, TiDB, TiFlash, TiCDC, Pump) is then paused. 
-
-    {{< copyable "" >}}
-    
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      ...
-    spec:
-      ...
-      paused: true  # Pausing sync of TiDB cluster
-      pd:
-        ...
-      tikv:
-        ...
-      tidb:
-        ...
-    ```
-
-3. To confirm the sync status of a TiDB cluster, execute the following command. `${pod_name}` is the name of tidb-controller-manager Pod, and `${namespace}` is the namespace of TiDB Operator.
+2. To confirm the sync status of a TiDB cluster, execute the following command. `${pod_name}` is the name of tidb-controller-manager Pod, and `${namespace}` is the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     
@@ -87,30 +67,10 @@ To resume the sync of the TiDB cluster, configure `spec.paused: false` in the Ti
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": false}}'
     ```
 
-2. Configure `spec.paused: false` as follows, and save changes. The sync of TiDB cluster components (PD, TiKV, TiDB, TiFlash, TiCDC, Pump) is then resumed. 
-
-    {{< copyable "" >}}
-    
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      ...
-    spec:
-      ...
-      paused: false  # Resuming sync of TiDB cluster
-      pd:
-        ...
-      tikv:
-        ...
-      tidb:
-        ...
-    ```
-
-3. To confirm the sync status of a TiDB cluster, execute the following command. `${pod_name}` represents the name of the tidb-controller-manager Pod, and `${namespace}` represents the namespace of TiDB Operator.
+2. To confirm the sync status of a TiDB cluster, execute the following command. `${pod_name}` represents the name of the tidb-controller-manager Pod, and `${namespace}` represents the namespace of TiDB Operator.
 
     {{< copyable "shell-regular" >}}
     

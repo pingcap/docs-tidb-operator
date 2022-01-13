@@ -339,7 +339,7 @@ spec:
 
 ### Scale in Pump
 
-To scale in Pump, you need to take a single Pump node offline, and execute `kubectl edit tc ${cluster_name} -n ${namespace}` to reduce the value of `replicas` of Pump by 1. Repeat the operations on each node.
+To scale in Pump, you need to take a single Pump node offline, and execute `kubectl patch tc ${cluster_name} -n ${namespace}` to reduce the value of `replicas` of Pump by 1. Repeat the operations on each node.
 
 The steps are as follows:
 
@@ -375,7 +375,7 @@ The steps are as follows:
 
 2. Delete the corresponding Pump Pod:
 
-    Execute `kubectl edit tc ${cluster_name} -n ${namespace}` to change `spec.pump.replicas` to `2`, and wait until the Pump Pod is taken offline and deleted automatically.
+    Execute `kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": 2}}}'`, and wait until the Pump Pod is taken offline and deleted automatically.
 
 3. (Optional) Force Pump to go offline:
 
@@ -402,15 +402,15 @@ The steps are as follows:
 > **Note:**
 >
 > - Before performing the following steps, you need to have at least one Pump node in the cluster. If you have scaled in Pump nodes to `0`, you need to scale out Pump at least to `1` node before you perform the removing operation in this section.
-> - To scale out the Pump to `1`, execute `kubectl edit tc ${tidb-cluster} -n ${namespace}` and modify the `spec.pump.replicas` to `1`.
+> - To scale out the Pump to `1`, execute `kubectl patch tc ${tidb-cluster} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": 1}}}'`.
 
-1. Before removing Pump nodes, execute `kubectl edit tc ${cluster_name} -n ${namespace}` and set `spec.tidb.binlogEnabled` to `false`. After the TiDB Pods are rolling updated, you can remove the Pump nodes.
+1. Before removing Pump nodes, execute `kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tidb":{"binlogEnabled": false}}}'`. After the TiDB Pods are rolling updated, you can remove the Pump nodes.
 
     If you directly remove Pump nodes, it might cause TiDB failure because TiDB has no Pump nodes to write into.
 
 2. Refer to [Scale in Pump](#scale-in-pump) to scale in Pump to `0`.
 
-3. Execute `kubectl edit tc ${cluster_name} -n ${namespace}` and delete all configuration items of `spec.pump`.
+3. Execute `kubectl patch tc ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/pump"}]'` to delete all configuration items of `spec.pump`.
 
 4. Execute `kubectl delete sts ${cluster_name}-pump -n ${namespace}` to delete the StatefulSet resources of Pump.
 
