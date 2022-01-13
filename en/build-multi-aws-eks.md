@@ -1,6 +1,6 @@
 ---
 title: Build Multiple Connected AWS EKS Clusters
-summary:
+summary: Learn how to build multiple connected AWS EKS clusters and prepare for deploying a TiDB cluster across multiple EKS clusters.
 ---
 
 # Build Multiple Connected AWS EKS Clusters
@@ -117,7 +117,7 @@ To connect the three clusters, you need to create a VPC peering connection betwe
 
 2. Create a VPC peering connection between the VPCs of Cluster 1 and Cluster 2.
 
-    1. Refer to [AWS VPC peering documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) and create a VPC peering. Use `${vpc_id_1}` as the requester VPC and ${vpc_id_2} as the accepter VPC.
+    1. Refer to [AWS VPC peering documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) and create a VPC peering. Use `${vpc_id_1}` as the requester VPC and `${vpc_id_2}` as the accepter VPC.
 
     2. Refer to [AWS VPC peering documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) and complete creating a VPC peering.
 
