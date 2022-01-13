@@ -20,7 +20,7 @@ TiDB Operator 版本：1.3.0-beta.1
 ## 新功能
 
 - 支持为 TiFlash 的 init container 配置资源使用量 ([#4304](https://github.com/pingcap/tidb-operator/pull/4304), [@KanShiori](https://github.com/KanShiori))
-- 支持为 TiDB 集群开启[持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard#启用持续性能分析) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
+- 支持为 TiDB 集群开启[持续性能分析](../access-dashboard.md#启用持续性能分析) ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
 - 支持通过配置 annotation 的方式优雅重启单个 TiKV Pod ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
 - 支持为 Discovery 组件自定义 PodSecurityContext 等更多配置 ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc), [#4208](https://github.com/pingcap/tidb-operator/pull/4208), [@KanShiori](https://github.com/KanShiori))
 - 支持为 TidbCluster CR 配置 PodManagementPolicy ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
