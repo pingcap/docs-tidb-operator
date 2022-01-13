@@ -30,17 +30,17 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 2. 修改 `tidb-cluster-clone.yaml`，让新克隆集群加入原 TiDB 集群：
 
-```yaml
-kind: TidbCluster
-metadata:
-  name: ${clone_cluster_name}
-spec:
-  cluster:
-    name: ${origin_cluster_name}
-...
-```
+    ```yaml
+    kind: TidbCluster
+    metadata:
+      name: ${clone_cluster_name}
+    spec:
+      cluster:
+        name: ${origin_cluster_name}
+    ...
+    ```
 
-其中 `${clone_cluster_name}` 是克隆集群的新名字，`${origin_cluster_name}` 是原集群名字。
+    其中 `${clone_cluster_name}` 是克隆集群的新名字，`${origin_cluster_name}` 是原集群名字。
 
 ## 第二步：为克隆集群签发证书
 
