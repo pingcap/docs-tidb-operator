@@ -20,9 +20,9 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 
 ## 第一步：创建新的节点组
 
-1. 找到云上 TiDB 集群的 `eksctl` 部署配置文件 `cluster.yaml`, 并拷贝保存为 `cluster-new.yaml`。
+1. 找到 TiDB 集群所在的 EKS 集群的配置文件 `cluster.yaml`，将其拷贝保存为 `cluster-new.yaml`。
 
-2. `cluster-new.yaml` 加入新节点组 `tidb-1b-new`、`tikv-1a-new`：
+2. 在 `cluster-new.yaml` 中加入新节点组 `tidb-1b-new`、`tikv-1a-new`：
 
     ```yaml
     apiVersion: eksctl.io/v1alpha5
@@ -58,17 +58,17 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
     > * `availabilityZones` 需要和要替换的节点组保持一致。
     > * 本例仅以 `tidb-1b-new`、`tikv-1a-new` 节点组为例，请自行配置参数。
 
-    如果要升级节点规格修改 `instanceType`。如果要升级节点 Kubernetes 版本，请先升级 `Kubernetes Control Plane` 版本，可以参考[更新集群](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html)
+    如果要升级节点规格，修改 `instanceType`。如果要升级节点 Kubernetes 版本，请先升级 `Kubernetes Control Plane` 版本，可以参考[更新集群](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html)
 
-3. `cluster-new.yaml` 中删除要更换的原节点组
+3. 从 `cluster-new.yaml` 中删除要更换的原节点组。
 
     本例中删除 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行删除。
 
-4. `cluster.yaml` 中删除**不要更换**的节点组（留下要更换的原节点组，因为这些最后要被删除）
+4. 从 `cluster.yaml` 中删除**无需更换**的节点组，保留要更换的原节点组，这些节点组将从集群中被删除。
 
-   本例中留下 `tidb-1b`、`tikv-1a` 节点组，请根据情况自行调整。
+   本例中留下 `tidb-1b`、`tikv-1a` 节点组，删除其他节点组。请根据情况自行调整。
 
-5. 执行命令：
+5. 执行以下命令，创建新的节点组：
 
     {{< copyable "shell-regular" >}}
 
@@ -92,7 +92,9 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
 
     其中 `${new_nodegroup}` 是新节点组名称，本例中是 `tidb-1b-new`、`tikv-1a-new`，请根据情况自行调整。
 
-## 第二步：使用 `kubectl cordon` 命令标记原节点组节点为不可调度，防止新的 Pod 调度上去
+## 第二步：标记原节点组的节点为不可调度
+
+使用 `kubectl cordon` 命令标记原节点组节点为不可调度，防止新的 Pod 调度上去：
 
 {{< copyable "shell-regular" >}}
 
@@ -118,7 +120,7 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 kubectl get po -n ${namespace} -owide
 ```
 
-最后，运行下面命令删除原节点组：
+确认没有 TiDB/PD/TiKV Pod 遗留后，运行下面命令删除原节点组：
 
 {{< copyable "shell-regular" >}}
 
