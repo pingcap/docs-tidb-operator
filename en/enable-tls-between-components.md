@@ -20,6 +20,11 @@ To enable TLS between TiDB components, perform the following steps:
     > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB components will fail.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
+
+    > **Note:**
+    >
+    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade.
+
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
 > **Note:**
@@ -656,7 +661,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     Then, create a `tidb-cluster-issuer.yaml` file with the following content:
 
     ```yaml
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -664,7 +669,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -679,7 +684,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-tidb-issuer
@@ -712,7 +717,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     - PD
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-pd-cluster-secret
@@ -721,8 +726,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-pd-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -764,14 +770,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-pd-cluster-secret` Secret object to be used by the PD component of the TiDB server.
 
     - TiKV
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tikv-cluster-secret
@@ -780,8 +786,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-tikv-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -825,14 +832,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tikv-cluster-secret` Secret object to be used by the TiKV component of the TiDB server.
 
     - TiDB
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tidb-cluster-secret
@@ -841,8 +848,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-tidb-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -886,14 +894,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tidb-cluster-secret` Secret object to be used by the TiDB component of the TiDB server.
 
     - Pump
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-pump-cluster-secret
@@ -902,8 +910,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-pump-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -935,7 +944,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in the `issuerRef`
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-pump-cluster-secret` Secret object to be used by the Pump component of the TiDB server.
 
@@ -957,7 +966,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         Then you need to configure the certificate as described below:
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-drainer-cluster-secret
@@ -966,8 +975,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-drainer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -988,7 +998,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         If you didn't set the `drainerName` attribute when deploying Drainer, configure the `dnsNames` attributes as follows:
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-drainer-cluster-secret
@@ -997,8 +1007,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-drainer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1025,7 +1036,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-drainer-cluster-secret` Secret object to be used by the Drainer component of the TiDB server.
 
@@ -1034,7 +1045,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         Starting from v4.0.3, TiCDC supports TLS. TiDB Operator supports enabling TLS for TiCDC since v1.1.3.
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-ticdc-cluster-secret
@@ -1043,8 +1054,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-ticdc-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1088,14 +1100,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-ticdc-cluster-secret` Secret object to be used by the TiCDC component of the TiDB server.
 
     - TiFlash
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tiflash-cluster-secret
@@ -1104,8 +1116,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-tiflash-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1149,7 +1162,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tiflash-cluster-secret` Secret object to be used by the TiFlash component of the TiDB server.
 
@@ -1158,7 +1171,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-importer-cluster-secret
@@ -1167,8 +1180,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-importer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1203,7 +1217,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
 
@@ -1212,7 +1226,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-lightning-cluster-secret
@@ -1221,8 +1235,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-lightning-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1254,28 +1269,29 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-lightning-cluster-secret` Secret object to be used by the TiDB Lightning component of the TiDB server.
 
 4. Generate the client-side certificate for components of the TiDB cluster.
 
     ```yaml
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
-        name: ${cluster_name}-cluster-client-secret
-        namespace: ${namespace}
+      name: ${cluster_name}-cluster-client-secret
+      namespace: ${namespace}
     spec:
-        secretName: ${cluster_name}-cluster-client-secret
-        duration: 8760h # 365d
-        renewBefore: 360h # 15d
-        organization:
+      secretName: ${cluster_name}-cluster-client-secret
+      duration: 8760h # 365d
+      renewBefore: 360h # 15d
+      subject:
+        organizations:
         - PingCAP
-        commonName: "TiDB"
-        usages:
-        - client auth
-        issuerRef:
+      commonName: "TiDB"
+      usages:
+      - client auth
+      issuerRef:
         name: ${cluster_name}-tidb-issuer
         kind: Issuer
         group: cert-manager.io
@@ -1287,7 +1303,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     - Add `client auth` in `usages`.
     - You can leave `dnsNames` and `ipAddresses` empty.
     - Add the Issuer created above in `issuerRef`.
-    - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+    - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
     After the object is created, `cert-manager` generates a `${cluster_name}-cluster-client-secret` Secret object to be used by the clients of the TiDB components.
 
@@ -1515,7 +1531,7 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"mountClusterClientSecret": true},"tikv":{"mountClusterClientSecret": true}}}'
     ```
 
     > **Note:**

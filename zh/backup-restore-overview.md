@@ -298,10 +298,8 @@ kubectl delete backupschedule ${name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit backup ${name} -n ${namespace}
+kubectl patch -n ${namespace} backup ${name} --type merge -p '{"metadata":{"finalizers":[]}}'
 ```
-
-删除 `metadata.finalizers` 配置，即可正常删除 CR。
 
 ### 清理备份文件
 

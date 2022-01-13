@@ -333,43 +333,27 @@ spec:
 
 ### 缩容 Pump 节点
 
-缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 命令将 Pump 对应的 replica 数量减 1，并对每个节点重复上述步骤。具体操作步骤如下：
-
-1. 下线 Pump 节点：
-
-    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `${ordinal_id}` 替换成 `2`，操作方式如下（`${tidb_version}` 为当前 TiDB 的版本）。
-
-    如果 Pump 没有开启 TLS，使用下述指令新建 Pod 下线 Pump。
+1. 执行以下命令缩容 Pump Pod：
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl run offline-pump-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250
+    ```bash
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": ${pump_replicas}}}}'
     ```
 
-    如果 Pump 开启了 TLS，通过下述指令使用前面开启的 Pod 来下线 Pump。
+    其中 `${pump_replicas}` 是你想缩容至的目标副本数。
 
-    {{< copyable "shell-regular" >}}
+2. 等待 Pump Pod 自动下线被删除，运行以下命令观察：
 
-    ```shell
-    kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls "https://${cluster_name}-pd:2379" -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
+   {{< copyable "shell-regular" >}}
+
+    ```bash
+    watch kubectl get po ${cluster_name} -n ${namespace}
     ```
-
-    然后查看 Pump 的日志输出，输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl logs -f -n ${namespace} ${release_name}-pump-${ordinal_id}
-    ```
-
-2. 删除对应的 Pump Pod：
-
-    运行 `kubectl edit tc ${cluster_name} -n ${namespace}` 修改文件中 `spec.pump.replicas` 为 `2`，然后等待 Pump Pod 自动下线被删除。
 
 3. (可选项) 强制下线 Pump
 
-    如果在下线 Pump 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Pump pod 输出可以删除 pod 的日志，可以先进行步骤 2 调小 `replicas`， 等待 Pump Pod 被完全删除后，标注 Pump 状态为 offline。
+    如果在下线 Pump 节点时遇到下线失败的情况，即 Pump Pod 长时间未删除，可以强制标注 Pump 状态为 offline。
     
     没有开启 TLS 时，使用下述指令标注状态为 offline。
     
@@ -387,15 +371,19 @@ spec:
     kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
     ```
 
+> **注意：**
+>
+> 不要缩容 Pump 到 0，否则 [Pump 节点会被完全移除](#完全移除-pump-节点)。
+
 ### 完全移除 Pump 节点
 
 > **注意：**
 >
-> 执行如下步骤之前，集群内需要至少存在一个 Pump 节点。如果此时 Pump 节点已经缩容到 0，需要先至少扩容到 1，再进行下面的移除操作。如果需要扩容至 1，使用命令 `kubectl edit tc ${tidb-cluster} -n ${namespace}`，修改 `spec.pump.replicas` 为 1 即可。
+> 执行如下步骤之前，集群内需要至少存在一个 Pump 节点。如果此时 Pump 节点已经缩容到 0，需要先至少扩容到 1，再进行下面的移除操作。如果需要扩容至 1，使用命令 `kubectl patch tc ${tidb-cluster} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": 1}}}'`。
 
-1. 移除 Pump 节点前，必须首先需要执行 `kubectl edit tc ${cluster_name} -n ${namespace}` 设置其中的 `spec.tidb.binlogEnabled` 为 `false`，等待 TiDB Pod 完成重启更新后再移除 Pump 节点。如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
+1. 移除 Pump 节点前，必须首先需要执行 `kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tidb":{"binlogEnabled": false}}}'`，等待 TiDB Pod 完成重启更新后再移除 Pump 节点。如果直接移除 Pump 节点会导致 TiDB 没有可以写入的 Pump 而无法使用。
 2. 参考[缩容 Pump 节点步骤](#缩容-pump-节点)缩容 Pump 到 0。
-3. `kubectl edit tc ${cluster_name} -n ${namespace}` 将 `spec.pump` 部分配置项全部删除。
+3. `kubectl patch tc ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/pump"}]'` 将 `spec.pump` 部分配置项全部删除。
 4. `kubectl delete sts ${cluster_name}-pump -n ${namespace}` 删除 Pump StatefulSet 资源。
 5. 通过 `kubectl get pvc -n ${namespace} -l app.kubernetes.io/component=pump` 查看 Pump 集群使用过的 PVC，随后使用 `kubectl delete pvc -l app.kubernetes.io/component=pump -n ${namespace}` 指令删除 Pump 的所有 PVC 资源。
 

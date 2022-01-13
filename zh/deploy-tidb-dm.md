@@ -51,6 +51,7 @@ metadata:
   namespace: ${namespace}
 spec:
   version: v5.3.0
+  configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -65,8 +66,8 @@ spec:
     storageSize: "10Gi"
     requests:
       cpu: 1
-    config:
-      rpc-timeout: 40s
+    config: |
+      rpc-timeout = "40s"
 ```
 
 #### DM-worker 配置
@@ -88,8 +89,8 @@ spec:
     storageSize: "100Gi"
     requests:
       cpu: 1
-    config:
-      keepalive-ttl: 15
+    config: |
+      keepalive-ttl = 15
 ```
 
 ### 拓扑分布约束
