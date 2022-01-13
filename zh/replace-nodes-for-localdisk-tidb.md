@@ -66,7 +66,7 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
 
 ## 第四步：创建克隆 TiDB 集群
 
-1. 执行命令：
+1. 执行以下命令，创建克隆集群：
 
     {{< copyable "shell-regular" >}}
     
@@ -95,9 +95,9 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
 
 > **注意：**
 >
-> 若通过负载均衡或数据库访问层中间件的方式接入待迁移 TiDB 集群，则需要在缩容原集群 TiDB 之前，先修改配置，将业务流量迁移至目标 TiDB 集群，避免影响业务。
+> 若通过负载均衡或数据库访问层中间件的方式接入原 TiDB 集群，则需要在缩容原集群 TiDB 之前，先修改配置，将业务流量迁移至目标 TiDB 集群，避免影响业务。
 
-## 第六步：缩容待迁移集群 TiKV 节点
+## 第六步：缩容原集群 TiKV 节点
 
 将原集群的 TiKV 节点缩容至 0 个，参考[水平扩缩容](scale-a-tidb-cluster.md#水平扩缩容)一节。
 
