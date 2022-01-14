@@ -1,17 +1,17 @@
 ---
-title: Build Multiple Connected AWS EKS Clusters
+title: Build Multiple Peering AWS EKS Clusters
 summary: Learn how to build multiple connected AWS EKS clusters and prepare for deploying a TiDB cluster across multiple EKS clusters.
 ---
 
-# Build Multiple Connected AWS EKS Clusters
+# Build Multiple Interconnected AWS EKS Clusters
 
-This document describes how to create multiple AWS EKS clusters and configure network connections between the clusters. The connected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to build three connected EKS clusters.
+This document describes how to create multiple AWS EKS clusters and configure network peering between these clusters. These interconnected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to configure three-cluster network peering.
 
 If you need to deploy TiDB on a single AWS EKS cluster, refer to [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md).
 
 ## Prerequisites
 
-Before you start building multiple connected EKS clusters, make sure you have completed the following preparations:
+Before you deploy EKS clusters, make sure you have completed the following preparations:
 
 - Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
 
@@ -23,55 +23,55 @@ Before you start building multiple connected EKS clusters, make sure you have co
     - Install and configure the CLI for creating Kubernetes clusters (`eksctl`).
     - Install the Kubernetes CLI (`kubectl`)
 
-- AWS Access Key has at least the [minimum permissions required for `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [permissions required for creating a Linux bastion](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account).
+- Grant AWS Access Key the [minimum permissions required for `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [permissions required for creating a Linux bastion](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account).
 
 To verify whether you have correctly configured the AWS CLI, run the `aws configure list` command. If the output shows the values of `access_key` and `secret_key`, you have successfully configured the AWS CLI. Otherwise, you need to reconfigure the AWS CLI.
 
 ## Step 1. Start the Kubernetes cluster
 
-Define the configuration files of three Kubernetes clusters as `cluster_1.yaml`, `cluster_2.yaml`, and `cluster_3.yaml`. Create three clusters using `eksctl`.
+Define the configuration files of three EKS clusters as `cluster_1.yaml`, `cluster_2.yaml`, and `cluster_3.yaml`, and create three clusters using `eksctl`.
 
 1. Define the configuration file of Cluster 1, and create Cluster 1.
 
-    Save the following content as `cluster_1.yaml`. `${cluster_1}` is the name of the EKS cluster. `${region_1}` is the Region that the EKS cluster is deployed in. `${cidr_block_1}` is the CIDR block of the VPC that the EKS cluster belongs to.
+    1. Save the following content as `cluster_1.yaml`. `${cluster_1}` is the name of the EKS cluster. `${region_1}` is the Region that the EKS cluster is deployed in. `${cidr_block_1}` is the CIDR block for the VPC that the EKS cluster is deployed in.
 
-    ```yaml
-    apiVersion: eksctl.io/v1alpha5
-    kind: ClusterConfig
+        ```yaml
+        apiVersion: eksctl.io/v1alpha5
+        kind: ClusterConfig
 
-    metadata:
-      name: ${cluster_1}
-      region: ${region_1}
+        metadata:
+          name: ${cluster_1}
+          region: ${region_1}
 
-    # nodeGroups ...
+        # nodeGroups ...
 
-    vpc:
-      cidr: ${cidr_block_1}
-    ```
+        vpc:
+          cidr: ${cidr_block_1}
+        ```
 
-    For the configuration of the `nodeGroups` field, refer to [Create an EKS cluster and a node pool](deploy-on-aws-eks.md#create-an-eks-cluster-and-a-node-pool).
+        For the configuration of the `nodeGroups` field, refer to [Create an EKS cluster and a node pool](deploy-on-aws-eks.md#create-an-eks-cluster-and-a-node-pool).
 
-    Create Cluster 1 by running the following command:
+    2. Create Cluster 1 by running the following command:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```bash
-    eksctl create cluster -f cluster_1.yaml
-    ```
+        ```bash
+        eksctl create cluster -f cluster_1.yaml
+        ```
 
-    After running the command above, wait until the EKS cluster is successfully created and the node group is created and added to the EKS cluster. This process might take 5 to 20 minutes. For more cluster configuration, refer to [`eksctl` documentation](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
+    After running the command above, wait until the EKS cluster is successfully created and the node group is created and added to the EKS cluster. This process might take 5~20 minutes. For more cluster configuration, refer to [Using Config Files](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
 
-2. Refer to Step 1, define the configuration files of Cluster 2 and Cluster 3, and create Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step and create Cluster 2 and Cluster 3.
 
-    The CIDR block of the VPC that each EKS cluster belongs to **must not** overlap with that of each other.
+    The CIDR block for each EKS cluster **must not** overlap with that of each other.
 
     In the following sections:
 
-    - `${cluster_1}`, `${cluster_2}`, and `${cluster_3}` refer to the name of the clusters.
-    - `${region_1}`, `${region_2}`, and `${region_3}` refer to the Region that the clusters are deployed in.
-    - `${cidr_block_1}`, `${cidr_block_2}`, and `${cidr_block_3}` refer to the CIDR block of the VPC that the clusters belong to.
+    - `${cluster_1}`, `${cluster_2}`, and `${cluster_3}` refer to the cluster names.
+    - `${region_1}`, `${region_2}`, and `${region_3}` refer to the Regions that the clusters are deployed in.
+    - `${cidr_block_1}`, `${cidr_block_2}`, and `${cidr_block_3}` refer to the CIDR block for the VPC that the clusters are deployed in.
 
-3. After the clusters are created, obtain the Kubernetes context of each cluster. The context will be used in the subsequent `kubectl` commands.
+3. After the clusters are created, obtain the Kubernetes context of each cluster. The contexts are used in the subsequent `kubectl` commands.
 
     {{< copyable "shell-regular" >}}
 
@@ -80,24 +80,29 @@ Define the configuration files of three Kubernetes clusters as `cluster_1.yaml`,
     ```
 
     <details>
-    <summary>Toggle expected output. The context is in the `NAME` column.</summary>
+    <summary>Expected output</summary>
+
+    The context is in the <code>NAME</code> column.
+
     <pre><code>
     CURRENT   NAME                                 CLUSTER                      AUTHINFO                            NAMESPACE
     *         pingcap@tidb-1.us-west-1.eksctl.io   tidb-1.us-west-1.eksctl.io   pingcap@tidb-1.us-west-1.eksctl.io
-             pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
-             pingcap@tidb-3.us-east-1.eksctl.io   tidb-3.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
+              pingcap@tidb-2.us-west-2.eksctl.io   tidb-2.us-west-2.eksctl.io   pingcap@tidb-2.us-west-2.eksctl.io
+              pingcap@tidb-3.us-east-1.eksctl.io   tidb-3.us-east-1.eksctl.io   pingcap@tidb-3.us-east-1.eksctl.io
     </code></pre>
     </details>
 
     In the following sections, `${context_1}`, `${context_2}`, and `${context_3}` refer to the context of each cluster.
 
-## Step 2. Configure network
+## Step 2. Configure the network
 
-### Configure VPC peering
+### Set up VPC peering
 
-To connect the three clusters, you need to create a VPC peering connection between the VPCs of every two clusters. For details on VPC peering, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html).
+To allow the three clusters to access each other, you need to create a VPC peering connection between the VPCs of every two clusters. For details on VPC peering, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html).
 
-1. Get the VPC ID of each cluster. The following example gets the VPC ID of Cluster 1:
+1. Get the VPC ID of each cluster.
+
+    The following example gets the VPC ID of Cluster 1:
 
     {{< copyable "shell-regular" >}}
 
@@ -106,7 +111,10 @@ To connect the three clusters, you need to create a VPC peering connection betwe
     ```
 
     <details>
-    <summary>Toggle expected output. The VPC ID is in the `VPC` column.</summary>
+    <summary>Expected output</summary>
+
+    The VPC ID is in the <code>VPC</code> column.
+
     <pre><code>
     NAME          VERSION STATUS  CREATED                 VPC                       SUBNETS                                                                                                                   SECURITYGROUPS
     tidb-1        1.20    ACTIVE  2021-11-22T06:40:20Z    vpc-0b15ed35c02af5288   subnet-058777d55881c4095, subnet-06def2041b6fa3fa0,subnet-0869c7e73e09c3174,subnet-099d10845f6cbaf82,subnet-0a1a58db5cb087fed, subnet-0f68b302678c4d36b     sg-0cb299e7ec153c595
@@ -115,42 +123,45 @@ To connect the three clusters, you need to create a VPC peering connection betwe
 
     In the following sections, `${vpc_id_1}`, `${vpc_id_2}`, and `${vpc_id_3}` refer to the VPC ID of each cluster.
 
-2. Create a VPC peering connection between the VPCs of Cluster 1 and Cluster 2.
+2. Create a VPC peering connection between Cluster 1 and Cluster 2.
 
-    1. Refer to [AWS VPC peering documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) and create a VPC peering. Use `${vpc_id_1}` as the requester VPC and `${vpc_id_2}` as the accepter VPC.
+    1. Refer to [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) and create a VPC peering. Use `${vpc_id_1}` as the requester VPC and `${vpc_id_2}` as the accepter VPC.
 
-    2. Refer to [AWS VPC peering documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) and complete creating a VPC peering.
+    2. Refer to [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) and complete creating a VPC peering.
 
-3. Refer to Step 2, create a VPC peering between Cluster 1 and Cluster 3, and create a VPC peering between Cluster 2 and Cluster 3.
+3. Follow the instructions in the previous step. Create a VPC peering connection between Cluster 1 and Cluster 3 and a VPC peering connection between Cluster 2 and Cluster 3.
 
-4. [Update the route tables](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) for the VPC peering.
+4. [Update the route tables](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) for the VPC peering of the three clusters.
 
-    You need to update the route tables of all subnets used by the clusters. Add two routes in each route table. Take the route table of Cluster 1 as an example:
+    You need to update the route tables of all subnets used by the clusters. Add two routes in each route table.
+
+    The following example shows the route table of Cluster 1:
 
     | Destination     | Target               | Status | Propagated |
     | --------------- | -------------------- | ------ | ---------- |
-    | ${cidr_block_2} | ${vpc_peering_id_12} | Active | No         |
-    | ${cidr_block_3} | ${vpc_peering_id_13} | Active | No         |
+    | `${cidr_block_2}` | `${vpc_peering_id_12}` | Active | No         |
+    | `${cidr_block_3}` | `${vpc_peering_id_13}` | Active | No         |
 
-    The **Destination** of each route is the CIDR block of another cluster. **Target** is the VPC peering ID of the two clusters.
+    The **Destination** of each route is the CIDR block of another cluster. The **Target** is the VPC peering ID of the two clusters.
 
 ### Update the security groups for the instances
 
 1. Update the security group for Cluster 1.
 
     1. Enter the AWS Security Groups Console and select the security group of Cluster 1. The name of the security group is similar to `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
-    2. Add inbound rules in the security group to allow traffic from Cluster 2 and Cluster 3.
 
-        | Type        | Protocol | Port range | Source                 | Descrption                                    |
+    2. Add inbound rules to the security group to allow traffic from Cluster 2 and Cluster 3.
+
+        | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
         | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
         | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
 
-2. Follow the same procedure in Step 1 for Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step to update the security groups for Cluster 2 and Cluster 3.
 
 ### Configure load balancers
 
-Each cluster needs to expose its CoreDNS service to other clusters via a load balancer. This sections describes how to configure load balancers.
+Each cluster needs to expose its CoreDNS service to other clusters via a [network load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html). This section describes how to configure load balancers.
 
 1. Create the load balancer service definition file `dns-lb.yaml` as follows:
 
@@ -183,31 +194,35 @@ Each cluster needs to expose its CoreDNS service to other clusters via a load ba
 
     ```bash
     kubectl --context ${context_1} apply -f dns-lb.yaml
+
     kubectl --context ${context_2} apply -f dns-lb.yaml
+
     kubectl --context ${context_3} apply -f dns-lb.yaml
     ```
 
-3. Obtain the load balancer name of each cluster, and wait for all load balancers to become `Active`.
+3. Get the load balancer name of each cluster, and wait for all load balancers to become `Active`.
 
-    Obtain the load balancer names by running the following commands:
+    Get the load balancer names by running the following commands:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+
     lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+
     lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
     ```
 
-    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", the load balancer is in `Active` state.
-
-    {{< copyable "shell-regular" >}}
+    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", the load balancer is in the `Active` state.
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     aws elbv2 describe-load-balancers --names ${lb_name_1} --region ${region_1} --query 'LoadBalancers[*].State' --output text
+
     aws elbv2 describe-load-balancers --names ${lb_name_2} --region ${region_2} --query 'LoadBalancers[*].State' --output text
+
     aws elbv2 describe-load-balancers --names ${lb_name_3} --region ${region_3} --query 'LoadBalancers[*].State' --output text
     ```
 
@@ -236,9 +251,9 @@ Each cluster needs to expose its CoreDNS service to other clusters via a load ba
 
     Repeat the same step for Cluster 2 and Cluster 3.
 
-    In the following sections, `${lb_ip_list_1}`, `${lb_ip_list_2}`, and `${lb_ip_list_3}` refer to the IP address associated with the load balancer of each cluster.
+    In the following sections, `${lb_ip_list_1}`, `${lb_ip_list_2}`, and `${lb_ip_list_3}` refer to the IP addresses associated with the load balancer of each cluster.
 
-    Load balancers in different Region might have different numbers of IP addresses. For example, in the above example, `${lb_ip_list_1}` is `10.1.175.233 10.1.144.196`.
+    The load balancers in different Regions might have different numbers of IP addresses. For example, in the example above, `${lb_ip_list_1}` is `10.1.175.233 10.1.144.196`.
 
 ### Configure CoreDNS
 
@@ -264,11 +279,11 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
         kubectl --context ${context_1} -n kube-system edit configmap coredns
         ```
 
-        Modify the `data.Corefile` field as follows. In the example below, `${namespace_2}` and `${namespace_3}` are the namespaces that Cluster 2 and Cluster 3 will deploy TidbCluster in.
+        Modify the `data.Corefile` field as follows. In the example below, `${namespace_2}` and `${namespace_3}` are the namespaces that Cluster 2 and Cluster 3 deploy `TidbCluster` in.
 
         > **Warning:**
         >
-        > Because you cannot modify the cluster domain of an EKS cluster, the namespace is required as an identifier for forwarding DNS requests. Therefore, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` **must not** be the same.
+        > Because you cannot modify the cluster domain of an EKS cluster, you need to use the namespace as an identifier for DNS forwarding. Therefore, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` must be different from each other.
 
         ```yaml
         apiVersion: v1
@@ -277,7 +292,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
         data:
           Corefile: |
              .:53 {
-                # The default configuration. Do not modify.
+                # Do not modify the default configuration.
              }
              ${namspeace_2}.svc.cluster.local:53 {
                  errors
@@ -297,18 +312,18 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
 
     3. Wait for the CoreDNS to reload the configuration. It might take around 30 seconds.
 
-2. Follow the procedures in Step 1, and modify the CoreDNS configuration of Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step, and modify the CoreDNS configuration of Cluster 2 and Cluster 3.
 
     In the CoreDNS configuration of each cluster, you need to perform the following operations:
 
-    - Configure `${namespace_2}` and `${namespace_3}` to the namespace of each cluster.
-    - Configure the IP address to the IP addresses of the load balancers of other two clusters.
+    - Configure `${namespace_2}` and `${namespace_3}` to the namespace that the other two clusters deploy `TidbCluster` in.
+    - Configure the IP address to the IP addresses of the load balancers of the other two clusters.
 
-In the following sections, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` refer to the namespaces that each cluster will deploy TidbCluster in.
+In the following sections, `${namespace_1}`, `${namespace_2}`, and `${namespace_3}` refer to the namespaces that each cluster deploy `TidbCluster` in.
 
-## Step 3. Verify the network connectivity
+## Step 3. Verify the network interconnectivity
 
-Before you deploy the TiDB cluster, you need to verify that the network between EKS clusters is connected.
+Before you deploy the TiDB cluster, you need to verify that the network between the EKS clusters is interconnected.
 
 1. Save the following content in the `sample-nginx.yaml` file.
 
@@ -343,7 +358,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
       clusterIP: None
     ```
 
-2. Deploy the nginx service in the namespaces of three clusters.
+2. Deploy the nginx service to the namespaces of the three clusters:
 
     {{< copyable "shell-regular" >}}
 
@@ -355,7 +370,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
     ```
 
-3. Access the nginx services of other clusters to verify the network connectivity.
+3. Access the nginx services of other clusters to verify the network interconnectivity.
 
     The following command verifies the network from Cluster 1 to Cluster 2:
 
@@ -373,7 +388,9 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
 
     ```bash
     kubectl --context ${context_1} -n ${namespace_1} delete -f sample-nginx.yaml
+
     kubectl --context ${context_2} -n ${namespace_2} delete -f sample-nginx.yaml
+
     kubectl --context ${context_3} -n ${namespace_3} delete -f sample-nginx.yaml
     ```
 
@@ -385,13 +402,13 @@ Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and deploy TiDB Operato
 
 ## Step 5. Deploy TiDB clusters
 
-Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md), and deploy a TidbCluster CR for each EKS cluster. Note the following operations:
+Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md) and deploy a `TidbCluster` CR for each EKS cluster. Note the following operations:
 
 * You must deploy the TidbCluster CR in the corresponding namespace configured in the [Configure CoreDNS](#configure-coredns) section. Otherwise, the TiDB cluster will fail to start.
 
 * The cluster domain of each cluster must be set to "cluster.local".
 
-Take Cluster 1 as an example. When deploy the `TidbCluster` CR to Cluster 1, specify `metadata.namespace` as `${namespace_1}`:
+Take Cluster 1 as an example. When you deploy the `TidbCluster` CR to Cluster 1, specify `metadata.namespace` as `${namespace_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
