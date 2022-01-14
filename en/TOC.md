@@ -26,6 +26,11 @@
   - [Deploy the TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
+- Monitor and Alert
+    - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
+    - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
+    - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+    - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
 - Migrate
   - [Import Data](restore-data-using-tidb-lightning.md)
   - Migrate from MySQL
@@ -74,11 +79,6 @@
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
-  - Monitor and Alert
-    - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
-    - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
-    - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
-    - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
