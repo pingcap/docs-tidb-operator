@@ -142,7 +142,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
     2. 在安全组中添加 Inbound rules，以允许来自集群 2 和集群 3 的流量：
 
-        | Type        | Protocol | Port range | Source                 | Descrption                                    |
+        | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
         | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
         | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
