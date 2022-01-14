@@ -70,7 +70,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 0}}}'
     ```
 
     由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD StatefulSet，所以需要通过如下命令设置 PD StatefulSet `spec.replicas` 为 `0`：
@@ -78,7 +78,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 0}}'
     ```
 
     通过如下命令确认 PD Pod 已经被删除：
@@ -104,7 +104,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 1}}}'
     ```
 
     由于此时 PD 集群异常，TiDB Operator 无法将上面的改动同步到 PD StatefulSet，所以需要通过如下命令设置 PD StatefulSet `spec.replicas` 为 `1`：
@@ -112,7 +112,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
     通过如下命令确认 PD Pod 已经启动：
@@ -186,7 +186,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc ${cluster_name} -n ${namespace}
+kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}
 ```
 
 ### 第 7 步：重启 TiDB 和 TiKV

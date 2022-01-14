@@ -28,7 +28,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 > **注意：**
 >
-> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account)。
 
 ## 推荐机型及存储
 
@@ -497,7 +497,7 @@ basic-grafana   LoadBalancer   10.100.199.42   a806cfe84c12a4831aa3313e792e3eed-
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}'` 命令修改。
 
 升级过程会持续一段时间，你可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 

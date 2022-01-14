@@ -311,30 +311,28 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Leader 迁移到其他 Pod。
-
-4. 删除 TiKV Pod：
+3. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启，TiDB Operator 会在迁移完 TiKV Region Leader 后删掉 Pod：
 
     {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl delete -n ${namespace} pod ${pod_name}
+   
+    ```bash
+    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="delete-pod"
     ```
 
-5. 确认该 TiKV Pod 正常调度到其它节点上：
+4. 确认该 TiKV Pod 正常调度到其它节点上：
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-6. 移除 evict-leader-scheduler，等待 Region Leader 自动调度回来：
+5. 检查 Region Leader 已经开始迁回:
 
-    {{< copyable "shell-regular" >}}
+   {{< copyable "shell-regular" >}}
 
-    ```shell
-    pd-ctl scheduler remove evict-leader-scheduler-${ID}
+    ```bash
+    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
 
 ### 如果节点存储不可自动迁移
@@ -453,26 +451,18 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 迁移 TiKV Region Leader
 
-1. 查看 TiKV Pod 的 `store-id`：
+1. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation：
 
     {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
+   
+    ```bash
+    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
-2. 驱逐 Region Leader：
+2. 检查 Region Leader 已经全部被迁移走:
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
-    pd-ctl scheduler add evict-leader-scheduler ${ID}
-    ```
-
-3. 检查 Region Leader 已经全部被迁移走:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    ```bash
+    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
