@@ -30,7 +30,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
     metadata:
       name: your-eks-cluster
       region: ap-northeast-1
-    
+
     nodeGroups:
     ...
       - name: tidb-1b-new
@@ -52,7 +52,7 @@ summary: 介绍如何为使用云存储的 TiDB 集群更换节点。
         taints:
           dedicated: tikv:NoSchedule
     ```
-    
+
     > **注意：**
     >
     > * `availabilityZones` 需要和要替换的节点组保持一致。
