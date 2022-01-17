@@ -21,7 +21,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 1. 执行以下命令，导出克隆集群文件 `tidb-cluster-clone.yaml`：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```bash
     kubectl get tidbcluster ${origin_cluster_name} -n ${namespace} -oyaml > tidb-cluster-clone.yaml
     ```
@@ -69,7 +69,7 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
 1. 执行以下命令，创建克隆集群：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```bash
     kubectl apply -f tidb-cluster-clone.yaml
     ```
@@ -120,11 +120,11 @@ kubectl patch -n ${namespace} tc ${clone_cluster_name} --type=json -p '[{"op":"r
 1. 删除原集群 `TidbCluster`：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```bash
     kubectl delete -n ${namespace} tc ${origin_cluster_name}
     ```
-    
+
     其中 `${namespace}` 是原集群的命名空间（不变），`${origin_cluster_name}` 是原集群名字。
 
 2. 删除原集群数据，请参考[删除 PV 以及对应的数据](configure-storage-class.md)一节。
