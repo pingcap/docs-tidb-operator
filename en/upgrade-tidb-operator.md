@@ -42,6 +42,8 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     This document takes TiDB v1.3.0-beta.1 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
+
+
 3. Get the `values.yaml` file of the `tidb-operator` chart:
 
     {{< copyable "shell-regular" >}}
@@ -82,7 +84,7 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     > **Note:**
     >
-    > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
+    > If upgrading Operator to V1.3.0 or later for the first time, you can't use `replace` command to upgrade TidbNGMonitoring CRD due to TidbNGMonitoring CRD is new, you need to create TidbNGMonitoring first.
 
 ## offline upgrade
 
@@ -109,6 +111,10 @@ If your server cannot access the Internet, you can offline upgrade by taking the
             ```
 
         This document takes TiDB v1.3.0-beta.1 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
+
+        > **Note:**
+        >
+        > If upgrading Operator to V1.3.0 or later for the first time, you can't use `replace`  command to upgrade TidbNGMonitoring CRD due to TidbNGMonitoring CRD is new, you need to  create TidbNGMonitoring first.
 
     2. Download the `tidb-operator` chart package file.
 

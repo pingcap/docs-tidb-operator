@@ -21,7 +21,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     如果输出中未包含你需要的新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo)。
 
 2. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
-
+   
     * 如果 Kubernetes 版本大于等于 1.16:
 
         {{< copyable "shell-regular" >}}
@@ -41,6 +41,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         ```
 
     本文以 TiDB Operator v1.3.0-beta.1 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
+
+    > **注意：**
+    >
+    > 第一次升级 Operator 到 v1.3.0 及以后版本时，由于 TidbNGMonitoring CRD 是新增加的，因此无法使用 `replace` 命令更新 TidbNGMonitoring CR，需要先创建 TidbNGMonitoring CR。
 
 3. 获取你要升级的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -109,6 +113,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
             ```
 
         本文以 TiDB Operator v1.3.0-beta.1 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
+
+        > **注意：**
+        >
+        > 第一次升级 Operator 到 v1.3.0 及以后版本时，由于 TidbNGMonitoring CRD 是新增加的，因此无法使  用 `replace` 命令更新 TidbNGMonitoring CR，需要先创建 TidbNGMonitoring CR。
 
     2. 下载 `tidb-operator` chart 包文件：
 
