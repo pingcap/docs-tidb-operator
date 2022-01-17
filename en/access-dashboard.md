@@ -208,7 +208,7 @@ Note that if there is more than one PD `Pod` in the cluster, you need to set `sp
 
 With Continuous Profiling, you can collect continuous performance data of TiDB, PD, TiKV, and TiFlash instances, and have the nodes monitored day and night without restarting any of them. The data collected can be displayed in various forms, for example, on a flame graph or a directed acyclic graph. The data displayed visually shows what internal operations are performed on the instances during the performance profiling period and the corresponding proportions. With such data, you can quickly learn the CPU resource consumption of these instances.
 
-To enable this feature, you need to deploy TidbNGMonitoring CR using TiUP v1.3.0 or later.
+To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operator v1.3.0 or later.
 
 1. Deploy TidbMonitor CR.
 
