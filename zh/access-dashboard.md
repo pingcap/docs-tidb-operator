@@ -221,12 +221,13 @@ spec:
     spec:
       clusters:
       - name: ${cluster_name}
-        ns: ${cluster_ns}
+        namespace: ${cluster_ns}
 
       ngMonitoring:
         requests:
           storage: 10Gi
         version: v5.4.0
+        # storageClassName: default
         baseImage: pingcap/ng-monitoring
     ```
 
