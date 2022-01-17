@@ -108,7 +108,7 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 
 ## 第三步：滚动重启 TiDB 集群
 
-参考[重启 Kubernetes 上的 TiDB 集群](restart-a-tidb-cluster.md#优雅滚动重启-tidb-集群组件的所有-pod)滚动重启 TiDB 集群。
+参考[重启 Kubernetes 上的 TiDB 集群](restart-a-tidb-cluster.md#优雅滚动重启-tidb-集群组件的所有-pod-节点)滚动重启 TiDB 集群。
 
 ## 第四步：删除原来节点组
 
