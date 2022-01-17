@@ -42,7 +42,9 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     This document takes TiDB v1.3.0-beta.1 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
-
+    > **Note:**
+    >
+    > If upgrading Operator to V1.3.0 or later for the first time, you can't use `replace` command to upgrade TidbNGMonitoring CRD due to TidbNGMonitoring CRD is new, you need to create TidbNGMonitoring first.
 
 3. Get the `values.yaml` file of the `tidb-operator` chart:
 
@@ -81,10 +83,6 @@ If your server has access to the internet, you can perform online upgrade by tak
     image: pingcap/tidb-operator:v1.3.0-beta.1
     image: docker.io/pingcap/tidb-operator:v1.3.0-beta.1
     ```
-
-    > **Note:**
-    >
-    > If upgrading Operator to V1.3.0 or later for the first time, you can't use `replace` command to upgrade TidbNGMonitoring CRD due to TidbNGMonitoring CRD is new, you need to create TidbNGMonitoring first.
 
 ## offline upgrade
 
