@@ -19,7 +19,7 @@ Common open source tools that can be used to collect Kubernetes logs are:
 - [Fluentd](https://www.fluentd.org/)
 - [Fluent-bit](https://fluentbit.io/)
 - [Filebeat](https://www.elastic.co/products/beats/filebeat)
-- [Logstash](https://www.elastic.co/products/logstash)
+- [Logstash](https://www.elastic.co/logstash/)
 
 Collected Logs can usually be aggregated and stored on a specific server or in a dedicated storage and analysis system such as ElasticSearch.
 
