@@ -194,6 +194,55 @@ spec:
 
 需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
 
+## 启用持续性能分析
+
+持续性能分析允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据，并且持久监控节点。收集到的性能数据可显示为火焰图、有向无环图等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例 CPU 资源消耗细节。
+
+启用持续性能分析，你需要使用 v1.3.0 版本及以上的 TiDB Operator 部署 TidbNGMonitoring CR。
+
+1. 部署 TidbMonitor CR。
+
+    - 如果 TiDB 集群版本小于 v5.4.0，参考[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)部署 TidbMonitor CR。
+    
+    - 如果 TiDB 集群版本大于等于 v5.4.0，可以跳过这一步。
+
+2. 部署 TidbNGMonitoring CR。
+
+    执行以下命令部署 TidbNGMonitoring CR。其中， `${cluster_name}` 为 TidbCluster CR 的名称，`${cluster_ns}` 为 TidbCluster CR 所在的命名空间。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF | kubectl apply -n ${ns} -f -
+    apiVersion: pingcap.com/v1alpha1
+    kind: TidbNGMonitoring
+    metadata:
+      name: ${name}
+    spec:
+      clusters:
+      - name: ${cluster_name}
+        namespace: ${cluster_ns}
+
+      ngMonitoring:
+        requests:
+          storage: 10Gi
+        version: v5.4.0
+        # storageClassName: default
+        baseImage: pingcap/ng-monitoring
+    ```
+
+    关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
+
+3. 启用持续性能分析。
+
+    1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
+    2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
+    3. 点击**保存** (Save)。
+
+    ![启用功能](/media/dashboard-conprof-start.png)
+
+关于持续性能分析功能的更多操作，参考 [TiDB Dashboard 实例性能分析 - 持续分析页面](https://docs.pingcap.com/zh/tidb/stable/continuous-profiling)。
+
 ## TiDB Operator 中不支持的 Dashboard 功能
 
 TiDB Dashboard 中的部分功能会因为 kubernetes 的特殊环境而无法使用，包括以下功能：

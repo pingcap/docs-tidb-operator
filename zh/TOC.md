@@ -71,11 +71,15 @@
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
     - [查看 TiDB 日志](view-logs.md)
+    - [修改 TiDB 集群配置](modify-tidb-configuration.md)
     - [配置集群故障自动转移](use-auto-failover.md)
     - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
     - [使用多套 TiDB Operator 单独管理不同的 TiDB 集群](deploy-multiple-tidb-operator.md)
     - [维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
     - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
+    - 为 TiDB 集群更换节点
+        - [更换云存储节点](replace-nodes-for-cloud-disk.md)
+        - [更换本地存储节点](replace-nodes-for-local-disk.md)
   - 监控与告警
     - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
@@ -111,6 +115,8 @@
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
+  - v1.3
+    - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)

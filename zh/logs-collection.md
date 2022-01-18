@@ -19,7 +19,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/logs-collection/','/docs-cn/tidb-in-k
 - [Fluentd](https://www.fluentd.org/)
 - [Fluent-bit](https://fluentbit.io/)
 - [Filebeat](https://www.elastic.co/products/beats/filebeat)
-- [Logstash](https://www.elastic.co/products/logstash)
+- [Logstash](https://www.elastic.co/logstash/)
 
 收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSearch 等专用的存储、分析系统当中。
 

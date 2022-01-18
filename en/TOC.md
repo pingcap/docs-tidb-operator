@@ -71,6 +71,7 @@
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
     - [View TiDB Logs](view-logs.md)
+    - [Modify TiDB Cluster Configuration](modify-tidb-configuration.md)
     - [Configure Automatic Failover](use-auto-failover.md)
     - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
@@ -110,6 +111,8 @@
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
+  - v1.3
+    - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)

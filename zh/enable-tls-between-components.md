@@ -17,6 +17,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致各组件部署失败。
 
 2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
+
+    > **注意：**
+    >
+    > 在集群创建后，不能修改此字段，否则将导致集群升级失败。
+
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
 > **注意：**
@@ -647,7 +652,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     然后创建一个 `tidb-cluster-issuer.yaml` 文件，输入以下内容：
 
     ``` yaml
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -655,7 +660,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -670,7 +675,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-tidb-issuer
@@ -703,7 +708,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     - PD 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-pd-cluster-secret
@@ -712,8 +717,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-pd-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -755,14 +761,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-pd-cluster-secret` 的 Secret 对象供 TiDB 集群的 PD 组件使用。
 
     - TiKV 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tikv-cluster-secret
@@ -771,8 +777,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-tikv-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -814,14 +821,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tikv-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV 组件使用。
 
     - TiDB 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tidb-cluster-secret
@@ -830,8 +837,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-tidb-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -873,14 +881,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tidb-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiDB 组件使用。
 
     - Pump 组件的 Server 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-pump-cluster-secret
@@ -889,8 +897,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-pump-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -920,7 +929,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-pump-cluster-secret` 的 Secret 对象供 TiDB 集群的 Pump 组件使用。
 
@@ -942,7 +951,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         那么就需要这样配置证书：
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-drainer-cluster-secret
@@ -951,8 +960,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-drainer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -973,7 +983,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         如果部署的时候没有设置 `drainerName` 属性，需要这样配置 `dnsNames` 属性：
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-drainer-cluster-secret
@@ -982,8 +992,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-drainer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1010,7 +1021,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-drainer-cluster-secret` 的 Secret 对象供 TiDB 集群的 Drainer 组件使用。
 
@@ -1019,7 +1030,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
       TiCDC 从 v4.0.3 版本开始支持 TLS，TiDB Operator v1.1.3 版本同步支持 TiCDC 开启 TLS 功能。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-ticdc-cluster-secret
@@ -1028,8 +1039,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-ticdc-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1071,14 +1083,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-ticdc-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiCDC 组件使用。
 
     - TiFlash 组件的 Server 端证书。
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-tiflash-cluster-secret
@@ -1087,8 +1099,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-tiflash-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1130,7 +1143,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiflash-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiFlash 组件使用。
 
@@ -1139,7 +1152,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
       如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-importer-cluster-secret
@@ -1148,8 +1161,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-importer-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1182,7 +1196,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV Importer 组件使用。
 
@@ -1191,7 +1205,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
       如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-lightning-cluster-secret
@@ -1200,8 +1214,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-lightning-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -1231,14 +1246,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-lightning-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiDB Lightning 组件使用。
 
     - 一套 TiDB 集群组件的 Client 端证书。
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-cluster-client-secret
@@ -1247,8 +1262,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
           secretName: ${cluster_name}-cluster-client-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - client auth
@@ -1264,7 +1280,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         - `usages` 请添加上  `client auth`；
         - `dnsNames` 和 `ipAddresses` 不需要填写；
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-cluster-client-secret` 的 Secret 对象供 TiDB 组件的 Client 使用。
 
