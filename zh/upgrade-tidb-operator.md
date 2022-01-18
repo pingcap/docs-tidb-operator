@@ -152,7 +152,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 2. 将下载的文件和镜像上传到需要升级的服务器上，在服务器上按照以下步骤进行安装：
 
-    1. 如果是第一次升级 Operator 到 v1.3.0 及以后版本，需要先创建新增加的 TidbNGMonitoring CRD。
+    1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
         {{< copyable "shell-regular" >}}
 
@@ -162,7 +162,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
         对于其他 CRD，执行该命令时会报 "AlreadyExists" 的错误，可以忽略该错误。
 
-    2. 安装 TiDB Operator 需要的 `crd.yaml` 文件：
+    2. 升级 TiDB Operator 需要的 `crd.yaml` 文件：
 
         {{< copyable "shell-regular" >}}
 
