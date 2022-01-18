@@ -24,7 +24,9 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 ### 部署 TiDB 集群监控
 
-根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中`cluster_name`为TiDB集群名称，`cluster_namespace`为TiDB集群所在的命名空间，`kubernetes_cluster_name`为自定义的 kubernetes 集群名称，作为标识 Prometheus 的`externallabels`，`storageclass_name`设置为当前集群中的存储，`remote_write_url` 为`thanos-receiver`（或其他兼容 Prometheus remote API）组件的 host 信息，关于 thanos 部署方案参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name` 为TiDB集群名称， `cluster_namespace` 为TiDB集群所在的命名空间， `kubernetes_cluster_name` 为自定义的 kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用， `storageclass_name` 设置为当前集群中的存储， `remote_write_url` 为 `thanos-receiver` （或其他兼容 Prometheus remote API）组件的 host ，关于 thanos 部署方案参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cluster_name="cluster1"
@@ -34,7 +36,9 @@ storageclass_name="local-storage"
 remote_write_url="http://thanos-receiver:19291/api/v1/receive"
 ```
 
-执行以下指令，创建`TidbMonitor`：
+执行以下指令，创建 `TidbMonitor` ：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cat << EOF | kubectl apply -n ${cluster_namespace} -f -
@@ -47,7 +51,7 @@ spec:
   - name: ${cluster_name}
     namespace: ${cluster_namespace}
   externalLabels:
-    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue #4219.
+    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
     kubernetes: ${kubernetes_cluster_name}
     #add other meta labels here
     #region: us-east-1
@@ -70,38 +74,31 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-### 配置 Grafana
-
-为所有 TiDB 集群部署 `TidbMonitor`后，即可使用 Thanos query 组件作为全局统一视图，查看跨 kubernetes 集群的 TiDB 集群监控数据。若通过 Grafana 进行访问，请进行以下操作：
-
-1. 登陆 Grafana。
-2. 在左侧导航栏中，选择 Configuration > Data Sources。
-3. 添加或修改一个 Prometheus 类型的 DataSource。
-4. 将 HTTP 下面的 URL 设置为 http://thanos-query.${thanos_namespace}:9090
-
-
 ## Pull 方式
 
 <SimpleTab>
-
 <div label="Thanos Query">
 
-### 部署架构图
+### 使用 Thanos Query
 
-为每个 prometheus(TidbMonitor) 组件部署 thanos sidecar，并使用 thanos-query 组件进行聚合查询，其中 thanos-store、S3 等组件在不需要对监控数据做长期存储时可以选择不部署。
+#### 部署架构图
+
+为每个 prometheus(TidbMonitor) 组件部署 thanos sidecar，并使用 thanos-query 组件进行聚合查询，其中 thanos-store、 S3 等组件在不需要对监控数据做长期存储时可以选择不部署。
 
 ![pull-thanos-query.png](/media/pull-thanos-query.png)
 
-### 前置条件
+#### 前置条件
 
 需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod IP。
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod FQDN。
 
-### 部署 TiDB 集群监控
+#### 部署 TiDB 集群监控
 
-根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name`为TiDB集群名称，`cluster_namespace`为TiDB集群所在的命名空间，`kubernetes_cluster_name`为自定义的 kubernetes 集群名称，作为标识 Prometheus 的`externallabels`，`storageclass_name`设置为当前集群中的存储，关于 thanos 部署方案参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name`为TiDB集群名称， `cluster_namespace` 为TiDB集群所在的命名空间， `kubernetes_cluster_name` 为自定义的 kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用， `storageclass_name` 设置为当前集群中的存储，关于 thanos 部署方案参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos)。
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cluster_name="cluster1"
@@ -111,6 +108,8 @@ storageclass_name="local-storage"
 ```
 
 执行以下指令，创建 `TidbMonitor`：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
@@ -123,7 +122,7 @@ spec:
   - name: ${cluster1_name}
     namespace: ${cluster1_namespace}
   externalLabels:
-    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue #4219.
+    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
     kubernetes: ${kubernetes_cluster1_name}
     #add other meta labels here
     #region: us-east-1
@@ -154,22 +153,26 @@ spec:
 
 <div label="Federation">
 
-### 部署架构图
+### 使用 Prometheus Federation
 
-使用 Federation Prometheus Server 作为数据统一存储与查询的入口，以笔者的经验来看，该方案只建议在数据规模较小的环境下使用。
+#### 部署架构图
+
+使用 Federation Prometheus Server 作为数据统一存储与查询的入口，建议在数据规模较小的环境下使用。
 
 ![pull-prom-federation.png](/media/pull-prom-federation.png)
 
-### 前置条件
+#### 前置条件
 
 需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
-- 各 Kubernetes 集群上的 TiDB 组件有能力访问集群内和集群间所有 TiDB 组件的 Pod IP。
-- 各 Kubernetes 集群上的 TiDB 组件有能力解析集群内和集群间所有 TiDB 组件的 Pod FQDN。
+- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod IP。
+- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod FQDN。
 
-### 部署 TiDB 集群监控
+#### 部署 TiDB 集群监控
 
-根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name`为TiDB集群名称，`cluster_namespace`为TiDB集群所在的命名空间，`kubernetes_cluster_name`为自定义的 kubernetes 集群名称，作为标识 Prometheus 的`externallabels`，`storageclass_name`设置为当前集群中的存储。
+根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name` 为TiDB集群名称， `cluster_namespace` 为TiDB集群所在的命名空间， `kubernetes_cluster_name` 为自定义的 kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用， `storageclass_name` 设置为当前集群中的存储。
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cluster_name="cluster1"
@@ -178,7 +181,9 @@ kubernetes_cluster_name="kind-cluster-1"
 storageclass_name="local-storage"
 ```
 
-执行以下指令，创建 `TidbMonitor`：
+执行以下指令，创建 `TidbMonitor` ：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
@@ -191,7 +196,7 @@ spec:
   - name: ${cluster1_name}
     namespace: ${cluster1_namespace}
   externalLabels:
-    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue #4219.
+    #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
     kubernetes: ${kubernetes_cluster1_name}
     #add other meta labels here
     #region: us-east-1
@@ -213,7 +218,7 @@ spec:
 
 ### 配置 Federation Prometheus
 
-关于 Federation 方案，参考[federation文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后修改采集配置，添加需要汇总的 Prometheus(TiDBMonitor) 的 host 信息。
+关于 Federation 方案，参考[federation文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后修改 Prometheus 采集配置，添加需要汇总的 Prometheus(TiDBMonitor) 的 host 信息。
 
 ```
 scrape_configs:
