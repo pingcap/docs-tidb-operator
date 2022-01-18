@@ -234,7 +234,7 @@ gcloud config set core/project <gcp-project>
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
+    kubectl --context ${context_1} -n default apply -f sample-nginx.yaml
 
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
 

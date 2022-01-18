@@ -1,17 +1,17 @@
 ---
-title: Build Multiple Connected GCP GKE Clusters
-summary: Learn how to build multiple connected GCP GKE clusters and prepare for deploying a TiDB cluster across multiple GKE clusters.
+title: Build Multiple Interconnected GCP GKE Clusters
+summary: Learn how to build multiple interconnected GCP GKE clusters and prepare for deploying a TiDB cluster across multiple GKE clusters.
 ---
 
-# Build Multiple Connected GCP GKE Clusters
+# Build Multiple Interconnected GCP GKE Clusters
 
-This document describes how to create multiple GCP GKE clusters and configure network connections between the clusters. The connected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to build three connected GKE clusters.
+This document describes how to create multiple GCP GKE clusters and configure network peering between these clusters. These interconnected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to configure three-cluster network peering.
 
 If you need to deploy TiDB on a single GCP GKE cluster, refer to [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
 
 ## Prerequisites
 
-Before you start building multiple connected GKE clusters, make sure you have completed the following preparations:
+Before you deploy GKE clusters, make sure you have completed the following preparations:
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
 * Install [gcloud](https://cloud.google.com/sdk/gcloud): `gcloud` is the CLI for creating and managing GCP services
@@ -29,7 +29,7 @@ gcloud config set core/project <gcp-project>
 
 ## Step 1. Create the network
 
-1. Create a VPC network for the custom subnet:
+1. Create a VPC network with custom subnets:
 
     {{< copyable "shell-regular" >}}
 
@@ -37,7 +37,7 @@ gcloud config set core/project <gcp-project>
     gcloud compute networks create ${network_name} --subnet-mode=custom
     ```
 
-2. In the VPC network created above, create three subnets that belong to different Regions. The CIDR block of each subnet does not overlap with that of each other.
+2. In the VPC network created above, create three subnets that belong to different regions. The CIDR block of each subnet does not overlap with that of each other.
 
     {{< copyable "shell-regular" >}}
 
@@ -69,15 +69,15 @@ gcloud config set core/project <gcp-project>
         --secondary-range pods=10.12.0.0/16,services=10.102.0.0/16
     ```
 
-    `${subnet_1}`, `${subnet_2}`, and `${subnet_3}` refer to the name of the three subnets.
+    `${subnet_1}`, `${subnet_2}`, and `${subnet_3}` refer to the names of the three subnets.
 
-    `--range=10.0.0.0/16` specifies the CIDR block of the subnet in the cluster. The CIDR block of the subnet of all clusters **must not** overlap with that of each other.
+    `--range=10.0.0.0/16` specifies the CIDR block of the subnet in the cluster. The CIDR blocks of all cluster subnets **must not** overlap with each other.
 
-    `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` specifies the CIRD block used by Kubernetes Pods and Services. The CIRD block will be used later.
+    `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` specifies the CIRD block used by Kubernetes Pods and Services. This CIRD block will be used later.
 
 ## Step 2. Start the Kubernetes cluster
 
-Create three GKE clusters, and each cluster uses the subnet created in the previous step.
+Create three GKE clusters, and each cluster uses the subnet created in Step 1.
 
 1. Create three GKE clusters. Each cluster has a default node pool.
 
@@ -144,7 +144,7 @@ Create three GKE clusters, and each cluster uses the subnet created in the previ
     kubectl config get-contexts
     ```
 
-    The expexted output is as follows. The context is in the `NAME` column.
+    The expected output is as follows. The context is in the `NAME` column.
 
     ```
     CURRENT   NAME                          CLUSTER                       AUTHINFO                            NAMESPACE
@@ -167,14 +167,14 @@ Create three GKE clusters, and each cluster uses the subnet created in the previ
         gcloud compute firewall-rules list --filter='name~gke-${cluster_1}-.*-all'
         ```
 
-        The expexted output is as follows. The rule name is in the `NAME` column.
+        The expected output is as follows. The rule name is in the `NAME` column.
 
         ```
         NAME                           NETWORK     DIRECTION  PRIORITY  ALLOW                         DENY  DISABLED
         gke-${cluster_1}-b8b48366-all  ${network}  INGRESS    1000      tcp,udp,icmp,esp,ah,sctp            False
         ```
 
-    2. Add the CIDR block of Pod network of other two clusters to the source range of the firewall rule:
+    2. Update the source range of the firewall rule. Add the CIDR block of the Pod network of the other two clusters to the source range:
 
         {{< copyable "shell-regular" >}}
 
@@ -182,7 +182,7 @@ Create three GKE clusters, and each cluster uses the subnet created in the previ
         gcloud compute firewall-rules update ${firewall_rule_name} --source-ranges 10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
         ```
 
-        Run the folllowing command to check whether the firwall rule is successfully updated:
+        Run the following command to check whether the firewall rule is successfully updated:
 
         {{< copyable "shell-regular" >}}
 
@@ -192,9 +192,9 @@ Create three GKE clusters, and each cluster uses the subnet created in the previ
 
 2. Follow the same steps to update the firewall rules for Cluster 2 and Cluster 3.
 
-## Step 3. Verify the network connectivity
+## Step 3. Verify the network interconnectivity
 
-Before you deploy the TiDB cluster, you need to verify the network connectivity between the clusters.
+Before you deploy the TiDB cluster, you need to verify that the network between the GKE clusters is interconnected.
 
 1. Save the following content in the `sample-nginx.yaml` file.
 
@@ -234,12 +234,14 @@ Before you deploy the TiDB cluster, you need to verify the network connectivity 
     {{< copyable "shell-regular" >}}
 
     ```bash
+    kubectl --context ${context_1} -n default apply -f sample-nginx.yaml
+
     kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
-    kubectl --context ${context_2} -n default apply -f sample-nginx.yaml
+
     kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
     ```
 
-3. Access the nginx services of other clusters to verify the network connectivity.
+3. Access the nginx services of other clusters to verify the network interconnectivity.
 
     The following command verifies the network from Cluster 1 to Cluster 2:
 
@@ -269,7 +271,7 @@ Refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and deploy TiDB Operato
 
 ## Step 5. Deploy TiDB clusters
 
-Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md), and deploy a TidbCluster CR for each GKE cluster.
+Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md), and deploy a `TidbCluster` CR for each GKE cluster.
 
 In the `TidbCluster` CR, the `spec.clusterDomain` field must be the same as `${cluster_domain_n}` defined in [Step 2](#step-2-start-the-kubernetes-cluster).
 
