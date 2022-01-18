@@ -1,6 +1,6 @@
 ---
-title: Build Multiple Peering AWS EKS Clusters
-summary: Learn how to build multiple connected AWS EKS clusters and prepare for deploying a TiDB cluster across multiple EKS clusters.
+title: Build Multiple Interconnected AWS EKS Clusters
+summary: Learn how to build multiple interconnected AWS EKS clusters and prepare for deploying a TiDB cluster across multiple EKS clusters.
 ---
 
 # Build Multiple Interconnected AWS EKS Clusters
