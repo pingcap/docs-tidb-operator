@@ -24,7 +24,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
    
     * 如果 Kubernetes 版本大于等于 1.16:
 
-        1. 如果是第一次升级 Operator 到 v1.3.0 及以后版本，需要先创建新增加的 TidbNGMonitoring CRD。
+        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果直接部署 v1.3.x 及以后版本的 TiDB Operator，可跳过这一步。
 
             {{< copyable "shell-regular" >}}
 
@@ -43,7 +43,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     * 如果 Kubernetes 版本小于 1.16:
 
-        1. 如果是第一次升级 Operator 到 v1.3.0 及以后版本，需要先创建新增加的 TidbNGMonitoring CRD。
+        1. 如果 TiDB Operator 从 v1.3.x 之前版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD，否则，直接执行下一步。
 
             {{< copyable "shell-regular" >}}
 
