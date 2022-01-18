@@ -24,7 +24,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
    
     * 如果 Kubernetes 版本大于等于 1.16:
 
-        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果直接部署 v1.3.x 及以后版本的 TiDB Operator，可跳过这一步。
+        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
             {{< copyable "shell-regular" >}}
 
@@ -43,7 +43,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
     * 如果 Kubernetes 版本小于 1.16:
 
-        1. 如果 TiDB Operator 从 v1.3.x 之前版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD，否则，直接执行下一步。
+        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
             {{< copyable "shell-regular" >}}
 
@@ -159,6 +159,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         ```shell
         kubectl create -f ./crd.yaml
         ```
+
+        对于其他 CRD，执行该命令时会报 "AlreadyExists" 的错误，可以忽略该错误。
 
     2. 安装 TiDB Operator 需要的 `crd.yaml` 文件：
 
