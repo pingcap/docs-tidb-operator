@@ -113,7 +113,7 @@ After TiDB Operator is upgraded to v1.1, you can configure the scheduled full ba
 
 ## Switch other components or features managed by chart to services supported by TiDB Operator v1.1
 
-This section describes how to switch other components and features managed by the chart to services in TiBD Operator v1.1.
+This section describes how to switch other components and features managed by the chart to services in TiDB Operator v1.1.
 
 ## Ad-hoc backup
 

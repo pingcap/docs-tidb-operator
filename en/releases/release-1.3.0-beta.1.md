@@ -9,7 +9,7 @@ TiDB Operator version: 1.3.0-beta.1
 
 ## Compatibility Change
 
-Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
+Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed, and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
 
 ## Rolling Update Changes
 
