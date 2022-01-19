@@ -5,36 +5,53 @@ summary: 介绍如何使用 BR、Dumpling、TiDB Lightning 工具对 Kubernetes 
 
 # 备份与恢复简介
 
-本文档介绍如何使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)、[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning)、[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 
-TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现：
+[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 是一个数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
-+ 如果 TiDB 集群版本 >= v3.1，可以参考以下文档：
+[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 是一个数据导入工具，该工具可以把 Dumpling 或 CSV 输出格式的数据快速导入到 TiDB 中，可以用于完成逻辑上的全量恢复或者导入。
 
-    - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
-    - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
-    - [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
-    - [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
-    - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
-    - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
-
-+ 如果 TiDB 集群版本 < v3.1，可以参考以下文档：
-
-    - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
-    - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
-    - [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)
-    - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
+[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Dumpling 和 Mydumper，BR 更适合大数据量的场景，BR 只支持 TiDB v3.1 及以上版本。如果需要对延迟不敏感的增量备份，请参阅 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。如果需要实时的增量备份，请参阅 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)。
 
 ## 使用场景
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 是一个数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。如果需要实时的增量备份，请参阅 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)。
+### 数据备份
 
-[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 是一个将全量数据高速导入到 TiDB 集群的工具，TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，TiDB Lightning 支持 Dumpling 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
+如果你对数据备份有以下要求，可考虑使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 对 TiDB 进行数据备份：
 
-- 迅速导入大量新数据。
-- 恢复所有备份数据。
+- 备份的数据量较大，而且要求备份速度较快
+- 直接备份数据的 SST 文件（键值对）
+- 对延迟不敏感的增量备份
 
-[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Dumpling 和 Mydumper，BR 更适合大数据量的场景，BR 只支持 TiDB v3.1 及以上版本。
+[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 相关使用文档可参考：
+
+- [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
+- [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
+- [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
+
+如果你对数据备份有以下要求，可考虑使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 对 TiDB 进行数据备份：
+
+- 导出 SQL 或 CSV 格式的数据
+- 对单条 SQL 语句的内存进行限制
+- 导出 TiDB 的历史数据快照
+
+[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 相关使用文档可参考：
+
+- [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
+- [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
+
+### 数据恢复
+
+如果你需要从 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 备份的 SST 文件对 TiDB 进行数据恢复，则应使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。相关使用文档可参考：
+
+- [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
+- [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+- [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
+
+如果你需要从 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 或其他格式兼容的 SQL 或 CSV 文件对 TiDB 进行数据恢复，则应使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning)。相关使用文档可参考：
+
+- [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)
+- [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
 
 ## Backup CR 字段介绍
 
