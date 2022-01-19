@@ -25,7 +25,10 @@ Minio
 [Nn]amespace
 Netease
 PingCAP
+schedulable
+non-schedulable
 (?i)sql
+storages
 svc
 [Ss]ysbench
 sysctl
