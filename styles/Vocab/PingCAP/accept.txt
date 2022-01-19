@@ -30,8 +30,7 @@ svc
 [Ss]ysbench
 sysctl
 Thanos
-TiDB
-tidb
+(TiDB)|(tidb)
 TiFlash
 tkctl
 (?i)yaml
