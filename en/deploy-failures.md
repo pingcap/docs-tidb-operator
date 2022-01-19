@@ -72,7 +72,7 @@ If the `StorageClass` of the PVC cannot be found, take the following steps:
     * If you want to start the TiDB cluster, execute `kubectl edit tc ${cluster_name} -n ${namespace}` to update the cluster.
     * If you want to run a backup/restore task, first execute `kubectl delete bk ${backup_name} -n ${namespace}` to delete the old backup/restore task, and then execute `kubectl apply -f backup.yaml` to create a new backup/restore task.
 
-4. Delete Statefulset and the corresponding PVCs:
+4. Delete StatefulSet and the corresponding PVCs:
 
     {{< copyable "shell-regular" >}}
 
@@ -93,7 +93,7 @@ If the Pod's state becomes `Pending` because the high availability scheduling po
 
 ## The Pod is in the `CrashLoopBackOff` state
 
-A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeatedly aborts (in the loop of abort - restart by `kubelet` - abort). There are many potential causes of `CrashLoopBackOff`. 
+A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeatedly aborts (in the loop of abort - restart by `kubelet` - abort). There are many potential causes of `CrashLoopBackOff`.
 
 ### View the log of the current container
 
@@ -130,6 +130,6 @@ root soft core unlimited
 root soft stack 10240
 ```
 
-### Other causes 
+### Other causes
 
 If you cannot confirm the cause from the log and `ulimit` is also a normal value, troubleshoot the issue by [using the diagnostic mode](tips.md#use-the-diagnostic-mode).
