@@ -100,10 +100,6 @@ If your server has access to the internet, you can perform online upgrade by tak
     image: docker.io/pingcap/tidb-operator:v1.3.0-beta.1
     ```
 
-    > **Note:**
-    >
-    > If upgrading Operator to V1.3.0 or later for the first time, you can't use `replace` command to upgrade TidbNGMonitoring CRD due to TidbNGMonitoring CRD is new, you need to create TidbNGMonitoring first.
-
 ## offline upgrade
 
 If your server cannot access the Internet, you can offline upgrade by taking the following steps:
