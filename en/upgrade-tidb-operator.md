@@ -24,7 +24,7 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     * If your Kubernetes version >= v1.16:
         
-        1. If upgrading Operator from v1.2.x or older to v1.3.x or later, you need to execute the following command to create the new TidbNGMonitoring CRD. If upgrading Operator from v1.3.x or later, you can skip this step.
+        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
 
             {{< copyable "shell-regular" >}}
 
@@ -156,7 +156,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         kubectl create -f ./crd.yaml
         ```
 
-        For other CRDs, there is a "AlreadyExists" error after executing this command, you can ingore this error.
+        After executing this command, you can expect to see an "AlreadyExists" error for other CRDs. You can ignore this error.
 
     2. Install the `crd.yaml` file for TiDB Operator:
 
