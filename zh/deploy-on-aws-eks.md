@@ -28,7 +28,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 > **注意：**
 >
-> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services)。
+> 本文档的操作需要 AWS Access Key 至少具有 [eksctl 所需最少权限](https://eksctl.io/usage/minimum-iam-policies/)和创建 [Linux 堡垒机所涉及的服务权限](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account)。
 
 ## 推荐机型及存储
 
@@ -184,36 +184,50 @@ mountOptions:
 以下步骤以 gp3 存储类型为例说明如何创建并配置 gp3 存储类型的 StorageClass。
 
 1. 对于 gp3 存储类型，请参考 [AWS 文档](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)在 EKS 上部署 [Amazon Elastic Block Store (EBS) CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)。对于其他存储类型，请跳过此步骤。
-2. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
+
+2. 设置 ebs-csi-node `toleration`。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl patch -n kube-system ds ebs-csi-node -p '{"spec":{"template":{"spec":{"tolerations":[{"operator":"Exists"}]}}}}'
+    ```
+
+    期望输出：
+
+    ```
+    daemonset.apps/ebs-csi-node patched
+    ```
+
+3. 创建 StorageClass 定义。在 StorageClass 定义中，通过 `parameters.type` 字段指定需要的存储类型。
 
     ```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
       name: gp3
-    provisioner: kubernetes.io/aws-ebs
+    provisioner: ebs.csi.aws.com
+    allowVolumeExpansion: true
+    volumeBindingMode: WaitForFirstConsumer
     parameters:
       type: gp3
       fsType: ext4
-      iopsPerGB: "10"
-      encrypted: "false"
+      iops: "4000"
+      throughput: "400"
     mountOptions:
     - nodelalloc,noatime
     ```
 
-3. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
+4. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
 
     ```yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
-        requests:
-          storage: 100Gi
+        ...
         storageClassName: gp3
     ```
 
-4. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+5. 为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
 
     ```yaml
     kind: StorageClass
@@ -264,18 +278,22 @@ mountOptions:
         eksctl create nodegroups -f cluster.yaml
         ```
 
-        若 `tikv` 组已存在，为避免名字冲突，可先删除再创建，或者修改名字。
+        若 TiKV 的节点组已存在，为避免名字冲突，可先删除再创建，或者修改节点组的名字。
 
 2. 部署 local volume provisioner。
 
     1. 为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。
 
-    2. 部署并创建一个 `local-storage` 的 Storage Class：
+    2. 通过[普通挂载方式](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)将本地存储挂载到 `/mnt/ssd` 目录。
+
+    3. 根据本地存储的挂载情况，修改 [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml) 文件。
+
+    4. 使用修改后的 `local-volume-provisioner.yaml`，部署并创建一个 `local-storage` 的 Storage Class：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+        kubectl apply -f <local-volume-provisioner.yaml>
         ```
 
 3. 使用本地存储。
@@ -286,7 +304,7 @@ mountOptions:
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 EKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -411,7 +429,7 @@ sudo yum install mysql -y
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
 ```
 
 其中 `${tidb-nlb-dnsname}` 为 TiDB Service 的 LoadBalancer 域名，可以通过命令 `kubectl get svc basic-tidb -n tidb-cluster` 输出中的 `EXTERNAL-IP` 字段查看。
@@ -419,7 +437,7 @@ mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
 以下为一个连接 TiDB 集群的示例：
 
 ```shell
-$ mysql -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
+$ mysql --comments -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1189
 Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
@@ -479,7 +497,7 @@ basic-grafana   LoadBalancer   10.100.199.42   a806cfe84c12a4831aa3313e792e3eed-
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}'` 命令修改。
 
 升级过程会持续一段时间，你可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 
@@ -583,6 +601,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:

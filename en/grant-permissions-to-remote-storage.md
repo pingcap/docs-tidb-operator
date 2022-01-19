@@ -47,10 +47,10 @@ If you associate the user's [IAM](https://aws.amazon.com/cn/iam/) role with the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc demo1 -n test1
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tikv":{"annotations":{"iam.amazonaws.com/role":"arn:aws:iam::123456789012:role/user"}}}}'
     ```
 
-    Find `spec.tikv.annotations`, add this annotation to it: `iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user`, and exit the editor. After the TiKV Pod is restarted, check whether the Pod has the annotation.
+    After the TiKV Pod is restarted, check whether the Pod has the annotation.
 
 > **Note:**
 >
@@ -83,7 +83,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc demo1 -n test1
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tikv":{"serviceAccount": "tidb-backup-manager"}}}'
     ```
 
     Modify the value of `spec.tikv.serviceAccount` to `tidb-backup-manager`. After the TiKV Pod is restarted, check whether the Pod's `serviceAccountName` is changed.

@@ -29,9 +29,9 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 The formats of the related parameters are as follows:
 
-- `spec.version`: the format is `imageTag`, such as `v2.0.7`.
+- `spec.version`: the format is `imageTag`, such as `v5.3.0`.
 - `spec.<master/worker>.baseImage`: the format is `imageName`, such as `pingcap/dm`.
-- `spec.<master/worker>.version`: the format is `imageTag`, such as `v2.0.7`.
+- `spec.<master/worker>.version`: the format is `imageTag`, such as `v5.3.0`.
 
 TiDB Operator only supports deploying DM 2.0 and later versions.
 
@@ -50,23 +50,24 @@ metadata:
   name: ${dm_cluster_name}
   namespace: ${namespace}
 spec:
-  version: v2.0.7
+  version: v5.3.0
+  configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
   master:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     imagePullPolicy: IfNotPresent
     service:
       type: NodePort
       # Configures masterNodePort when you need to expose the DM-master service to a fixed NodePort
       # masterNodePort: 30020
     replicas: 1
-    storageSize: "1Gi"
+    storageSize: "10Gi"
     requests:
       cpu: 1
-    config:
-      rpc-timeout: 40s
-
+    config: |
+      rpc-timeout = "40s"
 ```
 
 #### Configure DM-worker
@@ -83,12 +84,13 @@ spec:
   ...
   worker:
     baseImage: pingcap/dm
+    maxFailoverCount: 0
     replicas: 1
-    storageSize: "1Gi"
+    storageSize: "100Gi"
     requests:
       cpu: 1
-    config:
-      keepalive-ttl: 15
+    config: |
+      keepalive-ttl = 15
 
 ```
 
@@ -96,9 +98,10 @@ spec:
 
 By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configuring `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
 
-> **Note:**
->
-> To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
+To use `topologySpreadConstraints`, you must meet the following conditions:
+
+- Your Kubernetes cluster uses `default-scheduler` instead of `tidb-scheduler`. For details, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler).
+- Your Kubernetes cluster enables the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
 
 You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
@@ -128,10 +131,6 @@ topologySpreadConstrains:
   labelSelector: <object>
 ```
 
-> **Note:**
->
-> You can use this feature to replace [TiDB Scheduler](tidb-scheduler.md) for evenly scheduling.
-
 ## Deploy the DM cluster
 
 After configuring the yaml file of the DM cluster in the above steps, execute the following command to deploy the DM cluster:
@@ -142,10 +141,10 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 If the server does not have an external network, you need to download the Docker image used by the DM cluster and upload the image to the server, and then execute `docker load` to install the Docker image on the server:
 
-1. Deploy a DM cluster requires the following Docker image (assuming the version of the DM cluster is v2.0.7):
+1. Deploy a DM cluster requires the following Docker image (assuming the version of the DM cluster is v5.3.0):
 
     ```shell
-    pingcap/dm:v2.0.7
+    pingcap/dm:v5.3.0
     ```
 
 2. To download the image, execute the following command:
@@ -153,8 +152,8 @@ If the server does not have an external network, you need to download the Docker
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/dm:v2.0.7
-    docker save -o dm-v2.0.7.tar pingcap/dm:v2.0.7
+    docker pull pingcap/dm:v5.3.0
+    docker save -o dm-v5.3.0.tar pingcap/dm:v5.3.0
     ```
 
 3. Upload the Docker image to the server, and execute `docker load` to install the image on the server:
@@ -162,7 +161,7 @@ If the server does not have an external network, you need to download the Docker
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i dm-v2.0.7.tar
+    docker load -i dm-v5.3.0.tar
     ```
 
 After deploying the DM cluster, execute the following command to view the Pod status:

@@ -206,7 +206,7 @@ mountOptions:
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 AKS 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -387,7 +387,7 @@ basic-grafana   LoadBalancer   10.100.199.42   20.240.0.8    3000:30761/TCP   12
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}'` 命令修改。
 
 升级过程会持续一段时间，您可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 
@@ -468,6 +468,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -552,11 +553,8 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     ``` yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
+        ...
         storageClassName: ultra
-        requests:
-          storage: "100Gi"
     ```
 
 您可以使用任意 Azure 磁盘类型，推荐使用 `Premium_LRS` 或 `UltraSSD_LRS`。

@@ -32,7 +32,7 @@ kubectl edit tc ${cluster_name} -n ${namespace}
 spec:
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -58,7 +58,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -115,7 +115,7 @@ TiDB Operator 通过创建 [StatefulSet](https://kubernetes.io/docs/concepts/wor
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tiflash":{"replicas": 0}}}'
     ```
 
 4. 检查 TiFlash Pod 和 TiFlash 节点 store 状态。
@@ -169,7 +169,7 @@ TiDB Operator 通过创建 [StatefulSet](https://kubernetes.io/docs/concepts/wor
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiflash"}]'
     ```
 
     使用以下命令删除 TiFlash StatefulSet：

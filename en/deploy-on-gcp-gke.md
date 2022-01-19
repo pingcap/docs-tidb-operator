@@ -69,7 +69,7 @@ gcloud config set compute/region <gcp-region>
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#deploy-tidb-operator).
+To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
@@ -190,7 +190,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql -h ${tidb-nlb-dnsname} -P 4000 -u root
+    mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
     ```
 
     `${tidb-nlb-dnsname}` is the LoadBalancer IP of the TiDB service. You can view the IP in the `EXTERNAL-IP` field of the `kubectl get svc basic-tidb -n tidb-cluster` execution result.
@@ -198,7 +198,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     For example:
 
     ```shell
-    $ mysql -h 10.128.15.243 -P 4000 -u root
+    $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
     Server version: 5.7.25-TiDB-v4.0.4 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
@@ -254,7 +254,13 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
+To upgrade the TiDB cluster, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+```
 
 The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 
@@ -321,6 +327,7 @@ The two components are *not required* in the deployment. This section shows a qu
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:

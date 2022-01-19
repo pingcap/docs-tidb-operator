@@ -210,7 +210,7 @@ mountOptions:
 
 ## Deploy TiDB Operator
 
-Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* section](get-started.md#deploy-tidb-operator).
+Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* section](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
@@ -391,7 +391,13 @@ See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to s
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit `spec.version` by running the `kubectl edit tc basic -n tidb-cluster` command.
+To upgrade the TiDB cluster, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+```
 
 The upgrade process does not finish immediately. You can view the upgrade progress by running the `kubectl get pods -n tidb-cluster --watch` command.
 
@@ -474,6 +480,7 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:
@@ -560,11 +567,8 @@ Azure disks support multiple volume types. Among them, `UltraSSD` delivers low l
     ```yaml
     spec:
       tikv:
-        baseImage: pingcap/tikv
-        replicas: 3
+        ...
         storageClassName: ultra
-        requests:
-          storage: "100Gi"
     ```
 
 You can use any supported Azure disk type. It is recommended to use `Premium_LRS` or `UltraSSD_LRS`.

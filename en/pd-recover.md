@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
 
 # Use PD Recover to Recover the PD Cluster
 
-[PD Recover](https://pingcap.com/docs/stable/reference/tools/pd-recover) is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/architecture/#placement-driver-server), used to recover the PD cluster which cannot start or provide services normally.
+PD Recover is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/architecture/#placement-driver-server), used to recover the PD cluster which cannot start or provide services normally. For detailed introduction of this tool, see [TiDB documentation - PD Recover](https://pingcap.com/docs/stable/reference/tools/pd-recover). This document introduces how to download PD Recover and how to use it to recover a PD cluster.
 
 ## Download PD Recover
 
@@ -18,7 +18,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    In the command above, `${version}` is the version of the TiDB cluster, such as `v5.2.1`.
+    In the command above, `${version}` is the version of the TiDB cluster, such as `v5.3.0`.
 
 2. Unpack the TiDB package for installation:
 
@@ -34,7 +34,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
 
 This section introduces how to recover the PD cluster using PD Recover.
 
-### Get Cluster ID
+### Step 1: Get Cluster ID
 
 {{< copyable "shell-regular" >}}
 
@@ -49,7 +49,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 6821434242797747735
 ```
 
-### Get Alloc ID
+### Step 2. Get Alloc ID
 
 When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-id`. The value of `alloc-id` must be larger than the largest allocated ID (`Alloc ID`) of the original cluster.
 
@@ -59,7 +59,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 3. Multiply the largest value in the query result by `100`. Use the multiplied value as the `alloc-id` value specified when using `pd-recover`.
 
-### Recover the PD Pod
+### Step 3. Recover the PD Pod
 
 1. Delete the Pod of the PD cluster.
 
@@ -68,7 +68,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 0}}}'
     ```
 
     Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `0`.
@@ -76,7 +76,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 0}}'
     ```
 
     Execute the following command to confirm that the PD Pod is deleted:
@@ -102,7 +102,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": 1}}}'
     ```
 
     Because the PD cluster is in an abnormal state, TiDB Operator cannot synchronize the change above to the PD StatefulSet. You need to execute the following command to set the `spec.replicas` of the PD StatefulSet to `1`.
@@ -110,7 +110,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit sts ${cluster_name}-pd -n ${namespace}
+    kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
     Execute the following command to confirm that the PD Pod is started:
@@ -121,7 +121,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl get pod -n ${namespace}
     ```
 
-### Recover the cluster
+### Step 4. Recover the cluster
 
 1. Execute the `port-forward` command to expose the PD service:
 
@@ -139,7 +139,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
-    In the command above, `${cluster_id}` is the cluster ID got in [Get Cluster ID](#get-cluster-id). `${alloc_id}` is the largest value of `pd_cluster_id` (got in [Get Alloc ID](#get-alloc-id)) multiplied by `100`.
+    In the command above, `${cluster_id}` is the cluster ID got in [Get Cluster ID](#step-1-get-cluster-id). `${alloc_id}` is the largest value of `pd_cluster_id` (got in [Get Alloc ID](#step-2-get-alloc-id)) multiplied by `100`.
 
     After the `pd-recover` command is successfully executed, the following result is printed:
 
@@ -147,9 +147,9 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     recover success! please restart the PD cluster
     ```
 
-3. Go back to the window where the `port-forward` command is executed, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
+3. Go back to the window where the `port-forward` command is executed, and then press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
-### Restart the PD Pod
+### Step 5. Restart the PD Pod
 
 1. Delete the PD Pod:
 
@@ -167,7 +167,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
     ```
 
-3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the one got in [Get Cluster ID](#get-cluster-id).
+3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the one got in [Get Cluster ID](#step-1-get-cluster-id).
 
     {{< copyable "shell-regular" >}}
 
@@ -177,17 +177,19 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 4. Go back to the window where the `port-forward` command is executed, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
-### Increase the capacity of the PD cluster
+### Step 6. Scale out the PD cluster
 
 Execute the following command to set the value of `spec.pd.replicas` to the desired number of Pods:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc ${cluster_name} -n ${namespace}
+kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}
 ```
 
-### Restart TiDB and TiKV
+### Step 7. Restart TiDB and TiKV
+
+Use the following commands to restart the TiDB and TiKV clusters:
 
 {{< copyable "shell-regular" >}}
 

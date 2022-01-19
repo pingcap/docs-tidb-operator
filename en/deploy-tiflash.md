@@ -34,7 +34,7 @@ Add the TiFlash configuration as follows:
 spec:
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -60,7 +60,7 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -117,7 +117,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tiflash":{"replicas": 0}}}
     ```
 
 4. Check the state of TiFlash Pods and TiFlash stores.
@@ -171,7 +171,7 @@ If the server does not have an external network, refer to [deploy the TiDB clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl edit tidbcluster ${cluster_name} -n ${namespace}
+    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiflash"}]'
     ```
 
    To delete the TiFlash StatefulSet, run the following command:

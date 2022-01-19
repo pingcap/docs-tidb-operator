@@ -18,6 +18,8 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 - 各 Kubernetes 集群上的 TiDB 组件有能力访问集群内和集群间所有 TiDB 组件的 Pod IP。
 - 各 Kubernetes 集群上的 TiDB 组件有能力解析集群内和集群间所有 TiDB 组件的 Pod FQDN。
 
+多个 EKS 或者 GKE 集群网络互通可以参考 [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md) 与 [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)。
+
 ## 支持场景
 
 目前支持场景：
@@ -62,7 +64,7 @@ kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
 spec:
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -71,18 +73,21 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -119,7 +124,7 @@ kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
 spec:
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -132,18 +137,21 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -182,7 +190,7 @@ EOF
 
     ```bash
     cat <<EOF | kubectl apply -f -
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -190,7 +198,7 @@ EOF
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -261,7 +269,7 @@ EOF
 
         ```bash
         cat << EOF | kubectl apply -f -
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
           name: ${cluster_name}-tidb-issuer
@@ -290,7 +298,7 @@ EOF
 
        ```bash
        cat << EOF | kubectl apply -f -
-       apiVersion: cert-manager.io/v1alpha2
+       apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
          name: ${cluster_name}-tidb-issuer
@@ -378,7 +386,7 @@ cluster_domain="cluster2.com"
 
 ```bash
 cat << EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${cluster_name}-pd-cluster-secret
@@ -387,8 +395,9 @@ spec:
   secretName: ${cluster_name}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
-  organization:
-  - PingCAP
+  subject:
+    organizations:
+    - PingCAP
   commonName: "TiDB"
   usages:
     - server auth
@@ -446,7 +455,7 @@ kind: TidbCluster
 metadata:
   name: "${cluster1_name}"
 spec:
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -457,6 +466,7 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -466,6 +476,7 @@ spec:
           - TiDB
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -475,6 +486,7 @@ spec:
          - TiDB
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -516,7 +528,7 @@ kind: TidbCluster
 metadata:
   name: "${cluster2_name}"
 spec:
-  version: v5.2.1
+  version: v5.3.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -531,6 +543,7 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -540,6 +553,7 @@ spec:
           - TiDB
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -549,6 +563,7 @@ spec:
          - TiDB
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP

@@ -30,6 +30,7 @@ TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
     + On public cloud:
         - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
         - [Deploy TiDB on GCP GKE (beta)](deploy-on-gcp-gke.md)
+        - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
         - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
     - In an existing Kubernetes cluster:
@@ -44,7 +45,7 @@ After the deployment is complete, see the following documents to use, operate, a
 
 + [Access the TiDB Cluster](access-tidb.md)
 + [Scale TiDB Cluster](scale-a-tidb-cluster.md)
-+ [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-using-tidbcluster-cr)
++ [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 + [Change the Configuration of TiDB Cluster](configure-a-tidb-cluster.md)
 + [Back up and Restore a TiDB Cluster](backup-restore-overview.md)
 + [Automatic Failover](use-auto-failover.md)

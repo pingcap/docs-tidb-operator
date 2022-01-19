@@ -89,7 +89,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.2.4"
+    operator_version = "v1.3.0-beta.1"
     ```
 
     如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 `ecs.i2.2xlarge`。
@@ -175,7 +175,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
       ...
       tiflash:
         baseImage: pingcap/tiflash
-        maxFailoverCount: 3
+        maxFailoverCount: 0
         nodeSelector:
           dedicated: TIDB_CLUSTER_NAME-tiflash
         replicas: 1
@@ -276,7 +276,7 @@ ssh -i credentials/${cluster_name}-key.pem root@${bastion_ip}
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h ${tidb_lb_ip} -P 4000 -u root
+mysql --comments -h ${tidb_lb_ip} -P 4000 -u root
 ```
 
 `tidb_lb_ip` 为 TiDB Service 的 LoadBalancer IP。
@@ -303,7 +303,7 @@ mysql -h ${tidb_lb_ip} -P 4000 -u root
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl --kubeconfig credentials/kubeconfig edit tc ${tidb_cluster_name} -n ${namespace}` 修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl --kubeconfig credentials/kubeconfig patch tc ${tidb_cluster_name} -n ${namespace} --type merge -p '{"spec":{"version":"${version}"}}'` 修改 `spec.version`。
 
 升级操作可能会执行较长时间，可以通过以下命令来持续观察进度：
 
