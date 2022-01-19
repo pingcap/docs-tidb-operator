@@ -30,7 +30,7 @@ Since TiDB Operator v1.1.0, PingCAP no longer updates the tidb-cluster chart. Th
 
 In TiDB Operator v1.1, you can still manage your cluster using Helm and the tidb-cluster chart. Although new features will not be added to the tidb-cluster chart, you can contribute new features to the tidb-cluster chart by yourself, or switch to services that are fully supported by TiDB Operator v1.1.
 
-This section describes how to switch your components and features to services in TiBD Operator v1.1.
+This section describes how to switch your components and features to services in TiDB Operator v1.1.
 
 ### Discovery
 

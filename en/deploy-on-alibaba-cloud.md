@@ -345,7 +345,7 @@ You can set the variables in `terraform.tfvars` to configure TiDB Operator. Most
     operator_helm_values = file("./my-operator-values.yaml")
     ```
 
-In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vswitch not configured.
+In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vSwitch not configured.
 
 ### Configure the TiDB cluster
 
