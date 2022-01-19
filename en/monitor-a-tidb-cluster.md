@@ -226,7 +226,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-To modify the setting of Ingress Annotations, configure `spec.prometheus.ingress.annotations` and `spec.grafana.ingress.annotations`. If you use the default nginx Ingress, see [nginx Ingress Controller Annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) for details.
+To modify the setting of Ingress Annotations, configure `spec.prometheus.ingress.annotations` and `spec.grafana.ingress.annotations`. If you use the default NGINX Ingress, see [NGINX Ingress Controller Annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) for details.
 
 The TidbMonitor Ingress setting also supports TLS. The following example shows how to configure TLS for Ingress. See [Ingress TLS](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) for details.
 
