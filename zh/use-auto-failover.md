@@ -34,7 +34,7 @@ controllerManager:
 另外，在配置 TiDB 集群时，可以通过 `spec.${component}.maxFailoverCount` 指定 TiDB Operator 在各组件故障自动转移时能扩容的 Pod 数量阈值，详情请参考 [TiDB 组件配置文档](configure-a-tidb-cluster.md#配置-pdtidbtikvtiflash-故障自动转移阈值)。
 
 > **注意：**
-> 
+>
 > 如果集群中没有足够的资源以供 TiDB Operator 扩容新 Pod，则扩容出的 Pod 会处于 Pending 状态。
 
 ## 实现原理
@@ -91,27 +91,27 @@ TiDB Operator 通过访问 PD API 获取 TiKV store 健康状况，并记录到 
 
 如果**所有**异常的 TiKV Pod 都已经恢复，这时如果需要缩容新起的 Pod，请参考以下两种方法：
 
-方法一：配置 `spec.tikv.recoverFailover: true` (从 TiDB Operator v1.1.5 开始支持)
+- 方法一：配置 `spec.tikv.recoverFailover: true` (从 TiDB Operator v1.1.5 开始支持)。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
-```
+    ```shell
+    kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
+    ```
 
-TiDB Operator 在每次发生故障转移并恢复后都会自动缩容。
+    TiDB Operator 在每次发生故障转移并恢复后都会自动缩容。
 
-方法二：配置 `spec.tikv.failover.recoverByUID: ${recover_uid}`
+- 方法二：配置 `spec.tikv.failover.recoverByUID: ${recover_uid}`。
 
-`${recover_uid}` 是本次故障恢复的 UID，可用用下面命令查看：
+    `${recover_uid}` 是本次故障恢复的 UID，可用用下面命令查看：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tikv.failoverUID}'
-```
+    ```shell
+    kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tikv.failoverUID}'
+    ```
 
-TiDB Operator 会根据 `${recover_uid}`，将本次故障恢复新起的 TiKV Pod 自动缩容
+    TiDB Operator 会根据 `${recover_uid}`，将本次故障恢复新起的 TiKV Pod 自动缩容。
 
 ### TiFlash 故障转移策略
 
@@ -130,27 +130,27 @@ TiDB Operator 通过访问 PD API 获取 TiFlash store 健康状况，并记录�
 
 如果**所有**异常的 TiFlash Pod 都已经恢复，这时如果需要缩容新起的 Pod，请参考以下两种方法：
 
-方法一：配置 `spec.tiflash.recoverFailover: true` (从 TiDB Operator v1.1.5 开始支持)：
+- 方法一：配置 `spec.tiflash.recoverFailover: true` (从 TiDB Operator v1.1.5 开始支持)。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
-```
+    ```shell
+    kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
+    ```
 
-TiDB Operator 在每次发生故障转移并恢复后都会自动缩容。
+    TiDB Operator 在每次发生故障转移并恢复后都会自动缩容。
 
-方法二：配置 `spec.tiflash.failover.recoverByUID: ${recover_uid}`
+- 方法二：配置 `spec.tiflash.failover.recoverByUID: ${recover_uid}`。
 
-`${recover_uid}` 是本次故障恢复的 UID，可用用下面命令查看：
+    `${recover_uid}` 是本次故障恢复的 UID，可用用下面命令查看：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tiflash.failoverUID}'
-```
+    ```shell
+    kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tiflash.failoverUID}'
+    ```
 
-TiDB Operator 会根据 `${recover_uid}`，将本次故障恢复新起的 TiFlash Pod 自动缩容
+    TiDB Operator 会根据 `${recover_uid}`，将本次故障恢复新起的 TiFlash Pod 自动缩容。
 
 ## 关闭故障自动转移
 
