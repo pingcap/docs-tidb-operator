@@ -23,22 +23,42 @@ If your server has access to the internet, you can perform online upgrade by tak
 2. Update [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) (CRD) for Kubernetes:
 
     * If your Kubernetes version >= v1.16:
+        
+        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
 
-        {{< copyable "shell-regular" >}}
+            {{< copyable "shell-regular" >}}
 
-        ```bash
-        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-        kubectl get crd tidbclusters.pingcap.com
-        ```
+            ```shell
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
+            ```
+        
+        2. Update CRD.
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
+            kubectl get crd tidbclusters.pingcap.com
+            ```
 
     * If your Kubernetes version < v1.16:
 
-        {{< copyable "shell-regular" >}}
+        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
 
-        ```bash
-        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
-        kubectl get crd tidbclusters.pingcap.com
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbngmonitorings.yaml
+            ```
+
+        2. Update CRD.
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
+            kubectl get crd tidbclusters.pingcap.com
+            ```
 
     This document takes TiDB v1.3.0-beta.1 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
@@ -79,10 +99,6 @@ If your server has access to the internet, you can perform online upgrade by tak
     image: pingcap/tidb-operator:v1.3.0-beta.1
     image: docker.io/pingcap/tidb-operator:v1.3.0-beta.1
     ```
-
-    > **Note:**
-    >
-    > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
 
 ## offline upgrade
 
@@ -132,7 +148,17 @@ If your server cannot access the Internet, you can offline upgrade by taking the
 
 2. Upload the downloaded files and images to the server where TiDB Operator is deployed, and install the new TiDB Operator version:
 
-    1. Install the `crd.yaml` file for TiDB Operator:
+    1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create -f ./crd.yaml
+        ```
+
+        After executing this command, you can expect to see an "AlreadyExists" error for other CRDs. You can ignore this error.
+
+    2. Install the `crd.yaml` file for TiDB Operator:
 
         {{< copyable "shell-regular" >}}
 
@@ -140,7 +166,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         kubectl replace -f ./crd.yaml
         ```
 
-    2. Unpack the `tidb-operator` chart package file, and copy the `values.yaml` file to the directory of the new TiDB Operator:
+    3. Unpack the `tidb-operator` chart package file, and copy the `values.yaml` file to the directory of the new TiDB Operator:
 
         {{< copyable "shell-regular" >}}
 
@@ -150,7 +176,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.3.0-beta.1/values-tidb-operator.yaml
         ```
 
-    3. Install the Docker images on the server:
+    4. Install the Docker images on the server:
 
         {{< copyable "shell-regular" >}}
 
