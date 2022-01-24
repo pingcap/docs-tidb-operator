@@ -309,15 +309,17 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. Add annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod to trigger the graceful restart. After TiDB Operator evicts the TiKV Region Leader, TiDB Operator deletes the Pod.
+3. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
+
+4. Delete the old TiKV Pod:
 
     {{< copyable "shell-regular" >}}
 
-    ```bash
-    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="delete-pod"
+    ```shell
+    kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-4. Confirm that the TiKV Pod is successfully scheduled to another node:
+5. Confirm that the TiKV Pod is successfully scheduled to another node:
 
     {{< copyable "shell-regular" >}}
 
@@ -325,12 +327,12 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-5. Confirm that the Region Leader is transferred back:
+6. Remove evict-leader-scheduler, and wait for the Region Leader to automatically schedule back:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    pd-ctl scheduler remove evict-leader-scheduler-${ID}
     ```
 
 ### If the node storage cannot be automatically migrated
@@ -449,18 +451,26 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
 ## Evict TiKV Region Leader
 
-1. Add annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod:
+1. Check `store-id` of the TiKV Pod:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
     ```
 
-2. Confirm that all Region Leaders are migrated:
+2. Evict the Region Leader:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    pd-ctl scheduler add evict-leader-scheduler ${ID}
+    ```
+
+3. Confirm that all Region Leaders are migrated:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
