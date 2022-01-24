@@ -166,7 +166,7 @@ spec:
 ...
 ```
 
-The reason is nslookup version is changed in the image, See: [#4379](https://github.com/pingcap/tidb-operator/pull/4379). after adding `startUpScriptVersion` as `v1`, we will use `dig` to check DNS instead of using nslookup.
+The reason is that there is something wrong with the nslookup in the base image, see detail in the description of [#4379](https://github.com/pingcap/tidb-operator/pull/4379). After adding `startUpScriptVersion` as `v1`, we will use `dig` to check DNS instead of using nslookup.
 
 ### Other causes 
 
