@@ -130,7 +130,7 @@ root soft core unlimited
 root soft stack 10240
 ```
 
-### PD Pod nslookup domain failed
+### PD Pod `nslookup domain failed`
 
 You should see some log of PD Pod like:
 
@@ -149,14 +149,14 @@ nslookup domain basic-pd-0.basic-pd-peer.default.svc failed
 
 This happen when:
 
-- There two `nameserver` in `/etc/resolv.conf` and the second one is not IP of CoreDNS.
-- Version of PD is:
-    - Greater than or equals v5.0.5.
-    - Greater than or equals v5.1.4.
-    - Greater than or equals v5.2.4.
+- There are two `nameserver` in `/etc/resolv.conf`, and the second one is not IP of CoreDNS.
+- The version of PD is:
+    - Greater than or equal to v5.0.5.
+    - Greater than or equal to v5.1.4.
+    - Greater than or equal to v5.2.4.
     - All 5.3 versions.
 
-To address this, add `startUpScriptVersion` to TiDBCluster as:
+To address this failure, add `startUpScriptVersion` to TidbCluster as:
 
 ```yaml
 ...
@@ -166,7 +166,7 @@ spec:
 ...
 ```
 
-The reason is that there is something wrong with the nslookup in the base image, see detail in the description of [#4379](https://github.com/pingcap/tidb-operator/pull/4379). After adding `startUpScriptVersion` as `v1`, we will use `dig` to check DNS instead of using nslookup.
+This failure occurs because there is something wrong with the `nslookup` in the base image (see detail in [#4379](https://github.com/pingcap/tidb-operator/pull/4379)). After configuring `startUpScriptVersion` to `v1`, TiDB Operator uses `dig` to check DNS instead of using `nslookup`.
 
 ### Other causes 
 
