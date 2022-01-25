@@ -131,6 +131,45 @@ root        soft        core          unlimited
 root        soft        stack         10240
 ```
 
+### PD Pod `nslookup domain failed`
+
+你可以在 PD Pod 看到如下类似日志：
+
+```
+Thu Jan 13 14:55:52 IST 2022
+;; Got recursion not available from 10.43.0.10, trying next server
+;; Got recursion not available from 10.43.0.10, trying next server
+;; Got recursion not available from 10.43.0.10, trying next server
+Server: 10.43.0.10
+Address: 10.43.0.10#53
+
+** server can't find basic-pd-0.basic-pd-peer.default.svc: NXDOMAIN
+
+nslookup domain basic-pd-0.basic-pd-peer.default.svc failed
+```
+
+这个错误会在下面情况下出现：
+
+- There are two `nameserver` in `/etc/resolv.conf`, and the second one is not IP of CoreDNS.
+- 在 `/etc/resolv.conf` 有两个 `nameserver·`，并且第二个不是 CoreDNS 的 IP 。
+- PD 版本是以下版本：
+    - 不小于 v5.0.5 的版本。
+    - 不小于 v5.1.4 的版本。
+    - 不小于 v5.2.4 的版本。
+    - 全部 5.3 版本.
+
+解决这个问题需要在 TidbCluster 添加 `startUpScriptVersion`：
+
+```yaml
+...
+spec:
+  pd:
+    startUpScriptVersion: "v1"
+...
+```
+
+这个问题出现的原因是由于在镜像里的 `nslookup` 版本变了导致的（详情参考 [#4379](http://github.com/pingcap/tidb-operator/pull/4379)）。当配置了 `startUpScriptVersion` 为 `v1`, TiDB Operator 会使用 `dig` 替换 `nslookup` 来检查 DSN。
+
 ### 其他原因
 
 假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过[诊断模式](tips.md#诊断模式)进行进一步排查。
