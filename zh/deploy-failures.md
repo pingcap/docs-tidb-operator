@@ -148,10 +148,9 @@ Address: 10.43.0.10#53
 nslookup domain basic-pd-0.basic-pd-peer.default.svc failed
 ```
 
-这个错误会在下面情况下出现：
+当集群同时满足以下两个条件时，这种错误会出现：
 
-- There are two `nameserver` in `/etc/resolv.conf`, and the second one is not IP of CoreDNS.
-- 在 `/etc/resolv.conf` 有两个 `nameserver·`，并且第二个不是 CoreDNS 的 IP 。
+- 在 `/etc/resolv.conf` 有两个 `nameserver`，并且第二个不是 CoreDNS 的 IP。
 - PD 版本是以下版本：
     - 不小于 v5.0.5 的版本。
     - 不小于 v5.1.4 的版本。
@@ -168,7 +167,7 @@ spec:
 ...
 ```
 
-这个问题出现的原因是由于在镜像里的 `nslookup` 版本变了导致的（详情参考 [#4379](http://github.com/pingcap/tidb-operator/pull/4379)）。当配置了 `startUpScriptVersion` 为 `v1`, TiDB Operator 会使用 `dig` 替换 `nslookup` 来检查 DSN。
+出现这个问题的原因是镜像里的 `nslookup` 版本发生了变化（详情参考 [#4379](http://github.com/pingcap/tidb-operator/pull/4379)）。当配置了 `startUpScriptVersion` 为 `v1` 时，TiDB Operator 会使用 `dig` 替换 `nslookup` 来检查 DNS。
 
 ### 其他原因
 
