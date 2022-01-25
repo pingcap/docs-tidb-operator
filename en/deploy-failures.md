@@ -147,7 +147,7 @@ Address: 10.43.0.10#53
 nslookup domain basic-pd-0.basic-pd-peer.default.svc failed
 ```
 
-This happen when:
+This type of failure occurs in the following situations:
 
 - There are two `nameserver` in `/etc/resolv.conf`, and the second one is not IP of CoreDNS.
 - The version of PD is:
