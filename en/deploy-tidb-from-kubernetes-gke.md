@@ -53,7 +53,9 @@ gcloud config set compute/zone us-west1-a
 ```
 
 ## Launch a 3-node Kubernetes cluster
+
 <!-- vale PingCAP.Exclamation = NO -->
+
 It's now time to launch a 3-node Kubernetes cluster! The following command launches a 3-node cluster of `n1-standard-1` machines.
 
 It takes a few minutes to complete:
@@ -236,3 +238,5 @@ Once you have finished experimenting, you can delete the Kubernetes cluster:
 ```shell
 gcloud container clusters delete tidb
 ```
+
+<!-- vale PingCAP.Exclamation = YES -->
