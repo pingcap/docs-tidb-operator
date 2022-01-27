@@ -19,7 +19,7 @@ Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), i
 ## New Features
 
 - Support configuring the resource usage for the init container of TiFlash ([#4304](https://github.com/pingcap/tidb-operator/pull/4304), [@KanShiori](https://github.com/KanShiori))
-- Support enabling continuous profiling for the TiDB cluster ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
+- Support enabling [continuous profiling](../access-dashboard.md#enable-continuous-profiling) for the TiDB cluster ([#4287](https://github.com/pingcap/tidb-operator/pull/4287), [@KanShiori](https://github.com/KanShiori))
 - Support gracefully restarting TiKV through annotations ([#4279](https://github.com/pingcap/tidb-operator/pull/4279), [@july2993](https://github.com/july2993))
 - Support `PodSecurityContext` and other configurations for Discovery ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc), [#4208](https://github.com/pingcap/tidb-operator/pull/4208), [@KanShiori](https://github.com/KanShiori))
 - Support configuring `PodManagementPolicy` in TidbCluster CR ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))

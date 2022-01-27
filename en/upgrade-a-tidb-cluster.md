@@ -20,7 +20,8 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 
 > **Warning:**
 >
-> For the clients that cannot retry stale connections, **performing a rolling update to TiDB servers closes the client connections and cause the request to fail**. In such cases, it is recommended to add a retry function for the clients to retry, or to perform a rolling update to TiDB servers in idle time.
+> - For the clients that cannot retry stale connections, **performing a rolling update to TiDB servers closes the client connections and cause the request to fail**. In such cases, it is recommended to add a retry function for the clients to retry, or to perform a rolling update to TiDB servers in idle time.
+> - Before upgrading, refer to the [documentation](https://docs.pingcap.com/tidb/stable/sql-statement-admin-show-ddl) to confirm that there are no DDL operations in progress.
 
 ## Upgrade steps
 
