@@ -74,6 +74,9 @@
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
+    - Replace Nodes for a TiDB Cluster
+      - [Replace Nodes on Cloud Disks](replace-nodes-for-cloud-disk.md)
+      - [Replace Nodes on Local Disks](replace-nodes-for-local-disk.md)
   - Monitor and Alert
     - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
     - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
