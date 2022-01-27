@@ -54,9 +54,7 @@ gcloud config set compute/zone us-west1-a
 
 ## Launch a 3-node Kubernetes cluster
 
-<!-- vale PingCAP.Exclamation = NO -->
-
-It's now time to launch a 3-node Kubernetes cluster! The following command launches a 3-node cluster of `n1-standard-1` machines.
+It's now time to launch a 3-node Kubernetes cluster. The following command launches a 3-node cluster of `n1-standard-1` machines.
 
 It takes a few minutes to complete:
 
@@ -76,7 +74,7 @@ The last step is to verify that `kubectl` can connect to the cluster, and all th
 kubectl get nodes
 ```
 
-If you see `Ready` for all nodes, congratulations! You've set up your first Kubernetes cluster.
+If you see `Ready` for all nodes, congratulations. You've set up your first Kubernetes cluster.
 
 ## Install Helm
 
@@ -182,7 +180,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 >
 > This command contains some special characters which cannot be auto-populated in the google cloud shell tutorial, so you might need to copy and paste it into your console manually.
 
-Congratulations, you are now up and running with a distributed TiDB database compatible with MySQL!
+Congratulations, you are now up and running with a distributed TiDB database compatible with MySQL.
 
 > **Note:**
 >
@@ -238,5 +236,3 @@ Once you have finished experimenting, you can delete the Kubernetes cluster:
 ```shell
 gcloud container clusters delete tidb
 ```
-
-<!-- vale PingCAP.Exclamation = YES -->
