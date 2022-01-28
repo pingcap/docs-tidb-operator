@@ -204,7 +204,7 @@ To do so, use the following command:
 kubectl -n demo port-forward svc/basic-grafana 8080:3000 &>/tmp/pf8080.log &
 ```
 
-Open this URL to view the Grafana dashboard: <https://ssh.cloud.google.com/devshell/proxy?port=8080> . (Alternatively, in Cloud Shell, click the Web Preview button on the upper right corner and change the port to 8080 if necessary.  If not using Cloud Shell, point a browser to `localhost:8080`.
+Open this URL to view the Grafana dashboard: <https://ssh.cloud.google.com/devshell/proxy?port=8080>. (Alternatively, in Cloud Shell, click the Web Preview button on the upper right corner and change the port to 8080 if necessary. If not using Cloud Shell, point a browser to `localhost:8080`.
 
 The default username and password are both "admin".
 
