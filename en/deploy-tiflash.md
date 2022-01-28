@@ -12,7 +12,7 @@ This document describes how to add or remove the TiDB HTAP storage engine TiFlas
 >
 > If a TiDB cluster has not been deployed yet, instead of referring to this document, you can [configure a TiDB cluster in Kubernetes](configure-a-tidb-cluster.md) with the TiFlash-related parameters, and then [deploy the TiDB cluster](deploy-on-general-kubernetes.md).
 
-## Usage scenarios
+## User scenarios
 
 This document is applicable to scenarios in which you already have a TiDB cluster and need to use TiDB HTAP capabilities by deploying TiFlash, such as the following:
 
@@ -152,18 +152,9 @@ Once the deployment of TiFlash is completed, to add PVs for TiFlash, you need to
     kubectl delete sts -n ${namespace} ${cluster_name}-tiflash
     ```
 
-
-
-TiDB Operator manages TiFlash by creating [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). Since `StatefulSet` does not support modifying `volumeClaimTemplates` after creation, updating `storageClaims` to add the disk cannot mount the additional PV to the Pod. There are two solutions:
-
-* When deploying the TiFlash cluster for the first time, determine how many PVs are required and configure `storageClaims`.
-* If you really want to add a PV, after configuring `storageClaims`, you need to manually delete the TiFlash StatefulSet (`kubectl delete sts -n ${namespace} ${cluster_name}-tiflash`) and wait for the TiDB Operator to recreate it.
-
-To add TiFlash component to an existing TiDB cluster, you need to set `replication.enable-placement-rules: true` in PD. After you add the TiFlash configuration in `TidbCluster` by taking the above steps, TiDB Operator automatically configures `replication.enable-placement-rules: true` in PD.
-
-
-
 ## Remove TiFlash
+
+If your TiDB cluster no longer needs the TiDB HTAP storage engine TiFlash, take the following steps to remove TiFlash:
 
 1. Adjust the number of replicas of the tables replicated to the TiFlash cluster.
 
@@ -199,75 +190,75 @@ To add TiFlash component to an existing TiDB cluster, you need to set `replicati
 
 4. Check the state of TiFlash Pods and TiFlash stores.
 
-   First, run the following command to check whether you delete the TiFlash Pod successfully:
+    1. run the following command to check whether you delete the TiFlash Pod successfully:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-    ```
+        ```shell
+        kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+        ```
 
-   If the output is empty, it means that you delete the Pod of the TiFlash cluster successfully.
+        If the output is empty, it means that you delete the Pod of the TiFlash cluster successfully.
 
-   To check whether the stores of the TiFlash are in the `Tombstone` state, run the following command:
+   2. To check whether the stores of the TiFlash are in the `Tombstone` state, run the following command:
 
-    ```shell
-    kubectl get tidbcluster ${cluster_name} -n ${namespace} -o yaml
-    ```
+        ```shell
+        kubectl get tidbcluster ${cluster_name} -n ${namespace} -o yaml
+        ```
 
-   The value of the `status.tiflash` field in the output result is similar to the example below.
+        The value of the `status.tiflash` field in the output result is similar to the example below.
 
-    ```
-    tiflash:
-        ...
-        tombstoneStores:
-        "88":
-            id: "88"
-            ip: basic-tiflash-0.basic-tiflash-peer.default.svc
-            lastHeartbeatTime: "2020-12-31T04:42:12Z"
-            lastTransitionTime: null
-            leaderCount: 0
-            podName: basic-tiflash-0
-            state: Tombstone
-        "89":
-            id: "89"
-            ip: basic-tiflash-1.basic-tiflash-peer.default.svc
-            lastHeartbeatTime: "2020-12-31T04:41:50Z"
-            lastTransitionTime: null
-            leaderCount: 0
-            podName: basic-tiflash-1
-            state: Tombstone
-    ```
+        ```
+        tiflash:
+            ...
+            tombstoneStores:
+            "88":
+                id: "88"
+                ip: basic-tiflash-0.basic-tiflash-peer.default.svc
+                lastHeartbeatTime: "2020-12-31T04:42:12Z"
+                lastTransitionTime: null
+                leaderCount: 0
+                podName: basic-tiflash-0
+                state: Tombstone
+            "89":
+                id: "89"
+                ip: basic-tiflash-1.basic-tiflash-peer.default.svc
+                lastHeartbeatTime: "2020-12-31T04:41:50Z"
+                lastTransitionTime: null
+                leaderCount: 0
+                podName: basic-tiflash-1
+                state: Tombstone
+        ```
 
-    Only after you delete all Pods of the TiFlash cluster successfully and all the TiFlash stores have changed to the `Tombstone` state, can you perform the next operation.
+        Only after you delete all Pods of the TiFlash cluster successfully and all the TiFlash stores have changed to the `Tombstone` state, can you perform the next operation.
 
 5. Delete the TiFlash StatefulSet.
 
-   To modify the TidbCluster CR and delete the `spec.tiflash` field, run the following command:
+   1. To modify the TidbCluster CR and delete the `spec.tiflash` field, run the following command:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiflash"}]'
-    ```
+        ```shell
+        kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiflash"}]'
+        ```
 
-   To delete the TiFlash StatefulSet, run the following command:
+   2. To delete the TiFlash StatefulSet, run the following command:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-    ```
+        ```shell
+        kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+        ```
 
-   To check whether you delete the StatefulSet of the TiFlash cluster successfully, run the following command:
+   3. To check whether you delete the StatefulSet of the TiFlash cluster successfully, run the following command:
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-    ```
+        ```shell
+        kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+        ```
 
-   If the output is empty, it means that you delete the StatefulSet of the TiFlash cluster successfully.
+    If the output is empty, it means that you delete the StatefulSet of the TiFlash cluster successfully.
 
 6. (Optional) Delete PVC and PV.
 
@@ -296,11 +287,3 @@ To add TiFlash component to an existing TiDB cluster, you need to set `replicati
       ```shell
       kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
       ```
-
-## Configuration notes for different versions
-
-Starting from TiDB Operator v1.1.5, the default configuration of `spec.tiflash.config.config.flash.service_addr` is changed from `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` to `0.0.0.0:3930`, and TiFlash needs to configure `spec.tiflash.config.config.flash.service_addr` to `0.0.0.0:3930` since v4.0.5.
-
-Therefore, for different TiFlash and TiDB Operator versions, you need to pay attention to the following configurations:
-
-
