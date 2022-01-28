@@ -1,81 +1,158 @@
 ---
-title: Deploy TiFlash in Kubernetes
-summary: Learn how to deploy TiFlash in Kubernetes.
+title: Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
+summary:  Learn how to deploy TiFlash, the TiDB HTAP storage engine, on Kubernetes for an existing TiDB cluster.
 aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tiflash/']
 ---
 
-# Deploy TiFlash in Kubernetes
+# Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
 
-This document describes how to deploy TiFlash in Kubernetes.
+This document describes how to add or remove the TiDB HTAP storage engine TiFlash for an existing TiDB cluster in Kubernetes. As a columnar storage extension of TiKV, TiFlash provides both good isolation level and strong consistency guarantee.
 
-## Prerequisites
-
-* [Deploy TiDB Operator](deploy-tidb-operator.md).
-
-## Fresh TiFlash deployment
-
-To deploy TiFlash when deploying the TiDB cluster, refer to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
-
-## Add TiFlash to an existing TiDB cluster
-
-Edit the `TidbCluster` Custom Resource:
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl eidt tc ${cluster_name} -n ${namespace}
-```
-
-Add the TiFlash configuration as follows:
-
-{{< copyable "" >}}
-
-```yaml
-spec:
-  tiflash:
-    baseImage: pingcap/tiflash
-    maxFailoverCount: 0
-    replicas: 1
-    storageClaims:
-    - resources:
-        requests:
-          storage: 100Gi
-      storageClassName: local-storage
-```
-
-To configure other parameters, refer to [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
-
-To deploy Enterprise Edition of TiFlash, edit the `dm.yaml` file above to set `spec.tiflash.baseImage` to the enterprise image (`pingcap/tiflash-enterprise`).
-
-For example:
-
-```yaml
-spec:
-  tiflash:
-    baseImage: pingcap/tiflash-enterprise
-```
-
-TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
-
-```yaml
-  tiflash:
-    baseImage: pingcap/tiflash
-    maxFailoverCount: 0
-    replicas: 1
-    storageClaims:
-    - resources:
-        requests:
-          storage: 100Gi
-      storageClassName: local-storage
-    - resources:
-        requests:
-          storage: 100Gi
-      storageClassName: local-storage
-```
-
-> **Warning:**
+> **Note**:
 >
-> Since TiDB Operator will mount PVs automatically in the **order** of the items in the `storageClaims` list, if you need to add more disks to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items.
+> If a TiDB cluster has not been deployed yet, instead of referring to this document, you can [configure a TiDB cluster in Kubernetes](configure-a-tidb-cluster.md) with the TiFlash-related parameters, and then [deploy the TiDB cluster](deploy-on-general-kubernetes.md).
+
+## Usage scenarios
+
+This document is applicable to scenarios in which you already have a TiDB cluster and need to use TiDB HTAP capabilities by deploying TiFlash, such as the following:
+
+- Mixed load scenarios with online real-time analytic processing
+- Real-time stream processing scenarios
+- Data hub scenarios
+
+## Deploy TiFlash
+
+If you need to deploy TiFlash for an existing TiDB cluster, do the following:
+
+> **Note:**
+>
+> If your server does not have an external network, you can download the required Docker image on the machine with an external network, upload the Docker image to the server, and then use `docker load` to install the Docker image on the server. For details, see [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster).
+
+1. Edit the `TidbCluster` Custom Resource:
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl eidt tc ${cluster_name} -n ${namespace}
+    ```
+
+2. Add the TiFlash configuration as the following example:
+
+    {{< copyable "shell-regular" >}}
+
+    ```yaml
+    spec:
+    tiflash:
+        # To deploy the Enterprise Edition of TiFlash, change the value of `baseImage` to `pingcap/tiflash-enterprise`.
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 0
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+              storage: 100Gi
+          storageClassName: local-storage
+    ```
+
+3. TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
+
+    ```yaml
+    tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 0
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+                storage: 100Gi
+          storageClassName: local-storage
+        - resources:
+            requests:
+                storage: 100Gi
+          storageClassName: local-storage
+    ```
+
+    > **Note**:
+    >
+    > - When deploying TiFlash for the first time, it is recommended that you plan how many PVs are required and configure the number of `resources` items in `storageClaims` accordingly.
+    > - Once the deployment of TiFlash is completed, if you need to mount additional PVs for TiFlash, updating `storageClaims` directly to add disks does not take effect. This is because TiDB Operator manages TiFlash by creating a [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), and the `StatefulSet` does not support modifying `volumeClaimTemplates` after being created.
+
+4. Configure the relevant parameters of `spec.tiflash.config` in TidbCluster CR. For example:
+
+    ```yaml
+    spec:
+      tiflash:
+        config:
+          config: |
+            [flash]
+              [flash.flash_cluster]
+                log = "/data0/logs/flash_cluster_manager.log"
+            [logger]
+              count = 10
+              level = "information"
+              errorlog = "/data0/logs/error.log"
+              log = "/data0/logs/server.log"
+    ```
+
+    For more TiFlash parameters that can be configured, refer to [TiFlash Configuration Documentation](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/).
+
+    > **Note:**
+    >
+    > For different TiFlash versions, note the following configuration differences:
+    >
+    > - If TiFlash version <= v4.0.4, you need to set `spec.tiflash.config.config.flash.service_addr` to `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` in TidbCluster CR, where `${clusterName}` and `${namespace}` need to be replaced according to the real case.
+    > - If TiFlash version >= v4.0.5, there is no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
+    > - If you upgrade from TiFlash v4.0.4 or an earlier version to TiFlash v4.0.5 or a later version, you need to delete the configuration of `spec.tiflash.config.config.flash.service_addr` from the `TidbCluster` CR.
+
+## Adding PVs to TiFlash
+
+Once the deployment of TiFlash is completed, to add PVs for TiFlash, you need to update the `storageClaims` to add disks, and then manually delete the TiFlash StatefulSet. The following are the detailed steps.
+
+> **Warnings**:
+>
+> Deleting the TiFlash StatefulSet makes the TiFlash cluster unavailable during the deletion and affects related business. You must be cautious about whether to do the following.
+
+1. Edit the TidbCluster Custom Resource (CR).
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl edit tc ${cluster_name} -n ${namespace}
+    ```
+
+2. TiDB Operator automatically mounts PVs in the **order** of the items in the `storageClaims` list. If you need to add more `resources` items to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items. For example:
+
+    {{< copyable "shell-regular" >}}
+
+    ```yaml
+    tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 0
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+                storage: 100Gi
+          storageClassName: local-storage
+        - resources:
+            requests:
+                storage: 100Gi
+          storageClassName: local-storage
+        - resources: #newly added
+            requests:  #newly added
+                storage: 100Gi  #newly added
+          storageClassName: local-storage  #newly added
+    ```
+
+3. Manually delete the TiFlash StatefulSet and wait for the TiDB Operator to recreate the TiFlash StatefulSet.
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl delete sts -n ${namespace} ${cluster_name}-tiflash
+    ```
+
+
 
 TiDB Operator manages TiFlash by creating [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/). Since `StatefulSet` does not support modifying `volumeClaimTemplates` after creation, updating `storageClaims` to add the disk cannot mount the additional PV to the Pod. There are two solutions:
 
@@ -84,7 +161,7 @@ TiDB Operator manages TiFlash by creating [StatefulSet](https://kubernetes.io/do
 
 To add TiFlash component to an existing TiDB cluster, you need to set `replication.enable-placement-rules: true` in PD. After you add the TiFlash configuration in `TidbCluster` by taking the above steps, TiDB Operator automatically configures `replication.enable-placement-rules: true` in PD.
 
-If the server does not have an external network, refer to [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
+
 
 ## Remove TiFlash
 
@@ -226,10 +303,4 @@ Starting from TiDB Operator v1.1.5, the default configuration of `spec.tiflash.c
 
 Therefore, for different TiFlash and TiDB Operator versions, you need to pay attention to the following configurations:
 
-* If the TiDB Operator version <= v1.1.4
-    * If the TiFlash version <= v4.0.4, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
-    * If the TiFlash version >= v4.0.5, you need to set `spec.tiflash.config.config.flash.service_addr` to `0.0.0.0:3930` in the `TidbCluster` CR.
-* If the TiDB Operator version >= v1.1.5
-    * If the TiFlash version <= v4.0.4, you need to set `spec.tiflash.config.config.flash.service_addr` to `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` in the `TidbCluster` CR. `${clusterName}` and `${namespace}` need to be replaced according to the real case.
-    * If the TiFlash version >= v4.0.5, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
-    * If you upgrade from TiFlash v4.0.4 or lower versions to TiFlash v4.0.5 or higher versions, you need to delete the configuration of `spec.tiflash.config.config.flash.service_addr` in the `TidbCluster` CR.
+
