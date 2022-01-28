@@ -16,9 +16,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
 ## 前置条件
 
-* 已经存在一个 TiDB 集群。
-
-如果尚未部署 TiDB 集群，可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
+已经存在一个 TiDB 集群。如果尚未部署 TiDB 集群，可以参考 [在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md)进行部署。
 
 ## 部署异构集群
 
@@ -97,7 +95,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     kubectl create -f cluster.yaml -n ${namespace}
     ```
 
-    如果执行成功，输出会提示 `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`。TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
+    如果输出提示 `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`，表示执行成功。TiDB Operator 会根据集群配置文件，创建对应配置的 TiDB 集群。
 
 </div>
 
