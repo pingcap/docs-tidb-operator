@@ -1,41 +1,41 @@
 ---
-title: Enable TidbCluster Auto-scaling
+title: Enable TiDB Cluster Auto-scaling in Kubernetes
 summary: Learn how to use the TidbCluster auto-scaling feature.
 aliases: ['/docs/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 ---
 
-# Enable TidbCluster Auto-scaling
+# Enable TiDB Cluster Auto-scaling in Kubernetes
 
-Kubernetes provides [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), a native API for elastic scaling. Based on Kubernetes, TiDB 5.0 has implemented an elastic scheduling mechanism. Correspondingly, in TiDB Operator 1.2 and later versions, you can enable the auto-scaling feature to enable elastic scheduling. This document introduces how to enable and use the auto-scaling feature of `TidbCluster`.
-
-## Enable the auto-scaling feature
+TiDB has implemented an auto-scaling mechanism since v5.0 based on Kubernetes. You can enable the auto-scaling feature in TiDB Operator. This document introduces how to enable and use the auto-scaling feature for a TiDB cluster in Kubernetes.
 
 > **Warning:**
 >
 > * The auto-scaling feature is in the alpha stage. It is highly **not recommended** to enable this feature in the critical production environment.
 > * It is recommended to try this feature in a test environment. PingCAP welcomes your comments and suggestions to help improve this feature.
-> * Currently the auto-scaling feature is based solely on CPU utilization.
+> * Currently, the auto-scaling feature is based solely on CPU utilization.
 
-To turn this feature on, you need to enable some related configurations in TiDB Operator. The auto-scaling feature is disabled by default.
+## Enable the auto-scaling feature
 
-Take the following steps to manually enable auto-scaling:
+The auto-scaling feature is disabled by default. To enable this feature, perform the following steps:
 
-1. Edit the `values.yaml` file in TiDB Operator.
-
-    Enable `AutoScaling` in the `features` option:
+1. Edit the `values.yaml` file of TiDB Operator and enable `AutoScaling` in the `features` option:
 
     ```yaml
     features:
     - AutoScaling=true
     ```
 
-2. Install or update TiDB Operator.
+2. Update TiDB Operator to make the configuration take effect.
 
-    To install or update TiDB Operator, see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} --namespace=tidb-admin -f ${HOME}/tidb-operator/values-tidb-operator.yaml
+    ```
 
 3. Confirm the resource configuration of the target TiDB cluster.
 
-    Before using the auto-scaling feature on the target TiDB cluster, first you need to configure the CPU setting of the corresponding components. For example, you need to configure `spec.tikv.requests.cpu` in TiKV:
+    Before using the auto-scaling feature on the target TiDB cluster, you need to configure the CPU setting of the corresponding components. For example, you need to configure `spec.tikv.requests.cpu` in TiKV:
 
     ```yaml
     spec:
@@ -47,11 +47,9 @@ Take the following steps to manually enable auto-scaling:
           cpu: "1"
     ```
 
-## `TidbClusterAutoScaler`
+## Define the auto-scaling behavior
 
-The `TidbClusterAutoScaler` CR object is used to control the auto-scaling behavior in the TiDB cluster.
-
-The following is an example.
+To define the auto-scaling behavior in the TiDB cluster, configure the `TidbClusterAutoScaler` CR object. The following is an example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1

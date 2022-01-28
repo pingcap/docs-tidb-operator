@@ -105,13 +105,9 @@ You are now ready to deploy TiDB Operator.
 
 You can create a Kubernetes cluster in a VM using [minikube](https://minikube.sigs.k8s.io/docs/start/), which supports macOS, Linux, and Windows.
 
-> **Note:**
->
-> minikube supports `--vm-driver=none` that uses a host Docker instead of a VM. However, this function is not yet fully tested on TiDB Operator and may result in operational failures. If you want to try TiDB Operator in a non-virtualized system (for example, in a VPS), consider using [kind](#create-a-kubernetes-cluster-using-kind) instead.
-
 Before deployment, make sure the following requirements are satisfied:
 
-- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
+- [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. Newer versions like v1.24 is recommended. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 
 #### Start a minikube Kubernetes cluster
@@ -129,28 +125,22 @@ minikube start
 You should see output like this, with some differences depending on your OS and hypervisor:
 
 ```
-😄  minikube v1.10.1 on Darwin 10.15.4
-✨  Automatically selected the hyperkit driver. Other choices: docker, vmwarefusion
-💾  Downloading driver docker-machine-driver-hyperkit:
-    > docker-machine-driver-hyperkit.sha256: 65 B / 65 B [---] 100.00% ? p/s 0s
-    > docker-machine-driver-hyperkit: 10.90 MiB / 10.90 MiB  100.00% 1.76 MiB p
-🔑  The 'hyperkit' driver requires elevated permissions. The following commands will be executed:
-
-    $ sudo chown root:wheel /Users/user/.minikube/bin/docker-machine-driver-hyperkit
-    $ sudo chmod u+s /Users/user/.minikube/bin/docker-machine-driver-hyperkit
-
-
-💿  Downloading VM boot image ...
-    > minikube-v1.10.0.iso.sha256: 65 B / 65 B [-------------] 100.00% ? p/s 0s
-    > minikube-v1.10.0.iso: 174.99 MiB / 174.99 MiB [] 100.00% 6.63 MiB p/s 27s
+😄  minikube v1.24.0 on Darwin 12.1
+✨  Automatically selected the docker driver. Other choices: hyperkit, virtualbox, ssh
 👍  Starting control plane node minikube in cluster minikube
-💾  Downloading Kubernetes v1.18.2 preload ...
-    > preloaded-images-k8s-v3-v1.18.2-docker-overlay2-amd64.tar.lz4: 525.43 MiB
-🔥  Creating hyperkit VM (CPUs=2, Memory=4000MB, Disk=20000MB) ...
-🐳  Preparing Kubernetes v1.18.2 on Docker 19.03.8 ...
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.22.3 preload ...
+    > gcr.io/k8s-minikube/kicbase: 355.78 MiB / 355.78 MiB  100.00% 4.46 MiB p/
+    > preloaded-images-k8s-v13-v1...: 501.73 MiB / 501.73 MiB  100.00% 5.18 MiB
+🔥  Creating docker container (CPUs=2, Memory=1985MB) ...
+🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
 🔎  Verifying Kubernetes components...
-🌟  Enabled addons: default-storageclass, storage-provisioner
-🏄  Done! kubectl is now configured to use "minikube"
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
 </details>
@@ -268,7 +258,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.5
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.0-beta.1
     ```
 
     <details>
@@ -419,10 +409,10 @@ In this case, the TiDB **service** is called **basic-tidb**. Run the following c
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+kubectl port-forward -n tidb-cluster svc/basic-tidb 14000:4000 > pf14000.out &
 ```
 
-This command runs in the background and writes its output to a file called `pf4000.out`, so you can continue working in the same shell session.
+If the port `14000` is already occupied, you can replace it with an available port. This command runs in the background and writes its output to a file named `pf14000.out`. You can continue to run the command in the current shell session.
 
 ### Connect to the TiDB service
 
@@ -433,7 +423,7 @@ This command runs in the background and writes its output to a file called `pf40
 {{< copyable "shell-regular" >}}
 
 ``` shell
-mysql --comments -h 127.0.0.1 -P 4000 -u root
+mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 
 <details>
@@ -463,6 +453,7 @@ After connecting to the cluster, you can run the following commands to verify th
 <summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
+mysql> use test;
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
 Query OK, 0 rows affected (0.17 sec)
 
@@ -574,9 +565,9 @@ mysql> select * from information_schema.cluster_info\G
 
 </details>
 
-### Access Grafana dashboard
+### Access the Grafana dashboard
 
-You can forward the port for Grafana to access Grafana dashboard locally:
+You can forward the port for Grafana to access the Grafana dashboard locally:
 
 {{< copyable "shell-regular" >}}
 
@@ -584,7 +575,15 @@ You can forward the port for Grafana to access Grafana dashboard locally:
 kubectl port-forward -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-You can access Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`. Note that if you want to access Grafana dashboard at <http://localhost:3000> from your browser, you must run `kubectl` on the same host, not in a Docker container or on a remote host.
+You can access the Grafana dashboard at <http://localhost:3000> on the host where you run `kubectl`. The default username and password in Grafana are both `admin`.
+
+Note that if you run `kubectl` in a Docker container or on a remote host instead of your local host, you can not access the Grafana dashboard at <http://localhost:3000> from your browser. In this case, you can run the following command to listen on all addresses.
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
+```
+
+Then access Grafana through <http://${remote-server-IP}:3000>.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
@@ -640,20 +639,22 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 After all Pods have been restarted, you can see that the version number of the cluster has changed.
 
-Note that you need to reset any port forwarding you set up in a previous step, because the pods they forwarded to have been destroyed and recreated. If the `kubectl port-forward` process is still running in your shell, end it before forwarding the port again.
+Note that you need to reset any port forwarding you set up in a previous step, because the pods they forwarded to have been destroyed and recreated.
 
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl port-forward -n tidb-cluster svc/basic-tidb 4000 > pf4000.out &
+kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
 ```
+
+If the port `24000` is already occupied, you can replace it with an available port.
 
 ### Check the TiDB cluster version
 
 {{< copyable "shell-regular" >}}
 
 ```
-mysql --comments -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 ```
 
 <details>
@@ -683,6 +684,16 @@ After you finish testing, you can destroy the TiDB cluster and the Kubernetes cl
 ### Destroy the TiDB cluster
 
 This section introduces how to destroy a TiDB cluster.
+
+#### Stop `kubectl` port forwarding
+
+If you still have running `kubectl` processes that are forwarding ports, end them:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+pgrep -lfa kubectl
+```
 
 #### Delete the TiDB cluster
 
@@ -721,16 +732,6 @@ To ensure that there are no lingering resources, delete the namespace used for y
 
 ```shell
 kubectl delete namespace tidb-cluster
-```
-
-#### Stop `kubectl` port forwarding
-
-If you still have running `kubectl` processes that are forwarding ports, end them:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-pgrep -lfa kubectl
 ```
 
 ### Destroy the Kubernetes cluster

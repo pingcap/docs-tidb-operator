@@ -192,7 +192,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
     ```bash
     cat <<EOF | kubectl apply -f -
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -200,7 +200,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -271,7 +271,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
         ```bash
         cat << EOF | kubectl apply -f -
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
           name: ${cluster_name}-tidb-issuer
@@ -300,7 +300,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
        ```bash
        cat << EOF | kubectl apply -f -
-       apiVersion: cert-manager.io/v1alpha2
+       apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
          name: ${cluster_name}-tidb-issuer
@@ -388,7 +388,7 @@ Run the following command:
 
 ```bash
 cat << EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${cluster_name}-pd-cluster-secret
@@ -397,8 +397,9 @@ spec:
   secretName: ${cluster_name}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
-  organization:
-  - PingCAP
+  subject:
+    organizations:
+    - PingCAP
   commonName: "TiDB"
   usages:
     - server auth
