@@ -4,7 +4,7 @@ title: TiDB Operator 1.1.8 Release Notes
 
 # TiDB Operator 1.1.8 Release Notes
 
-Release date: December 21, 2020 
+Release date: December 21, 2020
 
 TiDB Operator version: 1.1.8
 
@@ -15,7 +15,7 @@ TiDB Operator version: 1.1.8
 ## Improvements
 
 - Support cluster and client TLS for `tidb-lightning` and `tikv-importer` helm charts ([#3598](https://github.com/pingcap/tidb-operator/pull/3598), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support setting additional ports for the TiDB service. Users can utilize this feature to implement customized services, e.g. additional health check ([#3599](https://github.com/pingcap/tidb-operator/pull/3599), [@handlerww](https://github.com/handlerww))
+- Support setting additional ports for the TiDB service. Users can utilize this feature to implement customized services, for example, additional health check ([#3599](https://github.com/pingcap/tidb-operator/pull/3599), [@handlerww](https://github.com/handlerww))
 - Support skipping TLS when connecting `TidbInitializer` to TiDB Server ([#3564](https://github.com/pingcap/tidb-operator/pull/3564), [@LinuxGit](https://github.com/LinuxGit))
 - Support tableFilters for restoring data using TiDB Lightning ([#3521](https://github.com/pingcap/tidb-operator/pull/3521), [@sstubbs](https://github.com/sstubbs))
 - Support Prometheus to scrape metrics data from multiple TiDB clusters ([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
