@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 # 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
 
-本文介绍如何在已有的 TiDB 集群上部署或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性。
+本文介绍在 Kubernetes 上如何为已有的 TiDB 集群部署或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性。
 
 > **注意**:
 >
@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 ## 部署 TiFlash
 
-当 TiDB 集群已经部署完成时，如果你需要在现有 TiDB 集群上新增 TiFlash 组件，请进行以下操作：
+如果你需要在现有的 TiDB 集群上部署 TiFlash 组件，请进行以下操作：
 
 > **注意:**
 >
@@ -37,6 +37,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     ```
 
 2. 按照如下示例增加 TiFlash 配置：
+
+    {{< copyable "shell-regular" >}}
 
     ```yaml
     spec:
@@ -92,11 +94,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
               log = "/data0/logs/server.log"
     ```
 
-    要获取所有可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
+    要获取更多可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
 
     > **注意:**
     >
-    > 针对不同 TiFlash 版本，请注意以下不同配置：
+    > 针对不同 TiFlash 版本，请注意以下配置区别：
     >
     > - 如果 TiFlash 版本 <= v4.0.4，需要在 TidbCluster CR 中设置 `spec.tiflash.config.config.flash.service_addr` 为 `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930`。其中，`${clusterName}` 和 `${namespace}` 需要根据实际情况替换。
     > - 如果 TiFlash 版本 >= v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
@@ -119,6 +121,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     ```
 
 2. TiDB Operator 会按照 `storageClaims` 列表中的配置**按顺序**自动挂载 PV，如果需要为 TiFlash 增加 `resources` 项，请确保只在列表原有配置**最后添加**，并且**不能**修改列表中原有配置的顺序。例如：
+
+    {{< copyable "shell-regular" >}}
 
     ```yaml
     tiflash:
