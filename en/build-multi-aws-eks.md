@@ -31,7 +31,7 @@ To verify whether you have correctly configured the AWS CLI, run the `aws config
 
 Define the configuration files of three EKS clusters as `cluster_1.yaml`, `cluster_2.yaml`, and `cluster_3.yaml`, and create three clusters using `eksctl`.
 
-1. Define the configuration file of Cluster 1, and create Cluster 1.
+1. Define the configuration file of cluster 1, and create cluster 1.
 
     1. Save the following content as `cluster_1.yaml`. `${cluster_1}` is the name of the EKS cluster. `${region_1}` is the Region that the EKS cluster is deployed in. `${cidr_block_1}` is the CIDR block for the VPC that the EKS cluster is deployed in.
 
@@ -59,7 +59,7 @@ Define the configuration files of three EKS clusters as `cluster_1.yaml`, `clust
         eksctl create cluster -f cluster_1.yaml
         ```
 
-    After running the command above, wait until the EKS cluster is successfully created and the node group is created and added to the EKS cluster. This process might take 5~20 minutes. For more cluster configuration, refer to [Using Config Files](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
+    After running the command above, wait until the EKS cluster is successfully created and the node group is created and added to the EKS cluster. This process might take 5 to 20 minutes. For more cluster configuration, refer to [Using Config Files](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
 
 2. Follow the instructions in the previous step and create Cluster 2 and Cluster 3.
 
@@ -69,7 +69,7 @@ Define the configuration files of three EKS clusters as `cluster_1.yaml`, `clust
 
     - `${cluster_1}`, `${cluster_2}`, and `${cluster_3}` refer to the cluster names.
     - `${region_1}`, `${region_2}`, and `${region_3}` refer to the Regions that the clusters are deployed in.
-    - `${cidr_block_1}`, `${cidr_block_2}`, and `${cidr_block_3}` refer to the CIDR block for the VPC that the clusters are deployed in.
+    - `${cidr_block_1}`, `${cidr_block_2}`, and `${cidr_block_3}` refer to the CIDR blocks for the VPCs that the clusters are deployed in.
 
 3. After the clusters are created, obtain the Kubernetes context of each cluster. The contexts are used in the subsequent `kubectl` commands.
 
@@ -131,7 +131,7 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
 3. Follow the instructions in the previous step. Create a VPC peering connection between Cluster 1 and Cluster 3 and a VPC peering connection between Cluster 2 and Cluster 3.
 
-4. [Update the route tables](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) for the VPC peering of the three clusters.
+4. [Update the route tables](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) for the VPC peering connection of the three clusters.
 
     You need to update the route tables of all subnets used by the clusters. Add two routes in each route table.
 
@@ -163,7 +163,7 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
 Each cluster needs to expose its CoreDNS service to other clusters via a [network load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html). This section describes how to configure load balancers.
 
-1. Create the load balancer service definition file `dns-lb.yaml` as follows:
+1. Create a load balancer service definition file `dns-lb.yaml` as follows:
 
     ```yaml
     apiVersion: v1
@@ -214,7 +214,7 @@ Each cluster needs to expose its CoreDNS service to other clusters via a [networ
     lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
     ```
 
-    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", the load balancer is in the `Active` state.
+    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", all load balancers are in the `Active` state.
 
     {{< copyable "shell-regular" >}}
 
@@ -294,7 +294,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
              .:53 {
                 # Do not modify the default configuration.
              }
-             ${namspeace_2}.svc.cluster.local:53 {
+             ${namespace_2}.svc.cluster.local:53 {
                  errors
                  cache 30
                  forward . ${lb_ip_list_2} {
@@ -314,7 +314,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
 
 2. Follow the instructions in the previous step, and modify the CoreDNS configuration of Cluster 2 and Cluster 3.
 
-    In the CoreDNS configuration of each cluster, you need to perform the following operations:
+    For the CoreDNS configuration of each cluster, you need to perform the following operations:
 
     - Configure `${namespace_2}` and `${namespace_3}` to the namespace that the other two clusters deploy `TidbCluster` in.
     - Configure the IP address to the IP addresses of the load balancers of the other two clusters.
@@ -370,7 +370,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
     ```
 
-3. Access the nginx services of other clusters to verify the network interconnectivity.
+3. Access the nginx services of each cluster to verify the network interconnectivity.
 
     The following command verifies the network from Cluster 1 to Cluster 2:
 
