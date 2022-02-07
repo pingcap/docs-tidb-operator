@@ -51,7 +51,7 @@ Define the configuration files of three EKS clusters as `cluster_1.yaml`, `clust
 
         For the configuration of the `nodeGroups` field, refer to [Create an EKS cluster and a node pool](deploy-on-aws-eks.md#create-an-eks-cluster-and-a-node-pool).
 
-    2. Create Cluster 1 by running the following command:
+    2. Create cluster 1 by running the following command:
 
         {{< copyable "shell-regular" >}}
 
@@ -61,7 +61,7 @@ Define the configuration files of three EKS clusters as `cluster_1.yaml`, `clust
 
     After running the command above, wait until the EKS cluster is successfully created and the node group is created and added to the EKS cluster. This process might take 5 to 20 minutes. For more cluster configuration, refer to [Using Config Files](https://eksctl.io/usage/creating-and-managing-clusters/#using-config-files).
 
-2. Follow the instructions in the previous step and create Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step and create cluster 2 and cluster 3.
 
     The CIDR block for each EKS cluster **must not** overlap with that of each other.
 
@@ -102,7 +102,7 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
 1. Get the VPC ID of each cluster.
 
-    The following example gets the VPC ID of Cluster 1:
+    The following example gets the VPC ID of cluster 1:
 
     {{< copyable "shell-regular" >}}
 
@@ -123,19 +123,19 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
     In the following sections, `${vpc_id_1}`, `${vpc_id_2}`, and `${vpc_id_3}` refer to the VPC ID of each cluster.
 
-2. Create a VPC peering connection between Cluster 1 and Cluster 2.
+2. Create a VPC peering connection between cluster 1 and cluster 2.
 
     1. Refer to [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#create-vpc-peering-connection-local) and create a VPC peering. Use `${vpc_id_1}` as the requester VPC and `${vpc_id_2}` as the accepter VPC.
 
     2. Refer to [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) and complete creating a VPC peering.
 
-3. Follow the instructions in the previous step. Create a VPC peering connection between Cluster 1 and Cluster 3 and a VPC peering connection between Cluster 2 and Cluster 3.
+3. Follow the instructions in the previous step. Create a VPC peering connection between cluster 1 and cluster 3 and a VPC peering connection between cluster 2 and cluster 3.
 
 4. [Update the route tables](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) for the VPC peering connection of the three clusters.
 
     You need to update the route tables of all subnets used by the clusters. Add two routes in each route table.
 
-    The following example shows the route table of Cluster 1:
+    The following example shows the route table of cluster 1:
 
     | Destination     | Target               | Status | Propagated |
     | --------------- | -------------------- | ------ | ---------- |
@@ -146,18 +146,18 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
 ### Update the security groups for the instances
 
-1. Update the security group for Cluster 1.
+1. Update the security group for cluster 1.
 
-    1. Enter the AWS Security Groups Console and select the security group of Cluster 1. The name of the security group is similar to `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
+    1. Enter the [AWS Security Groups Console](https://us-west-2.console.aws.amazon.com/ec2/v2/home#SecurityGroups) and select the security group of cluster 1. The name of the security group is similar to `eksctl-${cluster_1}-cluster/ClusterSharedNodeSecurityGroup`.
 
-    2. Add inbound rules to the security group to allow traffic from Cluster 2 and Cluster 3.
+    2. Add inbound rules to the security group to allow traffic from cluster 2 and cluster 3.
 
         | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
         | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
         | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
 
-2. Follow the instructions in the previous step to update the security groups for Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step to update the security groups for cluster 2 and cluster 3.
 
 ### Configure load balancers
 
@@ -236,7 +236,7 @@ Each cluster needs to expose its CoreDNS service to other clusters via a [networ
 
 4. Check the IP address associated with the load balancer of each cluster.
 
-    Check the IP address associated with the load balancer of Cluster 1:
+    Check the IP address associated with the load balancer of cluster 1:
 
     {{< copyable "shell-regular" >}}
 
@@ -249,7 +249,7 @@ Each cluster needs to expose its CoreDNS service to other clusters via a [networ
     <pre><code>10.1.175.233 10.1.144.196</code></pre>
     </details>
 
-    Repeat the same step for Cluster 2 and Cluster 3.
+    Repeat the same step for cluster 2 and cluster 3.
 
     In the following sections, `${lb_ip_list_1}`, `${lb_ip_list_2}`, and `${lb_ip_list_3}` refer to the IP addresses associated with the load balancer of each cluster.
 
@@ -261,7 +261,7 @@ To allow Pods in a cluster to access services in other clusters, you need to con
 
 You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDNS. For information on more configuration items, refer to [Customizing DNS Service](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns).
 
-1. Modify the CoreDNS configuration of Cluster 1.
+1. Modify the CoreDNS configuration of cluster 1.
 
     1. Back up the current CoreDNS configuration:
 
@@ -279,7 +279,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
         kubectl --context ${context_1} -n kube-system edit configmap coredns
         ```
 
-        Modify the `data.Corefile` field as follows. In the example below, `${namespace_2}` and `${namespace_3}` are the namespaces that Cluster 2 and Cluster 3 deploy `TidbCluster` in.
+        Modify the `data.Corefile` field as follows. In the example below, `${namespace_2}` and `${namespace_3}` are the namespaces that cluster 2 and cluster 3 deploy `TidbCluster` in.
 
         > **Warning:**
         >
@@ -301,7 +301,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
                      force_tcp
                  }
              }
-             ${namspeace_3}.svc.cluster.local:53 {
+             ${namespace_3}.svc.cluster.local:53 {
                  errors
                  cache 30
                  forward . ${lb_ip_list_3} {
@@ -312,7 +312,7 @@ You can configure CoreDNS by modifying the ConfigMap corresponding to the CoreDN
 
     3. Wait for the CoreDNS to reload the configuration. It might take around 30 seconds.
 
-2. Follow the instructions in the previous step, and modify the CoreDNS configuration of Cluster 2 and Cluster 3.
+2. Follow the instructions in the previous step, and modify the CoreDNS configuration of cluster 2 and cluster 3.
 
     For the CoreDNS configuration of each cluster, you need to perform the following operations:
 
@@ -372,7 +372,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
 
 3. Access the nginx services of each cluster to verify the network interconnectivity.
 
-    The following command verifies the network from Cluster 1 to Cluster 2:
+    The following command verifies the network from cluster 1 to cluster 2:
 
     {{< copyable "shell-regular" >}}
 
@@ -408,7 +408,7 @@ Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb
 
 * The cluster domain of each cluster must be set to "cluster.local".
 
-Take Cluster 1 as an example. When you deploy the `TidbCluster` CR to Cluster 1, specify `metadata.namespace` as `${namespace_1}`:
+Take cluster 1 as an example. When you deploy the `TidbCluster` CR to cluster 1, specify `metadata.namespace` as `${namespace_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
