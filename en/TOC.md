@@ -82,6 +82,7 @@
     - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
     - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
     - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
+    - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
