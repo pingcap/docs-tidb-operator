@@ -16,7 +16,7 @@ This document describes how to add or remove the TiDB HTAP storage engine TiFlas
 
 This document is applicable to scenarios in which you already have a TiDB cluster and need to use TiDB HTAP capabilities by deploying TiFlash, such as the following:
 
-- Mixed load scenarios with online real-time analytic processing
+- Hybrid workload scenarios with online real-time analytic processing
 - Real-time stream processing scenarios
 - Data hub scenarios
 
@@ -26,9 +26,9 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
 
 > **Note:**
 >
-> If your server does not have an external network, you can download the required Docker image on the machine with an external network, upload the Docker image to the server, and then use `docker load` to install the Docker image on the server. For details, see [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster).
+> If your server does not have an external network, you can download the required Docker image on the machine with an external network, upload the Docker image to your server, and then use `docker load` to install the Docker image on the server. For details, see [deploy the TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster).
 
-1. Edit the `TidbCluster` Custom Resource:
+1. Edit the `TidbCluster` Custom Resource (CR):
 
     {{< copyable "shell-regular" >}}
 
@@ -43,7 +43,7 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
     ```yaml
     spec:
     tiflash:
-        # To deploy the Enterprise Edition of TiFlash, change the value of `baseImage` to `pingcap/tiflash-enterprise`.
+        # To deploy the enterprise edition of TiFlash, change the value of `baseImage` to `pingcap/tiflash-enterprise`.
         baseImage: pingcap/tiflash
         maxFailoverCount: 0
         replicas: 1
@@ -54,7 +54,7 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
           storageClassName: local-storage
     ```
 
-3. TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
+3. TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `requests.storage` and `storageClassName`. For example:
 
     ```yaml
     tiflash:
@@ -120,7 +120,7 @@ Once the deployment of TiFlash is completed, to add PVs for TiFlash, you need to
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-2. TiDB Operator automatically mounts PVs in the **order** of the items in the `storageClaims` list. If you need to add more `resources` items to TiFlash, make sure to append the new item only to the **end** of the original items, and **DO NOT** modify the order of the original items. For example:
+2. TiDB Operator automatically mounts PVs in the **order** of the items in the `storageClaims` list. If you need to add more `resources` items to TiFlash, make sure to append new items only to the **end** of the original items, and **DO NOT** modify the order of the original items. For example:
 
     {{< copyable "shell-regular" >}}
 
@@ -144,7 +144,7 @@ Once the deployment of TiFlash is completed, to add PVs for TiFlash, you need to
           storageClassName: local-storage  #newly added
     ```
 
-3. Manually delete the TiFlash StatefulSet and wait for the TiDB Operator to recreate the TiFlash StatefulSet.
+3. Manually delete the TiFlash StatefulSet by running the following command. Then, wait for the TiDB Operator to recreate the TiFlash StatefulSet.
 
     {{< copyable "shell-regular" >}}
 
@@ -190,7 +190,7 @@ If your TiDB cluster no longer needs the TiDB HTAP storage engine TiFlash, take 
 
 4. Check the state of TiFlash Pods and TiFlash stores.
 
-    1. run the following command to check whether you delete the TiFlash Pod successfully:
+    1. Run the following command to check whether you delete the TiFlash Pod successfully:
 
         {{< copyable "shell-regular" >}}
 
@@ -258,7 +258,7 @@ If your TiDB cluster no longer needs the TiDB HTAP storage engine TiFlash, take 
         kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
         ```
 
-    If the output is empty, it means that you delete the StatefulSet of the TiFlash cluster successfully.
+        If the output is empty, it means that you delete the StatefulSet of the TiFlash cluster successfully.
 
 6. (Optional) Delete PVC and PV.
 
@@ -266,24 +266,24 @@ If your TiDB cluster no longer needs the TiDB HTAP storage engine TiFlash, take 
 
    1. Delete the PVC object corresponding to the PV
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```shell
-      kubectl delete pvc -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-      ```
+        ```shell
+        kubectl delete pvc -n ${namespace} -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+        ```
 
     2. If the PV reclaim policy is `Retain`, the corresponding PV is still retained after you delete the PVC object. If you want to delete the PV, you can set the reclaim policy of the PV to `Delete`, and the PV can be deleted and recycled automatically.
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```shell
-      kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
-      ```
+        ```shell
+        kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+        ```
 
-      In the above command, `${pv_name}` represents the PV name of the TiFlash cluster. You can check the PV name by running the following command:
+        In the above command, `${pv_name}` represents the PV name of the TiFlash cluster. You can check the PV name by running the following command:
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```shell
-      kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-      ```
+        ```shell
+        kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
+        ```

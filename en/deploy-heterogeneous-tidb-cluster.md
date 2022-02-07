@@ -9,23 +9,23 @@ This document describes how to deploy a heterogeneous cluster for an existing Ti
 
 ## User scenarios
 
-This document is applicable to scenarios where you need to create differentiated instances for an existing TiDB cluster, such as the following:
+This document is applicable to scenarios in which you need to create differentiated instances for an existing TiDB cluster, such as the following:
 
-- Create a TiKV cluster with different configurations and different Labels for hotspot scheduling.
+- Create a TiKV cluster with different configurations and different labels for hotspot scheduling.
 - Create a TiDB cluster with different configurations for OLTP and OLAP queries.
 
 ## Prerequisites
 
-You already have a TiDB cluster. If not, refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
+You already have a TiDB cluster. If not, [deploy a TiDB cluster in Kubernetes](deploy-on-general-kubernetes.md) first.
 
 ## Deploy a heterogeneous cluster
 
-Depending on whether you need to enable TLS (Transport Layer Security) for a heterogeneous cluster, choose one of the following methods:
+Depending on whether you need to enable Transport Layer Security (TLS) for a heterogeneous cluster, choose one of the following methods:
 
 - Deploy a heterogeneous cluster
 - Deploy a TLS-enabled heterogeneous cluster
 
-<SimpleTab
+<SimpleTab>
 <div label="non-TLS">
 
 ### Deploy a heterogeneous cluster
@@ -59,7 +59,7 @@ To deploy a heterogeneous cluster, do the following:
         baseImage: pingcap/tikv
         maxFailoverCount: 0
         replicas: 1
-        # If storageClassName is not set, the default Storage Class of the Kubernetes cluster is used
+        # If storageClassName is not set, the default Storage Class of the Kubernetes cluster is used.
         # storageClassName: local-storage
         requests:
           storage: "100Gi"
@@ -83,12 +83,11 @@ To deploy a heterogeneous cluster, do the following:
 
     For more configurations and field meanings of TiDB cluster, see the [TiDB cluster configuration document](/configure-a-tidb-cluster.md).
 
-2. According to your need, modify the configurations of each node in the heterogeneous cluster configuration file.
+2. In the configuration file of your heterogeneous cluster, modify the configurations of each node according to your need.
 
     For example, you can modify the number of `replicas` for each component in the `cluster.yaml` file, or remove components that are not needed.
 
-3. Execute the following command to create the heterogeneous cluster. You need to replace `cluster.yaml` with the configuration filename of the heterogeneous cluster.
-
+3. Create the heterogeneous cluster by running the following command. You need to replace `cluster.yaml` with the configuration filename of your heterogeneous cluster.
 
     {{< copyable "shell-regular" >}}
 
@@ -142,7 +141,7 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
         baseImage: pingcap/tikv
         maxFailoverCount: 0
         replicas: 1
-        # If storageClassName is not set, the default Storage Class of the Kubernetes cluster is used
+        # If storageClassName is not set, the default Storage Class of the Kubernetes cluster is used.
         # storageClassName: local-storage
         requests:
           storage: "100Gi"
@@ -166,16 +165,16 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
                 storage: 100Gi
     ```
 
-    In the configuration file, `spec.tlsCluster.enabled`controls whether to enable TLS between the components and `spec.tidb.tlsClient.enabled`controls whether to enable TLS for MySQL client.
+    In the configuration file, `spec.tlsCluster.enabled`controls whether to enable TLS between the components and `spec.tidb.tlsClient.enabled`controls whether to enable TLS for the MySQL client.
 
-    - For more configurations of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
+    - For more configurations of a TLS-enabled heterogeneous cluster, see the ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
     - For more configurations and field meanings of a TiDB cluster, see the [TiDB cluster configuration document](/configure-a-tidb-cluster.md).
 
-2. According to your need, modify the configurations of each node in the configuration file of your heterogeneous cluster.
+2. In the configuration file of your heterogeneous cluster, modify the configurations of each node according to your need.
 
     For example, you can modify the number of `replicas` for each component in the `cluster.yaml` file, or remove components that are not needed.
 
-3. Execute the following command to create the TLS-enabled heterogeneous cluster. You need to replace `cluster.yaml` with the configuration filename of the heterogeneous cluster.
+3. Create the TLS-enabled heterogeneous cluster by running the following command. You need to replace `cluster.yaml` with the configuration filename of the heterogeneous cluster.
 
     {{< copyable "shell-regular" >}}
 
@@ -183,7 +182,7 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
     kubectl create -f cluster.yaml -n ${namespace}
     ```
 
-    If the output shows `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`, the execution is successful. Then, TiDB Operator will create the TiDB cluster with the configurations according to the cluster configuration file.
+    If the output shows `tidbcluster.pingcap.com/${heterogeneous_cluster_name} created`, the execution is successful. Then, TiDB Operator will create the TiDB cluster with the configurations according to your cluster configuration file.
 
 </div>
 </SimpleTab>
@@ -192,7 +191,7 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
 
 If you need to deploy a monitoring component for a heterogeneous cluster, take the following steps to add the heterogeneous cluster name to the TidbMonitor CR file of an existing TiDB cluster.
 
-1. Edit the TidbMonitor Custom Resource (CR) of the existing TiDB cluster.
+1. Edit the TidbMonitor Custom Resource (CR) of the existing TiDB cluster:
 
     {{< copyable "shell-regular" >}}
 

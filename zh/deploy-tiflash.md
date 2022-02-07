@@ -54,7 +54,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
           storageClassName: local-storage
     ```
 
-3. TiFlash 支持挂载多个 PV。如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多个 `resources` 项，每个 `resources` 项可以分别配置 `storage request` 和 `storageClassName`，例如：
+3. TiFlash 支持挂载多个 PV。如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多个 `resources` 项，每个 `resources` 项可以分别配置 `requests.storage` 和 `storageClassName`，例如：
 
     ```yaml
     tiflash:
