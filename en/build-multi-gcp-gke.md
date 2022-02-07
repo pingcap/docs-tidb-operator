@@ -27,7 +27,7 @@ Configure your GCP project by running the following command:
 gcloud config set core/project <gcp-project>
 ```
 
-## Step 1. Create the network
+## Step 1. Create a VPC network
 
 1. Create a VPC network with custom subnets:
 
@@ -71,13 +71,13 @@ gcloud config set core/project <gcp-project>
 
     `${subnet_1}`, `${subnet_2}`, and `${subnet_3}` refer to the names of the three subnets.
 
-    `--range=10.0.0.0/16` specifies the CIDR block of the subnet in the cluster. The CIDR blocks of all cluster subnets **must not** overlap with each other.
+    `--range=10.0.0.0/16` specifies the CIDR block of the `${subnet_1}` in the cluster. The CIDR blocks of all cluster subnets **must not** overlap with each other.
 
     `--secondary-range pods=10.11.0.0/16,services=10.101.0.0/16` specifies the CIRD block used by Kubernetes Pods and Services. This CIRD block will be used later.
 
 ## Step 2. Start the Kubernetes cluster
 
-Create three GKE clusters, and each cluster uses the subnet created in Step 1.
+Create three GKE clusters, and each cluster uses one of the subnets created in Step 1.
 
 1. Create three GKE clusters. Each cluster has a default node pool.
 
@@ -174,7 +174,7 @@ Create three GKE clusters, and each cluster uses the subnet created in Step 1.
         gke-${cluster_1}-b8b48366-all  ${network}  INGRESS    1000      tcp,udp,icmp,esp,ah,sctp            False
         ```
 
-    2. Update the source range of the firewall rule. Add the CIDR block of the Pod network of the other two clusters to the source range:
+    2. Update the source range of the firewall rule. Add the CIDR blocks of the Pod network of the other two clusters to the source range:
 
         {{< copyable "shell-regular" >}}
 
@@ -241,7 +241,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     kubectl --context ${context_3} -n default apply -f sample-nginx.yaml
     ```
 
-3. Access the nginx services of other clusters to verify the network interconnectivity.
+3. Access the nginx services of each cluster to verify the network interconnectivity.
 
     The following command verifies the network from Cluster 1 to Cluster 2:
 
@@ -258,7 +258,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
+    kubectl --context ${context_1} -n default delete -f sample-nginx.yaml
     kubectl --context ${context_2} -n default delete -f sample-nginx.yaml
     kubectl --context ${context_3} -n default delete -f sample-nginx.yaml
     ```
