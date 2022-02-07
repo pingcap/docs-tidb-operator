@@ -346,7 +346,7 @@ spec:
     kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": ${pump_replicas}}}}'
     ```
 
-    In the command above, `${pump_replicas}` is the desired number of Pump Pods.
+    In the command above, `${pump_replicas}` is the desired number of Pump Pods after the scaling.
 
 2. Wait for the Pump Pods to automatically be taken offline and deleted. Run the following command to observe the Pod status:
 
