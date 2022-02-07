@@ -123,7 +123,7 @@ Create three GKE clusters, and each cluster uses one of the subnets created in S
 
 2. Create the dedicated node pools used by PD, TiKV, and TiDB for each cluster.
 
-    Take Cluster 1 as an example:
+    Take cluster 1 as an example:
 
     {{< copyable "shell-regular" >}}
 
@@ -157,7 +157,7 @@ Create three GKE clusters, and each cluster uses one of the subnets created in S
 
 ### Configure the firewall rules
 
-1. Update the firewall rules for Cluster 1.
+1. Update the firewall rules for cluster 1.
 
     1. Obtain the name of the firewall rule used for communication between GKE Pods. The name of the firewall rule is similar to `gke-${cluster_1}-${hash}-all`.
 
@@ -190,7 +190,7 @@ Create three GKE clusters, and each cluster uses one of the subnets created in S
         gcloud compute firewall-rules describe ${firewall_rule_name}
         ```
 
-2. Follow the same steps to update the firewall rules for Cluster 2 and Cluster 3.
+2. Follow the same steps to update the firewall rules for cluster 2 and cluster 3.
 
 ## Step 3. Verify the network interconnectivity
 
@@ -243,7 +243,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
 
 3. Access the nginx services of each cluster to verify the network interconnectivity.
 
-    The following command verifies the network from Cluster 1 to Cluster 2:
+    The following command verifies the network from cluster 1 to cluster 2:
 
     {{< copyable "shell-regular" >}}
 
@@ -275,7 +275,7 @@ Refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb
 
 In the `TidbCluster` CR, the `spec.clusterDomain` field must be the same as `${cluster_domain_n}` defined in [Step 2](#step-2-start-the-kubernetes-cluster).
 
-For example, when you deploy the `TidbCluster` CR to Cluster 1, specify `spec.clusterDomain` as `${cluster_domain_1}`:
+For example, when you deploy the `TidbCluster` CR to cluster 1, specify `spec.clusterDomain` as `${cluster_domain_1}`:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
