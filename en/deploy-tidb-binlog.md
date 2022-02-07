@@ -348,6 +348,10 @@ spec:
 
     In the command above, `${pump_replicas}` is the desired number of Pump Pods after the scaling.
 
+    > **Note:**
+    >
+    > Do not scale in Pump nodes to 0. Otherwise, [Pump nodes are removed completely](#remove-pump-nodes-completely).
+
 2. Wait for the Pump Pods to automatically be taken offline and deleted. Run the following command to observe the Pod status:
 
     {{< copyable "shell-regular" >}}
@@ -375,9 +379,6 @@ spec:
         ```shell
         kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
         ```
-> **Note:**
->
-> Do not scale in Pump nodes to 0. Otherwise, [Pump nodes are removed completely](#remove-pump-nodes-completely).
 
 ### Remove Pump nodes completely
 
