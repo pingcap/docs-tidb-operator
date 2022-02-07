@@ -178,7 +178,7 @@ If a node will be offline for a long time, to minimize the impact on your applic
 
 ### If the node storage can be automatically migrated
 
-If the node storage can be automatically migrated (such as EBS), to reschedule the PD Pod, you do not need to delete the PD member. You only need to transfer the PD Leader to another Pod and delete the old Pod.
+If the node storage can be automatically migrated (such as EBS), to reschedule a PD Pod, you do not need to delete the PD member. You only need to transfer the PD Leader to another Pod and delete the old Pod.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -216,7 +216,7 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
 
 ### If the node storage cannot be automatically migrated
 
-If the node storage cannot be automatically migrated (such as local storage), to reschedule the PD Pod, you need to delete the PD member.
+If the node storage cannot be automatically migrated (such as local storage), to reschedule a PD Pod, you need to delete the PD member.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -292,7 +292,7 @@ If a node will be offline for a long time, to minimize the impact on your applic
 
 ### If the node storage can be automatically migrated
 
-If the node storage can be automatically migrated (such as EBS), to reschedule the TiKV Pod, you do not need to delete the whole TiKV store. You only need to evict the TiKV Region Leader to another Pod and delete the old Pod.
+If the node storage can be automatically migrated (such as EBS), to reschedule a TiKV Pod, you do not need to delete the whole TiKV store. You only need to evict the TiKV Region Leader to another Pod and delete the old Pod.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -338,7 +338,7 @@ If the node storage can be automatically migrated (such as EBS), to reschedule t
 
 ### If the node storage cannot be automatically migrated
 
-If the node storage cannot be automatically migrated (such as local storage), to reschedule the TiKV Pod, you need to delete the whole TiKV store.
+If the node storage cannot be automatically migrated (such as local storage), to reschedule a TiKV Pod, you need to delete the whole TiKV store.
 
 1. Mark the node to be maintained as non-schedulable to ensure that no new Pod is scheduled to it:
 
@@ -362,7 +362,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
     > **Note:**
     >
-    > Before you take the TiKV Pod offline, make sure that the remaining TiKV Pods are not fewer than the TiKV replica number set in PD configuration (`max-replicas`, 3 by default). If there are not enough TiKV Pods, scale out TiKV Pods before you take the TiKV Pod offline.
+    > Before you take the TiKV Pod offline, make sure that the remaining TiKV Pods are not fewer than the TiKV replica number set in PD configuration (`max-replicas`, 3 by default). If the remaining TiKV Pods are not enough, scale out TiKV Pods before you take the TiKV Pod offline.
 
     1. Check `store-id` of the TiKV Pod:
 
