@@ -37,20 +37,18 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     ```
 
     假如存在 TiKV Pod，针对每一个 Pod，进行以下操作：
-    
+
     1. 参考[迁移 TiKV Region Leader](#迁移-tikv-region-leader) 将 Region Leader 迁移到其他 Pod。
 
     2. 通过调整 PD 的 `max-store-down-time` 配置来增大集群所允许的 TiKV Pod 下线时间，在此时间内维护完毕并恢复 Kubernetes 节点后，所有该节点上的 TiKV Pod 会自动恢复。
-    
-        以调整 `max-store-down-time` 为 `60m` 为例，请使用以下命令：
+
+        以调整 `max-store-down-time` 为 `60m` 为例，请使用以下命令。你可以调整 `max-store-down-time` 到合理的值。
 
         {{< copyable "shell-regular" >}}
 
         ```shell
         pd-ctl config set max-store-down-time 60m
         ```
-
-        调整 `max-store-down-time` 到合理的值。
 
 3. 检查待维护节点上是否有 PD Pod：
 
@@ -126,7 +124,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-    假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-tikv-pod) 将 Pod 重调度到其他节点。    
+    假如存在 TiKV Pod，针对每一个 Pod，参考[重调度 TiKV Pod](#重调度-tikv-pod) 将 Pod 重调度到其他节点。
 
 2. 检查待维护节点上是否有 PD Pod：
 
@@ -254,7 +252,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 6. 解除 PD Pod 与节点本地盘的绑定。
 
-    查询 Pod 使用的 `PesistentVolumeClaim`：
+    查询 Pod 使用的 `PersistentVolumeClaim`：
 
     {{< copyable "shell-regular" >}}
 
@@ -262,7 +260,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
     ```
 
-    删除该 `PesistentVolumeClaim`：
+    删除该 `PersistentVolumeClaim`：
 
     {{< copyable "shell-regular" >}}
 
@@ -390,7 +388,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 6. 解除 TiKV Pod 与节点本地盘的绑定。
 
-    查询 Pod 使用的 `PesistentVolumeClaim`：
+    查询 Pod 使用的 `PersistentVolumeClaim`：
 
     {{< copyable "shell-regular" >}}
 
@@ -398,7 +396,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
     ```
 
-    删除该 `PesistentVolumeClaim`：
+    删除该 `PersistentVolumeClaim`：
 
     {{< copyable "shell-regular" >}}
 
