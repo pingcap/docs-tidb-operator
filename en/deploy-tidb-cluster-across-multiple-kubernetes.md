@@ -18,6 +18,8 @@ You need to configure the Kubernetes network and DNS so that the Kubernetes clus
 - The TiDB components on each Kubernetes cluster can access the Pod IP of all TiDB components in and between clusters.
 - The TiDB components on each Kubernetes cluster can look up the Pod FQDN of all TiDB components in and between clusters.
 
+To build multiple connected EKS or GKE clusters, refer to [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md) or [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md).
+
 ## Supported scenarios
 
 Currently supported scenarios:
