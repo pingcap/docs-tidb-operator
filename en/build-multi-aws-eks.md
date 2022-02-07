@@ -214,7 +214,7 @@ Each cluster needs to expose its CoreDNS service to other clusters via a [networ
     lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
     ```
 
-    Check the load balancer status of each cluster by running the following commands. If the output of all commands is "active", all load balancers are in the `Active` state.
+    Check the load balancer status of each cluster by running the following commands. If the output of all commands is `active`, all load balancers are in the `Active` state.
 
     {{< copyable "shell-regular" >}}
 
