@@ -391,7 +391,7 @@ spec:
 
     If you directly remove Pump nodes, it might cause TiDB failure because TiDB has no Pump nodes to write into.
 
-2. Refer to [Scale in Pump](#scale-in-pump) to scale in Pump to `0`.
+2. Refer to [Scale in Pump](#scale-in-pump-nodes) to scale in Pump to `0`.
 
 3. Execute `kubectl patch tc ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/pump"}]'` to delete all configuration items of `spec.pump`.
 
