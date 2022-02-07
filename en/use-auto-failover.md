@@ -99,7 +99,7 @@ If **all** failed Pods have recovered, and you want to remove the newly created 
     kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
     ```
 
-    Every time after the cluster recovers from failover, TiDB Operator automatically scale in the newly created Pods.
+    Every time after the cluster recovers from failover, TiDB Operator automatically scales in the newly created Pods.
 
 - Method 2: Configure `spec.tikv.failover.recoverByUID: ${recover_uid}`.
 
@@ -138,7 +138,7 @@ If **all** of the failed Pods have recovered, and you want to remove the newly c
     kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
     ```
 
-    Every time after the cluster recovers from failover, TiDB Operator automatically scale in the newly created Pods.
+    Every time after the cluster recovers from failover, TiDB Operator automatically scales in the newly created Pods.
 
 - Method 2: Configure `spec.tiflash.failover.recoverByUID: ${recover_uid}`.
 
