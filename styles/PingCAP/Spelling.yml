@@ -3,7 +3,7 @@ message: "In general, use American spelling instead of '%s'."
 link: 'https://developers.google.com/style/spelling'
 ignorecase: true
 level: warning
-#scope: paragraph
+scope: paragraph
 tokens:
   - '(?:\w+)nised?'
   - '(?:\w+)logue'
