@@ -112,6 +112,176 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl get bk -n test1 -owide
     ```
 
+
+#### 备份示例
+
++ 备份全部集群数据
+ 
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-backup-gcs
+      namespace: test1
+    spec:
+      # backupType: full
+      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+      from:
+        host: ${tidb-host}
+        port: ${tidb-port}
+        user: ${tidb-user}
+        secretName: backup-demo1-tidb-secret
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        # logLevel: info
+        # statusAddr: ${status-addr}
+        # concurrency: 4
+        # rateLimit: 0
+        # checksum: true
+        # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: ${bucket}
+        prefix: ${prefix}
+        # location: us-east1
+        # storageClass: STANDARD_IA
+        # objectAcl: private
+    ```
+
++ 备份单个数据库的数据
+
+    以下示例中，备份 `db1` 数据库的数据。
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-backup-gcs
+      namespace: test1
+    spec:
+      # backupType: full
+      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+      from:
+        host: ${tidb-host}
+        port: ${tidb-port}
+        user: ${tidb-user}
+        secretName: backup-demo1-tidb-secret
+      tableFilter:
+      - "db1.*"
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        # logLevel: info
+        # statusAddr: ${status-addr}
+        # concurrency: 4
+        # rateLimit: 0
+        # checksum: true
+        # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: ${bucket}
+        prefix: ${prefix}
+        # location: us-east1
+        # storageClass: STANDARD_IA
+        # objectAcl: private
+    ```
+
++ 备份单张表的数据
+
+  以下示例中，备份 `db1.table1` 表的数据。
+
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-backup-gcs
+      namespace: test1
+    spec:
+      # backupType: full
+      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+      from:
+        host: ${tidb-host}
+        port: ${tidb-port}
+        user: ${tidb-user}
+        secretName: backup-demo1-tidb-secret
+      tableFilter:
+      - "db1.table1"
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        # logLevel: info
+        # statusAddr: ${status-addr}
+        # concurrency: 4
+        # rateLimit: 0
+        # checksum: true
+        # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: ${bucket}
+        prefix: ${prefix}
+        # location: us-east1
+        # storageClass: STANDARD_IA
+        # objectAcl: private
+    ```
+
++ 使用表库过滤功能备份多张表的数据
+
+    以下示例中，备份 `db1.table1` 表 和  `db1.table2` 表的数据。
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-backup-gcs
+      namespace: test1
+    spec:
+      # backupType: full
+      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+      from:
+        host: ${tidb-host}
+        port: ${tidb-port}
+        user: ${tidb-user}
+        secretName: backup-demo1-tidb-secret
+      tableFilter:
+      - "db1.table1"
+      - "db1.table2"
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        # logLevel: info
+        # statusAddr: ${status-addr}
+        # concurrency: 4
+        # rateLimit: 0
+        # checksum: true
+        # sendCredToTikv: true
+        # options:
+        # - --lastbackupts=420134118382108673
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: ${bucket}
+        prefix: ${prefix}
+        # location: us-east1
+        # storageClass: STANDARD_IA
+        # objectAcl: private
+    ```
+
+
 ## 定时全量备份
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
