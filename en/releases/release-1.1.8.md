@@ -21,6 +21,7 @@ TiDB Operator version: 1.1.8
 - Support Prometheus to scrape metrics data from multiple TiDB clusters ([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
     ACTION REQUIRED: If `TidbMonitor` CRs are deployed, update the `spec.initializer.version` to `v4.0.9` after upgrading TiDB Operator to v1.1.8, or some metrics will not be shown correctly in the Grafana dashboards. Prometheus crape job names are changed from `${component}` to `${namespace}-${TidbCluster Name}-${component}`.
+
 - `component` label is added to the scrape jobs of Prometheus in `TidbMonitor` ([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug Fixes
