@@ -33,7 +33,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 1. 定义集群 1 的配置文件，并创建集群 1。
 
-    将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`$ {cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
+    将如下配置保存为 `cluster_1.yaml` 文件，其中 `${cluster_1}` 为 EKS 集群的名字，`${region_1}` 为部署 EKS 集群到的 Region，`${cidr_block_1}` 为 EKS 集群所属的 VPC 的 CIDR block。
 
     ```yaml
     apiVersion: eksctl.io/v1alpha5
@@ -65,7 +65,11 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
     需要注意，每个集群所属的 VPC 的 CIDR block **必须** 与其他集群不重叠。
 
-    后文中，`${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字，`${region_1}`、`${region_2}` 与 `${region_1}` 分别代表三个集群所处的 Region，`${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
+    后文中：
+
+    - `${cluster_1}`、`${cluster_2}` 与 `${cluster_3}` 分别代表三个集群的名字。
+    - `${region_1}`、`${region_2}` 与 `${region_3}` 分别代表三个集群所处的 Region。
+    - `${cidr_block_1}`、`${cidr_block_2}` 与 `${cidr_block_3}` 分别代表三个集群所属的 VPC 的 CIDR block。
 
 3. 在所有集群创建完毕后，你需要获取每个集群的 Kubernetes Context，以方便后续使用 `kubectl` 命令操作每个集群。
 
@@ -138,7 +142,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
     2. 在安全组中添加 Inbound rules，以允许来自集群 2 和集群 3 的流量：
 
-        | Type        | Protocol | Port range | Source                 | Descrption                                    |
+        | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
         | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
         | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
@@ -261,11 +265,11 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
         kubectl --context ${context_1} -n kube-system edit configmap coredns
         ```
 
-        修改 `data.Corefile` 字段如下，其中 `${namspeace_2}` 和 `${namspeace_3}` 分别为集群 2 和集群 3 将要部署的 TidbCluster 所在的 namespace。
+        修改 `data.Corefile` 字段如下，其中 `${namespace_2}` 和 `${namespace_3}` 分别为集群 2 和集群 3 将要部署的 TidbCluster 所在的 namespace。
 
         > **警告：**
         >
-        > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namspeace_1}`、 `$ {namspeace_2}` 和 `${namspeace_3}` **必须**不一样。
+        > 因为 EKS 集群无法修改集群的 cluster domain，因此我们需要使用 namespace 作为 DNS 请求转发的识别条件，所以 `${namespace_1}`、 `$ {namespace_2}` 和 `${namespace_3}` **必须**不一样。
 
         ```yaml
         apiVersion: v1
@@ -276,14 +280,14 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
              .:53 {
                 # ... 默认配置不修改
              }
-             ${namspeace_2}.svc.cluster.local:53 {
+             ${namespace_2}.svc.cluster.local:53 {
                  errors
                  cache 30
                  forward . ${lb_ip_list_2} {
                      force_tcp
                  }
              }
-             ${namspeace_3}.svc.cluster.local:53 {
+             ${namespace_3}.svc.cluster.local:53 {
                  errors
                  cache 30
                  forward . ${lb_ip_list_3} {
@@ -296,9 +300,9 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 
 2. 以步骤 1 为例，修改集群 2 和集群 3 的 CoreDNS 配置。
 
-    对于每个集群的 CoreDNS 配置，你需要将 `${namspeace_2}` 与 `${namspeace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
+    对于每个集群的 CoreDNS 配置，你需要将 `${namespace_2}` 与 `${namespace_3}` 修改为另外两个集群将要部署 TidbCluster 的 namespace，将配置中的 IP 地址配置为另外两个集群的 Load Balancer 的 IP 地址。
 
-后文中，使用 `${namspeace_1}`、`${namspeace_2}` 与 `${namspeace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
+后文中，使用 `${namespace_1}`、`${namespace_2}` 与 `${namespace_3}` 分别代表各个集群的将要部署的 TidbCluster 所在的 namespace。
 
 ## 第 3 步：验证网络连通性
 
