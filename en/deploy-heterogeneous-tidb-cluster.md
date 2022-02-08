@@ -11,8 +11,8 @@ This document describes how to deploy a heterogeneous cluster for an existing Ti
 
 This document is applicable to scenarios in which you need to create differentiated instances for an existing TiDB cluster, such as the following:
 
-- Create a TiKV cluster with different configurations and different labels for hotspot scheduling.
-- Create a TiDB cluster with different configurations for OLTP and OLAP queries.
+- Create TiKV clusters with different configurations and different labels for hotspot scheduling.
+- Create TiDB clusters with different configurations for OLTP and OLAP queries.
 
 ## Prerequisites
 
