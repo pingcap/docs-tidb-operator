@@ -9,7 +9,7 @@ This document describes how to use shards for TidbMonitor.
 
 ## Shards
 
-TidbMonitor collects monitoring data for a single TiDB cluster or multiple TiDB clusters. When the amount of monitoring data is large, the computing power of one TidbMonitor might hit a bottleneck. In this case, it is recommended to use shards of Prometheus [Modulus](https://prometheus.io/docs/prometheus/latest/configuration/configuration/). This feature performs `hashmod` on `__address__` to divide the monitoring data of multipel targets (`Targets`) into multiple TidbMonitor Pods.
+TidbMonitor collects monitoring data for a single TiDB cluster or multiple TiDB clusters. When the amount of monitoring data is large, the computing capacity of one TidbMonitor might hit a bottleneck. In this case, it is recommended to use shards of Prometheus [Modulus](https://prometheus.io/docs/prometheus/latest/configuration/configuration/). This feature performs `hashmod` on `__address__` to divide the monitoring data of multiple targets (`Targets`) into multiple TidbMonitor Pods.
 
 To use shards for TidbMonitor, you need a data aggregation plan. The [Thanos](https://thanos.io/tip/thanos/design.md/) method is recommended.
 
