@@ -16,7 +16,7 @@ After backing up TiDB cluster data to Amazon S3 using BR, if you need to recover
 > **Note:**
 >
 > - BR is only applicable to TiDB v3.1 or later releases.
-> - Data restored by BR cannot be replicated to a downstream cluster, because BR imports SST files to TiDB directly and the downstream cluster currently cannot access the upstream SST files.
+> - Data restored by BR cannot be replicated to a downstream cluster, because BR directly imports SST files to TiDB and the downstream cluster currently cannot access the upstream SST files.
 
 This document provides an example about how to restore the backup data from the `spec.s3.prefix` folder of the `spec.s3.bucket` bucket on Amazon S3 to the `demo2` TiDB cluster in the `test2` namespace. The following are the detailed steps.
 
