@@ -185,7 +185,7 @@ summary: 介绍如何使用 BR 恢复 Amazon S3 兼容存储上的备份数据�
 - 关于兼容 S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-overview.md#s3-存储字段介绍)。
 - `.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
-- 更多 `restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+- 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
