@@ -1,7 +1,7 @@
 extends: capitalization
 message: "'%s' should use sentence-style capitalization."
 link: 'https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings'
-level: warning
+level: suggestion
 scope:
   - heading.h2
   - heading.h3
@@ -13,6 +13,7 @@ indicators:
 exceptions:
   - Azure
   - CLI
+  - ClusterIP
   - Code
   - Cosmos
   - Docker
@@ -24,6 +25,7 @@ exceptions:
   - macOS
   - Marketplace
   - MongoDB
+  - NodePort
   - REPL
   - Studio
   - TiDB

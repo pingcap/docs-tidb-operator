@@ -4,6 +4,7 @@ Alibaba
 Ansible
 Apiserver
 autoscaling
+BackupSchedule
 binlog
 Ceph
 config
@@ -23,6 +24,7 @@ Filebeat
 Fluentd
 Grafana
 hotspot
+Ingress
 initializer
 interconnectivity
 jq
@@ -55,11 +57,14 @@ svc
 sysctl
 systemd
 Thanos
-(?i)ticdc
-(?i)tidb
-(?i)tiflash
-(?i)tikv
+Thanos Query
+TiCDC
+TiDB Dashboard
+TiDB
+TiFlash
+TiKV
 tkctl
+TLS
 vSwitch
 (?i)yaml
 Zabbix
