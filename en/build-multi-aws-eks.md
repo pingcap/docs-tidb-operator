@@ -154,8 +154,8 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
         | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
-        | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
-        | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom `${cidr_block_2}` | Allow cluster 2 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom `${cidr_block_3}` | Allow cluster 3 to communicate with cluster 1 |
 
 2. Follow the instructions in the previous step to update the security groups for cluster 2 and cluster 3.
 
