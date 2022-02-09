@@ -1,6 +1,7 @@
 [Aa]ddon
 Aliyun
 Alibaba
+Alpha
 Ansible
 Apiserver
 autoscaling
@@ -9,6 +10,7 @@ binlog
 Ceph
 config
 configmap
+COS
 CRD
 deallocate
 (?i)dev
@@ -61,6 +63,7 @@ Thanos Query
 TiCDC
 TiDB Dashboard
 TiDB
+tidb-backup
 TiFlash
 TiKV
 tkctl
