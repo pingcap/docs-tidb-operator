@@ -22,6 +22,7 @@ exceptions:
   - MongoDB
   - REPL
   - Studio
+  - TiDB
   - TypeScript
   - URLs
   - Visual
