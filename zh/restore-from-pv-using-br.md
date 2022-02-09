@@ -20,6 +20,8 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
 
 ## 第 1 步：准备恢复环境
 
+使用 BR 将 PV 上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
+
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) 到执行恢复的服务器。
 
 2. 执行以下命令在 `test2` 这个命名空间中创建恢复所需的 RBAC 相关资源：
@@ -34,9 +36,7 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，你可以跳过此步骤。
 
-    1. 确保你拥有待恢复数据库的以下权限：
-
-        - `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限：恢复前后，Restore CR 需要一个拥有该权限的数据库账户，用于调整 GC 时间
+    1. 确保你拥有恢复数据库 `mysql.tidb` 表的 `SELECT` 和 `UPDATE` 权限，用于恢复前后调整 GC 时间。
 
     2. 创建 `restore-demo2-tidb-secret` secret：
 
