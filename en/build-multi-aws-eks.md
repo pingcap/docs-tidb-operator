@@ -15,7 +15,7 @@ Before you deploy EKS clusters, make sure you have completed the following prepa
 
 - Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
 
-- Complete all steps in [Getting started with Amazon EKS – eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
+- Complete all steps in [Getting started with Amazon EKS—eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
 
     This tutorial includes the following tasks:
 
