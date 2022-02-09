@@ -7,7 +7,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到持久卷。
 
 本文档介绍如何将 Kubernetes 上 TiDB 集群的数据备份到[持久卷](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/)上。本文描述的持久卷，指任何 [Kubernetes 支持的持久卷类型](https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes)。本文以备份数据到网络文件系统 (NFS) 存储为例。
 
-本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具获取集群的逻辑备份，然后再将备份数据存储到持久卷。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool/) 工具获取集群数据，然后再将备份数据存储到持久卷。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
@@ -29,7 +29,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 本文档假设对部署在 Kubernetes `test1` 这个命名空间中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
-### 第 1 步：准备 Ad-hoc 全量备份环境
+### 第 1 步：准备 Ad-hoc 备份环境
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
 
@@ -133,7 +133,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
     - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
 
-    - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
+    - 更多 `Backup` CR 字段的详细解释，参考 [Backup CR 字段介绍](backup-restore-overview.md#backup-cr-字段介绍)。
 
 2. 创建好 `Backup` CR 后，可通过以下命令查看备份状态：
 
@@ -149,7 +149,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ### 第 1 步：准备定时全量备份环境
 
-同 [Ad-hoc 全量备份环境准备](#ad-hoc-备份环境准备)。
+同 [Ad-hoc 备份环境准备](#ad-hoc-备份环境准备)。
 
 ### 第 2 步：定时全量备份数据到持久卷
 
