@@ -16,7 +16,7 @@ After backing up TiDB cluster data to GCS using BR, if you need to recover the b
 > **Note:**
 >
 > - BR is only applicable to TiDB v3.1 or later releases.
-> - Data restored by BR cannot be replicated to a downstream cluster, because BR imports SST files to TiDB directly and the downstream cluster currently cannot access the upstream SST files.
+> - Data restored by BR cannot be replicated to a downstream cluster, because BR directly imports SST files to TiDB and the downstream cluster currently cannot access the upstream SST files.
 
 This document provides an example about how to restore the backup data from the `spec.gcs.prefix` folder of the `spec.gcs.bucket` bucket on GCS to the `demo2` TiDB cluster in the `test2` namespace. The following are the detailed steps.
 
@@ -98,7 +98,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
 
     - For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
     - Some parameters in `.spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
-    - For v4.0.8 or a later version,  BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR.
+    - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR.
     - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
 
 2. After creating the `Restore` CR, execute the following command to check the restore status:
