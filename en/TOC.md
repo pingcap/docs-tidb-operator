@@ -1,5 +1,6 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
+<!-- vale PingCAP.Acronyms = NO -->
 
 - Introduction
   - [Overview](tidb-operator-overview.md)

@@ -8,6 +8,8 @@ first: '\b([A-Z]{3,5})\b'
 second: '(?:\b[A-Z][a-z]+ )+\(([A-Z]{3,5})\)'
 # ... with the exception of these:
 exceptions:
+  - ACK
+  - AKS
   - API
   - ASP
   - CLI
@@ -17,10 +19,13 @@ exceptions:
   - DEBUG
   - DOM
   - DPI
+  - EKS
   - FAQ
   - GCC
+  - GCP
   - GDB
   - GET
+  - GKE
   - GPU
   - GTK
   - GUI
