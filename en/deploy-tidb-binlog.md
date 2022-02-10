@@ -337,49 +337,33 @@ spec:
         secretName: ${cluster_name}-cluster-client-secret
 ```
 
-### Scale in Pump
+### Scale in Pump nodes
 
-To scale in Pump, you need to take a single Pump node offline, and execute `kubectl patch tc ${cluster_name} -n ${namespace}` to reduce the value of `replicas` of Pump by 1. Repeat the operations on each node.
-
-The steps are as follows:
-
-1. Take the Pump node offline.
-
-    Assume there are three Pump nodes in the cluster. You need to take the third node offline and replace `${ordinal_id}` with `2`. (`${tidb_version}` is the current TiDB version.)
-
-    - If TLS is not enabled for Pump, create a Pod to take Pump offline:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl run offline-pump-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250
-        ```
-
-    - If TLS is enabled for Pump, use the previously started Pod to take Pump offline:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls "https://${cluster_name}-pd:2379" -cmd offline-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
-        ```
-
-    View the log of Pump by executing the following command:
+1. Scale in Pump Pods:
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl logs -f -n ${namespace} ${release_name}-pump-${ordinal_id}
+    ```bash
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": ${pump_replicas}}}}'
     ```
 
-    If `pump offline, please delete my pod` is output, this node is successfully taken offline.
+    In the command above, `${pump_replicas}` is the desired number of Pump Pods after the scaling.
 
-2. Delete the corresponding Pump Pod:
+    > **Note:**
+    >
+    > Do not scale in Pump nodes to 0. Otherwise, [Pump nodes are removed completely](#remove-pump-nodes-completely).
 
-    Execute `kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pump":{"replicas": 2}}}'`, and wait until the Pump Pod is taken offline and deleted automatically.
+2. Wait for the Pump Pods to automatically be taken offline and deleted. Run the following command to observe the Pod status:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    watch kubectl get po ${cluster_name} -n ${namespace}
+    ```
 
 3. (Optional) Force Pump to go offline:
 
-    If the offline operation fails, the Pump Pod will not output `pump offline, please delete my pod`. At this time, you can force Pump to go offline, that is, taking Step 2 to reduce the value of `spec.pump.replicas` and mark Pump as `offline` after the Pump Pod is deleted completely.
+    If the offline operation fails, that is, the Pump Pods are not deleted for a long time, you can forcibly mark Pump as `offline`.
 
     - If TLS is not enabled for Pump, mark Pump as `offline`:
 
@@ -408,7 +392,7 @@ The steps are as follows:
 
     If you directly remove Pump nodes, it might cause TiDB failure because TiDB has no Pump nodes to write into.
 
-2. Refer to [Scale in Pump](#scale-in-pump) to scale in Pump to `0`.
+2. Refer to [Scale in Pump](#scale-in-pump-nodes) to scale in Pump to `0`.
 
 3. Execute `kubectl patch tc ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/pump"}]'` to delete all configuration items of `spec.pump`.
 

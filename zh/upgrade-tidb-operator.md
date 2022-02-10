@@ -21,24 +21,44 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     如果输出中未包含你需要的新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo)。
 
 2. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
-
+   
     * 如果 Kubernetes 版本大于等于 1.16:
 
-        {{< copyable "shell-regular" >}}
+        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
-        ```shell
-        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-        kubectl get crd tidbclusters.pingcap.com
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
+            ```
+
+        2. 更新 CRD。
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
+            kubectl get crd tidbclusters.pingcap.com
+            ```
 
     * 如果 Kubernetes 版本小于 1.16:
 
-        {{< copyable "shell-regular" >}}
+        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
-        ```shell
-        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
-        kubectl get crd tidbclusters.pingcap.com
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbngmonitorings.yaml
+            ```
+
+        2. 更新 CRD。
+
+            {{< copyable "shell-regular" >}}
+
+            ```shell
+            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
+            kubectl get crd tidbclusters.pingcap.com
+            ```
 
     本文以 TiDB Operator v1.3.0-beta.1 为例，你需要替换 `${operator_version}` 为你要升级到的 TiDB Operator 版本。
 
@@ -132,7 +152,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 2. 将下载的文件和镜像上传到需要升级的服务器上，在服务器上按照以下步骤进行安装：
 
-    1. 安装 TiDB Operator 需要的 `crd.yaml` 文件：
+    1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create -f ./crd.yaml
+        ```
+
+        对于其他 CRD，执行该命令时会报 "AlreadyExists" 的错误，可以忽略该错误。
+
+    2. 升级 TiDB Operator 需要的 `crd.yaml` 文件：
 
         {{< copyable "shell-regular" >}}
 
@@ -140,7 +170,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         kubectl replace -f ./crd.yaml
         ```
 
-    2. 解压 `tidb-operator` chart 包文件，并拷贝 `values.yaml` 文件到升级目录：
+    3. 解压 `tidb-operator` chart 包文件，并拷贝 `values.yaml` 文件到升级目录：
 
         {{< copyable "shell-regular" >}}
 
@@ -150,7 +180,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
         cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.3.0-beta.1/values-tidb-operator.yaml
         ```
 
-    3. 安装 Docker 镜像到服务器上：
+    4. 安装 Docker 镜像到服务器上：
 
         {{< copyable "shell-regular" >}}
 

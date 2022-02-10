@@ -27,7 +27,7 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 
 > **Note:**
 >
-> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
+> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account).
 
 ## Recommended instance types and storage
 
