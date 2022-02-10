@@ -21,7 +21,11 @@ controllerManager:
   - version!=canary
 ```
 
-参考[在线升级](upgrade-tidb-operator.md#在线升级)或[离线升级](upgrade-tidb-operator.md#离线升级)，对当前 TiDB Operator 执行升级步骤。
+参考[在线升级](upgrade-tidb-operator.md#在线升级)或[离线升级](upgrade-tidb-operator.md#离线升级)，对当前 TiDB Operator 执行升级步骤：
+
+```shell
+helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml
+```
 
 ## 第 2 步：部署灰度的 TiDB Operator
 
