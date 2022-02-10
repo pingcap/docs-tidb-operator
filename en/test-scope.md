@@ -5,6 +5,8 @@ summary: This is a test file for scoping.
 
 # A Test File for Scoping
 
+Test if the vale linter can skip code spans and code blocks.
+
 Test code spans:
 
 <http:waitress>
