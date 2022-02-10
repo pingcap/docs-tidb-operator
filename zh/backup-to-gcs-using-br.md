@@ -112,7 +112,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl get bk -n test1 -owide
     ```
 
-
 #### 备份示例
 
 + 备份全部集群数据
@@ -199,7 +198,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
   以下示例中，备份 `db1.table1` 表的数据。
 
-
     ```yaml
     ---
     apiVersion: pingcap.com/v1alpha1
@@ -280,7 +278,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
         # storageClass: STANDARD_IA
         # objectAcl: private
     ```
-
 
 ## 定时全量备份
 

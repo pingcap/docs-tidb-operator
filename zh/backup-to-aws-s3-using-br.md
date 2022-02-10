@@ -202,7 +202,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 kubectl get bk -n test1 -o wide
 ```
 
-
 #### 备份示例
 
 + 备份全部集群数据
@@ -366,7 +365,6 @@ kubectl get bk -n test1 -o wide
         bucket: my-bucket
         prefix: my-folder
     ```
-
 
 ## 定时全量备份
 

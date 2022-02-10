@@ -131,7 +131,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
     kubectl get bk -n test1 -owide
     ```
 
-
 #### 备份示例
 
 + 备份全部集群数据
@@ -302,7 +301,6 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
           name: nfs
           mountPath: /nfs
     ```
-
 
 ## 定时全量备份
 
