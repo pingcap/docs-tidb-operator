@@ -7,11 +7,7 @@ summary: This is a test file for scoping.
 
 Test if the vale linter can skip code spans and code blocks.
 
-Test code spans:
-
-<http:waitress>
-
-<code>10kB</code>
+Test code spans: <http:waitress>, <code>10kB</code>, `1h`.
 
 Test code blocks:
 
