@@ -18,3 +18,15 @@ Don't use version(s).
 This is the 11th rule.
 
 </code></pre>
+
+```
+This is an actively-maintained repository.
+Don't use version(s).
+This is the 11th rule.
+```
+
+```shell
+This is an actively-maintained repository.
+Don't use version(s).
+This is the 11th rule.
+```
