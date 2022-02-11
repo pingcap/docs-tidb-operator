@@ -430,7 +430,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
 
 ## Helm
 
-### 添加 Helm Repository
+### 添加 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -438,7 +438,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
 helm repo add pingcap https://charts.pingcap.org/
 ```
 
-### 更新 Helm Repository
+### 更新 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -464,7 +464,7 @@ helm repo update
     helm search hub mysql
     ```
 
-- 查看其他 Repository 中的 Chart
+- 查看其他 repository 中的 Chart
 
     {{< copyable "shell-regular" >}}
 

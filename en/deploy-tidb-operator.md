@@ -34,7 +34,7 @@ It is recommended to enable [RBAC](https://kubernetes.io/docs/admin/authorizatio
 
 ### Install Helm
 
-Refer to [Use Helm](tidb-toolkit.md#use-helm) to install Helm and configure it with the official PingCAP chart Repository.
+Refer to [Use Helm](tidb-toolkit.md#use-helm) to install Helm and configure it with the official PingCAP chart repository.
 
 ## Deploy TiDB Operator
 
