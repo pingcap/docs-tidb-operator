@@ -59,7 +59,7 @@ Dumpling 相关使用文档可参考：
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 [`Restore` CR](backup-restore-cr.md#restore-cr-字段介绍) 对象来描述一次恢复。
 
-在创建完对应的 CR 对象后，TiDB Operator 将根据相应配置执行备份或恢复。有关 `Backup`、`BackupSchedule` 及 `Restore` CR 中各字段的介绍可参考[备份与恢复 CR 介绍](backup-restore-cr.md)。
+在创建完对应的 CR 对象后，TiDB Operator 将根据相应配置执行备份或恢复。
 
 ## 删除备份的 Backup CR
 
