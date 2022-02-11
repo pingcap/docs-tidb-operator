@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的 TiDB 集群环境需求
 summary: 介绍在 Kubernetes 上部署 TiDB 集群的软硬件环境需求。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/prerequisites/']
 ---
 
 # Kubernetes 上的 TiDB 集群环境需求
@@ -91,7 +90,7 @@ Kubelet 正常工作需要关闭 Swap，并且把 `/etc/fstab` 里面有关 Swap
 
 ```shell
 swapoff -a
-sed -i 's/^\(.*swap.*\)$/#\1/' /etc/fstab 
+sed -i 's/^\(.*swap.*\)$/#\1/' /etc/fstab
 ```
 
 ## 内核参数设置
@@ -242,14 +241,14 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
 1. 将 Kubelet 的数据保存到一块单独盘上（可跟 Docker 共用一块盘），Kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。通过设置 `--root-dir` 参数来实现：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     echo "KUBELET_EXTRA_ARGS=--root-dir=/data1/kubelet" > /etc/sysconfig/kubelet
     systemctl restart kubelet
     ```
-   
+
     上面会将 Kubelet 数据目录设置为 `/data1/kubelet`。
-    
+
 2. 通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)，保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
 
 ## TiDB 集群资源需求

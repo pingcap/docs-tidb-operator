@@ -1,7 +1,6 @@
 ---
 title: 对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩
 summary: 介绍如何对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tidb-cluster-auto-scaling/']
 ---
 
 # 对 Kubernetes 上的 TiDB 集群启用自动弹性伸缩

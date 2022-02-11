@@ -1,7 +1,6 @@
 ---
 title: 维护 TiDB 集群所在的 Kubernetes 节点
 summary: 介绍如何维护 TiDB 集群所在的 Kubernetes 节点。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/maintain-a-kubernetes-node/']
 ---
 
 # 维护 TiDB 集群所在的 Kubernetes 节点
@@ -312,7 +311,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 3. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启，TiDB Operator 会在迁移完 TiKV Region Leader 后删掉 Pod：
 
     {{< copyable "shell-regular" >}}
-   
+
     ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="delete-pod"
     ```
@@ -452,7 +451,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 1. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation：
 
     {{< copyable "shell-regular" >}}
-   
+
     ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```

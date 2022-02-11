@@ -1,7 +1,6 @@
 ---
 title: TiDB FAQs in Kubernetes
 summary: Learn about TiDB FAQs in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/faq/']
 ---
 
 # TiDB FAQs in Kubernetes
@@ -43,7 +42,7 @@ If the TiDB cluster is already running, first upgrade the cluster, and then conf
     Then upgrade the TiDB cluster.
 
 2. Configure TiDB to support the new time zone:
-    
+
     Refer to [Time Zone Support](https://docs.pingcap.com/tidb/v4.0/configure-time-zone) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
@@ -121,7 +120,7 @@ Three possible reasons:
     kubectl get deployment --all-namespaces | grep tidb-scheduler
     ```
 
-## How does TiDB ensure data safety and reliability? 
+## How does TiDB ensure data safety and reliability?
 
 To ensure persistent storage of data, TiDB clusters deployed by TiDB Operator use [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) provided by Kubernetes cluster as the storage.
 

@@ -1,7 +1,6 @@
 ---
 title: tidb-backup chart 配置
 summary: 介绍 tidb-backup chart 配置。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-backup/']
 ---
 
 # tidb-backup chart 配置
