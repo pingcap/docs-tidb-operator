@@ -37,6 +37,7 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 - Storage: Because AWS supports the [EBS `gp3`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) volume type, it is recommended to use EBS `gp3`. For `gp3` provisioning, the following is recommended:
     - TiKV: 400 MiB/s, 4000 IOPS
     - TiFlash: 625 MiB/s, 6000 IOPS
+- AMI type: Amazon Linux 2
 
 ## Create an EKS cluster and a node pool
 
