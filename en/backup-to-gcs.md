@@ -1,7 +1,6 @@
 ---
 title: Back up Data to GCS Using Dumpling
 summary: Learn how to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
-aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-gcs/']
 ---
 
 # Back up Data to GCS Using Dumpling

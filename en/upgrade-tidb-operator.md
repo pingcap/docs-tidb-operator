@@ -1,7 +1,6 @@
 ---
 title: Upgrade TiDB Operator
 summary: Learn how to perform online upgrade and offline upgrade to TiDB Operator in the Kubernetes cluster.
-aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 ---
 
 # Upgrade TiDB Operator
@@ -23,7 +22,7 @@ If your server has access to the internet, you can perform online upgrade by tak
 2. Update [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) (CRD) for Kubernetes:
 
     * If your Kubernetes version >= v1.16:
-        
+
         1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
 
             {{< copyable "shell-regular" >}}
@@ -31,7 +30,7 @@ If your server has access to the internet, you can perform online upgrade by tak
             ```shell
             kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
             ```
-        
+
         2. Update CRD.
 
             {{< copyable "shell-regular" >}}
