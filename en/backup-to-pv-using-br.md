@@ -11,7 +11,7 @@ The backup method described in this document is implemented based on CustomResou
 
 ## User scenarios
 
-If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-full-backup-to-s3-compatible-storage) or [scheduled full backup](#scheduled-full-backup-to-s3-compatible-storage) of the TiDB cluster data to PVs:
+If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled full backup](#scheduled-full-backup) of the TiDB cluster data to PVs:
 
 - To back up a large volume of data at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
