@@ -81,7 +81,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
                 storage: 100Gi
     ```
 
-    TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](/configure-a-tidb-cluster.md)。
+    TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](configure-a-tidb-cluster.md)。
 
 2. 依据需要，修改异构集群配置文件中各节点的配置项。
 
@@ -167,7 +167,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
     - 详细的异构 TLS 集群配置示例，请参阅 [`heterogeneous-tls`](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls)。
 
-    - TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](/configure-a-tidb-cluster.md)。
+    - TiDB 集群更多的配置项和字段含义，请参考 [TiDB 集群配置文档](configure-a-tidb-cluster.md)。
 
 2. 依据需要，修改异构集群配置文件中各节点的配置项。
 
