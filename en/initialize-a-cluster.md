@@ -75,7 +75,7 @@ initSql: |-
 
 > **Note:**
 >
-> Currently no verification has been implemented for `initSql`. You can create accounts and set passwords in `initSql`, but it is not recommended to do so because passwords created this way are saved as plaintext in the initializer job object.
+> Currently no verification has been implemented for `initSql`. You can create accounts and set passwords in `initSql`, but it is not recommended to do so because passwords created this way are saved as plaintext in the `initializer` job object.
 
 ## Initialize the cluster
 
