@@ -341,7 +341,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
       clusterIP: None
     ```
 
-2. 在三个集群对应的命名空间下部署 nginx 服务。
+2. 在三个集群对应的命名空间下部署 NGINX 服务。
 
     {{< copyable "shell-regular" >}}
 
@@ -353,7 +353,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     kubectl --context ${context_3} -n ${namespace_3} apply -f sample-nginx.yaml
     ```
 
-3. 访问其他集群的 nginx 服务，验证网络是否连通。
+3. 访问其他集群的 NGINX 服务，验证网络是否连通。
 
     以验证集群 1 到集群 2 的网络连通性为例，执行以下命令。
 
@@ -363,9 +363,9 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
     ```
 
-    如果输出为 nginx 的欢迎页面，那么就表明网络是正常连通的。
+    如果输出为 NGINX 的欢迎页面，那么就表明网络是正常连通的。
 
-4. 验证完成后，执行以下命令删除 nginx 服务。
+4. 验证完成后，执行以下命令删除 NGINX 服务。
 
     {{< copyable "shell-regular" >}}
 
