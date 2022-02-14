@@ -11,7 +11,7 @@ The restore method described in this document is implemented based on CustomReso
 
 ## User Scenarios
 
-After backing up TiDB cluster data to Amazon S3 using BR, if you need to recover the backup SST (key-value pairs) files from Amazon S3 to TiDB cluster, you can follow steps in this document to restore the data using BR.
+After backing up TiDB cluster data to Amazon S3 using BR, if you need to recover the backup SST (key-value pairs) files from Amazon S3 to a TiDB cluster, you can follow steps in this document to restore the data using BR.
 
 > **Note:**
 >
