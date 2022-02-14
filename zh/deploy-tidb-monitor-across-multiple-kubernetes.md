@@ -5,7 +5,11 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 # 跨多个 Kubernetes 集群监控 TiDB 集群
 
-本文档介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控，以及如何与几种社区常见的 Prometheus 多集群监控方式进行集成，从而实现统一全局视图进行监控数据访问。
+你可以监控跨多个 Kubernetes 集群的 TiDB 集群，实现从统一全局视图访问监控数据。本文档介绍如何与几种常见的 Prometheus 多集群监控方式进行集成：
+
+- [Push 方式](#push-方式)
+- [Pull 方式 - 使用 Thanos Query](#使用-thanos-query)
+- [Pull 方式 - 使用 Prometheus Federation](#使用-prometheus-federation)
 
 ## Push 方式
 
@@ -24,7 +28,15 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 ### 部署 TiDB 集群监控
 
-根据不同 TiDB 集群所在的 Kubernetes 集群设置以下环境变量，其中 `cluster_name` 为TiDB集群名称， `cluster_namespace` 为TiDB集群所在的命名空间， `kubernetes_cluster_name` 为自定义的 kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用， `storageclass_name` 设置为当前集群中的存储， `remote_write_url` 为 `thanos-receiver` （或其他兼容 Prometheus remote API）组件的 host ，关于 thanos 部署方案参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+1. 根据不同 TiDB 集群所在的 Kubernetes 集群，设置以下环境变量：
+
+    - `cluster_name`：TiDB 集群名称。
+    - `cluster_namespace`：TiDB 集群所在的命名空间。
+    - `kubernetes_cluster_name`：自定义的 Kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用。
+    -  `storageclass_name`：当前集群中的存储。
+    - `remote_write_url`：`thanos-receiver` 组件的 host，或其他兼容 Prometheus remote API 组件的 host 。
+    
+    如需部署 Thanos，部署方案可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
 
 {{< copyable "shell-regular" >}}
 
@@ -36,7 +48,7 @@ storageclass_name="local-storage"
 remote_write_url="http://thanos-receiver:19291/api/v1/receive"
 ```
 
-执行以下指令，创建 `TidbMonitor` ：
+2. 执行以下指令，创建 `TidbMonitor`：
 
 {{< copyable "shell-regular" >}}
 
