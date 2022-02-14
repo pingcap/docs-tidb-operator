@@ -135,18 +135,18 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
     {{< copyable "shell-regular" >}}
 
     ```sh
-    cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+    cat << EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
     metadata:
-    name: ${cluster1_name}
+    name: ${cluster_name}
     spec:
     clusters:
-    - name: ${cluster1_name}
-        namespace: ${cluster1_namespace}
+    - name: ${cluster_name}
+        namespace: ${cluster_namespace}
     externalLabels:
         #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster1_name}
+        kubernetes: ${kubernetes_cluster_name}
         #add other meta labels here
         #region: us-east-1
     initializer:
@@ -214,18 +214,18 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
     {{< copyable "shell-regular" >}}
 
     ```sh
-    cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+    cat << EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
     metadata:
-    name: ${cluster1_name}
+    name: ${cluster_name}
     spec:
     clusters:
-    - name: ${cluster1_name}
-        namespace: ${cluster1_namespace}
+    - name: ${cluster_name}
+        namespace: ${cluster_namespace}
     externalLabels:
         #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster1_name}
+        kubernetes: ${kubernetes_cluster_name}
         #add other meta labels here
         #region: us-east-1
     initializer:
