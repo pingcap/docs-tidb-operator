@@ -24,7 +24,7 @@ TiDB Operator version: 1.1.0-rc.4
 - Support creating node pools for TiFlash and CDC on ACK ([#2420](https://github.com/pingcap/tidb-operator/pull/2420), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - Support creating node pools for TiFlash and CDC on EKS ([#2413](https://github.com/pingcap/tidb-operator/pull/2413), [@DanielZhangQD](https://github.com/DanielZhangQD))
 - Expose `PVReclaimPolicy` for `TidbMonitor` when storage is enabled ([#2379](https://github.com/pingcap/tidb-operator/pull/2379), [@Yisaer](https://github.com/Yisaer))
-- Support arbitrary topology-based HA in tidb-scheduler (e.g. node zones) ([#2366](https://github.com/pingcap/tidb-operator/pull/2366), [@PengJi](https://github.com/PengJi))
+- Support arbitrary topology-based HA in tidb-scheduler (for example, node zones) ([#2366](https://github.com/pingcap/tidb-operator/pull/2366), [@PengJi](https://github.com/PengJi))
 - Skip setting the TLS for PD dashboard when the TiDB version is earlier than 4.0.0 ([#2389](https://github.com/pingcap/tidb-operator/pull/2389), [@weekface](https://github.com/weekface))
 - Support backup and restore with GCS using BR ([#2267](https://github.com/pingcap/tidb-operator/pull/2267), [@shuijing198799](https://github.com/shuijing198799))
 - Update `TiDBConfig` and `TiKVConfig` to support the `4.0.0-rc` version ([#2322](https://github.com/pingcap/tidb-operator/pull/2322), [@Yisaer](https://github.com/Yisaer))

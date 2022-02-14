@@ -429,7 +429,7 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
 
 ## Helm
 
-### 添加 Helm Repo
+### 添加 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -437,7 +437,7 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
 helm repo add pingcap https://charts.pingcap.org/
 ```
 
-### 更新 Helm Repo
+### 更新 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -463,7 +463,7 @@ helm repo update
     helm search hub mysql
     ```
 
-- 查看其他 Repo 中的 Chart
+- 查看其他 repository 中的 Chart
 
     {{< copyable "shell-regular" >}}
 
