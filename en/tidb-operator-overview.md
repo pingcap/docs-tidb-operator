@@ -9,12 +9,13 @@ summary: Learn the overview of TiDB Operator.
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
-| TiDB Operator version | Compatible TiDB versions |
+| Compatible TiDB versions | TiDB Operator version |
 |:---|:---|
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0, v5.0 |
-| v1.2 | v3.0 and later releases |
-| dev | v3.0 and later releases, dev |
+| TiDB >= v3.0 | dev |
+| TiDB >= v3.0 | v1.3 (Recommended)|
+| v3.0 <= TiDB < v5.4.0 | v1.2 |
+| v3.0 <= TiDB < v5.1.0 | v1.1 |
+| v2.1 <= TiDB < v3.1 | v1.0 (Out of Support)|
 
 ## Manage TiDB clusters using TiDB Operator
 

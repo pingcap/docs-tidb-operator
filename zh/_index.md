@@ -11,12 +11,13 @@ summary: 了解 TiDB in Kubernetes 的用户文档。
 
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
-| TiDB Operator 版本 | 适用的 TiDB 版本 |
+| 适用的 TiDB 版本 | TiDB Operator 版本 |
 |:---|:---|
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0, v5.0 |
-| v1.2 | v3.0 及以上版本 |
-| dev | v3.0 及以上版本，dev |
+| TiDB >= v3.0 | dev |
+| TiDB >= v3.0 | v1.3（推荐）|
+| v3.0 <= TiDB < v5.4.0 | v1.2 |
+| v3.0 <= TiDB < v5.1.0 | v1.1 |
+| v2.1 <= TiDB < v3.1 | v1.0（停止维护）|
 
 <NavColumns>
 <NavColumn>
