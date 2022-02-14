@@ -366,7 +366,7 @@ This document is an overview of the commands used for TiDB cluster management.
 
 ### Interact with nodes
 
-* Mark the node as unschedulable:
+* Mark the node as non-schedulable:
 
     {{< copyable "shell-regular" >}}
 
@@ -464,7 +464,7 @@ helm repo update
     helm search hub mysql
     ```
 
-- View charts in other Repos:
+- View charts in other repositories:
 
     {{< copyable "shell-regular" >}}
 

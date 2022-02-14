@@ -12,7 +12,7 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 
 ## Prerequisites
 
-- [aliyun-cli](https://github.com/aliyun/aliyun-cli) >= 3.0.15 and [configure aliyun-cli](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
+- [`aliyun-cli`](https://github.com/aliyun/aliyun-cli) >= 3.0.15 and [configure `aliyun-cli`](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
 
     > **Note:**
     >
@@ -345,7 +345,7 @@ You can set the variables in `terraform.tfvars` to configure TiDB Operator. Most
     operator_helm_values = file("./my-operator-values.yaml")
     ```
 
-In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vswitch not configured.
+In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vSwitch not configured.
 
 ### Configure the TiDB cluster
 
