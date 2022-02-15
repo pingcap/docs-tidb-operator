@@ -15,7 +15,7 @@ Before you deploy EKS clusters, make sure you have completed the following prepa
 
 - Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
 
-- Complete all steps in [Getting started with Amazon EKS – eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
+- Complete all steps in [Getting started with Amazon EKS—eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
 
     This tutorial includes the following tasks:
 
@@ -154,8 +154,8 @@ To allow the three clusters to access each other, you need to create a VPC peeri
 
         | Type        | Protocol | Port range | Source                 | Description                                   |
         | ----------- | -------- | ---------- | ---------------------- | --------------------------------------------- |
-        | All traffic | All      | All        | Custom ${cidr_block_2} | Allow cluster 2 to communicate with cluster 1 |
-        | All traffic | All      | All        | Custom ${cidr_block_3} | Allow cluster 3 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom `${cidr_block_2}` | Allow cluster 2 to communicate with cluster 1 |
+        | All traffic | All      | All        | Custom `${cidr_block_3}` | Allow cluster 3 to communicate with cluster 1 |
 
 2. Follow the instructions in the previous step to update the security groups for cluster 2 and cluster 3.
 
