@@ -94,7 +94,7 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
               log = "/data0/logs/server.log"
     ```
 
-    For more TiFlash parameters that can be configured, refer to [TiFlash Configuration Documentation](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/).
+    For more TiFlash parameters that can be configured, refer to [TiFlash Configuration Documentation](https://docs.pingcap.com/tidb/stable/tiflash-configuration).
 
     > **Note:**
     >
