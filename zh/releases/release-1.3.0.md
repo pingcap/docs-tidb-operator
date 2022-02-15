@@ -23,6 +23,7 @@ TiDB Operator 版本：1.3.0
 - 添加新的 `spec.tidb.initializer.createPassword` 字段，支持部署新 TiDB 集群时设置随机密码 ([#4328](https://github.com/pingcap/tidb-operator/pull/4328), [@mikechengwei](https://github.com/mikechengwei))
 - 添加新的 `failover.recoverByUID` 字段，以支持为 TiKV/TiFlash/DM Worker 仅执行一次性的 Recover 操作 ([#4373](https://github.com/pingcap/tidb-operator/pull/4373), [@better0332](https://github.com/better0332))
 - 添加新的 `sepc.pd.startUpScriptVersion` 字段，以支持修改 PD 启动脚本使用的 DNS 解析的方式 ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
+- 支持跨 Kubernetes 部署 Heterogeneous TiDB 集群 ( [#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 
 
 ## 优化提升
@@ -32,6 +33,5 @@ TiDB Operator 版本：1.3.0
 
 ## Bug 修复
 
-- 修复跨 Kubernetes 部署 TiDB 集群场景下，无法部署 Heterogeneous 集群的问题 ( [#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 - 修复 tidb scheduler 不支持 Kubernetes v1.23 的问题 ([#4386](https://github.com/pingcap/tidb-operator/pull/4386), [@just1900](https://github.com/just1900))
 - 修复跨 Kubernetes 部署 TiDB 的场景下，某集群的所有 PD 下线导致同一集群内 Pump 异常的问题 ([#4377](https://github.com/pingcap/tidb-operator/pull/4377), [@just1900](https://github.com/just1900))
