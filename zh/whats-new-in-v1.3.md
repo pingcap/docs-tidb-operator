@@ -1,14 +1,14 @@
 ---
-title: What's New in TiDB Operator 1.3
+title: TiDB Operator 1.3 新特性
 ---
 
-# What's New in TiDB Operator 1.3
+# TiDB Operator 1.3 新特性
 
 TiDB Operator 1.3 引入了以下关键特性，从扩展性、易用性、安全性等方面帮助你更轻松地管理 TiDB 集群及其周边工具。
 
 ## 兼容性改动
 
-- 跨 Kubernetes 部署 TiDB 集群优化。如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并导致跨 Kubernetes 特性失效。你需要执行以下操作来升级 TiDB Operator：
+- 跨 Kubernetes 部署 TiDB 集群优化。如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并失败。如果从更早版本升级 TiDB Operator 到 v1.3，你需要执行以下操作：
 
   1. 更新 CRD。
   2. 修改 TidbCluster 定义将 `spec.acrossK8s` 字段设置为 `true`。
