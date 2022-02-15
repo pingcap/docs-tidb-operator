@@ -94,7 +94,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
               log = "/data0/logs/server.log"
     ```
 
-    要获取更多可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://pingcap.com/docs-cn/stable/tiflash/tiflash-configuration/)。
+    要获取更多可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiflash-configuration)。
 
     > **注意:**
     >
