@@ -23,12 +23,14 @@ TiDB Operator 版本：1.3.0
 - 添加新的 `spec.tidb.initializer.createPassword` 字段，支持部署新 TiDB 集群时设置随机密码 ([#4328](https://github.com/pingcap/tidb-operator/pull/4328), [@mikechengwei](https://github.com/mikechengwei))
 - 添加新的 `failover.recoverByUID` 字段，以支持为 TiKV/TiFlash/DM Worker 仅执行一次性的 Recover 操作 ([#4373](https://github.com/pingcap/tidb-operator/pull/4373), [@better0332](https://github.com/better0332))
 - 添加新的 `sepc.pd.startUpScriptVersion` 字段，以支持修改 PD 启动脚本使用的 DNS 解析的方式 ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
-- 支持跨 Kubernetes 部署 Heterogeneous TiDB 集群 ( [#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 
 ## 优化提升
 
-- 添加新的 `spec.acrossK8s` 字段，作为跨 Kubernetes 部署 TiDB 集群的标志字段 ([#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 - 部署或更新组件的 StatefulSet 预先检查配置的 VolumeMount 是否存在，防止异常的配置更新引起集群滚动更新 ([#4369](https://github.com/pingcap/tidb-operator/pull/4369), [@july2993](https://github.com/july2993))
+- 跨 Kubernetes 集群部署 TiDB 集群功能增强，包括：
+  - 添加新的 `spec.acrossK8s` 字段，作为跨 Kubernetes 部署 TiDB 集群的标识字段 ([#4400](https://github.com/pingcap/tidb-operator/pull/4400), [@KanShiori](https://github.com/KanShiori))
+  - 支持跨 Kubernetes 部署 Heterogeneous TiDB 集群 ([#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
+  - 跨 Kubernetes 集群部署 TiDB 集群场景下允许不设置 `spec.clusterDomain` 字段，该字段仅仅影响到组件间访问的地址 ([#4408](https://github.com/pingcap/tidb-operator/pull/4408), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug 修复
 
