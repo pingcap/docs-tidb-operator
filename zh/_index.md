@@ -24,7 +24,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 <ColumnTitle>关于 TiDB Operator</ColumnTitle>
 
 - [TiDB Operator 简介](tidb-operator-overview.md)
-- [What's New in v1.2](whats-new-in-v1.2.md)
+- [TiDB Operator v1.3 新特性](whats-new-in-v1.3.md)
 
 </NavColumn>
 

@@ -8,6 +8,16 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 本文介绍如何升级 TiDB Operator 到指定版本。你可以选择[在线升级](#在线升级)或[离线升级](#离线升级)。
 
+## 升级注意事项
+
+1. 如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并进入异常状态。如果从更早版本升级 TiDB Operator 到 v1.3，你需要执行以下操作：
+
+    1. 更新 CRD。
+    2. 修改 TidbCluster 定义将 `spec.acrossK8s` 字段设置为 `true`。
+    3. 升级 TiDB Operator。
+
+2. 弃用 Pod `ValidatingWebhook` 和 `MutatingWebhook`。如果使用 v1.2 及更早版本的 TiDB Operator 在集群部署了 Webhook，并启用了 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本，Pod `ValidatingWebhook` 和 `MutatingWebhook` 被删除，但这不会对 TiDB 集群管理产生影响，也不会影响正在运行的 TiDB 集群。
+
 ## 在线升级
 
 如果服务器可以访问外网，你可以按照以下步骤在线升级 TiDB Operator：
