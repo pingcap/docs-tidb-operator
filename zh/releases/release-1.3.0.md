@@ -25,7 +25,6 @@ TiDB Operator 版本：1.3.0
 - 添加新的 `sepc.pd.startUpScriptVersion` 字段，以支持修改 PD 启动脚本使用的 DNS 解析的方式 ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
 - 支持跨 Kubernetes 部署 Heterogeneous TiDB 集群 ( [#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 
-
 ## 优化提升
 
 - 添加新的 `spec.acrossK8s` 字段，作为跨 Kubernetes 部署 TiDB 集群的标志字段 ([#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
