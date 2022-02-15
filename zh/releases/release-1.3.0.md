@@ -12,7 +12,7 @@ TiDB Operator 版本：1.3.0
 
 - 由于 [#4400](https://github.com/pingcap/tidb-operator/pull/4400) 的变更，如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群进行失败的滚动更新。你需要执行以下操作来升级 TiDB Operator：
     1. 更新 CRD。
-    2. 添加新的 `spec.acrossK8s` 字段设置为 `true` 到 TidbCluster 定义。
+    2. 添加新的 `spec.acrossK8s` 字段到 TidbCluster 定义，其值设置为 `true`。
     3. 升级 TiDB Operator。
 
 ## 新功能
