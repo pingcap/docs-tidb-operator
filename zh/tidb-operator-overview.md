@@ -9,7 +9,7 @@ summary: 介绍 TiDB Operator 的整体架构及使用方式。
 
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
-| 适用的 TiDB 版本 | TiDB Operator 版本 |
+| TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
 | TiDB >= v3.0 | dev |
 | TiDB >= v3.0 | v1.3（推荐）|
