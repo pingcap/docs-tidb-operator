@@ -9,12 +9,13 @@ TiDB Operator version: 1.3.0-beta.1
 
 ## Compatibility Change
 
-Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
+Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed, and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
 
 ## Rolling Update Changes
 
 - Due to changes in [#4358](https://github.com/pingcap/tidb-operator/pull/4358), if the TiDB cluster (>= v5.4) is deployed by TiDB Operator v1.2, upgrading TiDB Operator to v1.3.0-beta.1 causes TiFlash to rolling upgrade. It is recommended to upgrade TiDB Operator to v1.3 before upgrading the TiDB cluster to v5.4.0 or later versions.
 - Due to changes in [#4169](https://github.com/pingcap/tidb-operator/pull/4169) , for TiDB clusters >= v5.0, if `spec.tikv.seperateRocksDBLog: true` or  `spec.tikv.separateRaftLog: true` is configured, upgrading TiDB Operator to v1.3.0-beta.1 causes TiKV to rolling upgrade.
+- Due to changes in [#4198](https://github.com/pingcap/tidb-operator/pull/4198), upgrading TiDB Operator causes the recreation of TidbMonitor Pod.
 
 ## New Features
 

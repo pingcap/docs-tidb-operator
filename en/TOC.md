@@ -3,7 +3,7 @@
 
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.2](whats-new-in-v1.2.md)
+  - [What's New in v1.3](whats-new-in-v1.3.md)
 - [Get Started](get-started.md)
 - Deploy
   - In Self-Managed Kubernetes
@@ -82,6 +82,7 @@
     - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
     - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
     - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
+    - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
@@ -112,6 +113,7 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
   - v1.3
+    - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
     - [1.2.6](releases/release-1.2.6.md)

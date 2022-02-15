@@ -3,7 +3,7 @@
 
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
-  - [What's New in v1.2](whats-new-in-v1.2.md)
+  - [v1.3 新特性](whats-new-in-v1.3.md)
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes
@@ -116,6 +116,7 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.3
+    - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
     - [1.2.6](releases/release-1.2.6.md)
