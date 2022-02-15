@@ -13,11 +13,11 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 ## Push 方式
 
-> Push 方式利用 Prometheus remote-write 的特性，处在不同 Kubernetes 集群的 Prometheus 实例将监控数据推送至中心化存储中。
+Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kubernetes 集群的 Prometheus 实例将监控数据推送至中心化存储中。
 
 ### 部署架构图
 
-本文档以 Thanos 为例，如果使用了其他兼容 Prometheus Remote API 的中心化存储方案（参考[Prometheus 集成方案](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage)），只需对 Thanos 相关组件进行替换即可。
+本节所描述的 Push 方式以 Thanos 为例。如果你使用了其他[兼容 Prometheus Remote API 的中心化存储方案](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage)，只需对 Thanos 相关组件进行替换即可。
 
 ![push-thanos-receive.png](/media/push-thanos-receive.png)
 
@@ -25,7 +25,7 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 多个 Kubernetes 集群间的组件满足以下条件：
 
-- 各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件有能力访问 Thanos Receiver 组件。
+- 各 Kubernetes 集群上的 Prometheus（即 TidbMonitor）组件有能力访问 Thanos Receiver 组件。
 - Grafana 组件有能力访问 Thanos Query 组件。
 
 ### 部署 TiDB 集群监控
@@ -90,7 +90,7 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 ## Pull 方式
 
-> Pull 方式从不同 Kubernetes 集群的 Prometheus 实例中拉取监控数据，聚合后提供统一全局视图查询。
+Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控数据，聚合后提供统一全局视图查询。本文中将其分为：[使用 Thanos Query](#使用-thanos-query) 和 [使用 Prometheus Federation](#使用-prometheus-federation)。
 
 <SimpleTab>
 <div label="Thanos Query">
@@ -99,7 +99,7 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 #### 部署架构图
 
-为每个 prometheus(TidbMonitor) 组件部署 thanos sidecar，并使用 thanos-query 组件进行聚合查询，其中 thanos-store、 S3 等组件在不需要对监控数据做长期存储时可以选择不部署。
+本节中的示例为每个 Prometheus (TidbMonitor) 组件部署了 Thanos Sidecar，并使用 thanos-query 组件进行聚合查询。如果不需要对监控数据做长期存储，你可以不部署 thanos-store、S3 等组件。
 
 ![pull-thanos-query.png](/media/pull-thanos-query.png)
 
@@ -107,8 +107,8 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
-- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod IP。
-- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod FQDN。
+- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (TidbMonitor) 组件的 Pod IP。
+- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
 
 #### 部署 TiDB 集群监控
 
@@ -188,8 +188,8 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
-- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod IP。
-- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus(TidbMonitor) 组件的 Pod FQDN。
+- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
+- Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
 
 #### 部署 TiDB 集群监控
 
@@ -246,7 +246,7 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 #### 配置 Federation Prometheus
 
-关于 Federation 方案，参考[federation文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后修改 Prometheus 采集配置，添加需要汇总的 Prometheus(TiDBMonitor) 的 host 信息。
+关于 Federation 方案，参考 [Federation 文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后，修改 Prometheus 采集配置，添加需要聚合的 Prometheus (TidbMonitor) 的 host 信息。
 
 ```
 scrape_configs:
