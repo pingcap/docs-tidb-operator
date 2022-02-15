@@ -10,9 +10,10 @@ TiDB Operator 版本：1.3.0
 
 ## 兼容性改动
 
-- 由于 [#4400](https://github.com/pingcap/tidb-operator/pull/4400) 的变更，如果使用 v1.3 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，如果直接升级 TiDB Operator 会导致集群滚动更新并导致跨 Kubernetes 特性失效。你需要执行以下操作来升级 TiDB Operator：
+- 由于 [#4400](https://github.com/pingcap/tidb-operator/pull/4400) 的变更，如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并导致跨 Kubernetes 特性失效。你需要执行以下操作来升级 TiDB Operator：
+
   1. 更新 CRD。
-  2. 修改 TidbCluster 定义将 `spec.acrossK8s` 字段设置为 true。
+  2. 修改 TidbCluster 定义将 `spec.acrossK8s` 字段设置为 `true`。
   3. 升级 TiDB Operator。
 
 ## 新功能
@@ -33,4 +34,4 @@ TiDB Operator 版本：1.3.0
 
 - 修复跨 Kubernetes 部署 TiDB 集群场景下，无法部署 Heterogeneous 集群的问题 ( [#4400](https://github.com/pingcap/tidb-operator/pull/4400) [#4387](https://github.com/pingcap/tidb-operator/pull/4387), [@KanShiori](https://github.com/KanShiori))
 - 修复 tidb scheduler 不支持 Kubernetes v1.23 的问题 ([#4386](https://github.com/pingcap/tidb-operator/pull/4386), [@just1900](https://github.com/just1900))
-- 修复跨 Kubernetes 部署 TiDB 场景下，某集群的 PD 下线时导致无法管理 Pump 的问题 ([#4377](https://github.com/pingcap/tidb-operator/pull/4377), [@just1900](https://github.com/just1900))
+- 修复跨 Kubernetes 部署 TiDB 的场景下，某集群的所有 PD 下线导致同一集群内 Pump 异常的问题 ([#4377](https://github.com/pingcap/tidb-operator/pull/4377), [@just1900](https://github.com/just1900))
