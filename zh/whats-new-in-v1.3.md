@@ -1,10 +1,10 @@
 ---
-title: TiDB Operator 1.3 新特性
+title: TiDB Operator v1.3 新特性
 ---
 
-# TiDB Operator 1.3 新特性
+# TiDB Operator v1.3 新特性
 
-TiDB Operator 1.3 引入了以下关键特性，从扩展性、易用性、安全性等方面帮助你更轻松地管理 TiDB 集群及其周边工具。
+TiDB Operator v1.3 引入了以下关键特性，从扩展性、易用性、安全性等方面帮助你更轻松地管理 TiDB 集群及其周边工具。
 
 ## 兼容性改动
 
