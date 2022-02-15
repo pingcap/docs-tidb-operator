@@ -20,6 +20,7 @@ TiDB Operator 1.3 引入了以下关键特性，从扩展性、易用性、安�
 
 - TiFlash（>= v5.4.0）默认配置优化。TiDB Operator v1.3.0-beta.1 及之后版本针对 TiFlash v5.4.0 及之后版本的默认配置进行了优化，如果使用 v1.2 版本 TiDB Operator 部署了 v5.4 及更新版本的 TiDB 集群，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本会导致 TiFlash 组件滚动更新。建议在升级 TiDB 集群到 v5.4.0 或更新版本之前，先升级 TiDB Operator 到 v1.3 及以上版本。
 - 特定配置下 TiKV 可能滚动更新。如果部署了 v5.0 及更新版本的 TiDB 集群，并且设置了 `spec.tikv.seperateRocksDBLog: true` 或者 `spec.tikv.separateRaftLog: true`，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本会导致 TiKV 组件滚动更新。
+- 为了支持在 TidbMonitor CR 中配置 Prometheus 分片，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本会导致 TidbMonitor Pod 删除重建。
 
 ## 扩展性
 
