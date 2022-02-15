@@ -8,10 +8,10 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-- Enhance the feature of deploying a TiDB cluster across Kubernetes clusters. If you deployed a TiDB cluster across multiple Kubernetes clusters by TiDB Operator (<= v1.3.0-beta.1), upgrading TiDB Operator to v1.3.0 directly will cause failed rolling upgrade and the cluster might become abnormal. If you need to upgrade TiDB Operator from earlier versions to v1.3.0, take the following steps:
+- Enhance the feature of deploying a TiDB cluster across Kubernetes clusters. If you deploy a TiDB cluster across multiple Kubernetes clusters by TiDB Operator (<= v1.3.0-beta.1), upgrading TiDB Operator to v1.3.0 directly will cause failed rolling upgrade and the cluster might become abnormal. If you need to upgrade TiDB Operator from earlier versions to v1.3.0, take the following steps:
 
     1. Update CRD.
-    2. Add a new `spec.acrossK8s` field in TidbCluster spec and set it to `true`.
+    2. Add a new `spec.acrossK8s` field in the TidbCluster spec and set it to `true`.
     3. Upgrade TiDB Operator.
 
 - The `ValidatingWebhook` and `MutatingWebhook` of Pods are depricated. If you deploy Webhook in your TiDB cluster using TiDB Operator v1.2 or earlier versions, and enable `ValidatingWebhook` and `MutatingWebhook` of Pods, upgrading TiDB Operator to v1.3.0-beta.1 or later versions will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management and does not affect the TiDB clusters in operation.
@@ -27,7 +27,7 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
 ## Extensibility
 
 - [Deploying a TiDB cluster across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md) becomes generally available. Now you can deploy [heterogeneous TiDB clusters](deploy-heterogeneous-tidb-cluster.md) across Kubernetes clusters.
-- Add a new `failover.recoverByUID` field to support one-time recover for TiKV/TiFlash/DM Worker.
+- Add a new `failover.recoverByUID` field to support one-time recovery for TiKV, TiFlash, and DM Worker.
 - Support configuring [PodManagementPolicy](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies) for the StatefulSets of TiDB cluster components.
 - Support configuring DNS config for Pods of all components.
 - Support Kubernetes >= v1.22.
