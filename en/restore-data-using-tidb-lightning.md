@@ -51,7 +51,7 @@ You can deploy tikv-importer using the Helm chart. See the following example:
 
     ```yaml
     clusterName: demo
-    image: pingcap/tidb-lightning:v5.3.0
+    image: pingcap/tidb-lightning:v5.4.0
     imagePullPolicy: IfNotPresent
     storageClassName: local-storage
     storage: 20Gi
