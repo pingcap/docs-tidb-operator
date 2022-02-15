@@ -70,7 +70,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v5.3.0
+    version: v5.4.0
     replicas: 1
     storageClassName: local-storage
     requests:
