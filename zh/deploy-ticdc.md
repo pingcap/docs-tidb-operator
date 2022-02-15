@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
 
 # 在 Kubernetes 上部署 TiCDC
 
-[TiCDC](https://pingcap.com/docs-cn/stable/ticdc/ticdc-overview/) 是一款 TiDB 增量数据同步工具，本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 TiCDC。
+[TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview) 是一款 TiDB 增量数据同步工具，本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 TiCDC。
 
 ## 前置条件
 

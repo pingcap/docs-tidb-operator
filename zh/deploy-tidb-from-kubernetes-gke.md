@@ -99,14 +99,14 @@ kubectl get crd tidbclusters.pingcap.com
 ```
 
 > **注意：**
-> 
+>
 > 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 创建 `TidbCluster` 自定义资源类型后，接下来在 Kubernetes 集群上安装 TiDB Operator。
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.5
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.0
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -188,7 +188,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值进行水平扩容。
 
 ``` shell
-kubectl -n demo edit tc basic
+kubectl -n demo patch tc basic --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
 ```
 
 ## 访问 Grafana 面板

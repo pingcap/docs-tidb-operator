@@ -56,7 +56,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     metadata:
       name: basic
     spec:
-      version: v5.3.0
+      version: v5.4.0
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -203,6 +203,56 @@ spec:
 After deploying the `Service`, you can access TiDB Dashboard via <https://{nodeIP}:{nodePort}/dashboard>. By default, `nodePort` is randomly assigned by Kubernetes. You can also specify an available port in the `.yaml` file.
 
 Note that if there is more than one PD `Pod` in the cluster, you need to set `spec.pd.enableDashboardInternalProxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
+
+## Enable Continuous Profiling
+
+With Continuous Profiling, you can collect continuous performance data of TiDB, PD, TiKV, and TiFlash instances, and have the nodes monitored day and night without restarting any of them. The data collected can be displayed in various forms, for example, on a flame graph or a directed acyclic graph. The data displayed visually shows what internal operations are performed on the instances during the performance profiling period and the corresponding proportions. With such data, you can quickly learn the CPU resource consumption of these instances.
+
+To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operator v1.3.0 or later versions.
+
+1. Deploy TidbMonitor CR.
+
+    - If your TiDB cluster is earlier than v5.4.0, see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md) to deploy TidbMonitor CR.
+
+    - If your TiDB cluster is v5.4.0 or later, skip this step.
+
+2. Deploy TidbNGMonitoring CR.
+
+    Run the following command to deploy TidbNGMonitoring CR. In this command, `${cluster_name}` is the name of the TidbCluster CR and `${cluster_ns}` is the namespace of this CR.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF | kubectl apply -n ${ns} -f -
+    apiVersion: pingcap.com/v1alpha1
+    kind: TidbNGMonitoring
+    metadata:
+      name: ${name}
+    spec:
+      clusters:
+      - name: ${cluster_name}
+        namespace: ${cluster_ns}
+      ngMonitoring:
+        requests:
+          storage: 10Gi
+        version: v5.4.0
+        # storageClassName: default
+        baseImage: pingcap/ng-monitoring
+    ```
+
+    For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml).
+
+3. Enable Continuous Profiling.
+
+    1. On TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling**.
+
+    2. In the displayed window, click **Open Settings**. Switch on the button under **Enable Feature** on the right. Modify the value of **Retention Duration** as required or retain the default value.
+
+    3. Click **Save** to enable this feature.
+
+    ![Enable the feature](/media/dashboard-conprof-start.png)
+
+For more operations of the Continuous Profiling function, see [TiDB Dashboard Instance Profiling - Continuous Profiling](https://docs.pingcap.com/zh/tidb/stable/continuous-profiling).
 
 ## Unsupported TiDB Dashboard features
 

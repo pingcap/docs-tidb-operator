@@ -34,7 +34,7 @@ It is recommended to enable [RBAC](https://kubernetes.io/docs/admin/authorizatio
 
 ### Install Helm
 
-Refer to [Use Helm](tidb-toolkit.md#use-helm) to install Helm and configure it with the official PingCAP chart Repo.
+Refer to [Use Helm](tidb-toolkit.md#use-helm) to install Helm and configure it with the official PingCAP chart repository.
 
 ## Deploy TiDB Operator
 
@@ -101,7 +101,7 @@ When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-sc
 
     > **Note:**
     >
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.2.5`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
+    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.3.0`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
 
 2. Configure TiDB Operator
 
@@ -109,7 +109,7 @@ When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-sc
 
     > **Note:**
     >
-    > After setting `clusterScoped: false`, TiDB Operator will still operate Nodes, Persistent Volumes, and Storage Classe in the Kubernetes cluster by default. If the role that deploys TiDB Operator does not have the permissions to operate these resources, you can set the corresponding permission request under `controllerManager.clusterPermissions` to `false` to disable TiDB Operator's operations on these resources.
+    > After setting `clusterScoped: false`, TiDB Operator will still operate Nodes, Persistent Volumes, and Storage Classes in the Kubernetes cluster by default. If the role that deploys TiDB Operator does not have the permissions to operate these resources, you can set the corresponding permission request under `controllerManager.clusterPermissions` to `false` to disable TiDB Operator's operations on these resources.
 
     You can modify other items such as `limits`, `requests`, and `replicas` as needed.
 
@@ -149,15 +149,15 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.2.5.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.3.0.tgz
     ```
 
-    Copy the `tidb-operator-v1.2.5.tgz` file to the target server and extract it to the current directory:
+    Copy the `tidb-operator-v1.3.0.tgz` file to the target server and extract it to the current directory:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.2.5.tgz
+    tar zxvf tidb-operator.v1.3.0.tgz
     ```
 
 2. Download the Docker images used by TiDB Operator
@@ -169,8 +169,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.2.5
-    pingcap/tidb-backup-manager:v1.2.5
+    pingcap/tidb-operator:v1.3.0
+    pingcap/tidb-backup-manager:v1.3.0
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -183,13 +183,13 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.2.5
-    docker pull pingcap/tidb-backup-manager:v1.2.5
+    docker pull pingcap/tidb-operator:v1.3.0
+    docker pull pingcap/tidb-backup-manager:v1.3.0
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.2.5.tar pingcap/tidb-operator:v1.2.5
-    docker save -o tidb-backup-manager-v1.2.5.tar pingcap/tidb-backup-manager:v1.2.5
+    docker save -o tidb-operator-v1.3.0.tar pingcap/tidb-operator:v1.3.0
+    docker save -o tidb-backup-manager-v1.3.0.tar pingcap/tidb-backup-manager:v1.3.0
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -199,8 +199,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.2.5.tar
-    docker load -i tidb-backup-manager-v1.2.5.tar
+    docker load -i tidb-operator-v1.3.0.tar
+    docker load -i tidb-backup-manager-v1.3.0.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```
