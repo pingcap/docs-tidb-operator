@@ -39,7 +39,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 部署跨多个 Kubernetes 集群的 TiDB 集群，默认你已部署好此场景所需要的 Kubernetes 集群，在此基础上进行下面的部署工作。
 
-下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：部署初始 TidbCluster
 
@@ -99,7 +99,7 @@ cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${tc_2}"
+  name: "${tc_name_2}"
 spec:
   version: v5.4.0
   timezone: UTC
@@ -141,7 +141,7 @@ EOF
 
 可以按照以下步骤为跨多个 Kubernetes 集群部署的 TiDB 集群开启组件间 TLS。
 
-下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：签发根证书
 
@@ -206,7 +206,7 @@ EOF
       tls.key: LS0t...tCg==
     kind: Secret
     metadata:
-      name: ${tc_2}-ca-secret
+      name: ${tc_name_2}-ca-secret
     type: kubernetes.io/tls
     ```
 
@@ -252,11 +252,11 @@ EOF
        apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
-         name: ${tc_2}-tidb-issuer
+         name: ${tc_name_2}-tidb-issuer
          namespace: ${namespace_2}
        spec:
          ca:
-           secretName: ${tc_2}-ca-secret
+           secretName: ${tc_name_2}-ca-secret
        EOF
        ```
 
@@ -428,7 +428,7 @@ cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${tc_2}"
+  name: "${tc_name_2}"
 spec:
   version: v5.4.0
   timezone: UTC
@@ -519,7 +519,7 @@ EOF
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl patch tc ${tc_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
+kubectl patch tc ${tc_name_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
 等待集群 2 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
@@ -527,7 +527,7 @@ kubectl patch tc ${tc_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"repl
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get pods -l app.kubernetes.io/instance=${tc_2} -n ${namespace_2}
+kubectl get pods -l app.kubernetes.io/instance=${tc_name_2} -n ${namespace_2}
 ```
 
 Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，TidbCluster 对应组件已经退出 TiDB 集群，查看状态：
@@ -535,7 +535,7 @@ Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，T
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get tc ${tc_2} -n ${namespace_2}
+kubectl get tc ${tc_name_2} -n ${namespace_2}
 ```
 
 结果显示集群 2 为 `Ready` 状态，此时可以删除该对象，对相关资源进行回收。
@@ -543,7 +543,7 @@ kubectl get tc ${tc_2} -n ${namespace_2}
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl delete tc ${tc_2} -n ${namespace_2}
+kubectl delete tc ${tc_name_2} -n ${namespace_2}
 ```
 
 通过上述步骤完成已加入集群的退出和资源回收。
