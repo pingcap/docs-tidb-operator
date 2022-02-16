@@ -18,9 +18,9 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
 
 ## Step 1. Create new node groups
 
-1. Locate the `cluster.yaml` configuration file for the EKS cluster that the TiDB cluster is deployed in, and save the file copy as `cluster-new.yaml`.
+1. Locate the `cluster.yaml` configuration file for the EKS cluster that the TiDB cluster is deployed in, and save a copy of the file as `cluster-new.yaml`.
 
-2. In `cluster-new.yaml`, add new new groups (for example, `tidb-1b-new` and `tikv-1a-new`):
+2. In `cluster-new.yaml`, add new groups (for example, `tidb-1b-new` and `tikv-1a-new`):
 
     ```yaml
     apiVersion: eksctl.io/v1alpha5
@@ -54,9 +54,9 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
     > **Note:**
     >
     > * `availabilityZones` must be the same as that of the original node group to be replaced.
-    > * `tidb-1b-new` and `tikv-1a-new` in the YAML above are only for demonstration. You need to configure the node groups according to your needs.
+    > * The `tidb-1b-new` and `tikv-1a-new` node groups configured in the YAML above are only for demonstration. You need to configure the node groups according to your needs.
 
-    If you want to scale up the node, modify `instanceType`. If you want to upgrade the Kubernetes version, first upgrade the version of your cluster control plane. For details, see [Updating a Cluster](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html).
+    If you want to scale up a node, modify `instanceType`. If you want to upgrade the Kubernetes version, first upgrade the version of your cluster control plane. For details, see [Updating a Cluster](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html).
 
 3. In `cluster-new.yaml`, delete the original node groups to be replaced.
 
@@ -64,7 +64,7 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
 
 4. In `cluster.yaml`, delete the node groups that **are not to be replaced** and keep the node groups that are to be replaced. The retained node groups will be deleted from the cluster.
 
-    In this example, keep `tidb-1a` and `tikv-1b`, and delete other node groups. You need to adjust node groups according to your needs.
+    In this example, keep `tidb-1a` and `tikv-1b`, and delete other node groups. You need to keep or delete node groups according to your needs.
 
 5. Create the new node groups:
 
@@ -88,7 +88,7 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
     ...
     ```
 
-   `${new_nodegroup}` is the name of the new node groups. In this example, the new node groups are `tidb-1b-new` and `tikv-1a-new`. You need to configure the node group name according to your needs.
+   `${new_nodegroup}` is the name of a new node group. In this example, the new node groups are `tidb-1b-new` and `tikv-1a-new`. You need to configure the node group name according to your needs.
 
 ## Step 2. Mark the original nodes as non-schedulable
 
@@ -102,7 +102,7 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 ...
 ```
 
-`${origin_nodegroup}` is the name of the original node groups. In this example, the original node groups are `tidb-1b` and `tikv-1a`. You need to configure the node group name according to your needs.
+`${origin_nodegroup}` is the name of an original node group. In this example, the original node groups are `tidb-1b` and `tikv-1a`. You need to configure the node group name according to your needs.
 
 ## Step 3. Rolling restart the TiDB cluster
 
@@ -110,7 +110,7 @@ Refer to [Restart a TiDB Cluster in Kubernetes](restart-a-tidb-cluster.md#perfor
 
 ## Step 4. Delete the original node groups
 
-Check whether there are TiDB/PD/TiKV Pods left on nodes of the original node groups:
+Check whether there are TiDB, PD, or TiKV Pods left on nodes of the original node groups:
 
 {{< copyable "shell-regular" >}}
 
@@ -118,7 +118,7 @@ Check whether there are TiDB/PD/TiKV Pods left on nodes of the original node gro
 kubectl get po -n ${namespace} -owide
 ```
 
-If no TiDB/PD/TiKV Pods are left on the nodes of the original node groups, you can delete the original node groups:
+If no TiDB, PD, or TiKV Pods are left on the nodes of the original node groups, you can delete the original node groups:
 
 {{< copyable "shell-regular" >}}
 
