@@ -125,7 +125,7 @@ This document provides an example about how to back up the data of the `demo1` T
           mountPath: /nfs
     ```
 
-    When configuring `backup-aws-s3.yaml`, note the following:
+    When configuring `backup-nfs.yaml`, note the following:
 
     * If you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
 
