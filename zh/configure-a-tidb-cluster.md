@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v5.3.0`
+- `spec.version`，格式为 `imageTag`，例如 `v5.4.0`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.3.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.4.0`
 
 ### 推荐配置
 
@@ -384,9 +384,9 @@ Kubernetes 在删除 TiDB Pod 的同时，也会把该 TiDB 节点从 Service �
 
 ### 配置 TiKV 平滑升级
 
-TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 10 分钟）后，TiKV Pod 才会重启。
+TiKV 升级过程中，在重启 TiKV Pod 之前，TiDB Operator 会先驱逐 TiKV Pod 上的所有 Region leader。只有当驱逐完成（即 TiKV Pod 上的 Region leader 个数为 0）或者驱逐超时（默认 1500 分钟）后，TiKV Pod 才会重启。如果集群的 TiKV 副本数小于 2，TiDB Operator 不再等待超时，直接触发强制升级。
 
-如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+如果驱逐 Region leader 超时，重启 TiKV Pod 会导致部分请求失败或者延时增加。要避免此问题，你可以将超时时间 `spec.tikv.evictLeaderTimeout`（默认 1500 分钟）配置为一个更大的值，例如：
 
 ```
 spec:

@@ -54,7 +54,7 @@ gcloud config set compute/zone us-west1-a
 
 ## Launch a 3-node Kubernetes cluster
 
-It's now time to launch a 3-node kubernetes cluster! The following command launches a 3-node cluster of `n1-standard-1` machines.
+It's now time to launch a 3-node Kubernetes cluster. The following command launches a 3-node cluster of `n1-standard-1` machines.
 
 It takes a few minutes to complete:
 
@@ -74,7 +74,7 @@ The last step is to verify that `kubectl` can connect to the cluster, and all th
 kubectl get nodes
 ```
 
-If you see `Ready` for all nodes, congratulations! You've set up your first Kubernetes cluster.
+If you see `Ready` for all nodes, congratulations. You've set up your first Kubernetes cluster.
 
 ## Install Helm
 
@@ -109,7 +109,7 @@ After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.0-beta.1
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.0
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -180,7 +180,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 >
 > This command contains some special characters which cannot be auto-populated in the google cloud shell tutorial, so you might need to copy and paste it into your console manually.
 
-Congratulations, you are now up and running with a distributed TiDB database compatible with MySQL!
+Congratulations, you are now up and running with a distributed TiDB database compatible with MySQL.
 
 > **Note:**
 >
@@ -204,7 +204,7 @@ To do so, use the following command:
 kubectl -n demo port-forward svc/basic-grafana 8080:3000 &>/tmp/pf8080.log &
 ```
 
-Open this URL to view the Grafana dashboard: <https://ssh.cloud.google.com/devshell/proxy?port=8080> . (Alternatively, in Cloud Shell, click the Web Preview button on the upper right corner and change the port to 8080 if necessary.  If not using Cloud Shell, point a browser to `localhost:8080`.
+Open this URL to view the Grafana dashboard: <https://ssh.cloud.google.com/devshell/proxy?port=8080>. (Alternatively, in Cloud Shell, click the Web Preview button on the upper right corner and change the port to 8080 if necessary. If not using Cloud Shell, point a browser to `localhost:8080`.
 
 The default username and password are both "admin".
 

@@ -26,7 +26,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v5.3.0
+    version: v5.4.0
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -45,7 +45,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v5.3.0
+    version: v5.4.0
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -192,7 +192,7 @@ spec:
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v5.3.0
+    clusterVersion: v5.4.0
     baseImage: pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
@@ -225,7 +225,7 @@ spec:
 
     ```yaml
     ...
-    clusterVersion: v5.3.0
+    clusterVersion: v5.4.0
     baseImage: pingcap/tidb-binlog-enterprise
     ...
     ```
@@ -343,6 +343,10 @@ spec:
 
     其中 `${pump_replicas}` 是你想缩容至的目标副本数。
 
+    > **注意：**
+    >
+    > 不要缩容 Pump 到 0，否则 [Pump 节点会被完全移除](#完全移除-pump-节点)。
+
 2. 等待 Pump Pod 自动下线被删除，运行以下命令观察：
 
    {{< copyable "shell-regular" >}}
@@ -354,26 +358,22 @@ spec:
 3. (可选项) 强制下线 Pump
 
     如果在下线 Pump 节点时遇到下线失败的情况，即 Pump Pod 长时间未删除，可以强制标注 Pump 状态为 offline。
-    
+
     没有开启 TLS 时，使用下述指令标注状态为 offline。
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl run update-pump-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline
     ```
-    
+
     如果开启了 TLS，通过下述指令使用前面开启的 pod 来标注状态为 offline。
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-pump -node-id ${cluster_name}-pump-${ordinal_id}:8250 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
     ```
-
-> **注意：**
->
-> 不要缩容 Pump 到 0，否则 [Pump 节点会被完全移除](#完全移除-pump-节点)。
 
 ### 完全移除 Pump 节点
 
@@ -426,19 +426,19 @@ spec:
 3. (可选项) 强制下线 Drainer
 
     如果在下线 Drainer 节点时遇到下线失败的情况，即执行下线操作后仍未看到 Drainer pod 输出可以删除 pod 的日志，可以先进行步骤 2 删除 Drainer Pod 后，再运行下述指令标注 Drainer 状态为 offline：
-    
+
     没有开启 TLS 时，使用下述指令标注状态为 offline。
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl run update-drainer-${ordinal_id} --image=pingcap/tidb-binlog:${tidb_version} --namespace=${namespace} --restart=OnFailure -- /binlogctl -pd-urls=http://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline
     ```
-    
+
     如果开启了 TLS，通过下述指令使用前面开启的 pod 来下线 Drainer。
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl exec binlogctl -n ${namespace} -- /binlogctl -pd-urls=https://${cluster_name}-pd:2379 -cmd update-drainer -node-id ${drainer_node_id}:8249 --state offline -ssl-ca "/etc/binlog-tls/ca.crt" -ssl-cert "/etc/binlog-tls/tls.crt" -ssl-key "/etc/binlog-tls/tls.key"
     ```

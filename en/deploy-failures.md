@@ -72,7 +72,7 @@ If the `StorageClass` of the PVC cannot be found, take the following steps:
     * If you want to start the TiDB cluster, execute `kubectl edit tc ${cluster_name} -n ${namespace}` to update the cluster.
     * If you want to run a backup/restore task, first execute `kubectl delete bk ${backup_name} -n ${namespace}` to delete the old backup/restore task, and then execute `kubectl apply -f backup.yaml` to create a new backup/restore task.
 
-4. Delete Statefulset and the corresponding PVCs:
+4. Delete StatefulSet and the corresponding PVCs:
 
     {{< copyable "shell-regular" >}}
 
@@ -93,7 +93,7 @@ If the Pod's state becomes `Pending` because the high availability scheduling po
 
 ## The Pod is in the `CrashLoopBackOff` state
 
-A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeatedly aborts (in the loop of abort - restart by `kubelet` - abort). There are many potential causes of `CrashLoopBackOff`. 
+A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeatedly aborts (in the loop of abort - restart by `kubelet` - abort). There are many potential causes of `CrashLoopBackOff`.
 
 ### View the log of the current container
 
@@ -129,6 +129,44 @@ root hard nofile 1000000
 root soft core unlimited
 root soft stack 10240
 ```
+
+### PD Pod `nslookup domain failed`
+
+You should see some log of PD Pod like:
+
+```
+Thu Jan 13 14:55:52 IST 2022
+;; Got recursion not available from 10.43.0.10, trying next server
+;; Got recursion not available from 10.43.0.10, trying next server
+;; Got recursion not available from 10.43.0.10, trying next server
+Server: 10.43.0.10
+Address: 10.43.0.10#53
+
+** server can't find basic-pd-0.basic-pd-peer.default.svc: NXDOMAIN
+
+nslookup domain basic-pd-0.basic-pd-peer.default.svc failed
+```
+
+This type of failure occurs when the cluster meets both of the following two conditions:
+
+- There are two `nameserver` in `/etc/resolv.conf`, and the second one is not IP of CoreDNS.
+- The version of PD is:
+    - Greater than or equal to v5.0.5.
+    - Greater than or equal to v5.1.4.
+    - Greater than or equal to v5.2.4.
+    - All 5.3 versions.
+
+To address this failure, add `startUpScriptVersion` to TidbCluster as:
+
+```yaml
+...
+spec:
+  pd:
+    startUpScriptVersion: "v1"
+...
+```
+
+This failure occurs because there is something wrong with the `nslookup` in the base image (see detail in [#4379](https://github.com/pingcap/tidb-operator/pull/4379)). After configuring `startUpScriptVersion` to `v1`, TiDB Operator uses `dig` to check DNS instead of using `nslookup`.
 
 ### Other causes 
 
