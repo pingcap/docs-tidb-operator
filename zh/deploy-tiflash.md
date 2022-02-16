@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 在 Kubernetes 上部署 TiFlash
-summary: 了解如何在 Kubernetes 上部署 TiFlash。
-=======
 title: 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
 summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署 TiDB HTAP 存储引擎 TiFlash。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))
 ---
 
 # 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
