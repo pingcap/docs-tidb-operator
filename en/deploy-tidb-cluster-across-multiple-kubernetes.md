@@ -18,6 +18,8 @@ You need to configure the Kubernetes network and DNS so that the Kubernetes clus
 - The TiDB components on each Kubernetes cluster can access the Pod IP of all TiDB components in and between clusters.
 - The TiDB components on each Kubernetes cluster can look up the Pod FQDN of all TiDB components in and between clusters.
 
+To build multiple connected EKS or GKE clusters, refer to [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md) or [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md).
+
 ## Supported scenarios
 
 Currently supported scenarios:
@@ -192,7 +194,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
     ```bash
     cat <<EOF | kubectl apply -f -
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -200,7 +202,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -271,7 +273,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
         ```bash
         cat << EOF | kubectl apply -f -
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
           name: ${cluster_name}-tidb-issuer
@@ -300,7 +302,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
        ```bash
        cat << EOF | kubectl apply -f -
-       apiVersion: cert-manager.io/v1alpha2
+       apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
          name: ${cluster_name}-tidb-issuer
@@ -388,7 +390,7 @@ Run the following command:
 
 ```bash
 cat << EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${cluster_name}-pd-cluster-secret
@@ -397,8 +399,9 @@ spec:
   secretName: ${cluster_name}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
-  organization:
-  - PingCAP
+  subject:
+    organizations:
+    - PingCAP
   commonName: "TiDB"
   usages:
     - server auth

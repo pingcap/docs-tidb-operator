@@ -41,11 +41,11 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v5.2.1`
+- `spec.version`: the format is `imageTag`, such as `v5.4.0`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v5.2.1`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v5.4.0`
 
 ### Recommended configuration
 
@@ -398,9 +398,9 @@ When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the ser
 
 ### Configure graceful upgrade for TiKV cluster
 
-During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (10 minutes by default), TiKV Pod is restarted.
+During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (1500 minutes by default), TiKV Pod is restarted. If TiKV has fewer than 2 replicas, TiDB Operator forces an upgrade without waiting for the timeout.
 
-If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. To avoid the issues, you can configure the timeout `spec.tikv.evictLeaderTimeout` (10 minutes by default) to a larger value. For example:
+If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. To avoid the issues, you can configure the timeout `spec.tikv.evictLeaderTimeout` (1500 minutes by default) to a larger value. For example:
 
 ```
 spec:
@@ -513,7 +513,7 @@ NodePort has two modes:
     >
     > In this mode, the request source IP obtained by the TiDB service is the host IP, not the real client source IP, so access control based on the client source IP is not available in this mode.
 
--`externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
+- `externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
 
 #### LoadBalancer
 

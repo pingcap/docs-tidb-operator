@@ -27,7 +27,7 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 
 > **Note:**
 >
-> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
+> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account).
 
 ## Recommended instance types and storage
 
@@ -512,7 +512,13 @@ See [Access TiDB Dashboard](access-dashboard.md) for instructions about how to s
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
+To upgrade the TiDB cluster, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+```
 
 The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 

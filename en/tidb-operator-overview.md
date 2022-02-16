@@ -10,12 +10,13 @@ aliases: ['/docs/tidb-in-kubernetes/dev/tidb-operator-overview/']
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
-| TiDB Operator version | Compatible TiDB versions |
+| TiDB versions | Compatible TiDB Operator version |
 |:---|:---|
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0, v5.0 |
-| v1.2 | v3.0 and later releases |
-| dev | v3.0 and later releases, dev |
+| TiDB >= v3.0 | dev |
+| TiDB >= v3.0 | v1.3 (Recommended)|
+| v3.0 <= TiDB < v5.4.0 | v1.2 |
+| v3.0 <= TiDB < v5.1.0 | v1.1 |
+| v2.1 <= TiDB < v3.1 | v1.0 (End of Support)|
 
 ## Manage TiDB clusters using TiDB Operator
 
@@ -30,6 +31,7 @@ TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
     + On public cloud:
         - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
         - [Deploy TiDB on GCP GKE (beta)](deploy-on-gcp-gke.md)
+        - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
         - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
     - In an existing Kubernetes cluster:
@@ -44,7 +46,7 @@ After the deployment is complete, see the following documents to use, operate, a
 
 + [Access the TiDB Cluster](access-tidb.md)
 + [Scale TiDB Cluster](scale-a-tidb-cluster.md)
-+ [Upgrade TiDB Cluster](upgrade-a-tidb-cluster.md#upgrade-the-version-of-tidb-using-tidbcluster-cr)
++ [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 + [Change the Configuration of TiDB Cluster](configure-a-tidb-cluster.md)
 + [Back up and Restore a TiDB Cluster](backup-restore-overview.md)
 + [Automatic Failover](use-auto-failover.md)

@@ -230,6 +230,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
 
 ### Patch 资源
 
+* Patch TidbCluster:
+
+  {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n ${namespace} patch tc ${name} --type merge -p '${json_path}'
+    ```
+
 * Patch PV ReclaimPolicy：
 
     {{< copyable "shell-regular" >}}
@@ -283,7 +291,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
     ```
 
     创建用户名、密码的 Secret：
-    
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -422,7 +430,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
 
 ## Helm
 
-### 添加 Helm Repo
+### 添加 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -430,7 +438,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/cheat-sheet/']
 helm repo add pingcap https://charts.pingcap.org/
 ```
 
-### 更新 Helm Repo
+### 更新 Helm repository
 
 {{< copyable "shell-regular" >}}
 
@@ -456,7 +464,7 @@ helm repo update
     helm search hub mysql
     ```
 
-- 查看其他 Repo 中的 Chart
+- 查看其他 repository 中的 Chart
 
     {{< copyable "shell-regular" >}}
 
@@ -485,7 +493,7 @@ helm inspect values ${chart_name} --version=${chart_version} > values.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm inspect values pingcap/tidb-operator --version=v1.2.4 > values-tidb-operator.yaml
+helm inspect values pingcap/tidb-operator --version=v1.3.0 > values-tidb-operator.yaml
 ```
 
 ### 使用 Helm Chart 部署
@@ -501,7 +509,7 @@ helm install ${name} ${chart_name} --namespace=${namespace} --version=${chart_ve
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.4 -f values-tidb-operator.yaml
+helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.3.0 -f values-tidb-operator.yaml
 ```
 
 ### 查看已经部署的 Helm Release
@@ -525,7 +533,7 @@ helm upgrade ${name} ${chart_name} --version=${chart_version} -f ${values_file}
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.4 -f values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=v1.3.0 -f values-tidb-operator.yaml
 ```
 
 ### 删除 Helm Release

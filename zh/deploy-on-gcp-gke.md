@@ -197,7 +197,7 @@ gcloud compute instances create bastion \
     $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v5.2.1 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v5.4.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -250,7 +250,7 @@ basic-grafana            LoadBalancer   10.15.255.169   34.123.168.114   3000:30
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}` 命令修改。
 
 升级过程会持续一段时间，你可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 

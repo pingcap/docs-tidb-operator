@@ -3,7 +3,7 @@
 
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
-  - [What's New in v1.2](whats-new-in-v1.2.md)
+  - [v1.3 新特性](whats-new-in-v1.3.md)
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes
@@ -21,7 +21,10 @@
     - [阿里云 ACK](deploy-on-alibaba-cloud.md)
   - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
-  - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
+  - 跨多个 Kubernetes 集群部署 TiDB 集群
+    - [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md)
+    - [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)
+    - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
@@ -68,11 +71,15 @@
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
     - [查看 TiDB 日志](view-logs.md)
+    - [修改 TiDB 集群配置](modify-tidb-configuration.md)
     - [配置集群故障自动转移](use-auto-failover.md)
     - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
-    - [部署多套 TiDB Operator 维护多个 TiDB 集群](deploy-multiple-tidb-operator.md)
+    - [使用多套 TiDB Operator 单独管理不同的 TiDB 集群](deploy-multiple-tidb-operator.md)
     - [维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
     - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
+    - 为 TiDB 集群更换节点
+        - [更换云存储节点](replace-nodes-for-cloud-disk.md)
+        - [更换本地存储节点](replace-nodes-for-local-disk.md)
   - 监控与告警
     - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
     - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
@@ -80,8 +87,8 @@
     - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
     - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
   - 灾难恢复
+    - [恢复误删的 TiDB 集群](recover-deleted-cluster.md)
     - [恢复 PD 集群](pd-recover.md)
-    - [恢复误删的集群](recover-deleted-cluster.md)
 - 故障诊断
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
@@ -108,7 +115,12 @@
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
+  - v1.3
+    - [1.3 GA](releases/release-1.3.0.md)
+    - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
+    - [1.2.6](releases/release-1.2.6.md)
+    - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
     - [1.2.3](releases/release-1.2.3.md)
     - [1.2.2](releases/release-1.2.2.md)

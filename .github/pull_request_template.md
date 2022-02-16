@@ -13,6 +13,7 @@
 <!--Tick the checkbox(es) below to choose the TiDB Operator version(s) that your changes apply to.-->
 
 - [ ] master (the latest development version)
+- [ ] v1.3 (TiDB Operator 1.3 versions)
 - [ ] v1.2 (TiDB Operator 1.2 versions)
 - [ ] v1.1 (TiDB Operator 1.1 versions)
 - [ ] v1.0 (TiDB Operator 1.0 versions)
@@ -23,13 +24,3 @@
 
 - This PR is translated from: <!--Give links here-->
 - Other reference link(s): <!--Give links here-->
-
-### Do your changes match any of the following descriptions?
-
-<!-- Provide as much information as possible so that reviewers can review your changes more efficiently.
-If you are not sure of the options, leave it as it is. -->
-
-- [ ] Delete files
-- [ ] Change aliases
-- [ ] Need modification after applied to another branch <!-- If yes, please comment "/label version-specific-changes-required" below to trigger the bot to add the label.-->
-- [ ] Might cause conflicts after applied to another branch

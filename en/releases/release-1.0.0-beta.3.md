@@ -28,7 +28,7 @@ TiDB Operator version: 1.0.0-beta.3
 
 - Introduce ConfigMap rollout management. With the feature gate open, configuration file changes will be automatically applied to the cluster via a rolling update. Currently, the `scheduler` and `replication` configurations of PD can not be changed via ConfigMap rollout. You can use `pd-ctl` to change these values instead, see [#487](https://github.com/pingcap/tidb-operator/pull/487) for details.
 - Support stable scheduling for pods of TiDB members in tidb-scheduler.
-- Support adding additional pod annotations for PD/TiKV/TiDB,  e.g. [fluentbit.io/parser](https://docs.fluentbit.io/manual/filter/kubernetes#kubernetes-annotations).
+- Support adding additional pod annotations for PD/TiKV/TiDB, for example, [fluentbit.io/parser](https://docs.fluentbit.io/manual/filter/kubernetes#kubernetes-annotations).
 - Support the affinity feature of k8s which can define the rule of assigning pods to nodes
 - Allow pausing during TiDB upgrade
 
