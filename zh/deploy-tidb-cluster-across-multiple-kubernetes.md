@@ -567,7 +567,7 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com", "acrossK8s": true}}'
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
     ```
 
     修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
