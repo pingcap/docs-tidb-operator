@@ -421,7 +421,7 @@ spec:
 EOF
 ```
 
-### 第 2 步：部署 TidbCluster 加入集群
+### 第 4 步：部署 TidbCluster 加入集群
 
 等待初始集群部署完成部署后，创建新的 TidbCluster 加入集群。在实际使用中，新部署的 TidbCluster 可以加入任意的已经部署的 TidbCluster。
 
@@ -558,7 +558,23 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
 >
 > 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用。
 
-1. 更新 `.spec.clusterDomain` 配置：
+已有数据集群指的是设置 `spec.acrossK8s: false` 部署的 TiDB 集群，根据构建的多个 Kubernetes 集群之间的网络情况不同，有不同的方法。
+
+如果各个 Kubernetes 集群之间有着相同的 Cluster Domain，那么只需要更新 TidbCluster 的 `spec.acrossK8s` 配置。执行以下命令：
+
+1. 更新 `spec.acrossK8s` 配置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com", "acrossK8s": true}}'
+    ```
+
+    修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
+
+如果各个 Kubernetes 集群之间有着不同的 Cluster Domain，那么需要更新 TidbCluster 的 `spec.clusterDomain` 和 `spec.acrossK8s` 配置。具体步骤如下：
+
+1. 更新 `spec.clusterDomain` 与 `spec.acrossK8s` 配置：
 
     根据你的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
@@ -569,10 +585,10 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com"}}'
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com", "acrossK8s": true}}'
     ```
 
-    修改完成后，TiDB 集群进入滚动更新状态。
+    修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
 
 2. 更新 PD 的 `PeerURL` 信息：
 
