@@ -7,9 +7,9 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 你可以监控跨多个 Kubernetes 集群的 TiDB 集群，实现从统一全局视图访问监控数据。本文档介绍如何与几种常见的 Prometheus 多集群监控方式进行集成：
 
-- [Push 方式](#Push 方式)
-- [Pull 方式 - 使用 Thanos Query](#使用 Thanos Query)
-- [Pull 方式 - 使用 Prometheus Federation](#使用 Prometheus Federation)
+- [Push 方式](#push-方式)
+- [Pull 方式 - 使用 Thanos Query](#使用-thanos-query)
+- [Pull 方式 - 使用 Prometheus Federation](#使用-prometheus-federation)
 
 ## Push 方式
 
@@ -26,7 +26,6 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 多个 Kubernetes 集群间的组件满足以下条件：
 
 - 各 Kubernetes 集群上的 Prometheus（即 TidbMonitor）组件有能力访问 Thanos Receiver 组件。
-- Grafana 组件有能力访问 Thanos Query 组件。
 
 ### 部署 TiDB 集群监控
 
@@ -38,7 +37,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
     - `storageclass_name`：当前集群中的存储。
     - `remote_write_url`：`thanos-receiver` 组件的 host，或其他兼容 Prometheus remote API 组件的 host 。
 
-    如需部署 Thanos Receiver，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+    关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
 
     {{< copyable "shell-regular" >}}
 
@@ -71,7 +70,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
         #region: us-east-1
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v5.2.1
+        version: v5.4.0
     persistent: true
     storage: 5Gi
     storageClassName: ${storageclass_name}
@@ -151,7 +150,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         #region: us-east-1
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v5.2.1
+        version: v5.4.0
     persistent: true
     storage: 20Gi
     storageClassName: ${storageclass_name}
@@ -230,7 +229,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         #region: us-east-1
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v5.2.1
+        version: v5.4.0
     persistent: true
     storage: 20Gi
     storageClassName: ${storageclass_name}
@@ -258,8 +257,7 @@ scrape_configs:
 
     params:
       'match[]':
-        - '{job="prometheus"}'
-        - '{__name__=~"job:.*"}'
+        - '{__name__=~".+"}'
 
     static_configs:
       - targets:
@@ -270,3 +268,37 @@ scrape_configs:
 
 </div>
 </SimpleTab>
+
+## 使用 Grafana 可视化多集群监控数据
+
+1. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)
+
+2. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards:
+
+    <SimpleTab>
+    <div label="Linux">
+    {{< copyable "shell-regular" >}}
+
+    ```sh
+    version=v5.4.0
+    git clone -b auto-generate-for-$version https://github.com/pingcap/monitoring.git && \
+    cd monitoring/monitor-snapshot/$version/operator/dashboards && \
+    sed -i 's/Test-Cluster-/Cluster-/g; s/"hide": 2/"hide": 0/g;' *.json
+    ```
+
+    </div>
+
+    <div label="MacOS">
+    {{< copyable "shell-regular" >}}
+
+    ```sh
+    version=v5.4.0
+    git clone -b auto-generate-for-$version https://github.com/pingcap/monitoring.git && \
+    cd monitor-snapshot/$version/operator/dashboards && \
+    sed -i "" 's/Test-Cluster-/Cluster-/g; s/"hide": 2/"hide": 0/g;' *.json
+    ```
+
+    </div>
+    </SimpleTab>
+
+3. [在 Grafana 中导入 Dashboard](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard)
