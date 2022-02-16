@@ -484,10 +484,10 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-  tidb_version(): Release Version: v5.3.0
+  tidb_version(): Release Version: v5.4.0
          Edition: Community
  Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
-      Git Branch: heads/refs/tags/v5.3.0
+      Git Branch: heads/refs/tags/v5.4.0
   UTC Build Time: 2021-11-24 13:32:39
        GoVersion: go1.16.4
     Race Enabled: false
