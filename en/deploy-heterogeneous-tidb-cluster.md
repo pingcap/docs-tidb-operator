@@ -20,104 +20,6 @@ You already have a TiDB cluster. If not, [deploy a TiDB cluster in Kubernetes](d
 
 ## Deploy a heterogeneous cluster
 
-<<<<<<< HEAD
-A heterogeneous cluster creates differentiated instances for an existing TiDB cluster. You can create a heterogeneous TiKV cluster with different configurations and labels to facilitate hotspot scheduling, or create a heterogeneous TiDB cluster for OLTP and OLAP workloads respectively.
-
-### Create a heterogeneous cluster
-
-Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
-
-{{< copyable "" >}}
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: ${heterogeneous_cluster_name}
-spec:
-  configUpdateStrategy: RollingUpdate
-  version: v5.3.0
-  timezone: UTC
-  pvReclaimPolicy: Delete
-  discovery: {}
-  cluster:
-    name: ${origin_cluster_name}
-  tikv:
-    baseImage: pingcap/tikv
-    maxFailoverCount: 0
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "100Gi"
-    config: {}
-  tidb:
-    baseImage: pingcap/tidb
-    maxFailoverCount: 0
-    replicas: 1
-    service:
-      type: ClusterIP
-    config: {}
-  tiflash:
-    baseImage: pingcap/tiflash
-    maxFailoverCount: 0
-    replicas: 1
-    storageClaims:
-      - resources:
-          requests:
-            storage: 100Gi
-```
-
-Execute the following command to create the heterogeneous cluster:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl create -f cluster.yaml -n ${namespace}
-```
-
-The configuration of a heterogeneous cluster is mostly the same as a normal TiDB cluster, except that it uses the `spec.cluster.name` field to join the target cluster.
-
-### Deploy the cluster monitoring component
-
-Save the following configuration as the `tidbmonitor.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
-
-{{< copyable "" >}}
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbMonitor
-metadata:
-  name: heterogeneous
-spec:
-  clusters:
-    - name: ${origin_cluster_name}
-    - name: ${heterogeneous_cluster_name}
-  prometheus:
-    baseImage: prom/prometheus
-    version: v2.11.1
-  grafana:
-    baseImage: grafana/grafana
-    version: 6.1.6
-  initializer:
-    baseImage: pingcap/tidb-monitor-initializer
-    version: v5.3.0
-  reloader:
-    baseImage: pingcap/tidb-monitor-reloader
-    version: v1.0.1
-  imagePullPolicy: IfNotPresent
-```
-
-Execute the following command to create the heterogeneous cluster:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl create -f tidbmonitor.yaml -n ${namespace}
-```
-
-## Deploy a TLS-enabled heterogeneous cluster
-=======
 Depending on whether you need to enable Transport Layer Security (TLS) for a heterogeneous cluster, choose one of the following methods:
 
 - Deploy a heterogeneous cluster
@@ -147,7 +49,7 @@ To deploy a heterogeneous cluster, do the following:
       name: ${heterogeneous_cluster_name}
     spec:
       configUpdateStrategy: RollingUpdate
-      version: v5.4.0
+      version: v5.3.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -200,7 +102,6 @@ To deploy a heterogeneous cluster, do the following:
 <div label="TLS">
 
 ### Deploy a TLS-enabled heterogeneous cluster
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))
 
 To enable TLS for a heterogeneous cluster, you need to explicitly declare the TLS configuration, issue the certificates using the same certification authority (CA) as the target cluster and create new secrets with the certificates.
 
@@ -211,69 +112,6 @@ For detailed procedures to create certificates for the heterogeneous cluster, re
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 
-<<<<<<< HEAD
-### Create a TLS-enabled heterogeneous cluster
-
-Save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
-
-{{< copyable "" >}}
-
-```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: ${heterogeneous_cluster_name}
-spec:
-  tlsCluster:
-    enabled: true
-  configUpdateStrategy: RollingUpdate
-  version: v5.3.0
-  timezone: UTC
-  pvReclaimPolicy: Delete
-  discovery: {}
-  cluster:
-    name: ${origin_cluster_name}
-  tikv:
-    baseImage: pingcap/tikv
-    maxFailoverCount: 0
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "100Gi"
-    config: {}
-  tidb:
-    baseImage: pingcap/tidb
-    maxFailoverCount: 0
-    replicas: 1
-    service:
-      type: ClusterIP
-    config: {}
-    tlsClient:
-      enabled: true
-  tiflash:
-    baseImage: pingcap/tiflash
-    maxFailoverCount: 0
-    replicas: 1
-    storageClaims:
-      - resources:
-          requests:
-            storage: 100Gi
-```
-
-- `spec.tlsCluster.enabled`: Determines whether to enable TLS between the components.
-- `spec.tidb.tlsClient.enabled`: Determines whether to enable TLS for MySQL client.
-
-Execute the following command to create the TLS-enabled heterogeneous cluster:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl create -f cluster.yaml -n ${namespace}
-```
-
-For the detailed configuration of a TLS-enabled heterogeneous cluster, see ['heterogeneous-tls'](https://github.com/pingcap/tidb-operator/tree/master/examples/heterogeneous-tls) example.
-=======
 After creating certificates, take the following steps to deploy a TLS-enabled heterogeneous cluster.
 
 1. Create a cluster configuration file for the heterogeneous cluster.
@@ -293,7 +131,7 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
       tlsCluster:
         enabled: true
       configUpdateStrategy: RollingUpdate
-      version: v5.4.0
+      version: v5.3.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -382,10 +220,9 @@ If you need to deploy a monitoring component for a heterogeneous cluster, take t
         version: 6.1.6
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v5.4.0
+        version: v5.3.0
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
     imagePullPolicy: IfNotPresent
     ```
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))

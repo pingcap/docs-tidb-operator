@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 在 Kubernetes 上部署 TiFlash
-summary: 了解如何在 Kubernetes 上部署 TiFlash。
-=======
 title: 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
 summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署 TiDB HTAP 存储引擎 TiFlash。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))
 ---
 
 # 为已有 TiDB 集群部署 HTAP 存储引擎 TiFlash
@@ -109,11 +103,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     > - 如果 TiFlash 版本 >= v4.0.5，不需要手动配置 `spec.tiflash.config.config.flash.service_addr`。
     > - 如果从小于等于 v4.0.4 的 TiFlash 版本升级到大于等于 v4.0.5 TiFlash 版本，需要删除 TidbCluster CR 中 `spec.tiflash.config.config.flash.service_addr` 的配置。
 
-<<<<<<< HEAD
-TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在 `tiflash.storageClaims` 下面配置多项，每一项可以分别配置 `storage reqeust` 和 `storageClassName`，例如：
-=======
 ## 为 TiFlash 新增 PV
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))
 
 当 TiFlash 组件部署完成后，如果要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
 

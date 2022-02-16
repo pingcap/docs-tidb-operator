@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Deploy TiFlash in Kubernetes
-summary: Learn how to deploy TiFlash in Kubernetes.
-=======
 title: Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
 summary:  Learn how to deploy TiFlash, the TiDB HTAP storage engine, on Kubernetes for an existing TiDB cluster.
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tiflash/']
->>>>>>> 22ddca75 ( en, zh: refine docs: deploying TiFlash and heterogeneous clusters in Kubernetes (#1543))
 ---
 
 # Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster 
