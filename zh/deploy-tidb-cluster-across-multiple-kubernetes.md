@@ -39,11 +39,13 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 部署跨多个 Kubernetes 集群的 TiDB 集群，默认你已部署好此场景所需要的 Kubernetes 集群，在此基础上进行下面的部署工作。
 
-下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
+
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：部署初始 TidbCluster
 
-创建 TidbCluster 定义，并部署。可以执行以下指令：
+创建并部署初始 TidbCluster。
 
 {{< copyable "shell-regular" >}}
 
@@ -86,7 +88,7 @@ spec:
 EOF
 ```
 
-上述配置中，字段 `spec.acrossK8s: true` 表示是跨 Kubernetes 集群部署，必须设置。
+上述配置中，字段 `spec.acrossK8s: true` 表示是跨 Kubernetes 集群部署 TiDB 集群，必须设置。
 
 ### 第 2 步：部署 TidbCluster 加入 TiDB 集群
 
@@ -141,7 +143,9 @@ EOF
 
 可以按照以下步骤为跨多个 Kubernetes 集群部署的 TiDB 集群开启组件间 TLS。
 
-下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍。后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
+
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：签发根证书
 
