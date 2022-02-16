@@ -62,28 +62,28 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
     spec:
     clusters:
     - name: ${cluster_name}
-        namespace: ${cluster_namespace}
+      namespace: ${cluster_namespace}
     externalLabels:
-        #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
-        #add other meta labels here
-        #region: us-east-1
+      #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operatorissues/4219.
+      kubernetes: ${kubernetes_cluster_name}
+      #add other meta labels here
+      #region: us-east-1
     initializer:
-        baseImage: pingcap/tidb-monitor-initializer
-        version: v5.4.0
+      baseImage: pingcap/tidb-monitor-initializer
+      version: v5.4.0
     persistent: true
     storage: 5Gi
     storageClassName: ${storageclass_name}
     prometheus:
-        baseImage: prom/prometheus
-        logLevel: info
-        remoteWrite:
-        - url: ${remote_write_url}
-        retentionTime: 2h
-        version: v2.27.1
+      baseImage: prom/prometheus
+      logLevel: info
+      remoteWrite:
+      - url: ${remote_write_url}
+      retentionTime: 2h
+      version: v2.27.1
     reloader:
-        baseImage: pingcap/tidb-monitor-reloader
-        version: v1.0.1
+      baseImage: pingcap/tidb-monitor-reloader
+      version: v1.0.1
     imagePullPolicy: IfNotPresent
     ```
 
@@ -142,32 +142,32 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     spec:
     clusters:
     - name: ${cluster_name}
-        namespace: ${cluster_namespace}
+      namespace: ${cluster_namespace}
     externalLabels:
-        #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
-        #add other meta labels here
-        #region: us-east-1
+      #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
+      kubernetes: ${kubernetes_cluster_name}
+      #add other meta labels here
+      #region: us-east-1
     initializer:
-        baseImage: pingcap/tidb-monitor-initializer
-        version: v5.4.0
+      baseImage: pingcap/tidb-monitor-initializer
+      version: v5.4.0
     persistent: true
     storage: 20Gi
     storageClassName: ${storageclass_name}
     prometheus:
-        baseImage: prom/prometheus
-        logLevel: info
-        version: v2.27.1
+      baseImage: prom/prometheus
+      logLevel: info
+      version: v2.27.1
     reloader:
-        baseImage: pingcap/tidb-monitor-reloader
-        version: v1.0.1
+      baseImage: pingcap/tidb-monitor-reloader
+      version: v1.0.1
     thanos:
-        baseImage: quay.io/thanos/thanos
-        version: v0.22.0
-        #enable config below if long-term storage is needed.
-        #objectStorageConfig:
-        #  key: objectstorage.yaml
-        #  name: thanos-objectstorage
+      baseImage: quay.io/thanos/thanos
+      version: v0.22.0
+      #enable config below if long-term storage is needed.
+      #objectStorageConfig:
+      #  key: objectstorage.yaml
+      #  name: thanos-objectstorage
     imagePullPolicy: IfNotPresent
     ```
 
@@ -221,25 +221,25 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     spec:
     clusters:
     - name: ${cluster_name}
-        namespace: ${cluster_namespace}
+      namespace: ${cluster_namespace}
     externalLabels:
-        #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
-        #add other meta labels here
-        #region: us-east-1
+      #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
+      kubernetes: ${kubernetes_cluster_name}
+      #add other meta labels here
+      #region: us-east-1
     initializer:
-        baseImage: pingcap/tidb-monitor-initializer
-        version: v5.4.0
+      baseImage: pingcap/tidb-monitor-initializer
+      version: v5.4.0
     persistent: true
     storage: 20Gi
     storageClassName: ${storageclass_name}
     prometheus:
-        baseImage: prom/prometheus
-        logLevel: info
-        version: v2.27.1
+      baseImage: prom/prometheus
+      logLevel: info
+      version: v2.27.1
     reloader:
-        baseImage: pingcap/tidb-monitor-reloader
-        version: v1.0.1
+      baseImage: pingcap/tidb-monitor-reloader
+      version: v1.0.1
     imagePullPolicy: IfNotPresent
     ```
 
@@ -294,7 +294,7 @@ scrape_configs:
     ```sh
     version=v5.4.0
     git clone -b auto-generate-for-$version https://github.com/pingcap/monitoring.git && \
-    cd monitor-snapshot/$version/operator/dashboards && \
+    cd monitoring/monitor-snapshot/$version/operator/dashboards && \
     sed -i "" 's/Test-Cluster-/Cluster-/g; s/"hide": 2/"hide": 0/g;' *.json
     ```
 
