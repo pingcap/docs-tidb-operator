@@ -11,8 +11,8 @@ TiDB Operator version: 1.3.0-beta.1
 
 - Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed, and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
 
-- Due to changes in [#4151](https://github.com/pingcap/tidb-operator/pull/4151), TiDB Operator with v1.3.0-beta.1 or later versions will set the default `baseImage` field of all components. If you use the field `image` instead of the field `baseImage` to set image, upgrading TiDB Operator to v1.3.0-beta.1 will cause TiDB Cluster to roll upgrade and even fail to run because using wrong image. You have to upgrade TiDB Operator by the following steps:
-    1. Use fields `baseImage` and `version` to replace the field `image`, refer to the document [Configure TiDB deployment](../configure-a-tidb-cluster.md#version).
+- Due to changes in [#4151](https://github.com/pingcap/tidb-operator/pull/4151), TiDB Operator >= v1.3.0-beta.1 sets the default `baseImage` field of all components. If you set the component image using the `image` field instead of the `baseImage` field, upgrading TiDB Operator to v1.3.0-beta.1 will cause the TiDB cluster to rolling update or even fail to run because of the wrong image. To avoid such situations, you must upgrade TiDB Operator by the following steps:
+    1. Use the `baseImage` and `version` fields to replace the `image` field. For details, refer to [Configure TiDB deployment](../configure-a-tidb-cluster.md#version).
     2. Upgrade TiDB Operator.
 
 ## Rolling Update Changes
