@@ -9,7 +9,11 @@ TiDB Operator version: 1.3.0-beta.1
 
 ## Compatibility Change
 
-Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed, and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
+- Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), if Webhook is deployed, and `ValidatingWebhook` and `MutatingWebhook` of Pods are enabled with TiDB Operator v1.2 or earlier versions, upgrading TiDB Operator to v1.3.0-beta.1 will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management.
+
+- Due to changes in [#4151](https://github.com/pingcap/tidb-operator/pull/4151), TiDB Operator >= v1.3.0-beta.1 sets the default `baseImage` field of all components. If you set the component image using the `image` field instead of the `baseImage` field, upgrading TiDB Operator to v1.3.0-beta.1 will change the image in use, cause the TiDB cluster to rolling update or even fail to run. To avoid such situations, you must upgrade TiDB Operator by the following steps:
+    1. Use the `baseImage` and `version` fields to replace the `image` field. For details, refer to [Configure TiDB deployment](../configure-a-tidb-cluster.md#version).
+    2. Upgrade TiDB Operator.
 
 ## Rolling Update Changes
 
@@ -26,6 +30,7 @@ Due to changes in [#4209](https://github.com/pingcap/tidb-operator/pull/4209), i
 - Support configuring `PodManagementPolicy` in TidbCluster CR ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
 - Support configuring Prometheus shards in TidbMonitor CR ([#4198](https://github.com/pingcap/tidb-operator/pull/4198), [@mikechengwei](https://github.com/mikechengwei))
 - Support deploying TiDB Operator in Kubernetes v1.22 or later versions ([#4195](https://github.com/pingcap/tidb-operator/pull/4195), [#4202](https://github.com/pingcap/tidb-operator/pull/4202), [@KanShiori](https://github.com/KanShiori))
+- Generate v1 CRD to support deploying in Kubernetes v1.22 or later versions ([#4151](https://github.com/pingcap/tidb-operator/pull/4151), [@KanShiori](https://github.com/KanShiori))
 
 ## Improvements
 
