@@ -396,7 +396,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -406,7 +406,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -418,7 +418,7 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -458,7 +458,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -468,7 +468,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -480,7 +480,7 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -530,7 +530,7 @@ Take the second TidbCluster created in [the last section](#step-2-deploy-the-new
 kubectl patch tc ${tc_name_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-Wait for the status of cluster #2 to become `Ready`, and scale in related components to `0` replica:
+Wait for the status of the second TidbCluster to become `Ready`, and scale in related components to `0` replica:
 
 {{< copyable "shell-regular" >}}
 
@@ -546,7 +546,7 @@ The Pod list shows `No resources found`. At this time, all Pods have been scaled
 kubectl get tc ${tc_name_2} -n ${namespace_2}
 ```
 
-The result shows that cluster #2 is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
+The result shows that the second TidbCluster is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
 
 {{< copyable "shell-regular" >}}
 
