@@ -12,7 +12,7 @@ TiDB Operator 版本：1.3.0-beta.1
 
 - 由于 [#4209](https://github.com/pingcap/tidb-operator/pull/4209) 的变更，如果使用 v1.2 及更早版本的 TiDB Operator 在集群部署了 Webhook，并启用了 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级 TiDB Operator 到 v1.3.0-beta.1 版本后，Pod `ValidatingWebhook` 和 `MutatingWebhook` 被删除，但这不会对 TiDB 集群管理产生影响，也不会影响正在运行的 TiDB 集群。
 
-- 由于 [#4151](https://github.com/pingcap/tidb-operator/pull/4151) 的变更，1.3.0-beta.1 后 TiDB Operator 会默认设置各组件的 `baseImage` 字段。如果你使用了各组件的 `image` 字段而不是 `baseImage` 字段来设置镜像，那么直接升级到 1.3.0-beta.1 及以后的 TiDB Operator，可能会因为使用错误的镜像导致 TiDB 集群滚动重建甚至无法正常运行。你必须按照以下操作来升级 TiDB Operator：
+- 由于 [#4151](https://github.com/pingcap/tidb-operator/pull/4151) 的变更，1.3.0-beta.1 后 TiDB Operator 会默认设置各组件的 `baseImage` 字段。如果你使用了各组件的 `image` 字段而不是 `baseImage` 字段来设置镜像，那么直接升级到 1.3.0-beta.1 及以后的 TiDB Operator，由于使用错误的镜像，可能会导致 TiDB 集群滚动重建甚至无法正常运行。你必须按照以下操作来升级 TiDB Operator：
     1. 在各组件的配置中，使用 `baseImage` 与 `version` 字段代替当前使用的 `image` 字段，可以参考文档[部署配置](../configure-a-tidb-cluster.md#版本)。
     2. 升级 TiDB Operator。
 
