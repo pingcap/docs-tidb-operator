@@ -392,7 +392,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -402,7 +402,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -414,7 +414,7 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -454,7 +454,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -464,7 +464,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -476,7 +476,7 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -490,7 +490,7 @@ EOF
 1. 升级所有 Kubernetes 集群的 PD 版本。
 
    1. 修改初始 TidbCluster 定义中的 `spec.pd.version` 字段。
-   
+
       ```yaml
       apiVersion: pingcap.com/v1alpha1
       kind: TidbCluster
@@ -499,7 +499,7 @@ EOF
         pd:
           version: ${version}
       ```
-    
+
    2. 查看 PD Pods 状态，等待初始 TidbCluster 对应的 PD Pod 都重建完毕进入 `Running` 状态。
 
    3. 按照前两步，升级其他 TidbCluster 的 PD 版本。
@@ -526,7 +526,7 @@ EOF
 kubectl patch tc ${tc_name_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-等待集群 2 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
+等待第二个 TidbCluster 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
 
 {{< copyable "shell-regular" >}}
 
@@ -542,7 +542,7 @@ Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，T
 kubectl get tc ${tc_name_2} -n ${namespace_2}
 ```
 
-结果显示集群 2 为 `Ready` 状态，此时可以删除该对象，对相关资源进行回收。
+结果显示第二个 TidbCluster  为 `Ready` 状态，此时可以删除该对象，对相关资源进行回收。
 
 {{< copyable "shell-regular" >}}
 
@@ -579,7 +579,7 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
     根据你的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
     > **警告：**
-    > 
+    >
     > 目前需要你使用正确的信息配置 `clusterDomain`，配置修改后无法再次修改。
 
     {{< copyable "shell-regular" >}}
@@ -613,7 +613,7 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
         > **注意：**
         >
         > 如果集群开启了 TLS，使用 curl 命令时需要配置证书。例如：
-        > 
+        >
         > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 
         执行后输出如下结果：
