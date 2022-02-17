@@ -8,7 +8,7 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-- Enhance the feature of deploying a TiDB cluster across Kubernetes clusters. If you deploy a TiDB cluster across multiple Kubernetes clusters by TiDB Operator (<= v1.3.0-beta.1), upgrading TiDB Operator to v1.3.0 directly will cause failed rolling upgrade and the cluster might become abnormal. If you need to upgrade TiDB Operator from earlier versions to v1.3.0, take the following steps:
+- Enhance the feature of deploying a TiDB cluster across Kubernetes clusters. If you deploy a TiDB cluster across multiple Kubernetes clusters by TiDB Operator (<= v1.3.0-beta.1), upgrading TiDB Operator to v1.3.0 directly will change the image in use, cause the TiDB cluster to rolling update or even fail to run. If you need to upgrade TiDB Operator from earlier versions to v1.3.0, take the following steps:
 
     1. Update CRD.
     2. Add a new `spec.acrossK8s` field in the TidbCluster spec and set it to `true`.
