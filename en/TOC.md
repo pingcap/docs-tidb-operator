@@ -116,6 +116,7 @@
     - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
+    - [1.2.7](releases/release-1.2.7.md)
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
