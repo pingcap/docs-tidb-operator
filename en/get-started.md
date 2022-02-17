@@ -499,7 +499,7 @@ Expected output:
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 76
-Server version: 5.7.25-TiDB-v4.0.0 MySQL Community Server (Apache License 2.0)
+Server version: 5.7.25-TiDB-v5.0.6 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
@@ -522,22 +522,24 @@ After connecting to the cluster, you can execute the following commands to verif
 
     mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
     *************************** 1. row ***************************
-           REGION_ID: 2
-           START_KEY: 7480000000000000FF3700000000000000F8
-             END_KEY:
-            TABLE_ID: 55
-             DB_NAME: test
-          TABLE_NAME: hello_world
-            IS_INDEX: 0
-            INDEX_ID: NULL
-          INDEX_NAME: NULL
-      EPOCH_CONF_VER: 5
-       EPOCH_VERSION: 23
-       WRITTEN_BYTES: 0
-          READ_BYTES: 0
-    APPROXIMATE_SIZE: 1
-    APPROXIMATE_KEYS: 0
-    1 row in set (0.03 sec)
+                    REGION_ID: 2
+                    START_KEY: 7480000000000000FF3500000000000000F8
+                    END_KEY:
+                    TABLE_ID: 53
+                    DB_NAME: test
+                TABLE_NAME: hello_world
+                    IS_INDEX: 0
+                    INDEX_ID: NULL
+                INDEX_NAME: NULL
+            EPOCH_CONF_VER: 1
+                EPOCH_VERSION: 26
+                WRITTEN_BYTES: 0
+                READ_BYTES: 0
+            APPROXIMATE_SIZE: 1
+            APPROXIMATE_KEYS: 0
+    REPLICATIONSTATUS_STATE: NULL
+    REPLICATIONSTATUS_STATEID: NULL
+    1 row in set (0.011 sec)
     ```
 
 - Query the TiDB version:
@@ -545,16 +547,16 @@ After connecting to the cluster, you can execute the following commands to verif
     ```sql
     mysql> select tidb_version()\G
     *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0
+    tidb_version(): Release Version: v5.0.6
     Edition: Community
-    Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
-    Git Branch: heads/refs/tags/v4.0.0
-    UTC Build Time: 2020-05-28 01:37:40
+    Git Commit Hash: 6416f8d601472892d245b950dfd5547e857a1a33
+    Git Branch: heads/refs/tags/v5.0.6
+    UTC Build Time: 2021-12-23 12:26:47
     GoVersion: go1.13
     Race Enabled: false
     TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
     Check Table Before Drop: false
-    1 row in set (0.00 sec)
+    1 row in set (0.001 sec)
     ```
 
 - Query the TiKV store status:
@@ -562,26 +564,26 @@ After connecting to the cluster, you can execute the following commands to verif
     ```sql
     mysql> select * from information_schema.tikv_store_status\G
     *************************** 1. row ***************************
-             STORE_ID: 4
-              ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-          STORE_STATE: 0
-     STORE_STATE_NAME: Up
+            STORE_ID: 1
+            ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+        STORE_STATE: 0
+    STORE_STATE_NAME: Up
                 LABEL: null
-              VERSION: 4.0.0
-             CAPACITY: 58.42GiB
-            AVAILABLE: 36.18GiB
-         LEADER_COUNT: 3
+            VERSION: 5.0.6
+            CAPACITY: 49.98GiB
+            AVAILABLE: 28.47GiB
+        LEADER_COUNT: 26
         LEADER_WEIGHT: 1
-         LEADER_SCORE: 3
-          LEADER_SIZE: 3
-         REGION_COUNT: 21
+        LEADER_SCORE: 26
+        LEADER_SIZE: 26
+        REGION_COUNT: 26
         REGION_WEIGHT: 1
-         REGION_SCORE: 21
-          REGION_SIZE: 21
-             START_TS: 2020-05-28 22:48:21
-    LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-               UPTIME: 3m40.598302151s
-    1 rows in set (0.01 sec)
+        REGION_SCORE: 4299796.044762109
+        REGION_SIZE: 26
+            START_TS: 2022-02-17 06:13:46
+    LAST_HEARTBEAT_TS: 2022-02-17 06:18:16
+            UPTIME: 4m30.708704931s
+    1 row in set (0.003 sec)
     ```
 
 - Query the TiDB cluster information:
@@ -591,30 +593,33 @@ After connecting to the cluster, you can execute the following commands to verif
     ```sql
     mysql> select * from information_schema.cluster_info\G
     *************************** 1. row ***************************
-              TYPE: tidb
-          INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
+            TYPE: tidb
+        INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
     STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-           VERSION: 5.7.25-TiDB-v4.0.0
-          GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-        START_TIME: 2020-05-28T22:50:11Z
-            UPTIME: 3m21.459090928s
+        VERSION: 5.0.6
+        GIT_HASH: 6416f8d601472892d245b950dfd5547e857a1a33
+        START_TIME: 2022-02-17T06:14:08Z
+            UPTIME: 4m31.933720922s
+        SERVER_ID: 0
     *************************** 2. row ***************************
-              TYPE: pd
-          INSTANCE: basic-pd:2379
-    STATUS_ADDRESS: basic-pd:2379
-           VERSION: 4.0.0
-          GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-        START_TIME: 2020-05-28T22:45:04Z
-            UPTIME: 8m28.459091915s
+            TYPE: pd
+        INSTANCE: basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379
+    STATUS_ADDRESS: basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379
+        VERSION: 5.0.6
+        GIT_HASH: 552c53ebd355eb657208d9130521e82a05ee009d
+        START_TIME: 2022-02-17T06:13:22Z
+            UPTIME: 5m17.933730718s
+        SERVER_ID: 0
     *************************** 3. row ***************************
-              TYPE: tikv
-          INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-    STATUS_ADDRESS: 0.0.0.0:20180
-           VERSION: 4.0.0
-          GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-        START_TIME: 2020-05-28T22:48:21Z
-            UPTIME: 5m11.459102648s
-    3 rows in set (0.01 sec)
+            TYPE: tikv
+        INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
+    STATUS_ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20180
+        VERSION: 5.0.6
+        GIT_HASH: 7fcfaf4a9dd6b245fa7b6ac26740effda57b5139
+        START_TIME: 2022-02-17T06:13:46Z
+            UPTIME: 4m53.933733552s
+        SERVER_ID: 0
+    3 rows in set (0.023 sec)
     ```
 
 ### Access Grafana dashboard
