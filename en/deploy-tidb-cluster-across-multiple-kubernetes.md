@@ -39,9 +39,9 @@ Unsupported scenarios:
 
 Before you deploy a TiDB cluster across multiple Kubernetes clusters, you need to first deploy the Kubernetes clusters required for this operation. The following deployment assumes that you have completed Kubernetes deployment.
 
-The following takes the deployment of two clusters as an example. One TidbCluster will be deployed in each Kubernetes cluster.
+The following takes the deployment of one TiDB cluster across two Kubernetes clusters as an example. One TidbCluster is deployed in each Kubernetes cluster.
 
-In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster, `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster, `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes clusters.
+In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster. `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster. `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes cluster.
 
 ### Step 1. Deploy the initial TidbCluster
 
@@ -88,11 +88,11 @@ spec:
 EOF
 ```
 
-In the above configuration, the field `spec.acrossK8s: true` is required because it indicates that deploying TiDB cluster across Kubernetes clusters,
+In the above configuration, the field `spec.acrossK8s: true` is required. It indicates that the TiDB cluster is deployed across Kubernetes clusters.
 
 ### Step 2. Deploy the new TidbCluster to join the TiDB cluster
 
-Wait for the initial cluster to complete the deployment, and then deploy the new TidbCluster to join the TiDB cluster. In the actual situation, you can create a new TidbCluster to join any existing TidbCluster in multiple clusters.
+After the initial cluster completes the deployment, you can deploy the new TidbCluster to join the TiDB cluster. You can create a new TidbCluster to join any existing TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -143,9 +143,9 @@ EOF
 
 You can follow the steps below to enable TLS between TiDB components for TiDB clusters deployed across multiple Kubernetes clusters.
 
-The following takes the deployment of two clusters as an example. One TidbCluster will be deployed in each Kubernetes cluster.
+The following takes the deployment of a TiDB cluster across two Kubernetes clusters as an example. One TidbCluster is deployed in each Kubernetes cluster.
 
-In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster, `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster, `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes clusters.
+In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster. `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster. `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes cluster.
 
 ### Step 1. Issue the root certificate
 
@@ -230,7 +230,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
 4. Create a component certificate `Issuer` in all Kubernetes clusters and configure it to use this CA.
 
-    1. Create an `Issuer` that issues certificates between TiDB components in the initial Kubernetes cluster.
+    1. In the initial Kubernetes cluster, create an `Issuer` that issues certificates between TiDB components.
 
         Run the following command:
 
@@ -249,7 +249,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
         EOF
         ```
 
-    2. Create an `Issuer` that issues certificates between TiDB components in other Kubernetes clusters.
+    2. In other Kubernetes clusters, create an `Issuer` that issues certificates between TiDB components.
 
        Run the following command:
 
@@ -369,7 +369,7 @@ For other TLS-related information, refer to the following documents:
 
 ### Step 3. Deploy the initial TidbCluster
 
-Run the following commands to deploy the initial TidbCluster. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
+Run the following commands to deploy the initial TidbCluster. The following `YAML` file enables the TLS feature and configures `cert-allowed-cn`, which makes each component start to verify the certificates issued by the `CN` for the `CA` of `TiDB`.
 
 {{< copyable "shell-regular" >}}
 
@@ -427,7 +427,7 @@ EOF
 
 ### Step 4. Deploy a new TidbCluster to join the TiDB cluster
 
-Wait for the initial cluster to complete the deployment, and then deploy the new TidbCluster to join the TiDB cluster. In the actual situation, you can create a new TidbCluster to join any existing TidbCluster in multiple clusters.
+After the initial cluster completes the deployment, you can deploy the new TidbCluster to join the TiDB cluster. You can create a new TidbCluster to join any existing TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -522,7 +522,7 @@ When you need to make a cluster exit from the joined TiDB cluster deployed acros
 
 - After scaling in the cluster, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
-Take the TidbCluster #2 created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you enable other components such as TiFlash, TiCDC, and Pump, set the number of these replicas to `0`:
+Take the second TidbCluster created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you have enabled other components such as TiFlash, TiCDC, and Pump, set the number of these replicas to `0`:
 
 {{< copyable "shell-regular" >}}
 
@@ -538,7 +538,7 @@ Wait for the status of cluster #2 to become `Ready`, and scale in related compon
 kubectl get pods -l app.kubernetes.io/instance=${tc_name_2} -n ${namespace_2}
 ```
 
-The Pod list shows `No resources found`. At this time, Pods have all been scaled in, and cluster #2 exits the cluster. Check the cluster status of cluster #2:
+The Pod list shows `No resources found`. At this time, all Pods have been scaled in, and the second TidbCluster exits the cluster. Check the cluster status of the second TidbCluster:
 
 {{< copyable "shell-regular" >}}
 
@@ -566,7 +566,7 @@ A cluster with existing data refer to a deployed TiDB cluster with the configura
 
 Depending on the network between multiple Kubernetes clusters, there are different methods.
 
-If all Kubernetes have same Cluster Domain, just need to update the `spec.crossK8s` configuration of TidbCluster. Run the following command:
+If all Kubernetes have the same Cluster Domain, you only need to update the `spec.crossK8s` configuration of TidbCluster. Run the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -574,9 +574,9 @@ If all Kubernetes have same Cluster Domain, just need to update the `spec.crossK
 kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
 ```
 
-After completing the modification, wait for TiDB cluster to complete rolling upgrade.
+After the modification, wait for the TiDB cluster to complete rolling update.
 
-If each Kubernetes have different Cluster Domain, need to update the `spec.clusterDomain` and `spec.acrossK8s` fields. Take the steps:
+If each Kubernetes have different Cluster Domain, you need to update the `spec.clusterDomain` and `spec.acrossK8s` fields. Take the following steps:
 
 1. Update the `spec.clusterDomain` and `spec.acrossK8s` fields:
 
