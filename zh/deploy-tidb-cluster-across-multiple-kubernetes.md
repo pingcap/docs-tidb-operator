@@ -421,7 +421,7 @@ spec:
 EOF
 ```
 
-### 第 4 步：部署 TidbCluster 加入集群
+### 第 4 步：部署新的 TidbCluster 加入 TiDB 集群
 
 等待初始集群部署完成部署后，创建新的 TidbCluster 加入集群。在实际使用中，新部署的 TidbCluster 可以加入任意的已经部署的 TidbCluster。
 
@@ -562,19 +562,17 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
 
 根据构建的多个 Kubernetes 集群之间的网络情况不同，有不同的方法。
 
-如果各个 Kubernetes 集群之间有着相同的 Cluster Domain，那么只需要更新 TidbCluster 的 `spec.acrossK8s` 配置。执行以下命令：
+如果所有 Kubernetes 集群有着相同的 Cluster Domain，那么只需要更新 TidbCluster 的 `spec.acrossK8s` 配置。执行以下命令：
 
-1. 更新 `spec.acrossK8s` 配置：
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+```bash
+kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
+```
 
-    ```bash
-    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
-    ```
+修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
 
-    修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
-
-如果各个 Kubernetes 集群之间有着不同的 Cluster Domain，那么需要更新 TidbCluster 的 `spec.clusterDomain` 和 `spec.acrossK8s` 配置。具体步骤如下：
+如果各个 Kubernetes 集群有着不同的 Cluster Domain，那么需要更新 TidbCluster 的 `spec.clusterDomain` 和 `spec.acrossK8s` 配置。具体步骤如下：
 
 1. 更新 `spec.clusterDomain` 与 `spec.acrossK8s` 配置：
 
@@ -635,5 +633,7 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
         curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
         -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
         ```
+
+完成上述步骤后，该 TidbCluster 可以作为跨 Kubernetes 集群部署 TiDB 集群的初始 TidbCluster。可以参考[部署新的 TidbCluster 加入 TiDB 集群](#第-2-步部署新的-tidbcluster-加入-tidb-集群)一节部署其他的 TidbCluster。
 
 更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。

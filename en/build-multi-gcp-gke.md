@@ -284,6 +284,7 @@ kind: TidbCluster
 spec:
   #..
   clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
 ```
 
 ## What's next
