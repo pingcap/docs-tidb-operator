@@ -17,7 +17,7 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
 - The `ValidatingWebhook` and `MutatingWebhook` of Pods are depricated. If you deploy Webhook in your TiDB cluster using TiDB Operator v1.2 or earlier versions, and enable `ValidatingWebhook` and `MutatingWebhook` of Pods, upgrading TiDB Operator to v1.3.0-beta.1 or later versions will cause `ValidatingWebhook` and `MutatingWebhook` to be deleted. But this has no impact on TiDB cluster management and does not affect the TiDB clusters in operation.
 
 - Generate v1 CRD to support deploying in Kubernetes v1.22 or later versions. TiDB Operator with v1.3.0-beta.1 or later versions will set the default `baseImage` field of all components. If you use the field `image` instead of the field `baseImage` to set image, upgrading TiDB Operator to v1.3.0-beta.1 will cause TiDB Cluster to roll upgrade and even fail to run because using wrong image. You have to upgrade TiDB Operator by the following steps:
-    1. Use fields `baseImage` and `version` to replace the field `image`, refer to the document [Configure TiDB deployment](../configure-a-tidb-cluster.md#version).
+    1. Use fields `baseImage` and `version` to replace the field `image`, refer to the document [Configure TiDB deployment](configure-a-tidb-cluster.md#version).
     2. Upgrade TiDB Operator.
 
 ## Rolling upgrade changes
