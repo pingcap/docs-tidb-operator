@@ -493,7 +493,7 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
 
 1. Upgrade PD versions for all Kubernetes clusters.
 
-   1. Modify the `spec.pd.version` field in the spec for cluster #1.
+   1. Modify the `spec.pd.version` field in the spec for the initial TidbCluster.
 
       ```yaml
       apiVersion: pingcap.com/v1alpha1
@@ -504,9 +504,9 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
           version: ${version}
       ```
 
-    2. Watch the status of PD Pods and wait for PD Pods in cluster #1 to finish recreation and become `Running`.
+    1. Watch the status of PD Pods and wait for PD Pods in the initial TidbCluster to finish recreation and become `Running`.
 
-    3. Repeat the first two substeps to upgrade all PD Pods in other clusters.
+    2. Repeat the first two substeps to upgrade all PD Pods in other TidbCluster.
 
 2. Take step 1 as an example, perform the following upgrade operations in sequence:
 
