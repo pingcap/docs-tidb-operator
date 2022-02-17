@@ -504,9 +504,9 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
           version: ${version}
       ```
 
-    1. Watch the status of PD Pods and wait for PD Pods in the initial TidbCluster to finish recreation and become `Running`.
+    2. Watch the status of PD Pods and wait for PD Pods in the initial TidbCluster to finish recreation and become `Running`.
 
-    2. Repeat the first two substeps to upgrade all PD Pods in other TidbCluster.
+    3. Repeat the first two substeps to upgrade all PD Pods in other TidbCluster.
 
 2. Take step 1 as an example, perform the following upgrade operations in sequence:
 
