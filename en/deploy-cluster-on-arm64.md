@@ -17,9 +17,9 @@ The process of deploying TiDB operator on ARM64 machines is the same as the proc
 
 ```yaml
 # ...
-operatorImage: pingcap/tidb-operator-arm64:v1.2.6
+operatorImage: pingcap/tidb-operator-arm64:v1.2.7
 # ...
-tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.2.6
+tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.2.7
 # ...
 ```
 
