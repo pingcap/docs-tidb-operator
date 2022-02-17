@@ -41,7 +41,7 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
 
-后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表将部署到各个 Kubernetes 集群的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：部署初始 TidbCluster
 
@@ -90,7 +90,7 @@ EOF
 
 上述配置中，字段 `spec.acrossK8s: true` 表示是跨 Kubernetes 集群部署 TiDB 集群，必须设置。
 
-### 第 2 步：部署 TidbCluster 加入 TiDB 集群
+### 第 2 步：部署新的 TidbCluster 加入 TiDB 集群
 
 等待初始集群部署完成后，部署新的 TidbCluster 加入 TiDB 集群。在实际使用中，新部署的 TidbCluster 可以加入任意的已经部署的 TidbCluster。
 
@@ -145,7 +145,7 @@ EOF
 
 下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
 
-后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表各个 Kubernetes 集群将部署的的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表将部署到各个 Kubernetes 集群的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
 ### 第 1 步：签发根证书
 
@@ -266,7 +266,7 @@ EOF
 
 ### 第 2 步：为各个 Kubernetes 集群的 TiDB 组件签发证书
 
-你需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如初始 TidbCluster 的配置为 `${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}`。
+你需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录。例如，初始 TidbCluster 的配置为 `${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}`。
 
 #### 使用 cfssl 系统为 TiDB 组件签发证书
 
@@ -512,7 +512,7 @@ EOF
    4. 升级所有 Kubernetes 集群的 TiDB 版本。
    5. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
-## 退出和回收已加入 TidbCluster
+## 退出和回收已加入的 TidbCluster
 
 当你需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
 
@@ -558,7 +558,9 @@ kubectl delete tc ${tc_name_2} -n ${namespace_2}
 >
 > 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用。
 
-已有数据集群指的是设置 `spec.acrossK8s: false` 部署的 TiDB 集群，根据构建的多个 Kubernetes 集群之间的网络情况不同，有不同的方法。
+已有数据集群指的是已部署的 TiDB 集群，且在部署时已设置 `spec.acrossK8s: false`。
+
+根据构建的多个 Kubernetes 集群之间的网络情况不同，有不同的方法。
 
 如果各个 Kubernetes 集群之间有着相同的 Cluster Domain，那么只需要更新 TidbCluster 的 `spec.acrossK8s` 配置。执行以下命令：
 
