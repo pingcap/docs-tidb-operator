@@ -576,9 +576,9 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
 
 After completing the modification, wait for TiDB cluster to complete rolling upgrade.
 
-If each Kubernetes have different Cluster Domain, need to update configurations `spec.clusterDomain` and `spec.acrossK8s`. Take the steps:
+If each Kubernetes have different Cluster Domain, need to update the `spec.clusterDomain` and `spec.acrossK8s` fields. Take the steps:
 
-1. Update configurations `spec.clusterDomain` and `spec.acrossK8s`:
+1. Update the `spec.clusterDomain` and `spec.acrossK8s` fields:
 
     Configure the following parameters according to the `clusterDomain` in your Kubernetes cluster information:
 
