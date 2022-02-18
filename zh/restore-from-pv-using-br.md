@@ -94,11 +94,11 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
     kubectl get rt -n test2 -owide
     ```
 
-以上示例将存储在 NFS 上指定路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。持久卷存储相关配置参考 [Local 存储字段介绍](backup-restore-overview.md#local-存储字段介绍)。
+以上示例将存储在 NFS 上指定路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。持久卷存储相关配置参考 [Local 存储字段介绍](backup-restore-cr.md#local-存储字段介绍)。
 
-以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-overview.md#br-字段介绍)。
+以上示例中，`.spec.br` 中的一些参数项均可省略，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 
-更多 `Restore` CR 字段的详细解释参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+更多 `Restore` CR 字段的详细解释参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
 
 ## 故障诊断
 
