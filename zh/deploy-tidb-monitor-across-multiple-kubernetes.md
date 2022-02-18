@@ -58,37 +58,38 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
     metadata:
-    name: ${cluster_name}
+      name: ${cluster_name}
     spec:
-    clusters:
-    - name: ${cluster_name}
-      namespace: ${cluster_namespace}
-    externalLabels:
-      # kubernetes indicates the k8s cluster name, you can change
-      # the label's name on your own, but you should notice that the
-      # `cluster` label has been used by the TiDB metrics already.
-      # For more information, please refer to the issue
-      # https://github.com/pingcap/tidb-operator/issues/4219.
-      kubernetes: ${kubernetes_cluster_name}
-      #add other meta labels here
-      #region: us-east-1
-    initializer:
-      baseImage: pingcap/tidb-monitor-initializer
-      version: v5.4.0
-    persistent: true
-    storage: 100Gi
-    storageClassName: ${storageclass_name}
-    prometheus:
-      baseImage: prom/prometheus
-      logLevel: info
-      remoteWrite:
-      - url: ${remote_write_url}
-      retentionTime: 2h
-      version: v2.27.1
-    reloader:
-      baseImage: pingcap/tidb-monitor-reloader
-      version: v1.0.1
-    imagePullPolicy: IfNotPresent
+      clusters:
+      - name: ${cluster_name}
+        namespace: ${cluster_namespace}
+      externalLabels:
+        # kubernetes indicates the k8s cluster name, you can change
+        # the label's name on your own, but you should notice that the
+        # "cluster" label has been used by the TiDB metrics already.
+        # For more information, please refer to the issue
+        # https://github.com/pingcap/tidb-operator/issues/4219.
+        kubernetes: ${kubernetes_cluster_name}
+        #add other meta labels here
+        #region: us-east-1
+      initializer:
+        baseImage: pingcap/tidb-monitor-initializer
+        version: v5.4.0
+      persistent: true
+      storage: 100Gi
+      storageClassName: ${storageclass_name}
+      prometheus:
+        baseImage: prom/prometheus
+        logLevel: info
+        remoteWrite:
+        - url: ${remote_write_url}
+        retentionTime: 2h
+        version: v2.27.1
+      reloader:
+        baseImage: pingcap/tidb-monitor-reloader
+        version: v1.0.1
+      imagePullPolicy: IfNotPresent
+    EOF
     ```
 
 ## Pull 方式
@@ -138,41 +139,46 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     {{< copyable "shell-regular" >}}
 
     ```sh
-    cat << EOF | kubectl apply -n ${cluster_namespace} -f -
+    cat <<EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
     metadata:
-    name: ${cluster_name}
+      name: ${cluster_name}
     spec:
-    clusters:
-    - name: ${cluster_name}
-      namespace: ${cluster_namespace}
-    externalLabels:
-      #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-      kubernetes: ${kubernetes_cluster_name}
-      #add other meta labels here
-      #region: us-east-1
-    initializer:
-      baseImage: pingcap/tidb-monitor-initializer
-      version: v5.4.0
-    persistent: true
-    storage: 20Gi
-    storageClassName: ${storageclass_name}
-    prometheus:
-      baseImage: prom/prometheus
-      logLevel: info
-      version: v2.27.1
-    reloader:
-      baseImage: pingcap/tidb-monitor-reloader
-      version: v1.0.1
-    thanos:
-      baseImage: quay.io/thanos/thanos
-      version: v0.22.0
-      #enable config below if long-term storage is needed.
-      #objectStorageConfig:
-      #  key: objectstorage.yaml
-      #  name: thanos-objectstorage
-    imagePullPolicy: IfNotPresent
+      clusters:
+      - name: ${cluster_name}
+        namespace: ${cluster_namespace}
+      externalLabels:
+        # kubernetes indicates the k8s cluster name, you can change
+        # the label's name on your own, but you should notice that the
+        # "cluster" label has been used by the TiDB metrics already.
+        # For more information, please refer to the issue
+        # https://github.com/pingcap/tidb-operator/issues/4219.
+        kubernetes: ${kubernetes_cluster_name}
+        # add other meta labels here
+        #region: us-east-1
+      initializer:
+        baseImage: pingcap/tidb-monitor-initializer
+        version: v5.4.0
+      persistent: true
+      storage: 20Gi
+      storageClassName: ${storageclass_name}
+      prometheus:
+        baseImage: prom/prometheus
+        logLevel: info
+        version: v2.27.1
+      reloader:
+        baseImage: pingcap/tidb-monitor-reloader
+        version: v1.0.1
+      thanos:
+        baseImage: quay.io/thanos/thanos
+        version: v0.22.0
+        #enable config below if long-term storage is needed.
+        #objectStorageConfig:
+        #  key: objectstorage.yaml
+        #  name: thanos-objectstorage
+      imagePullPolicy: IfNotPresent
+    EOF
     ```
 
 </div>
@@ -221,30 +227,35 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
     metadata:
-    name: ${cluster_name}
+      name: ${cluster_name}
     spec:
-    clusters:
-    - name: ${cluster_name}
-      namespace: ${cluster_namespace}
-    externalLabels:
-      #kubernetes indicates the k8s cluster name, you can change the label's name on your own, but you should notice that `cluster` label has been used by tidb already. For more information, please refer to issue https://github.com/pingcap/tidb-operator/issues/4219.
-      kubernetes: ${kubernetes_cluster_name}
-      #add other meta labels here
-      #region: us-east-1
-    initializer:
-      baseImage: pingcap/tidb-monitor-initializer
-      version: v5.4.0
-    persistent: true
-    storage: 20Gi
-    storageClassName: ${storageclass_name}
-    prometheus:
-      baseImage: prom/prometheus
-      logLevel: info
-      version: v2.27.1
-    reloader:
-      baseImage: pingcap/tidb-monitor-reloader
-      version: v1.0.1
-    imagePullPolicy: IfNotPresent
+      clusters:
+      - name: ${cluster_name}
+        namespace: ${cluster_namespace}
+      externalLabels:
+        # kubernetes indicates the k8s cluster name, you can change
+        # the label's name on your own, but you should notice that the
+        # "cluster" label has been used by the TiDB metrics already.
+        # For more information, please refer to the issue
+        # https://github.com/pingcap/tidb-operator/issues/4219.
+        kubernetes: ${kubernetes_cluster_name}
+        #add other meta labels here
+        #region: us-east-1
+      initializer:
+        baseImage: pingcap/tidb-monitor-initializer
+        version: v5.4.0
+      persistent: true
+      storage: 20Gi
+      storageClassName: ${storageclass_name}
+      prometheus:
+        baseImage: prom/prometheus
+        logLevel: info
+        version: v2.27.1
+      reloader:
+        baseImage: pingcap/tidb-monitor-reloader
+        version: v1.0.1
+      imagePullPolicy: IfNotPresent
+    EOF
     ```
 
 #### 配置 Federation Prometheus
@@ -279,30 +290,11 @@ scrape_configs:
 
 2. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards:
 
-    <SimpleTab>
-    <div label="Linux">
     {{< copyable "shell-regular" >}}
 
     ```sh
     version=v5.4.0
-    git clone -b auto-generate-for-$version https://github.com/pingcap/monitoring.git && \
-    cd monitoring/monitor-snapshot/$version/operator/dashboards && \
-    sed -i 's/Test-Cluster-/Cluster-/g; s/"hide": 2/"hide": 0/g;' *.json
+    docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version}
     ```
-
-    </div>
-
-    <div label="MacOS">
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    version=v5.4.0
-    git clone -b auto-generate-for-$version https://github.com/pingcap/monitoring.git && \
-    cd monitoring/monitor-snapshot/$version/operator/dashboards && \
-    sed -i "" 's/Test-Cluster-/Cluster-/g; s/"hide": 2/"hide": 0/g;' *.json
-    ```
-
-    </div>
-    </SimpleTab>
 
 3. [在 Grafana 中导入 Dashboard](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard)
