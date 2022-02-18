@@ -22,6 +22,11 @@ To enable TLS between components of the DM cluster, perform the following steps:
     > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the DM cluster will fail.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
+
+    > **Note:**
+    >
+    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade.
+
 3. Configure `dmctl` to connect to the cluster.
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the DM cluster:
@@ -287,7 +292,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     Then, create a `dm-cluster-issuer.yaml` file with the following content:
 
     ``` yaml
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -295,7 +300,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -310,7 +315,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         name: ${cluster_name}-selfsigned-ca-issuer
         kind: Issuer
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-dm-issuer
@@ -343,7 +348,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     - The DM-master server-side certificate
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-master-cluster-secret
@@ -352,8 +357,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-dm-master-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -395,14 +401,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-dm-master-cluster-secret` Secret object to be used by the DM-master component of the DM cluster.
 
     - The DM-worker server-side certificate
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-worker-cluster-secret
@@ -411,8 +417,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-dm-worker-cluster-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - server auth
@@ -454,14 +461,14 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `127.0.0.1`
             - `::1`
         - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec).
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-dm-cluster-secret` Secret object to be used by the DM-worker component of the DM cluster.
 
     - A set of client-side certificates of DM cluster components.
 
         ``` yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
           name: ${cluster_name}-dm-client-secret
@@ -470,8 +477,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           secretName: ${cluster_name}-dm-client-secret
           duration: 8760h # 365d
           renewBefore: 360h # 15d
-          organization:
-          - PingCAP
+          subject:
+            organizations:
+            - PingCAP
           commonName: "TiDB"
           usages:
             - client auth
@@ -487,7 +495,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - Add `server auth` and `client auth` in `usages`.
         - `dnsNames` and `ipAddresses` are not required.
         - Add the Issuer created above in the `issuerRef`
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1alpha2.CertificateSpec)
+        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)
 
         After the object is created, `cert-manager` generates a `${cluster_name}-cluster-client-secret` Secret object to be used by the clients of the DM components.
 
@@ -510,7 +518,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v5.3.0
+  version: v5.4.0
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -580,7 +588,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v5.3.0
+  version: v5.4.0
   pvReclaimPolicy: Retain
   discovery: {}
   tlsClientSecretNames:
