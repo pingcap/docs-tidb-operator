@@ -12,73 +12,11 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，仅需要部署 tidb-lightning。
 
-此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
-
-## 部署 TiKV Importer
-
 > **注意：**
->
-> 如需要使用 TiDB Lightning 的 `local` 或 `tidb` 后端用于数据恢复，则不需要部署 tikv-importer。
+> 
+> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考旧版文档部署 tikv-importer。
 
-可以通过 `tikv-importer` Helm chart 来部署 tikv-importer，示例如下：
-
-1. 确保 PingCAP Helm 库是最新的：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm repo update
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm search repo tikv-importer -l
-    ```
-
-2. 获取默认的 `values.yaml` 文件以方便自定义：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm inspect values pingcap/tikv-importer --version=${chart_version} > values.yaml
-    ```
-
-3. 修改 `values.yaml` 文件以指定目标 TiDB 集群。示例如下：
-
-    {{< copyable "" >}}
-
-    ```yaml
-    clusterName: demo
-    image: pingcap/tidb-lightning:v5.4.0
-    imagePullPolicy: IfNotPresent
-    storageClassName: local-storage
-    storage: 20Gi
-    pushgatewayImage: prom/pushgateway:v0.3.1
-    pushgatewayImagePullPolicy: IfNotPresent
-    config: |
-      log-level = "info"
-      [metric]
-      job = "tikv-importer"
-      interval = "15s"
-      address = "localhost:9091"
-    ```
-
-    `clusterName` 必须匹配目标 TiDB 集群。
-
-    如果目标 TiDB 集群组件间开启了 TLS (`spec.tlsCluster.enabled: true`)，则可以参考[为 TiDB 集群各个组件生成证书](enable-tls-between-components.md#第一步为-tidb-集群各个组件生成证书)为 TiKV importer 组件生成 Server 端证书，并在 `values.yaml` 中通过配置 `tlsCluster.enabled: true` 开启 TLS 支持。
-
-4. 部署 tikv-importer：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm install ${cluster_name} pingcap/tikv-importer --namespace=${namespace} --version=${chart_version} -f values.yaml
-    ```
-
-    > **注意：**
-    >
-    > tikv-importer 必须与目标 TiDB 集群安装在相同的命名空间中。
+此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
 ## 部署 TiDB Lightning
 
@@ -92,7 +30,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-根据需要配置 TiDB Lightning 所使用的后端 `backend`，即将 `values.yaml` 中的 `backend` 设置为 `importer`、`local` 、`tidb` 中的一个。
+根据需要配置 TiDB Lightning 所使用的后端 `backend`，即将 `values.yaml` 中的 `backend` 设置为 `local` 、`tidb` 中的一个。
 
 > **注意：**
 >
@@ -291,13 +229,9 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
         > `arn:aws:iam::123456789012:role/user` 为步骤 1 中创建的 IAM 角色。
         > ${service-account} 为 tidb-lightning 使用的 ServiceAccount，默认为 default。
 
-## 销毁 TiKV Importer 和 TiDB Lightning
+## 销毁 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
-
-删除 tikv-importer 的步骤：
-
-* 运行 `helm uninstall ${release_name} -n ${namespace}`。
 
 删除 tidb-lightning 的方法：
 
@@ -361,4 +295,4 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
         3. 根据新的 `values.yaml` 创建新的 `Job` 用于继续数据恢复。
 
-4. 故障处理及数据恢复完成后，参考[销毁 TiKV Importer 和 TiDB Lightning](#销毁-tikv-importer-和-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
+4. 故障处理及数据恢复完成后，参考[销毁 TiDB Lightning](#销毁-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
