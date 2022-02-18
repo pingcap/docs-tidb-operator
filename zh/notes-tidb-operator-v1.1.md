@@ -103,7 +103,7 @@ spec
 
 ### TiKV Importer
 
-- 如果在升级到 TiDB Operator v1.1 之前，没有部署 TiKV Importer，现在需要新部署，可以参考 [TiKV Importer 部署](restore-data-using-tidb-lightning.md#部署-tikv-importer)。
+- 如果在升级到 TiDB Operator v1.1 之前，没有部署 TiKV Importer，现在需要新部署，可以参考 [TiKV Importer 部署](restore-data-using-tidb-lightning.md)。
 - 如果在升级到 TiDB Operator v1.1 之前，已经部署 TiKV Importer，建议直接用 kubectl 管理。
 
 ## 其他由 chart 管理的组件或者功能切换到 v1.1 支持的方式
