@@ -22,7 +22,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 ### 第 1 步：配置 TiDB Lightning
 
-使用如下命令获得 TiDB Lightning 的默认配置文件：
+使用如下命令将 TiDB Lightning 的默认配置保存到 `tidb-lightning-values.yaml` 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -30,7 +30,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-根据需要配置 TiDB Lightning 所使用的后端 `backend`，即将 `values.yaml` 中的 `backend` 设置为 `local` 、`tidb` 中的一个。
+根据 TiDB Lightning 所使用的后端类型，将配置文件中的 `backend` 字段设置为 `local` 、`tidb` 中的一个。
 
 ```yaml
 # The delivery backend used to import data (valid options include `importer`, `local` and `tidb`).
@@ -40,7 +40,7 @@ backend: local
 
 > **注意：**
 >
-> 如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在 `values.yaml` 中设置 `sortedKV` 来创建相应的 PVC 以用于本地 KV 排序。
+> 如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在配置文件中设置 `sortedKV` 字段来创建相应的 PVC 以用于本地 KV 排序。
 
 #### 断点续传配置
 
@@ -67,7 +67,7 @@ backend: local
 
 ### 第 2 步：配置数据源
 
-tidb-lightning Helm chart 支持恢复本地或远程的备份数据，通过配置文件中的 `dataSource` 字段来配置数据源。
+tidb-lightning Helm chart 支持从本地或远程获取备份数据，为此支持三种模式：本地模式、远程模式和 Ad hoc 模式。三种模式不能混用，只允许配置其中一种模式。
 
 #### 本地模式
 
