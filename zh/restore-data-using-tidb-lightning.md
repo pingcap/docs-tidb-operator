@@ -82,6 +82,7 @@ dataSource:
 ```
 
 相关字段含义如下：
+
 * `dataSource.local.nodeName`：目录所在的节点的名称。
 * `dataSource.local.hostPath`：备份数据所在的目录路径，该目录下必须包含名为 `metadata` 的文件。
 
@@ -191,6 +192,7 @@ dataSource:
     ```
     
     相关字段含义如下：
+    
     * `dataSource.remote.storageClassName`：PV 使用的 StorageClass 名称。
     * `dataSource.remote.secretName`：上一步所创建的 Secret 的名称。
     * `dataSource.remote.path`：如果备份数据打包为 tarball 文件，使用该字段表明 tarball 文件的路径。
@@ -211,6 +213,7 @@ dataSource:
 ```
 
 相关字段含义如下：
+
 * `dataSource.adhoc.pvcName`：备份数据所在的 PVC 的名称，PVC 必须和 Tidb-Lightning 部署在同一个 namespace。
 * `dataSource.adhoc.backupName`：原备份数据对应的名称，如 `backup-2020-12-17T10:12:51Z` (不包含在网络存储上压缩文件名的 `.tgz` 后缀)。
 
