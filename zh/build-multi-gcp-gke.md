@@ -286,6 +286,7 @@ kind: TidbCluster
 spec:
   #..
   clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
 ```
 
 ## 探索更多

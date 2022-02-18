@@ -39,37 +39,30 @@ summary: 本文档介绍如何实现跨多个 Kubernetes 集群部署 TiDB 集�
 
 部署跨多个 Kubernetes 集群的 TiDB 集群，默认你已部署好此场景所需要的 Kubernetes 集群，在此基础上进行下面的部署工作。
 
-下面以部署两个集群为例进行介绍，其中集群 1 为初始集群，按照下面给出的配置进行创建，集群 1 正常运行后，按照下面给出配置创建集群 2，等集群完成创建和部署工作后，两个集群正常运行。
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
 
-### 部署初始集群
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表将部署到各个 Kubernetes 集群的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
 
-根据实际情况设置以下环境变量，实际使用中需要根据你的实际情况设置 `cluster1_name` 和 `cluster1_cluster_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_cluster_domain` 为集群 1 的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction), `cluster1_namespace` 为集群 1 的命名空间。
+### 第 1 步：部署初始 TidbCluster
 
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-```
-
-执行以下指令：
+创建并部署初始 TidbCluster。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_1} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster1_name}"
+  name: "${tc_name_1}"
 spec:
   version: v5.4.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_cluster_domain}"
+  clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -95,45 +88,32 @@ spec:
 EOF
 ```
 
-### 部署新集群加入初始集群
+上述配置中，字段 `spec.acrossK8s: true` 表示是跨 Kubernetes 集群部署 TiDB 集群，必须设置。
 
-等待集群 1 完成部署后，创建集群 2。在实际使用中，新创建的集群 2 可以加入多集群内的任意一个已有集群。
+### 第 2 步：部署新的 TidbCluster 加入 TiDB 集群
 
-可以参考下面的范例，根据实际情况设置填入集群 1 和集群 2 的 `Name`、`Cluster Domain`、`Namespace` 等相关信息：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-
-cluster2_name="cluster2"
-cluster2_cluster_domain="cluster2.com"
-cluster2_namespace="pingcap"
-```
-
-执行以下指令：
+等待初始集群部署完成后，部署新的 TidbCluster 加入 TiDB 集群。在实际使用中，新部署的 TidbCluster 可以加入任意的已经部署的 TidbCluster。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -n ${cluster2_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster2_name}"
+  name: "${tc_name_2}"
 spec:
   version: v5.4.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_cluster_domain}"
+  clusterDomain: "${cluster_domain_2}"
+  acrossK8s: true
   cluster:
-    name: "${cluster1_name}"
-    namespace: "${cluster1_namespace}"
-    clusterDomain: "${cluster1_clusterdomain}"
+    name: "${tc_name_1}"
+    namespace: "${namespace_1}"
+    clusterDomain: "${cluster_domain_1}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -163,7 +143,11 @@ EOF
 
 可以按照以下步骤为跨多个 Kubernetes 集群部署的 TiDB 集群开启组件间 TLS。
 
-### 签发根证书
+下面以跨两个 Kubernetes 部署 TiDB 集群为例进行介绍，将在每个 Kubernetes 集群部署一个 TidbCluster。
+
+后文中，`${tc_name_1}`、`${tc_name_2}` 分别代表将部署到各个 Kubernetes 集群的 TidbCluster 的名字，`${namespace_1}` 和 `${namespace_2}` 分别代表各 TidbCluster 将部署到的命名空间，`${cluster_domain_1}` 和 `${cluster_domain_2}` 分别代表各个 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+
+### 第 1 步：签发根证书
 
 #### 使用 cfssl 系统签发根证书
 
@@ -171,18 +155,9 @@ EOF
 
 #### 使用 cert-manager 系统签发根证书
 
-如果你使用 `cert-manager`，只需要在初始集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他准备加入的新集群，其他集群只需要创建组件证书签发 `Issuer`（在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 `${cluster_name}-tidb-issuer` 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
+如果你使用 `cert-manager`，只需要在初始 Kubernetes 集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他的 Kubernetes 集群，其他集群只需要创建组件证书签发 `Issuer`（在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 `${cluster_name}-tidb-issuer` 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
-1. 在初始集群上创建 `CA Issuer` 和创建 `CA Certificate`。
-
-    根据实际情况设置以下环境变量：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    cluster_name="cluster1"
-    namespace="pingcap"
-    ```
+1. 在初始 Kubernetes 集群上创建 `CA Issuer` 和创建 `CA Certificate`。
 
     执行以下指令：
 
@@ -193,7 +168,7 @@ EOF
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-selfsigned-ca-issuer
+      name: ${tc_name_1}-selfsigned-ca-issuer
       namespace: ${namespace}
     spec:
       selfSigned: {}
@@ -201,16 +176,16 @@ EOF
     apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
-      name: ${cluster_name}-ca
-      namespace: ${namespace}
+      name: ${tc_name_1}-ca
+      namespace: ${namespace_1}
     spec:
-      secretName: ${cluster_name}-ca-secret
+      secretName: ${tc_name_1}-ca-secret
       commonName: "TiDB"
       isCA: true
       duration: 87600h # 10yrs
       renewBefore: 720h # 30d
       issuerRef:
-        name: ${cluster_name}-selfsigned-ca-issuer
+        name: ${tc_name_1}-selfsigned-ca-issuer
         kind: Issuer
     EOF
     ```
@@ -222,7 +197,7 @@ EOF
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
+    kubectl get secret ${tc_name_1}-ca-secret -n ${namespace_1} -o yaml > ca.yaml
     ```
 
     删除 Secret YAML 文件中无关信息，删除后 YAML 文件如下所示，其中 `data` 内信息已省略：
@@ -235,33 +210,23 @@ EOF
       tls.key: LS0t...tCg==
     kind: Secret
     metadata:
-      name: cluster1-ca-secret
+      name: ${tc_name_2}-ca-secret
     type: kubernetes.io/tls
     ```
 
-3. 将导出的 CA 导入到其他集群。
+3. 将导出的 CA 导入到其他 Kubernetes 集群。
 
     你需要配置这里的 `namespace` 使得相关组件可以访问到 CA 证书：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl apply -f ca.yaml -n ${namespace}
+    kubectl apply -f ca.yaml -n ${namespace_2}
     ```
 
-4. 在初始集群和新集群创建组件证书签发 `Issuer`，使用该 CA。
+4. 在所有 Kubernetes 集群创建组件证书签发 `Issuer`，使用该 CA。
 
-    1. 在初始集群上，创建组件间证书签发 `Issuer`。
-
-        根据实际情况设置以下环境变量：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        cluster_name="cluster1"
-        namespace="pingcap"
-        ca_secret_name="cluster1-ca-secret"
-        ```
+    1. 在初始 Kubernetes 集群上，创建组件间证书签发 `Issuer`。
 
         执行以下指令：
 
@@ -272,26 +237,16 @@ EOF
         apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
-          name: ${cluster_name}-tidb-issuer
-          namespace: ${namespace}
+          name: ${tc_name_1}-tidb-issuer
+          namespace: ${namespace_1}
         spec:
           ca:
-            secretName: ${ca_secret_name}
+            secretName: ${tc_name_1}-ca-secret
         EOF
         ```
 
-    2. 在新集群上，创建组件间证书签发 `Issuer`。
+    2. 在其他 Kubernetes 集群上，创建组件间证书签发 `Issuer`。
 
-       根据实际情况设置以下环境变量，其中 `ca_secret_name` 需要指向你刚才导入的存放 `CA` 的 `Secret`，`cluster_name` 和 `namespace` 在下面的操作中需要用到：
-
-       {{< copyable "shell-regular" >}}
-
-       ```bash
-       cluster_name="cluster2"
-       namespace="pingcap"
-       ca_secret_name="cluster1-ca-secret"
-       ```
-       
        执行以下指令：
 
        {{< copyable "shell-regular" >}}
@@ -301,33 +256,21 @@ EOF
        apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
-         name: ${cluster_name}-tidb-issuer
-         namespace: ${namespace}
+         name: ${tc_name_2}-tidb-issuer
+         namespace: ${namespace_2}
        spec:
          ca:
-           secretName: ${ca_secret_name}
+           secretName: ${tc_name_2}-ca-secret
        EOF
        ```
 
-### 为各个 Kubernetes 集群的 TiDB 组件签发证书
+### 第 2 步：为各个 Kubernetes 集群的 TiDB 组件签发证书
 
-你需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录， 例如 `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`。
+你需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录。例如，初始 TidbCluster 的配置为 `${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}`。
 
 #### 使用 cfssl 系统为 TiDB 组件签发证书
 
-如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，`pd-server.json` 文件如下所示。
-
-根据实际情况设置以下环境变量：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster_name=cluster2
-cluster_domain=cluster2.com
-namespace=pingcap
-```
-
-`pd-server.json`可以通过如下指令创建：
+如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，可以通过如下指令创建初始 TidbCluster 的 `pd-server.json` 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -338,18 +281,18 @@ cat << EOF > pd-server.json
     "hosts": [
       "127.0.0.1",
       "::1",
-      "${cluster_name}-pd",
-      "${cluster_name}-pd.${namespace}",
-      "${cluster_name}-pd.${namespace}.svc",
-      "${cluster_name}-pd.${namespace}.svc.${cluster_domain}",
-      "${cluster_name}-pd-peer",
-      "${cluster_name}-pd-peer.${namespace}",
-      "${cluster_name}-pd-peer.${namespace}.svc",
-      "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
-      "*.${cluster_name}-pd-peer",
-      "*.${cluster_name}-pd-peer.${namespace}",
-      "*.${cluster_name}-pd-peer.${namespace}.svc",
-      "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+      "${tc_name_1}-pd",
+      "${tc_name_1}-pd.${namespace_1}",
+      "${tc_name_1}-pd.${namespace_1}.svc",
+      "${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}",
+      "${tc_name_1}-pd-peer",
+      "${tc_name_1}-pd-peer.${namespace_1}",
+      "${tc_name_1}-pd-peer.${namespace_1}.svc",
+      "${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}",
+      "*.${tc_name_1}-pd-peer",
+      "*.${tc_name_1}-pd-peer.${namespace_1}",
+      "*.${tc_name_1}-pd-peer.${namespace_1}.svc",
+      "*.${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
     ],
     "key": {
         "algo": "ecdsa",
@@ -368,19 +311,7 @@ EOF
 
 #### 使用 cert-manager 系统为 TiDB 组件签发证书
 
-如果使用 `cert-manager`，以创建 PD 组件所使用的证书为例，`Certifcates` 如下所示。
-
-通过以下指令设置环境变量：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster_name="cluster2"
-namespace="pingcap"
-cluster_domain="cluster2.com"
-```
-
-执行以下指令：
+如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certifcates` 如下所示。
 
 {{< copyable "shell-regular" >}}
 
@@ -389,10 +320,10 @@ cat << EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ${cluster_name}-pd-cluster-secret
-  namespace: ${namespace}
+  name: ${tc_name_1}-pd-cluster-secret
+  namespace: ${namespace_1}
 spec:
-  secretName: ${cluster_name}-pd-cluster-secret
+  secretName: ${tc_name_1}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
   subject:
@@ -403,23 +334,23 @@ spec:
     - server auth
     - client auth
   dnsNames:
-    - "${cluster_name}-pd"
-    - "${cluster_name}-pd.${namespace}"
-    - "${cluster_name}-pd.${namespace}.svc"
-    - "${cluster_name}-pd.${namespace}.svc.${cluster_domain}"
-    - "${cluster_name}-pd-peer"
-    - "${cluster_name}-pd-peer.${namespace}"
-    - "${cluster_name}-pd-peer.${namespace}.svc"
-    - "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
-    - "*.${cluster_name}-pd-peer"
-    - "*.${cluster_name}-pd-peer.${namespace}"
-    - "*.${cluster_name}-pd-peer.${namespace}.svc"
-    - "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+    - "${tc_name_1}-pd"
+    - "${tc_name_1}-pd.${namespace_1}"
+    - "${tc_name_1}-pd.${namespace_1}.svc"
+    - "${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}"
+    - "${tc_name_1}-pd-peer"
+    - "${tc_name_1}-pd-peer.${namespace_1}"
+    - "${tc_name_1}-pd-peer.${namespace_1}.svc"
+    - "${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
+    - "*.${tc_name_1}-pd-peer"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}.svc"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
   ipAddresses:
   - 127.0.0.1
   - ::1
   issuerRef:
-    name: ${cluster_name}-tidb-issuer
+    name: ${tc_name_1}-tidb-issuer
     kind: Issuer
     group: cert-manager.io
 EOF
@@ -432,28 +363,18 @@ EOF
 - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
 - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
 
-### 部署初始集群
+### 第 3 步：部署初始 TidbCluster
 
-通过如下命令部署初始化集群，实际使用中需要根据你的实际情况设置 `cluster1_name` 和 `cluster1_cluster_domain` 变量的内容，其中 `cluster1_name` 为集群 1 的集群名称，`cluster1_cluster_domain` 为集群 1 的 `Cluster Domain`，`cluster1_namespace` 为集群 1 的命名空间。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书。
-
-根据实际情况设置以下环境变量：
+通过如下命令部署初始 TidbCluster。下面的 YAML 文件已经开启了 TLS 功能，并通过配置 `cert-allowed-cn`，使得各个组件开始验证由 `CN` 为 `TiDB` 的 `CA` 所签发的证书。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-```
-
-执行以下指令：
-
-```
-cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_1} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster1_name}"
+  name: "${tc_name_1}"
 spec:
   version: v5.4.0
   timezone: UTC
@@ -462,7 +383,8 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_cluster_domain}"
+  clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -470,7 +392,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -480,7 +402,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -492,41 +414,25 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
 EOF
 ```
 
-### 部署新集群加入初始集群
+### 第 4 步：部署新的 TidbCluster 加入 TiDB 集群
 
-等待集群 1 完成部署，完成部署后，创建集群 2，相关命令如下。在实际使用中，集群 1 并不一定是初始集群，可以指定多集群内的任一集群加入。
-
-根据实际情况设置以下环境变量：
+等待初始集群部署完成部署后，创建新的 TidbCluster 加入集群。在实际使用中，新部署的 TidbCluster 可以加入任意的已经部署的 TidbCluster。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-
-cluster2_name="cluster2"
-cluster2_cluster_domain="cluster2.com"
-cluster2_namespace="pingcap"
-```
-
-执行以下指令：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cat << EOF | kubectl apply -n ${cluster2_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster2_name}"
+  name: "${tc_name_2}"
 spec:
   version: v5.4.0
   timezone: UTC
@@ -535,11 +441,12 @@ spec:
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_cluster_domain}"
+  clusterDomain: "${cluster_domain_2}"
+  acrossK8s: true
   cluster:
-    name: "${cluster1_name}"
-    namespace: "${cluster1_namespace}"
-    clusterDomain: "${cluster1_clusterdomain}"
+    name: "${tc_name_1}"
+    namespace: "${namespace_1}"
+    clusterDomain: "${cluster_domain_1}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -547,7 +454,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
         cert-allowed-cn:
           - TiDB
@@ -557,7 +464,7 @@ spec:
     replicas: 1
     requests:
       storage: "10Gi"
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -569,7 +476,7 @@ spec:
       type: ClusterIP
     tlsClient:
       enabled: true
-    config: 
+    config:
       security:
        cert-allowed-cn:
          - TiDB
@@ -578,12 +485,12 @@ EOF
 
 ## 升级 TiDB 集群
 
-当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改各 Kubernetes 集群的 TidbCluster 定义中各组件的 version 配置。
+当跨 Kubernetes 集群部署一个 TiDB 集群时，如果要对 TiDB 集群的各组件 Pod 进行滚动升级，请按照本文中的步骤依次修改各 Kubernetes 集群的 TidbCluster 定义中各组件的 `version` 配置。
 
 1. 升级所有 Kubernetes 集群的 PD 版本。
 
-   1. 修改集群 1 定义中的 `spec.pd.version` 字段。
-   
+   1. 修改初始 TidbCluster 定义中的 `spec.pd.version` 字段。
+
       ```yaml
       apiVersion: pingcap.com/v1alpha1
       kind: TidbCluster
@@ -592,10 +499,10 @@ EOF
         pd:
           version: ${version}
       ```
-    
-   2. 查看 PD Pods 状态，等待集群 1 中的 PD Pod 都重建完毕进入 `Running` 状态。
 
-   3. 按照前两步，升级其他集群的 PD 版本。
+   2. 查看 PD Pods 状态，等待初始 TidbCluster 对应的 PD Pod 都重建完毕进入 `Running` 状态。
+
+   3. 按照前两步，升级其他 TidbCluster 的 PD 版本。
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
 
@@ -605,42 +512,42 @@ EOF
    4. 升级所有 Kubernetes 集群的 TiDB 版本。
    5. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
-## 退出和回收已加入集群
+## 退出和回收已加入的 TidbCluster
 
 当你需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
 
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
-以上面文档创建的集群 2 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0：
+以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
+kubectl patch tc ${tc_name_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-等待集群 2 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
+等待第二个 TidbCluster 状态变为 `Ready`，相关组件此时应被缩容到 0 副本：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
+kubectl get pods -l app.kubernetes.io/instance=${tc_name_2} -n ${namespace_2}
 ```
 
-Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，集群 2 已经退出集群，查看集群 2 的集群状态：
+Pod 列表显示为 `No resources found.`，此时 Pod 已经被全部缩容，TidbCluster 对应组件已经退出 TiDB 集群，查看状态：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get tc cluster2
+kubectl get tc ${tc_name_2} -n ${namespace_2}
 ```
 
-结果显示集群 2 为 `Ready` 状态，此时可以删除该对象，对相关资源进行回收。
+结果显示第二个 TidbCluster  为 `Ready` 状态，此时可以删除该对象，对相关资源进行回收。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl delete tc cluster2
+kubectl delete tc ${tc_name_2} -n ${namespace_2}
 ```
 
 通过上述步骤完成已加入集群的退出和资源回收。
@@ -651,21 +558,37 @@ kubectl delete tc cluster2
 >
 > 目前此场景属于实验性支持，可能会造成数据丢失，请谨慎使用。
 
-1. 更新 `.spec.clusterDomain` 配置：
+已有数据集群指的是已部署的 TiDB 集群，且在部署时已设置 `spec.acrossK8s: false`。
+
+根据构建的多个 Kubernetes 集群之间的网络情况不同，有不同的方法。
+
+如果所有 Kubernetes 集群有着相同的 Cluster Domain，那么只需要更新 TidbCluster 的 `spec.acrossK8s` 配置。执行以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
+```
+
+修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
+
+如果各个 Kubernetes 集群有着不同的 Cluster Domain，那么需要更新 TidbCluster 的 `spec.clusterDomain` 和 `spec.acrossK8s` 配置。具体步骤如下：
+
+1. 更新 `spec.clusterDomain` 与 `spec.acrossK8s` 配置：
 
     根据你的 Kubernetes 集群信息中的 `clusterDomain` 配置下面的参数：
 
     > **警告：**
-    > 
+    >
     > 目前需要你使用正确的信息配置 `clusterDomain`，配置修改后无法再次修改。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com"}}'
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com", "acrossK8s": true}}'
     ```
 
-    修改完成后，TiDB 集群进入滚动更新状态。
+    修改完成后，TiDB 集群进入滚动更新状态，等待滚动更新结束。
 
 2. 更新 PD 的 `PeerURL` 信息：
 
@@ -690,7 +613,7 @@ kubectl delete tc cluster2
         > **注意：**
         >
         > 如果集群开启了 TLS，使用 curl 命令时需要配置证书。例如：
-        > 
+        >
         > `curl --cacert /var/lib/pd-tls/ca.crt --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key https://127.0.0.1:2379/v2/members`
 
         执行后输出如下结果：
@@ -710,5 +633,7 @@ kubectl delete tc cluster2
         curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
         -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
         ```
+
+完成上述步骤后，该 TidbCluster 可以作为跨 Kubernetes 集群部署 TiDB 集群的初始 TidbCluster。可以参考[部署新的 TidbCluster 加入 TiDB 集群](#第-2-步部署新的-tidbcluster-加入-tidb-集群)一节部署其他的 TidbCluster。
 
 更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。
