@@ -5,28 +5,17 @@ summary: 介绍如何使用 BR、Dumpling、TiDB Lightning 工具对 Kubernetes 
 
 # 备份与恢复简介
 
-本文档介绍如何使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)、[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+本文档介绍如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。备份与恢复中所使用的工具有 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)、[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 和 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。
 
-TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现：
+[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 是一个数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
-+ 如果 TiDB 集群版本 >= v3.1，可以参考以下文档：
+[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 是一个数据导入工具，该工具可以把 Dumpling 或 CSV 输出格式的数据快速导入到 TiDB 中，可以用于完成逻辑上的全量恢复或者导入。
 
-    - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
-    - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
-    - [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
-    - [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
-    - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
-    - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
-
-+ 如果 TiDB 集群版本 < v3.1，可以参考以下文档：
-
-    - [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
-    - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
-    - [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)
-    - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
+[BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Dumpling 和 Mydumper，BR 更适合大数据量的场景，BR 只支持 TiDB v3.1 及以上版本。如果需要对延迟不敏感的增量备份，请参阅 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。如果需要实时的增量备份，请参阅 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)。
 
 ## 使用场景
 
+<<<<<<< HEAD
 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 是一个数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。如果需要实时的增量备份，请参阅 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)。
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/get-started-with-tidb-lightning) 是一个将全量数据高速导入到 TiDB 集群的工具，TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，TiDB Lightning 支持 Dumpling 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
@@ -208,17 +197,23 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
     * `publicReadWrite`
 
     如果不设置 bucket ACL 策略，则默认策略为 `private`。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
+=======
+### 数据备份
+>>>>>>> 020c8501 (zh: optimize backup/restore overview (#1603))
 
-### Local 存储字段介绍
+如果你对数据备份有以下要求，可考虑使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 对 TiDB 进行数据备份：
 
-* `.spec.local.prefix`：持久卷存储目录。如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
-* `.spec.local.volume`：持久卷配置。
-* `.spec.local.volumeMount`：持久卷挂载配置。
+- 备份的数据量较大，而且要求备份速度较快
+- 直接备份数据的 SST 文件（键值对）
+- 对延迟不敏感的增量备份
 
-## Restore CR 字段介绍
+BR 相关使用文档可参考：
 
-为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` Custom Resource (CR) 对象来描述一次恢复，具体恢复过程可参考 [备份与恢复简介](#备份与恢复简介)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
+- [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
+- [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
+- [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
 
+<<<<<<< HEAD
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。
     - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
@@ -229,52 +224,39 @@ TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CR
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
 * `.spec.to.secretName`：存储 `.spec.to.user` 用户的密码的 secret。
 * `.spec.to.tlsClientSecretName`：指定恢复备份使用的存储证书的 Secret。
+=======
+如果你对数据备份有以下要求，可考虑使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 对 TiDB 进行数据备份：
+>>>>>>> 020c8501 (zh: optimize backup/restore overview (#1603))
 
-    如果 TiDB 集群开启了 [TLS](enable-tls-between-components.md)，但是不想使用[文档](enable-tls-between-components.md)中创建的 `${cluster_name}-cluster-client-secret` 恢复备份，可以通过这个参数为恢复备份指定一个 Secret，可以通过如下命令生成：
+- 导出 SQL 或 CSV 格式的数据
+- 对单条 SQL 语句的内存进行限制
+- 导出 TiDB 的历史数据快照
 
-    {{< copyable "shell-regular" >}}
+Dumpling 相关使用文档可参考：
 
-    ```shell
-    kubectl create secret generic ${secret_name} --namespace=${namespace} --from-file=tls.crt=${cert_path} --from-file=tls.key=${key_path} --from-file=ca.crt=${ca_path}
-    ```
+- [使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-s3.md)
+- [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
 
-* `.spec.storageClassName`：指定恢复时所需的 PV 类型。
-* `.spec.storageSize`：指定恢复集群时所需的 PV 大小。该值应大于 TiDB 集群备份的数据大小。
-* `.spec.tableFilter`：恢复时指定让 BR 恢复符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/) 的表。默认情况下该字段可以不用配置。
+### 数据恢复
 
-    当不配置时，如果使用 TiDB Lightning 恢复，`tableFilter` 字段的默认值如下：
+如果你需要从由 BR 备份出的 SST 文件对 TiDB 进行数据恢复，则应使用 BR。相关使用文档可参考：
 
-    ```bash
-    tableFilter:
-    - "*.*"
-    - "!/^(mysql|test|INFORMATION_SCHEMA|PERFORMANCE_SCHEMA|METRICS_SCHEMA|INSPECTION_SCHEMA)$/.*"
-    ```
+- [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
+- [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+- [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
 
-    如果使用 BR 恢复，BR 会恢复备份文件中的所有数据库：
+如果你需要从由 Dumpling 导出的或其他格式兼容的 SQL 或 CSV 文件对 TiDB 进行数据恢复，则应使用 TiDB Lightning。相关使用文档可参考：
 
-    > **注意：**
-    >
-    > 如果要使用排除规则 `"!db.table"` 导出除 `db.table` 的所有表，那么在 `"!db.table"` 前必须先添加 `*.*` 规则。如下面例子所示：
-    >
-    > ```
-    > tableFilter:
-    > - "*.*"
-    > - "!db.table"
-    > ```
+- [使用 TiDB Lightning 恢复兼容 S3 的存储上的备份数据](restore-from-s3.md)
+- [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
 
-* `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
-* `.spec.s3`：S3 兼容存储相关配置，具体介绍参考 [S3 字段介绍](#s3-存储字段介绍)。
-* `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
-* `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
+## 备份与恢复过程
 
-## BackupSchedule CR 字段介绍
+为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户需要创建一个自定义的 [`Backup` Custom Resource](backup-restore-cr.md#backup-cr-字段介绍) (CR) 对象来描述一次备份，或者创建一个自定义的 [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-字段介绍) 对象来描述一个定时备份。
 
-`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。下面介绍 `backupSchedule` 独有的配置项：
+为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 [`Restore` CR](backup-restore-cr.md#restore-cr-字段介绍) 对象来描述一次恢复。
 
-+ `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
-+ `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
-+ `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-+ `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
+在创建完对应的 CR 对象后，TiDB Operator 将根据相应配置并选择对应的工具执行备份或恢复。
 
 ## 删除备份的 Backup CR
 
