@@ -396,11 +396,12 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-   name: ${tc_name}
+   name: ${tc_name_1}
    namespace: ${namespace_1}
 spec:
   # ...
   clusterDomain: "cluster.local"
+  acrossK8s: true
 ```
 
 ## 探索更多

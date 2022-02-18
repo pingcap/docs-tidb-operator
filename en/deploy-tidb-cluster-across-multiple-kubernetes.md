@@ -39,38 +39,30 @@ Unsupported scenarios:
 
 Before you deploy a TiDB cluster across multiple Kubernetes clusters, you need to first deploy the Kubernetes clusters required for this operation. The following deployment assumes that you have completed Kubernetes deployment.
 
-The following takes the deployment of two clusters as an example. Cluster #1 is the initial cluster. Create it according to the configuration given below. After cluster #1 is running normally, create cluster #2 according to the configuration given below. After creating and deploying clusters, two clusters run normally.
+The following takes the deployment of one TiDB cluster across two Kubernetes clusters as an example. One TidbCluster is deployed in each Kubernetes cluster.
 
-### Deploy the initial cluster
+In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster. `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster. `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes cluster.
 
-Set the following environment variables according to the actual situation. You need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual use. `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of cluster #1, and `cluster1_namespace` is the namespace of cluster #1.
+### Step 1. Deploy the initial TidbCluster
 
-{{< copyable "shell-regular" >}}
-
-```bash
-
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-```
-
-Run the following command:
+Create and deploy the initial TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_1} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster1_name}"
+  name: "${tc_name_1}"
 spec:
-  version: v4.0.9
+  version: v5.4.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_cluster_domain}"
+  clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -96,44 +88,32 @@ spec:
 EOF
 ```
 
-### Deploy the new cluster to join the initial cluster
+In the above configuration, the field `spec.acrossK8s: true` is required. It indicates that the TiDB cluster is deployed across Kubernetes clusters.
 
-You can wait for the cluster #1 to complete the deployment, and then create cluster #2. In the actual situation, cluster #2 refers to the cluster you newly created. You can create a new cluster to join any existing cluster in multiple clusters.
+### Step 2. Deploy the new TidbCluster to join the TiDB cluster
 
-Refer to the following example and fill in the relevant information such as `Name`, `Cluster Domain`, and `Namespace` of cluster #1 and cluster #2 according to the actual situation:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-cluster2_name="cluster2"
-cluster2_cluster_domain="cluster2.com"
-cluster2_namespace="pingcap"
-```
-
-Run the following command:
+After the initial cluster completes the deployment, you can deploy the new TidbCluster to join the TiDB cluster. You can create a new TidbCluster to join any existing TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat << EOF | kubectl apply -n ${cluster2_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster2_name}"
+  name: "${tc_name_2}"
 spec:
-  version: v4.0.9
+  version: v5.4.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_cluster_domain}"
+  clusterDomain: "${cluster_domain_2}"
+  acrossK8s: true
   cluster:
-    name: "${cluster1_name}"
-    namespace: "${cluster1_namespace}"
-    clusterDomain: "${cluster1_clusterdomain}"
+    name: "${tc_name_1}"
+    namespace: "${namespace_1}"
+    clusterDomain: "${cluster_domain_1}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -163,7 +143,11 @@ EOF
 
 You can follow the steps below to enable TLS between TiDB components for TiDB clusters deployed across multiple Kubernetes clusters.
 
-### Issue the root certificate
+The following takes the deployment of a TiDB cluster across two Kubernetes clusters as an example. One TidbCluster is deployed in each Kubernetes cluster.
+
+In the following sections, `${tc_name_1}` and `${tc_name_2}` refer to the name of TidbCluster that will be deployed in each Kubernetes cluster. `${namespace_1}` and `${namespace_2}` refer to the namespace of TidbCluster. `${cluster_domain_1}` and `${cluster_domain_2}` refer to the [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction) of each Kubernetes cluster.
+
+### Step 1. Issue the root certificate
 
 #### Use `cfssl`
 
@@ -177,16 +161,7 @@ If you use `cert-manager`, you only need to create a `CA Issuer` and a `CA Certi
 
 For other clusters, you only need to create a component certificate `Issuer` (refers to `${cluster_name}-tidb-issuer` in the [TLS document](enable-tls-between-components.md#using-cert-manager)) and configure the `Issuer` to use the `CA`. The detailed process is as follows:
 
-1. Create a `CA Issuer` and a `CA Certificate` in the initial cluster.
-
-    Set the following environment variables according to the actual situation:
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    cluster_name="cluster1"
-    namespace="pingcap"
-    ```
+1. Create a `CA Issuer` and a `CA Certificate` in the initial Kubernetes cluster.
 
     Run the following command:
 
@@ -197,7 +172,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-selfsigned-ca-issuer
+      name: ${tc_name_1}-selfsigned-ca-issuer
       namespace: ${namespace}
     spec:
       selfSigned: {}
@@ -205,16 +180,16 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
-      name: ${cluster_name}-ca
-      namespace: ${namespace}
+      name: ${tc_name_1}-ca
+      namespace: ${namespace_1}
     spec:
-      secretName: ${cluster_name}-ca-secret
+      secretName: ${tc_name_1}-ca-secret
       commonName: "TiDB"
       isCA: true
       duration: 87600h # 10yrs
       renewBefore: 720h # 30d
       issuerRef:
-        name: ${cluster_name}-selfsigned-ca-issuer
+        name: ${tc_name_1}-selfsigned-ca-issuer
         kind: Issuer
     EOF
     ```
@@ -226,7 +201,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     {{< copyable "shell-regular" >}}
 
     ```bash
-     kubectl get secret cluster1-ca-secret -n ${namespace} -o yaml > ca.yaml
+    kubectl get secret ${tc_name_1}-ca-secret -n ${namespace_1} -o yaml > ca.yaml
     ```
 
     Delete irrelevant information in the Secret YAML file. After the deletion, the YAML file is as follows (the information in `data` is omitted):
@@ -239,7 +214,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
       tls.key: LS0t...tCg==
     kind: Secret
     metadata:
-      name: cluster1-ca-secret
+      name: ${tc_name_2}-ca-secret
     type: kubernetes.io/tls
     ```
 
@@ -250,22 +225,12 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl apply -f ca.yaml -n ${namespace}
+    kubectl apply -f ca.yaml -n ${namespace_2}
     ```
 
-4. Create a component certificate `Issuer` in the initial cluster and the new cluster, and configure it to use this CA.
+4. Create a component certificate `Issuer` in all Kubernetes clusters and configure it to use this CA.
 
-    1. Create an `Issuer` that issues certificates between TiDB components in the initial cluster.
-
-        Set the following environment variables according to the actual situation:
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        cluster_name="cluster1"
-        namespace="pingcap"
-        ca_secret_name="cluster1-ca-secret"
-        ```
+    1. In the initial Kubernetes cluster, create an `Issuer` that issues certificates between TiDB components.
 
         Run the following command:
 
@@ -276,25 +241,15 @@ For other clusters, you only need to create a component certificate `Issuer` (re
         apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
-          name: ${cluster_name}-tidb-issuer
-          namespace: ${namespace}
+          name: ${tc_name_1}-tidb-issuer
+          namespace: ${namespace_1}
         spec:
           ca:
-            secretName: ${ca_secret_name}
+            secretName: ${tc_name_1}-ca-secret
         EOF
         ```
 
-    2. Create an `Issuer` that issues certificates between TiDB components in the new cluster.
-
-        Set the following environment variables according to the actual situation. Among them, `ca_secret_name` points to the imported `Secret` that stores the `CA`. You can use the `cluster_name` and `namespace` in the following operations:
-
-       {{< copyable "shell-regular" >}}
-
-       ```bash
-       cluster_name="cluster2"
-       namespace="pingcap"
-       ca_secret_name="cluster1-ca-secret"
-       ```
+    2. In other Kubernetes clusters, create an `Issuer` that issues certificates between TiDB components.
 
        Run the following command:
 
@@ -305,33 +260,21 @@ For other clusters, you only need to create a component certificate `Issuer` (re
        apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
-         name: ${cluster_name}-tidb-issuer
-         namespace: ${namespace}
+         name: ${tc_name_2}-tidb-issuer
+         namespace: ${namespace_2}
        spec:
          ca:
-           secretName: ${ca_secret_name}
+           secretName: ${tc_name_2}-ca-secret
        EOF
        ```
 
-### Issue certificates for the TiDB components of each Kubernetes cluster
+### Step 2. Issue certificates for the TiDB components of each Kubernetes cluster
 
-You need to issue a component certificate for each TiDB component on the Kubernetes cluster. When issuing a component certificate, you need to add an authorization record ending with `.${cluster_domain}` to the hosts, for example, `${cluster_name}-pd.${namespace}.svc.${cluster_domain}`.
+You need to issue a component certificate for each TiDB component on the Kubernetes cluster. When issuing a component certificate, you need to add an authorization record ending with `.${cluster_domain}` to the hosts, for example, the record of the initial TidbCluster is `${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}`.
 
 #### Use the `cfssl` system to issue certificates for TiDB components
 
-The following example shows how to use `cfssl` to create a certificate used by PD. The `pd-server.json` file is as follows.
-
-Set the following environment variables according to the actual situation:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster_name=cluster2
-cluster_domain=cluster2.com
-namespace=pingcap
-```
-
-You can create the `pd-server.json` by the following command:
+The following example shows how to use `cfssl` to create a certificate used by PD. Run the following command to create the `pd-server.json` file for the initial TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
@@ -342,18 +285,18 @@ cat << EOF > pd-server.json
     "hosts": [
       "127.0.0.1",
       "::1",
-      "${cluster_name}-pd",
-      "${cluster_name}-pd.${namespace}",
-      "${cluster_name}-pd.${namespace}.svc",
-      "${cluster_name}-pd.${namespace}.svc.${cluster_domain}",
-      "${cluster_name}-pd-peer",
-      "${cluster_name}-pd-peer.${namespace}",
-      "${cluster_name}-pd-peer.${namespace}.svc",
-      "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}",
-      "*.${cluster_name}-pd-peer",
-      "*.${cluster_name}-pd-peer.${namespace}",
-      "*.${cluster_name}-pd-peer.${namespace}.svc",
-      "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+      "${tc_name_1}-pd",
+      "${tc_name_1}-pd.${namespace_1}",
+      "${tc_name_1}-pd.${namespace_1}.svc",
+      "${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}",
+      "${tc_name_1}-pd-peer",
+      "${tc_name_1}-pd-peer.${namespace_1}",
+      "${tc_name_1}-pd-peer.${namespace_1}.svc",
+      "${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}",
+      "*.${tc_name_1}-pd-peer",
+      "*.${tc_name_1}-pd-peer.${namespace_1}",
+      "*.${tc_name_1}-pd-peer.${namespace_1}.svc",
+      "*.${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
     ],
     "key": {
         "algo": "ecdsa",
@@ -372,19 +315,7 @@ EOF
 
 #### Use the `cert-manager` system to issue certificates for TiDB components
 
-The following example shows how to use `cert-manager` to create a certificate used by PD. `Certifcates` is shown below.
-
-Set the following environment variables according to the actual situation.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cluster_name="cluster2"
-namespace="pingcap"
-cluster_domain="cluster2.com"
-```
-
-Run the following command:
+The following example shows how to use `cert-manager` to create a certificate used by PD for the initial TidbCluster. `Certifcates` is shown below.
 
 {{< copyable "shell-regular" >}}
 
@@ -393,10 +324,10 @@ cat << EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ${cluster_name}-pd-cluster-secret
-  namespace: ${namespace}
+  name: ${tc_name_1}-pd-cluster-secret
+  namespace: ${namespace_1}
 spec:
-  secretName: ${cluster_name}-pd-cluster-secret
+  secretName: ${tc_name_1}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
   subject:
@@ -407,23 +338,23 @@ spec:
     - server auth
     - client auth
   dnsNames:
-    - "${cluster_name}-pd"
-    - "${cluster_name}-pd.${namespace}"
-    - "${cluster_name}-pd.${namespace}.svc"
-    - "${cluster_name}-pd.${namespace}.svc.${cluster_domain}"
-    - "${cluster_name}-pd-peer"
-    - "${cluster_name}-pd-peer.${namespace}"
-    - "${cluster_name}-pd-peer.${namespace}.svc"
-    - "${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
-    - "*.${cluster_name}-pd-peer"
-    - "*.${cluster_name}-pd-peer.${namespace}"
-    - "*.${cluster_name}-pd-peer.${namespace}.svc"
-    - "*.${cluster_name}-pd-peer.${namespace}.svc.${cluster_domain}"
+    - "${tc_name_1}-pd"
+    - "${tc_name_1}-pd.${namespace_1}"
+    - "${tc_name_1}-pd.${namespace_1}.svc"
+    - "${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}"
+    - "${tc_name_1}-pd-peer"
+    - "${tc_name_1}-pd-peer.${namespace_1}"
+    - "${tc_name_1}-pd-peer.${namespace_1}.svc"
+    - "${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
+    - "*.${tc_name_1}-pd-peer"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}.svc"
+    - "*.${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
   ipAddresses:
   - 127.0.0.1
   - ::1
   issuerRef:
-    name: ${cluster_name}-tidb-issuer
+    name: ${tc_name_1}-tidb-issuer
     kind: Issuer
     group: cert-manager.io
 EOF
@@ -436,39 +367,28 @@ For other TLS-related information, refer to the following documents:
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 
-### Deploy the initial cluster
+### Step 3. Deploy the initial TidbCluster
 
-This section introduces how to deploy and initialize the cluster.
-
-In actual use, you need to set the contents of the `cluster1_name` and `cluster1_cluster_domain` variables according to your actual situation, where `cluster1_name` is the cluster name of cluster #1, `cluster1_cluster_domain` is the `Cluster Domain` of cluster #1, and `cluster1_namespace` is the namespace of cluster #1. The following `YAML` file enables the TLS feature, and each component starts to verify the certificates issued by the `CN` for the `CA` of `TiDB` by configuring the `cert-allowed-cn`.
-
-Set the following environment variables according to the actual situation.
+Run the following commands to deploy the initial TidbCluster. The following `YAML` file enables the TLS feature and configures `cert-allowed-cn`, which makes each component start to verify the certificates issued by the `CN` for the `CA` of `TiDB`.
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-```
-
-Run the following command:
-
-```
-cat << EOF | kubectl apply -n ${cluster1_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_1} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster1_name}"
+  name: "${tc_name_1}"
 spec:
-  version: v4.0.9
+  version: v5.4.0
   timezone: UTC
   tlsCluster:
    enabled: true
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster1_cluster_domain}"
+  clusterDomain: "${cluster_domain_1}"
+  acrossK8s: true
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -505,46 +425,32 @@ spec:
 EOF
 ```
 
-### Deploy a new cluster to join the initial cluster
+### Step 4. Deploy a new TidbCluster to join the TiDB cluster
 
-You can wait for the cluster #1 to complete the deployment. After completing the deployment, you can create cluster #2. The related commands are as follows. In actual use, cluster #1 might not the initial cluster. You can specify cluster #2 to join any cluster in the multiple clusters.
-
-Set the following environment variables according to the actual situation:
+After the initial cluster completes the deployment, you can deploy the new TidbCluster to join the TiDB cluster. You can create a new TidbCluster to join any existing TidbCluster.
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cluster1_name="cluster1"
-cluster1_cluster_domain="cluster1.com"
-cluster1_namespace="pingcap"
-cluster2_name="cluster2"
-cluster2_cluster_domain="cluster2.com"
-cluster2_namespace="pingcap"
-```
-
-Run the following command:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cat << EOF | kubectl apply -n ${cluster2_namespace} -f -
+cat << EOF | kubectl apply -n ${namespace_2} -f -
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-  name: "${cluster2_name}"
+  name: "${tc_name_2}"
 spec:
-  version: v4.0.9
+  version: v5.4.0
   timezone: UTC
   tlsCluster:
    enabled: true
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
   configUpdateStrategy: RollingUpdate
-  clusterDomain: "${cluster2_cluster_domain}"
+  clusterDomain: "${cluster_domain_2}"
+  acrossK8s: true
   cluster:
-    name: "${cluster1_name}"
-    namespace: "${cluster1_namespace}"
-    clusterDomain: "${cluster1_clusterdomain}"
+    name: "${tc_name_1}"
+    namespace: "${namespace_1}"
+    clusterDomain: "${cluster_domain_1}"
   discovery: {}
   pd:
     baseImage: pingcap/pd
@@ -583,11 +489,11 @@ EOF
 
 ## Upgrade TiDB Cluster
 
-For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upgrade for each component Pod of the TiDB cluster, take the following steps in sequence to modify the version configuration of each component in the TidbCluster spec for each Kubernetes cluster.
+For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upgrade for each component Pod of the TiDB cluster, take the following steps in sequence to modify the `version` configuration of each component in the TidbCluster spec for each Kubernetes cluster.
 
 1. Upgrade PD versions for all Kubernetes clusters.
 
-   1. Modify the `spec.pd.version` field in the spec for cluster #1.
+   1. Modify the `spec.pd.version` field in the spec for the initial TidbCluster.
 
       ```yaml
       apiVersion: pingcap.com/v1alpha1
@@ -598,9 +504,9 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
           version: ${version}
       ```
 
-    2. Watch the status of PD Pods and wait for PD Pods in cluster #1 to finish recreation and become `Running`.
+    2. Watch the status of PD Pods and wait for PD Pods in the initial TidbCluster to finish recreation and become `Running`.
 
-    3. Repeat the first two substeps to upgrade all PD Pods in other clusters.
+    3. Repeat the first two substeps to upgrade all PD Pods in other TidbCluster.
 
 2. Take step 1 as an example, perform the following upgrade operations in sequence:
 
@@ -610,42 +516,42 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
     4. Upgrade TiDM versions for all Kubernetes clusters.
     5. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
 
-## Exit and reclaim clusters that already join a cross-Kubernetes cluster
+## Exit and reclaim TidbCluster that already join a cross-Kubernetes cluster
 
 When you need to make a cluster exit from the joined TiDB cluster deployed across Kubernetes and reclaim resources, you can perform the operation by scaling in the cluster. In this scenario, the following requirements of scaling-in need to be met.
 
 - After scaling in the cluster, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
-Take the cluster #2 created in [the last section](#deploy-a-new-cluster-to-join-the-initial-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you enable other components such as TiFlash, TiCDC, and Pump, set the number of these replicas to `0`:
+Take the second TidbCluster created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you have enabled other components such as TiFlash, TiCDC, and Pump, set the number of these replicas to `0`:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl patch tc cluster2 --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
+kubectl patch tc ${tc_name_2} -n ${namespace_2} --type merge -p '{"spec":{"pd":{"replicas":0},"tikv":{"replicas":0},"tidb":{"replicas":0}}}'
 ```
 
-Wait for the status of cluster #2 to become `Ready`, and scale in related components to `0` replica:
+Wait for the status of the second TidbCluster to become `Ready`, and scale in related components to `0` replica:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get pods -l app.kubernetes.io/instance=cluster2 -n pingcap
+kubectl get pods -l app.kubernetes.io/instance=${tc_name_2} -n ${namespace_2}
 ```
 
-The Pod list shows `No resources found`. At this time, Pods have all been scaled in, and cluster #2 exits the cluster. Check the cluster status of cluster #2:
+The Pod list shows `No resources found`. At this time, all Pods have been scaled in, and the second TidbCluster exits the cluster. Check the cluster status of the second TidbCluster:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get tc cluster2
+kubectl get tc ${tc_name_2} -n ${namespace_2}
 ```
 
-The result shows that cluster #2 is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
+The result shows that the second TidbCluster is in the `Ready` status. At this time, you can delete the object and reclaim related resources.
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl delete tc cluster2
+kubectl delete tc ${tc_name_2} -n ${namespace_2}
 ```
 
 Through the above steps, you can complete exit and resources reclaim of the joined clusters.
@@ -656,7 +562,23 @@ Through the above steps, you can complete exit and resources reclaim of the join
 >
 > Currently, this is an experimental feature and might cause data loss. Please use it carefully.
 
-1. Update `.spec.clusterDomain` configuration:
+A cluster with existing data refer to a deployed TiDB cluster with the configuration `spec.acrossK8s: false`.
+
+Depending on the network between multiple Kubernetes clusters, there are different methods.
+
+If all Kubernetes have the same Cluster Domain, you only need to update the `spec.crossK8s` configuration of TidbCluster. Run the following command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}'
+```
+
+After the modification, wait for the TiDB cluster to complete rolling update.
+
+If each Kubernetes have different Cluster Domain, you need to update the `spec.clusterDomain` and `spec.acrossK8s` fields. Take the following steps:
+
+1. Update the `spec.clusterDomain` and `spec.acrossK8s` fields:
 
     Configure the following parameters according to the `clusterDomain` in your Kubernetes cluster information:
 
@@ -667,7 +589,7 @@ Through the above steps, you can complete exit and resources reclaim of the join
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com"}}'
+    kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"clusterDomain":"cluster1.com", "acrossK8s": true}}'
     ```
 
     After completing the modification, the TiDB cluster performs the rolling update.
@@ -714,5 +636,7 @@ Through the above steps, you can complete exit and resources reclaim of the join
         curl http://127.0.0.1:2379/v2/members/${member_ID} -XPUT \
         -H "Content-Type: application/json" -d '{"peerURLs":["${member_peer_url}"]}'
         ```
+
+After completing the above steps, this TidbCluster can be used as the initial TidbCluster for TiDB cluster deployment across Kubernetes clusters. You can refer the [section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) to deploy other TidbCluster.
 
 For more examples and development information, refer to [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster).

@@ -414,11 +414,12 @@ Take cluster 1 as an example. When you deploy the `TidbCluster` CR to cluster 1,
 apiVersion: pingcap.com/v1alpha1
 kind: TidbCluster
 metadata:
-   name: ${tc_name}
+   name: ${tc_name_1}
    namespace: ${namespace_1}
 spec:
   # ...
   clusterDomain: "cluster.local"
+  acrossK8s: true
 ```
 
 ## What's next
