@@ -94,9 +94,9 @@ TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，�
       storageSize: 1Gi
     ```
 
-    以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [GCS 字段介绍](backup-restore-overview.md#gcs-存储字段介绍)。
+    以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [GCS 字段介绍](backup-restore-cr.md#gcs-存储字段介绍)。
 
-    更多 `Restore` CR 字段的详细解释参考 [Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+    更多 `Restore` CR 字段的详细解释参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
 
 2. 创建好 `Restore` CR 后可通过以下命令查看恢复的状态：
 
