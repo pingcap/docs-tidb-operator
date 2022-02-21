@@ -43,8 +43,7 @@
     - [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
     - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
     - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
-  - Scale
-    - [Manually Scale](scale-a-tidb-cluster.md)
+  - [Scale](scale-a-tidb-cluster.md)
   - Upgrade
     - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
     - Upgrade TiDB Operator
