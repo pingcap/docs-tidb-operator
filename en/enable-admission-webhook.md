@@ -194,16 +194,6 @@ By default, the admission controller and Kubernetes api-server skip the [TLS ver
 
 TiDB Operator implements many functions using the admission controller. This section introduces the admission controller for each resource and its corresponding functions.
 
-* Admission controller for Pod validation
-
-    The admission controller for Pod validation guarantees the safe logon and safe logoff of the PD/TiKV/TiDB component. You can [restart a TiDB cluster in Kubernetes](restart-a-tidb-cluster.md) using this controller. The component is enabled by default if the admission controller is enabled.
-
-    ```yaml
-    admissionWebhook:
-      validation:
-        pods: true
-    ```
-
 * Admission controller for StatefulSet validation
 
     The admission controller for StatefulSet validation supports the gated launch of the TiDB/TiKV component in a TiDB cluster. The component is disabled by default if the admission controller is enabled.
@@ -245,16 +235,6 @@ TiDB Operator implements many functions using the admission controller. This sec
     ```
 
     For example, regarding `TidbCluster` resources, the admission controller for TiDB Operator resources validation checks the required fields of the `spec` field. When you create or update `TidbCluster`, if the check is not passed (for example, neither of the `spec.pd.image` filed and the `spec.pd.baseImage` field is defined), this admission controller refuses the request.
-
-* Admission controller for Pod modification
-
-    The admission controller for Pod modification supports the hotspot scheduling of TiKV in the auto-scaling scenario. To [enable TidbCluster auto-scaling](enable-tidb-cluster-auto-scaling.md), you need to enable this controller. The component is enabled by default if the admission controller is enabled.
-
-    ```yaml
-    admissionWebhook:
-      mutation:
-        pods: true
-    ```
 
 * Admission controller for TiDB Operator resources modification
 
