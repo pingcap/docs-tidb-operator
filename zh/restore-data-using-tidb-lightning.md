@@ -14,7 +14,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 > **注意：**
 > 
-> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考 v1.2 及以前的旧版文档部署 tikv-importer。
+> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#%E9%83%A8%E7%BD%B2-tikv-importer)部署 tikv-importer。
 
 此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
@@ -75,7 +75,6 @@ tidb-lightning Helm chart 支持从本地或远程获取备份数据，为此支
 
 ```yaml
 dataSource:
-  # for `local` source, the `nodeName` should be the label value of `kubernetes.io/hostname`.
   local:
     nodeName: kind-worker3
     hostPath: /data/export-20190820
@@ -187,7 +186,6 @@ dataSource:
         storage: 100Gi
         secretName: cloud-storage-secret
         path: s3:bench-data-us/sysbench/sbtest_16_1e7.tar.gz
-        # Directory support downloading all files in a remote directory, shadow dataSoure.remote.path if present
         # directory: s3:bench-data-us
     ```
     
@@ -204,9 +202,6 @@ dataSource:
 
 ```yaml
 dataSource:
-  # The backup data is on a PVC which is exported and unarchived from tidb-backup or scheduled backup.
-  # Note: when using this mode, the lightning needs to be deployed in the same namespace as the PVC
-  # and the `targetTidbCluster.namespace` needs to be configured explicitly
   adhoc:
     pvcName: tidb-cluster-scheduled-backup
     backupName: scheduled-backup-20190822-041004
