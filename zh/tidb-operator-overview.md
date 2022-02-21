@@ -14,11 +14,13 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
-| TiDB Operator 版本 | 适用的 TiDB 版本 |
+| TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
+| dev               | dev                 |
+| TiDB >= 5.4       | 1.3                 |
+| 5.1 <= TiDB < 5.4 | 1.3（推荐），1.2      |
+| 3.0 <= TiDB < 5.1 | 1.3（推荐），1.2，1.1 |
+| 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
 
 ## TiDB Operator 整体架构
 
