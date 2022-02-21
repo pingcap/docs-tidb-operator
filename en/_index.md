@@ -10,13 +10,6 @@ aliases: ['/docs/tidb-in-kubernetes/v1.0/']
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
-<<<<<<< HEAD
-| TiDB Operator version | Compatible TiDB versions |
-|:---|:---|
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
-=======
 | TiDB versions | Compatible TiDB Operator versions |
 |:---|:---|
 | dev               | dev                 |
@@ -24,7 +17,6 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | 5.1 <= TiDB < 5.4 | 1.3 (Recommended), 1.2      |
 | 3.0 <= TiDB < 5.1 | 1.3 (Recommended), 1.2, 1.1 |
 | 2.1 <= TiDB < v3.0| 1.0 (End of support)       |
->>>>>>> 3de96508 (en,zh: update tidb & operator version choice (#1678))
 
 TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
 

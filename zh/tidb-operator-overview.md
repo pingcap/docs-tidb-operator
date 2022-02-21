@@ -14,12 +14,11 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
-| TiDB Operator 版本 | 适用的 TiDB 版本 |
-|:---|:---|
-<<<<<<< HEAD
-| v1.0 | v2.1, v3.0 |
-| v1.1 | v3.0, v3.1, v4.0 |
-| dev | v3.0, v3.1, v4.0, dev |
+| dev               | dev                 |
+| TiDB >= 5.4       | 1.3                 |
+| 5.1 <= TiDB < 5.4 | 1.3（推荐），1.2      |
+| 3.0 <= TiDB < 5.1 | 1.3（推荐），1.2，1.1 |
+| 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
 
 ## TiDB Operator 整体架构
 
@@ -42,13 +41,6 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 4. PD、TiKV、TiDB 的 `Pod` 声明中会指定使用 `tidb-scheduler` 调度器，`tidb-scheduler` 会在调度对应 `Pod` 时应用 TiDB 的特定调度逻辑。
 
 基于上述的声明式控制流程，TiDB Operator 能够自动进行集群节点健康检查和故障恢复。部署、升级、扩缩容等操作也可以通过修改 `TidbCluster` 对象声明“一键”完成。
-=======
-| dev               | dev                 |
-| TiDB >= 5.4       | 1.3                 |
-| 5.1 <= TiDB < 5.4 | 1.3（推荐），1.2      |
-| 3.0 <= TiDB < 5.1 | 1.3（推荐），1.2，1.1 |
-| 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
->>>>>>> 3de96508 (en,zh: update tidb & operator version choice (#1678))
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 
