@@ -36,6 +36,11 @@ gcloud config set compute/region <gcp-region>
 
 使用以上命令，设置好你的 GCP 项目和默认的区域。
 
+## 推荐机型及存储
+
+* 推荐机型：出于性能考虑，推荐 PD 所在节点使用 n2-standard-4，TiDB 所在节点使用 n2-standard-8，TiKV 或 TiFlash 所在节点使用 n2-highmem-8。
+* 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
+
 ## 创建 GKE 集群和节点池
 
 1. 创建 GKE 集群和一个默认节点池：
@@ -55,15 +60,71 @@ gcloud config set compute/region <gcp-region>
     {{< copyable "shell-regular" >}}
 
     ```shell
-    gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+    gcloud container node-pools create pd --cluster tidb --machine-type n2-standard-4 --num-nodes=1 \
         --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
-    gcloud container node-pools create tikv --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
+    gcloud container node-pools create tikv --cluster tidb --machine-type n2-highmem-8 --num-nodes=1 \
         --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
-    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-8 --num-nodes=1 \
+    gcloud container node-pools create tidb --cluster tidb --machine-type n2-standard-8 --num-nodes=1 \
         --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
 此过程可能需要几分钟。
+
+## 配置 StorageClass
+
+创建 GKE 集群后默认会存在一个三个不同存储类型的 StorageClass：
+
+* standard：pd-standard 存储类型（默认）
+* standard-rwo：pd-balanced 存储类型
+* premium-rwo：pd-ssd 存储类型（推荐）
+
+为了提高存储的 IO 性能，推荐配置 StorageClass 的 `mountOptions` 来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+- nodelalloc,noatime
+```
+
+> **注意**:
+>
+> 默认的 pd-standard 存储类型不支持设置挂载选项 `nodelalloc` 和 `noatime`。
+
+### 使用本地存储
+
+请使用[区域永久性磁盘](https://cloud.google.com/compute/docs/disks#pdspecs)作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 GCP 部分实例类型提供的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
+
+> **注意：**
+>
+> * 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
+> * 由于 GKE 升级过程中节点重建会导致[本地盘数据会丢失](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)，在重建前你需要提前备份数据，因此不建议在生产环境中使用本地盘。
+
+1. 为 TiKV 创建附带本地存储的节点组。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    gcloud container node-pools create tikv --cluster tidb --machine-type n2-highmem-8 --num-nodes=1 --local-ssd-count 1 \
+      --node-labels dedicated=tikv --node-taints dedicated=tikv:NoSchedule
+    ```
+
+    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
+
+2. 部署 local volume provisioner。
+
+    本地存储需要使用 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    ```
+
+3. 使用本地存储。
+
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可。
 
 ## 部署 TiDB Operator
 
@@ -373,35 +434,3 @@ spec:
 
 ## 使用本地存储
 
-请使用[区域永久性磁盘](https://cloud.google.com/compute/docs/disks#pdspecs)作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 GCP 部分实例类型提供的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
-
-> **警告：**
->
-> 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
->
-> 由于 GKE 升级过程中节点重建，[本地盘数据会丢失](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。由于 GKE 升级或其他原因造成的节点重建，会导致需要迁移 TiKV 数据，如果无法接受这一点，则不建议在生产环境中使用本地盘。
-
-1. 为 TiKV 创建附带本地存储的节点组。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    gcloud container node-pools create tikv --cluster tidb --machine-type n1-standard-4 --num-nodes=1 --local-ssd-count 1 \
-      --node-labels dedicated=tikv --node-taints dedicated=tikv:NoSchedule
-    ```
-
-    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
-
-2. 部署 local volume provisioner。
-
-    本地存储需要使用 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
-    ```
-
-3. 使用本地存储。
-
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可。
