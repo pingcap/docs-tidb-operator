@@ -26,6 +26,7 @@
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
+<<<<<<< HEAD
   - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
   - 部署 TiDB 集群监控
     - [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
@@ -43,6 +44,30 @@
   - TiDB 集群伸缩
     - [手动扩缩容](scale-a-tidb-cluster.md)
     - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
+=======
+  - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
+  - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
+- 迁移
+  - [导入集群数据](restore-data-using-tidb-lightning.md)
+  - 从 MySQL 迁移
+    - [部署 DM](deploy-tidb-dm.md)
+    - [使用 DM 迁移 MySQL 数据到 TiDB 集群](use-tidb-dm.md)
+  - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
+- 管理
+  - 安全
+    - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
+    - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
+    - [为 DM 组件开启 TLS](enable-tls-for-dm.md)
+    - [同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
+    - [更新和替换 TLS 证书](renew-tls-certificate.md)
+    - [以非 root 用户运行](containers-run-as-non-root-user.md)
+  - [扩缩容](scale-a-tidb-cluster.md)
+  - 升级
+    - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
+    - 升级 TiDB Operator
+      - [常规升级](upgrade-tidb-operator.md)
+      - [灰度升级](canary-upgrade-tidb-operator.md)
+>>>>>>> 2fd8a3c0 (en, zh: update description for the alpha features (#1685))
   - 备份与恢复
     - [备份与恢复简介](backup-restore-overview.md)
     - [远程存储访问授权](grant-permissions-to-remote-storage.md)

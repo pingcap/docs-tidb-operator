@@ -25,6 +25,7 @@
   - [Deploy TiFlash](deploy-tiflash.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
+<<<<<<< HEAD
   - [Deploy TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy Multiple Sets of TiDB Operator](deploy-multiple-tidb-operator.md)
   - Deploy Monitoring
@@ -42,6 +43,28 @@
   - Scale TiDB Cluster
     - [Manually Scale](scale-a-tidb-cluster.md)
     - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
+=======
+- Migrate
+  - [Import Data](restore-data-using-tidb-lightning.md)
+  - Migrate from MySQL
+    - [Deploy DM](deploy-tidb-dm.md)
+    - [Migrate to TiDB Using DM](use-tidb-dm.md)
+  - [Migrate TiDB to Kubernetes](migrate-tidb-to-kubernetes.md)
+- Manage
+  - Secure
+    - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
+    - [Enable TLS between TiDB Components](enable-tls-between-components.md)
+    - [Enable TLS for DM](enable-tls-for-dm.md)
+    - [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
+    - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
+    - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
+  - [Scale](scale-a-tidb-cluster.md)
+  - Upgrade
+    - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
+    - Upgrade TiDB Operator
+      - [Normal Upgrade](upgrade-tidb-operator.md)
+      - [Canary Upgrade](canary-upgrade-tidb-operator.md)
+>>>>>>> 2fd8a3c0 (en, zh: update description for the alpha features (#1685))
   - Backup and Restore
     - [Overview](backup-restore-overview.md)
     - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)

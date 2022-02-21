@@ -191,16 +191,6 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
 
 TiDB Operator 通过准入控制器的帮助实现了许多功能。我们将在这里介绍各个资源的准入控制器与其相对应的功能。
 
-* Pod 验证准入控制器:
-
-    Pod 准入控制器提供了对 PD/TiKV/TiDB 组件安全下线与安全上线的保证，通过 Pod 验证准入控制器，我们可以实现[重启 Kubernetes 上的 TiDB 集群](restart-a-tidb-cluster.md)。该组件在准入控制器开启的情况下默认开启。
-
-    ```yaml
-    admissionWebhook:
-      validation:
-        pods: true
-    ```
-
 * StatefulSet 验证准入控制器:
 
     StatefulSet 验证准入控制器帮助实现 TiDB 集群中 TiDB/TiKV 组件的灰度发布，该组件在准入控制器开启的情况下默认关闭。
@@ -242,16 +232,6 @@ TiDB Operator 通过准入控制器的帮助实现了许多功能。我们将在
     ```
 
     举个例子，对于 `TidbCluster` 资源，TiDB Operator 资源验证准入控制器将会检查其 `spec` 字段中的必要字段。如果在 `TidbCluster` 创建或者更新时发现检查不通过，比如同时没有定义 `spec.pd.image` 或者 `spec.pd.baseImage` 字段，TiDB Operator 资源验证准入控制器将会拒绝这个请求。
-
-* Pod 修改准入控制器:
-
-    Pod 修改准入控制器帮助我们在弹性伸缩场景下实现 TiKV 的热点调度功能，在[启用 TidbCluster 弹性伸缩](enable-tidb-cluster-auto-scaling.md)中需要开启该控制器。该组件在准入控制器开启的情况下默认开启。
-
-    ```yaml
-    admissionWebhook:
-      mutation:
-        pods: true
-    ```
 
 * TiDB Operator 资源修改准入控制器:
 
