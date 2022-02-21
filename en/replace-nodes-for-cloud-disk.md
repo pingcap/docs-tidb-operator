@@ -16,7 +16,7 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
 - A TiDB cluster is deployed on the cloud. If not, refer to [Deploy on Amazon EKS](deploy-on-aws-eks.md) and deploy a cluster.
 - The TiDB cluster uses cloud storage as its data disk.
 
-## Step 1. Create new node groups
+## Step 1: Create new node groups
 
 1. Locate the `cluster.yaml` configuration file for the EKS cluster that the TiDB cluster is deployed in, and save a copy of the file as `cluster-new.yaml`.
 
@@ -90,7 +90,7 @@ For other cloud platforms, refer to [GCP GKE](deploy-on-gcp-gke.md), [Azure AKS]
 
    `${new_nodegroup}` is the name of a new node group. In this example, the new node groups are `tidb-1b-new` and `tikv-1a-new`. You need to configure the node group name according to your needs.
 
-## Step 2. Mark the original nodes as non-schedulable
+## Step 2: Mark the original nodes as non-schedulable
 
 You need to mark the original nodes as non-schedulable to ensure that no new Pod is scheduled to it. Run the `kubectl cordon` command:
 
@@ -104,11 +104,11 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 
 `${origin_nodegroup}` is the name of an original node group. In this example, the original node groups are `tidb-1b` and `tikv-1a`. You need to configure the node group name according to your needs.
 
-## Step 3. Rolling restart the TiDB cluster
+## Step 3: Rolling restart the TiDB cluster
 
 Refer to [Restart a TiDB Cluster in Kubernetes](restart-a-tidb-cluster.md#perform-a-graceful-rolling-restart-to-all-pods-in-a-component) and perform a rolling restart on the TiDB cluster.
 
-## Step 4. Delete the original node groups
+## Step 4: Delete the original node groups
 
 Check whether there are TiDB, PD, or TiKV Pods left on nodes of the original node groups:
 

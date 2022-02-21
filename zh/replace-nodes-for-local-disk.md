@@ -26,7 +26,7 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
     kubectl get tidbcluster ${origin_cluster_name} -n ${namespace} -oyaml > tidb-cluster-clone.yaml
     ```
 
-   其中 `${origin_cluster_name}` 是原集群名字，`${namespace}` 是原集群命名空间。
+    其中 `${origin_cluster_name}` 是原集群名字，`${namespace}` 是原集群命名空间。
 
 2. 修改 `tidb-cluster-clone.yaml`，让新克隆集群加入原 TiDB 集群：
 
@@ -76,18 +76,18 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
 
 2. 确认克隆 TiDB 集群与原 TiDB 集群组成的新集群正常运行：
 
-   - 获取新集群 store 个数、状态：
+    - 获取新集群 store 个数、状态：
 
-     {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-       ```bash
-       # store 个数
-       pd-ctl -u http://<address>:<port> store | jq '.count'
-       # store 状态
-       pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'
-       ```
+        ```bash
+        # store 个数
+        pd-ctl -u http://<address>:<port> store | jq '.count'
+        # store 状态
+        pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'
+        ```
 
-   - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](access-tidb.md)。
+    - 通过 MySQL 客户端[访问 Kubernetes 上的 TiDB 集群](access-tidb.md)。
 
 ## 第五步：缩容原集群 TiDB 节点
 
@@ -106,6 +106,8 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
 将原集群的 PD 节点缩容至 0 个，参考[水平扩缩容](scale-a-tidb-cluster.md#水平扩缩容)一节。
 
 ## 第八步：删除克隆集群中 `spec.cluster` 字段
+
+执行以下命令，删除克隆集群中 `spec.cluster` 字段：
 
 {{< copyable "shell-regular" >}}
 
@@ -127,7 +129,7 @@ kubectl patch -n ${namespace} tc ${clone_cluster_name} --type=json -p '[{"op":"r
 
     其中 `${namespace}` 是原集群的命名空间（不变），`${origin_cluster_name}` 是原集群名字。
 
-2. 删除原集群数据，请参考[删除 PV 以及对应的数据](configure-storage-class.md)一节。
+2. 删除原集群数据，请参考[删除 PV 以及对应的数据](configure-storage-class.md#删除-pv-以及对应的数据)一节。
 3. 将需要更换的节点从 Kubernetes 集群中删除：
 
     {{< copyable "shell-regular" >}}
