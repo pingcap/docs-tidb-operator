@@ -67,155 +67,82 @@ kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
 
 Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 项目中的 `local-volume-provisioner` 程序创建本地存储对象。
 
-以下示例流程以 `/mnt/disks` 为发现目录，以 `local-storage` 为 StorageClass 名称，创建 PV。如需为监控、备份等使用不同的数据盘或 StorageClass，可参考下文的[示例](#示例)进行配置。
-
-1. 参考 Kubernetes 提供的[操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在集群节点中预分配本地存储。
-
-2. 部署 `local-volume-provisioner` 程序。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-    ```
-
-    如果服务器没有外网，需要先用有外网的机器下载 `local-volume-provisioner.yaml` 文件，然后再进行安装：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-    kubectl apply -f ./local-volume-provisioner.yaml
-    ```
-
-    local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-    docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
-    ```
-
-    将 `local-volume-provisioner-v2.3.4.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    docker load -i local-volume-provisioner-v2.3.4.tar
-    ```
-
-    通过下面命令查看 Pod 和 PV 状态：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get po -n kube-system -l app=local-volume-provisioner && \
-    kubectl get pv | grep local-storage
-    ```
-
-    `local-volume-provisioner` 会为发现目录 (discovery directory) 下的每一个挂载点创建一个 PV。
-
-    > **注意：**
-    >
-    > - 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
-    > - 如果发现目录下无任何挂载点，则不会创建任何 PV，`kubectl get pv | grep local-storage` 输出将为空。
-    > - 如果 StorageClass 名称不为 `local-storage`，则需按实际 StorageClass 名称替换 `kubectl get pv | grep local-storage` 中的 `local-storage` 来确认 PV 状态。
-
-更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local)和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
-
-### 最佳实践
-
-- Local PV 的路径是本地存储卷的唯一标示符。为了保证唯一性并避免冲突，推荐使用设备的 UUID 来生成唯一的路径
-- 如果想要 IO 隔离，建议每个存储卷使用一块物理盘会比较恰当，在硬件层隔离
-- 如果想要容量隔离，建议每个存储卷一个分区或者每个存储卷使用一块物理盘来实现
-
-更多信息，可参阅 local-static-provisioner 的[最佳实践文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
-
-### 示例
+### 第 1 步：准备本地存储
 
 如果监控、TiDB Binlog、备份等组件都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 供这些组件使用，具体操作如下：
 
-- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/disks` 目录，后续创建 `local-storage` `StorageClass`。
+- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式将盘挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`。
+  
+    出于性能考虑，推荐 TiKV 独占一个磁盘，并且推荐磁盘类型为 SSD。
 
-    > **注意：**
-    >
-    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量。1 个目录会对应创建 1 个 PV。每个 TiDB 集群的监控数据会使用 1 个 PV。
-
-- 给 TiDB Binlog 和备份数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/backup` 目录，后续创建 `backup-storage` `StorageClass`。
-
-    > **注意：**
-    >
-    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量、每个集群内的 Pump 数量及备份方式。1 个目录会对应创建 1 个 PV。每个 Pump 会使用 1 个 PV，每个 drainer 会使用 1 个 PV，所有 [Ad-hoc 全量备份](backup-to-s3.md#ad-hoc-全量备份)和所有[定时全量备份](backup-to-s3.md#定时全量备份)会共用 1 个 PV。
-
-- 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录，后续创建 `shared-ssd-storage` `StorageClass`。
+- 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录下，后续创建 `shared-ssd-storage` `StorageClass`。
 
     > **注意：**
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量及每个集群内的 PD 数量。1 个目录会对应创建 1 个 PV。每个 PD 会使用一个 PV。
 
-- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式将盘挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`。
+- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/disks` 目录下，后续创建 `local-storage` `StorageClass`。
 
-盘挂载完成后，需要根据上述磁盘挂载情况修改 [`local-volume-provisioner` yaml 文件](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml)，配置发现目录并创建必要的 `StorageClass`。以下是根据上述挂载修改的 yaml 文件示例：
+    > **注意：**
+    >
+    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量。1 个目录会对应创建 1 个 PV。每个 TiDB 集群的监控数据会使用 1 个 PV。
 
-```yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: "local-storage"
-provisioner: "kubernetes.io/no-provisioner"
-volumeBindingMode: "WaitForFirstConsumer"
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: "ssd-storage"
-provisioner: "kubernetes.io/no-provisioner"
-volumeBindingMode: "WaitForFirstConsumer"
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: "shared-ssd-storage"
-provisioner: "kubernetes.io/no-provisioner"
-volumeBindingMode: "WaitForFirstConsumer"
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: "backup-storage"
-provisioner: "kubernetes.io/no-provisioner"
-volumeBindingMode: "WaitForFirstConsumer"
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: local-provisioner-config
-  namespace: kube-system
-data:
-  nodeLabelsForPV: |
-    - kubernetes.io/hostname
-  storageClassMap: |
-    shared-ssd-storage:
-      hostDir: /mnt/sharedssd
-      mountDir: /mnt/sharedssd
-    ssd-storage:
-      hostDir: /mnt/ssd
-      mountDir: /mnt/ssd
-    local-storage:
-      hostDir: /mnt/disks
-      mountDir: /mnt/disks
-    backup-storage:
-      hostDir: /mnt/backup
-      mountDir: /mnt/backup
----
+- 给 TiDB Binlog 和备份数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/backup` 目录下，后续创建 `backup-storage` `StorageClass`。
 
-......
+    > **注意：**
+    >
+    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量、每个集群内的 Pump 数量及备份方式。1 个目录会对应创建 1 个 PV。每个 Pump 会使用 1 个 PV，每个 drainer 会使用 1 个 PV，所有 [Ad-hoc 全量备份](backup-to-s3.md#ad-hoc-全量备份)和所有[定时全量备份](backup-to-s3.md#定时全量备份)会共用 1 个 PV。
 
+上述的 `/mnt/ssd`、`/mnt/sharedssd`、`/mnt/disks` 和 `/mnt/backup` 是 local-volume-provisioner 使用的发现目录（discovery directory），local-volume-provisioner 会为发现目录下的每一个子目录创建对应的 PV。
+
+> **注意：**
+>
+> - 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
+
+### 第 2 步：部署 local-volume-provisioner
+
+#### 在线部署
+
+1. 下载 local-volume-provisioner 部署文件。
+   
+    {{< copyable "shell-regular" >}}
+     
+    ```shell
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/local-pv/local-volume-provisioner.yaml
+    ```
+
+2. 如果你使用与上一步中不同路径的发现目录，需要修改 ConfigMap 定义中的 `data.storageClassMap` 字段。
+
+    ```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: local-provisioner-config
+      namespace: kube-system
+    data:
+      # ...
+      storageClassMap: |
+        shared-ssd-storage:
+          hostDir: /mnt/sharedssd
+          mountDir: /mnt/sharedssd
+        ssd-storage:
+          hostDir: /mnt/ssd
+          mountDir: /mnt/ssd
+        local-storage:
+          hostDir: /mnt/disks
+          mountDir: /mnt/disks
+        backup-storage:
+          hostDir: /mnt/backup
+          mountDir: /mnt/backup
+    ```
+
+    关于 local-volume-provisioner 更多的配置项，参考文档 [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) 。
+
+3. 如果你使用不同路径的发现目录，需要修改 DaemonSet 定义中的 `volumes` 与 `volumeMounts` 字段，以确保发现目录能够挂载到 Pod 中的对应目录。
+
+    ```yaml
+    ......
           volumeMounts:
-
-            ......
-
             - mountPath: /mnt/ssd
               name: local-ssd
               mountPropagation: "HostToContainer"
@@ -229,9 +156,6 @@ data:
               name: local-backup
               mountPropagation: "HostToContainer"
       volumes:
-
-        ......
-
         - name: local-ssd
           hostPath:
             path: /mnt/ssd
@@ -244,19 +168,64 @@ data:
         - name: local-backup
           hostPath:
             path: /mnt/backup
-......
+    ......
+    ```
 
-```
+4. 部署 local-volume-provisioner 程序。
+   
+    {{< copyable "shell-regular" >}}
+     
+    ```shell
+    kubectl apply -f local-volume-provisioner.yaml
+    ```
 
-最后通过 `kubectl apply` 命令部署 `local-volume-provisioner` 程序。
+5. 检查 Pod 和 PV 状态。
+   
+    {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
+    ```shell
+    kubectl get po -n kube-system -l app=local-volume-provisioner && \
+    kubectl get pv | grep -e local-storage -e ssd-storage -e shared-ssd-storage -e backup-storage
+    ```
 
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-```
+    `local-volume-provisioner` 会为发现目录 (discovery directory) 下的每一个挂载点创建一个 PV。
 
-后续创建 TiDB 集群或备份等组件的时候，再配置相应的 `StorageClass` 供其使用。
+    > **注意：**
+    >
+    > - 如果发现目录下无任何挂载点，则不会创建任何 PV，那么输出将为空。
+
+更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local)和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
+
+#### 离线部署
+
+离线部署步骤与在线部署步骤相同，需要注意的是：
+
+* 先在有外网的服务器下载 local-volume-provisioner 部署文件，上传到服务器上后再进行安装。
+
+* local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
+
+     {{< copyable "shell-regular" >}}
+
+     ``` shell
+     docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
+     docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/     local-volume-provisioner:v2.3.4
+     ```
+     
+     将 `local-volume-provisioner-v2.3.4.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
+     
+     {{< copyable "shell-regular" >}}
+     
+     ``` shell
+     docker load -i local-volume-provisioner-v2.3.4.tar
+     ```
+
+### 最佳实践
+
+- Local PV 的路径是本地存储卷的唯一标示符。为了保证唯一性并避免冲突，推荐使用设备的 UUID 来生成唯一的路径
+- 如果想要 IO 隔离，建议每个存储卷使用一块物理盘会比较恰当，在硬件层隔离
+- 如果想要容量隔离，建议每个存储卷一个分区或者每个存储卷使用一块物理盘来实现
+
+更多信息，可参阅 local-static-provisioner 的[最佳实践文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
 
 ## 数据安全
 
