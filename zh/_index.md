@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/v1.0/']
 
 TiDB 与 TiDB Operator 版本的对应关系如下：
 
-| TiDB Operator 版本 | 适用的 TiDB 版本 |
+| TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
 | dev               | dev                 |
 | TiDB >= 5.4       | 1.3                 |
