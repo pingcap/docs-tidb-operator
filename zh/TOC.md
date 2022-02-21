@@ -43,8 +43,7 @@
     - [同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
     - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [以非 root 用户运行](containers-run-as-non-root-user.md)
-  - 扩缩容
-    - [扩缩容](scale-a-tidb-cluster.md)
+  - [扩缩容](scale-a-tidb-cluster.md)
   - 升级
     - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
     - 升级 TiDB Operator
