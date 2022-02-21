@@ -30,10 +30,10 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-根据 TiDB Lightning 所使用的后端类型，将配置文件中的 `backend` 字段设置为 `local` 、`tidb` 中的一个。
+根据 TiDB Lightning 所使用的后端类型，将配置文件中的 `backend` 字段设置为 `local`、`tidb` 中的一个。
 
 ```yaml
-# The delivery backend used to import data (valid options include `importer`, `local` and `tidb`).
+# The delivery backend used to import data (valid options include `local` and `tidb`).
 # If set to `local`, then the following `sortedKV` should be set.
 backend: local
 ```
