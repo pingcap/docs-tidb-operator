@@ -431,6 +431,3 @@ spec:
   tikv:
     baseImage: pingcap/tikv-enterprise
 ```
-
-## 使用本地存储
-
