@@ -95,13 +95,13 @@ Before restoring backup data on PVs to TiDB using BR, take the following steps t
 
     When configuring `restore.yaml`, note the following:
 
-    - The example above restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
+    - The example above restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about PV configuration, refer to [Local storage fields](backup-restore-cr.md#local-storage-fields).
 
-    - Some parameters in `spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about `.spec.br`, refer to [BR fields](backup-restore-overview.md#br-fields).
+    - Some parameters in `spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about `.spec.br`, refer to [BR fields](backup-restore-cr.md#br-fields).
 
     - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure the `spec.to` field in the `Restore` CR.
 
-    - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
+    - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
 
 2. After creating the `Restore` CR, execute the following command to check the restore status:
 
