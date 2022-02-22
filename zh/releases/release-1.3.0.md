@@ -15,6 +15,27 @@ TiDB Operator 版本：1.3.0
     2. 添加新的 `spec.acrossK8s` 字段到 TidbCluster 定义，其值设置为 `true`。
     3. 升级 TiDB Operator。
 
+- 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 和 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，部署 v1.3.0 或者 v1.3.0-beta.1 版本的 Operator 情况下，直接升级 TiFlash 到 v5.4.0 版本可能会导致 TiFlash 无法使用并且丢失数据。推荐使用 v1.3.1 及之后版本 Operator 执行升级操作。
+  
+    如果需要使用 v1.3.0 或者 v1.3.0-beta.1 版本的 Operator，那么你需要执行以下操作来升级 TiFlash：
+    
+    1. 确认 TidbCluster 定义中的 TiFlash 配置，确保 `tmp_path` 和 `storage.raft.dir`（或 `raft.kvstore_path`）字段存在。如果字段不存在，那么需要手动添加。
+       
+        ```yaml
+        spec:
+          # ...
+          tiflash:
+            config:
+              config: |
+                # ...
+                tmp_path = "/data0/tmp"
+                [storage]
+                  [storage.raft]
+                    dir = ["/data0/kvstore""]
+        ```
+    
+    2. 升级 TiFlash
+
 ## 新功能
 
 - 添加新的 `spec.tidb.tlsClient.skipInternalClientCA` 字段，以支持内部组件访问 TiDB 时跳过服务端证书验证 ([#4388](https://github.com/pingcap/tidb-operator/pull/4388), [@just1900](https://github.com/just1900))
