@@ -18,7 +18,7 @@ This document describes a method for replacing and upgrading nodes without downt
 
 ## Step 1: Clone the configuration of the original TiDB cluster
 
-1. Export a clone of the cluster configuration file, `tidb-cluster-clone.yaml`, by running the following command:
+1. Export a copy of the cluster configuration file, `tidb-cluster-clone.yaml`, by running the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -52,11 +52,11 @@ If you use cfssl to sign certificates, you must sign certificates using the same
 
 ### Using cert-manager
 
-If you use cert-manager, you must sign certificates using the same issuer as the original cluster. To complete the signing process, follow instructions in Step 3 in [Using cert-manager](enable-tls-between-components.md#using-cert-manager).
+If you use cert-manager, you must sign certificates using the same Issuer as the original cluster. To complete the signing process, follow instructions in Step 3 in [Using cert-manager](enable-tls-between-components.md#using-cert-manager).
 
 ## Step 3: Mark the nodes to be replaced as non-schedulable
 
-You need to mark the nodes to be replaced as non-schedulable to ensure that no new Pod is scheduled to it. Run the `kubectl cordon` command:
+By marking the nodes to be replaced as non-schedulable, you can ensure that no new Pod is scheduled to the nodes. Run the `kubectl cordon` command:
 
 {{< copyable "shell-regular" >}}
 
@@ -74,7 +74,7 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
     kubectl apply -f tidb-cluster-clone.yaml
     ```
 
-2. Confirm that the new TiDB cluster consisting of the clone cluster and the original cluster is running normally.
+2. Confirm that the new TiDB cluster that consists of the clone cluster and the original cluster is running normally.
 
     - Obtain the count and state of stores in the new cluster:
 
@@ -87,13 +87,15 @@ kubectl cordon ${replace_nodename1} ${replace_nodename2} ...
         pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'
         ```
 
+    - [Access the TiDB cluster](access-tidb.md) via MySQL client.
+
 ## Step 5: Scale in all TiDB nodes of the original cluster
 
 Scale in all TiDB nodes of the original cluster to 0. For details, refer to [Horizontal scaling](scale-a-tidb-cluster.md#horizontal-scaling).
 
 > **Note:**
 >
-> If you access the original TiDB cluster via load balancer or database middleware, before scaling in the original TiDB cluster, you need to modify the configuration to route your application traffic to the target TiDB cluster. Otherwise, your application might be affected.
+> If you access the original TiDB cluster via a load balancer or database middleware, before scaling in the original TiDB cluster, you need to modify the configuration to route your application traffic to the target TiDB cluster. Otherwise, your application might be affected.
 
 ## Step 6: Scale in all TiKV nodes of the original cluster
 
@@ -105,7 +107,7 @@ Scale in all PD nodes of the original cluster to 0. For details, refer to [Horiz
 
 ## Step 8: Delete the `spec.cluster` field in the clone cluster
 
-Run the following command:
+Delete the `spec.cluster` field in the clone cluster by running the following command:
 
 {{< copyable "shell-regular" >}}
 
