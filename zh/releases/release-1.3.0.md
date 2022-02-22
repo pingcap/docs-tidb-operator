@@ -34,7 +34,7 @@ TiDB Operator 版本：1.3.0
                     dir = ["/data0/kvstore""]
         ```
     
-    2. 升级 TiFlash
+    2. 升级 TiFlash。
 
 ## 新功能
 
