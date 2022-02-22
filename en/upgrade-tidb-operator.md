@@ -99,7 +99,7 @@ If your server has access to the internet, you can perform online upgrade by tak
     image: docker.io/pingcap/tidb-operator:v1.3.1
     ```
 
-## offline upgrade
+## Offline upgrade
 
 If your server cannot access the Internet, you can offline upgrade by taking the following steps:
 
