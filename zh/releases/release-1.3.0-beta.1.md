@@ -18,7 +18,7 @@ TiDB Operator 版本：1.3.0-beta.1
 
 - 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 和 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，部署 v1.3.0 或者 v1.3.0-beta.1 版本的 Operator 情况下，直接升级 TiFlash 到 v5.4.0 版本可能会导致 TiFlash 无法使用并且丢失数据。推荐使用 v1.3.1 及之后版本 Operator 执行升级操作。
   
-    如果需要使用 v1.3.0 或者 v1.3.0-beta.1 版本的 Operator，那么你需要执行以下操作来升级 TiFlash：
+    如果需要使用 v1.3.0-beta.1 版本的 TiDB Operator，那么你需要执行以下操作来升级 TiFlash 到 5.4.0：
     
     1. 确认 TidbCluster 定义中的 TiFlash 配置，确保 `tmp_path` 和 `storage.raft.dir`（或 `raft.kvstore_path`）字段存在。如果字段不存在，那么需要手动添加。
        
@@ -35,7 +35,7 @@ TiDB Operator 版本：1.3.0-beta.1
                     dir = ["/data0/kvstore""]
         ```
     
-    2. 升级 TiFlash
+    2. 升级 TiFlash。
 
 ## 滚动升级改动
 

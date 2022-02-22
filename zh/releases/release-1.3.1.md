@@ -12,7 +12,7 @@ TiDB Operator 版本：1.3.0
 
 - 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 和 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，如果已经使用 v1.3.0 和 v1.3.0-beta.1 版本 TiDB Operator 部署了 v5.4.0 及以后版本的 TiFlash，你需要执行以下步骤来升级 Operator，以防止 TiFlash 丢失数据：
 
-    1. 如果 TidbCluster 定义中未配置 TiFlash 配置中的 `storage.raft.dir` 和 `raft.kvstore_path` 字段，则添加 `storage.raft.dir` 字段。
+    1. 如果 TidbCluster 定义中**没有显式**配置 TiFlash 配置 `spec.tiflash.config.config` 中的 `storage.raft.dir` 和 `raft.kvstore_path` 字段，则显式添加 `storage.raft.dir` 字段。
         
         ```yaml
         spec:
@@ -36,6 +36,6 @@ TiDB Operator 版本：1.3.0
 
 ## Bug 修复
 
-- 修复当没有手动设置 TiFlash 配置 `raft.kvstore_path` 或 `storage.raft.dir` 字段的情况下，使用 v1.3.0 和 v1.3.0-beta.1 版本 Operator 升级旧版本 TiFlash 到 v5.4.0 及以后版本后，TiFlash 会丢失数据的问题 ([#4430](https://github.com/pingcap/tidb-operator/pull/4430), [@KanShiori](https://github.com/KanShiori))
+- 修复当没有显式设置 TiFlash 配置 `raft.kvstore_path` 或 `storage.raft.dir` 字段的情况下，使用 v1.3.0 或者 v1.3.0-beta.1 版本 TiDB Operator 升级 TiFlash 到 v5.4.0 及以后版本后，TiFlash 丢失元数据的问题 ([#4430](https://github.com/pingcap/tidb-operator/pull/4430), [@KanShiori](https://github.com/KanShiori))
 
 - 修复不配置 TiFlash 配置 `tmp_path` 字段无法使用 TiFlash 的问题 ([#4430](https://github.com/pingcap/tidb-operator/pull/4430), [@KanShiori](https://github.com/KanShiori))
