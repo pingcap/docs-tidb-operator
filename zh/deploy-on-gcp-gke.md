@@ -72,13 +72,13 @@ gcloud config set compute/region <gcp-region>
 
 ## 配置 StorageClass
 
-创建 GKE 集群后默认会存在一个三个不同存储类型的 StorageClass：
+创建 GKE 集群后默认会存在三个不同存储类型的 StorageClass：
 
 * standard：pd-standard 存储类型（默认）
 * standard-rwo：pd-balanced 存储类型
 * premium-rwo：pd-ssd 存储类型（推荐）
 
-为了提高存储的 IO 性能，推荐配置 StorageClass 的 `mountOptions` 来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
+为了提高存储的 IO 性能，推荐在 StorageClass 的 `mountOptions` 字段中，添加存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)。
 
 ```yaml
 kind: StorageClass
@@ -101,7 +101,7 @@ mountOptions:
 > * 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
 > * 由于 GKE 升级过程中节点重建会导致[本地盘数据会丢失](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)，在重建前你需要提前备份数据，因此不建议在生产环境中使用本地盘。
 
-1. 为 TiKV 创建附带本地存储的节点组。
+1. 为 TiKV 创建附带本地存储的节点池。
 
     {{< copyable "shell-regular" >}}
 
@@ -124,7 +124,7 @@ mountOptions:
 
 3. 使用本地存储。
 
-    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可。
+    完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 SSD 盘。在 `tidb-cluster.yaml` 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可。
 
 ## 部署 TiDB Operator
 
