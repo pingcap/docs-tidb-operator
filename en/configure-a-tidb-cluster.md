@@ -40,11 +40,11 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v5.1.0`
+- `spec.version`: the format is `imageTag`, such as `v5.3.0`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v5.1.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v5.3.0`
 
 ### Recommended configuration
 
@@ -98,51 +98,13 @@ For example:
 {{< copyable "" >}}
 
 ```yaml
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      log:
-        file:
-          filename: /var/log/pdlog/pd.log
-        level: "warn"
-    storageVolumes:
-    - name: log
-      storageSize: "2Gi"
-      mountPath: "/var/log/pdlog"
-  tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      log:
-        file:
-          filename: /var/log/tidblog/tidb.log
-        level: "warn"
-    storageVolumes:
-    - name: log
-      storageSize: "2Gi"
-      mountPath: "/var/log/tidblog"
   tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      storage:
-        # In basic examples, you can set this to avoid using too much storage.
-        reserve-space: "0MB"
-      rocksdb:
-        wal-dir: "/data_sbi/tikv/wal"
-      titan:
-        dirname: "/data_sbj/titan/data"
+    ...
+    config: |
+      [rocksdb]
+        wal-dir = "/data_sbi/tikv/wal"
+      [titan]
+        dirname = "/data_sbj/titan/data"
     storageVolumes:
     - name: wal
       storageSize: "2Gi"
@@ -171,25 +133,13 @@ TiDB Operator starts a Discovery service for each TiDB cluster. The Discovery se
 A `spec.discovery` configuration example is as follows:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  version: v5.1.0
-  pvReclaimPolicy: Retain
   discovery:
     limits:
       cpu: "0.2"
     requests:
       cpu: "0.2"
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-...
+  ...
 ```
 
 ### Cluster topology
@@ -214,7 +164,7 @@ If you want to enable TiFlash in the cluster, configure `spec.pd.config.replicat
       enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -228,7 +178,7 @@ TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to conf
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -285,23 +235,11 @@ TiDB parameters can be configured by `spec.tidb.config` in TidbCluster Custom Re
 For example:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tidb:
-    image: pingcap/tidb:v5.1.0
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
     config: |
       split-table = true
       oom-action = "log"
-    requests:
-      cpu: 1
 ```
 
 For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
@@ -317,21 +255,12 @@ TiKV parameters can be configured by `spec.tikv.config` in TidbCluster Custom Re
 For example:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tikv:
-    image: pingcap/tikv:v5.0.1
     config: |
       [storage]
         [storage.block-cache]
           capacity = "16GB"
-    replicas: 1
-    requests:
-      cpu: 2
 ```
 
 For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/).
@@ -347,14 +276,8 @@ PD parameters can be configured by `spec.pd.config` in TidbCluster Custom Resour
 For example:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-.....
   pd:
-    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
@@ -374,12 +297,7 @@ TiFlash parameters can be configured by `spec.tiflash.config` in TidbCluster Cus
 For example:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   tiflash:
     config:
       config: |
@@ -404,12 +322,7 @@ For example:
 For TiDB Operator v1.2.0-rc.2 and later versions, configure the parameters in the TOML format as follows:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   ticdc:
     config: |
       gc-ttl = 86400
@@ -419,12 +332,7 @@ spec:
 For TiDB Operator versions earlier than v1.2.0-rc.2, configure the parameters in the YAML format as follows:
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   ticdc:
     config:
       timezone: UTC
@@ -432,9 +340,33 @@ spec:
       logLevel: info
 ```
 
-For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml).
+For all configurable start parameters of TiCDC, see [TiCDC configuration](https://github.com/pingcap/tiflow/blob/bf29e42c75ae08ce74fbba102fe78a0018c9d2ea/pkg/cmd/util/ticdc.toml).
 
-### Configure graceful upgrade for TiDB cluster 
+#### Configure automatic failover thresholds of PD, TiDB, TiKV, and TiFlash
+
+The [automatic failover](use-auto-failover.md) feature is enabled by default in TiDB Operator. When the Pods of PD, TiDB, TiKV, TiFlash fail or the corresponding nodes fail, TiDB Operator performs failover automatically and replenish the number of Pod replicas by scaling the corresponding components.
+
+To avoid that the automatic failover feature creates too many Pods, you can configure the threshold of the maximum number of Pods that TiDB Operator can create during failover for each component. The default threshold is `3`. If the threshold for a component is configured to `0`, it means that the automatic failover feature is disabled for this component. An example configuration is as follows:
+
+```yaml
+  pd:
+    maxFailoverCount: 3
+  tidb:
+    maxFailoverCount: 3
+  tikv:
+    maxFailoverCount: 3
+  tiflash:
+    maxFailoverCount: 3
+```
+
+> **Note:**
+>
+> For the following cases, configure `maxFailoverCount: 0` explicitly:
+>
+> - The Kubernetes cluster does not have enough resources for TiDB Operator to scale out the new Pod. In such cases, the new Pod will be in the Pending state.
+> - You do not want to enable the automatic failover function.
+
+### Configure graceful upgrade for TiDB cluster
 
 When you perform a rolling update to the TiDB cluster, Kubernetes sends a [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) signal to the TiDB server before it stops the TiDB Pod. When the TiDB server receives the `TERM` signal, it tries to wait for all connections to close. After 15 seconds, the TiDB server forcibly closes all the connections and exits the process.
 
@@ -444,32 +376,8 @@ You can enable this feature by configuring the following items:
 - `spec.tidb.lifecycle`: Sets the `preStop` hook for the TiDB Pod, which is the operation executed before the TiDB server stops.
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  version: v5.1.0
-  pvReclaimPolicy: Retain
-  discovery: {}
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
   tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config: {}
     terminationGracePeriodSeconds: 60
     lifecycle:
       preStop:
@@ -489,7 +397,7 @@ When Kubernetes deletes the TiDB Pod, it also removes the TiDB node from the ser
 
 ### Configure graceful upgrade for TiKV cluster
 
-During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (10 minutes by default), TiKV Pod is restarted. 
+During TiKV upgrade, TiDB Operator evicts all Region leaders from TiKV Pod before restarting TiKV Pod. Only after the eviction is completed (which means the number of Region leaders on TiKV Pod drops to 0) or the eviction exceeds the specified timeout (10 minutes by default), TiKV Pod is restarted.
 
 If the eviction of Region leaders exceeds the specified timeout, restarting TiKV Pod causes issues such as failures of some requests or more latency. To avoid the issues, you can configure the timeout `spec.tikv.evictLeaderTimeout` (10 minutes by default) to a larger value. For example:
 
@@ -604,7 +512,7 @@ NodePort has two modes:
     >
     > In this mode, the request source IP obtained by the TiDB service is the host IP, not the real client source IP, so access control based on the client source IP is not available in this mode.
 
--`externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
+- `externalTrafficPolicy=Local`: Only the machine that TiDB is running on allocates a NodePort port to access the local TiDB instance.
 
 #### LoadBalancer
 
@@ -691,9 +599,10 @@ affinity:
 
 By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configuring `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
 
-> **Note:**
->
-> To use `topologySpreadConstraints`, you must enable the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
+To use `topologySpreadConstraints`, you must meet the following conditions:
+
+- Your Kubernetes cluster uses `default-scheduler` instead of `tidb-scheduler`. For details, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler).
+- Your Kubernetes cluster enables the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
 
 You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
@@ -722,10 +631,6 @@ topologySpreadConstraints:
   whenUnsatisfiable: DoNotSchedule
   labelSelector: <object>
 ```
-
-> **Note:**
->
-> You can use this feature to replace [TiDB Scheduler](tidb-scheduler.md) for evenly scheduling.
 
 ### High availability of data
 

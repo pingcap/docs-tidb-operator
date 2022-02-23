@@ -1,38 +1,35 @@
 ---
-title: TiDB Operator 灰度升级
-summary: 介绍如何灰度升级 TiDB Operator。
+title: 灰度升级 TiDB Operator
+summary: 介绍如何灰度升级 TiDB Operator，避免 TiDB Operator 升级对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响。
 ---
 
-# TiDB Operator 灰度升级
+# 灰度升级 TiDB Operator
 
-本文介绍如何灰度升级 TiDB Operator。灰度升级可以控制 TiDB Operator 升级的影响范围，避免由于 TiDB Operator 升级导致对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响，在确认 TiDB Operator 升级的影响或者确认 TiDB Operator 新版本能正常稳定工作后再正常升级 TiDB Operator。
+如果你希望升级 TiDB Operator 至新版本，同时希望控制升级的影响范围，避免对整个 Kubernetes 集群中的所有 TiDB 集群产生不可预知的影响，可以采用灰度升级的方式升级 TiDB Operator。使用灰度升级后，你可以在灰度部署的集群中确认 TiDB Operator 升级的影响，在确认 TiDB Operator 新版本稳定工作后，再[正常升级 TiDB Operator](upgrade-tidb-operator.md)。
 
-> **注意：**
->
-> - 目前仅支持灰度升级 tidb-controller-manager 和 tidb-scheduler，不支持灰度升级 AdvancedStatefulSet controller 和 AdmissionWebhook。
-> - v1.1.10 开始支持此项功能，所以当前 TiDB Operator 版本需 >= v1.1.10。
+TiDB Operator 目前只支持对部分组件进行灰度升级，即 [tidb-controller-manager](architecture.md) 和 [tidb-scheduler](tidb-scheduler.md)，不支持对[增强型 StatefulSet 控制器](advanced-statefulset.md)和[准入控制器](enable-admission-webhook.md)进行灰度升级。
 
-## 相关参数
+在使用 TiDB Operator 时，`tidb-scheduler` 并不是必须使用。你可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)，确认是否需要部署 `tidb-scheduler`。
 
-为了支持灰度升级 TiDB Operator，`tidb-operator` chart 中 `values.yaml` 文件里面添加了一些参数，可以参考[文档](deploy-multiple-tidb-operator.md#相关参数)。
+## 第 1 步：为当前 TiDB Operator 配置 selector 并执行升级
 
-## 灰度升级 TiDB Operator
+在当前 TiDB Operator 的 `values.yaml` 中，添加如下 selector 配置：
 
-1. 为当前 TiDB Operator 配置 selector。
+```yaml
+controllerManager:
+  selector:
+  - version!=canary
+```
 
-    参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)，在 values.yaml 中添加如下配置，升级当前 TiDB Operator：
+参考[在线升级](upgrade-tidb-operator.md#在线升级)或[离线升级](upgrade-tidb-operator.md#离线升级)，对当前 TiDB Operator 执行升级步骤：
 
-    ```yaml
-    controllerManager:
-      selector:
-      - version!=canary
-    ```
+```shell
+helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml
+```
 
-    如果之前已经执行过上述步骤，可以直接进入下一步。
+## 第 2 步：部署灰度的 TiDB Operator
 
-2. 部署灰度 TiDB Operator。
-
-    参考[部署 TiDB Operator 文档](deploy-tidb-operator.md)，在 `values.yaml` 中添加如下配置，在**不同的 namespace** 中（例如 `tidb-admin-canary`）使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度 TiDB Operator：
+1. 参考[在线部署 TiDB Operator](deploy-tidb-operator.md#在线部署-tidb-operator) 的第 1 步和第 2 步，获取想要部署的灰度版本 TiDB Operator 的 `values.yaml` 文件，并在 `values.yaml` 中添加如下配置。
 
     ```yaml
     controllerManager:
@@ -40,83 +37,107 @@ summary: 介绍如何灰度升级 TiDB Operator。
       - version=canary
     appendReleaseSuffix: true
     #scheduler:
-    #  create: false
+    #  create: false # 如果你不需要 `tidb-scheduler`，将这个值设置为 false
     advancedStatefulset:
       create: false
     admissionWebhook:
       create: false
     ```
 
-    > **注意：**
-    >
-    > * 建议在单独的 namespace 部署新的 TiDB Operator。
-    > * `appendReleaseSuffix` 需要设置为 `true`。
-    > * 如果不需要灰度升级 tidb-scheduler，可以设置 `scheduler.create: false`。
-    > * 如果配置 `scheduler.create: true`，会创建一个名字为 `{{ .scheduler.schedulerName }}-{{.Release.Name}}` 的 scheduler，要使用这个 scheduler，需要配置 TidbCluster CR 中的 `spec.schedulerName` 为这个 scheduler。
-    > * 由于不支持灰度升级 AdvancedStatefulSet controller 和 AdmissionWebhook，需要配置 `advancedStatefulset.create: false` 和 `admissionWebhook.create: false`。
+    `appendReleaseSuffix` 需要设置为 `true`。
 
-3. 如果需要测试 tidb-controller-manager 灰度升级，通过如下命令为某个 TiDB 集群设置 label：
+    如果不需要灰度升级 tidb-scheduler，可以设置 `scheduler.create: false`。如果需要灰度升级 tidb-scheduler，配置 `scheduler.create: true`，会创建一个名字为 `{{ .scheduler.schedulerName }}-{{.Release.Name}}` 的 scheduler。如果要在灰度部署的 TiDB Operator 中使用这个 scheduler，需要配置 TidbCluster CR 中的 `spec.schedulerName` 为这个 scheduler 的名字。
+
+    由于灰度升级不支持增强型 StatefulSet 控制器和准入控制器，必须配置 `advancedStatefulset.create: false` 和 `admissionWebhook.create: false`。
+
+    如需了解灰度部署相关参数的详细信息，可参考[使用多套 TiDB Operator 单独管理不同的 TiDB 集群 - 相关参数](deploy-multiple-tidb-operator.md#相关参数)。
+
+2. 在**不同的 namespace** 中（例如 `tidb-admin-canary`），使用**不同的 [Helm Release Name](https://helm.sh/docs/intro/using_helm/#three-big-concepts)**（例如 `helm install tidb-operator-canary ...`）部署灰度的 TiDB Operator：
+
+    ```bash
+    helm install tidb-operator-canary pingcap/tidb-operator --namespace=tidb-admin-canary --version=${operator_version} -f ${HOME}/tidb-operator/${operator_version}/values-tidb-operator.yaml
+    ```
+
+    将 `${operator_version}` 替换为你需要灰度升级到的 TiDB Operator 版本号。
+
+## 第 3 步：测试灰度的 TiDB Operator (可选)
+
+在正常升级 TiDB Operator 前，可以测试灰度部署的 TiDB Operator 是否稳定工作。支持测试的组件有 tidb-controller-manager 和 tidb-scheduler。
+
+1. 如果需要测试灰度部署的 tidb-controller-manager，可通过如下命令，为某个 TiDB 集群设置 label：
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} label tc ${cluster_name} version=canary
     ```
 
-    通过查看已经部署的两个 tidb-controller-manager 的日志可以确认，这个 TiDB 集群已经归灰度 TiDB Operator 管理。
+    通过查看已经部署的两个 tidb-controller-manager 的日志，可以确认这个设置 label 的 TiDB 集群已经由灰度部署的 TiDB Operator 管理。查看日志的步骤如下：
 
-    1. 查看当前 TiDB Operator `tidb-controller-manager` 的日志:
+    1. 查看当前 TiDB Operator 的 tidb-controller-manager 的日志:
 
-        ```shell
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         kubectl -n tidb-admin logs tidb-controller-manager-55b887bdc9-lzdwv
         ```
+
+        预期的输出如下：
 
         ```
         I0305 07:52:04.558973       1 tidb_cluster_controller.go:148] TidbCluster has been deleted tidb-cluster-1/basic1
         ```
 
-    2. 查看灰度 TiDB Operator `tidb-controller-manager` 的日志:
+    2. 查看灰度部署的 TiDB Operator 的 tidb-controller-manager 的日志:
 
-        ```shell
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         kubectl -n tidb-admin-canary logs tidb-controller-manager-canary-6dcb9bdd95-qf4qr
         ```
+
+        预期的输出如下：
 
         ```
         I0113 03:38:43.859387       1 tidbcluster_control.go:69] TidbCluster: [tidb-cluster-1/basic1] updated successfully
         ```
 
-4. 如果需要测试 tidb-scheduler 灰度升级，通过如下命令为某个 TiDB 集群修改 `spec.schedulerName` 为 `tidb-scheduler-canary`：
+2. 如果需要测试灰度部署的 tidb-scheduler，可通过如下命令，为某个 TiDB 集群修改 `spec.schedulerName` 为 `tidb-scheduler-canary`：
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} edit tc ${cluster_name}
     ```
 
-    修改后，集群内各组件会滚动升级，可以通过查看灰度 TiDB Operator `tidb-scheduler` 的日志确认集群已经使用灰度 `tidb-scheduler`：
+    修改后，集群内各组件会滚动升级，通过查看灰度部署的 TiDB Operator 的 `tidb-scheduler` 的日志，可以确认集群已经使用灰度 `tidb-scheduler`：
 
-    ```shell
+    ```bash
     kubectl -n tidb-admin-canary logs tidb-scheduler-canary-7f7b6c7c6-j5p2j -c tidb-scheduler
     ```
 
-5. 灰度测试完成后，可以将 3，4 步骤中的修改改回去，重新使用当前 TiDB Operator 管理。
+3. 测试完成后，可撤销前两步中的修改，重新使用当前的 TiDB Operator 来管理 TiDB 集群。
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} label tc ${cluster_name} version-
     ```
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} edit tc ${cluster_name}
     ```
 
-6. 删除灰度 TiDB Operator。
+## 第 4 步：正常升级 TiDB Operator
 
-    ```shell
+确认灰度部署的 TiDB Operator 已经正常工作后，可以正常升级 TiDB Operator。
+
+1. 删除灰度部署的 TiDB Operator：
+
+    ```bash
     helm -n tidb-admin-canary uninstall ${release_name}
     ```
 
-7. 参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)正常升级当前 TiDB Operator。
+2. 正常[升级 TiDB Operator](upgrade-tidb-operator.md)。

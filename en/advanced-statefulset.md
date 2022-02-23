@@ -78,23 +78,26 @@ kind: TidbCluster
 metadata:
   name: asts
 spec:
-  version: v5.1.0
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 3
     requests:
       storage: "1Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 4
     requests:
       storage: "1Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 2
     service:
       type: ClusterIP
@@ -127,23 +130,26 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[1]'
   name: asts
 spec:
-  version: v5.1.0
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 3
     requests:
       storage: "1Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 3
     requests:
       storage: "1Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 2
     service:
       type: ClusterIP
@@ -178,23 +184,26 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[]'
   name: asts
 spec:
-  version: v5.1.0
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 3
     requests:
       storage: "1Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 4
     requests:
       storage: "1Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 2
     service:
       type: ClusterIP

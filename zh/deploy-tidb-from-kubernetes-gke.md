@@ -93,7 +93,7 @@ kubectl get nodes
 TiDB Operator 使用 [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) 扩展 Kubernetes，所以要使用 TiDB Operator，必须先创建 `TidbCluster` 等各种自定义资源类型：
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.4/manifests/crd.yaml && \
 kubectl get crd tidbclusters.pingcap.com
 ```
 
@@ -101,7 +101,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.0
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.2.7
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -183,7 +183,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tidb.replicas`、`spec.tikv.replicas` 至期望值进行水平扩容。
 
 ``` shell
-kubectl -n demo edit tc basic
+kubectl -n demo patch tc basic --type merge -p '{"spec":{"pd":{"replicas":${pd_replicas}},"tikv":{"replicas":${tikv_replicas}},"tidb":{"replicas":${tidb_replicas}}}}'
 ```
 
 ## 访问 Grafana 面板

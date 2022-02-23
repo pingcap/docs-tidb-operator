@@ -229,6 +229,14 @@ This document is an overview of the commands used for TiDB cluster management.
 
 ### Patch Resources
 
+* Patch TidbCluster:
+
+  {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n ${namespace} patch tc ${name} --type merge -p '${json_path}'
+    ```
+
 * Patch PV ReclaimPolicy:
 
     {{< copyable "shell-regular" >}}
@@ -357,7 +365,7 @@ This document is an overview of the commands used for TiDB cluster management.
 
 ### Interact with nodes
 
-* Mark the node as unschedulable:
+* Mark the node as non-schedulable:
 
     {{< copyable "shell-regular" >}}
 
@@ -455,7 +463,7 @@ helm repo update
     helm search hub mysql
     ```
 
-- View charts in other Repos:
+- View charts in other repositories:
 
     {{< copyable "shell-regular" >}}
 
@@ -484,7 +492,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm inspect values pingcap/tidb-operator --version=v1.2.0 > values-tidb-operator.yaml
+helm inspect values pingcap/tidb-operator --version=v1.2.7 > values-tidb-operator.yaml
 ```
 
 ### Deploy using Helm chart
@@ -500,7 +508,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.0 -f values-tidb-operator.yaml
+helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.2.7 -f values-tidb-operator.yaml
 ```
 
 ### View the deployed Helm release
@@ -524,7 +532,7 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.0 -f values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.7 -f values-tidb-operator.yaml
 ```
 
 ### Delete Helm release

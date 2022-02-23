@@ -11,7 +11,7 @@ To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes enviro
 
 ## Prerequisites
 
-- [aliyun-cli](https://github.com/aliyun/aliyun-cli) >= 3.0.15 and [configure aliyun-cli](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
+- [`aliyun-cli`](https://github.com/aliyun/aliyun-cli) >= 3.0.15 and [configure `aliyun-cli`](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
 
     > **Note:**
     >
@@ -88,7 +88,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.2.0"
+    operator_version = "v1.2.7"
     ```
 
     * To deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
@@ -179,7 +179,7 @@ All the instances except ACK mandatory workers are deployed across availability 
           ...
           tiflash:
             baseImage: pingcap/tiflash
-            maxFailoverCount: 3
+            maxFailoverCount: 0
             nodeSelector:
               dedicated: TIDB_CLUSTER_NAME-tiflash
             replicas: 1
@@ -263,6 +263,10 @@ All the instances except ACK mandatory workers are deployed across availability 
     kubectl --kubeconfig credentials/kubeconfig create -f db-monitor.yaml -n ${namespace}
     ```
 
+> **Note:**
+>
+> If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
+
 ## Access the database
 
 You can connect the TiDB cluster via the bastion instance. All necessary information is in the output printed after installation is finished (replace the `${}` parts with values from the output):
@@ -301,7 +305,7 @@ The initial login user account and password:
 
 ## Upgrade
 
-To upgrade the TiDB cluster, modify the `spec.version` variable by executing `kubectl --kubeconfig credentials/kubeconfig edit tc ${tidb_cluster_name} -n ${namespace}`.
+To upgrade the TiDB cluster, modify the `spec.version` variable by executing `kubectl --kubeconfig credentials/kubeconfig patch tc ${tidb_cluster_name} -n ${namespace} --type merge -p '{"spec":{"version":"${version}"}}`.
 
 This may take a while to complete. You can watch the process using the following command:
 
@@ -340,7 +344,7 @@ You can set the variables in `terraform.tfvars` to configure TiDB Operator. Most
     operator_helm_values = file("./my-operator-values.yaml")
     ```
 
-In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vswitch not configured.
+In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vSwitch not configured.
 
 ### Configure the TiDB cluster
 

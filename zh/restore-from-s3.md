@@ -5,17 +5,29 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
 
 # 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
 
-本文描述了将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。
+本文档介绍如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群。
 
 本文使用的恢复方式基于 TiDB Operator v1.1 及以上的 CustomResourceDefinition (CRD) 实现，底层通过使用 [TiDB Lightning TiDB-backend](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-tidb-backend) 来恢复数据。
 
-目前，TiDB Lightning 支持三种后端： `Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参考[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
+TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，可用于从本地盘、Google Cloud Storage (GCS) 或 Amazon S3 云盘读取数据。目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend`、`TiDB-backend`。本文介绍的方法使用 `TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。如果要使用 `Importer-backend` 或者 `Local-backend` 导入数据，请参阅[使用 TiDB Lightning 导入集群数据](restore-data-using-tidb-lightning.md)。
 
 以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
-## 环境准备
+## 使用场景
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
+如果你需要从兼容 S3 的存储导出备份数据到 TiDB 集群，并对数据恢复有以下要求，可使用本文介绍的恢复方案：
+
+- 希望以较低资源占用率和较低网络带宽占用进行恢复，并能接受 50 GB/小时的恢复速度
+- 要求导入集群时满足 ACID
+- 要求备份期间 TiDB 集群仍可对外提供服务
+
+## 恢复前的准备
+
+在进行数据恢复前，你需要准备恢复环境，并拥有数据库的相关权限。
+
+### 准备恢复环境
+
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
@@ -35,7 +47,9 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=${password} --namespace=test2
     ```
 
-## 数据库账户权限
+### 获取所需的数据库权限
+
+使用 TiDB Lightning 将 Amazon S3 上的备份数据恢复至 TiDB 集群前，确保你拥有备份数据库的以下权限：
 
 | 权限 | 作用域 |
 |:----|:------|
@@ -62,9 +76,16 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
 >     - --ignore-checksum
 > ```
 
-1. 创建 Restore customer resource (CR)，将制定备份数据恢复至 TiDB 集群
+本节提供了存储访问的多种方法。只需使用符合你情况的方法即可。
 
-    + 创建 Restore custom resource (CR)，通过 AccessKey 和 SecretKey 授权的方式将指定的备份数据由 Ceph 恢复至 TiDB 集群：
+- 通过 AccessKey 和 SecretKey 授权的方式由 Ceph 恢复数据的方法
+- 通过 AccessKey 和 SecretKey 授权的方式从 Amazon S3 恢复数据的方法
+- 通过绑定 IAM 与 Pod 的方式从 Amazon S3 恢复数据的方法
+- 通过绑定 IAM 与 ServiceAccount 的方式从 Amazon S3 恢复数据的方法
+
+1. 创建 Restore customer resource (CR)，将指定备份数据恢复至 TiDB 集群。
+
+    + 方法 1：创建 Restore custom resource (CR)，通过 AccessKey 和 SecretKey 授权的方式将指定的备份数据由 Ceph 恢复至 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
 
@@ -97,7 +118,7 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
           storageSize: 1Gi
         ```
 
-    + 创建 Restore custom resource (CR)，通过 AccessKey 和 SecretKey 授权的方式将指定的备份数据由 Amazon S3 恢复至 TiDB 集群：
+    + 方法 2：创建 Restore custom resource (CR)，通过 AccessKey 和 SecretKey 授权的方式将指定的备份数据由 Amazon S3 恢复至 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
 
@@ -130,7 +151,7 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
           storageSize: 1Gi
         ```
 
-    + 创建 Restore custom resource (CR)，通过 IAM 绑定 Pod 授权的方式将指定的备份数据恢复至 TiDB 集群：
+    + 方法 3：创建 Restore custom resource (CR)，通过 IAM 绑定 Pod 授权的方式将指定的备份数据恢复至 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
 
@@ -164,7 +185,7 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
           storageSize: 1Gi
         ```
 
-    + 创建 Restore custom resource (CR)，通过 IAM 绑定 ServiceAccount 授权的方式将指定的备份数据恢复至 TiDB 集群：
+    + 方法 4：创建 Restore custom resource (CR)，通过 IAM 绑定 ServiceAccount 授权的方式将指定的备份数据恢复至 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
 
@@ -205,9 +226,9 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
     kubectl get rt -n test2 -owide
     ```
 
-以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 `spec.to.host`。有关兼容 S3 的存储的配置项，可以参考 [S3 字段介绍](backup-restore-overview.md#s3-存储字段介绍)。
+以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 `spec.to.host`。有关兼容 S3 的存储的配置项，可以参考 [S3 字段介绍](backup-restore-cr.md#s3-存储字段介绍)。
 
-更多 `Restore` CR 字段的详细解释参考[Restore CR 字段介绍](backup-restore-overview.md#restore-cr-字段介绍)。
+更多 `Restore` CR 字段的详细解释参考[Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
 
 > **注意：**
 >

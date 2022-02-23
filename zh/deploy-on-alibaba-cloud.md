@@ -88,7 +88,7 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.2.0"
+    operator_version = "v1.2.7"
     ```
 
     如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 `ecs.i2.2xlarge`。
@@ -174,7 +174,7 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
       ...
       tiflash:
         baseImage: pingcap/tiflash
-        maxFailoverCount: 3
+        maxFailoverCount: 0
         nodeSelector:
           dedicated: TIDB_CLUSTER_NAME-tiflash
         replicas: 1
@@ -258,6 +258,10 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
   kubectl --kubeconfig credentials/kubeconfig create -f db-monitor.yaml -n ${namespace}
   ```
 
+> **注意：**
+>
+> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
+
 ## 连接数据库
 
 通过堡垒机可连接 TiDB 集群进行测试，相关信息在安装完成后的输出中均可找到：
@@ -298,7 +302,7 @@ mysql -h ${tidb_lb_ip} -P 4000 -u root
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl --kubeconfig credentials/kubeconfig edit tc ${tidb_cluster_name} -n ${namespace}` 修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl --kubeconfig credentials/kubeconfig patch tc ${tidb_cluster_name} -n ${namespace} --type merge -p '{"spec":{"version":"${version}"}}'` 修改 `spec.version`。
 
 升级操作可能会执行较长时间，可以通过以下命令来持续观察进度：
 

@@ -34,30 +34,10 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": true}}'
     ```
 
-2. 在 TidbCluster CR 中以如下方式配置 `spec.paused: true`，保存配置并退出编辑器。TiDB 集群各组件 (PD、TiKV、TiDB、TiFlash、TiCDC、Pump) 的同步过程将会被暂停。
-
-    {{< copyable "" >}}
-    
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      ...
-    spec:
-      ...
-      paused: true  # 暂停同步
-      pd:
-        ...
-      tikv:
-        ...
-      tidb:
-        ...
-    ```
-
-3. TiDB 集群同步暂停后，可以使用以下命令查看 tidb-controller-manager Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 tidb-controller-manager Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
+2. TiDB 集群同步暂停后，可以使用以下命令查看 tidb-controller-manager Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 tidb-controller-manager Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     
@@ -87,30 +67,10 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
     {{< copyable "shell-regular" >}}
     
     ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": false}}'
     ```
 
-2. 在 TidbCluster CR 中以如下方式配置 `spec.paused: false`，保存配置并退出编辑器。TiDB 集群各组件 (PD、TiKV、TiDB、TiFlash、TiCDC、Pump) 的同步过程将会被恢复。
-
-    {{< copyable "" >}}
-    
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      ...
-    spec:
-      ...
-      paused: false  # 恢复同步
-      pd:
-        ...
-      tikv:
-        ...
-      tidb:
-        ...
-    ```
-
-3. 恢复 TiDB 集群同步后，可以使用以下命令查看 tidb-controller-manager Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 tidb-controller-manager Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
+2. 恢复 TiDB 集群同步后，可以使用以下命令查看 tidb-controller-manager Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 tidb-controller-manager Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
 
     {{< copyable "shell-regular" >}}
     

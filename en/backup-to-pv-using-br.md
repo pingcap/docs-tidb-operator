@@ -1,31 +1,45 @@
 ---
-title: Back up Data to PV Using BR
-summary: Learn how to back up data to Persistent Volume (PV) using BR.
+title: Back up Data to PV
+summary: Learn how to back up cluster data to Persistent Volume (PV) using BR.
 ---
 
-# Back up Data to PV Using BR
+# Back up Data to PV
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVs). [BR](https://pingcap.com/docs/stable/br/backup-and-restore-tool/) is used to get the backup of the TiDB cluster, and then the backup data is sent to PVs.
+This document describes how to back up the data of a TiDB cluster in Kubernetes to [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVs). PVs in this documentation can be any [Kubernetes supported PV types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document uses NFS as an example PV type.
 
-PVs in this documentation can be any [Kubernetes supported Persistent Volume types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document uses NFS as an example PV type.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the backup data of the TiDB cluster, and then send the data to PVs. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
-> **Note:**
->
-> The backup method described in this document is supported starting from TiDB Operator v1.1.8.
+## User scenarios
 
-## Ad-hoc backup
+If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled full backup](#scheduled-full-backup) of the TiDB cluster data to PVs:
 
-Ad-hoc backup supports both full backup and incremental backup. It describes the backup by creating a `Backup` Custom Resource (CR) object. TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+- To back up a large volume of data at a fast speed
+- To get a direct backup of data as SST files (key-value pairs)
 
-This document provides examples in which the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace is backed up to NFS.
-
-### Prerequisites for ad-hoc backup
+For other backup needs, refer to [Backup and Restore Overview](backup-restore-overview.md) to choose an appropriate backup method.
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR. In addition, you can skip the steps of creating the `backup-demo1-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
+> - BR is only applicable to TiDB v3.1 or later releases.
+> - Data that is backed up using BR can only be restored to TiDB instead of other databases.
 
+<<<<<<< HEAD
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
+=======
+## Ad-hoc backup
+>>>>>>> upstream/release-1.2
+
+Ad-hoc backup supports both full backup and incremental backup.
+
+To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+
+This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to NFS. The following are the detailed steps.
+
+### Step 1: Prepare for an ad-hoc backup
+
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) to the server that runs the backup task.
+
+2. Execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
     {{< copyable "shell-regular" >}}
 
@@ -33,15 +47,7 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. Create the `backup-demo1-tidb-secret` secret which stores the root account and password needed to access the TiDB cluster:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
-    ```
-
-3. Ensure that the NFS server is accessible from your Kubernetes cluster, and TiKV is configured to mount the same NFS server directory to the same local path as in backup jobs. To mount NFS for TiKV, refer to the configuration below:
+3. Make sure that the NFS server is accessible from your Kubernetes cluster, and you have configured TiKV to mount the same NFS server directory to the same local path as in backup jobs. To mount NFS for TiKV, refer to the configuration below:
 
     {{< copyable "" >}}
 
@@ -49,22 +55,30 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
     spec:
       tikv:
         additionalVolumes:
-        # specify volume types that are supported by Kubernetes, Ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes
+        # Specify volume types that are supported by Kubernetes, Ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes
         - name: nfs
           nfs:
             server: 192.168.0.2
             path: /nfs
         additionalVolumeMounts:
-        # this must match `name` in `additionalVolumes`
+        # This must match `name` in `additionalVolumes`
         - name: nfs
           mountPath: /nfs
     ```
 
-### Required database account privileges
+4. For a TiDB version earlier than v4.0.8, you also need to complete the following preparation steps. For TiDB v4.0.8 or a later version, skip these preparation steps.
 
-* The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the backup, the `Backup` CR needs a database account with these privileges to adjust the GC time.
+    1. Make sure that you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
 
-### Process of ad-hoc backup
+    2. Create the `backup-demo1-tidb-secret` secret to store the account and password to access the TiDB cluster:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
+        ```
+
+### Step 2: Perform an ad-hoc backup
 
 1. Create the `Backup` CR, and back up cluster data to NFS as described below:
 
@@ -115,17 +129,19 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
           mountPath: /nfs
     ```
 
-    In the example above, `spec.local` refers to the configuration related to PVs. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
+    When configuring `backup-nfs.yaml`, note the following:
 
-    In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `timeAgo`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
+    * If you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
 
-    Since TiDB Operator v1.1.6, if you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool#back-up-incremental-data).
+    * `spec.local` refers to the configuration related to PVs. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
 
-    For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
+    * Some parameters in `spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, and `timeAgo`. For more information about `spec.br` fields, refer to [BR fields](backup-restore-overview.md#br-fields).
 
-    This example backs up all data in the TiDB cluster to NFS.
+    * For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
 
-2. After creating the `Backup` CR, use the following command to check the backup status:
+    * For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
+
+2. After creating the `Backup` CR, TiDB Operator automatically starts the backup task. You can use the following command to check the backup status:
 
     {{< copyable "shell-regular" >}}
 
@@ -137,11 +153,11 @@ This document provides examples in which the data of the `demo1` TiDB cluster in
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
-### Prerequisites for scheduled full backup
+### Step 1: Prepare for a scheduled full backup
 
-The prerequisites for the scheduled full backup is the same with the [prerequisites for ad-hoc backup](#prerequisites-for-ad-hoc-backup).
+The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
 
-### Process of scheduled full backup
+### Step 2: Perform a scheduled full backup
 
 1. Create the `BackupSchedule` CR, and back up cluster data as described below:
 
@@ -194,6 +210,11 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
             mountPath: /nfs
     ```
 
+    From the `backup-schedule-nfs.yaml` example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
+
+    - For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
+    - `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields).
+
 2. After creating the scheduled full backup, use the following command to check the backup status:
 
     {{< copyable "shell-regular" >}}
@@ -210,13 +231,9 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
     kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-nfs -n test1
     ```
 
-From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
-
-`backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields). For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
-
 ## Delete the backup CR
 
-Refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
+If you no longer need the backup CR, refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
 
 ## Troubleshooting
 

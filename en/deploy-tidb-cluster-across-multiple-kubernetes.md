@@ -18,6 +18,8 @@ You need to configure the Kubernetes network and DNS so that the Kubernetes clus
 - The TiDB components on each Kubernetes cluster can access the Pod IP of all TiDB components in and between clusters.
 - The TiDB components on each Kubernetes cluster can look up the Pod FQDN of all TiDB components in and between clusters.
 
+To build multiple connected EKS or GKE clusters, refer to [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md) or [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md).
+
 ## Supported scenarios
 
 Currently supported scenarios:
@@ -72,18 +74,21 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -132,18 +137,21 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
     config: {}
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -186,7 +194,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
     ```bash
     cat <<EOF | kubectl apply -f -
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
       name: ${cluster_name}-selfsigned-ca-issuer
@@ -194,7 +202,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
     spec:
       selfSigned: {}
     ---
-    apiVersion: cert-manager.io/v1alpha2
+    apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
       name: ${cluster_name}-ca
@@ -265,7 +273,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
         ```bash
         cat << EOF | kubectl apply -f -
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: Issuer
         metadata:
           name: ${cluster_name}-tidb-issuer
@@ -294,7 +302,7 @@ For other clusters, you only need to create a component certificate `Issuer` (re
 
        ```bash
        cat << EOF | kubectl apply -f -
-       apiVersion: cert-manager.io/v1alpha2
+       apiVersion: cert-manager.io/v1
        kind: Issuer
        metadata:
          name: ${cluster_name}-tidb-issuer
@@ -382,7 +390,7 @@ Run the following command:
 
 ```bash
 cat << EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ${cluster_name}-pd-cluster-secret
@@ -391,8 +399,9 @@ spec:
   secretName: ${cluster_name}-pd-cluster-secret
   duration: 8760h # 365d
   renewBefore: 360h # 15d
-  organization:
-  - PingCAP
+  subject:
+    organizations:
+    - PingCAP
   commonName: "TiDB"
   usages:
     - server auth
@@ -463,6 +472,7 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -472,6 +482,7 @@ spec:
           - TiDB
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -481,6 +492,7 @@ spec:
          - TiDB
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -536,6 +548,7 @@ spec:
   discovery: {}
   pd:
     baseImage: pingcap/pd
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -545,6 +558,7 @@ spec:
           - TiDB
   tikv:
     baseImage: pingcap/tikv
+    maxFailoverCount: 0
     replicas: 1
     requests:
       storage: "10Gi"
@@ -554,6 +568,7 @@ spec:
          - TiDB
   tidb:
     baseImage: pingcap/tidb
+    maxFailoverCount: 0
     replicas: 1
     service:
       type: ClusterIP
@@ -565,6 +580,35 @@ spec:
          - TiDB
 EOF
 ```
+
+## Upgrade TiDB Cluster
+
+For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upgrade for each component Pod of the TiDB cluster, take the following steps in sequence to modify the version configuration of each component in the TidbCluster spec for each Kubernetes cluster.
+
+1. Upgrade PD versions for all Kubernetes clusters.
+
+   1. Modify the `spec.pd.version` field in the spec for cluster #1.
+
+      ```yaml
+      apiVersion: pingcap.com/v1alpha1
+      kind: TidbCluster
+      # ...
+      spec:
+        pd:
+          version: ${version}
+      ```
+
+    2. Watch the status of PD Pods and wait for PD Pods in cluster #1 to finish recreation and become `Running`.
+
+    3. Repeat the first two substeps to upgrade all PD Pods in other clusters.
+
+2. Take step 1 as an example, perform the following upgrade operations in sequence:
+
+    1. If TiFlash is deployed in clusters, upgrade the TiFlash versions for all the Kubernetes clusters that have TiFlash deployed.
+    2. Upgrade TiKV versions for all Kubernetes clusters.
+    3. If Pump is deployed in clusters, upgrade the Pump versions for all the Kubernetes clusters that have Pump deployed.
+    4. Upgrade TiDM versions for all Kubernetes clusters.
+    5. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
 
 ## Exit and reclaim clusters that already join a cross-Kubernetes cluster
 

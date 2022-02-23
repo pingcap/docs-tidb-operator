@@ -68,7 +68,7 @@ gcloud config set compute/region <gcp-region>
 
 ## Deploy TiDB Operator
 
-To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#deploy-tidb-operator).
+To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#step-2-deploy-tidb-operator).
 
 ## Deploy a TiDB cluster and the monitoring component
 
@@ -111,6 +111,10 @@ kubectl create -f tidb-monitor.yaml -n tidb-cluster
 ```
 
 After the yaml file above is applied to the Kubernetes cluster, TiDB Operator creates the desired TiDB cluster and its monitoring component according to the yaml file.
+
+> **Note:**
+>
+> If you need to deploy a TiDB cluster on ARM64 machines, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
 ### View the cluster status
 
@@ -249,7 +253,13 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `spec.version` by executing `kubectl edit tc basic -n tidb-cluster`.
+To upgrade the TiDB cluster, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}`.
+```
 
 The upgrade process does not finish immediately. You can watch the upgrade progress by executing `kubectl get pods -n tidb-cluster --watch`.
 
@@ -316,6 +326,7 @@ The two components are *not required* in the deployment. This section shows a qu
       ...
       tiflash:
         baseImage: pingcap/tiflash
+        maxFailoverCount: 0
         replicas: 1
         storageClaims:
         - resources:

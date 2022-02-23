@@ -95,7 +95,7 @@ TiDB Operator 通过访问 PD API 获取 TiKV store 健康状况，并记录到 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc -n ${namespace} ${cluster_name}
+kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
 ```
 
 TiDB Operator 会自动将新起的 TiKV Pod 缩容，请在集群缩容完成后，配置 `spec.tikv.recoverFailover: false`，避免下次发生故障转移并恢复后自动缩容。
@@ -122,7 +122,7 @@ TiDB Operator 通过访问 PD API 获取 TiFlash store 健康状况，并记录�
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl edit tc -n ${namespace} ${cluster_name}
+kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
 ```
 
 TiDB Operator 会自动将新起的 TiFlash Pod 缩容，请在集群缩容完成后，配置 `spec.tiflash.recoverFailover: false`，避免下次发生故障转移并恢复后自动缩容。

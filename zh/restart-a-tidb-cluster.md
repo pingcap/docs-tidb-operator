@@ -21,31 +21,19 @@ kind: TidbCluster
 metadata:
   name: basic
 spec:
-  version: v5.1.0
+  version: v5.3.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
-    baseImage: pingcap/pd
-    replicas: 3
-    requests:
-      storage: "1Gi"
-    config: {}
+    ...
     annotations:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
   tikv:
-    baseImage: pingcap/tikv
-    replicas: 3
-    requests:
-      storage: "1Gi"
-    config: {}
+    ...
     annotations:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
   tidb:
-    baseImage: pingcap/tidb
-    replicas: 2
-    service:
-      type: ClusterIP
-    config: {}
+    ...
     annotations:
       tidb.pingcap.com/restartedAt: 2020-04-20T12:00
 ```

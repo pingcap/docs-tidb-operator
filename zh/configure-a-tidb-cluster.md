@@ -40,9 +40,9 @@ category: how-to
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v5.1.0`
+- `spec.version`，格式为 `imageTag`，例如 `v5.3.0`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.1.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v5.3.0`
 
 ### 推荐配置
 
@@ -98,51 +98,13 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 {{< copyable "" >}}
 
 ```yaml
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      log:
-        file:
-          filename: /var/log/pdlog/pd.log
-        level: "warn"
-    storageVolumes:
-    - name: log
-      storageSize: "2Gi"
-      mountPath: "/var/log/pdlog"
-  tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config:
-      log:
-        file:
-          filename: /var/log/tidblog/tidb.log
-        level: "warn"
-    storageVolumes:
-    - name: log
-      storageSize: "2Gi"
-      mountPath: "/var/log/tidblog"
   tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    # if storageClassName is not set, the default Storage Class of the Kubernetes cluster will be used
-    # storageClassName: local-storage
-    requests:
-      storage: "1Gi"
-    config:
-      storage:
-        # In basic examples, you can set this to avoid using too much storage.
-        reserve-space: "0MB"
-      rocksdb:
-        wal-dir: "/data_sbi/tikv/wal"
-      titan:
-        dirname: "/data_sbj/titan/data"
+    ...
+    config: |
+      [rocksdb]
+        wal-dir = "/data_sbi/tikv/wal"
+      [titan]
+        dirname = "/data_sbj/titan/data"
     storageVolumes:
     - name: wal
       storageSize: "2Gi"
@@ -167,25 +129,13 @@ TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discove
 `spec.discovery` 配置示例：
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  version: v5.1.0
-  pvReclaimPolicy: Retain
   discovery:
     limits:
       cpu: "0.2"
     requests:
       cpu: "0.2"
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-...
+  ...
 ```
 
 ### 集群拓扑
@@ -210,7 +160,7 @@ spec:
       enable-placement-rules = true
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -224,7 +174,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 ```yaml
   tiflash:
     baseImage: pingcap/tiflash
-    maxFailoverCount: 3
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
@@ -278,23 +228,11 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.tidb.config` 来配置 TiDB 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tidb:
-    image: pingcap/tidb:v5.1.0
-    imagePullPolicy: IfNotPresent
-    replicas: 1
-    service:
-      type: ClusterIP
     config: |
       split-table = true
       oom-action = "log"
-    requests:
-      cpu: 1
 ```
 
 获取所有可以配置的 TiDB 配置参数，请参考 [TiDB 配置文档](https://pingcap.com/docs-cn/stable/tidb-configuration-file/)。
@@ -308,21 +246,12 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.tikv.config` 来配置 TiKV 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-....
   tikv:
-    image: pingcap/tikv:v5.0.1
     config: |
       [storage]
         [storage.block-cache]
           capacity = "16GB"
-    replicas: 1
-    requests:
-      cpu: 2
 ```
 
 获取所有可以配置的 TiKV 配置参数，请参考 [TiKV 配置文档](https://pingcap.com/docs-cn/stable/tikv-configuration-file/)
@@ -336,14 +265,8 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.pd.config` 来配置 PD 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-.....
   pd:
-    image: pingcap/pd:v5.0.1
     config: |
       lease = 3
       enable-prevote = true
@@ -361,12 +284,7 @@ spec:
 你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   tiflash:
     config:
       config: |
@@ -389,12 +307,7 @@ spec:
 对于 TiDB Operator v1.2.0-rc.2 及之后版本，请使用 TOML 格式配置：
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   ticdc:
     config: |
       gc-ttl = 86400
@@ -404,12 +317,7 @@ spec:
 对于 TiDB Operator v1.2.0-rc.2 之前版本，请使用 YAML 格式配置：
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  ...
   ticdc:
     config:
       timezone: UTC
@@ -417,7 +325,7 @@ spec:
       logLevel: info
 ```
 
-获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/ticdc/blob/master/cmd/ticdc.toml)。
+获取所有可以配置的 TiCDC 启动参数，请参考 [TiCDC 启动参数文档](https://github.com/pingcap/tiflow/blob/bf29e42c75ae08ce74fbba102fe78a0018c9d2ea/pkg/cmd/util/ticdc.toml)。
 
 #### 配置 PD、TiDB、TiKV、TiFlash 故障自动转移阈值
 
@@ -436,6 +344,13 @@ spec:
     maxFailoverCount: 3
 ```
 
+> **注意：**
+>
+> 对于以下情况，请显式设置 `maxFailoverCount: 0`：
+>
+> - 集群中没有足够的资源以供 TiDB Operator 扩容新 Pod。该情况下，扩容出的 Pod 会处于 Pending 状态。
+> - 不希望开启故障自动转移功能。
+
 ### 配置 TiDB 平滑升级
 
 滚动更新 TiDB 集群的过程中，在停止 TiDB Pod 之前，Kubernetes 会向 TiDB server 进程发送一个 [`TERM`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) 信号。在收到 `TERM` 信号后，TiDB server 会尝试等待所有的连接关闭，不过 15 秒后会强制关闭所有连接并退出进程。
@@ -446,32 +361,9 @@ spec:
 - `spec.tidb.lifecycle`：设置 TiDB Pod 的 `preStop` Hook，在 TiDB server 停止之前执行的操作。
 
 ```yaml
-apiVersion: pingcap.com/v1alpha1
-kind: TidbCluster
-metadata:
-  name: basic
 spec:
-  version: v5.1.0
-  pvReclaimPolicy: Retain
-  discovery: {}
-  pd:
-    baseImage: pingcap/pd
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
-  tikv:
-    baseImage: pingcap/tikv
-    replicas: 1
-    requests:
-      storage: "1Gi"
-    config: {}
   tidb:
-    baseImage: pingcap/tidb
-    replicas: 1
-    service:
-      type: ClusterIP
-    config: {}
+    ...
     terminationGracePeriodSeconds: 60
     lifecycle:
       preStop:
@@ -567,7 +459,6 @@ spec:
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       type: ClusterIP
@@ -579,7 +470,6 @@ spec:
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       type: NodePort
@@ -604,7 +494,6 @@ NodePort 有两种模式：
 
 ```yaml
 spec:
-  ...
   tidb:
     service:
       annotations:
@@ -683,9 +572,10 @@ affinity:
 
 配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
 
-> **注意：**
->
-> 配置 `topologySpreadConstraints` 前，你需要开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或者 `EvenPodsSpread` feature gate 未开启，`topologySpreadConstraints` 的配置将不会生效。
+如需使用 `topologySpreadConstraints`，需要满足以下条件：
+
+* Kubernetes 集群使用 `default-scheduler`，而不是 `tidb-scheduler`。详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
+* Kubernetes 集群开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或集群未开启 `EvenPodsSpread` feature gate，`topologySpreadConstraints` 的配置将不会生效。
 
 `topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
 
@@ -714,10 +604,6 @@ topologySpreadConstraints:
   whenUnsatisfiable: DoNotSchedule
   labelSelector: <object>
 ```
-
-> **注意：**
->
-> 可以用该功能替换 [TiDB Scheduler](tidb-scheduler.md) 来实现均匀调度。
 
 ### 数据的高可用
 

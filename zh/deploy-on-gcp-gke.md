@@ -66,7 +66,7 @@ gcloud config set compute/region <gcp-region>
 
 ## 部署 TiDB Operator
 
-参考快速上手中[部署 TiDB Operator](get-started.md#部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
+参考快速上手中[部署 TiDB Operator](get-started.md#第-2-步部署-tidb-operator)，在 GKE 集群中部署 TiDB Operator。
 
 ## 部署 TiDB 集群和监控
 
@@ -109,6 +109,10 @@ kubectl create -f tidb-monitor.yaml -n tidb-cluster
 ```
 
 当上述 yaml 文件被应用到 Kubernetes 集群后，TiDB Operator 会负责根据 yaml 文件描述，创建对应配置的 TiDB 集群。
+
+> **注意：**
+>
+> 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
 ### 查看 TiDB 集群启动状态
 
@@ -192,7 +196,7 @@ gcloud compute instances create bastion \
     $ mysql -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v5.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 5.7.25-TiDB-v5.3.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -245,7 +249,7 @@ basic-grafana            LoadBalancer   10.15.255.169   34.123.168.114   3000:30
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可以通过 `kubectl edit tc basic -n tidb-cluster` 命令修改 `spec.version`。
+要升级 TiDB 集群，可以通过 `kubectl patch tc basic -n tidb-cluster --type merge -p '{"spec":{"version":"${version}"}}` 命令修改。
 
 升级过程会持续一段时间，你可以通过 `kubectl get pods -n tidb-cluster --watch` 命令持续观察升级进度。
 
@@ -306,6 +310,7 @@ spec:
   ...
   tiflash:
     baseImage: pingcap/tiflash
+    maxFailoverCount: 0
     replicas: 1
     storageClaims:
     - resources:
