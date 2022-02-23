@@ -38,7 +38,7 @@ TiDB Operator 版本：1.3.1
 
 ## 优化提升
 
-- `tidb-lightning` Helm chart 使用 `local` backend 作为默认后端 ([#4426](https://github.com/pingcap/tidb-operator/pull/4426), [@KanShiori](https://github.com/KanShiori))
+- `tidb-lightning` Helm chart 使用 `local` 后端作为默认后端 ([#4426](https://github.com/pingcap/tidb-operator/pull/4426), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug 修复
 
