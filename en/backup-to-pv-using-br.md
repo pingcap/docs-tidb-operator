@@ -23,11 +23,7 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 > - BR is only applicable to TiDB v3.1 or later releases.
 > - Data that is backed up using BR can only be restored to TiDB instead of other databases.
 
-<<<<<<< HEAD
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
-=======
 ## Ad-hoc backup
->>>>>>> upstream/release-1.2
 
 Ad-hoc backup supports both full backup and incremental backup.
 
@@ -37,7 +33,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 1: Prepare for an ad-hoc backup
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) to the server that runs the backup task.
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml) to the server that runs the backup task.
 
 2. Execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
