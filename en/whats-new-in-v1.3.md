@@ -22,7 +22,7 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
 
 - Due to the issue [#4434](https://github.com/pingcap/tidb-operator/pull/4434), If you upgrade TiFlash to v5.4.0 or later when using v1.3.0 or v1.3.0-beta.1 TiDB Operator, TiFlash maybe lose metadata and not work. If TiFlash is deployed in your cluster, it's recommended that upgrade TiDB Operator to v1.3.1 or later to upgrade TiFlash.
 
-- Due to the issue [#4435](https://github.com/pingcap/tidb-operator/pull/4435), If there isn't the `tmp_path` field in TiFlash's config, you can't use v5.4.0 TiFlash when using v1.3.0 or v1.3.0-beta.1 TiDB Operator, it's recommended that upgrade TiDB Operator to v1.3.1 or later to use TiFlash.
+- Due to the issue [#4435](https://github.com/pingcap/tidb-operator/pull/4435), when using v1.3.0 or v1.3.0-beta.1 TiDB Operator, you have to set `tmp_path` field in TiFlash's config to use v5.4.0 or later TiFlash. It's recommended that upgrade TiDB Operator to v1.3.1 or later to use TiFlash.
 
 ## Rolling upgrade changes
 
