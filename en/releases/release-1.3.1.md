@@ -12,7 +12,7 @@ TiDB Operator version: 1.3.1
 
 - Due to the issues in [#4434](https://github.com/pingcap/tidb-operator/pull/4434) and [#4435](https://github.com/pingcap/tidb-operator/pull/4435), if you have deployed TiFlash v5.4.0 or later versions when using TiDB Operator v1.3.0 or v1.3.0-beta.1, you must upgrade TiDB Operator by taking the following steps to **avoid TiFlash losing metadata**.
 
-    1. In TidbCluster spec, if the `storage.rafe.dir` and `raft.kvstore_path` fields in TiFlash's config `spec.tiflash.config.config` are not explicitly configured, you need to add the `storage.raft.dir` field.
+    1. In TidbCluster spec, if the `storage.rafe.dir` and `raft.kvstore_path` fields in TiFlash's config `spec.tiflash.config.config` are not explicitly configured, you need to add the `storage.raft.dir` field. If `storage.main.dir` is not explicitly configured, you need to add the field.
     
         ```yaml
         spec:
