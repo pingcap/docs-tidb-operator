@@ -20,6 +20,10 @@ TiDB Operator 1.3 introduces the following key features, which helps you manage 
     1. Use fields `baseImage` and `version` to replace the field `image`, refer to the document [Configure TiDB deployment](configure-a-tidb-cluster.md#version).
     2. Upgrade TiDB Operator.
 
+- Due to the issue [#4434](https://github.com/pingcap/tidb-operator/pull/4434), If you upgrade TiFlash to v5.4.0 or later when using v1.3.0 or v1.3.0-beta.1 TiDB Operator, TiFlash maybe lose metadata and not work. If TiFlash is deployed in your cluster, it's recommended that upgrade TiDB Operator to v1.3.1 or later to upgrade TiFlash.
+
+- Due to the issue [#4435](https://github.com/pingcap/tidb-operator/pull/4435), If there isn't the `tmp_path` field in TiFlash's config, you can't use v5.4.0 TiFlash when using v1.3.0 or v1.3.0-beta.1 TiDB Operator, it's recommended that upgrade TiDB Operator to v1.3.1 or later to upgrade TiFlash.
+
 ## Rolling upgrade changes
 
 - Optimize the default configuration of TiFlash (>= v5.4.0). Since v1.3.0-beta.1, TiDB Operator optimizes the default configuration for TiFlash >= v5.4.0. If you deploy a TiDB cluster >= v5.4 using TiDB Operator v1.2, after upgrading TiDB Operator to v1.3.x, the TiFlash component will be rolling updated. It is recommended to upgrade TiDB Operator to v1.3.x before upgrading the TiDB cluster to v5.4.x.
