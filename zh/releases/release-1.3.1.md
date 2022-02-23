@@ -22,6 +22,8 @@ TiDB Operator 版本：1.3.1
               config: |
                 # ...
                 [storage]
+                  [storage.main]
+                    dir = ["/data0/db"]
                   [storage.raft]
                     dir = ["/data0/db/kvstore/"]
         ```
