@@ -22,7 +22,7 @@ TiDB Operator v1.3 引入了以下关键特性，从扩展性、易用性、安�
 
 - 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 的问题，在部署 v1.3.0 或 v1.3.0-beta.1 版本的 TiDB Operator 情况下，直接升级 TiFlash 到 v5.4.0 及更高版本可能会导致 TiFlash **无法使用并且丢失元数据**。如果集群中部署了 TiFlash，推荐升级到 v1.3.1 及之后版本，再执行升级操作。
   
-- 由于 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，在部署 v1.3.0 或 v1.3.0-beta.1 版本的 TiDB Operator 情况下，如果 TiFlash 的配置不包含 `tmp_path` 字段，则无法使用 v5.4.0 版本的 TiFlash。推荐使用 v1.3.1 及之后版本的 TiDB Operator 部署 TiFlash
+- 由于 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，在部署 v1.3.0 或 v1.3.0-beta.1 版本的 TiDB Operator 情况下，如果 TiFlash 的配置不包含 `tmp_path` 字段，则无法使用 v5.4.0 版本的 TiFlash。推荐使用 v1.3.1 及之后版本的 TiDB Operator 使用 TiFlash。
 
 ## 滚动更新改动
 

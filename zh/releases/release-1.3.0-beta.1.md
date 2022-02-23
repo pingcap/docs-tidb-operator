@@ -18,44 +18,8 @@ TiDB Operator 版本：1.3.0-beta.1
 
 - 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 的问题，在部署 v1.3.0-beta.1 版本的 TiDB Operator 情况下，直接升级 TiFlash 到 v5.4.0 及更高版本可能会导致 TiFlash **无法使用并且丢失元数据**。如果集群中部署了 TiFlash，推荐升级到 v1.3.1 及之后版本，再执行升级操作。
   
-    如果需要使用 v1.3.0-beta.1 版本的 TiDB Operator，那么升级 TiFlash 到 v5.4.0 或者新部署 v5.4.0 TiFlash 之前，你需要执行以下操作：
-    
-    1. 确认 TidbCluster 定义中的 TiFlash 配置，确保 `tmp_path` 和 `storage.raft.dir`（或 `raft.kvstore_path`）字段存在。如果字段不存在，那么需要手动添加。
-       
-        ```yaml
-        spec:
-          # ...
-          tiflash:
-            config:
-              config: |
-                # ...
-                tmp_path = "/data0/tmp"
-                [storage]
-                  [storage.main]
-                    dir = ["/data0/db"]
-                  [storage.raft]
-                    dir = ["/data0/kvstore""]
-        ```
-    
-    2. 升级 TiFlash。
-
-- 由于 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，在部署 v1.3.0-beta.1 版本的 TiDB Operator 情况下，如果 TiFlash 的配置不包含 `tmp_path` 字段，则无法使用 v5.4.0 版本的 TiFlash。TidbCluster 定义中的 TiFlash 配置必须包含 `tmp_path` 字段。
+- 由于 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，在部署 v1.3.0-beta.1 版本的 TiDB Operator 情况下，如果 TiFlash 的配置不包含 `tmp_path` 字段，则无法使用 v5.4.0 版本的 TiFlash。推荐升级到 v1.3.1 及之后版本后，再使用 TiFlash。
   
-    ```yaml
-    spec:
-      # ...
-      tiflash:
-        config:
-          config: |
-            # ...
-            tmp_path = "/data0/tmp"
-            [storage]
-              [storage.main]
-                dir = ["/data0/db"]
-              [storage.raft]
-                dir = ["/data0/kvstore""]
-    ```
-
 ## 滚动升级改动
 
 - 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用 v1.2 版本 TiDB Operator 部署了 v5.4 及更新版本的 TiDB 集群，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiFlash 组件滚动更新。建议在升级 TiDB 集群到 v5.4.0 或更新版本之前，先升级 TiDB Operator 到 v1.3 及以上版本。
