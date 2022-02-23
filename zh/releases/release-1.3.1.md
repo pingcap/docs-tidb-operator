@@ -4,13 +4,13 @@ title: TiDB Operator 1.3.1 Release Notes
 
 # TiDB Operator 1.3.1 Release Notes
 
-发布日期: 2022 年 2 月 22 日
+发布日期: 2022 年 2 月 23 日
 
 TiDB Operator 版本：1.3.1
 
 ## 兼容性改动
 
-- 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 和 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，如果已经使用 v1.3.0 或者 v1.3.0-beta.1 版本 TiDB Operator 部署了 v5.4.0 及以后版本的 TiFlash，你需要执行以下步骤来升级 Operator，以防止 TiFlash **丢失元数据**：
+- 由于 [#4434](https://github.com/pingcap/tidb-operator/pull/4434) 和 [#4435](https://github.com/pingcap/tidb-operator/pull/4435) 的问题，如果已经使用 v1.3.0 或者 v1.3.0-beta.1 版本 TiDB Operator 部署了 v5.4.0 及以后版本的 TiFlash，你需要执行以下步骤来升级 TiDB Operator，以防止 TiFlash **丢失元数据**：
 
     1. 如果 TidbCluster 定义中**没有显式**配置 TiFlash 配置 `spec.tiflash.config.config` 中的 `storage.raft.dir` 和 `raft.kvstore_path` 字段，则显式添加 `storage.raft.dir` 字段。
         
