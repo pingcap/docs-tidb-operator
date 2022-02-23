@@ -32,6 +32,10 @@ TiDB Operator version: 1.3.1
 
 - Add a new field `spec.dnsPolicy` to support configure `DNSPolicy` of Pod ([#4420](https://github.com/pingcap/tidb-operator/pull/4420), [@handlerww](https://github.com/handlerww))
 
+## Improvements
+
+- `tidb-lightning` Helm chart use `Local-backend` as default backend ([#4426](https://github.com/pingcap/tidb-operator/pull/4426), [@KanShiori](https://github.com/KanShiori))
+
 ## Bug fixes
 
 - Fix the issue that if you don't set `raft.kvstore_path` field or `storage.raft.dir` field in TiFlash's config, TiFlash will lose metadata after upgrading TiFlash to v5.4.0 or later when using v1.3.0 or v1.3.0-beta.1 TiDB Operator ([#4430](https://github.com/pingcap/tidb-operator/pull/4430), [@KanShiori](https://github.com/KanShiori))
