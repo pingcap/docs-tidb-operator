@@ -34,6 +34,10 @@ TiDB Operator 版本：1.3.1
 
 - 添加新的 `spec.dnsPolicy` 字段，以支持配置 Pod 的 DNSPolicy ([#4420](https://github.com/pingcap/tidb-operator/pull/4420), [@handlerww](https://github.com/handlerww))
 
+## 优化提升
+
+- `tidb-lightning` Helm chart 使用 `Local-backend` 后端作为默认后端 ([#4426](https://github.com/pingcap/tidb-operator/pull/4426), [@KanShiori](https://github.com/KanShiori))
+
 ## Bug 修复
 
 - 修复当没有显式设置 TiFlash 配置 `raft.kvstore_path` 或 `storage.raft.dir` 字段的情况下，使用 v1.3.0 或者 v1.3.0-beta.1 版本 TiDB Operator 升级 TiFlash 到 v5.4.0 及以后版本后，TiFlash 丢失元数据的问题 ([#4430](https://github.com/pingcap/tidb-operator/pull/4430), [@KanShiori](https://github.com/KanShiori))
