@@ -17,43 +17,7 @@ TiDB Operator version: 1.3.0-beta.1
 
 - Due to the issue [#4434](https://github.com/pingcap/tidb-operator/pull/4434), If you upgrade TiFlash to v5.4.0 or later when using v1.3.0-beta.1 TiDB Operator, TiFlash maybe lose metadata and not work. If TiFlash is deployed in your cluster, it's recommended that upgrade TiDB Operator to v1.3.1 or later to upgrade TiFlash.
 
-    If you have to use v1.3.0-beta.1 TiDB Operator, you have to upgrade TiFlash to v5.4.0 by the following steps:
-
-    1. Check the config of TiFlash in TidbCluster spec, ensure `tmp_path` and `storage.raft.dir` (or `raft.kvstore_path`) fields existing. If these fields isn't existing, you need to add manually.
-   
-        ```yaml
-        spec:
-          # ...
-          tiflash:
-            config:
-              config: |
-                # ...
-                tmp_path = "/data0/tmp"
-                [storage]
-                  [storage.main]
-                    dir = ["/data0/db"]
-                  [storage.raft]
-                    dir = ["/data0/kvstore""]
-        ```
-    
-    2. Upgrade TiFlash.
-
-- Due to the issue [#4435](https://github.com/pingcap/tidb-operator/pull/4435), If there isn't the `tmp_path` field in TiFlash's config, you can't use v5.4.0 TiFlash when using v1.3.0-beta.1 TiDB Operator. TiFlash's config in TidbCluster spec have to contain the `tmp_path` field.
-
-    ```yaml
-    spec:
-      # ...
-      tiflash:
-        config:
-          config: |
-            # ...
-            tmp_path = "/data0/tmp"
-            [storage]
-              [storage.main]
-                dir = ["/data0/db"]
-              [storage.raft]
-                dir = ["/data0/kvstore""]
-    ```
+- Due to the issue [#4435](https://github.com/pingcap/tidb-operator/pull/4435), If there isn't the `tmp_path` field in TiFlash's config, you can't use v5.4.0 TiFlash when using v1.3.0-beta.1 TiDB Operator. It's recommended that upgrade TiDB Operator to v1.3.1 or later to use TiFlash.
 
 ## Rolling Update Changes
 
