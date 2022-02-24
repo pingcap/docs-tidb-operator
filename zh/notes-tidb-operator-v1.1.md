@@ -14,9 +14,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/notes-tidb-operator-v1.1/']
 | 组件、功能 | v1.1 |
 | :--- | :--- |
 | TiDB Cluster (PD, TiDB, TiKV) | [TidbCluster CR](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) |
-| TiDB Monitor | [TidbMonitor CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/monitor/tidb-monitor.yaml) |
-| TiDB Initializer | [TidbInitializer CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/initializer/tidb-initializer.yaml) |
-| Scheduled Backup | [BackupSchedule CR](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-schedule-aws-s3-br.yaml) |
+| TiDB Monitor | [TidbMonitor CR](https://github.com/pingcap/tidb-operator/blob/v1.3.1/manifests/monitor/tidb-monitor.yaml) |
+| TiDB Initializer | [TidbInitializer CR](https://github.com/pingcap/tidb-operator/blob/v1.3.1/manifests/initializer/tidb-initializer.yaml) |
+| Scheduled Backup | [BackupSchedule CR](https://github.com/pingcap/tidb-operator/blob/v1.3.1/manifests/backup/backup-schedule-aws-s3-br.yaml) |
 | Pump | [TidbCluster CR](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) |
 | Drainer | [tidb-drainer chart](https://github.com/pingcap/tidb-operator/tree/master/charts/tidb-drainer) |
 | Importer | [tikv-importer chart](https://github.com/pingcap/tidb-operator/tree/master/charts/tikv-importer) |
