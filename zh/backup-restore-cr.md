@@ -116,7 +116,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
 * `.spec.s3.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
 * `.spec.s3.endpoint`：兼容 S3 的存储服务 endpoint，例如 `http://minio.minio.svc.cluster.local:9000`。
-* `.spec.s3.secretName`：指定访问兼容 S3 存储的密钥信息（包含 access key 和 secret key）的 Secret 名称。
+* `.spec.s3.secretName`：访问兼容 S3 存储的密钥信息（包含 access key 和 secret key）的 Secret 名称。
 * `.spec.s3.acl`：支持的 access-control list (ACL) 策略。
 
     Amazon S3 支持以下几种 access-control list (ACL) 策略：
