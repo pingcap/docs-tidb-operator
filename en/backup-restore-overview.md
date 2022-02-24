@@ -152,7 +152,7 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.s3.bucket`: The name of the bucket compatible with S3 storage.
 * `.spec.s3.prefix`: If you set this field, the value is used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
 * `.spec.s3.endpoint`：The endpoint of S3 compatible storage service, e.g. `http://minio.minio.svc.cluster.local:9000`.
-* `.spec.s3.secretName`：The name of secret which stores S3 compatible storage access key and secret key.
+* `.spec.s3.secretName`：The name of secret which stores S3 compatible storage's access key and secret key.
 * `.spec.s3.acl`: The supported access-control list (ACL) policies.
 
     Amazon S3 supports the following ACL options:
