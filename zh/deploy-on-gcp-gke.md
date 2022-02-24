@@ -24,6 +24,11 @@ summary: 了解如何在 GCP GKE 上部署 TiDB 集群。
     * 启用 Kubernetes API
     * 配置足够的配额等
 
+## 推荐机型及存储
+
+* 推荐机型：出于性能考虑，推荐 PD 所在节点使用 n2-standard-4，TiDB 所在节点使用 n2-standard-8，TiKV 或 TiFlash 所在节点使用 n2-highmem-8。
+* 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
+
 ## 配置 GCP 服务
 
 {{< copyable "shell-regular" >}}
@@ -34,11 +39,6 @@ gcloud config set compute/region <gcp-region>
 ```
 
 使用以上命令，设置好你的 GCP 项目和默认的区域。
-
-## 推荐机型及存储
-
-* 推荐机型：出于性能考虑，推荐 PD 所在节点使用 n2-standard-4，TiDB 所在节点使用 n2-standard-8，TiKV 或 TiFlash 所在节点使用 n2-highmem-8。
-* 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
 
 ## 创建 GKE 集群和节点池
 
@@ -97,7 +97,7 @@ mountOptions:
 
 > **注意：**
 >
-> * 运行中的 TiDB 集群不能动态更换 storage class，可创建一个新的 TiDB 集群测试。
+> * 运行中的 TiDB 集群不能动态更换 StorageClass，可创建一个新的 TiDB 集群测试。
 > * 由于 GKE 升级过程中节点重建会导致[本地盘数据会丢失](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)，在重建前你需要提前备份数据，因此不建议在生产环境中使用本地盘。
 
 1. 为 TiKV 创建附带本地存储的节点池。
@@ -113,7 +113,7 @@ mountOptions:
 
 2. 部署 local volume provisioner。
 
-    本地存储需要使用 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 Storage Class。
+    本地存储需要使用 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 程序发现并管理。以下命令会部署并创建一个 `local-storage` 的 StorageClass。
 
     {{< copyable "shell-regular" >}}
 
