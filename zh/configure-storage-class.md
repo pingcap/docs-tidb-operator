@@ -98,7 +98,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 > **注意：**
 >
-> - 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
+> 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
 
 ### 第 2 步：部署 local-volume-provisioner
 
@@ -189,11 +189,11 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     kubectl get pv | grep -e local-storage -e ssd-storage -e shared-ssd-storage -e backup-storage
     ```
 
-    `local-volume-provisioner` 会为发现目录 (discovery directory) 下的每一个挂载点创建一个 PV。
+    `local-volume-provisioner` 会为发现目录下的每一个挂载点创建一个 PV。
 
     > **注意：**
     >
-    > - 如果发现目录下无任何挂载点，则不会创建任何 PV，那么输出将为空。
+    > 如果发现目录下无任何挂载点，则不会创建任何 PV，那么输出将为空。
 
 更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local)和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
 
@@ -222,9 +222,9 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 ### 最佳实践
 
-- Local PV 的路径是本地存储卷的唯一标示符。为了保证唯一性并避免冲突，推荐使用设备的 UUID 来生成唯一的路径
-- 如果想要 IO 隔离，建议每个存储卷使用一块物理盘会比较恰当，在硬件层隔离
-- 如果想要容量隔离，建议每个存储卷一个分区或者每个存储卷使用一块物理盘来实现
+- 本地 PV 的路径是本地存储卷的唯一标示符。为了保证唯一性并避免冲突，推荐使用设备的 UUID 来生成唯一的路径。
+- 如果想要 IO 隔离，建议每个存储卷使用一块物理盘，在硬件层隔离。
+- 如果想要容量隔离，建议每个存储卷一个分区使用一块物理盘，或者每个存储卷使用一块物理盘。
 
 更多信息，可参阅 local-static-provisioner 的[最佳实践文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
 
