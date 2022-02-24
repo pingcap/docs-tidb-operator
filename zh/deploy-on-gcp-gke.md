@@ -87,7 +87,7 @@ mountOptions:
 - nodelalloc,noatime
 ```
 
-> **注意**:
+> **注意：**
 >
 > 默认的 pd-standard 存储类型不支持设置挂载选项 `nodelalloc` 和 `noatime`。
 
@@ -109,7 +109,7 @@ mountOptions:
       --node-labels dedicated=tikv --node-taints dedicated=tikv:NoSchedule
     ```
 
-    若 tikv 组已存在，可先删除再创建，或者修改名字规避名字冲突。
+    若命名为 tikv 的节点池已存在，可先删除再创建，或者修改名字规避名字冲突。
 
 2. 部署 local volume provisioner。
 
