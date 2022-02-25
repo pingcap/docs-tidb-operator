@@ -25,10 +25,16 @@
     - [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md)
     - [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md)
     - [Deploy TiDB Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
-  - [Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
-  - [TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
+  - [Deploy a Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
+  - [Deploy the TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
+- Monitor and Alert
+  - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
+  - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
+  - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+  - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
+  - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
 - Migrate
   - [Import Data](restore-data-using-tidb-lightning.md)
   - Migrate from MySQL
@@ -41,7 +47,7 @@
     - [Enable TLS between TiDB Components](enable-tls-between-components.md)
     - [Enable TLS for DM](enable-tls-for-dm.md)
     - [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
-    - [Renew and Replace TLS Certificate](renew-tls-certificate.md)
+    - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
     - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
   - Scale
     - [Manually Scale](scale-a-tidb-cluster.md)
@@ -77,10 +83,13 @@
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
+<<<<<<< HEAD
   - Monitor and Alert
     - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
     - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
     - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+=======
+>>>>>>> 668c2b5f (en, zh: update index and TOC organization (#1535))
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
