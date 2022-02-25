@@ -208,7 +208,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
      ``` shell
      docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-     docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/     local-volume-provisioner:v2.3.4
+     docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
      ```
      
      将 `local-volume-provisioner-v2.3.4.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
