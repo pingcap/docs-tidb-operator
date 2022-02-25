@@ -63,7 +63,7 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>管理</ColumnTitle>
+<ColumnTitle>运维管理</ColumnTitle>
 
 - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
 - [升级 TiDB Operator](upgrade-tidb-operator.md)
