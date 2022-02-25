@@ -32,7 +32,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <ColumnTitle>Quick Start</ColumnTitle>
 
 - [kind](get-started.md#create-a-kubernetes-cluster-using-kind)
-- [Minikube](get-started.md#minikube)
+- [Minikube](get-started.md#create-a-kubernetes-cluster-using-minikube)
 - [GKE](deploy-tidb-from-kubernetes-gke.md)
 
 </NavColumn>
