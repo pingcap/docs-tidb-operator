@@ -23,6 +23,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <ColumnTitle>About TiDB Operator</ColumnTitle>
 
 - [TiDB Operator Overview](tidb-operator-overview.md)
+- [TiDB Operator Architecture](architecture.md)
 - [What's New in v1.3](whats-new-in-v1.3.md)
 
 </NavColumn>
@@ -78,7 +79,6 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [TiDB Scheduler](tidb-scheduler.md)
 - [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
-- [Use tkctl](use-tkctl.md)
 - [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
 
 </NavColumn>
