@@ -17,9 +17,9 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
 
 ```yaml
 # ...
-operatorImage: pingcap/tidb-operator-arm64:v1.3.0-beta.1
+operatorImage: pingcap/tidb-operator-arm64:v1.3.1
 # ...
-tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.0-beta.1
+tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.1
 # ...
 ```
 
@@ -34,7 +34,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${cluster_namespace}
 spec:
-  version: "v5.3.0"
+  version: "v5.4.0"
   # ...
   helper:
     image: busybox:1.33.0
@@ -87,7 +87,7 @@ spec:
   # ...
   initializer:
     baseImage: pingcap/tidb-monitor-initializer-arm64
-    version: v5.3.0
+    version: v5.4.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader-arm64
     version: v1.0.1

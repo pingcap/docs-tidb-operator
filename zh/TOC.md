@@ -3,7 +3,7 @@
 
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
-  - [What's New in v1.2](whats-new-in-v1.2.md)
+  - [v1.3 新特性](whats-new-in-v1.3.md)
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes
@@ -49,9 +49,7 @@
     - [同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
     - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [以非 root 用户运行](containers-run-as-non-root-user.md)
-  - 扩缩容
-    - [手动扩缩容](scale-a-tidb-cluster.md)
-    - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
+  - [扩缩容](scale-a-tidb-cluster.md)
   - 升级
     - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
     - 升级 TiDB Operator
@@ -59,6 +57,7 @@
       - [灰度升级](canary-upgrade-tidb-operator.md)
   - 备份与恢复
     - [备份与恢复简介](backup-restore-overview.md)
+    - [备份与恢复 CR 介绍](backup-restore-cr.md)
     - [远程存储访问授权](grant-permissions-to-remote-storage.md)
     - 使用 Amazon S3 兼容的存储
       - [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
@@ -116,8 +115,11 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.3
+    - [1.3.1](releases/release-1.3.1.md)
+    - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
+    - [1.2.7](releases/release-1.2.7.md)
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
@@ -131,6 +133,7 @@
     - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   - v1.1
+    - [1.1.15](releases/release-1.1.15.md)
     - [1.1.14](releases/release-1.1.14.md)
     - [1.1.13](releases/release-1.1.13.md)
     - [1.1.12](releases/release-1.1.12.md)

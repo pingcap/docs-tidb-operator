@@ -53,7 +53,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
     2to3    0.8.0   migrate and cleanup Helm v2 configuration and releases in-place to Helm v3
     ```
 
-3. Migrate the configuration such as repo and plugins from Helm 2 to Helm 3:
+3. Migrate the configuration such as repositories and plugins from Helm 2 to Helm 3:
 
     {{< copyable "shell-regular" >}}
 
@@ -63,7 +63,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
 
     Before you migrate, you can learn about the possible operations and their consequences by executing `helm3 2to3 move config --dry-run`.
 
-    After the migration, the PingCAP repo is already in Helm 3:
+    After the migration, the PingCAP repository is already in Helm 3:
 
     {{< copyable "shell-regular" >}}
 

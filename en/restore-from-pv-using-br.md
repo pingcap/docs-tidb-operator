@@ -1,23 +1,30 @@
 ---
-title: Restore Data from PV Using BR
+title: Restore Data from PV
 summary: Learn how to restore data from Persistent Volume (PV) using BR.
 ---
 
-# Restore Data from PV Using BR
+# Restore Data from PV
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. [BR](https://docs.pingcap.com/tidb/dev/backup-and-restore-tool) is used to perform the restore.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. PVs in this documentation can be any [Kubernetes supported PV types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document shows how to restore data from NFS to TiDB.
 
-PVs in this documentation can be any [Kubernetes supported Persistent Volume types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document uses NFS as an example PV type, and shows an example in which the backup data stored in the specified path on NFS is restored to the TiDB cluster.
+The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
-The restore method described in this document is implemented based on Custom Resource Definition (CRD) in TiDB Operator v1.1 or later versions.
+## User scenarios
 
-## Prerequisites
+After backing up TiDB cluster data to PVs using BR, if you need to recover the backup SST (key-value pairs) files from PVs to a TiDB cluster, you can follow steps in this document to restore the data using BR.
 
 > **Note:**
 >
-> If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR. In addition, you can skip the steps of creating the `restore-demo2-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
+> - BR is only applicable to TiDB v3.1 or later releases.
+> - Data restored by BR cannot be replicated to a downstream cluster, because BR directly imports SST files to TiDB and the downstream cluster currently cannot access the upstream SST files.
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
+## Step 1: Prepare the restore environment
+
+Before restoring backup data on PVs to TiDB using BR, take the following steps to prepare the restore environment:
+
+1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml).
+
+2. Execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
     {{< copyable "shell-regular" >}}
 
@@ -25,21 +32,21 @@ The restore method described in this document is implemented based on Custom Res
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. Create the `restore-demo2-tidb-secret` secret which stores the root account and password needed to access the TiDB cluster:
+3. Make sure that the NFS server is accessible from your Kubernetes cluster.
 
-    {{< copyable "shell-regular" >}}
+4. For a TiDB version earlier than v4.0.8, you also need to complete the following preparation steps. For TiDB v4.0.8 or a later version, skip these preparation steps.
 
-    ```shell
-    kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
-    ```
+    1. Make sure that you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the target database so that the `Restore` CR can adjust the GC time before and after the restore.
 
-3. Ensure that the NFS server is accessible from your Kubernetes cluster.
+    2. Create the `restore-demo2-tidb-secret` secret to store the account and password to access the TiDB cluster:
 
-## Required database account privileges
+        {{< copyable "shell-regular" >}}
 
-- The `SELECT` and `UPDATE` privileges of the `mysql.tidb` table: Before and after the restore, the `Restore` CR needs a database account with these privileges to adjust the GC time.
+        ```shell
+        kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
+        ```
 
-## Restore process
+## Step 2: Restore the backup data to a TiDB cluster
 
 1. Create the `Restore` custom resource (CR), and restore the specified data to your cluster:
 
@@ -49,7 +56,7 @@ The restore method described in this document is implemented based on Custom Res
     kubectl apply -f restore.yaml
     ```
 
-    The content of `restore.yaml` file is as follows:
+    The content of the `restore.yaml` file is as follows:
 
     ```yaml
     ---
@@ -86,6 +93,16 @@ The restore method described in this document is implemented based on Custom Res
           mountPath: /nfs
     ```
 
+    When configuring `restore.yaml`, note the following:
+
+    - The example above restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
+
+    - Some parameters in `spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about `.spec.br`, refer to [BR fields](backup-restore-overview.md#br-fields).
+
+    - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure the `spec.to` field in the `Restore` CR.
+
+    - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
+
 2. After creating the `Restore` CR, execute the following command to check the restore status:
 
     {{< copyable "shell-regular" >}}
@@ -93,12 +110,6 @@ The restore method described in this document is implemented based on Custom Res
     ```shell
     kubectl get rt -n test2 -owide
     ```
-
-The example above restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about local storage configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
-
-In the example above, some parameters in `spec.br` can be ignored, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-overview.md#br-fields).
-
-For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
 
 ## Troubleshooting
 

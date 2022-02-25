@@ -3,7 +3,7 @@
 
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.2](whats-new-in-v1.2.md)
+  - [What's New in v1.3](whats-new-in-v1.3.md)
 - [Get Started](get-started.md)
 - Deploy
   - In Self-Managed Kubernetes
@@ -21,7 +21,10 @@
     - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
   - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
-  - [Deploy across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
+  - Deploy TiDB Across Multiple Kubernetes Clusters
+    - [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md)
+    - [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md)
+    - [Deploy TiDB Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Deploy a Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [Deploy the TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy TiCDC](deploy-ticdc.md)
@@ -45,9 +48,7 @@
     - [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
     - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
     - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
-  - Scale
-    - [Manually Scale](scale-a-tidb-cluster.md)
-    - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
+  - [Scale](scale-a-tidb-cluster.md)
   - Upgrade
     - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
     - Upgrade TiDB Operator
@@ -79,6 +80,12 @@
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
+  - Monitor and Alert
+    - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
+    - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
+    - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+    - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
+    - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
@@ -109,8 +116,11 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
   - v1.3
+    - [1.3.1](releases/release-1.3.1.md)
+    - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
+    - [1.2.7](releases/release-1.2.7.md)
     - [1.2.6](releases/release-1.2.6.md)
     - [1.2.5](releases/release-1.2.5.md)
     - [1.2.4](releases/release-1.2.4.md)
@@ -124,6 +134,7 @@
     - [1.2.0-beta.1](releases/release-1.2.0-beta.1.md)
     - [1.2.0-alpha.1](releases/release-1.2.0-alpha.1.md)
   - v1.1
+    - [1.1.15](releases/release-1.1.15.md)
     - [1.1.14](releases/release-1.1.14.md)
     - [1.1.13](releases/release-1.1.13.md)
     - [1.1.12](releases/release-1.1.12.md)
