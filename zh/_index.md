@@ -24,12 +24,8 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 <ColumnTitle>关于 TiDB Operator</ColumnTitle>
 
 - [TiDB Operator 简介](tidb-operator-overview.md)
-<<<<<<< HEAD
-- [What's New in v1.2](whats-new-in-v1.2.md)
-=======
 - [TiDB Operator 架构](architecture.md)
-- [TiDB Operator v1.3 新特性](whats-new-in-v1.3.md)
->>>>>>> 668c2b5f (en, zh: update index and TOC organization (#1535))
+- [What's New in v1.2](whats-new-in-v1.2.md)
 
 </NavColumn>
 

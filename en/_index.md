@@ -22,12 +22,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <ColumnTitle>About TiDB Operator</ColumnTitle>
 
 - [TiDB Operator Overview](tidb-operator-overview.md)
-<<<<<<< HEAD
-- [What's New in v1.2](whats-new-in-v1.2.md)
-=======
 - [TiDB Operator Architecture](architecture.md)
-- [What's New in v1.3](whats-new-in-v1.3.md)
->>>>>>> 668c2b5f (en, zh: update index and TOC organization (#1535))
+- [What's New in v1.2](whats-new-in-v1.2.md)
 
 </NavColumn>
 
