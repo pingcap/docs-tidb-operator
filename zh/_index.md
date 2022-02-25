@@ -33,7 +33,7 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 <ColumnTitle>快速上手</ColumnTitle>
 
 - [kind](get-started.md#使用-kind-创建-kubernetes-集群)
-- [Minikube](get-started.md#使用-minikube-创建-kubernetes-集群)
+- [Minikube](get-started.md#minikube)
 - [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
 
 </NavColumn>
@@ -67,7 +67,7 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 
 - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
 - [升级 TiDB Operator](upgrade-tidb-operator.md)
-- [水平扩缩容 TiDB 集群](scale-a-tidb-cluster.md)
+- [扩缩容 TiDB 集群](scale-a-tidb-cluster.md)
 - [备份与恢复数据](backup-restore-overview.md)
 - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
 - [维护 TiDB 集群所在节点](maintain-a-kubernetes-node.md)

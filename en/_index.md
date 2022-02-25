@@ -31,7 +31,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <ColumnTitle>Quick Start</ColumnTitle>
 
 - [kind](get-started.md#create-a-kubernetes-cluster-using-kind)
-- [Minikube](get-started.md#create-a-kubernetes-cluster-using-minikube)
+- [Minikube](get-started.md#minikube)
 - [GKE](deploy-tidb-from-kubernetes-gke.md)
 
 </NavColumn>
@@ -65,7 +65,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
-- [Horizontally Scale a TiDB Cluster](scale-a-tidb-cluster.md)
+- [Scale a TiDB Cluster](scale-a-tidb-cluster.md)
 - [Backup and Restore Data](backup-restore-overview.md)
 - [Deploy Monitoring and Alerts](monitor-a-tidb-cluster.md)
 - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
