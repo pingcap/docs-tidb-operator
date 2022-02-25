@@ -125,7 +125,7 @@ To scale in TiFlash horizontally, perform the following steps:
     kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
     ```
 
-#### Horizontally scale TiCDC
+### Horizontally scale TiCDC
 
 If TiCDC is deployed in the cluster, you can horizontally scale out or scale in TiCDC by modifying the value of `spec.ticdc.replicas`.
 
