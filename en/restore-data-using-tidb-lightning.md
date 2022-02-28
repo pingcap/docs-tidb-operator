@@ -366,4 +366,4 @@ If TiDB Lightning fails to restore data, and if you have configured to persist t
 
         3. Create a new `Job` using the modified `values.yaml` file and resume data restore.
 
-4. After the troubleshooting and data restore is completed, [delete the `Job`s](#destroy-tikv-importer-and-tidb-lightning) for data restore and troubleshooting.
+4. After the troubleshooting and data restore is completed, [delete the `Job`s](#destroy-tidb-lightning) for data restore and troubleshooting.
