@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/']
 
 # TiDB in Kubernetes Documentation
 
-[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for TiDB clusters in Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB clusters in Kubernetes. TiDB Operator is an automatic operation system for TiDB clusters in Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
@@ -23,6 +23,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <ColumnTitle>About TiDB Operator</ColumnTitle>
 
 - [TiDB Operator Overview](tidb-operator-overview.md)
+- [TiDB Operator Architecture](architecture.md)
 - [What's New in v1.3](whats-new-in-v1.3.md)
 
 </NavColumn>
@@ -39,12 +40,12 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <NavColumn>
 <ColumnTitle>Deploy TiDB</ColumnTitle>
 
-- [On AWS EKS](deploy-on-aws-eks.md)
+- [On Amazon EKS](deploy-on-aws-eks.md)
 - [On GCP GKE](deploy-on-gcp-gke.md)
+- [On Azure AKS](deploy-on-azure-aks.md)
 - [On Alibaba ACK](deploy-on-alibaba-cloud.md)
 - [On Self-managed Kubernetes](deploy-on-general-kubernetes.md)
-- [Deploy TiFlash](deploy-tiflash.md)
-- [Deploy Monitoring Services](monitor-a-tidb-cluster.md)
+- [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
 
 </NavColumn>
 
@@ -53,17 +54,21 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
 - [Enable TLS between TiDB Components](enable-tls-between-components.md)
-- [Run TiDB Operator and TiDB Clusters as a Non-root User](containers-run-as-non-root-user.md)
+- [Enable TLS for TiDB Data Migration](enable-tls-for-dm.md)
+- [Replicate Data to TLS-enabled Downstream Services](enable-tls-for-ticdc-sink.md)
+- [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
+- [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
 
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>Maintain</ColumnTitle>
+<ColumnTitle>Manage</ColumnTitle>
 
 - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
 - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
 - [Scale a TiDB Cluster](scale-a-tidb-cluster.md)
-- [Backup and Restore](backup-restore-overview.md)
+- [Backup and Restore Data](backup-restore-overview.md)
+- [Deploy Monitoring and Alerts](monitor-a-tidb-cluster.md)
 - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
 - [Use Automatic Failover](use-auto-failover.md)
 
@@ -74,7 +79,6 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [TiDB Scheduler](tidb-scheduler.md)
 - [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
-- [Use tkctl](use-tkctl.md)
 - [Configure TiDB Binlog Drainer](configure-tidb-binlog-drainer.md)
 
 </NavColumn>

@@ -121,7 +121,7 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
     kubectl get tidbcluster ${cluster-name} -n ${namespace} -oyaml
     ```
 
-### 扩缩容 TiCDC
+### 水平扩缩容 TiCDC
 
 如果集群中部署了 TiCDC，可以通过修改 `spec.ticdc.replicas` 对 TiCDC 进行扩缩容。例如，执行以下命令可将 TiCDC 的 `replicas` 值设置为 3：
 
