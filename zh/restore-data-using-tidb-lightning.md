@@ -14,7 +14,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 > **注意：**
 > 
-> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#%E9%83%A8%E7%BD%B2-tikv-importer)部署 tikv-importer。
+> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#部署-tikv-importer)部署 tikv-importer。
 
 此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
