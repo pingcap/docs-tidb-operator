@@ -38,9 +38,14 @@ helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lig
 backend: local
 ```
 
-> **注意：**
->
-> 如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在配置文件中设置 `sortedKV` 字段来创建相应的 PVC 以用于本地 KV 排序。
+如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在配置文件中设置 `sortedKV` 字段来创建相应的 PVC 以用于本地 KV 排序。
+
+```yaml
+# For `local` backend, an extra PV is needed for local KV sorting.
+sortedKV:
+  storageClassName: local-storage
+  storage: 100Gi
+```
 
 #### 断点续传配置
 
