@@ -19,7 +19,7 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
     > `Importer-backend` is deprecated in TiDB 5.3 version or later versions.If you have to use `Importer-backend`, refer to 1.2 version or laters versions [old documentation](https://docs.pingcap.com/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#deploy-tikv-importer).
 
 - For `Local-backend`, only tidb-lightning needs to be deployed.
-  
+
 - For `TiDB-backend`, only tidb-lightning needs to be deployed, and it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions. For details, refer to [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md) or [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 
 ## Deploy TiDB Lightning
@@ -80,7 +80,7 @@ tidb-lightning Helm chart supports both local and remote data sources. Correspon
 
 #### Local
 
-In the local mode, tidb-lightning read the backup data from a directory in one of the Kubernetes node.
+In the local mode, tidb-lightning reads the backup data from a directory in one of the Kubernetes node.
 
 ```yaml
 dataSource:
@@ -89,18 +89,18 @@ dataSource:
     hostPath: /data/export-20190820
 ```
 
-The meanings of the related fields are as follows:
+The descriptions of the related fields are as follows:
 
-* `dataSource.local.nodeName`: node name that the directory is located.
-* `dataSource.local.hostPath`: path of the backup data, the path should contain a file named `metadata`.
+* `dataSource.local.nodeName`: the node name that the directory is located at.
+* `dataSource.local.hostPath`: the path of the backup data. The path must contain a file named `metadata`.
 
 #### Remote
 
-Unlike the local mode, the remote mode use [rclone](https://rclone.org) to download the backup tarball file or the backup directory from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
+Unlike the local mode, the remote mode uses [rclone](https://rclone.org) to download the backup tarball file or the backup directory from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
 
 To restore backup data from the remote source, take the following steps:
 
-1. Grant permissions to the remote storage
+1. Grant permissions to the remote storage.
 
     If you use Amazon S3 as the storage, refer to [AWS account Permissions](grant-permissions-to-remote-storage.md#aws-account-permissions). The configuration varies with different methods.
 
@@ -188,7 +188,7 @@ To restore backup data from the remote source, take the following steps:
             ```
 
 2. Configure the `dataSource` field. For example:
-   
+
     ```yaml
     dataSource:
       remote:
@@ -200,12 +200,12 @@ To restore backup data from the remote source, take the following steps:
         # directory: s3:bench-data-us
     ```
 
-    The meanings of the related fields are as follows:
-    
-    * `dataSource.remote.storageClassName`: name of StorageClass used to create PV.
-    * `dataSource.remote.secretName`: name of Secret created in above step.
+    The descriptions of the related fields are as follows:
+
+    * `dataSource.remote.storageClassName`: the name of StorageClass used to create PV.
+    * `dataSource.remote.secretName`: the name of the Secret created in the previous step.
     * `dataSource.remote.path`: If the backup data is packaged as a tarball file, use this field to indicate the path to the tarball file.
-    * `dataSource.remote.directory`: If the backup data is contained in a directory, use this field to indicate the path to the directory.
+    * `dataSource.remote.directory`: If the backup data is in a directory, use this field to specify the path to the directory.
 
 #### Ad hoc
 
@@ -220,11 +220,10 @@ dataSource:
     backupName: scheduled-backup-20190822-041004
 ```
 
-The meanings of the related fields are as follows:
+The descriptions of the related fields are as follows:
 
-* `dataSource.adhoc.pvcName`: PVC name used in restoring data from remote storage. The PVC must be deployed in the same namespace as Tidb-Lightning.
-
-* `dataSource.adhoc.backupName`: the name of the original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain the '. tgz' suffix of the compressed file name on network storage).
+* `dataSource.adhoc.pvcName`: the PVC name used in restoring data from remote storage. The PVC must be deployed in the same namespace as Tidb-Lightning.
+* `dataSource.adhoc.backupName`: the name of the original backup data, such as: `backup-2020-12-17T10:12:51Z` (Does not contain the '. tgz' suffix of the compressed file name on network storage).
 
 ### Step 3. Deploy TiDB Lightning
 
