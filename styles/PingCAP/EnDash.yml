@@ -1,5 +1,5 @@
 extends: existence
-message: "Use an em dash ('—') instead of '–'."
+message: "Use an em dash ('—') instead of en dash ('–')."
 link: 'https://developers.google.com/style/dashes'
 nonword: true
 level: error
