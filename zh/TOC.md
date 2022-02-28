@@ -108,6 +108,8 @@
   - 工具
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
+  - 配置
+    - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史

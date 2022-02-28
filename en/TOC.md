@@ -105,6 +105,8 @@
   - Tools
     - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
+  - Configure
+    - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
