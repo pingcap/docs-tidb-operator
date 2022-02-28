@@ -91,7 +91,6 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     >
     > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. For each directory, a corresponding PV will be created. Each Pump uses one PV and each Drainer uses one PV. All [Ad-hoc full backup](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage) tasks and all [scheduled full backup](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage) tasks share one PV.
 
-
 The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring` and `/mnt/backup` are discovery directories used by local-volume-provisioner. local-volume-provisioner create a corresponding PV for each subdirectory in discovery directory.
 
 > **Note:**
