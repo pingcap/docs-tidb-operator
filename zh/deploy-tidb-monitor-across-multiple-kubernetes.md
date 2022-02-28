@@ -69,7 +69,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
+        k8s_clsuter: ${kubernetes_cluster_name}
         #add other meta labels here
         #region: us-east-1
       initializer:
@@ -154,7 +154,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
+        k8s_clsuter: ${kubernetes_cluster_name}
         # add other meta labels here
         #region: us-east-1
       initializer:
@@ -238,7 +238,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
-        kubernetes: ${kubernetes_cluster_name}
+        k8s_clsuter: ${kubernetes_cluster_name}
         #add other meta labels here
         #region: us-east-1
       initializer:
@@ -286,15 +286,26 @@ scrape_configs:
 
 ## 使用 Grafana 可视化多集群监控数据
 
-1. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)
-
-2. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards:
+1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards:
 
     {{< copyable "shell-regular" >}}
 
     ```sh
-    version=v5.4.0
-    docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version}
+    version=nightly
+    docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
+    cd dashboards
+    ```
+
+    执行上述命令后，可以在当前目录下查看所有组件 dashboard 的 json 定义文件。
+
+2. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)，为了与上述获得的 dashboard json 文件保持一致，需将数据源 Name 字段值配置为 `tidb-cluster`，或执行以下指令对上述 dashboard json 文件中的数据源名称进行替换。
+
+    {{< copyable "shell-regular" >}}
+
+    ```sh
+    # define your datasource name here.
+    DS_NAME=tidb-cluster
+    sed -i 's/"datasource": "tidb-cluster"/"datasource": "$DS_NAME"/g' *.json
     ```
 
 3. [在 Grafana 中导入 Dashboard](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard)
