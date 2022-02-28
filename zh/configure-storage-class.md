@@ -69,8 +69,6 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 ### 第 1 步：准备本地存储
 
-如果监控、TiDB Binlog、备份等组件都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 供这些组件使用，具体操作如下：
-
 - 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式将盘挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`。
   
     出于性能考虑，推荐 TiKV 独占一个磁盘，并且推荐磁盘类型为 SSD。
