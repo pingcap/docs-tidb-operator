@@ -10,13 +10,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于单独的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，仅需要部署 tidb-lightning。
+目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
 
-> **注意：**
-> 
-> `Importer-backend` 方式在 TiDB 5.3 及之后的版本被废弃，无法使用。如果必须使用 `Importer-backend` 方式，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#部署-tikv-importer)部署 tikv-importer。
+- 对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning。
 
-此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
+    > **注意：**
+    > 
+    > `Importer-backend` 后端在 TiDB 5.3 及之后的版本被废弃。如果必须使用 `Importer-backend` 后端，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#部署-tikv-importer)部署 tikv-importer。
+
+- 对于 `Local-backend` 后端，只需要部署 tidb-lightning。
+  
+- 对于 `TiDB-backend` 后盾，只需要部署 tidb-lightning。推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
 ## 部署 TiDB Lightning
 
@@ -72,7 +76,7 @@ sortedKV:
 
 ### 第 2 步：配置数据源
 
-tidb-lightning Helm chart 支持从本地或远程获取备份数据，为此支持三种模式：本地模式、远程模式和 Ad hoc 模式。三种模式不能混用，只允许配置其中一种模式。
+tidb-lightning Helm chart 支持从本地或远程获取备份数据。对应三种模式：本地模式、远程模式和 Ad hoc 模式。三种模式不能混用，只允许配置其中一种模式。
 
 #### 本地模式
 
@@ -196,14 +200,16 @@ dataSource:
     
     相关字段含义如下：
     
-    * `dataSource.remote.storageClassName`：PV 使用的 StorageClass 名称。
+    * `dataSource.remote.storageClassName`：创建 PV 使用的 StorageClass 名称。
     * `dataSource.remote.secretName`：上一步所创建的 Secret 的名称。
     * `dataSource.remote.path`：如果备份数据打包为 tarball 文件，使用该字段表明 tarball 文件的路径。
     * `dataSource.remote.directory`：如果备份数据包含在目录下，使用该字段表明目录的路径。
 
 #### Ad hoc 模式
 
-当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。示例如下：
+当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。
+
+示例如下：
 
 ```yaml
 dataSource:
@@ -284,9 +290,13 @@ dataSource:
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 
-删除 tidb-lightning 的方法：
+执行以下命令删除删除 tidb-lightning ：
 
-* 运行 `helm uninstall ${release_name} -n ${namespace}`。
+{{< copyable "shell-regular" >}}
+
+```shell
+helm uninstall ${release_name} -n ${namespace}
+```
 
 ## 故障诊断
 

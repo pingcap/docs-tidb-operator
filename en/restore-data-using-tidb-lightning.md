@@ -13,80 +13,20 @@ TiDB Lightning contains two components: tidb-lightning and tikv-importer. In Kub
 TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends).
 
 - For `Importer-backend`, both tikv-importer and tidb-lightning need to be deployed.
-- For `Local-backend`, only tidb-lightning needs to be deployed.
-- For `TiDB-backend`, only tidb-lightning needs to be deployed, and it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions. For details, refer to [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md) or [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
-
-## Deploy TiKV Importer
-
-> **Note:**
->
-> If you use the `local` or `tidb` backend for data restore, you can skip deploying tikv-importer and [deploy tidb-lightning](#deploy-tidb-lightning) directly.
-
-You can deploy tikv-importer using the Helm chart. See the following example:
-
-1. Make sure that the PingCAP Helm repository is up to date:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm repo update
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm search repo tikv-importer -l
-    ```
-
-2. Get the default `values.yaml` file for easier customization:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm inspect values pingcap/tikv-importer --version=${chart_version} > values.yaml
-    ```
-
-3. Modify the `values.yaml` file to specify the target TiDB cluster. See the following example:
-
-    {{< copyable "" >}}
-
-    ```yaml
-    clusterName: demo
-    image: pingcap/tidb-lightning:v5.4.0
-    imagePullPolicy: IfNotPresent
-    storageClassName: local-storage
-    storage: 20Gi
-    pushgatewayImage: prom/pushgateway:v0.3.1
-    pushgatewayImagePullPolicy: IfNotPresent
-    config: |
-      log-level = "info"
-      [metric]
-      job = "tikv-importer"
-      interval = "15s"
-      address = "localhost:9091"
-    ```
-
-    `clusterName` must match the target TiDB cluster.
-
-    If the target TiDB cluster has enabled TLS between components (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiKV Importer, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS.
-
-4. Deploy tikv-importer:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm install ${cluster_name} pingcap/tikv-importer --namespace=${namespace} --version=${chart_version} -f values.yaml
-    ```
 
     > **Note:**
     >
-    > You must deploy tikv-importer in the same namespace where the target TiDB cluster is deployed.
+    > `Importer-backend` is deprecated in TiDB 5.3 version or later versions.If you have to use `Importer-backend`, refer to 1.2 version or laters versions [old documentation](https://docs.pingcap.com/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#deploy-tikv-importer).
+
+- For `Local-backend`, only tidb-lightning needs to be deployed.
+  
+- For `TiDB-backend`, only tidb-lightning needs to be deployed, and it is recommended to import data using CustomResourceDefinition (CRD) in TiDB Operator v1.1 and later versions. For details, refer to [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md) or [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 
 ## Deploy TiDB Lightning
 
-### Configure TiDB Lightning
+### Step 1. Configure TiDB Lightning
 
-Use the following command to get the default configuration of TiDB Lightning:
+Use the following command to save the default configuration of TiDB Lightning to file `tidb-lightning-values.yaml`:
 
 {{< copyable "shell-regular" >}}
 
@@ -94,15 +34,30 @@ Use the following command to get the default configuration of TiDB Lightning:
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-Configure a `backend` used by TiDB Lightning depending on your needs. To do that, you can set the `backend` value in `values.yaml` to an option in `importer`, `local`, or `tidb`.
+Configure a `backend` used by TiDB Lightning depending on your needs. To do that, you can set the `backend` value in `values.yaml` to an option in `local`, or `tidb`.
 
-> **Note:**
->
-> If you use the [`local` backend](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend), you must set `sortedKV` in `values.yaml` to create the corresponding PVC. The PVC is used for local KV sorting.
+```yaml
+# The delivery backend used to import data (valid options include `local` and `tidb`).
+# If set to `local`, then the following `sortedKV` should be set.
+backend: local
+```
+
+If you use the [`local` backend](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend), you must set `sortedKV` in `values.yaml` to create the corresponding PVC. The PVC is used for local KV sorting.
+
+```yaml
+# For `local` backend, an extra PV is needed for local KV sorting.
+sortedKV:
+  storageClassName: local-storage
+  storage: 100Gi
+```
+
+#### Checkpoint Configuration
 
 Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning checkpoint information](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints) in the directory of the source data. When the a new tidb-lightning job is running, it can resume the data import according to the checkpoint information.
 
 For versions earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
+
+#### TLS Configuration
 
 If TLS between components has been enabled on the target TiDB cluster (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiDB Lightning, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 
@@ -119,21 +74,33 @@ To use different client certificates to connect to the TiDB server, refer to [Is
 > tls="false"
 > ```
 
-TiDB Lightning Helm chart supports both local and remote data sources.
+### Step 2. Configure Data Source
+
+tidb-lightning Helm chart supports both local and remote data sources. Corresponding to three modes: local, remote and Ad hoc. The three modes cannot be mixed and only one is allowed to be configured.
 
 #### Local
 
-In the local mode, the backup data must be on one of the Kubernetes node. To enable this mode, set `dataSource.local.nodeName` to the node name and `dataSource.local.hostPath` to the path of the backup data. The path should contain a file named `metadata`.
+In the local mode, tidb-lightning read the backup data from a directory in one of the Kubernetes node.
+
+```yaml
+dataSource:
+  local:
+    nodeName: kind-worker3
+    hostPath: /data/export-20190820
+```
+
+The meanings of the related fields are as follows:
+
+* `dataSource.local.nodeName`: node name that the directory is located.
+* `dataSource.local.hostPath`: path of the backup data, the path should contain a file named `metadata`.
 
 #### Remote
 
-Unlike the local mode, the remote mode needs to use [rclone](https://rclone.org) to download the backup tarball file from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
+Unlike the local mode, the remote mode use [rclone](https://rclone.org) to download the backup tarball file or the backup directory from a network storage to a PV. Any cloud storage supported by rclone should work, but currently only the following have been tested: [Google Cloud Storage (GCS)](https://cloud.google.com/storage/), [Amazon S3](https://aws.amazon.com/s3/), [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/).
 
 To restore backup data from the remote source, take the following steps:
 
-1. Make sure that `dataSource.local.nodeName` and `dataSource.local.hostPath` in `values.yaml` are commented out.
-
-2. Grant permissions to the remote storage
+1. Grant permissions to the remote storage
 
     If you use Amazon S3 as the storage, refer to [AWS account Permissions](grant-permissions-to-remote-storage.md#aws-account-permissions). The configuration varies with different methods.
 
@@ -220,19 +187,48 @@ To restore backup data from the remote source, take the following steps:
             kubectl apply -f secret.yaml -n ${namespace}
             ```
 
-3. Configure the `dataSource.remote.storageClassName` to an existing storage class in the Kubernetes cluster.
+
+
+2. Configure the `dataSource` field. For example:
+   
+    ```yaml
+    dataSource:
+      remote:
+        rcloneImage: rclone/rclone:1.55.1
+        storageClassName: local-storage
+        storage: 100Gi
+        secretName: cloud-storage-secret
+        path: s3:bench-data-us/sysbench/sbtest_16_1e7.tar.gz
+        # directory: s3:bench-data-us
+    ```
+
+    The meanings of the related fields are as follows:
+    
+    * `dataSource.remote.storageClassName`: name of StorageClass used to create PV.
+    * `dataSource.remote.secretName`: name of Secret created in above step.
+    * `dataSource.remote.path`: If the backup data is packaged as a tarball file, use this field to indicate the path to the tarball file.
+    * `dataSource.remote.directory`: If the backup data is contained in a directory, use this field to indicate the path to the directory.
 
 #### Ad hoc
 
-When restoring data from remote storage, sometimes the restore process is interrupted due to the exception. In such cases, if you do not want to download backup data from the network storage repeatedly, you can use the ad hoc mode to directly recover the data that has been downloaded and decompressed into PV in the remote mode. The steps are as follows:
+When restoring data from remote storage, sometimes the restore process is interrupted due to the exception. In such cases, if you do not want to download backup data from the network storage repeatedly, you can use the ad hoc mode to directly recover the data that has been downloaded and decompressed into PV in the remote mode.
 
-1. Ensure `dataSource.local` and `dataSource.remote` in the config file `values.yaml` are empty。
+For example:
 
-2. Configure `dataSource.adhoc.pvcName` in `values.yaml` to the PVC name used in restoring data from remote storage.
+```yaml
+dataSource:
+  adhoc:
+    pvcName: tidb-cluster-scheduled-backup
+    backupName: scheduled-backup-20190822-041004
+```
 
-3. Configure `dataSource.adhoc.backupName` in `values.yaml` to the name of the original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain the '. tgz' suffix of the compressed file name on network storage).
+The meanings of the related fields are as follows:
 
-### Deploy TiDB Lightning
+* `dataSource.adhoc.pvcName`: PVC name used in restoring data from remote storage. The PVC must be deployed in the same namespace as Tidb-Lightning.
+
+* `dataSource.adhoc.backupName`: the name of the original backup data, such as: `backup-2020-12-17T10:12:51Z` (Do not contain the '. tgz' suffix of the compressed file name on network storage).
+
+### Step 3. Deploy TiDB Lightning
 
 The method of deploying TiDB Lightning varies with different methods of granting permissions and with different storages.
 
@@ -295,17 +291,9 @@ The method of deploying TiDB Lightning varies with different methods of granting
         > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 1.
         > `${service-account}` is the ServiceAccount used by TiDB Lightning. The default value is `default`.
 
-## Destroy TiKV Importer and TiDB Lightning
+## Destroy TiDB Lightning
 
 Currently, TiDB Lightning only supports restoring data offline. After the restore, if the TiDB cluster needs to provide service for external applications, you can destroy TiDB Lightning to save cost.
-
-To destroy tikv-importer, execute the following command:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-helm uninstall ${release_name} -n ${namespace}
-```
 
 To destroy tidb-lightning, execute the following command:
 
