@@ -81,7 +81,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量及每个集群内的 PD 数量。1 个目录会对应创建 1 个 PV。每个 PD 会使用一个 PV。
 
-- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/disks` 目录下，后续创建 `local-storage` `StorageClass`。
+- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/monitoring` 目录下，后续创建 `monitoring-storage` `StorageClass`。
 
     > **注意：**
     >
@@ -93,7 +93,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量、每个集群内的 Pump 数量及备份方式。1 个目录会对应创建 1 个 PV。每个 Pump 会使用 1 个 PV，每个 drainer 会使用 1 个 PV，所有 [Ad-hoc 全量备份](backup-to-s3.md#ad-hoc-全量备份)和所有[定时全量备份](backup-to-s3.md#定时全量备份)会共用 1 个 PV。
 
-上述的 `/mnt/ssd`、`/mnt/sharedssd`、`/mnt/disks` 和 `/mnt/backup` 是 local-volume-provisioner 使用的发现目录（discovery directory），local-volume-provisioner 会为发现目录下的每一个子目录创建对应的 PV。
+上述的 `/mnt/ssd`、`/mnt/sharedssd`、`/mnt/monitoring` 和 `/mnt/backup` 是 local-volume-provisioner 使用的发现目录（discovery directory），local-volume-provisioner 会为发现目录下的每一个子目录创建对应的 PV。
 
 > **注意：**
 >
@@ -122,15 +122,15 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     data:
       # ...
       storageClassMap: |
-        shared-ssd-storage:
-          hostDir: /mnt/sharedssd
-          mountDir: /mnt/sharedssd
         ssd-storage:
           hostDir: /mnt/ssd
           mountDir: /mnt/ssd
-        local-storage:
-          hostDir: /mnt/disks
-          mountDir: /mnt/disks
+        shared-ssd-storage:
+          hostDir: /mnt/sharedssd
+          mountDir: /mnt/sharedssd
+        monitoring-storage:
+          hostDir: /mnt/monitoring
+          mountDir: /mnt/monitoring
         backup-storage:
           hostDir: /mnt/backup
           mountDir: /mnt/backup
@@ -149,11 +149,11 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
             - mountPath: /mnt/sharedssd
               name: local-sharedssd
               mountPropagation: "HostToContainer"
-            - mountPath: /mnt/disks
-              name: local-disks
-              mountPropagation: "HostToContainer"
             - mountPath: /mnt/backup
               name: local-backup
+              mountPropagation: "HostToContainer"
+            - mountPath: /mnt/monitoring
+              name: local-monitoring
               mountPropagation: "HostToContainer"
       volumes:
         - name: local-ssd
@@ -162,12 +162,12 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
         - name: local-sharedssd
           hostPath:
             path: /mnt/sharedssd
-        - name: local-disks
-          hostPath:
-            path: /mnt/disks
         - name: local-backup
           hostPath:
             path: /mnt/backup
+        - name: local-monitoring
+          hostPath:
+            path: /mnt/monitoring
     ......
     ```
 
@@ -185,7 +185,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
     ```shell
     kubectl get po -n kube-system -l app=local-volume-provisioner && \
-    kubectl get pv | grep -e local-storage -e ssd-storage -e shared-ssd-storage -e backup-storage
+    kubectl get pv | grep -e ssd-storage -e shared-ssd-storage -e monitoring-storage-e backup-storage
     ```
 
     `local-volume-provisioner` 会为发现目录下的每一个挂载点创建一个 PV。
