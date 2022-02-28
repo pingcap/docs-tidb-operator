@@ -26,7 +26,10 @@ summary: 了解如何在 GCP GKE 上部署 TiDB 集群。
 
 ## 推荐机型及存储
 
-* 推荐机型：出于性能考虑，推荐 PD 所在节点使用 n2-standard-4，TiDB 所在节点使用 n2-standard-8，TiKV 或 TiFlash 所在节点使用 n2-highmem-8。
+* 推荐机型：出于性能考虑，推荐以下机型：
+    * PD 所在节点：`n2-standard-4`
+    * TiDB 所在节点：`n2-standard-8`
+    * TiKV 或 TiFlash 所在节点：`n2-highmem-8`
 * 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
 
 ## 配置 GCP 服务
@@ -73,9 +76,9 @@ gcloud config set compute/region <gcp-region>
 
 创建 GKE 集群后默认会存在三个不同存储类型的 StorageClass：
 
-* standard：pd-standard 存储类型（默认）
-* standard-rwo：pd-balanced 存储类型
-* premium-rwo：pd-ssd 存储类型（推荐）
+* standard：`pd-standard` 存储类型（默认）
+* standard-rwo：`pd-balanced` 存储类型
+* premium-rwo：`pd-ssd` 存储类型（推荐）
 
 为了提高存储的 IO 性能，推荐在 StorageClass 的 `mountOptions` 字段中，添加存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)。
 
@@ -89,7 +92,7 @@ mountOptions:
 
 > **注意：**
 >
-> 默认的 pd-standard 存储类型不支持设置挂载选项 `nodelalloc` 和 `noatime`。
+> 默认的 `pd-standard` 存储类型不支持设置挂载选项 `nodelalloc` 和 `noatime`。
 
 ### 使用本地存储
 
