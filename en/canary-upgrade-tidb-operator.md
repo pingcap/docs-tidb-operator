@@ -23,7 +23,7 @@ controllerManager:
 
 Refer to [Online upgrade](upgrade-tidb-operator.md#online-upgrade) or [Offline upgrade](upgrade-tidb-operator.md#offline-upgrade) to upgrade the current TiDB Operator:
 
-```shell
+```bash
 helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml
 ```
 
@@ -68,7 +68,7 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} label tc ${cluster_name} version=canary
     ```
 
@@ -78,7 +78,7 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
 
         {{< copyable "shell-regular" >}}
 
-        ```shell
+        ```bash
         kubectl -n tidb-admin logs tidb-controller-manager-55b887bdc9-lzdwv
         ```
 
@@ -92,7 +92,7 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
 
         {{< copyable "shell-regular" >}}
 
-        ```shell
+        ```bash
         kubectl -n tidb-admin-canary logs tidb-controller-manager-canary-6dcb9bdd95-qf4qr
         ```
 
@@ -106,7 +106,7 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} edit tc ${cluster_name}
     ```
 
@@ -114,21 +114,21 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
 
     Check the logs of `tidb-scheduler` of the canary TiDB Operator, and you can see this TiDB cluster is now using the canary `tidb-scheduler`:
 
-    ```shell
+    ```bash
     kubectl -n tidb-admin-canary logs tidb-scheduler-canary-7f7b6c7c6-j5p2j -c tidb-scheduler
     ```
 
-3. After the tests, you can revert the changes in Step 3 and Step 4 so that the TiDB cluster is again managed by the current TiDB Operator.
+3. After the tests, you can revert the changes in the previous two steps so that the TiDB cluster is again managed by the current TiDB Operator.
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} label tc ${cluster_name} version-
     ```
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} edit tc ${cluster_name}
     ```
 
@@ -138,7 +138,7 @@ After you confirm that the canary TiDB Operator works stably, you can upgrade th
 
 1. Delete the canary TiDB Operator:
 
-    ```shell
+    ```bash
     helm -n tidb-admin-canary uninstall ${release_name}
     ```
 
