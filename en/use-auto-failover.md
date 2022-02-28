@@ -10,7 +10,7 @@ TiDB Operator manages the deployment and scaling of Pods based on [`StatefulSet`
 
 ## Configure automatic failover
 
-The automatic failover feature is enabled by default in TiDB Operator. 
+The automatic failover feature is enabled by default in TiDB Operator.
 
 When deploying TiDB Operator, you can configure the waiting timeout for failover of the PD, TiKV, TiDB, and TiFlash components in a TiDB cluster in the `charts/tidb-operator/values.yaml` file. An example is as follows:
 
@@ -34,7 +34,7 @@ In the example, `pdFailoverPeriod`, `tikvFailoverPeriod`, `tiflashFailoverPeriod
 In addition, when configuring a TiDB cluster, you can specify `spec.${component}.maxFailoverCount` for each component, which is the threshold of the maximum number of Pods that the TiDB Operator can create during automatic failover. For more information, see the [TiDB component configuration documentation](configure-a-tidb-cluster.md#configure-automatic-failover-thresholds-of-pd-tidb-tikv-and-tiflash).
 
 > **Note:**
-> 
+>
 > If there are not enough resources in the cluster for TiDB Operator to create new Pods, the newly scaled Pods will be in the pending status.
 
 ## Automatic failover policies
@@ -48,7 +48,7 @@ TiDB Operator collects the health status of PD members via the `pd/health` PD AP
 Take a PD cluster with 3 Pods as an example. If a Pod fails for more than 5 minutes (`pdFailoverPeriod` is configurable), TiDB Operator automatically does the following operations:
 
 1. TiDB Operator records the Pod information in the `.status.pd.failureMembers` field of TidbCluster CR.
-2. TiDB Operator takes the Pod offline: TiDB Operator calls PD API to remove the Pod from the member list, and then deletes the Pod and its PVC. 
+2. TiDB Operator takes the Pod offline: TiDB Operator calls PD API to remove the Pod from the member list, and then deletes the Pod and its PVC.
 3. The StatefulSet controller recreates the Pod, and the recreated Pod joins the cluster as a new member.
 4. When calculating the replicas of PD StatefulSet, TiDB Operator takes the deleted `.status.pd.failureMembers` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
@@ -56,7 +56,7 @@ When all the failed Pods in the cluster recover, TiDB Operator will automaticall
 
 > **Note:**
 >
-> - For each PD cluster, the maximum number of Pods that TiDB Operator can create is `spec.pd.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover. 
+> - For each PD cluster, the maximum number of Pods that TiDB Operator can create is `spec.pd.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover.
 > - If most members in a PD cluster fail, which makes the PD cluster unavailable, TiDB Operator will not perform failover for the PD cluster.
 
 ### Failover with TiDB
@@ -65,7 +65,7 @@ TiDB Operator collects the Pod health status by accessing the `/status` interfac
 
 Take a TiDB cluster with 3 Pods as an example. If a Pod fails for more than 5 minutes (`tidbFailoverPeriod` is configurable), TiDB Operator automatically does the following operations:
 
-1. TiDB Operator records the Pod information in the `.status.tidb.failureMembers` field of TidbCluster CR. 
+1. TiDB Operator records the Pod information in the `.status.tidb.failureMembers` field of TidbCluster CR.
 2. When calculating the replicas of TiDB StatefulSet, TiDB Operator takes the `.status.tidb.failureMembers` into account, so it will create a new Pod. Then, 4 Pods will exist at the same time.
 
 When the failed Pod in the cluster recovers, TiDB Operator will automatically remove the newly created Pod, and the number of Pods gets back to 3.
@@ -89,17 +89,29 @@ When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** remove t
 >
 > For each TiKV cluster, the maximum number of Pods that TiDB Operator can create is `spec.tikv.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover.
 
-If **all** failed Pods have recovered, and you want to remove the newly created Pods, you can follow the procedure below:
+If **all** failed Pods have recovered, and you want to remove the newly created Pods, you can refer to the following two methods:
 
-Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
+- Method 1: Configure `spec.tikv.recoverFailover: true` (Supported since TiDB Operator v1.1.5).
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
-```
+    ```shell
+    kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tikv":{"recoverFailover": true}}}'
+    ```
 
-TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tikv.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+    Every time after the cluster recovers from failover, TiDB Operator automatically scales in the newly created Pods.
+
+- Method 2: Configure `spec.tikv.failover.recoverByUID: ${recover_uid}`.
+
+    `${recover_uid}` is the UID of this failover. You can get the UID by running the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tikv.failoverUID}'
+    ```
+
+    TiDB Operator automatically scales in the newly created TiKV Pods according to `${recover_uid}`.
 
 ### Failover with TiFlash
 
@@ -116,17 +128,29 @@ When the failed Pod in the cluster recovers, TiDB Operator **DOES NOT** remove t
 >
 > For each TiFlash cluster, the maximum number of Pods that TiDB Operator can create is `spec.tiflash.maxFailoverCount` (the default value is `3`). After the threshold is reached, TiDB Operator will not perform failover.
 
-If **all** of the failed Pods have recovered, and you want to remove the newly created Pods, you can follow the procedure below:
+If **all** of the failed Pods have recovered, and you want to remove the newly created Pods, you can refer to the following two methods:
 
-Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1.1.5):
+- Method 1: Configure `spec.tiflash.recoverFailover: true` (Supported since TiDB Operator v1.1.5).
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
-```
+    ```shell
+    kubectl patch tc -n ${namespace} ${cluster_name} --type merge -p '{"spec":{"tiflash":{"recoverFailover": true}}}'
+    ```
 
-TiDB Operator will remove the newly created Pods automatically. When the removal is finished, configure `spec.tiflash.recoverFailover: false` to avoid the auto-scaling operation when the next failover occurs and recovers.
+    Every time after the cluster recovers from failover, TiDB Operator automatically scales in the newly created Pods.
+
+- Method 2: Configure `spec.tiflash.failover.recoverByUID: ${recover_uid}`.
+
+    `${recover_uid}` is the UID of this failover. You can get the UID by running the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tc -n ${namespace} ${cluster_name} -ojsonpath='{.status.tiflash.failoverUID}'
+    ```
+
+    TiDB Operator automatically scales in the newly created TiFlash Pods according to `${recover_uid}`.
 
 ### Disable automatic failover
 

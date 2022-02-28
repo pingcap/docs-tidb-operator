@@ -27,7 +27,7 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 
 > **Note:**
 >
-> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html#aws-services).
+> The operations described in this document require at least the [minimum privileges needed by `eksctl`](https://eksctl.io/usage/minimum-iam-policies/) and the [service privileges needed to create a Linux bastion host](https://aws-quickstart.github.io/quickstart-linux-bastion/#_aws_account).
 
 ## Recommended instance types and storage
 
@@ -38,6 +38,7 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 - Storage: Because AWS supports the [EBS `gp3`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) volume type, it is recommended to use EBS `gp3`. For `gp3` provisioning, the following is recommended:
     - TiKV: 400 MiB/s, 4000 IOPS
     - TiFlash: 625 MiB/s, 6000 IOPS
+- AMI type: Amazon Linux 2
 
 ## Create an EKS cluster and a node pool
 
