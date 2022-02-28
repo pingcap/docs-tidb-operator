@@ -1,17 +1,17 @@
 ---
 title: Perform a Canary Upgrade on TiDB Operator
-summary: Learn how to perform a canary upgrade on TiDB Operator in Kubernetes. Canary upgrade avoids the unpredictable impact of a TiDB Operator upgrade on all TiDB clustsers in the entire Kubernetes cluster.
+summary: Learn how to perform a canary upgrade on TiDB Operator in Kubernetes. Canary upgrade avoids the unpredictable impact of a TiDB Operator upgrade on all TiDB clusters in the entire Kubernetes cluster.
 ---
 
 # Perform a Canary Upgrade on TiDB Operator
 
-If you want to upgrade TiDB Operator to a new version, but hope to limit the impact of the upgrade to avoid the unpredictable impact on all TiDB clusters in the entire Kubernetes cluster, you can perform a canary upgrade on TiDB Operator. After the canary upgrade, you can check the impact of the TiDB Operator upgrade on the canary cluster. After you confirm that the new version of TiDB Operator is working stably, you can then [upgrade TiDB Operator normally](upgrade-tidb-operator.md).
+If you want to upgrade TiDB Operator to a new version, and hope to limit the impact of the upgrade to avoid the unpredictable impact on all TiDB clusters in the entire Kubernetes cluster, you can perform a canary upgrade on TiDB Operator. After the canary upgrade, you can check the impact of the TiDB Operator upgrade on the canary cluster. After you confirm that the new version of TiDB Operator is working stably, you can then [upgrade TiDB Operator normally](upgrade-tidb-operator.md).
 
 You can perform a canary upgrade only on two components: [`tidb-controller-manager`](architecture.md) and [`tidb-scheduler`](tidb-scheduler.md). Canary upgrades for [the advanced StatefulSet controller](advanced-statefulset.md) and [the admission controller](enable-admission-webhook.md) are not supported.
 
 When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler) to confirm whether you need to deploy `tidb-scheduler`.
 
-## Step 1: Configure selector for the current TiDB Operator and perform upgrade
+## Step 1: Configure selector for the current TiDB Operator and perform an upgrade
 
 In `values.yaml` of the current TiDB Operator, add the following selector configuration:
 
@@ -21,7 +21,7 @@ controllerManager:
   - version!=canary
 ```
 
-Refer to [Online upgrade](upgrade-tidb-operator.md#online-upgrade) or [Offline upgrade](upgrade-tidb-operator.md#offline-upgrade) to perform upgrade on the current TiDB Operator:
+Refer to [Online upgrade](upgrade-tidb-operator.md#online-upgrade) or [Offline upgrade](upgrade-tidb-operator.md#offline-upgrade) to upgrade the current TiDB Operator:
 
 ```shell
 helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} -f ${HOME}/tidb-operator/values-tidb-operator.yaml
@@ -46,7 +46,7 @@ helm upgrade tidb-operator pingcap/tidb-operator --version=${chart_version} -f $
 
     `appendReleaseSuffix` must be set to `true`.
 
-    If you do not need to perform a canary upgrade on `tidb-scheduler`, configure `scheduler.create: false`. If you need to perform a canary upgrade on `tidb-scheduler`, configureing `scheduler.create: true` creates a scheduler named `{{ .scheduler.schedulerName }}-{{.Release.Name}}`. To use this scheduler in the canary TiDB Operator, in the `TidbCluster` CR, configure `spec.schedulerName` to the name of this scheduler.
+    If you do not need to perform a canary upgrade on `tidb-scheduler`, configure `scheduler.create: false`. If you need to perform a canary upgrade on `tidb-scheduler`, configuring `scheduler.create: true` creates a scheduler named `{{ .scheduler.schedulerName }}-{{.Release.Name}}`. To use this scheduler in the canary TiDB Operator, in the `TidbCluster` CR, configure `spec.schedulerName` to the name of this scheduler.
 
     Because canary upgrades for the advanced StatefulSet controller and the admission controller are not supported, you need to set `advancedStatefulset.create: false` and `admissionWebhook.create: false`.
 
@@ -72,7 +72,7 @@ Before you upgrade TiDB Operator in a normal way, you can test whether the canar
     kubectl -n ${namespace} label tc ${cluster_name} version=canary
     ```
 
-    Check the logs of the two deployed `tidb-controller-manager`s, and you can see this TiDB cluster with the `canary` label is now managed by the canary TiDB Operator. The steps to check logs is as follows:
+    Check the logs of the two deployed `tidb-controller-manager`s, and you can see this TiDB cluster with the `canary` label is now managed by the canary TiDB Operator. The steps to check logs are as follows:
 
     1. View the log of `tidb-controller-manager` of the current TiDB Operator:
 
