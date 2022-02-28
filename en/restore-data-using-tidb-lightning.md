@@ -187,8 +187,6 @@ To restore backup data from the remote source, take the following steps:
             kubectl apply -f secret.yaml -n ${namespace}
             ```
 
-
-
 2. Configure the `dataSource` field. For example:
    
     ```yaml
