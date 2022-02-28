@@ -25,6 +25,14 @@ Before deploying a TiDB cluster on GCP GKE, make sure the following requirements
     * Enable Kubernetes APIs
     * Configure enough quota
 
+## Recommended instance types and storage
+
+* Instance types: to gain better performance, the following is recommended:
+    * PD nodes: `n2-standard-4`
+    * TiDB nodes: `n2-standard-8`
+    * TiKV or TiFlash nodes: `n2-highmem-8`
+* Storage: For TiKV or TiFlash, it is recommended to use [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) disk type.
+
 ## Configure the GCP service
 
 Configure your GCP project and default region:
@@ -56,15 +64,74 @@ gcloud config set compute/region <gcp-region>
     {{< copyable "shell-regular" >}}
 
     ```shell
-    gcloud container node-pools create pd --cluster tidb --machine-type n1-standard-4 --num-nodes=1 \
+    gcloud container node-pools create pd --cluster tidb --machine-type n2-standard-4 --num-nodes=1 \
         --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
-    gcloud container node-pools create tikv --cluster tidb --machine-type n1-highmem-8 --num-nodes=1 \
+    gcloud container node-pools create tikv --cluster tidb --machine-type n2-highmem-8 --num-nodes=1 \
         --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
-    gcloud container node-pools create tidb --cluster tidb --machine-type n1-standard-8 --num-nodes=1 \
+    gcloud container node-pools create tidb --cluster tidb --machine-type n2-standard-8 --num-nodes=1 \
         --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
     The process might take a few minutes.
+
+## Configure StorageClass
+
+After creating GKE cluster, the cluster contain three StorageClass that are different disk types.
+
+* standard: `pd-standard` disk type (default)
+* standard-rwo: `pd-balanced` disk type
+* premium-rwo: `pd-ssd` disk type (recommended)
+
+To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource.
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+# ...
+mountOptions:
+- nodelalloc,noatime
+```
+
+> **Note:**
+>
+> It is not support to configure `nodelalloc` and `noatime` for the default disk type `pd-standard`.
+
+### Use local storage
+
+Use [Zonal Persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs) as a primary production configuration. To simulate bare metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+
+> **Note:**
+>
+> You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
+>
+> During the GKE upgrade, [data in the local storage will be lost](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
+
+1. Create a node pool with local storage for TiKV:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    gcloud container node-pools create tikv --cluster tidb --machine-type n2-highmem-8 --num-nodes=1 --local-ssd-count 1 \
+      --node-labels dedicated=tikv --node-taints dedicated=tikv:NoSchedule
+    ```
+
+    If the TiKV node pool already exists, you can either delete the old pool and then create a new one, or change the pool name to avoid conflict.
+
+2. Deploy the local volume provisioner.
+
+    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. Executing the following command deploys and creates a `local-storage` storage class:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    ```
+
+3. Use the local storage.
+
+    After the steps above, the local volume provisioner can discover all the local NVMe SSD disks in the cluster.
+
+    Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
 
 ## Deploy TiDB Operator
 
@@ -385,40 +452,3 @@ spec:
   tikv:
     baseImage: pingcap/tikv-enterprise
 ```
-
-## Use local storage
-
-Use [Zonal Persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs) as a primary production configuration. To simulate bare metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
-
-> **Note:**
->
-> You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
->
-> During the GKE upgrade, [data in the local storage will be lost](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
-
-1. Create a node pool with local storage for TiKV:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    gcloud container node-pools create tikv --cluster tidb --machine-type n1-standard-4 --num-nodes=1 --local-ssd-count 1 \
-      --node-labels dedicated=tikv --node-taints dedicated=tikv:NoSchedule
-    ```
-
-    If the TiKV node pool already exists, you can either delete the old pool and then create a new one, or change the pool name to avoid conflict.
-
-2. Deploy the local volume provisioner.
-
-    You need to use the [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) to discover and manage the local storage. Executing the following command deploys and creates a `local-storage` storage class:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
-    ```
-
-3. Use the local storage.
-
-    After the steps above, the local volume provisioner can discover all the local NVMe SSD disks in the cluster.
-
-    Modify `tikv.storageClassName` in the `tidb-cluster.yaml` file to `local-storage`.
