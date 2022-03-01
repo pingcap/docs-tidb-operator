@@ -24,7 +24,7 @@ summary: 介绍如何使用 BR 将存储在 GCS 上的备份数据恢复到 TiDB
 
 使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，你需要准备恢复环境，并拥有数据库的相关权限。
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
