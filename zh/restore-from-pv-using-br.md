@@ -17,7 +17,17 @@ summary: 介绍如何使用 BR 将存储在持久卷上的备份数据恢复到 
 >
 > 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
+<<<<<<< HEAD
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
+=======
+## 第 1 步：准备恢复环境
+
+使用 BR 将 PV 上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
+
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml) 到执行恢复的服务器。
+
+2. 执行以下命令在 `test2` 这个命名空间中创建恢复所需的 RBAC 相关资源：
+>>>>>>> d0a0eb61 (fix backup rbac link in v1.1 and v1.2 operator doc (#1696))
 
     {{< copyable "shell-regular" >}}
 

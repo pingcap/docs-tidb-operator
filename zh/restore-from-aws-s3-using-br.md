@@ -18,7 +18,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/','/d
 >
 > 如果使用 TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段，并且可以省略以下创建 `restore-demo2-tidb-secret` secret 的步骤和[数据库账户权限](#数据库账户权限)步骤。
 
+<<<<<<< HEAD
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建备份需要的 RBAC 相关资源：
+=======
+本文假设将存储在 Amazon S3 上指定路径 `spec.s3.bucket` 存储桶中 `spec.s3.prefix` 文件夹下的备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。下面是具体的操作过程。
+
+## 第 1 步：准备恢复环境
+
+使用 BR 将 S3 兼容存储上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
+
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
+>>>>>>> d0a0eb61 (fix backup rbac link in v1.1 and v1.2 operator doc (#1696))
 
     {{< copyable "shell-regular" >}}
 

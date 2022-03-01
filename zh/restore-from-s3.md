@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/restore-from-s3/','/docs-cn/tidb-i
 
 ## 环境准备
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
