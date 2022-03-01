@@ -84,7 +84,10 @@ spec:
 EOF
 ```
 
-上述配置中，字段 `spec.acrossK8s: true` 表示是跨 Kubernetes 集群部署 TiDB 集群，必须设置。
+相关字段含义如下：
+
+* `spec.acrossK8s`：表示是跨 Kubernetes 集群部署 TiDB 集群，必须设置为 `true`。
+* `spec.clusterDomain`：设置后，会使用包含 Cluster Domain 的 Pod FQDN 作为组件间相互访问的地址。如果Pod 访问其他 Kubernetes 集群的 Pod FQDN 时需要 Cluster Domain，那么必须设置。
 
 ### 第 2 步：部署新的 TidbCluster 加入 TiDB 集群
 
