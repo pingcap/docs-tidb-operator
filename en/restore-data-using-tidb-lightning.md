@@ -16,7 +16,7 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
 
     > **Note:**
     >
-    > `Importer-backend` is deprecated in TiDB 5.3 version or later versions.If you have to use `Importer-backend`, refer to 1.2 version or laters versions [old documentation](https://docs.pingcap.com/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#deploy-tikv-importer).
+    > `Importer-backend` is deprecated in TiDB 5.3 version or later versions. If you must use `Importer-backend`, refer to [the documentation of v1.2](https://docs.pingcap.com/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#deploy-tikv-importer).
 
 - For `Local-backend`, only tidb-lightning needs to be deployed.
 
@@ -26,7 +26,7 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
 
 ### Step 1. Configure TiDB Lightning
 
-Use the following command to save the default configuration of TiDB Lightning to file `tidb-lightning-values.yaml`:
+Use the following command to save the default configuration of TiDB Lightning to the `tidb-lightning-values.yaml` file:
 
 {{< copyable "shell-regular" >}}
 
@@ -34,7 +34,7 @@ Use the following command to save the default configuration of TiDB Lightning to
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-Configure a `backend` used by TiDB Lightning depending on your needs. To do that, you can set the `backend` value in `values.yaml` to an option in `local`, or `tidb`.
+Configure the `backend` field in the configuration file depending on your needs. The optional values are `local` and  `tidb`.
 
 ```yaml
 # The delivery backend used to import data (valid options include `local` and `tidb`).
@@ -51,13 +51,13 @@ sortedKV:
   storage: 100Gi
 ```
 
-#### Checkpoint Configuration
+#### Configure checkpoint
 
 Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning checkpoint information](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints) in the directory of the source data. When the a new tidb-lightning job is running, it can resume the data import according to the checkpoint information.
 
 For versions earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
 
-#### TLS Configuration
+#### Configure TLS 
 
 If TLS between components has been enabled on the target TiDB cluster (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiDB Lightning, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 
@@ -74,9 +74,9 @@ To use different client certificates to connect to the TiDB server, refer to [Is
 > tls="false"
 > ```
 
-### Step 2. Configure Data Source
+### Step 2. Configure the data source
 
-tidb-lightning Helm chart supports both local and remote data sources. Corresponding to three modes: local, remote and Ad hoc. The three modes cannot be mixed and only one is allowed to be configured.
+The tidb-lightning Helm chart supports both local and remote data sources. The three types of data sources correspond to three modes: local, remote, and ad hoc. The three modes cannot be used together. You can only configure one mode.
 
 #### Local
 
