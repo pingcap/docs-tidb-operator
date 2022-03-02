@@ -26,7 +26,7 @@ To better explain how to perform the backup operation, this document shows an ex
 
 ### Prerequisites for ad-hoc full backup
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.1.15/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
     {{< copyable "shell-regular" >}}
 

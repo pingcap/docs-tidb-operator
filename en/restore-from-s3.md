@@ -14,15 +14,7 @@ TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and
 
 ## Prerequisites
 
-<<<<<<< HEAD
-1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
-=======
-Before you perform the data restore, you need to prepare the restore environment and get the required database account privileges.
-
-### Prepare the restore environment
-
-1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
->>>>>>> d0a0eb61 (fix backup rbac link in v1.1 and v1.2 operator doc (#1696))
+1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.1.15/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
     {{< copyable "shell-regular" >}}
 

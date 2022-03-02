@@ -17,17 +17,7 @@ The restore method described in this document is implemented based on Custom Res
 >
 > If TiDB Operator >= v1.1.10 && TiDB >= v4.0.8, BR will automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR. In addition, you can skip the steps of creating the `restore-demo2-tidb-secret` secret and [configuring database account privileges](#required-database-account-privileges).
 
-<<<<<<< HEAD
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
-=======
-## Step 1: Prepare the restore environment
-
-Before restoring backup data on PVs to TiDB using BR, take the following steps to prepare the restore environment:
-
-1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml).
-
-2. Execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
->>>>>>> d0a0eb61 (fix backup rbac link in v1.1 and v1.2 operator doc (#1696))
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.1.15/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
     {{< copyable "shell-regular" >}}
 
