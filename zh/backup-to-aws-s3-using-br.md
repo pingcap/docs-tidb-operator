@@ -202,6 +202,182 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 kubectl get bk -n test1 -o wide
 ```
 
+### 备份示例
+
+<details>
+<summary>备份全部集群数据</summary>
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>备份单个数据库的数据</summary>
+
+以下示例中，备份 `db1` 数据库的数据。
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.*"
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>备份单张表的数据</summary>
+
+以下示例中，备份 `db1.table1` 表的数据。
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.table1"
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>使用表库过滤功能备份多张表的数据</summary>
+
+以下示例中，备份 `db1.table1` 表 和  `db1.table2` 表的数据。
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.table1"
+  - "db1.table2"
+  # ...
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
 ## 定时全量备份
 
 用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
