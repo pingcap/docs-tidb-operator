@@ -154,7 +154,7 @@ spec:
     evictLeaderTimeout: 10s
 ```
 
-关于该字段更多的说明见[配置 TiKV 平滑升级](configure-a-tidb-cluster.md#配置-tikv-平滑升级)。
+关于该字段更多的说明，见[配置 TiKV 平滑升级](configure-a-tidb-cluster.md#配置-tikv-平滑升级)。
 
 > **警告：**
 >
