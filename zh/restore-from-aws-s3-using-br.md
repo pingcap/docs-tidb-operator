@@ -24,7 +24,7 @@ summary: 介绍如何使用 BR 恢复 Amazon S3 兼容存储上的备份数据�
 
 使用 BR 将 S3 兼容存储上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
 
-1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.2.7/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
