@@ -77,13 +77,13 @@ gcloud config set compute/region <gcp-region>
 
 ## Configure StorageClass
 
-After creating GKE cluster, the cluster contain three StorageClass that are different disk types.
+After the GKE cluster is created, the cluster contains three StorageClasses of different disk types.
 
 * standard: `pd-standard` disk type (default)
 * standard-rwo: `pd-balanced` disk type
 * premium-rwo: `pd-ssd` disk type (recommended)
 
-To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource.
+To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource. For details, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
 
 ```yaml
 kind: StorageClass
@@ -95,7 +95,7 @@ mountOptions:
 
 > **Note:**
 >
-> It is not support to configure `nodelalloc` and `noatime` for the default disk type `pd-standard`.
+> Configuring `nodelalloc` and `noatime` is not supported for the default disk type `pd-standard`.
 
 ### Use local storage
 
@@ -103,9 +103,9 @@ Use [Zonal Persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs
 
 > **Note:**
 >
-> You cannot dynamically change the storage class of a running TiDB cluster. You can create a new cluster for testing.
+> You cannot dynamically change StorageClass for a running TiDB cluster. For testing purposes, create a new TiDB cluster with the desired StorageClass.
 >
-> During the GKE upgrade, [data in the local storage will be lost](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd) due to the node reconstruction. When the node reconstruction occurs, you need to migrate data in TiKV. If you do not want to migrate data, it is recommended not to use the local disk in the production environment.
+> GKE upgrade might cause node reconstruction. In such cases, [data in the local storage might be lost](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). To avoid data loss, you need to back up TiKV data before node reconstruction. It is thus not recommended to use local disks in the production environment.
 
 1. Create a node pool with local storage for TiKV:
 
