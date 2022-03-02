@@ -29,7 +29,6 @@ TiDB Operator 1.1 在 1.0 基础上新增 TiDB 4.0 功能特性支持，TiKV 数
 
 ## 实验性特性
 
-- 新增 `TidbClusterAutoScaler` 实现[集群自动伸缩功能](enable-tidb-cluster-auto-scaling.md)（开启 `AutoScaling` 特性开关后使用）
 - 新增可选的[增强型 StatefulSet 控制器](advanced-statefulset.md)，提供对指定 Pod 进行删除的功能（开启 `AdvancedStatefulSet` 特性开关后使用）
 
 完整发布日志参见 [1.1 CHANGE LOG](https://github.com/pingcap/tidb-operator/blob/master/CHANGELOG-1.1.md)。

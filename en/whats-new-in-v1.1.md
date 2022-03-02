@@ -40,8 +40,6 @@ TiDB Operator 1.1 also makes improvements in usability, providing the user exper
 
 ## Experimental features
 
-- Add `TidbClusterAutoScaler` to implement [auto-scaling](enable-tidb-cluster-auto-scaling.md). You can enable this feature by turning on the `AutoScaling` switch.
-
 - Add the optional [Advanced StatefulSet Controller](advanced-statefulset.md), which supports deleting a specific Pod. You can enable this feature by turning on the `AdvancedStatefulSet` switch.
 
 For the full release notes, see [1.1 CHANGE LOG](https://github.com/pingcap/tidb-operator/blob/master/CHANGELOG-1.1.md).
