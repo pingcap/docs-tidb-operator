@@ -16,7 +16,7 @@ This document shows an example in which the backup data stored in the specified 
 
 ## Prerequisites
 
-1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
+1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.1.15/manifests/backup/backup-rbac.yaml) and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
     {{< copyable "shell-regular" >}}
 
