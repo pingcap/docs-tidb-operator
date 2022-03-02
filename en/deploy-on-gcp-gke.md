@@ -98,7 +98,9 @@ mountOptions:
 
 ### Use local storage
 
-Use [Zonal Persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs) as a primary production configuration. To simulate bare metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+For the production environment, use [zonal persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs). 
+
+If you need to simulate bare-metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
