@@ -94,10 +94,6 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 上述的 `/mnt/ssd`、`/mnt/sharedssd`、`/mnt/monitoring` 和 `/mnt/backup` 是 local-volume-provisioner 使用的发现目录（discovery directory），local-volume-provisioner 会为发现目录下的每一个子目录创建对应的 PV。
 
-> **注意：**
->
-> 在 GKE 上，默认只能创建大小为 375 GiB 的本地卷。
-
 ### 第 2 步：部署 local-volume-provisioner
 
 #### 在线部署

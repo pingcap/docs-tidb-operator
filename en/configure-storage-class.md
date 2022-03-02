@@ -94,10 +94,6 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 
 The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring` and `/mnt/backup` are discovery directories used by local-volume-provisioner. local-volume-provisioner create a corresponding PV for each subdirectory in discovery directory.
 
-> **Note:**
->
-> On GKE, `local-volume-provisioner` creates a local volume of onl375 GiB in size by default.
-
 ### Step 2. Deploy local-volume-provisioner
 
 #### Online deployment
