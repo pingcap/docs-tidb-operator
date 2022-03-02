@@ -221,6 +221,182 @@ After you create the `Backup` CR, TiDB Operator starts the backup automatically.
 kubectl get bk -n test1 -o wide
 ```
 
+### Backup CR examples
+
+<details>
+<summary>Back up data of all clusters</summary>
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>Back up data of a single database</summary>
+
+The following example backs up data of the `db1` database.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.*"
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>Back up data of a single table</summary>
+
+The following example backs up data of the `db1.table1` table.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.table1"
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
+<details>
+<summary>Back up data of multiple tables using the table filter</summary>
+
+The following example backs up data of the `db1.table1` table and `db1.table2` table.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-s3
+  namespace: test1
+spec:
+  backupType: full
+  serviceAccount: tidb-backup-manager
+  tableFilter:
+  - "db1.table1"
+  - "db1.table2"
+  # ...
+  br:
+    cluster: demo1
+    sendCredToTikv: false
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  s3:
+    provider: aws
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-folder
+```
+
+</details>
+
 ## Scheduled full backup
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
