@@ -62,7 +62,7 @@ Pod 重建后会自动回到正常运行模式。
 
 ### 进入诊断模式后修改配置
 
-让 TiKV Pod 进入[诊断模式](#诊断模式)后，可以手动修改 TiKV 的配置文件，然后手动启动 TiKV 程序。
+让 TiKV Pod 进入[诊断模式](#诊断模式)后，可以手动修改 TiKV 的配置文件，然后手动启动 TiKV 进程。
 
 具体操作步骤如下：
 
@@ -141,7 +141,7 @@ kubectl delete ${pod_name} -n ${namespace}
 
 ## 配置 TiKV 强制升级
 
-在一些测试场景中，如果你需要在 TiKV 升级时不等待 TiKV Pod 上的所有 Region Leader 驱逐完毕，直接强制升级，可以将 TidbCluster 定义中的 `spec.tikv.evictLeaderTimeout` 字段设置为一个很小的值。
+正常情况下，在 TiKV 滚动升级或者修改配置滚动更新过程中，TiDB Operator 会为每个 TiKV 驱逐 Region Leader，并在 Leader 驱逐完成后才开始更新当前 Pod，尽量减小滚动升级或者更新过程对用户请求的影响。在一些测试场景中，如果你不需要在 TiKV 滚动升级或者修改配置滚动更新过程中等待 TiKV 上的 Region Leader 迁移，想要加速升级或者更新过程，可以将 TidbCluster 定义中的 `spec.tikv.evictLeaderTimeout` 字段设置为一个很小的值。
 
 ```yaml
 spec:
@@ -153,4 +153,4 @@ spec:
 
 > **警告：**
 >
-> 该操作可能会导致数据丢失，不建议在生产环境中使用。
+> 该操作会导致用户请求失败，不建议在生产环境中使用。
