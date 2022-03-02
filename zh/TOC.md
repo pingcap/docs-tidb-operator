@@ -29,13 +29,20 @@
   - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
   - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
-- 迁移
+- 监控与告警
+  - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
+  - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
+  - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
+  - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
+  - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
+  - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
+- 数据迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
   - 从 MySQL 迁移
     - [部署 DM](deploy-tidb-dm.md)
     - [使用 DM 迁移 MySQL 数据到 TiDB 集群](use-tidb-dm.md)
   - [迁移 TiDB 至 Kubernetes](migrate-tidb-to-kubernetes.md)
-- 管理
+- 运维管理
   - 安全
     - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
     - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
@@ -43,9 +50,7 @@
     - [同步数据到开启 TLS 的下游服务](enable-tls-for-ticdc-sink.md)
     - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [以非 root 用户运行](containers-run-as-non-root-user.md)
-  - 扩缩容
-    - [手动扩缩容](scale-a-tidb-cluster.md)
-    - [自动弹性伸缩](enable-tidb-cluster-auto-scaling.md)
+  - [扩缩容](scale-a-tidb-cluster.md)
   - 升级
     - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
     - 升级 TiDB Operator
@@ -81,13 +86,6 @@
     - 为 TiDB 集群更换节点
         - [更换云存储节点](replace-nodes-for-cloud-disk.md)
         - [更换本地存储节点](replace-nodes-for-local-disk.md)
-  - 监控与告警
-    - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
-    - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
-    - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
-    - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
-    - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
-    - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
   - 灾难恢复
     - [恢复误删的 TiDB 集群](recover-deleted-cluster.md)
     - [恢复 PD 集群](pd-recover.md)
@@ -118,6 +116,7 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.3
+    - [1.3.1](releases/release-1.3.1.md)
     - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)
   - v1.2
