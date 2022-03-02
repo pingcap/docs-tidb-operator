@@ -109,24 +109,30 @@ Pod 重建后会自动回到正常运行模式。
     kubectl logs ${pod_name} -n ${namespace} -c tikv
     ```
 
-3. 手动修改 TiKV 配置。
-   
-    在 TiKV 容器中，复制 TiKV 的配置文件，然后在新的文件上修改 TiKV 的配置。
+    <details>
+    <summary>点击查看期望输出</summary>
+    <pre><code>entering debug mode.</code></pre>
+    </details>
 
+3. 执行下面命令进入 TiKV 容器。
+   
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec ${pod_name} -n ${namespace} -c tikv -- cp /etc/tikv/tikv.toml /tmp/tikv.toml
-    kubectl exec -it ${pod_name} -n ${namespace} -c tikv -- vi /tmp/tikv.tmol
+    kubectl exec -it ${pod_name} -n ${namespace} -c tikv -- sh
     ```
 
-4. 手动运行 TiKV 程序。
+4. 在 TiKV 容器中，复制 TiKV 的配置文件，然后在新的文件上修改 TiKV 的配置。
    
-    进入 TiKV 容器，根据第 1 步中获取的 TiKV 的启动命令，修改启动参数 `--config` 为刚刚新创建的配置文件路径后，启动 TiKV 程序。
+    {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it ${pod_name} -n ${namespace} -c tikv -- sh
-    
+    cp /etc/tikv/tikv.toml /tmp/tikv.toml && vi /tmp/tikv.tmol
+    ```
+
+5. 在 TiKV 容器中，根据第 1 步中获取的 TiKV 的启动命令，修改启动参数 `--config` 为刚刚新创建的配置文件路径后，启动 TiKV 进程。
+   
+    ```shell
     /tikv-server --pd=http://${tc_name}-pd:2379 --advertise-addr=${pod_name}.${tc_name}-tikv-peer.default.svc:20160 --addr=0.0.0.0:20160 --status-addr=0.0.0.0:20180 --data-dir=/var/lib/tikv --capacity=0 --config=/tmp/tikv.toml
     ```
 
