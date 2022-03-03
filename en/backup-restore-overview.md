@@ -66,7 +66,7 @@ If you need to recover the SST files exported by BR to a TiDB cluster, use BR. R
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
-If you need to restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, you can use TiDB Lightning. Refer to the following documents for more information:
+If you need to restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
 - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
