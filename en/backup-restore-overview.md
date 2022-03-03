@@ -60,7 +60,7 @@ Refer to the following documents for more information:
 
 ### Restore data
 
-If you need to recover the SST files exported by BR to a TiDB cluster, you can use BR. Refer to the following documents for more information:
+If you need to recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the following documents for more information:
 
 - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
