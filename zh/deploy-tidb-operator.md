@@ -1,6 +1,7 @@
 ---
 title: 在 Kubernetes 上部署 TiDB Operator
 summary: 了解如何在 Kubernetes 上部署 TiDB Operator。
+aliases: ['/docs-cn/stable/tidb-in-kubernetes/deploy/tidb-operator']
 ---
 
 # 在 Kubernetes 上部署 TiDB Operator
