@@ -95,7 +95,7 @@ Before restoring backup data on PVs to TiDB using BR, take the following steps t
 
     When configuring `restore.yaml`, note the following:
 
-    - The example above restores data from the `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
+    - The example above restores data from the `local://${.spec.local.volume.nfs.path}/${.spec.local.prefix}/` directory on NFS to the `demo2` TiDB cluster in the `test2` namespace. For more information about PV configuration, refer to [Local storage fields](backup-restore-overview.md#local-storage-fields).
 
     - Some parameters in `spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about `.spec.br`, refer to [BR fields](backup-restore-overview.md#br-fields).
 
