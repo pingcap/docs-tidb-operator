@@ -286,11 +286,12 @@ scrape_configs:
 
 ## 使用 Grafana 可视化多集群监控数据
 
-1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards:
+1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards, 其中 version 变量的值为所部署的 TiDB 版本(如 v5.4.0), nightly 为 master 版本:
 
     {{< copyable "shell-regular" >}}
 
     ```sh
+    # set tidb version here, for example v5.4.0
     version=nightly
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
