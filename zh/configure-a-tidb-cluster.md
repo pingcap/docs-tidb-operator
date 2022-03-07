@@ -547,7 +547,7 @@ spec:
 
 #### 通过 tolerations 调度实例
 
-通过各组件配置的 `tolerations` 字段，可以允许组件的实例能够调度到带有与之匹配的污点的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+通过各组件配置的 `tolerations` 字段，可以允许组件的实例能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
