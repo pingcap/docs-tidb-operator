@@ -23,6 +23,14 @@ summary: 介绍 Kubernetes 上 TiDB 集群管理常用使用技巧。
 
     在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。
 
+    > **注意：**
+    >
+    > 如果 Pod 处于运行中，可以执行以下命令强制让容器重启。
+    >
+    > ```shell
+    > kubectl exec ${pod_name} -n ${namespace} -c ${container} -- kill -SIGTERM 1
+    > ```
+
 2. 等待 Pod 进入 Running 状态即可开始诊断：
 
     {{< copyable "shell-regular" >}}
