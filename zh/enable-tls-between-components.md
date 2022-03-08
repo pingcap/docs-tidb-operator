@@ -1302,6 +1302,8 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     创建 `tidb-cluster.yaml` 文件：
 
+    {{< copyable "" >}}
+
     ``` yaml
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
@@ -1374,6 +1376,9 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
+      prometheusReloader:
+       baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+       version: v0.49.0
      imagePullPolicy: IfNotPresent
     ```
 
