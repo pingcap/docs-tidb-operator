@@ -503,7 +503,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     </details>
 
-    从输出中可以看到，新的 TiKV Pod 有着新的 Store ID，并且 Region Leader 会自动调度到该 TiKV Pod 上。
+    从输出中可以看到，新的 TiKV Pod 有着新的 `store-id`，并且 Region Leader 会自动调度到该 TiKV Pod 上。
 
 5. 移除不再需要的 evict-leader-scheduler：
 
