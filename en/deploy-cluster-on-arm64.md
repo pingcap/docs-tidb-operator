@@ -78,6 +78,8 @@ spec:
 
 The process of deploying monitoring for a TiDB cluster on ARM64 machines is the same as the process of [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md). The only difference is that you need to modify the `spec.initializer.baseImage` and `spec.reloader.baseImage` fields in the TidbMonitor definition file to the ARM64 image versions.
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor

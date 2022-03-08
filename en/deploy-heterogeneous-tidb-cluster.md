@@ -224,5 +224,8 @@ If you need to deploy a monitoring component for a heterogeneous cluster, take t
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
+    prometheusReloader:
+        baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+        version: v0.49.0
     imagePullPolicy: IfNotPresent
     ```
