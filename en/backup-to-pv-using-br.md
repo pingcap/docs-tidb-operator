@@ -168,13 +168,6 @@ spec:
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # options:
-    # - --lastbackupts=420134118382108673
   local:
     prefix: backup-nfs
     volume:
@@ -214,13 +207,6 @@ spec:
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # options:
-    # - --lastbackupts=420134118382108673
   local:
     prefix: backup-nfs
     volume:
@@ -260,13 +246,6 @@ spec:
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # options:
-    # - --lastbackupts=420134118382108673
   local:
     prefix: backup-nfs
     volume:
@@ -307,13 +286,6 @@ spec:
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # options:
-    # - --lastbackupts=420134118382108673
   local:
     prefix: backup-nfs
     volume:
