@@ -117,14 +117,11 @@ Pod 重建后会自动回到正常运行模式。
     kubectl logs ${pod_name} -n ${namespace} -c tikv
     ```
 
-    <details>
-    <summary>点击查看期望输出</summary>
+    期望的日志内容如下：
     
     ```
     entering debug mode.
     ```
-
-    </details>
 
 3. 执行下面命令进入 TiKV 容器。
    
