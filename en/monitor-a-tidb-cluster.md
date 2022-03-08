@@ -39,12 +39,12 @@ spec:
   storage: 5G
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
@@ -155,12 +155,12 @@ spec:
   alertmanagerURL: alertmanager-main.monitoring:9093
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
@@ -201,7 +201,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     ingress:
       hosts:
       - example.com
@@ -209,7 +209,7 @@ spec:
         foo: "bar"
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: ClusterIP
     ingress:
@@ -241,7 +241,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     ingress:
       hosts:
       - example.com
@@ -251,7 +251,7 @@ spec:
         secretName: testsecret-tls
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: ClusterIP
   initializer:
@@ -323,12 +323,12 @@ spec:
   storage: 5G
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.7.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
