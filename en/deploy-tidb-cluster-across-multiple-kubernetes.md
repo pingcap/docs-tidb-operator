@@ -84,7 +84,14 @@ spec:
 EOF
 ```
 
-In the above configuration, the field `spec.acrossK8s: true` is required. It indicates that the TiDB cluster is deployed across Kubernetes clusters.
+The descriptions of the related fields are as follows:
+
+* `spec.acrossK8s`: Specifies whether the TiDB cluster is deployed across Kubernetes clusters. In this example, this field must be set to `true`.
+* `spec.clusterDomain`: If this field is set, the Pod FQDN which contains the cluster domain is used as the address for inter-component access.
+
+    Take Pod `${tc_name}-pd-0` as an example: Pods in other Kubernetes clusters access this Pod using the `${tc_name}-pd-0.${tc_name}-pd-peer.${ns}.svc.${cluster_domain}` address.
+
+    If the cluster domain is required when Pods access the Pod FQDB of another Kubernetes cluster, you must set this field.
 
 ### Step 2. Deploy the new TidbCluster to join the TiDB cluster
 
