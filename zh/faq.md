@@ -140,4 +140,4 @@ PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的�
 
 ## 修改某个组件的配置后，为什么新配置没有生效？
 
-默认设置下，配置更新后不会进行滚动更新，新的配置也就不会生效。需要设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性。该字段说明参考 [configUpdateStrategy](configure-a-tidb-cluster.md#configupdatestrategy)。
+默认设置下，配置更新后不会进行滚动更新，新的配置也就不会生效。需要设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性。关于该字段的说明，参考 [configUpdateStrategy](configure-a-tidb-cluster.md#configupdatestrategy)。
