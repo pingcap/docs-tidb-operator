@@ -70,23 +70,23 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 ### 第 1 步：准备本地存储
 
-- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式将盘挂载到 `/mnt/ssd` 目录，后续创建名为 `ssd-storage` 的 `StorageClass`。
+- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式将盘挂载到 `/mnt/ssd` 目录。
 
     出于性能考虑，推荐 TiKV 独占一个磁盘，并且推荐磁盘类型为 SSD。
 
-- 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录下，后续创建名为 `shared-ssd-storage` 的 `StorageClass`。
+- 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录下。
 
     > **注意：**
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量及每个集群内的 PD 数量。1 个目录会对应创建 1 个 PV。每个 PD 会使用一个 PV。
 
-- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/monitoring` 目录下，后续创建名为 `monitoring-storage` 的 `StorageClass`。
+- 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/monitoring` 目录下。
 
     > **注意：**
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量。1 个目录会对应创建 1 个 PV。每个 TiDB 集群的监控数据会使用 1 个 PV。
 
-- 给 TiDB Binlog 和备份数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/backup` 目录下，后续创建名为 `backup-storage` 的 `StorageClass`。
+- 给 TiDB Binlog 和备份数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/backup` 目录下。
 
     > **注意：**
     >
@@ -117,16 +117,16 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     data:
       # ...
       storageClassMap: |
-        ssd-storage:
+        ssd-storage: # 给 TiKV 使用
           hostDir: /mnt/ssd
           mountDir: /mnt/ssd
-        shared-ssd-storage:
+        shared-ssd-storage: # 给 PD 使用
           hostDir: /mnt/sharedssd
           mountDir: /mnt/sharedssd
-        monitoring-storage:
+        monitoring-storage: # 给监控数据使用
           hostDir: /mnt/monitoring
           mountDir: /mnt/monitoring
-        backup-storage:
+        backup-storage: # 给 TiDB Binlog 和备份数据使用
           hostDir: /mnt/backup
           mountDir: /mnt/backup
     ```
