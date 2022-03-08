@@ -385,7 +385,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
-2. 检查 Region Leader 已经全部被迁移走:
+2. 检查 Region Leader 已经全部被迁移走。执行以下命令，检查输出是否为 0。
 
     {{< copyable "shell-regular" >}}
 
