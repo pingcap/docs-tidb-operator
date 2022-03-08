@@ -403,45 +403,45 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     >
     > 下线 TiKV Pod 前，需要保证集群中剩余的 TiKV Pod 数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`，默认值 3）。假如不符合该条件，需要先操作扩容 TiKV。
 
-    查看 TiKV Pod 的 `store-id`：
+    1. 查看 TiKV Pod 的 `store-id`：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
-    ```
+        ```shell
+        kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
+        ```
 
-    在任意一个 PD Pod 中通过 `pd-ctl` 命令下线该 TiKV Pod：
+    2. 在任意一个 PD Pod 中通过 `pd-ctl` 命令下线该 TiKV Pod：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- /pd-ctl store delete ${store_id}
-    ```
+        ```shell
+        kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- /pd-ctl store delete ${store_id}
+        ```
 
-    等待 store 状态（`state_name`）转移为 `Tombstone`：
+    3. 等待 store 状态（`state_name`）转移为 `Tombstone`：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- watch /pd-ctl store ${store_id}
-    ```
+        ```shell
+        kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- watch /pd-ctl store ${store_id}
+        ```
 
-    <details>
-    <summary>点击查看期望输出</summary>
+        <details>
+        <summary>点击查看期望输出</summary>
 
-    ```json
-    {
-      "store": {
-          "id": ${store_id},
+        ```json
+        {
+          "store": {
+            "id": "${store_id}",
+            // ...
+            "state_name": "Tombstone"
+          },
           // ...
-          "state_name": "Tombstone"
-      },
-      // ...
-    }
-    ```
+        }
+        ```
 
-    </details>
+        </details>
 
 3. 解除 TiKV Pod 与当前使用的存储的绑定。
 
