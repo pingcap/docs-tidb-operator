@@ -49,7 +49,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 #### configUpdateStrategy
 
-建议设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性，在每次配置更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
+`spec.configUpdateStrategy` 字段默认值为 `InPlace`，表示当你修改某个组件的 `config` 更新后，需要手动触发滚动更新后才会应用新的配置。
+
+建议设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性，在某个组件的 `config` 更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
 
 #### enableDynamicConfiguration
 
