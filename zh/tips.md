@@ -120,7 +120,11 @@ Pod 重建后会自动回到正常运行模式。
 
     <details>
     <summary>点击查看期望输出</summary>
-    <pre><code>entering debug mode.</code></pre>
+    
+    ```
+    entering debug mode.
+    ```
+
     </details>
 
 3. 执行下面命令进入 TiKV 容器。
