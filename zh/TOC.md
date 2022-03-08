@@ -109,8 +109,6 @@
     - [TiDB Toolkit](tidb-toolkit.md)
   - 配置
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
-    - [tidb-cluster chart 配置](tidb-cluster-chart-config.md)
-    - [tidb-backup chart 配置](configure-backup.md)
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
