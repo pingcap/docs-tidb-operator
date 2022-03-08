@@ -139,22 +139,14 @@ metadata:
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  from:
-    host: ${tidb-host}
-    port: ${tidb-port}
-    user: ${tidb-user}
-    secretName: backup-demo1-tidb-secret
+  # from:
+    # host: ${tidb-host}
+    # port: ${tidb-port}
+    # user: ${tidb-user}
+    # secretName: backup-demo1-tidb-secret
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # sendCredToTikv: true
-    # options:
-    # - --lastbackupts=420134118382108673
   gcs:
     projectId: ${project_id}
     secretName: gcs-secret
@@ -182,24 +174,16 @@ metadata:
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  from:
-    host: ${tidb-host}
-    port: ${tidb-port}
-    user: ${tidb-user}
-    secretName: backup-demo1-tidb-secret
+  # from:
+    # host: ${tidb-host}
+    # port: ${tidb-port}
+    # user: ${tidb-user}
+    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.*"
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # sendCredToTikv: true
-    # options:
-    # - --lastbackupts=420134118382108673
   gcs:
     projectId: ${project_id}
     secretName: gcs-secret
@@ -227,24 +211,16 @@ metadata:
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  from:
-    host: ${tidb-host}
-    port: ${tidb-port}
-    user: ${tidb-user}
-    secretName: backup-demo1-tidb-secret
+  # from:
+    # host: ${tidb-host}
+    # port: ${tidb-port}
+    # user: ${tidb-user}
+    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # sendCredToTikv: true
-    # options:
-    # - --lastbackupts=420134118382108673
   gcs:
     projectId: ${project_id}
     secretName: gcs-secret
@@ -272,25 +248,17 @@ metadata:
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  from:
-    host: ${tidb-host}
-    port: ${tidb-port}
-    user: ${tidb-user}
-    secretName: backup-demo1-tidb-secret
+  # from:
+    # host: ${tidb-host}
+    # port: ${tidb-port}
+    # user: ${tidb-user}
+    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   - "db1.table2"
   br:
     cluster: demo1
     clusterNamespace: test1
-    # logLevel: info
-    # statusAddr: ${status-addr}
-    # concurrency: 4
-    # rateLimit: 0
-    # checksum: true
-    # sendCredToTikv: true
-    # options:
-    # - --lastbackupts=420134118382108673
   gcs:
     projectId: ${project_id}
     secretName: gcs-secret
