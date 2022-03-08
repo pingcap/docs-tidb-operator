@@ -453,6 +453,13 @@ spec:
 
 需要配置 `spec.tidb.service`，TiDB Operator 才会为 TiDB 创建 Service。Service 可以根据场景配置不同的类型，比如 `ClusterIP`、`NodePort`、`LoadBalancer` 等。
 
+#### 通用配置
+
+不用类型的 Service 有着部分通用的配置，包括：
+
+* `spec.tidb.service.annotations`：添加到 Service 资源的 Annotation。
+* `spec.tidb.service.labels`：添加到 Service 资源的 Labels。
+
 #### ClusterIP
 
 `ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 ClusterIP 或者 Service 域名（`${cluster_name}-tidb.${namespace}`）访问。
@@ -513,6 +520,61 @@ spec:
 TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑节点发生故障时，不仅服务不受影响，还要保证数据也是完整和可用。下面分别具体说明这两种高可用的配置。
 
 ### TiDB 服务高可用
+
+#### 通过 nodeSelector 调度实例
+
+通过各组件配置的 `nodeSelector` 字段，可以约束组件的实例只能调度到特定的节点上。关于 `nodeSelector` 的更多说明，请参阅 [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    nodeSelector:
+      node-role.kubernetes.io/pd: true
+    # ...
+  tikv:
+    nodeSelector:
+      node-role.kubernetes.io/tikv: true
+    # ...
+  tidb:
+    nodeSelector:
+      node-role.kubernetes.io/tidb: true
+    # ...
+```
+
+#### 通过 tolerations 调度实例
+
+通过各组件配置的 `tolerations` 字段，可以允许组件的实例能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pd
+    # ...
+  tikv:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tikv
+    # ...
+  tidb:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tidb
+    # ...
+```
 
 #### 通过 affinity 调度实例
 
