@@ -312,7 +312,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 3. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation，触发优雅重启，TiDB Operator 会在迁移完 TiKV Region Leader 后删掉 Pod：
 
     {{< copyable "shell-regular" >}}
-   
+
     ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="delete-pod"
     ```
@@ -357,6 +357,8 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 迁移 PD Leader
 
+如果 PD Leader Pod 所在节点是要维护的节点，则需要将 PD Leader 先迁移到其他节点上的 Pod。
+
 1. 查看 PD Leader：
 
     {{< copyable "shell-regular" >}}
@@ -365,7 +367,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl member leader show
     ```
 
-2. 如果 Leader Pod 所在节点是要维护的节点，则需要将 Leader 先迁移到其他节点上的 Pod。
+2. 迁移 PD Leader 到其他节点：
 
     {{< copyable "shell-regular" >}}
 
@@ -377,21 +379,25 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 迁移 TiKV Region Leader
 
+如果 TiKV Region Leader Pod 所在节点是要维护的节点，则需要将 TiKV Region Leader 先迁移到其他节点上的 Pod。
+
 1. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation：
 
     {{< copyable "shell-regular" >}}
-   
+
     ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
-2. 检查 Region Leader 已经全部被迁移走。执行以下命令，检查输出是否为 0。
+2. 执行以下命令，检查 Region Leader 是否已经全部被迁移走：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
+
+    如果输出为 0，则 Region Leader 已经全部被迁移走。
 
 ## 重建 TiKV Pod
 
@@ -411,7 +417,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
         kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
         ```
 
-    2. 在任意一个 PD Pod 中通过 `pd-ctl` 命令下线该 TiKV Pod：
+    2. 在任意一个 PD Pod 中，使用 `pd-ctl` 命令下线该 TiKV Pod：
 
         {{< copyable "shell-regular" >}}
 
@@ -445,31 +451,31 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 3. 解除 TiKV Pod 与当前使用的存储的绑定。
 
-    查询 Pod 使用的 `PersistentVolumeClaim`：
+    1. 查询 Pod 使用的 `PersistentVolumeClaim`：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
-    ```
+        ```shell
+        kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
+        ```
 
-    <details>
-    <summary>点击查看示例输出，其中 `NAME` 项就是该 PVC 的名字</summary>
+        <details>
+        <summary>点击查看示例输出，其中 <code>NAME</code> 项就是该 PVC 的名字</summary>
 
-    ```
-    NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES       STORAGECLASS   AGE
-    ${pvc_name}   Bound    pvc-a8f16ca6-a675-448f-82c3-3cae624aa0e2   100Gi      RWO                standard       18m
-    ```
+        ```
+        NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES       STORAGECLASS   AGE
+        ${pvc_name}   Bound    pvc-a8f16ca6-a675-448f-82c3-3cae624aa0e2   100Gi      RWO                standard       18m
+        ```
 
-    </details>
+        </details>
 
-    删除该 `PersistentVolumeClaim`：
+    2. 删除该 `PersistentVolumeClaim`：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
-    ```
+        ```shell
+        kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+        ```
 
 4. 删除 TiKV Pod，并等待新创建的 TiKV Pod 加入集群。
 
@@ -479,7 +485,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-    等待新创建的 TiKV Pod 状态变为 Up。
+    等待新创建的 TiKV Pod 状态变为 `Up`。
 
     {{< copyable "shell-regular" >}}
 
