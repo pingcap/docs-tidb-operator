@@ -129,14 +129,17 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 ```yaml
   tidb:
-    ...
+    config: |
+      path = "/tidb/data"
+      [log.file]
+        filename = "/tidb/log/tidb.log"
     storageVolumes:
-    - name: vol1
+    - name: data
       storageSize: "2Gi"
-      mountPath: "/some/data1"
-    - name: vol2
+      mountPath: "/tidb/data"
+    - name: log
       storageSize: "2Gi"
-      mountPath: "/some/data2"
+      mountPath: "/tidb/log"
 ```
 
 </div>
@@ -147,14 +150,17 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 ```yaml
   pd:
-    ...
+    config: |
+      data-dir=/pd/data
+      [log.file]
+        filename=/pd/log/pd.log
     storageVolumes:
-    - name: vol1
-      storageSize: "2Gi"
-      mountPath: "/some/data1"
-    - name: vol2
-      storageSize: "2Gi"
-      mountPath: "/some/data2"
+    - name: data
+      storageSize: "10Gi"
+      mountPath: "/pd/data"
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pd/log"
 ```
 
 </div>
