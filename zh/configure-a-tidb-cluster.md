@@ -632,6 +632,13 @@ spec:
 
 需要配置 `spec.tidb.service`，TiDB Operator 才会为 TiDB 创建 Service。Service 可以根据场景配置不同的类型，比如 `ClusterIP`、`NodePort`、`LoadBalancer` 等。
 
+#### 通用配置
+
+不用类型的 Service 有着部分通用的配置，包括：
+
+* `spec.tidb.service.annotations`：添加到 Service 资源的 Annotation。
+* `spec.tidb.service.labels`：添加到 Service 资源的 Labels。
+
 #### ClusterIP
 
 `ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 ClusterIP 或者 Service 域名（`${cluster_name}-tidb.${namespace}`）访问。
@@ -696,7 +703,64 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 ### TiDB 服务高可用
 
-其它层面的高可用（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+#### 通过 nodeSelector 调度实例
+
+通过各组件配置的 `nodeSelector` 字段，可以约束组件的实例只能调度到特定的节点上。关于 `nodeSelector` 的更多说明，请参阅 [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    nodeSelector:
+      node-role.kubernetes.io/pd: true
+    # ...
+  tikv:
+    nodeSelector:
+      node-role.kubernetes.io/tikv: true
+    # ...
+  tidb:
+    nodeSelector:
+      node-role.kubernetes.io/tidb: true
+    # ...
+```
+
+#### 通过 tolerations 调度实例
+
+通过各组件配置的 `tolerations` 字段，可以允许组件的实例能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pd
+    # ...
+  tikv:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tikv
+    # ...
+  tidb:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tidb
+    # ...
+```
+
+#### 通过 affinity 调度实例
+
+配置 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的。关于 Affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
 
 下面是一个典型的高可用设置例子：
 
