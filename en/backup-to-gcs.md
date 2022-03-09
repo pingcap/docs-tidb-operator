@@ -12,7 +12,7 @@ The backup method described in this document is implemented using CustomResource
 
 Dumpling is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV files and can be used to make a logical full backup or export.
 
-## User scenarios
+## Usage scenarios
 
 You can use the backup method described in this document if you want to make an [ad-hoc full backup](#ad-hoc-full-backup-to-gcs) or [scheduled full backup](#scheduled-full-backup-to-gcs) of the TiDB cluster data to GCS with the following needs:
 
@@ -104,7 +104,7 @@ To better explain how to perform the backup operation, this document shows an ex
       storageSize: 10Gi
     ```
 
-    The example above backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, `bucketAcl`, and `storageClass`. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
+    The example above backs up all data in the TiDB cluster to GCS. Some parameters in `spec.gcs` can be ignored, such as `location`, `objectAcl`, `bucketAcl`, and `storageClass`. For more information about GCS configuration, refer to [GCS fields](backup-restore-cr.md#gcs-fields).
 
     `spec.dumpling` refers to Dumpling-related configuration. You can specify Dumpling's operation parameters in the `options` field. See [Dumpling Option list](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling) for more information. These configuration items of Dumpling can be ignored by default. When these items are not specified, the default values of `options` fields are as follows:
 
@@ -114,7 +114,7 @@ To better explain how to perform the backup operation, this document shows an ex
     - --rows=10000
     ```
 
-    For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-overview.md#backup-cr-fields).
+    For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-cr.md#backup-cr-fields).
 
 2. After creating the `Backup` CR, use the following command to check the backup status:
 
@@ -201,7 +201,7 @@ The preparation for the scheduled backup is the same as the [prepare for ad-hoc 
 
 From the example above, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
 
-`backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-overview.md#backup-cr-fields). For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-overview.md#backupschedule-cr-fields).
+`backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-cr.md#backup-cr-fields). For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 
 > **Note:**
 >
