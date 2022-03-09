@@ -91,11 +91,15 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 相关字段的含义如下：
 
 - `storageVolume.name`：PV 的名称。
-- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用 spec.pd/tidb/tikv.storageClassName。
+- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用 spec.pd/tidb/tikv/ticdc.storageClassName。
 - `storageVolume.storageSize`：申请 PV 存储容量的大小。
 - `storageVolume.mountPath`：将 PV 挂载到容器的哪个目录。
 
 例子:
+
+<SimpleTab>
+
+<div label="TiKV">
 
 {{< copyable "" >}}
 
@@ -115,6 +119,69 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
       storageSize: "2Gi"
       mountPath: "/data_sbj/titan/data"
 ```
+
+</div>
+
+<div label="TiDB">
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    ...
+    storageVolumes:
+    - name: vol1
+      storageSize: "2Gi"
+      mountPath: "/some/data1"
+    - name: vol2
+      storageSize: "2Gi"
+      mountPath: "/some/data2"
+```
+
+</div>
+
+<div label="PD">
+
+{{< copyable "" >}}
+
+```yaml
+  pd:
+    ...
+    storageVolumes:
+    - name: vol1
+      storageSize: "2Gi"
+      mountPath: "/some/data1"
+    - name: vol2
+      storageSize: "2Gi"
+      mountPath: "/some/data2"
+```
+
+</div>
+
+<div label="TiCDC">
+
+{{< copyable "" >}}
+
+```yaml
+  ticdc:
+    ...
+    config:
+      dataDir: /ticdc/data
+      logFile: /ticdc/log/cdc.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/data"
+    - name: log
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/log"
+```
+
+</div>
+
+</SimpleTab>
 
 > **注意：**
 >
