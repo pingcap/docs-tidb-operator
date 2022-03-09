@@ -703,9 +703,6 @@ TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑
 
 ### TiDB 服务高可用
 
-<<<<<<< HEAD
-其它层面的高可用（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-=======
 #### 通过 nodeSelector 调度实例
 
 通过各组件配置的 `nodeSelector` 字段，可以约束组件的实例只能调度到特定的节点上。关于 `nodeSelector` 的更多说明，请参阅 [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)。
@@ -764,7 +761,6 @@ spec:
 #### 通过 affinity 调度实例
 
 配置 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到高可用的目的。关于 Affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
->>>>>>> c5491f43 (zh: add more config description (#1720))
 
 下面是一个典型的高可用设置例子：
 
