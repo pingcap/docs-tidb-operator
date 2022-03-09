@@ -11,7 +11,7 @@ This document describes how to add or remove the TiDB HTAP storage engine TiFlas
 >
 > If a TiDB cluster has not been deployed yet, instead of referring to this document, you can [configure a TiDB cluster in Kubernetes](configure-a-tidb-cluster.md) with the TiFlash-related parameters, and then [deploy the TiDB cluster](deploy-on-general-kubernetes.md).
 
-## User scenarios
+## Usage scenarios
 
 This document is applicable to scenarios in which you already have a TiDB cluster and need to use TiDB HTAP capabilities by deploying TiFlash, such as the following:
 

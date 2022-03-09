@@ -13,7 +13,7 @@ TiDB Lightning is a tool used for fast full import of large amounts of data into
 
 This document shows an example in which the backup data stored in the specified path on [GCS](https://cloud.google.com/storage/docs/) is restored to the TiDB cluster.
 
-## User scenarios
+## Usage scenarios
 
 You can use the restore solution introduced in this document if you need to export the backup data from GCS to a TiDB cluster, with the following requirements:
 
@@ -94,9 +94,9 @@ Before you use TiDB Lightning to restore the backup data in GCS to the TiDB clus
       storageSize: 1Gi
     ```
 
-    The example above restores data from the `spec.gcs.path` path on GCS to the `spec.to.host` TiDB cluster. For more information about GCS configuration, refer to [GCS fields](backup-restore-overview.md#gcs-fields).
+    The example above restores data from the `spec.gcs.path` path on GCS to the `spec.to.host` TiDB cluster. For more information about GCS configuration, refer to [GCS fields](backup-restore-cr.md#gcs-fields).
 
-    For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
+    For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
 
 2. After creating the `Restore` CR, execute the following command to check the restore status:
 
