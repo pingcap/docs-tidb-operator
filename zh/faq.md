@@ -127,8 +127,6 @@ TiDB Operator 部署的 TiDB 集群使用 Kubernetes 集群提供的[持久卷](
 PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的数据在各节点间复制为多副本，以确保某个节点宕机时数据的安全性。
 
 在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当集群中的大多数节点收到此日志时，日志会被提交，状态机会相应作出变更。
-<<<<<<< HEAD
-=======
 
 ## TidbCluster 的 Ready 项为 false 是否代表集群不可用？
 
@@ -143,4 +141,3 @@ PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的�
 ## 修改某个组件的配置后，为什么新配置没有生效？
 
 默认设置下，配置更新后不会进行滚动更新，新的配置也就不会生效。需要设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性。关于该字段的说明，参考 [configUpdateStrategy](configure-a-tidb-cluster.md#configupdatestrategy)。
->>>>>>> 1045413b (zh: add FAQ about configUpdateStrategy (#1718))
