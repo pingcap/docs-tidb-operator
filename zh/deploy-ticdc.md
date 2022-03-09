@@ -45,7 +45,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
        baseImage: pingcap/ticdc-enterprise
    ```
 
-3. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
+3. 为 TiCDC 挂载 PV：TiCDC 支持挂载多个 PV，建议第一次部署 TiCDC 时规划好使用几个 PV，相关配置请参阅[多盘挂载](configure-a-tidb-cluster.md#多盘挂载)
+
+4. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
 
     {{< copyable "shell-regular" >}}
 
@@ -53,7 +55,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
     kubectl exec -it ${pod_name} -n ${namespace} -- sh
     ```
 
-4. 然后通过 `cdc cli` 进行[管理集群和同步任务](https://pingcap.com/docs-cn/stable/ticdc/manage-ticdc/)。
+5. 然后通过 `cdc cli` 进行[管理集群和同步任务](https://pingcap.com/docs-cn/stable/ticdc/manage-ticdc/)。
 
     {{< copyable "shell-regular" >}}
 
@@ -92,38 +94,3 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
     ```
 
 如果服务器没有外网，请参考 [部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群) 在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
-
-## 为 TiCDC 挂载 PV
-
-TiCDC 支持挂载多个 PV。如果要为 TiCDC 配置多个 PV，可以在 `ticdc.storageVolumes` 中配置多个 item 项，每项可以配置不同的 `storageSize` 和 `storageClassName`。
-
-相关字段的含义如下：
-
-- `storageVolume.name`：PV 的名称。
-- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用 `spec.ticdc.storageClassName`。
-- `storageVolume.storageSize`：申请 PV 存储容量的大小。
-- `storageVolume.mountPath`：将 PV 挂载到容器的哪个目录。
-
-例子:
-
-{{< copyable "" >}}
-
-```yaml
-  ticdc:
-    baseImage: pingcap/ticdc
-    replica: 1
-    storageVolumes:
-    - name: data
-      storageSize: "10Gi"
-      storageClassName: local-storage
-      mountPath: "/ticdc/data"
-    - name: log
-      storageSize: "10Gi"
-      storageClassName: local-storage
-      mountPath: "/ticdc/log"
-```
-
-> **注意：**
->
-> - 建议第一次部署 TiCDC 时规划好使用几个 PV，配置相应的 `storageVolumes`。
-> - 集群创建完成后，不支持添加或者删除 `storageVolumes`，对于已经配置的 `storageVolumes`，除增大 `storageVolume.storageSize` 外，其他项不支持修改。如果要增大 `storageVolume.storageSize`，需要对应的 StorageClass 支持[动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
