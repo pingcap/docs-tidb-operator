@@ -44,7 +44,9 @@ summary: 了解如何在 Kubernetes 上部署 TiCDC。
        baseImage: pingcap/ticdc-enterprise
    ```
 
-3. 为 TiCDC 挂载 PV：TiCDC 支持挂载多个 PV，建议第一次部署 TiCDC 时规划好使用几个 PV，相关配置请参阅[多盘挂载](configure-a-tidb-cluster.md#多盘挂载)
+3. 为 TiCDC 挂载 PV。
+
+    TiCDC 支持挂载多个 PV，建议在第一次部署 TiCDC 时规划好使用几个 PV。相关配置请参阅[多盘挂载](configure-a-tidb-cluster.md#多盘挂载)。
 
 4. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
 
