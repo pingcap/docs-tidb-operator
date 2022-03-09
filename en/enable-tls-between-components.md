@@ -1326,6 +1326,8 @@ In this step, you need to perform the following operations:
 
     Create the `tidb-cluster.yaml` file:
 
+    {{< copyable "" >}}
+
     ``` yaml
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
@@ -1398,6 +1400,9 @@ In this step, you need to perform the following operations:
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
+     prometheusReloader:
+       baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+       version: v0.49.0
      imagePullPolicy: IfNotPresent
     ```
 

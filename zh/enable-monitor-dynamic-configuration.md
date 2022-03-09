@@ -17,6 +17,8 @@ TidbMonitor 支持多集群、分片等功能，当 Prometheus 的配置、Rule�
 
 在 TidbMonitor 的 spec 中，你可以通过指定 `prometheusReloader` 开启动态配置功能。示例如下:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor

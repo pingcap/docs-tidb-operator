@@ -16,6 +16,8 @@ With dynamic configuration enabled, any configuration change of TidbMonitor take
 
 To enable the dynamic configuration feature, configure `prometheusReloader` in the `spec` field of TidbMonitor. For example:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor

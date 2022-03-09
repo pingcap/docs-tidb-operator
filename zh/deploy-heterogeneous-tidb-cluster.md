@@ -223,5 +223,8 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
+    prometheusReloader:
+        baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+        version: v0.49.0
     imagePullPolicy: IfNotPresent
     ```

@@ -17,6 +17,8 @@ To use shards for TidbMonitor, you need a data aggregation plan. The [Thanos](ht
 
 To enable shards for TidbMonitor, you need to specify the `shards` field. For example:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -36,6 +38,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 

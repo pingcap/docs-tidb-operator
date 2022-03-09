@@ -1303,6 +1303,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     创建 `tidb-cluster.yaml` 文件：
 
+    {{< copyable "" >}}
+
     ``` yaml
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
@@ -1375,6 +1377,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
+      prometheusReloader:
+       baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+       version: v0.49.0
      imagePullPolicy: IfNotPresent
     ```
 
