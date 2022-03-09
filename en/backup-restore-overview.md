@@ -5,48 +5,46 @@ summary: Learn how to perform backup and restore on the TiDB cluster in Kubernet
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool), [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview), and [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning).
+This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
 
-TiDB Operator 1.1 and later versions implement the backup and restore methods using Custom Resource Definition (CRD):
+[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool, which exports data stored in TiDB or MySQL as SQL or CSV data files. You can use Dumpling to make a logical full backup or export.
 
-+ If your TiDB cluster version is v3.1 or later, refer to the following documents:
+[TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. You can use TiDB Lightning to make a logical full data restore or import.
 
-    - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
-    - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
-    - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
-    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
-    - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
-    - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
+[BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is a command-line tool for distributed backup and restoration of the TiDB cluster data. Compared with Dumpling and Mydumper, BR is more suitable for huge data volumes. BR only supports TiDB v3.1 and later versions. For incremental backup insensitive to latency, refer to [BR Overview](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
 
-+ If your TiDB cluster version is earlier than v3.1, refer to the following documents:
+## Usage scenarios
 
-    - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
-    - [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
-    - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
-    - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
+### Back up data
 
-## User scenarios
+If you have the following backup needs, you can use BR to make a backup of your TiDB cluster data:
 
-[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV data files to get the logic full backup or export. If you need to back up SST files (Key-Value pairs) directly or perform latency-insensitive incremental backup, refer to [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
+- To back up a large volume of data at a fast speed
+- To get a direct backup of data as SST files (key-value pairs)
+- To perform incremental backup that is insensitive to latency
 
-[TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. You can use TiDB Lightning for the following two purposes:
+Refer to the following documents for more information:
 
-- Quickly import large amounts of data
-- Restore all backup data
+- [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
+- [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
+- [Back up Data to PV Using BR](backup-to-pv-using-br.md)
 
-[BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is a command-line tool for distributed backup and restore of the TiDB cluster data. Compared with Dumpling and mydumper, BR is more suitable for scenarios of huge data volume. BR only supports TiDB v3.1 and later versions.
+If you have the following backup needs, you can use Dumpling to make a backup of the TiDB cluster data:
 
-## Backup CR fields
+- To export SQL or CSV files
+- To limit the memory usage of a single SQL statement
+- To export the historical data snapshot of TiDB
 
-To back up data for a TiDB cluster in Kubernetes, you can create a `Backup` Custom Resource (CR) object. For detailed backup process, refer to documents listed in [Backup and Restore Overview](#backup-and-restore-overview).
+Refer to the following documents for more information:
 
-This section introduces the fields in the `Backup` CR.
+- [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
+- [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
 
-### General fields
+### Restore data
 
-* `.spec.metadata.namespace`: The namespace where the `Backup` CR is located.
-* `.spec.toolImage`: The tool image used by `Backup`.
+To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the following documents for more information:
 
+<<<<<<< HEAD
     - When using BR for backup, you can specify the BR version in this field.
         - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
         - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.3.0`, the image of the specified version is used for backup.
@@ -54,19 +52,24 @@ This section introduces the fields in the `Backup` CR.
     - When using Dumpling for backup, you can specify the Dumpling version in this field. For example, `spec.toolImage: pingcap/dumpling:v5.3.0`. If not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for backup by default.
     - TiDB Operator supports this configuration starting from v1.1.9.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to 72h.
+=======
+- [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
+- [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
+- [Restore Data from PV Using BR](restore-from-pv-using-br.md)
+>>>>>>> b3ebb040 (en: optimize backup/restore overview (#1692))
 
-    Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
+To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
-    After the backup, no matter the backup is successful or not, as long as the previous `tikv_gc_life_time` value is smaller than `.spec.tikvGCLifeTime`, TiDB Operator will try to set `tikv_gc_life_time` to the previous value.
+- [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
+- [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
 
-    In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the backup as failed. At this time, you can view `tikv_gc_life_time` of the current TiDB cluster using the following statement:
+## Backup and restore process
 
-    {{< copyable "sql" >}}
+To make a backup of the TiDB cluster in Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
 
-    ```sql
-    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
-    ```
+To restore data to the TiDB cluster in Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
 
+<<<<<<< HEAD
     In the output of the command above, if the value of `tikv_gc_life_time` is still larger than expected (usually 10m), you need to [set `tikv_gc_life_time` back](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the previous value manually:
 
 * `.spec.cleanPolicy`: The cleaning policy for the backup data when the backup CR is deleted.
@@ -291,6 +294,9 @@ The unique configuration items of `backupSchedule` are as follows:
 * `.spec.maxReservedTime`: A backup retention policy based on time. For example, if you set the value of this field to `24h`, only backup files within the recent 24 hours are retained. All backup files older than this value are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set `.spec.maxBackups` and `.spec.maxReservedTime` at the same time, the latter takes effect.
 * `.spec.schedule`: The time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
 * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time is reached. During this pause, the backup Garbage Collection runs normally. If you change `true` to `false`, the scheduled full backup process is restarted.
+=======
+After creating the CR object, according to your configuration, TiDB Operator chooses the corresponding tool and performs the backup or restore.
+>>>>>>> b3ebb040 (en: optimize backup/restore overview (#1692))
 
 ## Delete the Backup CR
 

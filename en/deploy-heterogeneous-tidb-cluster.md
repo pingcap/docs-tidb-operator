@@ -7,7 +7,7 @@ summary: Learn how to deploy a heterogeneous cluster for an existing TiDB cluste
 
 This document describes how to deploy a heterogeneous cluster for an existing TiDB cluster. A heterogeneous cluster consists of nodes with different configurations from the existing TiDB cluster.
 
-## User scenarios
+## Usage scenarios
 
 This document is applicable to scenarios in which you need to create differentiated instances for an existing TiDB cluster, such as the following:
 
