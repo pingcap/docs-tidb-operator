@@ -31,7 +31,7 @@ To use the diagnostic mode for troubleshooting:
     > 
     > ```shell
     > kubectl exec ${pod_name} -n ${namespace} -c ${container} -- kill -SIGTERM 1
-    >
+    > ```
 
 2. Wait for the Pod to enter the Running state.
 
