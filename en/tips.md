@@ -28,7 +28,7 @@ To use the diagnostic mode for troubleshooting:
 
     > **Note:**
     >
-    > If Pod is running, restart the container forcedly by the following command.
+    > If Pod is running, you can force restart the container by running the following command.
     > 
     > ```shell
     > kubectl exec ${pod_name} -n ${namespace} -c ${container} -- kill -SIGTERM 1
@@ -58,25 +58,25 @@ To use the diagnostic mode for troubleshooting:
 
 After the Pod is rebuilt, it automatically returns to the normal mode.
 
-## Modify the configuration of a TiKV
+## Modify the configuration of a TiKV instance
 
-In some test scenarios, if you need to modify the configuration of a TiKV and not affect others, you can use the following methods.
+In some test scenarios, if you need to modify the configuration of a TiKV instance and do not want the configuration to affect other instances, you can use the following methods.
 
 ### Modify online
 
-Refer to the [document](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-tikv-configuration-online), you can use SQL to modify the configuration of a TiKV online.
+Refer to the [document](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-tikv-configuration-online) and use SQL to online modify the configuration of a single TiKV instance.
 
 > **Note:**
 >
-> The modification by this method is temporary and not persistent. When  the Pod is restarted, the original configuration will be used.
+> The modification made by this method is temporary and not persistent. After the Pod is restarted, the original configuration will be used.
 
 ### Modify manually in diagnostic mode
 
-After the TiKV Pod enter diagnostic mode, you can modify the configuration of TiKV, then specify the modified configuration and start the TiKV process manually.
+After the TiKV Pod enters diagnostic mode, you can modify the TiKV configuration file and then manually start the TiKV process using the modified configuration file.
 
 The steps are as follows:
 
-1. Get the start command from the TiKV log, it is used in following steps.
+1. Get the start command from the TiKV log, which will be used in a subsequent step.
    
     {{< copyable "shell-regular" >}}
 
@@ -84,7 +84,7 @@ The steps are as follows:
     kubectl logs pod ${pod_name} -n ${namespace} -c tikv | head -2 | tail -1
     ```
 
-    The output is similar to the following, and this line is the start command.
+    You can see a similar output as follows, which is the start command of TiKV.
 
     ```shell
     /tikv-server --pd=http://${tc_name}-pd:2379 --advertise-addr=${pod_name}.${tc_name}-tikv-peer.default.svc:20160 --addr=0.0.0.0:20160 --status-addr=0.0.0.0:20180 --data-dir=/var/lib/tikv --capacity=0 --config=/etc/tikv/tikv.toml
@@ -92,11 +92,11 @@ The steps are as follows:
 
     > **Note:**
     >
-    > If the TiKV Pod is in the `CrashLoopBackoff` state, can't get the start command from the log, you can splice the start command by using the above command format.
+    > If the TiKV Pod is in the `CrashLoopBackoff` state, you cannot get the start command from the log. In such cases, you might splice the start command according to the above command format.
 
 2. Turn on diagnostic mode for the Pod and restart the Pod.
    
-    Add an annotation to the Pod and wait for the Pod restarted.
+    Add an annotation to the Pod and wait for the Pod to restart.
 
     {{< copyable "shell-regular" >}}
 
@@ -104,7 +104,7 @@ The steps are as follows:
     kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
     ```
 
-    If Pod is running, restart the container forcedly by the following command.
+    If the Pod keeps running, you can force restart the container by running the following command:
 
     {{< copyable "shell-regular" >}}
   
@@ -112,7 +112,7 @@ The steps are as follows:
     kubectl exec ${pod_name} -n ${namespace} -c tikv -- kill -SIGTERM 1
     ```
 
-    Check the log of TiKV to ensure it is in diagnostic mode.
+    Check the log of TiKV to ensure that the Pod is in diagnostic mode.
 
     {{< copyable "shell-regular" >}}
 
