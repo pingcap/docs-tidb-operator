@@ -13,7 +13,7 @@ TiDB Lightning is a tool used for fast full import of large amounts of data into
 
 This document shows an example in which the backup data stored in the specified path on the S3-compatible storage is restored to the TiDB cluster.
 
-## User scenarios
+## Usage scenarios
 
 You can use the restore solution introduced in this document if you need to export the backup data from S3 to a TiDB cluster, with the following requirements:
 
@@ -228,9 +228,9 @@ This section lists multiple storage access methods. Only follow the method that 
     kubectl get rt -n test2 -owide
     ```
 
-The example above restores data from the `spec.s3.path` path on S3-compatible storage to the `spec.to.host` TiDB cluster. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-overview.md#s3-storage-fields).
+The example above restores data from the `spec.s3.path` path on S3-compatible storage to the `spec.to.host` TiDB cluster. For more information about S3-compatible storage configuration, refer to [S3 storage fields](backup-restore-cr.md#s3-storage-fields).
 
-For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-overview.md#restore-cr-fields).
+For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
 
 > **Note:**
 >

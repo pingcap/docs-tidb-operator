@@ -57,6 +57,7 @@
       - [Canary Upgrade](canary-upgrade-tidb-operator.md)
   - Backup and Restore
     - [Overview](backup-restore-overview.md)
+    - [Backup and Restore Custom Resources](backup-restore-cr.md)
     - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
     - Amazon S3 Compatible Storage
       - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
