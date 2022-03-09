@@ -48,4 +48,6 @@ To use the diagnostic mode for troubleshooting:
     kubectl delete pod ${pod_name} -n ${namespace}
     ```
 
-After the Pod is rebuilt, it automatically returns to the normal mode.
+After the Pod is rebuilt, it automatically returns to the normal mode `2h5min`.
+
+Another test of 1h.
