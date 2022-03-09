@@ -47,9 +47,9 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in Genera
        baseImage: pingcap/ticdc-enterprise
     ```
 
-3. Mount PVs for TiCDC。
+3. Mount persistent volumes (PVs) for TiCDC。
 
-    TiCDC supports mounting multiple Persistent Volumes (PVs)，it is recommended that you plan how many PVs are required when deploying TiCDC for the first time. For more information, refer to [Multiple disks mounting](configure-a-tidb-cluster.md#multiple-disks-mounting)。
+    TiCDC supports mounting multiple PV. It is recommended that you plan the number of PVs required when deploying TiCDC for the first time. For more information, refer to [Multiple disks mounting](configure-a-tidb-cluster.md#multiple-disks-mounting)。
 
 4. After the deployment, enter a TiCDC Pod by running `kubectl exec`:
 
