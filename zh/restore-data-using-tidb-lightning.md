@@ -10,81 +10,23 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于单独的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning；对于 `Local-backend` 或 `TiDB-backend` 后端，仅需要部署 tidb-lightning。
+目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
 
-此外，对于 `TiDB-backend` 后端，推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
-
-## 部署 TiKV Importer
-
-> **注意：**
->
-> 如需要使用 TiDB Lightning 的 `local` 或 `tidb` 后端用于数据恢复，则不需要部署 tikv-importer。
-
-可以通过 `tikv-importer` Helm chart 来部署 tikv-importer，示例如下：
-
-1. 确保 PingCAP Helm 库是最新的：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm repo update
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm search repo tikv-importer -l
-    ```
-
-2. 获取默认的 `values.yaml` 文件以方便自定义：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm inspect values pingcap/tikv-importer --version=${chart_version} > values.yaml
-    ```
-
-3. 修改 `values.yaml` 文件以指定目标 TiDB 集群。示例如下：
-
-    {{< copyable "" >}}
-
-    ```yaml
-    clusterName: demo
-    image: pingcap/tidb-lightning:v5.4.0
-    imagePullPolicy: IfNotPresent
-    storageClassName: local-storage
-    storage: 20Gi
-    pushgatewayImage: prom/pushgateway:v0.3.1
-    pushgatewayImagePullPolicy: IfNotPresent
-    config: |
-      log-level = "info"
-      [metric]
-      job = "tikv-importer"
-      interval = "15s"
-      address = "localhost:9091"
-    ```
-
-    `clusterName` 必须匹配目标 TiDB 集群。
-
-    如果目标 TiDB 集群组件间开启了 TLS (`spec.tlsCluster.enabled: true`)，则可以参考[为 TiDB 集群各个组件生成证书](enable-tls-between-components.md#第一步为-tidb-集群各个组件生成证书)为 TiKV importer 组件生成 Server 端证书，并在 `values.yaml` 中通过配置 `tlsCluster.enabled: true` 开启 TLS 支持。
-
-4. 部署 tikv-importer：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    helm install ${cluster_name} pingcap/tikv-importer --namespace=${namespace} --version=${chart_version} -f values.yaml
-    ```
+- 对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning。
 
     > **注意：**
-    >
-    > tikv-importer 必须与目标 TiDB 集群安装在相同的命名空间中。
+    > 
+    > `Importer-backend` 后端在 TiDB 5.3 及之后的版本被废弃。如果必须使用 `Importer-backend` 后端，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#部署-tikv-importer)部署 tikv-importer。
+
+- 对于 `Local-backend` 后端，只需要部署 tidb-lightning。
+  
+- 对于 `TiDB-backend` 后盾，只需要部署 tidb-lightning。推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
 ## 部署 TiDB Lightning
 
-### 配置 TiDB Lightning
+### 第 1 步：配置 TiDB Lightning
 
-使用如下命令获得 TiDB Lightning 的默认配置：
+使用如下命令将 TiDB Lightning 的默认配置保存到 `tidb-lightning-values.yaml` 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -92,15 +34,30 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lightning-values.yaml
 ```
 
-根据需要配置 TiDB Lightning 所使用的后端 `backend`，即将 `values.yaml` 中的 `backend` 设置为 `importer`、`local` 、`tidb` 中的一个。
+根据 TiDB Lightning 所使用的后端类型，将配置文件中的 `backend` 字段设置为 `local`、`tidb` 中的一个。
 
-> **注意：**
->
-> 如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在 `values.yaml` 中设置 `sortedKV` 来创建相应的 PVC 以用于本地 KV 排序。
+```yaml
+# The delivery backend used to import data (valid options include `local` and `tidb`).
+# If set to `local`, then the following `sortedKV` should be set.
+backend: local
+```
+
+如果使用 [`local` 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends#tidb-lightning-local-backend)，则还需要在配置文件中设置 `sortedKV` 字段来创建相应的 PVC 以用于本地 KV 排序。
+
+```yaml
+# For `local` backend, an extra PV is needed for local KV sorting.
+sortedKV:
+  storageClassName: local-storage
+  storage: 100Gi
+```
+
+#### 断点续传配置
 
 自 v1.1.10 版本起，tidb-lightning Helm chart 默认会将 [TiDB Lightning 的 checkpoint 信息](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)存储在源数据所在目录内。这样在运行新的 lightning job 时，可以根据 checkpoint 信息进行断点续传。
 
 对于 v1.1.10 之前的版本，可参考 [TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)，在 `values.yaml` 中的 `config` 配置下，设置将 checkpoint 信息保存到目标 TiDB 集群、其他 MySQL 协议兼容的数据库或共享存储目录中。
+
+#### TLS 配置
 
 如果目标 TiDB 集群组件间开启了 TLS (`spec.tlsCluster.enabled: true`)，则可以参考[为 TiDB 集群各个组件生成证书](enable-tls-between-components.md#第一步为-tidb-集群各个组件生成证书)为 TiDB Lightning 组件生成 Server 端证书，并在 `values.yaml` 中通过配置 `tlsCluster.enabled: true` 开启集群内部的 TLS 支持。
 
@@ -117,21 +74,33 @@ helm inspect values pingcap/tidb-lightning --version=${chart_version} > tidb-lig
 > tls="false"
 > ```
 
-tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
+### 第 2 步：配置数据源
+
+tidb-lightning Helm chart 支持从本地或远程获取备份数据。对应三种模式：本地模式、远程模式和 Ad hoc 模式。三种模式不能混用，只允许配置其中一种模式。
 
 #### 本地模式
 
-本地模式要求备份工具导出的备份数据位于其中一个 Kubernetes 节点上。要启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
+本地模式从某个 Kubernetes 节点的目录读取备份数据。示例如下：
+
+```yaml
+dataSource:
+  local:
+    nodeName: kind-worker3
+    hostPath: /data/export-20190820
+```
+
+相关字段含义如下：
+
+* `dataSource.local.nodeName`：目录所在的节点的名称。
+* `dataSource.local.hostPath`：备份数据所在的目录路径，该目录下必须包含名为 `metadata` 的文件。
 
 #### 远程模式
 
-与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将备份工具备份的 tarball 文件从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[Amazon S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
+与本地模式不同，远程模式使用 [rclone](https://rclone.org) 工具，将包含备份数据的 tarball 文件或目录从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[Amazon S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
 
 使用远程模式恢复备份数据的步骤如下：
 
-1. 确保 `values.yaml` 中的 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
-
-2. 存储访问授权
+1. 存储访问授权
 
     使用 Amazon S3 作为后端存储时，参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。在使用不同的权限授予方式时，需要使用不用的配置。
 
@@ -216,19 +185,45 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
             kubectl apply -f secret.yaml -n ${namespace}
             ```
 
-3. 将 `dataSource.remote.storageClassName` 设置为 Kubernetes 集群中现有的一个存储类型。
+2. 配置 `dataSource` 字段。示例如下：
+   
+    ```yaml
+    dataSource:
+      remote:
+        rcloneImage: rclone/rclone:1.55.1
+        storageClassName: local-storage
+        storage: 100Gi
+        secretName: cloud-storage-secret
+        path: s3:bench-data-us/sysbench/sbtest_16_1e7.tar.gz
+        # directory: s3:bench-data-us
+    ```
+    
+    相关字段含义如下：
+    
+    * `dataSource.remote.storageClassName`：创建 PV 使用的 StorageClass 名称。
+    * `dataSource.remote.secretName`：上一步所创建的 Secret 的名称。
+    * `dataSource.remote.path`：如果备份数据打包为 tarball 文件，使用该字段表明 tarball 文件的路径。
+    * `dataSource.remote.directory`：如果备份数据包含在目录下，使用该字段表明目录的路径。
 
 #### Ad hoc 模式
 
-当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。步骤如下：
+当使用远程模式进行恢复时，如果在恢复过程中由于异常而造成中断、但又不希望重复从网络存储中下载备份数据，则可以使用 Ad hoc 模式直接恢复已通过远程模式下载并解压到 PV 中的数据。
 
-1. 确保 `values.yaml` 中的 `dataSource.local` 和 `dataSource.remote` 均为空配置。
+示例如下：
 
-2. 配置 `values.yaml` 中的 `dataSource.adhoc.pvcName` 为使用远程模式时创建的 PVC 名称。
+```yaml
+dataSource:
+  adhoc:
+    pvcName: tidb-cluster-scheduled-backup
+    backupName: scheduled-backup-20190822-041004
+```
 
-3. 配置 `values.yaml` 中的 `dataSource.adhoc.backupName` 为原备份数据对应的名称，如 `backup-2020-12-17T10:12:51Z` (不包含在网络存储上压缩文件名的 `.tgz` 后缀)。
+相关字段含义如下：
 
-### 部署 TiDB Lightning
+* `dataSource.adhoc.pvcName`：备份数据所在的 PVC 的名称，PVC 必须和 Tidb-Lightning 部署在同一个 namespace。
+* `dataSource.adhoc.backupName`：原备份数据对应的名称，如 `backup-2020-12-17T10:12:51Z` (不包含在网络存储上压缩文件名的 `.tgz` 后缀)。
+
+### 第 3 步：部署 TiDB Lightning
 
 部署 TiDB Lightning 的方式根据不同的权限授予方式及存储方式，有不同的情况。
 
@@ -291,17 +286,17 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
         > `arn:aws:iam::123456789012:role/user` 为步骤 1 中创建的 IAM 角色。
         > ${service-account} 为 tidb-lightning 使用的 ServiceAccount，默认为 default。
 
-## 销毁 TiKV Importer 和 TiDB Lightning
+## 销毁 TiDB Lightning
 
 目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 
-删除 tikv-importer 的步骤：
+执行以下命令删除删除 tidb-lightning ：
 
-* 运行 `helm uninstall ${release_name} -n ${namespace}`。
+{{< copyable "shell-regular" >}}
 
-删除 tidb-lightning 的方法：
-
-* 运行 `helm uninstall ${release_name} -n ${namespace}`。
+```shell
+helm uninstall ${release_name} -n ${namespace}
+```
 
 ## 故障诊断
 
@@ -361,4 +356,4 @@ tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
         3. 根据新的 `values.yaml` 创建新的 `Job` 用于继续数据恢复。
 
-4. 故障处理及数据恢复完成后，参考[销毁 TiKV Importer 和 TiDB Lightning](#销毁-tikv-importer-和-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
+4. 故障处理及数据恢复完成后，参考[销毁 TiDB Lightning](#销毁-tidb-lightning) 删除用于数据恢复的 `Job` 及用于故障处理的 `Job`。
