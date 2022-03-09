@@ -10,7 +10,7 @@ This document describes how to restore the TiDB cluster data backed up using TiD
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
-## User Scenarios
+## Usage Scenarios
 
 After backing up TiDB cluster data to Amazon S3 using BR, if you need to recover the backup SST (key-value pairs) files from Amazon S3 to a TiDB cluster, you can follow steps in this document to restore the data using BR.
 

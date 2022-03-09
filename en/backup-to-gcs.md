@@ -12,7 +12,7 @@ The backup method described in this document is implemented using CustomResource
 
 Dumpling is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV files and can be used to make a logical full backup or export.
 
-## User scenarios
+## Usage scenarios
 
 You can use the backup method described in this document if you want to make an [ad-hoc full backup](#ad-hoc-full-backup-to-gcs) or [scheduled full backup](#scheduled-full-backup-to-gcs) of the TiDB cluster data to GCS with the following needs:
 

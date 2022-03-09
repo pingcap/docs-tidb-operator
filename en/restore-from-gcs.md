@@ -14,7 +14,7 @@ TiDB Lightning is a tool used for fast full import of large amounts of data into
 
 This document shows an example in which the backup data stored in the specified path on [GCS](https://cloud.google.com/storage/docs/) is restored to the TiDB cluster.
 
-## User scenarios
+## Usage scenarios
 
 You can use the restore solution introduced in this document if you need to export the backup data from GCS to a TiDB cluster, with the following requirements:
 
