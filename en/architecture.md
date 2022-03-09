@@ -11,7 +11,7 @@ This document describes the architecture of TiDB Operator and how it works.
 
 The following diagram is an overview of the architecture of TiDB Operator.
 
-![TiDB Operator Overview](/media/tidb-operator-overview-1.1.png)
+![TiDB Operator Overview](/media/tidb-operator-overview-1.2.png)
 
 `TidbCluster`, `TidbMonitor`, `TidbInitializer`, `Backup`, `Restore`, `BackupSchedule`, and `TidbClusterAutoScaler` are custom resources defined by CRD (`CustomResourceDefinition`).
 
@@ -28,6 +28,7 @@ The following components are responsible for the orchestration and scheduling lo
 * `tidb-controller-manager` is a set of custom controllers in Kubernetes. These controllers constantly compare the desired state recorded in the `TidbCluster` object with the actual state of the TiDB cluster. They adjust the resources in Kubernetes to drive the TiDB cluster to meet the desired state and complete the corresponding control logic according to other CRs;
 * `tidb-scheduler` is a Kubernetes scheduler extension that injects the TiDB specific scheduling policies to the Kubernetes scheduler;
 * `tidb-admission-webhook` is a dynamic admission controller in Kubernetes, which completes the modification, verification, operation, and maintenance of Pod, StatefulSet, and other related resources.
+* `discovery` is a server for inter-components discovery. Each TiDB cluster contains a discovery Pod which is used for componets discover other existing components in the same cluster.
 
 > **Note:**
 >
