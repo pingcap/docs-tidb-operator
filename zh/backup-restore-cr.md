@@ -50,6 +50,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `OnFailure`：如果备份中失败，删除 Backup CR 时会删除备份出的文件。
 
     如果不配置该字段，或者配置该字段的值为上述三种以外的值，均会保留备份出的文件。值得注意的是，在 v1.1.2 以及之前版本不存在该字段，且默认在删除 CR 的同时删除备份的文件。若 v1.1.3 及之后版本的用户希望保持该行为，需要设置该字段为 `Delete`。
+
 * `.spec.cleanOption`：备份集群后删除 Backup CR 时的备份文件清理行为, 在 v1.2.4 及之后版本可以使用，更多说明请参阅[清理备份文件](backup-restore-overview.md#清理备份文件)
 * `.spec.from.host`：待备份 TiDB 集群的访问地址，为需要导出的 TiDB 的 service name，例如 `basic-tidb`。
 * `.spec.from.port`：待备份 TiDB 集群的访问端口。
