@@ -5,37 +5,19 @@ summary: Learn how to perform backup and restore on the TiDB cluster in Kubernet
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. The backup and restore tools used are Dumpling, TiDB Lightning, and Backup & Restore (BR).
+This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
 
-[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool, which exports data stored in TiDB or MySQL as SQL or CSV data files. Dumpling can be used to make a logical full backup or export.
+[Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool, which exports data stored in TiDB or MySQL as SQL or CSV data files. You can use Dumpling to make a logical full backup or export.
 
-[TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. TiDB Lightning can be used to make a logical full data restore or import.
+[TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. You can use TiDB Lightning to make a logical full data restore or import.
 
 [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is a command-line tool for distributed backup and restoration of the TiDB cluster data. Compared with Dumpling and Mydumper, BR is more suitable for huge data volumes. BR only supports TiDB v3.1 and later versions. For incremental backup insensitive to latency, refer to [BR Overview](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
 
-TiDB Operator 1.1 and later versions implement the backup and restore methods using Custom Resource Definition (CRD):
-
-+ If your TiDB cluster version is v3.1 or later, refer to the following documents:
-
-    - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
-    - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
-    - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
-    - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
-    - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
-    - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
-
-+ If your TiDB cluster version is earlier than v3.1, refer to the following documents:
-
-    - [Back up Data to S3-Compatible Storage Using Dumpling](backup-to-s3.md)
-    - [Back up Data to GCS Using Dumpling](backup-to-gcs.md)
-    - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
-    - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
-
-## User scenarios
+## Usage scenarios
 
 ### Back up data
 
-If you have the following backup needs, you can use BR to make a backup of the TiDB cluster data:
+If you have the following backup needs, you can use BR to make a backup of your TiDB cluster data:
 
 - To back up a large volume of data at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
@@ -60,13 +42,13 @@ Refer to the following documents for more information:
 
 ### Restore data
 
-If you need to recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the following documents for more information:
+To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the following documents for more information:
 
 - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
-If you need to restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
+To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
 - [Restore Data from S3-Compatible Storage Using TiDB Lightning](restore-from-s3.md)
 - [Restore Data from GCS Using TiDB Lightning](restore-from-gcs.md)
