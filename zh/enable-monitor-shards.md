@@ -17,6 +17,8 @@ TidbMonitor 分片功能需要采用数据聚合方案，推荐使用 [Thanos](h
 
 开启分片功能，需要指定 `shards` 字段，示例如下:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -36,6 +38,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 
