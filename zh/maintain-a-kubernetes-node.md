@@ -357,8 +357,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 ## 迁移 PD Leader
 
-如果 PD Leader Pod 所在节点是要维护的节点，则需要将 PD Leader 先迁移到其他节点上的 Pod。
-
 1. 查看 PD Leader：
 
     {{< copyable "shell-regular" >}}
@@ -367,7 +365,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     pd-ctl member leader show
     ```
 
-2. 迁移 PD Leader 到其他节点：
+2. 如果 Leader Pod 所在节点是要维护的节点，则需要将 PD Leader 先迁移到其他节点上的 Pod。
 
     {{< copyable "shell-regular" >}}
 
@@ -378,8 +376,6 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
     其中 `${pod_name}` 是其他节点上的 PD Pod。
 
 ## 迁移 TiKV Region Leader
-
-如果 TiKV Region Leader Pod 所在节点是要维护的节点，则需要将 TiKV Region Leader 先迁移到其他节点上的 Pod。
 
 1. 为 TiKV Pod 添加一个 key 为 `tidb.pingcap.com/evict-leader` 的 annotation：
 
