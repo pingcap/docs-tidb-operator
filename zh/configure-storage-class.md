@@ -106,67 +106,69 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/local-pv/local-volume-provisioner.yaml
     ```
 
-2. 如果你使用与上一步中不同路径的发现目录，需要修改 ConfigMap 定义中的 `data.storageClassMap` 字段。
+2. 如果你使用的发现路径与[第 1 步：准备本地存储](#第-1-步准备本地存储)中的示例一致，可跳过这一步。如果你使用与上一步中不同路径的发现目录，需要修改 ConfigMap 和 DaemonSet 定义。
 
-    ```yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: local-provisioner-config
-      namespace: kube-system
-    data:
-      # ...
-      storageClassMap: |
-        ssd-storage: # 给 TiKV 使用
-          hostDir: /mnt/ssd
-          mountDir: /mnt/ssd
-        shared-ssd-storage: # 给 PD 使用
-          hostDir: /mnt/sharedssd
-          mountDir: /mnt/sharedssd
-        monitoring-storage: # 给监控数据使用
-          hostDir: /mnt/monitoring
-          mountDir: /mnt/monitoring
-        backup-storage: # 给 TiDB Binlog 和备份数据使用
-          hostDir: /mnt/backup
-          mountDir: /mnt/backup
-    ```
+    * 修改 ConfigMap 定义中的 `data.storageClassMap` 字段：
 
-    关于 local-volume-provisioner 更多的配置项，参考文档 [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) 。
+        ```yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: local-provisioner-config
+          namespace: kube-system
+        data:
+          # ...
+          storageClassMap: |
+            ssd-storage: # 给 TiKV 使用
+              hostDir: /mnt/ssd
+              mountDir: /mnt/ssd
+            shared-ssd-storage: # 给 PD 使用
+              hostDir: /mnt/sharedssd
+              mountDir: /mnt/sharedssd
+            monitoring-storage: # 给监控数据使用
+              hostDir: /mnt/monitoring
+              mountDir: /mnt/monitoring
+            backup-storage: # 给 TiDB Binlog 和备份数据使用
+              hostDir: /mnt/backup
+              mountDir: /mnt/backup
+        ```
 
-3. 如果你使用不同路径的发现目录，需要修改 DaemonSet 定义中的 `volumes` 与 `volumeMounts` 字段，以确保发现目录能够挂载到 Pod 中的对应目录。
+        关于 local-volume-provisioner 更多的配置项，参考文档 [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) 。
 
-    ```yaml
-    ......
-          volumeMounts:
-            - mountPath: /mnt/ssd
-              name: local-ssd
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/sharedssd
-              name: local-sharedssd
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/backup
-              name: local-backup
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/monitoring
-              name: local-monitoring
-              mountPropagation: "HostToContainer"
-      volumes:
-        - name: local-ssd
-          hostPath:
-            path: /mnt/ssd
-        - name: local-sharedssd
-          hostPath:
-            path: /mnt/sharedssd
-        - name: local-backup
-          hostPath:
-            path: /mnt/backup
-        - name: local-monitoring
-          hostPath:
-            path: /mnt/monitoring
-    ......
-    ```
+    * 修改 DaemonSet 定义中的 `volumes` 与 `volumeMounts` 字段，以确保发现目录能够挂载到 Pod 中的对应目录：
 
-4. 部署 local-volume-provisioner 程序。
+        ```yaml
+        ......
+              volumeMounts:
+                - mountPath: /mnt/ssd
+                  name: local-ssd
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/sharedssd
+                  name: local-sharedssd
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/backup
+                  name: local-backup
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/monitoring
+                  name: local-monitoring
+                  mountPropagation: "HostToContainer"
+          volumes:
+            - name: local-ssd
+              hostPath:
+                path: /mnt/ssd
+            - name: local-sharedssd
+              hostPath:
+                path: /mnt/sharedssd
+            - name: local-backup
+              hostPath:
+                path: /mnt/backup
+            - name: local-monitoring
+              hostPath:
+                path: /mnt/monitoring
+        ......
+        ```
+
+3. 部署 local-volume-provisioner 程序。
 
     {{< copyable "shell-regular" >}}
 
@@ -174,7 +176,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     kubectl apply -f local-volume-provisioner.yaml
     ```
 
-5. 检查 Pod 和 PV 状态。
+4. 检查 Pod 和 PV 状态。
 
     {{< copyable "shell-regular" >}}
 
