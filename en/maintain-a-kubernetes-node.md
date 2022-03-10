@@ -354,7 +354,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. [Recreate TiKV Pod](#recreate-tikv-pod).
+3. [Recreate a TiKV Pod](#recreate-tikv-pod).
 
 ## Transfer PD Leader
 
@@ -378,11 +378,11 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
 ## Evict TiKV Region Leader
 
-1. Add annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod:
+1. Add an annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod:
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
@@ -394,7 +394,9 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
     ```
 
-## Recreate TiKV Pod
+    If the output is `0`, all Region Leaders are successfully migrated.
+
+## Recreate a TiKV Pod
 
 1. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
 
@@ -412,7 +414,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
         kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
         ```
 
-    2. In any of PD Pod, use `pd-ctl` command to take the Pod offline:
+    2. In any of the PD Pods, use `pd-ctl` command to take the TiKV Pod offline:
 
         {{< copyable "shell-regular" >}}
 
@@ -444,7 +446,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
         </details>
 
-3. Unbind the TiKV Pod with the used storage.
+3. Unbind the TiKV Pod with the currently used storage.
 
     1. Check the `PersistentVolumeClaim` used by the Pod:
 
@@ -455,7 +457,9 @@ If the node storage cannot be automatically migrated (such as local storage), to
         ```
 
         <details>
-        <summary>Expected output, the <code>NAME</code> field is the name of PVC</summary>
+        <summary>Expected output</summary>
+
+        The <code>NAME</code> field is the name of PVC.
 
         ```
         NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES       STORAGECLASS   AGE
@@ -480,7 +484,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
-    Wait for the state of new TiKV Pod to be `Up`.
+    Wait for the state of the new TiKV Pod to become `Up`.
 
     ```shell
     kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" )"
