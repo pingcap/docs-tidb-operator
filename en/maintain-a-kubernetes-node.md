@@ -354,7 +354,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. [Recreate a TiKV Pod](#recreate-tikv-pod).
+3. [Recreate a TiKV Pod](#recreate-a-tikv-pod).
 
 ## Transfer PD Leader
 
