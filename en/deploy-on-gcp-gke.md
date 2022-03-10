@@ -66,11 +66,11 @@ gcloud config set compute/region <gcp-region>
 
     ```shell
     gcloud container node-pools create pd --cluster tidb --machine-type n2-standard-4 --num-nodes=1 \
-        --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule
+        --node-labels=dedicated=pd --node-taints=dedicated=pd:NoSchedule --region us-east1
     gcloud container node-pools create tikv --cluster tidb --machine-type n2-highmem-8 --num-nodes=1 \
-        --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule
+        --node-labels=dedicated=tikv --node-taints=dedicated=tikv:NoSchedule --region us-east1
     gcloud container node-pools create tidb --cluster tidb --machine-type n2-standard-8 --num-nodes=1 \
-        --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
+        --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule --region us-east1
     ```
 
     The process might take a few minutes.
@@ -86,9 +86,15 @@ After the GKE cluster is created, the cluster contains three StorageClasses of d
 To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource. For details, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
 
 ```yaml
-kind: StorageClass
 apiVersion: storage.k8s.io/v1
-# ...
+kind: StorageClass
+metadata:
+  name: pd-custom
+provisioner: kubernetes.io/gce-pd 
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
 mountOptions:
 - nodelalloc,noatime
 ```
@@ -218,7 +224,7 @@ After you deploy a TiDB cluster, you can access the TiDB database via MySQL clie
 
 ### Prepare a bastion host
 
-The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You can create a [bastion host](https://cloud.google.com/solutions/connecting-securely#bastion) in the cluster VPC to access the database.
+The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You can create a [bastion host](https://cloud.google.com/solutions/connecting-securely#bastion) in the cluster VPC or using an external LoadBalancer to access the database. 
 
 {{< copyable "shell-regular" >}}
 
