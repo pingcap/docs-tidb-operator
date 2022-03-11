@@ -69,23 +69,23 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 
 ### Step 1: Pre-allocate local storage
 
-- For a disk that stores TiKV data, you can [mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) the disk into the `/mnt/ssd` directory, and create a `StorageClass` named `ssd-storage` for the disk to use.
+- For a disk that stores TiKV data, you can [mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) the disk into the `/mnt/ssd` directory.
 
     To achieve high performance, it is recommanded to allocate TiDB a dedicated disk, and the recommended disk type is SSD.
 
-- For a disk that stores PD data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/sharedssd` directory. Then, create a `StorageClass` named `shared-ssd-storage` for the directories to use.
+- For a disk that stores PD data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/sharedssd` directory.
 
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters, and the number of PD servers in each cluster. For each directory, a corresponding PV will be created. Each PD server uses one PV.
 
-- For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/monitoring` directory. Then, create a `StorageClass` named `monitoring-storage` for the directories to use.
+- For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/monitoring` directory.
 
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters. For each directory, a corresponding PV will be created. The monitoring data in each TiDB cluster uses one PV.
 
-- For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories them into the `/mnt/backup` directory. Then, create a `StorageClass` named `backup-storage` for the directories to use.
+- For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories them into the `/mnt/backup` directory.
 
     >**Note:**
     >
@@ -105,67 +105,69 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
     wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/local-pv/local-volume-provisioner.yaml
     ```
 
-2. If you use a different path of discovery directory than in the previous step, you need to modify the `data.storageClassMap` field in the ConfigMap spec.
+2. If you use the same discovery directory as described in [Step 1: Pre-allocate local storage](#step-1-pre-allocate-local-storage), you can skip this step. If you use a different path of discovery directory than in the previous step, you need to modify the ConfigMap and DaemonSet spec.
 
-    ```yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: local-provisioner-config
-      namespace: kube-system
-    data:
-      # ...
-      storageClassMap: |
-        ssd-storage:
-          hostDir: /mnt/ssd
-          mountDir: /mnt/ssd
-        shared-ssd-storage:
-          hostDir: /mnt/sharedssd
-          mountDir: /mnt/sharedssd
-        monitoring-storage:
-          hostDir: /mnt/monitoring
-          mountDir: /mnt/monitoring
-        backup-storage:
-          hostDir: /mnt/backup
-          mountDir: /mnt/backup
-    ```
+    * Modify the `data.storageClassMap` field in the ConfigMap spec:
 
-    For more configuration about local-volume-provisioner, refer to [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration).
+        ```yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: local-provisioner-config
+          namespace: kube-system
+        data:
+          # ...
+          storageClassMap: |
+            ssd-storage:
+              hostDir: /mnt/ssd
+              mountDir: /mnt/ssd
+            shared-ssd-storage:
+              hostDir: /mnt/sharedssd
+              mountDir: /mnt/sharedssd
+            monitoring-storage:
+              hostDir: /mnt/monitoring
+              mountDir: /mnt/monitoring
+            backup-storage:
+              hostDir: /mnt/backup
+              mountDir: /mnt/backup
+        ```
 
-3. If you use a different path of discovery directory than in the previous step, you need to modify `volumes` and `volumeMounts` fields to ensure the discovery directory can be mounted to the corresponding directory in the Pod.
+        For more configuration about local-volume-provisioner, refer to [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration).
 
-    ```yaml
-    ......
-          volumeMounts:
-            - mountPath: /mnt/ssd
-              name: local-ssd
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/sharedssd
-              name: local-sharedssd
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/backup
-              name: local-backup
-              mountPropagation: "HostToContainer"
-            - mountPath: /mnt/monitoring
-              name: local-monitoring
-              mountPropagation: "HostToContainer"
-      volumes:
-        - name: local-ssd
-          hostPath:
-            path: /mnt/ssd
-        - name: local-sharedssd
-          hostPath:
-            path: /mnt/sharedssd
-        - name: local-backup
-          hostPath:
-            path: /mnt/backup
-        - name: local-monitoring
-          hostPath:
-            path: /mnt/monitoring
-    ......
-    ```
+    * Modify `volumes` and `volumeMounts` fields in the DaemonSet spec to ensure the discovery directory can be mounted to the corresponding directory in the Pod:
 
-4. Deploy `local-volume-provisioner`.
+        ```yaml
+        ......
+              volumeMounts:
+                - mountPath: /mnt/ssd
+                  name: local-ssd
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/sharedssd
+                  name: local-sharedssd
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/backup
+                  name: local-backup
+                  mountPropagation: "HostToContainer"
+                - mountPath: /mnt/monitoring
+                  name: local-monitoring
+                  mountPropagation: "HostToContainer"
+          volumes:
+            - name: local-ssd
+              hostPath:
+                path: /mnt/ssd
+            - name: local-sharedssd
+              hostPath:
+                path: /mnt/sharedssd
+            - name: local-backup
+              hostPath:
+                path: /mnt/backup
+            - name: local-monitoring
+              hostPath:
+                path: /mnt/monitoring
+        ......
+        ```
+
+3. Deploy `local-volume-provisioner`.
 
     {{< copyable "shell-regular" >}}
 
@@ -173,7 +175,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
-5. Check status of Pod and PV.
+4. Check status of Pod and PV.
 
     {{< copyable "shell-regular" >}}
 
