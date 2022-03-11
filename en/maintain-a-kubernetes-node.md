@@ -353,79 +353,7 @@ If the node storage cannot be automatically migrated (such as local storage), to
     kubectl get pod --all-namespaces -o wide | grep ${node_name} | grep tikv
     ```
 
-3. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
-
-4. Take the TiKV Pod offline.
-
-    > **Note:**
-    >
-    > Before you take the TiKV Pod offline, make sure that the remaining TiKV Pods are not fewer than the TiKV replica number set in PD configuration (`max-replicas`, 3 by default). If the remaining TiKV Pods are not enough, scale out TiKV Pods before you take the TiKV Pod offline.
-
-    1. Check `store-id` of the TiKV Pod:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
-        ```
-
-    2. Take the Pod offline:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        pd-ctl store delete ${ID}
-        ```
-
-5. Wait for the store status (`state_name`) to become `Tombstone`:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    watch pd-ctl store ${ID}
-    ```
-
-6. Unbind the TiKV Pod with the local disk on the node.
-
-    1. Check the `PersistentVolumeClaim` used by the Pod:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
-        ```
-
-    2. Delete the `PersistentVolumeClaim`:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
-        ```
-
-7. Delete the old TiKV Pod:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl delete -n ${namespace} pod ${pod_name}
-    ```
-
-8. Confirm that the TiKV Pod is successfully scheduled to another node:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    watch kubectl -n ${namespace} get pod -o wide
-    ```
-
-9. Remove evict-leader-scheduler, and wait for the Region Leader to automatically schedule back:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    pd-ctl scheduler remove evict-leader-scheduler-${ID}
-    ```
+3. [Recreate a TiKV Pod](#recreate-a-tikv-pod).
 
 ## Transfer PD Leader
 
@@ -449,11 +377,11 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
 ## Evict TiKV Region Leader
 
-1. Add annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod:
+1. Add an annotation with a `tidb.pingcap.com/evict-leader` key to the TiKV Pod:
 
     {{< copyable "shell-regular" >}}
 
-    ```shell
+    ```bash
     kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
     ```
 
@@ -463,4 +391,126 @@ If the node storage cannot be automatically migrated (such as local storage), to
 
     ```shell
     kubectl -n ${namespace} get tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .leaderCount"
+    ```
+
+    If the output is `0`, all Region Leaders are successfully migrated.
+
+## Recreate a TiKV Pod
+
+1. [Evict the TiKV Region Leader](#evict-tikv-region-leader) to another Pod.
+
+2. Take the TiKV Pod offline.
+
+    > **Note:**
+    >
+    > Before you take the TiKV Pod offline, make sure that the remaining TiKV Pods are not fewer than the TiKV replica number set in PD configuration (`max-replicas`, 3 by default). If the remaining TiKV Pods are not enough, scale out TiKV Pods before you take the TiKV Pod offline.
+
+    1. Check `store-id` of the TiKV Pod:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" ) | .id"
+        ```
+
+    2. In any of the PD Pods, use `pd-ctl` command to take the TiKV Pod offline:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- /pd-ctl store delete ${store_id}
+        ```
+
+    3. Wait for the store status (`state_name`) to become `Tombstone`:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- watch /pd-ctl store ${store_id}
+        ```
+
+        <details>
+        <summary>Expected output</summary>
+
+        ```json
+        {
+          "store": {
+            "id": "${store_id}",
+            // ...
+            "state_name": "Tombstone"
+          },
+          // ...
+        }
+        ```
+
+        </details>
+
+3. Unbind the TiKV Pod with the currently used storage.
+
+    1. Check the `PersistentVolumeClaim` used by the Pod:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl -n ${namespace} get pvc -l tidb.pingcap.com/pod-name=${pod_name}
+        ```
+
+        <details>
+        <summary>Expected output</summary>
+
+        The <code>NAME</code> field is the name of PVC.
+
+        ```
+        NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES       STORAGECLASS   AGE
+        ${pvc_name}   Bound    pvc-a8f16ca6-a675-448f-82c3-3cae624aa0e2   100Gi      RWO                standard       18m
+        ```
+
+        </details>
+
+    2. Delete the `PersistentVolumeClaim`:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+        ```
+
+4. Delete the old TiKV Pod and wait for the new TiKV Pod to join the cluster.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+    Wait for the state of the new TiKV Pod to become `Up`.
+
+    ```shell
+    kubectl get -n ${namespace} tc ${cluster_name} -ojson | jq ".status.tikv.stores | .[] | select ( .podName == \"${pod_name}\" )"
+    ```
+
+    <details>
+    <summary>Expected output</summary>
+
+    ```json
+    {
+      "id": "${new_store_id}",
+      "ip": "${pod_name}.${cluster_name}-tikv-peer.default.svc",
+      "lastTransitionTime": "2022-03-08T06:39:58Z",
+      "leaderCount": 3,
+      "podName": "${pod_name}",
+      "state": "Up"
+    }
+    ```
+
+    </details>
+
+    As you can see from the output, the new TiKV Pod have a new `store-id`, and Region Leaders are migrated to this TiKV Pod automatically.
+
+5. Remove the useless evict-leader-scheduler:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl exec -n ${namespace} ${cluster_name}-pd-0 -- /pd-ctl scheduler remove evict-leader-scheduler-${store_id}
     ```
