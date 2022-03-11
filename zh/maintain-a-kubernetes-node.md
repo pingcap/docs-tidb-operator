@@ -504,15 +504,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
     </details>
 
-<<<<<<< HEAD
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    kubectl -n ${namespace} annotate pod ${pod_name} tidb.pingcap.com/evict-leader="none"
-    ```
-=======
     从输出中可以看到，新的 TiKV Pod 有着新的 `store-id`，并且 Region Leader 会自动调度到该 TiKV Pod 上。
->>>>>>> ede7e5f3 (en,zh: add doc about recreate TiKV Pod (#1725))
 
 5. 移除不再需要的 evict-leader-scheduler：
 
