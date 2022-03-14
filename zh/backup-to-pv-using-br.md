@@ -146,11 +146,11 @@ metadata:
 spec:
   # # backupType: full
   # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-  #   host: ${tidb-host}
-  #   port: ${tidb-port}
-  #   user: ${tidb-user}
-  #   secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb-host}
+    port: ${tidb-port}
+    user: ${tidb-user}
+    secretName: backup-demo1-tidb-secret
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -183,11 +183,11 @@ metadata:
 spec:
   # # backupType: full
   # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-  #   host: ${tidb-host}
-  #   port: ${tidb-port}
-  #   user: ${tidb-user}
-  #   secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb-host}
+    port: ${tidb-port}
+    user: ${tidb-user}
+    secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.*"
   br:
@@ -222,11 +222,11 @@ metadata:
 spec:
   # # backupType: full
   # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-  #   host: ${tidb-host}
-  #   port: ${tidb-port}
-  #   user: ${tidb-user}
-  #   secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb-host}
+    port: ${tidb-port}
+    user: ${tidb-user}
+    secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   br:
@@ -261,11 +261,11 @@ metadata:
 spec:
   # # backupType: full
   # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-  #   host: ${tidb-host}
-  #   port: ${tidb-port}
-  #   user: ${tidb-user}
-  #   secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb-host}
+    port: ${tidb-port}
+    user: ${tidb-user}
+    secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   - "db1.table2"

@@ -222,11 +222,11 @@ spec:
     sendCredToTikv: false
     clusterNamespace: test1
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -258,11 +258,11 @@ spec:
     sendCredToTikv: false
     clusterNamespace: test1
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -294,11 +294,11 @@ spec:
     sendCredToTikv: false
     clusterNamespace: test1
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -332,11 +332,11 @@ spec:
     sendCredToTikv: false
     clusterNamespace: test1
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
