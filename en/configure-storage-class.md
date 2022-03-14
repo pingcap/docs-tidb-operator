@@ -76,15 +76,9 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 
 - For a disk that stores PD data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/sharedssd` directory.
 
-<<<<<<< HEAD
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml
-     ```
-=======
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters, and the number of PD servers in each cluster. For each directory, a corresponding PV will be created. Each PD server uses one PV.
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 - For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories into the `/mnt/monitoring` directory.
 
@@ -92,12 +86,6 @@ Kubernetes currently supports statically allocated local storage. To create a lo
     >
     > The number of directories you create depends on the planned number of TiDB clusters. For each directory, a corresponding PV will be created. The monitoring data in each TiDB cluster uses one PV.
 
-<<<<<<< HEAD
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml &&
-    kubectl apply -f ./local-volume-provisioner.yaml
-    ```
-=======
 - For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories in the disk, and bind mount the directories them into the `/mnt/backup` directory.
 
     >**Note:**
@@ -107,7 +95,6 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directories mentioned above are discovery directories used by local-volume-provisioner. local-volume-provisioner creates a corresponding PV for each subdirectory in discovery directory.
 
 ### Step 2: Deploy local-volume-provisioner
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 #### Online deployment
 
@@ -231,15 +218,9 @@ Steps of offline deployment is same as online deployment, except the following:
 
 ### Best practices
 
-<<<<<<< HEAD
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml
-```
-=======
 - A local PV's path is its unique identifier. To avoid conflicts, it is recommended to use the UUID of the device to generate a unique path.
 - For I/O isolation, a dedicated physical disk per PV is recommended to ensure hardware-based isolation.
 - For capacity isolation, a partition per PV or a physical disk per PV is recommended.
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 For more information on local PV in Kubernetes, refer to [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md).
 

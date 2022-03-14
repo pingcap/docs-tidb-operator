@@ -76,15 +76,9 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 - 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录下。
 
-<<<<<<< HEAD
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml
-    ```
-=======
     > **注意：**
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量及每个集群内的 PD 数量。1 个目录会对应创建 1 个 PV。每个 PD 会使用一个 PV。
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 - 给监控数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/monitoring` 目录下。
 
@@ -92,12 +86,6 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     >
     > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量。1 个目录会对应创建 1 个 PV。每个 TiDB 集群的监控数据会使用 1 个 PV。
 
-<<<<<<< HEAD
-    ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml
-    kubectl apply -f ./local-volume-provisioner.yaml
-    ```
-=======
 - 给 TiDB Binlog 和备份数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/backup` 目录下。
 
     > **注意：**
@@ -109,7 +97,6 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 ### 第 2 步：部署 local-volume-provisioner
 
 #### 在线部署
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 1. 下载 local-volume-provisioner 部署文件。
 
@@ -235,15 +222,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 - 如果想要 IO 隔离，建议每个存储卷使用一块物理盘，在硬件层隔离。
 - 如果想要容量隔离，建议每个存储卷一个分区使用一块物理盘，或者每个存储卷使用一块物理盘。
 
-<<<<<<< HEAD
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/manifests/local-dind/local-volume-provisioner.yaml
-```
-
-后续创建 TiDB 集群或备份等组件的时候，再配置相应的 `StorageClass` 供其使用。
-=======
 更多信息，可参阅 local-static-provisioner 的[最佳实践文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
->>>>>>> 6c1e0d23 (en,zh: optimize doc about local pv (#1690))
 
 ## 数据安全
 
