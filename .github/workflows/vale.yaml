@@ -19,7 +19,7 @@ jobs:
         #config: https://raw.githubusercontent.com/errata-ai/vale/master/.vale.ini
 
         # Optional
-        files: ./en
+        files: en
 
         # Optional
         onlyAnnotateModifiedLines: true
