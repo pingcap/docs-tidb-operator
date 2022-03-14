@@ -145,6 +145,161 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl get bk -n test1 -owide
     ```
 
+### Backup CR examples
+
+<details>
+<summary>Back up data of all clusters</summary>
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-nfs
+  namespace: test1
+spec:
+  # # backupType: full
+  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  # from:
+  #   host: ${tidb-host}
+  #   port: ${tidb-port}
+  #   user: ${tidb-user}
+  #   secretName: backup-demo1-tidb-secret
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+  local:
+    prefix: backup-nfs
+    volume:
+      name: nfs
+      nfs:
+        server: ${nfs_server_ip}
+        path: /nfs
+    volumeMount:
+      name: nfs
+      mountPath: /nfs
+```
+
+</details>
+
+<details>
+<summary>Back up data of a single database</summary>
+
+The following example backs up data of the `db1` database.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-nfs
+  namespace: test1
+spec:
+  # # backupType: full
+  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  # from:
+  #   host: ${tidb-host}
+  #   port: ${tidb-port}
+  #   user: ${tidb-user}
+  #   secretName: backup-demo1-tidb-secret
+  tableFilter:
+  - "db1.*"
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+  local:
+    prefix: backup-nfs
+    volume:
+      name: nfs
+      nfs:
+        server: ${nfs_server_ip}
+        path: /nfs
+    volumeMount:
+      name: nfs
+      mountPath: /nfs
+```
+
+</details>
+
+<details>
+<summary>Back up data of a single table</summary>
+
+The following example backs up data of the `db1.table1` table.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-nfs
+  namespace: test1
+spec:
+  # # backupType: full
+  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  # from:
+  #   host: ${tidb-host}
+  #   port: ${tidb-port}
+  #   user: ${tidb-user}
+  #   secretName: backup-demo1-tidb-secret
+  tableFilter:
+  - "db1.table1"
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+  local:
+    prefix: backup-nfs
+    volume:
+      name: nfs
+      nfs:
+        server: ${nfs_server_ip}
+        path: /nfs
+    volumeMount:
+      name: nfs
+      mountPath: /nfs
+```
+
+</details>
+
+<details>
+<summary>Back up data of multiple tables using the table filter</summary>
+
+The following example backs up data of the `db1.table1` table and `db1.table2` table.
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-backup-nfs
+  namespace: test1
+spec:
+  # # backupType: full
+  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  # from:
+  #   host: ${tidb-host}
+  #   port: ${tidb-port}
+  #   user: ${tidb-user}
+  #   secretName: backup-demo1-tidb-secret
+  tableFilter:
+  - "db1.table1"
+  - "db1.table2"
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+  local:
+    prefix: backup-nfs
+    volume:
+      name: nfs
+      nfs:
+        server: ${nfs_server_ip}
+        path: /nfs
+    volumeMount:
+      name: nfs
+      mountPath: /nfs
+```
+
+</details>
+
 ## Scheduled full backup
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
