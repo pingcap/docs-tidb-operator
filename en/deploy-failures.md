@@ -170,4 +170,4 @@ This failure occurs because there is something wrong with the `nslookup` in the 
 
 ### Other causes 
 
-If you cannot confirm the cause from the log and `ulimit` is also a normal value, troubleshoot the issue by [using the diagnostic mode](tips.md#use-the-diagnostic-mode).
+If you cannot confirm the cause from the log and `ulimit` is also a normal value, troubleshoot the issue by [using the debug mode](tips.md#use-the-debug-mode).
