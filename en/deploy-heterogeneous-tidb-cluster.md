@@ -7,7 +7,7 @@ summary: Learn how to deploy a heterogeneous cluster for an existing TiDB cluste
 
 This document describes how to deploy a heterogeneous cluster for an existing TiDB cluster. A heterogeneous cluster consists of nodes with different configurations from the existing TiDB cluster.
 
-## User scenarios
+## Usage scenarios
 
 This document is applicable to scenarios in which you need to create differentiated instances for an existing TiDB cluster, such as the following:
 
@@ -214,15 +214,18 @@ If you need to deploy a monitoring component for a heterogeneous cluster, take t
         - name: ${heterogeneous_cluster_name}
     prometheus:
         baseImage: prom/prometheus
-        version: v2.11.1
+        version: v2.27.1
     grafana:
         baseImage: grafana/grafana
-        version: 6.1.6
+        version: 7.5.11
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
         version: v5.4.0
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
+    prometheusReloader:
+        baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+        version: v0.49.0
     imagePullPolicy: IfNotPresent
     ```

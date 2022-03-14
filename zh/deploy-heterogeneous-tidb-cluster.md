@@ -213,15 +213,18 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
         - name: ${heterogeneous_cluster_name}
     prometheus:
         baseImage: prom/prometheus
-        version: v2.11.1
+        version: v2.27.1
     grafana:
         baseImage: grafana/grafana
-        version: 6.1.6
+        version: 7.5.11
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
         version: v5.4.0
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
+    prometheusReloader:
+        baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+        version: v0.49.0
     imagePullPolicy: IfNotPresent
     ```

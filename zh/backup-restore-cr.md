@@ -9,7 +9,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## Backup CR 字段介绍
 
-为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户可以通过创建一个自定义的 `Backup` CR 对象来描述一次备份，具体备份过程可参考[备份与恢复简介](backup-restore-overview.md#备份与恢复简介)中列出的文档。以下介绍 Backup CR 各个字段的具体含义。
+为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户可以通过创建一个自定义的 `Backup` CR 对象来描述一次备份，具体备份过程可参考[数据备份](backup-restore-overview.md#数据备份)中列出的文档。以下介绍 Backup CR 各个字段的具体含义。
 
 ### 通用字段介绍
 
@@ -22,7 +22,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
     - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本：
         - 如果指定了 Dumpling 的版本，例如 `spec.toolImage: pingcap/dumpling:v5.3.0`，那么使用指定的版本镜像进行备份。
-        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。           
+        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
 
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
@@ -115,6 +115,8 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
 * `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
 * `.spec.s3.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
+* `.spec.s3.endpoint`：兼容 S3 的存储服务 endpoint，例如 `http://minio.minio.svc.cluster.local:9000`。
+* `.spec.s3.secretName`：访问兼容 S3 存储的密钥信息（包含 access key 和 secret key）的 Secret 名称。
 * `.spec.s3.acl`：支持的 access-control list (ACL) 策略。
 
     Amazon S3 支持以下几种 access-control list (ACL) 策略：
@@ -189,7 +191,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## Restore CR 字段介绍
 
-为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#备份与恢复简介)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
+为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#数据恢复)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
 
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。

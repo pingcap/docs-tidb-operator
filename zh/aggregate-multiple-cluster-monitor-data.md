@@ -32,13 +32,13 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
     1. 下载 Thanos Query 的部署文件 `thanos-query.yaml`：
 
         {{< copyable "shell-regular" >}}
-        
+
         ```
         curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
     2. 手动修改 `thanos-query.yaml` 文件中的 `--store` 参数，将 `basic-prometheus:10901` 改为 `basic-prometheus.${namespace}:10901`。
-    
+
         其中，`${namespace}` 表示 TidbMonitor 部署的命名空间。
 
     3. 执行 `kubectl apply` 命令部署：
@@ -150,6 +150,8 @@ stringData:
 
 在启动 TiDBMonitor 时可以指定 Prometheus RemoteWrite 配置，示例如下:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -172,6 +174,9 @@ spec:
   reloader:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 

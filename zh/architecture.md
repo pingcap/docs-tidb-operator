@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/architecture/']
 
 下图是 TiDB Operator 的架构概览。
 
-![TiDB Operator Overview](/media/tidb-operator-overview-1.1.png)
+![TiDB Operator Overview](/media/tidb-operator-overview-1.2.png)
 
 其中，`TidbCluster`、`TidbMonitor`、`TidbInitializer`、`Backup`、`Restore`、`BackupSchedule`、`TidbClusterAutoScaler` 是由 CRD（`CustomResourceDefinition`）定义的自定义资源：
 
@@ -29,7 +29,8 @@ TiDB 集群的编排和调度逻辑则由下列组件负责：
 * `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态，并根据其他 CR 完成相应的控制逻辑；
 * `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiDB 集群特有的调度逻辑。
 * `tidb-admission-webhook` 是一个 Kubernetes 动态准入控制器，完成 Pod、StatefulSet 等相关资源的修改、验证与运维。
-
+* `discovery` 是一个用于组件间发现的服务。每一个 TiDB 集群会对应存在一个 discovery Pod，用于该集群中组件发现其他已经创建的组件。
+  
 > **注意：**
 >
 > `tidb-scheduler` 并不是必须使用，详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。

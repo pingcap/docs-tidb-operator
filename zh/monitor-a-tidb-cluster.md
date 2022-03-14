@@ -24,6 +24,8 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 可以在 `TidbMonitor` 中设置 `spec.persistent` 为 `true` 来持久化监控数据。开启此选项时应将 `spec.storageClassName` 设置为一个当前集群中已有的存储，并且此存储应当支持将数据持久化，否则会存在数据丢失的风险。配置示例如下：
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -37,12 +39,12 @@ spec:
   storage: 5G
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
@@ -51,6 +53,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 
@@ -75,6 +80,7 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 1. 为用户自定义配置创建 ConfigMap 并将 `data` 部分的键名设置为 `prometheus-config`。
 2. 设置 `spec.prometheus.config.configMapRef.name` 与 `spec.prometheus.config.configMapRef.namespace` 为自定义 ConfigMap 的名称与所属的 namespace。
+3. 确认 TidbMonitor 是否已开启[动态配置功能](enable-monitor-dynamic-configuration.md)，如果未开启该功能，需要重启 TidbMonitor 的 pod 重新加载配置。
 
 如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
@@ -141,6 +147,8 @@ TidbMonitor Grafana 默认内置了 Nodes-Info 与 Pods-Info 监控面板，用�
 
 同样的，你可以通过设置 TidbMonitor 来将监控推送警报至指定的 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/)。
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -153,12 +161,12 @@ spec:
   alertmanagerURL: alertmanager-main.monitoring:9093
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
@@ -167,6 +175,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 
@@ -186,6 +197,8 @@ spec:
 
 以下是一个开启了 Prometheus 与 Grafana Ingress 的 `TidbMonitor` 例子：
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -197,7 +210,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     ingress:
       hosts:
       - example.com
@@ -205,7 +218,7 @@ spec:
         foo: "bar"
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: ClusterIP
     ingress:
@@ -219,12 +232,17 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 
 你可以通过 `spec.prometheus.ingress.annotations` 与 `spec.grafana.ingress.annotations` 来设置对应的 Ingress Annotations 的设置。如果你使用的是默认的 NGINX Ingress 方案，你可以在 [NGINX Ingress Controller Annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) 了解更多关于 Annotations 的详情。
 
 `TidbMonitor` 的 Ingress 设置同样支持设置 TLS，以下是一个为 Ingress 设置 TLS 的例子。你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 来了解更多关于 Ingress TLS 的资料。
+
+{{< copyable "" >}}
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -237,7 +255,7 @@ spec:
   persistent: false
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     ingress:
       hosts:
       - example.com
@@ -247,7 +265,7 @@ spec:
         secretName: testsecret-tls
   grafana:
     baseImage: grafana/grafana
-    version: 6.1.6
+    version: 7.5.11
     service:
       type: ClusterIP
   initializer:
@@ -256,6 +274,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 
@@ -302,6 +323,8 @@ curl -H "Host: example.com" ${node_ip}:${NodePort}
 
 配置示例如下:
 
+{{< copyable "" >}}
+
 ```yaml
 apiVersion: pingcap.com/v1alpha1
 kind: TidbMonitor
@@ -317,12 +340,12 @@ spec:
   storage: 5G
   prometheus:
     baseImage: prom/prometheus
-    version: v2.18.1
+    version: v2.27.1
     service:
       type: NodePort
   grafana:
     baseImage: grafana/grafana
-    version: 6.7.6
+    version: 7.5.11
     service:
       type: NodePort
   initializer:
@@ -331,6 +354,9 @@ spec:
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
+  prometheusReloader:
+    baseImage: quay.io/prometheus-operator/prometheus-config-reloader
+    version: v0.49.0
   imagePullPolicy: IfNotPresent
 ```
 

@@ -90,11 +90,15 @@ You can configure the `storageVolumes` field for each component to describe mult
 The meanings of the related fields are as follows:
 
 - `storageVolume.name`: The name of the PV.
-- `storageVolume.storageClassName`: The StorageClass that the PV uses. If not configured, `spec.pd/tidb/tikv.storageClassName` will be used.
+- `storageVolume.storageClassName`: The StorageClass that the PV uses. If not configured, `spec.pd/tidb/tikv/ticdc.storageClassName` will be used.
 - `storageVolume.storageSize`: The storage size of the requested PV.
 - `storageVolume.mountPath`: The path of the container to mount the PV to.
 
 For example:
+
+<SimpleTab>
+
+<div label="TiKV">
 
 {{< copyable "" >}}
 
@@ -114,6 +118,75 @@ For example:
       storageSize: "2Gi"
       mountPath: "/data_sbj/titan/data"
 ```
+
+</div>
+
+<div label="TiDB">
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    config: |
+      path = "/tidb/data"
+      [log.file]
+        filename = "/tidb/log/tidb.log"
+    storageVolumes:
+    - name: data
+      storageSize: "2Gi"
+      mountPath: "/tidb/data"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/tidb/log"
+```
+
+</div>
+
+<div label="PD">
+
+{{< copyable "" >}}
+
+```yaml
+  pd:
+    config: |
+      data-dir=/pd/data
+      [log.file]
+        filename=/pd/log/pd.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      mountPath: "/pd/data"
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pd/log"
+```
+
+</div>
+
+<div label="TiCDC">
+
+{{< copyable "" >}}
+
+```yaml
+  ticdc:
+    ...
+    config:
+      dataDir: /ticdc/data
+      logFile: /ticdc/log/cdc.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/data"
+    - name: log
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/log"
+```
+
+</div>
+
+</SimpleTab>
 
 > **Note:**
 >

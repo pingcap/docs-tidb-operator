@@ -57,6 +57,7 @@
       - [Canary Upgrade](canary-upgrade-tidb-operator.md)
   - Backup and Restore
     - [Overview](backup-restore-overview.md)
+    - [Backup and Restore Custom Resources](backup-restore-cr.md)
     - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
     - Amazon S3 Compatible Storage
       - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
@@ -108,8 +109,6 @@
     - [TiDB Toolkit](tidb-toolkit.md)
   - Configure
     - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
-    - [Configure tidb-cluster Chart](tidb-cluster-chart-config.md)
-    - [Configure tidb-backup Chart](configure-backup.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes

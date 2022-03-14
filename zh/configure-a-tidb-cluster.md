@@ -49,7 +49,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 #### configUpdateStrategy
 
-建议设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性，在每次配置更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
+`spec.configUpdateStrategy` 字段默认值为 `InPlace`，表示当你修改某个组件的 `config` 更新后，需要手动触发滚动更新后才会应用新的配置。
+
+建议设置 `spec.configUpdateStrategy: RollingUpdate`，开启配置自动更新特性，在某个组件的 `config` 更新时，自动对组件执行滚动更新，将修改后的配置应用到集群中。
 
 #### enableDynamicConfiguration
 
@@ -90,11 +92,15 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 相关字段的含义如下：
 
 - `storageVolume.name`：PV 的名称。
-- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用 spec.pd/tidb/tikv.storageClassName。
+- `storageVolume.storageClassName`：PV 使用哪一个 StorageClass。如果不配置，会使用 spec.pd/tidb/tikv/ticdc.storageClassName。
 - `storageVolume.storageSize`：申请 PV 存储容量的大小。
 - `storageVolume.mountPath`：将 PV 挂载到容器的哪个目录。
 
 例子:
+
+<SimpleTab>
+
+<div label="TiKV">
 
 {{< copyable "" >}}
 
@@ -114,6 +120,75 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
       storageSize: "2Gi"
       mountPath: "/data_sbj/titan/data"
 ```
+
+</div>
+
+<div label="TiDB">
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    config: |
+      path = "/tidb/data"
+      [log.file]
+        filename = "/tidb/log/tidb.log"
+    storageVolumes:
+    - name: data
+      storageSize: "2Gi"
+      mountPath: "/tidb/data"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/tidb/log"
+```
+
+</div>
+
+<div label="PD">
+
+{{< copyable "" >}}
+
+```yaml
+  pd:
+    config: |
+      data-dir=/pd/data
+      [log.file]
+        filename=/pd/log/pd.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      mountPath: "/pd/data"
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pd/log"
+```
+
+</div>
+
+<div label="TiCDC">
+
+{{< copyable "" >}}
+
+```yaml
+  ticdc:
+    ...
+    config:
+      dataDir: /ticdc/data
+      logFile: /ticdc/log/cdc.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/data"
+    - name: log
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/log"
+```
+
+</div>
+
+</SimpleTab>
 
 > **注意：**
 >
@@ -454,6 +529,13 @@ spec:
 
 需要配置 `spec.tidb.service`，TiDB Operator 才会为 TiDB 创建 Service。Service 可以根据场景配置不同的类型，比如 `ClusterIP`、`NodePort`、`LoadBalancer` 等。
 
+#### 通用配置
+
+不用类型的 Service 有着部分通用的配置，包括：
+
+* `spec.tidb.service.annotations`：添加到 Service 资源的 Annotation。
+* `spec.tidb.service.labels`：添加到 Service 资源的 Labels。
+
 #### ClusterIP
 
 `ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，使用 ClusterIP 或者 Service 域名（`${cluster_name}-tidb.${namespace}`）访问。
@@ -514,6 +596,61 @@ spec:
 TiDB 是分布式数据库，它的高可用需要做到在任一个物理拓扑节点发生故障时，不仅服务不受影响，还要保证数据也是完整和可用。下面分别具体说明这两种高可用的配置。
 
 ### TiDB 服务高可用
+
+#### 通过 nodeSelector 调度实例
+
+通过各组件配置的 `nodeSelector` 字段，可以约束组件的实例只能调度到特定的节点上。关于 `nodeSelector` 的更多说明，请参阅 [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    nodeSelector:
+      node-role.kubernetes.io/pd: true
+    # ...
+  tikv:
+    nodeSelector:
+      node-role.kubernetes.io/tikv: true
+    # ...
+  tidb:
+    nodeSelector:
+      node-role.kubernetes.io/tidb: true
+    # ...
+```
+
+#### 通过 tolerations 调度实例
+
+通过各组件配置的 `tolerations` 字段，可以允许组件的实例能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+
+```yaml
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+# ...
+spec:
+  pd:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pd
+    # ...
+  tikv:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tikv
+    # ...
+  tidb:
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tidb
+    # ...
+```
 
 #### 通过 affinity 调度实例
 
