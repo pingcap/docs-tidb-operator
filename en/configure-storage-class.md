@@ -181,7 +181,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
 
     ```shell
     kubectl get po -n kube-system -l app=local-volume-provisioner && \
-    kubectl get pv | grep -e ssd-storage -e shared-ssd-storage -e monitoring-storage-e backup-storage
+    kubectl get pv | grep -e ssd-storage -e shared-ssd-storage -e monitoring-storage -e backup-storage
     ```
 
     `local-volume-provisioner` creates a PV for each mounting point under the discovery directory.
