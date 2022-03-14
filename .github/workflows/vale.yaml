@@ -19,10 +19,10 @@ jobs:
         #config: https://raw.githubusercontent.com/errata-ai/vale/master/.vale.ini
 
         # Optional
-        files: ./en
+        # files: ./en
 
         # Optional. This option is not compatible with `files`
-        # onlyAnnotateModifiedLines: true
+        onlyAnnotateModifiedLines: true
       env:
         # Required, set by GitHub actions automatically:
         # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
