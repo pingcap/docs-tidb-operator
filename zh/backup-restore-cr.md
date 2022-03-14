@@ -27,7 +27,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.backupType`：指定 Backup 类型，目前支持以下三种类型：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
-    * `table`：对 TiDB 集群一张表的数据执行备份。
+    * `table`：对 TiDB 集群表的数据执行备份，可以通过 `.spec.tableFilter` 对需要备份的表进行过滤。
 
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
 
@@ -218,7 +218,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.backupType`：指定 Restore 类型，目前支持以下三种类型：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
-    * `table`：对 TiDB 集群一张表的数据执行备份。
+    * `table`：对 TiDB 集群表的数据执行备份，可以通过 `.spec.tableFilter` 对需要备份的表进行过滤。
 
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。
     - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
