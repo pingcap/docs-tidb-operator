@@ -215,14 +215,29 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#备份与恢复简介)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
 
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
+* `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。
+    - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
+    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
+
 * `.spec.backupType`：指定 Restore 类型，目前支持以下三种类型：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
     * `table`：对 TiDB 集群表的数据执行备份，可以通过 `.spec.tableFilter` 对需要备份的表进行过滤。
 
-* `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。
-    - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
-    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
+* `.spec.tikvGCLifeTime`：数据恢复中的临时 `tikv_gc_life_time` 时间设置，默认为 72h。
+
+    在数据恢复开始之前，若 TiDB 集群的 `tikv_gc_life_time` 小于用户设置的 `spec.tikvGCLifeTime`，为了保证恢复的数据不被 TiKV GC 掉，TiDB Operator 会在恢复前[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 为 `spec.tikvGCLifeTime`。
+
+    数据恢复结束后，不论成功或者失败，如果旧的 `tikv_gc_life_time` 小于设置的 `.spec.tikvGCLifeTime`，TiDB Operator 会尝试设置 `tikv_gc_life_time` 为恢复前的旧值。在极端情况下，如果 TiDB Operator 访问数据库失败，TiDB Operator 将无法自动恢复 `tikv_gc_life_time` 并认为数据恢复失败。
+
+    此时，可以通过下述语句查看当前 TiDB 集群的 `tikv_gc_life_time`：
+
+    ```sql
+    select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc_life_time";
+    ```
+
+    如果发现 `tikv_gc_life_time` 值过大（通常为 10m），则需要按照[调节 `tikv_gc_life_time`](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出大规模数据时的-tidb-gc-设置) 将 `tikv_gc_life_time` 调回原样。
+
 * `.spec.to.host`：待恢复 TiDB 集群的访问地址。
 * `.spec.to.port`：待恢复 TiDB 集群的访问端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
