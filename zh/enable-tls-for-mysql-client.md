@@ -15,6 +15,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
 
 2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`；
+
+    > **注意：**
+    >
+    > 为已部署的集群设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`，将导致 TiDB Pod 重启。
+
 3. 配置 MySQL 客户端使用加密连接。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
@@ -385,7 +390,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     - PD Dashboard
     - Backup
     - Restore
-      
+
     如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则也可以为其中的 TiDB Lightning 组件生成 Client 端证书。
 
     下面就来生成这些组件的 Client 证书。
@@ -483,7 +488,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         如需要为 TiDB Lignting 组件生成 Client 端证书，则可以使用以下内容并通过在 TiDB Lightning 的 Helm Chart `values.yaml` 中设置 `tlsCluster.tlsClientSecretName` 为 `${cluster_name}-lightning-client-secret`：
-        
+
         ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
