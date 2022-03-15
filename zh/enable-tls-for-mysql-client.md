@@ -14,6 +14,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
 
 2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`；
+
+    > **注意：**
+    >
+    > 为已部署的集群设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`，将导致 TiDB Pod 重启。
+
 3. 配置 MySQL 客户端使用加密连接。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
