@@ -18,7 +18,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     * 如果希望关闭 TiDB 服务端对客户端 CA 证书的认证，即在[配置 TiDB 服务端启用安全连接](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-tidb-server-to-use-secure-connections) 中不设置 ssl-ca 参数，可以设置 `.spec.tidb.tlsClient.disableClientAuthn` 属性为 `true`。
     * 如果希望跳过作为 MySQL 客户端的内部组件(如 TidbInitializer, Dashboard, Backup, Restore)的 CA 证书认证，可以设置 `.spec.tidb.tlsClient.skipInternalClientCA` 属性为 `true`。
-    * 如果希望跳过作为 MySQL 客户端的内部组件的 TLS 认证，可以给集群对应的 `TidbCluster` 加上 `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb=“true”` 的 annotation。
+    * 如果希望跳过作为 MySQL 客户端的内部组件的 TLS 认证，可以给集群对应的 `TidbCluster` 加上 `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` 的 annotation。
 
     > **注意：**
     >
