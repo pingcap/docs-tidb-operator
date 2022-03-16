@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     > **注意：**
     >
-    > 为已部署的集群设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`，将导致 TiDB Pod 重启。
+    > 已部署的集群 `.spec.tidb.tlsClient.enabled` 属性从 `false` 改为 `true`，将导致 TiDB Pod 滚动重启。
 
 3. 配置 MySQL 客户端使用加密连接。
 
