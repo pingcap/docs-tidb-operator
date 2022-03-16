@@ -121,7 +121,8 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     - `cluster_name`：TiDB 集群名称。
     - `cluster_namespace`：TiDB 集群所在的命名空间。
     - `kubernetes_cluster_name`：自定义的 Kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用。
-    - `storageclass_name`：当前集群中的存储。
+    - `cluster_domain`：当前 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
+    - `storageclass_name`：当前 Kubernetes 集群中的存储。
 
     关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos)。
 
@@ -132,6 +133,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     cluster_namespace="pingcap"
     kubernetes_cluster_name="kind-cluster-1"
     storageclass_name="local-storage"
+    cluster_domain="svc.local"
     ```
 
 2. 执行以下指令，创建 `TidbMonitor`：
@@ -180,6 +182,10 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
       imagePullPolicy: IfNotPresent
     EOF
     ```
+
+3. 配置 Thanos Query Stores:
+
+    通过静态服务发现的方式，在 Thanos Query 的命令行启动参数中添加 `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` 来指定 Store 节点，需要对变量值进行替换。如果你使用了其他服务发现方式，请参考 [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md/) 进行配置。
 
 </div>
 
@@ -303,13 +309,13 @@ scrape_configs:
 
     执行上述命令后，可以在当前目录下查看所有组件 dashboard 的 json 定义文件。
 
-2. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)，为了与上述获得的 dashboard json 文件保持一致，需将数据源 Name 字段值配置为 `tidb-cluster`，或执行以下指令对上述 dashboard json 文件中的数据源名称进行替换。
+2. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)，为了与上述获得的 dashboard json 文件保持一致，需将数据源 Name 字段值配置为 `tidb-cluster`。如果希望使用已有的数据源，请执行以下指令对上述 dashboard json 文件中的数据源名称进行替换，其中 `DS_NAME` 变量的值为数据源的名称。
 
     {{< copyable "shell-regular" >}}
 
     ```sh
     # define your datasource name here.
-    DS_NAME=tidb-cluster
+    DS_NAME=thanos
     sed -i 's/"datasource": "tidb-cluster"/"datasource": "$DS_NAME"/g' *.json
     ```
 
