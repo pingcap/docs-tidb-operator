@@ -24,7 +24,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
         - 如果指定了 Dumpling 的版本，例如 `spec.toolImage: pingcap/dumpling:v5.3.0`，那么使用指定的版本镜像进行备份。
         - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
 
-* `.spec.backupType`：指定 Backup 类型，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
+* `.spec.backupType`：指定 Backup 类型，该字段仅在使用 BR 备份时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
     * `table`：对 TiDB 集群表的数据执行备份。
@@ -131,7 +131,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.s3.region`：使用 Amazon S3 存储备份，需要配置 Amazon S3 所在的 region。
 * `.spec.s3.bucket`：兼容 S3 存储的 bucket 名字。
 * `.spec.s3.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`。
-* `.spec.s3.path`：指定备份文件在远端存储的存储路径，例如 `s3://test1-demo1/backup-2019-12-11T04:32:12Z.tgz`。
+* `.spec.s3.path`：指定备份文件在远端存储的存储路径，该字段仅在使用 Dumpling 备份或 Lightning 恢复时有效，例如 `s3://test1-demo1/backup-2019-12-11T04:32:12Z.tgz`。
 * `.spec.s3.endpoint`：兼容 S3 的存储服务 endpoint，例如 `http://minio.minio.svc.cluster.local:9000`。
 * `.spec.s3.secretName`：访问兼容 S3 存储的密钥信息（包含 access key 和 secret key）的 Secret 名称。
 * `.spec.s3.sse`：指定 S3 的服务端加密方式，例如 `aws:kms`。
@@ -165,7 +165,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 * `.spec.gcs.projectId`：代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 * `.spec.gcs.location`：指定 GCS bucket 所在的区域，例如 `us-west2`。
-* `.spec.gcs.path`：指定备份文件在远端存储的存储路径，例如 `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`。
+* `.spec.gcs.path`：指定备份文件在远端存储的存储路径，该字段仅在使用 Dumpling 备份或 Lightning 恢复时有效，例如 `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`。
 * `.spec.gcs.secretName`：指定存储 GCS 用户账号认证信息的 Secret 名称。
 * `.spec.gcs.bucket`：存储数据的 bucket 名字。
 * `.spec.gcs.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`。
@@ -219,7 +219,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
     - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
 
-* `.spec.backupType`：指定 Restore 类型，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
+* `.spec.backupType`：指定 Restore 类型，该字段仅在使用 BR 恢复时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
     * `table`：对 TiDB 集群表的数据执行备份。
