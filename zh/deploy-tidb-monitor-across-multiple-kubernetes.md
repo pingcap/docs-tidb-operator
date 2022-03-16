@@ -64,13 +64,13 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
       - name: ${cluster_name}
         namespace: ${cluster_namespace}
       externalLabels:
-        # kubernetes indicates the k8s cluster name, you can change
+        # k8s_clsuter indicates the k8s cluster name, you can change
         # the label's name on your own, but you should notice that the
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
         k8s_clsuter: ${kubernetes_cluster_name}
-        #add other meta labels here
+        # add other meta labels here
         #region: us-east-1
       initializer:
         baseImage: pingcap/tidb-monitor-initializer
@@ -111,7 +111,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 需要配置 Kubernetes 的网络和 DNS，使得 Kubernetes 集群满足以下条件：
 
-- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (TidbMonitor) 组件的 Pod IP。
+- Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
 
 #### 部署 TiDB 集群监控
@@ -149,7 +149,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
       - name: ${cluster_name}
         namespace: ${cluster_namespace}
       externalLabels:
-        # kubernetes indicates the k8s cluster name, you can change
+        # k8s_clsuter indicates the k8s cluster name, you can change
         # the label's name on your own, but you should notice that the
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
@@ -233,13 +233,13 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
       - name: ${cluster_name}
         namespace: ${cluster_namespace}
       externalLabels:
-        # kubernetes indicates the k8s cluster name, you can change
+        # k8s_clsuter indicates the k8s cluster name, you can change
         # the label's name on your own, but you should notice that the
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
         k8s_clsuter: ${kubernetes_cluster_name}
-        #add other meta labels here
+        # add other meta labels here
         #region: us-east-1
       initializer:
         baseImage: pingcap/tidb-monitor-initializer
