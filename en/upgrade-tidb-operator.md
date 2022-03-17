@@ -70,7 +70,7 @@ If your server has access to the internet, you can perform online upgrade by tak
     >
     > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
 
-## offline upgrade
+## Offline upgrade
 
 If your server cannot access the Internet, you can offline upgrade by taking the following steps:
 
