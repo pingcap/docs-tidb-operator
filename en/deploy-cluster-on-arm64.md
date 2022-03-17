@@ -13,7 +13,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
 
 ## Deploy TiDB operator
 
-The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). Notice that with TiDB Operator versions earlier than v1.3.2, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
+The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). Note that with TiDB Operator versions earlier than v1.3.2, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
 
 ```yaml
 # ...
@@ -76,7 +76,7 @@ spec:
 
 ## Deploy monitoring for a TiDB cluster
 
-The process of deploying monitoring for a TiDB cluster on ARM64 machines is the same as the process of [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md). Notice that with TiDB versions earlier than v5.4.0, you need to modify the `spec.initializer.baseImage` field in the TidbMonitor definition file to the ARM64 image.
+The process of deploying monitoring for a TiDB cluster on ARM64 machines is the same as the process of [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md). Note that with TiDB versions earlier than v5.4.0, you need to modify the `spec.initializer.baseImage` field in the TidbMonitor definition file to the ARM64 image.
 
 {{< copyable "" >}}
 
