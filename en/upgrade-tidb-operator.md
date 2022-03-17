@@ -21,47 +21,7 @@ If your server has access to the internet, you can perform online upgrade by tak
 
 2. Update [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) (CRD) for Kubernetes:
 
-<<<<<<< HEAD
     {{< copyable "shell-regular" >}}
-=======
-    * If your Kubernetes version >= v1.16:
-
-        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
-            ```
-
-        2. Update CRD.
-
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-            kubectl get crd tidbclusters.pingcap.com
-            ```
-
-    * If your Kubernetes version < v1.16:
-
-        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbngmonitorings.yaml
-            ```
-
-        2. Update CRD.
-
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
-            kubectl get crd tidbclusters.pingcap.com
-            ```
->>>>>>> ef5bc12b (en: update doc for canary upgrade (#1691))
 
     ```bash
     kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/manifests/crd.yaml && \
@@ -106,15 +66,11 @@ If your server has access to the internet, you can perform online upgrade by tak
     image: docker.io/pingcap/tidb-operator:v1.2.7
     ```
 
-<<<<<<< HEAD
     > **Note:**
     >
     > After TiDB Operator is upgraded, the `discovery` Deployment in all TiDB clusters is automatically upgraded to the corresponding version of TiDB Operator.
 
-## offline upgrade
-=======
 ## Offline upgrade
->>>>>>> ef5bc12b (en: update doc for canary upgrade (#1691))
 
 If your server cannot access the Internet, you can offline upgrade by taking the following steps:
 
