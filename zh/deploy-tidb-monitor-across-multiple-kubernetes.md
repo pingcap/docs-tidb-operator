@@ -292,11 +292,7 @@ scrape_configs:
 
 ## 使用 Grafana 可视化多集群监控数据
 
-1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards, 其中 version 变量的值为 initializer 镜像版本，与 TiDB 版本对应关系如下，目前仅 nightly 版本镜像适用于**多集群**监控:
-
-    |  TiDB 版本 | Initializer 镜像版本 |
-    |:---|:---|
-    | dev               | nightly                 |
+1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards, 其中 version 变量的值为 initializer 镜像版本，应该和 TiDB 版本保持一致，但是目前仅 **nightly** 版本 Initializer 镜像适用于**多 Kubernetes 集群**监控。
 
     {{< copyable "shell-regular" >}}
 
