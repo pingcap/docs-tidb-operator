@@ -17,9 +17,9 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
 
 ```yaml
 # ...
-operatorImage: pingcap/tidb-operator-arm64:v1.3.2
+operatorImage: pingcap/tidb-operator-arm64:v1.3.1
 # ...
-tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.2
+tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.1
 # ...
 ```
 
@@ -76,7 +76,7 @@ spec:
 
 ## 部署 TiDB 集群监控
 
-在 ARM64 机器上部署 TiDB 集群监控的步骤与 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md) 的步骤相同。需要注意的是在 v1.3.1 及之前版本，你需要将 TidbMonitor 定义文件中的 `spec.initializer.baseImage` 与 `spec.reloader.baseImage` 字段设置为 ARM64 版本镜像。
+在 ARM64 机器上部署 TiDB 集群监控的步骤与 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md) 的步骤相同。需要注意的是使用低于 v5.4.0 版本的 TiDB，你需要将 TidbMonitor 定义文件中的 `spec.initializer.baseImage` 字段设置为 ARM64 版本镜像。
 
 {{< copyable "" >}}
 
@@ -89,9 +89,5 @@ spec:
   # ...
   initializer:
     baseImage: pingcap/tidb-monitor-initializer-arm64
-    version: v5.4.0
-  reloader:
-    baseImage: pingcap/tidb-monitor-reloader-arm64
-    version: v1.0.1
   # ...
 ```
