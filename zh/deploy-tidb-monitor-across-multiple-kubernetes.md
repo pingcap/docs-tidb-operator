@@ -15,17 +15,19 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 
 Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kubernetes 集群的 Prometheus 实例将监控数据推送至中心化存储中。
 
-### 部署架构图
-
 本节所描述的 Push 方式以 Thanos 为例。如果你使用了其他[兼容 Prometheus Remote API 的中心化存储方案](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage)，只需对 Thanos 相关组件进行替换即可。
-
-![push-thanos-receive.png](/media/push-thanos-receive.png)
 
 ### 前置条件
 
 多个 Kubernetes 集群间的组件满足以下条件：
 
 - 各 Kubernetes 集群上的 Prometheus（即 TidbMonitor）组件有能力访问 Thanos Receiver 组件。
+
+关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+
+### 部署架构图
+
+![push-thanos-receive.png](/media/push-thanos-receive.png)
 
 ### 部署 TiDB 集群监控
 
@@ -36,8 +38,6 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
     - `kubernetes_cluster_name`：自定义的 Kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用。
     - `storageclass_name`：当前集群中的存储。
     - `remote_write_url`：`thanos-receiver` 组件的 host，或其他兼容 Prometheus remote API 组件的 host 。
-
-    关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
 
     {{< copyable "shell-regular" >}}
 
@@ -101,11 +101,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 ### 使用 Thanos Query
 
-#### 部署架构图
-
 本节中的示例为每个 Prometheus (TidbMonitor) 组件部署了 Thanos Sidecar，并使用 thanos-query 组件进行聚合查询。如果不需要对监控数据做长期存储，你可以不部署 thanos-store、S3 等组件。
-
-![pull-thanos-query.png](/media/pull-thanos-query.png)
 
 #### 前置条件
 
@@ -113,6 +109,12 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
+
+关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos)。
+
+#### 部署架构图
+
+![pull-thanos-query.png](/media/pull-thanos-query.png)
 
 #### 部署 TiDB 集群监控
 
@@ -123,8 +125,6 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
     - `kubernetes_cluster_name`：自定义的 Kubernetes 集群名称，在标识 Prometheus 的 `externallabels` 中使用。
     - `cluster_domain`：当前 Kubernetes 集群的 [Cluster Domain](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction)。
     - `storageclass_name`：当前 Kubernetes 集群中的存储。
-
-    关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos)。
 
     {{< copyable "shell-regular" >}}
 
@@ -193,11 +193,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 ### 使用 Prometheus Federation
 
-#### 部署架构图
-
-使用 Federation Prometheus Server 作为数据统一存储与查询的入口，建议在数据规模较小的环境下使用。
-
-![pull-prom-federation.png](/media/pull-prom-federation.png)
+本节中的示例使用 Federation Prometheus Server 作为数据统一存储与查询的入口，建议在数据规模较小的环境下使用。
 
 #### 前置条件
 
@@ -205,6 +201,10 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 - Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
 - Federation Prometheus 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
+
+#### 部署架构图
+
+![pull-prom-federation.png](/media/pull-prom-federation.png)
 
 #### 部署 TiDB 集群监控
 
