@@ -33,6 +33,12 @@
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
   - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
   - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
+<<<<<<< HEAD
+=======
+  - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
+  - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
+  - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
+>>>>>>> 968bada3 (Add docs about multi cluster prom monitoring (#1490))
 - 数据迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
   - 从 MySQL 迁移

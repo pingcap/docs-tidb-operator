@@ -712,3 +712,7 @@ kubectl delete tc cluster2
         ```
 
 更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。
+
+## 跨多个 Kubernetes 集群部署的 TiDB 集群监控
+
+请参阅[跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
