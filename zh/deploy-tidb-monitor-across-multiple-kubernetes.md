@@ -10,7 +10,7 @@ summary: 介绍如何对跨多个 Kubernetes 集群的 TiDB 集群进行监控�
 - [Push 方式](#push-方式)
 - [Pull 方式 - 使用 Thanos Query](#使用-thanos-query)
 - [Pull 方式 - 使用 Prometheus Federation](#使用-prometheus-federation)
-- [使用 Grafana 可视化多集群监控数据](#使用-Grafana-可视化多集群监控数据)
+- [使用 Grafana 可视化多集群监控数据](#使用-grafana-可视化多集群监控数据)
 
 ## Push 方式
 
