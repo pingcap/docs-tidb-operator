@@ -172,7 +172,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.2/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
 4. Check status of Pod and PV.

@@ -27,7 +27,7 @@ TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，�
 
 ### 环境准备
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.3.2/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 

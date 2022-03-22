@@ -614,7 +614,7 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.2/manifests/eks/local-volume-provisioner.yaml
     ```
 
 3. Use local storage.
