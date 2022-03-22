@@ -205,7 +205,7 @@ TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.2/manifests/crd.yaml
 ```
 
 <details>

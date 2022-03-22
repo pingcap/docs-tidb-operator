@@ -192,7 +192,7 @@ Run the following command to install the CRDs into your cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.2/manifests/crd.yaml
 ```
 
 <details>

@@ -600,7 +600,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.2/manifests/eks/local-volume-provisioner.yaml
     ```
 
 3. 使用本地存储。

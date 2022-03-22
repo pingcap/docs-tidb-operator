@@ -22,7 +22,7 @@ After backing up TiDB cluster data to PVs using BR, if you need to recover the b
 
 Before restoring backup data on PVs to TiDB using BR, take the following steps to prepare the restore environment:
 
-1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml).
+1. Download [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.3.2/manifests/backup/backup-rbac.yaml).
 
 2. Execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
