@@ -42,7 +42,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cluster_name="cluster1"
     cluster_namespace="pingcap"
     kubernetes_cluster_name="kind-cluster-1"
@@ -54,7 +54,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cat << EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
@@ -129,7 +129,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cluster_name="cluster1"
     cluster_namespace="pingcap"
     kubernetes_cluster_name="kind-cluster-1"
@@ -141,7 +141,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cat <<EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
@@ -186,7 +186,9 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 3. 配置 Thanos Query Stores:
 
-    通过静态服务发现的方式，在 Thanos Query 的命令行启动参数中添加 `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` 来指定 Store 节点，需要对变量值进行替换。如果你使用了其他服务发现方式，请参考 [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md/) 进行配置。
+    通过静态服务发现的方式，在 Thanos Query 的命令行启动参数中添加 `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` 来指定 Store 节点。你需要根据实际情况替换变量值。
+
+    如果你使用了其他服务发现方式，请参考 [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md/) 进行配置。
 
 </div>
 
@@ -218,7 +220,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cluster_name="cluster1"
     cluster_namespace="pingcap"
     kubernetes_cluster_name="kind-cluster-1"
@@ -229,7 +231,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cat << EOF | kubectl apply -n ${cluster_namespace} -f -
     apiVersion: pingcap.com/v1alpha1
     kind: TidbMonitor
@@ -269,7 +271,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 关于 Federation 方案，参考 [Federation 文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后，修改 Prometheus 采集配置，添加需要聚合的 Prometheus (TidbMonitor) 的 host 信息。
 
-```
+```yaml
 scrape_configs:
   - job_name: 'federate'
     scrape_interval: 15s
@@ -293,29 +295,35 @@ scrape_configs:
 
 ## 使用 Grafana 可视化多集群监控数据
 
-使用 Prometheus 获取数据后，你可以使用 Grafana 可视化多集群监控数据
+使用 Prometheus 获取数据后，你可以使用 Grafana 可视化多集群监控数据。
 
-1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards, 其中 version 变量的值为 initializer 镜像版本，应该和 TiDB 版本保持一致，但是目前仅 **nightly** 版本 Initializer 镜像适用于**多 Kubernetes 集群**监控。
+1. 执行以下指令，获取 TiDB 相关组件的 Grafana Dashboards：
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     # set tidb version here
     version=nightly
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```
 
-    执行上述命令后，可以在当前目录下查看所有组件 dashboard 的 json 定义文件。
+    > **注意：**
+    >
+    > 上述命令中，`${version}` 为 Initializer 的镜像版本，应该和 TiDB 版本保持一致，但是目前仅 `nightly` 版本 Initializer 镜像适用于**多 Kubernetes 集群**监控，因此示例中使用 `nightly` 版本的镜像。
 
-2. [配置 Prometheus 数据源](https://grafana.com/docs/grafana/latest/datasources/prometheus/)，为了与上述获得的 dashboard json 文件保持一致，需将数据源 Name 字段值配置为 `tidb-cluster`。如果希望使用已有的数据源，请执行以下指令对上述 dashboard json 文件中的数据源名称进行替换，其中 `DS_NAME` 变量的值为数据源的名称。
+    执行上述命令后，可以在当前目录下查看所有组件 dashboard 的 JSON 定义文件。
+
+2. 参考 [Grafana 文档](https://grafana.com/docs/grafana/latest/datasources/prometheus/)，配置 Prometheus 数据源。
+
+    为了与上一步中获得的 dashboard JSON 定义文件保持一致，需将数据源 `Name` 字段值配置为 `tidb-cluster`。如果你希望使用已有的数据源，请执行以下指令，对上述 dashboard JSON 文件中的数据源名称进行替换，其中 `$DS_NAME` 变量的值为数据源的名称。
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     # define your datasource name here.
     DS_NAME=thanos
     sed -i 's/"datasource": "tidb-cluster"/"datasource": "$DS_NAME"/g' *.json
     ```
 
-3. [在 Grafana 中导入 Dashboard](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard)
+3. 参考 [Grafana 文档](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard)，在 Grafana 中导入 Dashboard。
