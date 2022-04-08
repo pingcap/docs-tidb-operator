@@ -645,24 +645,4 @@ Depending on the EKS cluster status, use different commands:
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-<<<<<<< HEAD
 For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.1.6/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
-
-## Deploy TiDB Enterprise Edition
-
-To deploy TiDB/PD/TiKV/TiFlash/TiCDC Enterprise Edition, configure `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` in `tidb-cluster.yaml` as the enterprise image. The enterprise image format is `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`.
-
-For example:
-
-```yaml
-spec:
-  ...
-  pd:
-    baseImage: pingcap/pd-enterprise
-  ...
-  tikv:
-    baseImage: pingcap/tikv-enterprise
-```
-=======
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
->>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))

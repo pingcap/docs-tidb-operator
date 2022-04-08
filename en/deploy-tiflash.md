@@ -28,22 +28,7 @@ kubectl eidt tc ${cluster_name} -n ${namespace}
 
 Add the TiFlash configuration as follows:
 
-<<<<<<< HEAD
 {{< copyable "" >}}
-=======
-    ```yaml
-    spec:
-    tiflash:
-        baseImage: pingcap/tiflash
-        maxFailoverCount: 0
-        replicas: 1
-        storageClaims:
-        - resources:
-            requests:
-              storage: 100Gi
-          storageClassName: local-storage
-    ```
->>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
 ```yaml
 spec:
@@ -59,16 +44,6 @@ spec:
 ```
 
 To configure other parameters, refer to [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
-
-To deploy Enterprise Edition of TiFlash, edit the `dm.yaml` file above to set `spec.tiflash.baseImage` to the enterprise image (`pingcap/tiflash-enterprise`).
-
-For example:
-
-```yaml
-spec:
-  tiflash:
-    baseImage: pingcap/tiflash-enterprise
-```
 
 TiFlash supports mounting multiple Persistent Volumes (PVs). If you want to configure multiple PVs for TiFlash, configure multiple `resources` in `tiflash.storageClaims`, each `resources` with a separate `storage request` and `storageClassName`. For example:
 

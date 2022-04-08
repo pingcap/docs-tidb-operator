@@ -35,25 +35,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/deploy-ticdc/','/docs-cn/tidb-in-k
         replicas: 3
     ```
 
-<<<<<<< HEAD
-   值得注意的是，如果需要部署企业版的 TiCDC，需要将 db.yaml 中 `spec.ticdc.baseImage` 配置为企业版镜像，格式为 `pingcap/ticdc-enterprise`。
-
-   例如:
-
-   ```yaml
-   spec:
-     ticdc:
-       baseImage: pingcap/ticdc-enterprise
-   ```
-
 3. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
-=======
-3. 为 TiCDC 挂载 PV。
-
-    TiCDC 支持挂载多个 PV，建议在第一次部署 TiCDC 时规划好使用几个 PV。相关配置请参阅[多盘挂载](configure-a-tidb-cluster.md#多盘挂载)。
-
-4. 部署完成后，通过 `kubectl exec` 进入任意一个 TiCDC Pod 进行操作。
->>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
     {{< copyable "shell-regular" >}}
 

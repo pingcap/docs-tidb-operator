@@ -209,20 +209,6 @@ spec
 
     有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](configure-tidb-binlog-drainer.md)。
 
-<<<<<<< HEAD
-    值得注意的是，如果需要部署企业版的 Drainer，需要将 上述 yaml 中 `baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
-
-    例如:
-
-    ```yaml
-    ...
-    clusterVersion: v5.0.6
-    baseImage: pingcap/tidb-binlog-enterprise
-    ...
-    ```
-
-=======
->>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 4. 部署 Drainer：
 
     {{< copyable "shell-regular" >}}

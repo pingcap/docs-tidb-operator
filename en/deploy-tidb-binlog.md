@@ -215,20 +215,6 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](configure-tidb-binlog-drainer.md).
 
-<<<<<<< HEAD
-    To deploy Enterprise Edition of Drainer, edit the YAML file above to set `baseImage` to the enterprise image (`pingcap/tidb-binlog-enterprise`).
-
-    For example:
-
-    ```yaml
-    ...
-    clusterVersion: v5.0.6
-    baseImage: pingcap/tidb-binlog-enterprise
-    ...
-    ```
-
-=======
->>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 4. Deploy Drainer:
 
     {{< copyable "shell-regular" >}}
