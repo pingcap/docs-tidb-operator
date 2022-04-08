@@ -21,12 +21,6 @@ If the TiDB cluster is deployed directly using TidbCluster CR, or deployed using
 
     Usually, components in a cluster are in the same version. You can upgrade the TiDB cluster simply by modifying `spec.version`. If you need to use different versions for different components, configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
 
-    > **Note:**
-    >
-    > If you want to upgrade to Enterprise Edition, edit the `db.yaml` file to set `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`).
-    >
-    > For example, change `spec.pd.baseImage` from `pingcap/pd` to `pingcap/pd-enterprise`.
-
     The `version` field has following formats:
 
     - `spec.version`: the format is `imageTag`, such as `v5.0.6`

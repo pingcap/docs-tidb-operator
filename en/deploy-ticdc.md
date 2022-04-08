@@ -37,16 +37,6 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in Genera
         replicas: 3
     ```
 
-    To deploy Enterprise Edition of TiCDC, edit the `db.yaml` file to set `spec.ticdc.baseImage` to the enterprise image (`pingcap/ticdc-enterprise`).
-
-    For example:
-
-    ```yaml
-    spec:
-     ticdc:
-       baseImage: pingcap/ticdc-enterprise
-    ```
-
 3. After the deployment, enter a TiCDC Pod by running `kubectl exec`:
 
     {{< copyable "shell-regular" >}}
