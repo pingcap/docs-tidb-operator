@@ -49,6 +49,7 @@ If the TiDB cluster is deployed directly using TidbCluster CR, or deployed using
 
     After all the Pods finish rebuilding and become `Running`, the upgrade is completed.
 
+<<<<<<< HEAD
 ### Force an upgrade of TiDB cluster using TidbCluster CR
 
 If the PD cluster is unavailable due to factors such as PD configuration error, PD image tag error and NodeAffinity, then [scaling the TiDB cluster](scale-a-tidb-cluster.md), [upgrading the TiDB cluster](#upgrade-the-version-of-tidb-using-tidbcluster-cr) and changing the TiDB cluster configuration cannot be done successfully.
@@ -74,6 +75,9 @@ Change the related PD configuration to make sure that PD is in a normal state.
 > ```shell
 > kubectl annotate tc ${cluster_name} -n ${namespace} tidb.pingcap.com/force-upgrade-
 > ```
+=======
+## Troubleshoot the upgrade
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
 ### Modify TiDB cluster configuration
 

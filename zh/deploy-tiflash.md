@@ -45,7 +45,22 @@ spec:
 
 值得注意的是，如果需要部署企业版的 TiFlash，需要将 db.yaml 中 `spec.tiflash.baseImage` 配置为企业版镜像，格式为 `pingcap/tiflash-enterprise`。
 
+<<<<<<< HEAD
 例如:
+=======
+    ```yaml
+    spec:
+    tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 0
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+              storage: 100Gi
+          storageClassName: local-storage
+    ```
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
 ```yaml
 spec:

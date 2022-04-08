@@ -28,7 +28,22 @@ kubectl eidt tc ${cluster_name} -n ${namespace}
 
 Add the TiFlash configuration as follows:
 
+<<<<<<< HEAD
 {{< copyable "" >}}
+=======
+    ```yaml
+    spec:
+    tiflash:
+        baseImage: pingcap/tiflash
+        maxFailoverCount: 0
+        replicas: 1
+        storageClaims:
+        - resources:
+            requests:
+              storage: 100Gi
+          storageClassName: local-storage
+    ```
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
 ```yaml
 spec:

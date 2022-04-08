@@ -45,6 +45,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/','/docs-cn
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
 
+<<<<<<< HEAD
 > **注意：**
 >
 > 如果需要升级到企业版，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`。
@@ -62,6 +63,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/','/docs-cn
 ```shell
 kubectl annotate --overwrite tc ${cluster_name} -n ${namespace} tidb.pingcap.com/force-upgrade=true
 ```
+=======
+## 升级故障排除
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
 然后修改 PD 相关配置，确保 PD 进入正常状态。
 
