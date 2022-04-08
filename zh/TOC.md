@@ -26,7 +26,6 @@
     - [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)
     - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
-  - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
   - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
 - 监控与告警

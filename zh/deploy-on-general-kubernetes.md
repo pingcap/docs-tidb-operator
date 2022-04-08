@@ -1,6 +1,10 @@
 ---
 title: 在标准 Kubernetes 上部署 TiDB 集群
 summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 TiDB 集群。
+<<<<<<< HEAD
+=======
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/tidb-in-kubernetes/dev/deploy-tidb-enterprise-edition']
+>>>>>>> 826bcb94 (delete deploy-tidb-enterprise-edition.md (#1776))
 ---
 
 # 在标准 Kubernetes 上部署 TiDB 集群
