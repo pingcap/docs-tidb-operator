@@ -262,7 +262,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 #### 配置 Federation Prometheus
 
-关于 Federation 方案，参考 [Federation 文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后，修改 Prometheus 采集配置，添加需要聚合的 Prometheus (TidbMonitor) 的 host 信息。
+关于 Federation 方案，参考 [Federation 文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。完成部署 Prometheus 后，修改 Prometheus 采集配置，添加需要聚合的 Prometheus (TidbMonitor) 的 host 信息。
 
 ```yaml
 scrape_configs:
