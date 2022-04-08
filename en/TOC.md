@@ -26,7 +26,6 @@
     - [Build Multiple Interconnected GCP GKE Clusters](build-multi-gcp-gke.md)
     - [Deploy TiDB Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Deploy a Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
-  - [Deploy the TiDB Enterprise Edition](deploy-tidb-enterprise-edition.md)
   - [Deploy TiCDC](deploy-ticdc.md)
   - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
 - Monitor and Alert
