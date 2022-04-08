@@ -1,10 +1,7 @@
 ---
 title: Deploy TiDB in General Kubernetes
 summary: Learn how to deploy a TiDB cluster on general Kubernetes.
-<<<<<<< HEAD
-=======
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/tidb-in-kubernetes/dev/deploy-tidb-enterprise-edition']
->>>>>>> 826bcb94 (delete deploy-tidb-enterprise-edition.md (#1776))
+aliases: ['/tidb-in-kubernetes/v1.2/deploy-tidb-enterprise-edition']
 ---
 
 # Deploy TiDB in General Kubernetes
