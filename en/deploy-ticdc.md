@@ -37,6 +37,7 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in Genera
         replicas: 3
     ```
 
+<<<<<<< HEAD
     To deploy Enterprise Edition of TiCDC, edit the `db.yaml` file to set `spec.ticdc.baseImage` to the enterprise image (`pingcap/ticdc-enterprise`).
 
     For example:
@@ -48,6 +49,13 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB in Genera
     ```
 
 3. After the deployment, enter a TiCDC Pod by running `kubectl exec`:
+=======
+3. Mount persistent volumes (PVs) for TiCDC。
+
+    TiCDC supports mounting multiple PV. It is recommended that you plan the number of PVs required when deploying TiCDC for the first time. For more information, refer to [Multiple disks mounting](configure-a-tidb-cluster.md#multiple-disks-mounting)。
+
+4. After the deployment, enter a TiCDC Pod by running `kubectl exec`:
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 
     {{< copyable "shell-regular" >}}
 

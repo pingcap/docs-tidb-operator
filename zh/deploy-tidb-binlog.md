@@ -58,16 +58,6 @@ spec
 
 按照集群实际情况修改 `version`、`replicas`、`storageClassName`、`requests.storage` 等配置。
 
-值得注意的是，如果需要部署企业版的 Pump，需要将 上述 yaml 中 `spec.pump.baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
-
-例如:
-
-```yaml
-spec:
- pump:
-   baseImage: pingcap/tidb-binlog-enterprise
-```
-
 如果在生产环境中开启 TiDB Binlog，建议为 TiDB 与 Pump 组件设置亲和性和反亲和性。如果在内网测试环境中尝试使用开启 TiDB Binlog，可以跳过此步。
 
 默认情况下，TiDB 和 Pump 的 affinity 亲和性设置为 `{}`。由于目前 Pump 组件与 TiDB 组件默认并非一一对应，当启用 TiDB Binlog 时，如果 Pump 与 TiDB 组件分开部署并出现网络隔离，而且 TiDB 组件还开启了 `ignore-error`，则会导致 TiDB 丢失 Binlog。推荐通过亲和性特性将 TiDB 组件与 Pump 部署在同一台 Node 上，同时通过反亲和性特性将 Pump 分散在不同的 Node 上，每台 Node 上至多仅需一个 Pump 实例。
@@ -218,6 +208,7 @@ spec:
 
     有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](configure-tidb-binlog-drainer.md)。
 
+<<<<<<< HEAD
     值得注意的是，如果需要部署企业版的 Drainer，需要将 上述 yaml 中 `baseImage` 配置为企业版镜像，格式为 `pingcap/tidb-binlog-enterprise`。
 
     例如:
@@ -229,6 +220,8 @@ spec:
     ...
     ```
 
+=======
+>>>>>>> bba312ca (en, zh: delete "enterprise" content from docs (#1780))
 4. 部署 Drainer：
 
     {{< copyable "shell-regular" >}}
