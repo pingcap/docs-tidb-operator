@@ -43,7 +43,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
     ```yaml
     spec:
     tiflash:
-        #如果要部署企业版的 TiFlash, 请修改 `baseImage` 的值为 `pingcap/tiflash-enterprise`。
         baseImage: pingcap/tiflash
         maxFailoverCount: 0
         replicas: 1

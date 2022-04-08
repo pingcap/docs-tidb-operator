@@ -52,12 +52,6 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
 
-> **注意：**
->
-> 如果需要升级到企业版，需要将 `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`。
->
-> 例如将 `spec.pd.baseImage` 从 `pingcap/pd` 修改为 `pingcap/pd-enterprise`。
-
 ## 升级故障排除
 
 如果因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因，导致 PD 集群不可用，此时无法成功升级 TiDB 集群版本。这种情况下，可使用 `force-upgrade` 强制升级集群以恢复集群功能。
