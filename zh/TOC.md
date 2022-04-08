@@ -22,7 +22,7 @@
       - [访问 TiDB 集群](access-tidb.md)
     - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署异构集群](deploy-heterogeneous-tidb-cluster.md)
-  - [部署 TiFlash](deploy-tiflash.md)zh/TOC.md
+  - [部署 TiFlash](deploy-tiflash.md)
   - [部署 TiCDC](deploy-ticdc.md)
   - [部署 TiDB Binlog](deploy-tidb-binlog.md)
   - [部署多套 TiDB Operator](deploy-multiple-tidb-operator.md)
