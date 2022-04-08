@@ -217,20 +217,6 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
 
     根据实际情况修改 `replicas`。
 
-    值得注意的是，如果需要部署企业版的 TiDB/PD/TiKV/TiFlash/TiCDC，需要将 db.yaml 中 `spec.<tidb/pd/tikv/tiflash/ticdc>.baseImage` 配置为企业版镜像，格式为 `pingcap/<tidb/pd/tikv/tiflash/ticdc>-enterprise`。
-
-    例如:
-
-    ```yaml
-    spec:
-      ...
-      pd:
-        baseImage: pingcap/pd-enterprise
-      ...
-      tikv:
-        baseImage: pingcap/tikv-enterprise
-    ```
-
     > **注意：**
     >
     > * 请使用 ACK 部署过程中配置的 `tidb_cluster_name` 替换 `db.yaml` 和 `db-monitor.yaml` 文件中所有的 `TIDB_CLUSTER_NAME`。

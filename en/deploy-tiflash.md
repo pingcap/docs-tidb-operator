@@ -42,7 +42,6 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
     ```yaml
     spec:
     tiflash:
-        # To deploy the enterprise edition of TiFlash, change the value of `baseImage` to `pingcap/tiflash-enterprise`.
         baseImage: pingcap/tiflash
         maxFailoverCount: 0
         replicas: 1
