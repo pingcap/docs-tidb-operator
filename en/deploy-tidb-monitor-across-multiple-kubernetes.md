@@ -1,18 +1,18 @@
 ---
-title: Deploy TiDB Monitor Across Multiple Kubernetes
+title: Monitor a TiDB Cluster across Multiple Kubernetes Clusters
 summary:
 ---
 
-# Deploy TiDB Monitor Across Multiple Kubernetes
+# Monitor a TiDB Cluster across Multiple Kubernetes Clusters
 
 You can monitor a TiDB cluster that is deployed across multiple Kubernetes clusters and access the monitoring data fom a global view. This document describes how to integrate with several popular multi-cluster monitoring methods based on Prometheus, and use Grafana to visualize the data across multiple Kubernetes clusters:
 
-- [The push method](#push-data)
-- [The pull method - Using Thanos Query](#使用-thanos-query)
-- [The pull method - Using Prometheus Federation](#使用-prometheus-federation)
-- [Using Grafana to visualize the data across multiple Kubernetes clusters](#使用-grafana-可视化多集群监控数据)
+- [Push data from Prometheus](#push-data-from-prometheus)
+- [The pull method - Using Thanos Query](#using-thanos-query)
+- [The pull method - Using Prometheus Federation](#using-prometheus-federation)
+- [Visualize monitoring data using Grafana](#visualize-monitoring-data-using-grafana)
 
-## The push method
+## Push data from Prometheus
 
 The push method refers to using the remote write feature of Prometheus, which requests the Prometheus instances in different Kubernetes clusters to push monitoring data to a centralized storage.
 
@@ -20,9 +20,9 @@ The push method described in this section is based on Thanos. If you use [other 
 
 ### Prerequisites
 
-The multiple Kubernetes clusters must meet the following conditions:
+The multiple Kubernetes clusters must meet the following condition:
 
-- The Prometheus (TidbMonitor) component in each Kubernetes cluster has access to the Thanos Receiver component.
+- The Prometheus (`TidbMonitor`) component in each Kubernetes cluster has access to the Thanos Receiver component.
 
 For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite).
 
@@ -30,9 +30,9 @@ For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com
 
 ![push-thanos-receive.png](/media/push-thanos-receive.png)
 
-### Deploy the monitoring component of a TiDB cluster
+### Deploy TidbMonitor
 
-1. According to the Kubernetes cluster of the TiDB cluster, set the following environment variables:
+1. According to the Kubernetes cluster that the TiDB cluster is deployed in, set the following environment variables:
 
     - `cluster_name`: the TiDB cluster name.
     - `cluster_namespace`: the TiDB cluster namespace.
@@ -93,23 +93,23 @@ For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com
     EOF
     ```
 
-## The pull method
+## Pull data from Prometheus
 
-The pull method refers to pull monitoring data from Prometheus instances in different Kubernetes clusters, and aggregate the data into a global view. This section describes how to pull data [using Thanos Query](#using-thanos-query) and [using Prometheus Federation](#using-prometheus-federation).
+The pull method refers to pulling monitoring data from Prometheus instances in different Kubernetes clusters, and aggregating the data into a global view. This section describes how to pull data [using Thanos Query](#using-thanos-query) and [using Prometheus Federation](#using-prometheus-federation).
 
 <SimpleTab>
 <div label="Thanos Query">
 
 ### Using Thanos Query
 
-In the example of this section, one Thanos Sidecar is deployed for each Prometheus (TidbMonitor) component. The Thanos query component is used for aggregation query. If you do not need to store the monitoring data for a long time, you can skip the deployment of some components such as thanos-store and S3.
+In the example of this section, one Thanos Sidecar is deployed for each Prometheus (`TidbMonitor`) component. The Thanos query component is used for aggregation query. If you do not need to store the monitoring data for a long time, you can skip the deployment of some components such as thanos-store and S3.
 
 #### Prerequisites
 
 You need to configure the network and DNS of the Kubernetes clusters so that the Kubernetes clusters meet the following conditions:
 
-- The Thanos Query component has access to the Pod IP of the Prometheus (TidbMonitor) component in each Kubernetes cluster.
-- The Thanos Query component has access to the Pod FQDN of the Prometheus (TidbMonitor) component in each Kubernetes cluster.
+- The Thanos Query component has access to the Pod IP of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
+- The Thanos Query component has access to the Pod FQDN of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 
 For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos).
 
@@ -117,9 +117,9 @@ For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/th
 
 ![pull-thanos-query.png](/media/pull-thanos-query.png)
 
-#### Deploy the monitoring component of a TiDB cluster
+#### Deploy TidbMonitor
 
-1. According to the Kubernetes cluster of the TiDB cluster, set the following environment variables:
+1. According to the Kubernetes cluster that the TiDB cluster is deployed in, set the following environment variables:
 
     - `cluster_name`: the TiDB cluster name.
     - `cluster_namespace`: the TiDB cluster namespace.
@@ -191,7 +191,6 @@ For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/th
     If you use other service discovery methods, refer to [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md).
 
 </div>
-
 <div label="Federation">
 
 ### Using Prometheus Federation
@@ -202,16 +201,16 @@ In the example of this section, the Federation Prometheus server is used as an e
 
 You need to configure the network and DNS of the Kubernetes clusters so that the Kubernetes clusters meet the following conditions:
 
-- The Federation Prometheus component has access to the Pod IP of the Prometheus (TidbMonitor) component in each Kubernetes cluster.
-- The Federation Prometheus component has access to the Pod FQDN of the Prometheus (TidbMonitor) component in each Kubernetes cluster.
+- The Federation Prometheus component has access to the Pod IP of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
+- The Federation Prometheus component has access to the Pod FQDN of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 
 #### Architecture
 
 ![pull-prom-federation.png](/media/pull-prom-federation.png)
 
-#### Deploy the monitoring component of a TiDB cluster
+#### Deploy TidbMonitor
 
-1. According to the Kubernetes cluster of the TiDB cluster, set the following environment variables:
+1. According to the Kubernetes cluster that the TiDB cluster is deployed in, set the following environment variables:
 
     - `cluster_name`: the TiDB cluster name.
     - `cluster_namespace`: the TiDB cluster namespace.
@@ -269,9 +268,7 @@ You need to configure the network and DNS of the Kubernetes clusters so that the
 
 #### Configure Federation Prometheus
 
-关于 Federation 方案，参考 [Federation 文档](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)。部署完成后，修改 Prometheus 采集配置，添加需要聚合的 Prometheus (TidbMonitor) 的 host 信息。
-
-For details on Federation, refer to [Federation](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation). After the deployment, you need to modify the Prometheus configuration, and add the host information of the Prometheus (TidbMonitor) to be aggregated.
+For details on Federation, refer to [Federation](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation). After the deployment of Prometheus, you need to modify the Prometheus configuration, and add the host information of the Prometheus (`TidbMonitor`) to be aggregated.
 
 ```yaml
 scrape_configs:
@@ -295,7 +292,7 @@ scrape_configs:
 </div>
 </SimpleTab>
 
-## Use Grafana to visualize multi-cluster monitoring data
+## Visualize monitoring data using Grafana
 
 After collecting data using Prometheus, you can visualize multi-cluster monitoring data using Grafana.
 
@@ -312,7 +309,7 @@ After collecting data using Prometheus, you can visualize multi-cluster monitori
 
     > **Note:**
     >
-    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. However, currently only the `nightly` version of the Initializer image is available for **multiple Kubernetes clusters** monitoring, so this example uses the `nightly` image.
+    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. However, currently only the `nightly` version of the Initializer image supports **multiple Kubernetes clusters** monitoring, so this example uses the `nightly` image.
 
     After running the command above, you can view all the dashboard JSON files in the current directory.
 
