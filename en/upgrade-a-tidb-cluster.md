@@ -53,12 +53,6 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 
     After all the Pods finish rebuilding and become `Running`, the upgrade is completed.
 
-> **Note:**
->
-> If you want to upgrade to Enterprise Edition, set `spec.<tidb/pd/tikv/tiflash/ticdc/pump>.baseImage` to the enterprise image (`pingcap/<tidb/pd/tikv/tiflash/ticdc/tidb-binlog>-enterprise`).
->
-> For example, change `spec.pd.baseImage` from `pingcap/pd` to `pingcap/pd-enterprise`.
-
 ## Troubleshoot the upgrade
 
 If the PD cluster is unavailable due to PD configuration errors, PD image tag errors, NodeAffinity, or other causes, you might not be able to successfully upgrade the TiDB cluster. In such cases, you can force an upgrade of the cluster to recover the cluster functionality.
