@@ -189,7 +189,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 
 ### 使用 Prometheus Federation
 
-本节中的示例使用 Federation Prometheus Server 作为数据统一存储与查询的入口，建议在数据规模较小的环境下使用。
+本节中的示例使用 Federation Prometheus Server 作为数据统一存储与查询的入口，这一方案建议仅在数据规模较小的环境下使用。
 
 #### 前置条件
 
