@@ -5,7 +5,7 @@ summary:
 
 # Monitor a TiDB Cluster across Multiple Kubernetes Clusters
 
-You can monitor a TiDB cluster that is deployed across multiple Kubernetes clusters and access the monitoring data fom a global view. This document describes how to integrate with several popular multi-cluster monitoring methods based on Prometheus, and use Grafana to visualize the data across multiple Kubernetes clusters:
+You can monitor a TiDB cluster that is deployed across multiple Kubernetes clusters and access the monitoring data from a global view. This document describes how to integrate with several popular multi-cluster monitoring solutions based on Prometheus, and use Grafana to visualize the data across multiple Kubernetes clusters:
 
 - [Push data from Prometheus](#push-data-from-prometheus)
 - [The pull method - Using Thanos Query](#using-thanos-query)
@@ -38,7 +38,7 @@ For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com
     - `cluster_namespace`: the TiDB cluster namespace.
     - `kubernetes_cluster_name`: the custom Kubernetes cluster name, which is used in the `externallabels` of Prometheus.
     - `storageclass_name`: the storage of the current Kubernetes cluster.
-    - `remote_write_url`: the host of the `thanos-receiver` component, or the host of other components compatible with the Prometheus remote API.
+    - `remote_write_url`: the host of the `thanos-receiver` component, or the host of other components compatible with the Prometheus remote write API.
 
     {{< copyable "shell-regular" >}}
 
@@ -102,7 +102,7 @@ The pull method refers to pulling monitoring data from Prometheus instances in d
 
 ### Using Thanos Query
 
-In the example of this section, one Thanos Sidecar is deployed for each Prometheus (`TidbMonitor`) component. The Thanos query component is used for aggregation query. If you do not need to store the monitoring data for a long time, you can skip the deployment of some components such as thanos-store and S3.
+In the example of this section, one Thanos Sidecar is deployed for each Prometheus (`TidbMonitor`) component. The Thanos query component is used for aggregation queries. If you do not need long-term storage, you can skip the deployment of some components such as thanos-store and S3.
 
 #### Prerequisites
 
@@ -195,7 +195,7 @@ For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/th
 
 ### Using Prometheus Federation
 
-In the example of this section, the Federation Prometheus server is used as an entry point for unified storage and query. This method is recommended for small data volumes.
+In the example of this section, the Federation Prometheus server is used as an entry point for unified storage and query. This method is only considered for small data volumes.
 
 #### Prerequisites
 
