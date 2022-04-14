@@ -302,14 +302,14 @@ After collecting data using Prometheus, you can visualize multi-cluster monitori
 
     ```shell
     # set tidb version here
-    version=nightly
+    version=v6.0.0
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```
 
     > **Note:**
     >
-    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. However, currently only the `nightly` version of the Initializer image supports **multiple Kubernetes clusters** monitoring, so this example uses the `nightly` image.
+    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. However, currently only the `v6.0.0` version of the Initializer image supports **multiple Kubernetes clusters** monitoring, so this example uses the `v6.0.0` image.
 
     After running the command above, you can view all the dashboard JSON files in the current directory.
 
