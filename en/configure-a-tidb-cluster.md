@@ -50,7 +50,9 @@ Here are the formats of the parameters:
 
 #### configUpdateStrategy
 
-It is recommended that you configure `spec.configUpdateStrategy: RollingUpdate` to enable automatic update of configurations. This way, every time the configuration is updated, all components are rolling updated automatically, and the modified configuration is applied to the cluster.
+The default value of the `spec.configUpdateStrategy` field is `InPlace`, which means that when you modify `config` of a component, you need to manually trigger a rolling update so that the new configuration is applied to the cluster.
+
+It is recommended that you configure `spec.configUpdateStrategy: RollingUpdate` to enable automatic update of configurations. This way, every time the `config` of a component is updated, the component is automatically rolling updated, and the modified configuration is applied to the cluster.
 
 #### enableDynamicConfiguration
 
