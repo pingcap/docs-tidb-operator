@@ -609,7 +609,7 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 #### Use nodeSelector to schedule Pods
 
-By cnofiguring the `nodeSelector` field of each component, you can specify the specific nodes that the component Pods can be scheduled onto. For details on `nodeSelector`, refer to [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector).
+By configuring the `nodeSelector` field of each component, you can specify the specific nodes that the component Pods can be scheduled onto. For details on `nodeSelector`, refer to [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
