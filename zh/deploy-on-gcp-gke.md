@@ -82,12 +82,20 @@ gcloud config set compute/region <gcp-region>
 
 为了提高存储的 IO 性能，推荐在 StorageClass 的 `mountOptions` 字段中，添加存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)。
 
+建议使用默认的 `pd-ssd` 存储类型 `premium-rwo`，或设置一个自定义的存储类型。
+
 ```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
-# ...
+metadata:
+  name: pd-custom
+provisioner: kubernetes.io/gce-pd
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc,noatime
 ```
 
 > **注意：**
