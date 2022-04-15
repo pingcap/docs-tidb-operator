@@ -85,12 +85,20 @@ After the GKE cluster is created, the cluster contains three StorageClasses of d
 
 To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource. For details, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
 
+It is recommended to use the default `pd-ssd` storage class `premium-rwo` or to set up a customized storage class:
+
 ```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
-# ...
+metadata:
+  name: pd-custom
+provisioner: kubernetes.io/gce-pd 
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc,noatime
 ```
 
 > **Note:**
