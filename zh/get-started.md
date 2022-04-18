@@ -43,7 +43,7 @@ aliases: ['/zh/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind','/docs-
 
 部署前，请确保满足以下要求：
 
-- [docker](https://docs.docker.com/install/)：版本 >= 17.03
+- [docker](https://docs.docker.com/install/)：版本 >= 18.09
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.12
 - [kind](https://kind.sigs.k8s.io/)：版本 >= 0.8.0
 - 若使用 Linux, [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
