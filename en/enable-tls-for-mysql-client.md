@@ -23,6 +23,14 @@ To enable TLS for the MySQL client, perform the following steps:
 
 2. [Deploy the cluster](#deploy-the-tidb-cluster), and set `.spec.tidb.tlsClient.enabled` to `true`.
 
+    * To skip TLS authentication for internal components as the MySQL client (such as TidbInitializer, Dashboard, Backup, and Restore), you can add the `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` annotation to the cluster's corresponding `TidbCluster`.
+    * To disable the client CA certificate authentication on the TiDB server, you can set `.spec.tidb.tlsClient.disableClientAuthn` to `true`. This means skipping setting `ssl-ca` parameter when you [configure TiDB server to enable secure connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-tidb-server-to-use-secure-connections).
+    * To skip the CA certificate authentication for internal components as the MySQL client, you can set `.spec.tidb.tlsClient.skipInternalClientCA` to `true`.
+
+    > **Note:**
+    >
+    > For an existing cluster, if you change `.spec.tidb.tlsClient.enabled` from `false` to `true`, the TiDB Pod will be rolling restarted.
+
 3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-an-encrypted-connection).
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
