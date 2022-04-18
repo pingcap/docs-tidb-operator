@@ -16,12 +16,21 @@ jobs:
       run:
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
         git fetch upstream;
+<<<<<<< HEAD
         wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-file-encoding.py;
         python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.0..HEAD -- '*.md' ':(exclude).github/*')
     - name: "Check git conflicts"
       run:
         wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-conflicts.py;
         python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.0..HEAD -- '*.md' '*.yml' '*.yaml')
+=======
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-file-encoding.py;
+        python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+    - name: "Check git conflicts"
+      run:
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-conflicts.py;
+        python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+>>>>>>> 63ac870b (ci: update ci path (#1792))
     - name: Markdown lint
       uses: avto-dev/markdown-lint@v1
       with:
@@ -33,6 +42,7 @@ jobs:
       run: ./hack/verify-link-anchors.sh
     - name: "Check control characters"
       run:
+<<<<<<< HEAD
         wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-control-char.py;
         python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.0..HEAD -- '*.md' ':(exclude).github/*')
     - name: "Check unclosed tags"
@@ -43,3 +53,15 @@ jobs:
       run:
         wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-manual-line-breaks.py;
         python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.0..HEAD -- '*.md' ':(exclude).github/*')
+=======
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-control-char.py;
+        python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+    - name: "Check unclosed tags"
+      run:
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-tags.py;
+        python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
+    - name: "Check manual line breaks"
+      run:
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-manual-line-breaks.py;
+        python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+>>>>>>> 63ac870b (ci: update ci path (#1792))
