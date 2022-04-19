@@ -11,6 +11,6 @@ set -euo pipefail
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-npm install markdownlint-cli@0.26.0
+npm --loglevel=error install markdownlint-cli@0.26.0
 echo "info: running markdownlint under $ROOT directory..."
 npx markdownlint -c ./.markdownlint.yaml -i node_modules .

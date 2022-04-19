@@ -7,7 +7,7 @@
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-npm install markdown-link-check@3.8.1
+npm --loglevel=error install markdown-link-check@3.8.1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
