@@ -13,4 +13,4 @@ cd $ROOT
 
 npm --loglevel=error install markdownlint-cli@0.26.0
 echo "info: running markdownlint under $ROOT directory..."
-npx markdownlint -c ./.markdownlint.yaml -i node_modules . --quiet
+npx markdownlint -c ./.markdownlint.yaml -i node_modules .
