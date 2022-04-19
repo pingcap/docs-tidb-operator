@@ -1,3 +1,6 @@
+SHELL = /bin/bash
+.SHELLFLAGS = -o pipefail -c 'echo [$@]: + $$0 && eval "$$0" 2>&1 | sed -e "s/^/[$@]: /;"'
+
 BASE_REF := master
 
 all: check-file-encoding check-git-conflicts markdownlint verify-internal-links verify-internal-link-anchors check-control-characters check-unclosed-tags check-manual-line-breaks
