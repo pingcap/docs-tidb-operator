@@ -59,11 +59,23 @@ jobs:
   verify-internal-links:
     runs-on: ubuntu-latest
     steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
     - name: Verify internal links
       run: ./hack/verify-links.sh
   verify-internal-link-anchors:
     runs-on: ubuntu-latest
     steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
     - name: Verify internal link anchors
       run: ./hack/verify-link-anchors.sh
   check-control-characters:
@@ -97,7 +109,7 @@ jobs:
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
         git fetch upstream
     - name: "Check unclosed tags"
-      run:
+      run: |
         wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-tags.py
         python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
   check-manual-line-breaks:
