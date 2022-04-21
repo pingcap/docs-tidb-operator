@@ -4,42 +4,128 @@ on: [pull_request]
 
 jobs:
 
-  pull:
+  check-file-encoding:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
       uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - name: Set up node
+      uses: actions/setup-node@v1
       with:
         node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: "Check file encoding"
-      run:
-        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git;
-        git fetch upstream;
-        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-file-encoding.py;
-        python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.3..HEAD -- '*.md' ':(exclude).github/*')
+      run: |
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-file-encoding.py
+        python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}..HEAD -- '*.md' ':(exclude).github/*')
+  check-git-conflicts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: "Check git conflicts"
-      run:
-        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-conflicts.py;
-        python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.3..HEAD -- '*.md' '*.yml' '*.yaml')
+      run: |
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-conflicts.py
+        python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}..HEAD -- '*.md' '*.yml' '*.yaml')
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: Markdown lint
       uses: avto-dev/markdown-lint@v1
       with:
         config: './.markdownlint.yaml'
         args: '.'
+  verify-internal-links:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
     - name: Verify internal links
       run: ./hack/verify-links.sh
+  verify-internal-link-anchors:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
     - name: Verify internal link anchors
       run: ./hack/verify-link-anchors.sh
+  check-control-characters:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: "Check control characters"
-      run:
-        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-control-char.py;
-        python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.3..HEAD -- '*.md' ':(exclude).github/*')
+      run: |
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-control-char.py
+        python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}..HEAD -- '*.md' ':(exclude).github/*')
+  check-unclosed-tags:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: "Check unclosed tags"
-      run:
-        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-tags.py;
-        python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.3...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
+      run: |
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-tags.py
+        python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}...HEAD -- 'zh/' 'en/' '.md' ':(exclude).github/*')
+  check-manual-line-breaks:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Set up node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Add remote
+      run: |
+        git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
+        git fetch upstream
     - name: "Check manual line breaks"
-      run:
-        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-manual-line-breaks.py;
-        python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/release-1.3..HEAD -- '*.md' ':(exclude).github/*')
+      run: |
+        wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/check-manual-line-breaks.py
+        python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/${{ github.base_ref }}..HEAD -- '*.md' ':(exclude).github/*')
