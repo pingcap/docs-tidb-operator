@@ -20,7 +20,7 @@ You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 5. [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
 6. [Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
 
-You can watch the below video (for about 12 minutes) that shows the process of getting started with TiDB Operator.
+You can watch the following video (about 12 minutes) that shows the process of getting started with TiDB Operator.
 
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/ENG+TiDB+Operation+Quick+Start.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+ENG+TiDB+operator.png"></video>
 
