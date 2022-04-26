@@ -21,6 +21,10 @@ You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 5. [Upgrade a TiDB cluster](#step-5-upgrade-a-tidb-cluster)
 6. [Destroy the TiDB cluster and the Kubernetes cluster](#step-6-destroy-the-tidb-cluster-and-the-kubernetes-cluster)
 
+You can watch the following video (about 12 minutes) to learn how to get started with TiDB Operator.
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/ENG+TiDB+Operation+Quick+Start.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+ENG+TiDB+operator.png"></video>
+
 ## Step 1. Create a test Kubernetes cluster
 
 This section describes two ways to create a simple Kubernetes cluster. After creating a Kubernetes cluster, you can use it to test TiDB clusters managed by TiDB Operator. Choose whichever best matches your environment.
