@@ -26,13 +26,13 @@
     - [构建多个网络互通的 GCP GKE 集群](build-multi-gcp-gke.md)
     - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
-  - [部署 TiDB 企业版集群](deploy-tidb-enterprise-edition.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
   - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
 - 监控与告警
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
   - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
   - [聚合多个 TiDB 集群的监控数据](aggregate-multiple-cluster-monitor-data.md)
+  - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
   - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
   - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
 - 数据迁移
@@ -113,6 +113,7 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
 - 版本发布历史
   - v1.3
+    - [1.3.2](releases/release-1.3.2.md)
     - [1.3.1](releases/release-1.3.1.md)
     - [1.3 GA](releases/release-1.3.0.md)
     - [1.3.0-beta.1](releases/release-1.3.0-beta.1.md)

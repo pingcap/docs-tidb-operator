@@ -85,12 +85,20 @@ After the GKE cluster is created, the cluster contains three StorageClasses of d
 
 To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the StorageClass resource. For details, see [TiDB Environment and System Configuration Check](https://docs.pingcap.com/tidb/stable/check-before-deployment#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv).
 
+It is recommended to use the default `pd-ssd` storage class `premium-rwo` or to set up a customized storage class:
+
 ```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
-# ...
+metadata:
+  name: pd-custom
+provisioner: kubernetes.io/gce-pd 
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc,noatime
 ```
 
 > **Note:**
@@ -439,19 +447,3 @@ The two components are *not required* in the deployment. This section shows a qu
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
 For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
-
-## Deploy TiDB Enterprise Edition
-
-To deploy TiDB/PD/TiKV/TiFlash/TiCDC Enterprise Edition, configure `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` in `tidb-cluster.yaml` as the enterprise image. The enterprise image format is `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`.
-
-For example:
-
-```yaml
-spec:
-  ...
-  pd:
-    baseImage: pingcap/pd-enterprise
-  ...
-  tikv:
-    baseImage: pingcap/tikv-enterprise
-```

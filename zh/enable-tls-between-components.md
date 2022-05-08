@@ -20,7 +20,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     > **注意：**
     >
-    > 在集群创建后，不能修改此字段，否则将导致集群升级失败。
+    > 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
 
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 

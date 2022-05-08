@@ -83,12 +83,20 @@ gcloud config set compute/region <gcp-region>
 
 为了提高存储的 IO 性能，推荐在 StorageClass 的 `mountOptions` 字段中，添加存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)。
 
+建议使用默认的 `pd-ssd` 存储类型 `premium-rwo`，或设置一个自定义的存储类型。
+
 ```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
-# ...
+metadata:
+  name: pd-custom
+provisioner: kubernetes.io/gce-pd
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  type: pd-ssd
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc,noatime
 ```
 
 > **注意：**
@@ -418,19 +426,3 @@ spec:
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
 更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
-
-## 使用企业版
-
-部署企业版 TiDB、PD、TiKV、TiFlash、TiCDC 时，只需要将 tidb-cluster.yaml 中 `spec.[tidb|pd|tikv|tiflash|ticdc].baseImage` 配置为企业版镜像，格式为 `pingcap/[tidb|pd|tikv|tiflash|ticdc]-enterprise`。
-
-例如:
-
-```yaml
-spec:
-  ...
-  pd:
-    baseImage: pingcap/pd-enterprise
-  ...
-  tikv:
-    baseImage: pingcap/tikv-enterprise
-```
