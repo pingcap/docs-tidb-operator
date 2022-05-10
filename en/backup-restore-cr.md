@@ -27,9 +27,9 @@ This section introduces the fields in the `Backup` CR.
         - If the field is not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for backup by default.
 
 * `.spec.backupType`: the backup type. This field is valid only when you use BR for backup. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
-    * `full`: back up all databases in the TiDB cluster.
-    * `db`: back up one database in the TiDB cluster.
-    * `table`: back up one table in the TiDB cluster.
+    * `full`: back up all databases in a TiDB cluster.
+    * `db`: back up a specified database in a TiDB cluster.
+    * `table`: back up a specified table in a TiDB cluster.
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to `72h`.
 
     Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
@@ -58,7 +58,7 @@ This section introduces the fields in the `Backup` CR.
 
     Note that in v1.1.2 and earlier versions, this field does not exist. The backup data is deleted along with the CR by default. For v1.1.3 or later versions, if you want to keep this earlier behavior, set this field to `Delete`.
 
-* `.spec.cleanOption`: the clean behavior for the backup file when the backup CR is deleted after backing up the cluster. For details, refer to [Clean backup data](backup-restore-overview.md#clean-backup-data)
+* `.spec.cleanOption`: the clean behavior for the backup files when the backup CR is deleted after the cluster backup. For details, refer to [Clean backup data](backup-restore-overview.md#clean-backup-data)
 * `.spec.from.host`: the address of the TiDB cluster to be backed up, which is the service name of the TiDB cluster to be exported, such as `basic-tidb`.
 * `.spec.from.port`: the port of the TiDB cluster to be backed up.
 * `.spec.from.user`: the user of the TiDB cluster to be backed up.
@@ -139,7 +139,7 @@ This section introduces the fields in the `Backup` CR.
 * `spec.s3.region`: if you want to use Amazon S3 for backup storage, configure this field as the region where Amazon S3 is located.
 * `.spec.s3.bucket`: the name of the bucket of the S3-compatible storage.
 * `.spec.s3.prefix`: if you set this field, the value is used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
-* `.spec.s3.path`: specifies the storage path of the backup file on the remote storage. This field is valid only when using Dumpling to back up data or using TiDB Lightning to restore data. For example, `s3://test1-demo1/backup-2019-12-11T04:32:12Z.tgz`.
+* `.spec.s3.path`: specifies the storage path of backup files on the remote storage. This field is valid only when the data is backed up using Dumpling or restored using TiDB Lightning. For example, `s3://test1-demo1/backup-2019-12-11T04:32:12Z.tgz`.
 * `.spec.s3.endpoint`：the endpoint of S3 compatible storage service, for example, `http://minio.minio.svc.cluster.local:9000`.
 * `.spec.s3.secretName`：the name of secret which stores S3 compatible storage's access key and secret key.
 * `.spec.s3.sse`: specifies the S3 server-side encryption method. For example, `aws:kms`.
@@ -173,8 +173,8 @@ This section introduces the fields in the `Backup` CR.
 
 * `.spec.gcs.projectId`: the unique identifier of the user project on GCP. To obtain the project ID, refer to [GCP documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 * `.spec.gcs.location`: the location of the GCS bucket. For example, `us-west2`.
-* `.spec.gcs.path`: the storage path of the backup file on the remote storage. This field is valid only when using Dumpling to back up data or using TiDB Lightning to restore data. For example, `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`.
-* `.spec.gcs.secretName`: the name of the secret which stores the GCS account credential.
+* `.spec.gcs.path`: the storage path of backup files on the remote storage. This field is valid only when the data is backed up using Dumpling or restored using TiDB Dumpling. For example, `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`.
+* `.spec.gcs.secretName`: the name of the secret that stores the GCS account credential.
 * `.spec.gcs.bucket`: the name of the bucket which stores data.
 * `.spec.gcs.prefix`: if you set this field, the value is used to make up the path of the remote storage: `gcs://${.spec.gcs.bucket}/${.spec.gcs.prefix}/backupName`.
 * `.spec.gcs.storageClass`: the supported storage class.
@@ -237,11 +237,11 @@ This section introduces the fields in the `Restore` CR.
     * `db`: restore one database in the TiDB cluster.
     * `table`: restore one table in the TiDB cluster.
 
-* `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the restore, which defaults to `72h`.
+* `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` setting during the restore, which defaults to `72h`.
 
-    Before the restore begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the restored data is not garbage-collected by TiKV.
+    Before the restore begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by users, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the restored data is not garbage-collected by TiKV.
 
-    After the restore, whether the restore is successful or not, as long as the previous `tikv_gc_life_time` value is smaller than `.spec.tikvGCLifeTime`, TiDB Operator tries to set `tikv_gc_life_time` to the previous value.
+    After the restore, whether the restore is successful or not, as long as the original `tikv_gc_life_time` value is smaller than `.spec.tikvGCLifeTime`, TiDB Operator tries to set `tikv_gc_life_time` back to the original value.
 
     In extreme cases, if TiDB Operator fails to access the database, TiDB Operator cannot automatically recover the value of `tikv_gc_life_time` and treats the restore as failed.
 
