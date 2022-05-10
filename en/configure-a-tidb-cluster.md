@@ -536,9 +536,9 @@ For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/
 
 You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
 
-#### General configuration
+#### General configurations
 
-Different types of Services have some general configuration in common, including:
+Different types of Services share some general configurations as follows:
 
 * `spec.tidb.service.annotations`: the annotation added to the Service resource.
 * `spec.tidb.service.labels`: the labels added to the Service resource.
@@ -609,7 +609,7 @@ TiDB is a distributed database and its high availability must ensure that when a
 
 #### Use nodeSelector to schedule Pods
 
-By configuring the `nodeSelector` field of each component, you can specify the specific nodes that the component Pods can be scheduled onto. For details on `nodeSelector`, refer to [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector).
+By configuring the `nodeSelector` field of each component, you can specify the specific nodes that the component Pods are scheduled onto. For details on `nodeSelector`, refer to [nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
