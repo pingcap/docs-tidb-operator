@@ -32,7 +32,7 @@ It is recommended to deploy a host monitoring system in the Kubernetes cluster v
 
 ### Monitor Kubernetes components
 
-For monitoring Kubernetes components, you can refer to the solutions provided in the [Kubernetes official documentation](https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/) or use other Kubernetes-compatible monitoring systems.
+For monitoring Kubernetes components, you can refer to the solutions provided in the [Kubernetes official documentation](https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-usage-monitoring/) or use other Kubernetes-compatible monitoring systems.
 
 Some cloud service providers may provide their own solutions for monitoring Kubernetes components. Some specialized performance monitoring service providers have their own Kubernetes integration solutions that you can choose from.
 
