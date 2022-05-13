@@ -9,7 +9,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 
 > **注意：**
 >
-> 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)。
+> 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](https://docs.pingcap.com/zh/tidb/dev/clinic-user-guide-for-tiup)。
 >
 > PingCAP Clinic 暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
 
@@ -31,14 +31,14 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 Diag 部署前，请确认以下软件需求：
 
 * Kubernetes v1.12 或者更高版本
-* [TiDB Operator](/zh/tidb-operator-overview.md)
+* [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)
 * [Helm 3](https://helm.sh)
 
 #### 安装 Helm
 
-参考[使用 Helm](/zh/tidb-toolkit.md#使用-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
+参考[使用 Helm](tidb-toolkit.md#使用-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
 
 ```shell
 helm search repo diag
@@ -49,6 +49,7 @@ pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
 #### 检查部署用户的权限
 
 部署 Diag 所使用的用户需要具备创建以下类型 *Role* 和 *Cluster Role* 的权限：
+
 *Role* 权限：
 
 ```
@@ -83,9 +84,10 @@ PolicyRule:
 
 > **注意：**
 >
-> - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限。详情见[最小权限部署](#第-3-步部署-clinic-diag-pod)。
+> - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限。详情见[最小权限部署](#第-3-步部署-diag-pod)。
 
 可以通过以下步骤检查部署用户的权限：
+
 （1）查看部署用户绑定的 Role 角色 和 clusterRole 角色：
 
 ```shell
