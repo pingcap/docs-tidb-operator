@@ -36,8 +36,8 @@
   - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
   - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
   - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
-  - [使用 PingCAP Clinic](/clinic-user-guide-for-operator.md)
-  - [Clinic 数据采集范围说明](/clinic-data-instruction-for-operator.md)
+  - [使用 PingCAP Clinic](clinic-user-guide-for-operator.md)
+  - [Clinic 数据采集范围说明](clinic-data-instruction-for-operator.md)
 - 数据迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
   - 从 MySQL 迁移
