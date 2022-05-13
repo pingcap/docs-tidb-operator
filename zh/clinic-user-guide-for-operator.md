@@ -1,6 +1,6 @@
 ---
 title: 使用 PingCAP Clinic
-summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 PingCAP Clinic 诊断服务进行数据采集和快速检查。
+summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、使用 PingCAP Clinic 诊断服务进行数据采集和快速检查。
 ---
 
 # 使用 PingCAP Clinic
@@ -84,23 +84,23 @@ PolicyRule:
 
 > **注意：**
 >
-> - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限。详情见[最小权限部署](#第-3-步部署-diag-pod)。
+> - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限，详情见[最小权限部署](#第-3-步部署-diag-pod)。
 
 可以通过以下步骤检查部署用户的权限：
 
-（1）查看部署用户绑定的 Role 角色 和 clusterRole 角色：
+1. 查看部署用户绑定的 *Role* 角色 和 *clusterRole* 角色：
 
-```shell
-kubectl describe rolebinding -n ${namespace} | grep ${user_name} -A 7
-kubectl describe clusterrolebinding -n ${namespace} | grep ${user_name} -A 7
-```
+    ```shell
+    kubectl describe rolebinding -n ${namespace} | grep ${user_name} -A 7
+    kubectl describe clusterrolebinding -n ${namespace} | grep ${user_name} -A 7
+    ```
 
-（2）查看对应角色具有的权限
+2. 查看对应角色具有的权限：
 
-```shell
-kubectl describe role ${role_name} -n ${namespace}
-kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
-```
+    ```shell
+    kubectl describe role ${role_name} -n ${namespace}
+    kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
+    ```
 
 ### 第 2 步：登录 Clinic Server 获取 Access Token
 
@@ -139,8 +139,8 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 1. 通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像
 
     ```shell
-    # namespace： 和 TiDB Operator 处于同一 namespace 中
-    # diag.clinicToken: 请在 "https://clinic.pingcap.com.cn" 中登录并获取您的 Token。
+    # namespace：和 TiDB Operator 处于同一 namespace 中
+    # diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 中登录并获取您的 Token。
     helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
           --set diag.clinicToken=${clinic_token}
     ```
@@ -188,13 +188,13 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 2. 配置 `values-diag-collector.yaml` 文件。
 
-    将修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Access Token。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Access Token。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
     > **注意：**
     >
-    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
+    > - 请参照[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
     > - 部署 `diag-collector`，会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
 3. 部署 Clinic Diag。
@@ -206,11 +206,11 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
     > **注意：**
     >
-    > - namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
+    > namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
 
 4. 【可选操作】设置持久化数据卷。
 
-    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
+    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的数据卷类型，下面为使用 PVC、Host 类型的示例：
 
     ```
     # 使用 PVC 类型
@@ -285,7 +285,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     docker load -i diag-v0.7.1.tar
     ```
 
-3. `values-diag-collector.yaml` 文件。
+3. 配置 `values-diag-collector.yaml` 文件。
 
     修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Access Token。
 
@@ -311,7 +311,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 5. 【可选操作】设置持久化数据卷。
 
-    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
+    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的数据卷类型，下面为使用 PVC、Host 类型的示例：
 
     ```
     # 使用 PVC 类型
@@ -337,7 +337,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 > **注意：**
 >
-> - 本部署方式将 Diag 部署到目标集群所在的 namespace，Diag 只能采集 namespace 中的数据，不能进行跨 namespace 采集数据。
+> 本部署方式将 Diag 部署到目标集群所在的 namespace，Diag 只能采集 namespace 中的数据，不能进行跨 namespace 采集数据。
 
 1. 确认部署用户的权限
 
@@ -429,7 +429,7 @@ diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
 
 Clinic Diag 可以快速抓取 TiDB 集群的诊断数据，其中包括监控数据、配置信息等。
 
-### 使用场景
+### Clinic Diag 使用场景
 
 以下场景适用于使用 Clinic Diag 采集诊断数据：
 
