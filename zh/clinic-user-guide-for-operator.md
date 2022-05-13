@@ -31,14 +31,14 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 Diag 部署前，请确认以下软件需求：
 
 * Kubernetes v1.12 或者更高版本
-* [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-operator-overview)
+* [TiDB Operator](/zh/tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)
 * [Helm 3](https://helm.sh)
 
 #### 安装 Helm
 
-参考[使用 Helm](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-toolkit#%E4%BD%BF%E7%94%A8-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
+参考[使用 Helm](/zh/tidb-toolkit.md#使用-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
 
 ```shell
 helm search repo diag
@@ -50,6 +50,7 @@ pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
 
 部署 Diag 所使用的用户需要具备创建以下类型 *Role* 和 *Cluster Role* 的权限：
 *Role* 权限：
+
 ```
 PolicyRule:
   Resources                               Non-Resource URLs  Resource Names  Verbs
@@ -66,6 +67,7 @@ PolicyRule:
 ```
 
 *Cluster Role* 权限：
+
 ```
 PolicyRule:
   Resources                                      Non-Resource URLs  Resource Names  Verbs
@@ -85,12 +87,14 @@ PolicyRule:
 
 可以通过以下步骤检查部署用户的权限：
 （1）查看部署用户绑定的 Role 角色 和 clusterRole 角色：
+
 ```shell
 kubectl describe rolebinding -n ${namespace} | grep ${user_name} -A 7
 kubectl describe clusterrolebinding -n ${namespace} | grep ${user_name} -A 7
 ```
 
 （2）查看对应角色具有的权限
+
 ```shell
 kubectl describe role ${role_name} -n ${namespace}
 kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
@@ -287,7 +291,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
     > **注意：**
     >
-    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步-：-登录-clinic-server-获取-clinic-token)的内容获取 Token。
+    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
     > - 部署 `diag-collector` 会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
 4. 安装 Clinic Diag。
@@ -544,7 +548,7 @@ curl -s http://${host}:${port}/api/v1/collectors/${id}
 }
 ```
 
-其中，`id` 为任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。该步骤命令返回格式与上一步（[发起采集数据请求](#发起采集数据请求)）的是相同的。
+其中，`id` 为任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。该步骤命令返回格式与上一步（[发起采集数据请求](#1-发起采集数据请求)）的是相同的。
 
 如果该任务的状态变为 `finished`，则表示数据采集已完成。
 
@@ -642,7 +646,7 @@ PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支�
 
 1. 采集数据
 
-    有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)。
+    有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#使用-clinic-diag-采集诊断数据)。
 
 2. 快速诊断
 
