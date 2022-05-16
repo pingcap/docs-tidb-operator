@@ -1336,7 +1336,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v5.4.0
+     version: v5.4.1
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1395,7 +1395,7 @@ In this step, you need to perform the following operations:
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v5.4.0
+       version: v5.4.1
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
