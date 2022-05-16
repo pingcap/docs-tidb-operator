@@ -52,7 +52,7 @@ spec:
     metadata:
       name: basic
     spec:
-      version: v5.4.0
+      version: v5.4.1
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -226,7 +226,7 @@ spec:
       ngMonitoring:
         requests:
           storage: 10Gi
-        version: v5.4.0
+        version: v5.4.1
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
     ```
