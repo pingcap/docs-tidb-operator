@@ -20,10 +20,10 @@ This section introduces the fields in the `Backup` CR.
 
     - When using BR for backup, you can specify the BR version in this field.
         - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
-        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.4.0`, the image of the specified version is used for backup.
+        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.4.1`, the image of the specified version is used for backup.
         - If an image is specified without the version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
     - When using Dumpling for backup, you can specify the Dumpling version in this field.
-        - If the Dumpling version is specified in this field, such as `spec.toolImage: pingcap/dumpling:v5.4.0`, the image of the specified version is used for backup.
+        - If the Dumpling version is specified in this field, such as `spec.toolImage: pingcap/dumpling:v5.4.1`, the image of the specified version is used for backup.
         - If the field is not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for backup by default.
 
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to `72h`.
@@ -209,8 +209,8 @@ This section introduces the fields in the `Restore` CR.
 * `.spec.metadata.namespace`: the namespace where the `Restore` CR is located.
 * `.spec.toolImage`：the tools image used by `Restore`. TiDB Operator supports this configuration starting from v1.1.9.
 
-    - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v5.4.0`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
-    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v5.4.0`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
+    - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v5.4.1`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
+    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v5.4.1`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
 
 * `.spec.to.host`: the address of the TiDB cluster to be restored.
 * `.spec.to.port`: the port of the TiDB cluster to be restored.
