@@ -112,6 +112,7 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
   - v1.3
+    - [1.3.3](releases/release-1.3.3.md)
     - [1.3.2](releases/release-1.3.2.md)
     - [1.3.1](releases/release-1.3.1.md)
     - [1.3 GA](releases/release-1.3.0.md)
