@@ -4,7 +4,7 @@ title: TiDB Operator 1.3.3 Release Notes
 
 # TiDB Operator 1.3.3 Release Notes
 
-发布日期: 2022 年 5 月 16 日
+发布日期: 2022 年 5 月 17 日
 
 TiDB Operator 版本：1.3.3
 
