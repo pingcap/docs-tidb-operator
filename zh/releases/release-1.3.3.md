@@ -18,6 +18,6 @@ TiDB Operator 版本：1.3.3
 
 - 更新 `tidb-backup-manager` 镜像的基础镜像，以修复不兼容 ARM 架构的问题 ([#4490](https://github.com/pingcap/tidb-operator/pull/4490), [@better0332](https://github.com/better0332))
 
-- 修复当 tidb Service 没有 Endpoint 时，operator 可能会 panic 的问题 ([#4500](https://github.com/pingcap/tidb-operator/pull/4500), [@mikechengwei](https://github.com/mikechengwei))
+- 修复当 tidb Service 没有 Endpoint 时，TiDB Operator 可能会 panic 的问题 ([#4500](https://github.com/pingcap/tidb-operator/pull/4500), [@mikechengwei](https://github.com/mikechengwei))
 
 - 修复 Kubernetes 集群访问失败并重试后，组件 Pod 的 Labels 和 Annotations 可能丢失的问题 ([#4498](https://github.com/pingcap/tidb-operator/pull/4498), [@duduainankai](https://github.com/duduainankai))
