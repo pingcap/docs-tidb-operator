@@ -18,6 +18,6 @@ TiDB Operator version: 1.3.3
 
 - Update the base image of `tidb-backup-manager` to fix incompatibility with ARM architecture ([#4490](https://github.com/pingcap/tidb-operator/pull/4490), [@better0332](https://github.com/better0332))
 
-- Fix the issue that operator may panic when tidb Service don't have any Endpoints ([#4500](https://github.com/pingcap/tidb-operator/pull/4500), [@mikechengwei](https://github.com/mikechengwei))
+- Fix the issue that TiDB Operator may panic when tidb Service does not have any Endpoints ([#4500](https://github.com/pingcap/tidb-operator/pull/4500), [@mikechengwei](https://github.com/mikechengwei))
 
-- Fix the issue that Labels and Annotations of component Pods may lost after retrying access Kubernetes server ([#4498](https://github.com/pingcap/tidb-operator/pull/4498), [@duduainankai](https://github.com/duduainankai))
+- Fix the issue that Labels and Annotations of the component Pods may be lost after TiDB Operator fails to access the Kubernetes server and retries ([#4498](https://github.com/pingcap/tidb-operator/pull/4498), [@duduainankai](https://github.com/duduainankai))
