@@ -232,10 +232,10 @@ This section introduces the fields in the `Restore` CR.
     - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v5.4.0`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
     - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v5.4.0`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
 
-* `.spec.backupType`: the restore type. This field is valid only when using BR to restore data. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
-    * `full`: restore all databases in the TiDB cluster.
-    * `db`: restore one database in the TiDB cluster.
-    * `table`: restore one table in the TiDB cluster.
+* `.spec.backupType`: the restore type. This field is valid only when you use BR to restore data. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
+    * `full`: restore all databases in a TiDB cluster.
+    * `db`: restore a specifed database in a TiDB cluster.
+    * `table`: restore a specified table in a TiDB cluster.
 
 * `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` setting during the restore, which defaults to `72h`.
 
