@@ -127,8 +127,6 @@ To ensure persistent storage of data, TiDB clusters deployed by TiDB Operator us
 To ensure data safety in case one node is down, PD and TiKV use [Raft Consistency Algorithm](https://raft.github.io/) to replicate the stored data as multiple replicas across nodes.
 
 In the bottom layer, TiKV replicates data using the log replication and State Machine model. For write requests, data is written to the Leader node first, and then the Leader node replicates the command to its Follower nodes as a log. When most of the Follower nodes in the cluster receive this log from the Leader node, the log is committed and the State Machine changes accordingly.
-<<<<<<< HEAD
-=======
 
 ## If the Ready field of a TidbCluster is false, does it mean that the corresponding TiDBCluster is unavailable?
 
@@ -143,4 +141,3 @@ To check whether a TiDB cluster is unavailable, you can try connecting to TiDB. 
 ## After the configuration of a component is modified, why does the new configuration not take effect?
 
 By default, after the configuration is modified, the cluster is not rolling updated and the new configuration does not take effect. To enable the automatic configuration update, you need to set `spec.configUpdateStrategy: RollingUpdate`. For details, refer to [`configUpdateStrategy`](configure-a-tidb-cluster.md#configupdatestrategy).
->>>>>>> db82ce66 (en: add faq about configUpdateStrategy (#1786))
