@@ -367,29 +367,27 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
         --set diag.clusterRoleEnabled=false
     ```
 
-    > **注意：**
-    >
-    > - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
-    >
-    > {{< copyable "shell-regular" >}}
-    >
-    >  ```shell
-    > helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
-    >        --set diag.clinicToken=${clinic_token} \
-    >        --set diag.tlsEnabled=false \
-    >        --set diag.clusterRoleEnabled=false
-    > ```
-    >
-    > - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
-    >
-    > {{< copyable "shell-regular" >}}
-    >
-    > ```shell
-    > helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
-    >      --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
-    >      --set diag.clinicToken= ${clinic_token} \
-    >      --set diag.clusterRoleEnabled=false
-    > ```
+    - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+            --set diag.clinicToken=${clinic_token} \
+            --set diag.tlsEnabled=false \
+            --set diag.clusterRoleEnabled=false
+        ```
+
+    - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+            --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
+            --set diag.clinicToken= ${clinic_token} \
+            --set diag.clusterRoleEnabled=false
+        ```
 
 3. 部署成功后会输出以下结果：
 
