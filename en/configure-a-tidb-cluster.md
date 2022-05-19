@@ -537,7 +537,7 @@ You need to configure `spec.tidb.service` so that TiDB Operator creates a servic
 
 #### General configurations
 
-Different types of Services share some general configurations as follows:
+Different types of services share some general configurations as follows:
 
 * `spec.tidb.service.annotations`: the annotation added to the Service resource.
 * `spec.tidb.service.labels`: the labels added to the Service resource.
