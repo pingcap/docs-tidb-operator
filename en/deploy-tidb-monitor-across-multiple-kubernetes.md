@@ -1,6 +1,6 @@
 ---
 title: Monitor a TiDB Cluster across Multiple Kubernetes Clusters
-summary:
+summary: Learn how to monitor a TiDB cluster across multiple Kubernetes clusters and aggregate the monitoring data into the common Prometheus multi-cluster monitoring systems.
 ---
 
 # Monitor a TiDB Cluster across Multiple Kubernetes Clusters
