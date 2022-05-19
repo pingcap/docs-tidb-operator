@@ -442,7 +442,7 @@ Clinic Diag 可以快速抓取 TiDB 集群的诊断数据，其中包括监控�
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](https://clinic-docs.vercel.app/docs/getting-started/clinic-data-instruction-for-operator)。建议采集完整的监控数据，以便提升诊断效率。
+如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](https://clinic-docs.vercel.app/docs/getting-started/data-instruction/operator)。建议采集完整的监控数据，以便提升诊断效率。
 
 ### 第 2 步：采集数据
 
@@ -587,7 +587,7 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
 }
 ```
 
-返回命令结果只代表上传任务开始已经开始，并不表示已完成上传。要了解上传任务是否完成，需要通过下一步操作来查看任务状态。
+返回命令结果只代表上传任务已经开始，并不表示已完成上传。要了解上传任务是否完成，需要通过下一步操作来查看任务状态。
 
 #### 2. 查看上传任务状态
 
@@ -719,6 +719,6 @@ PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支�
     上述示例中：
 
     - 第一部分为诊断集群名称等基础信息。
-    - 第二部分为断数据来源信息。
+    - 第二部分为诊断数据来源信息。
     - 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。
     - 最后一行为诊断结果文档的保存路径。
