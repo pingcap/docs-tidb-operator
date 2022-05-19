@@ -42,7 +42,7 @@ If the TiDB cluster is already running, first upgrade the cluster, and then conf
     Then upgrade the TiDB cluster.
 
 2. Configure TiDB to support the new time zone:
-    
+
     Refer to [Time Zone Support](https://docs.pingcap.com/tidb/v4.0/configure-time-zone) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
@@ -120,10 +120,24 @@ Three possible reasons:
     kubectl get deployment --all-namespaces | grep tidb-scheduler
     ```
 
-## How does TiDB ensure data safety and reliability? 
+## How does TiDB ensure data safety and reliability?
 
 To ensure persistent storage of data, TiDB clusters deployed by TiDB Operator use [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) provided by Kubernetes cluster as the storage.
 
 To ensure data safety in case one node is down, PD and TiKV use [Raft Consistency Algorithm](https://raft.github.io/) to replicate the stored data as multiple replicas across nodes.
 
 In the bottom layer, TiKV replicates data using the log replication and State Machine model. For write requests, data is written to the Leader node first, and then the Leader node replicates the command to its Follower nodes as a log. When most of the Follower nodes in the cluster receive this log from the Leader node, the log is committed and the State Machine changes accordingly.
+
+## If the Ready field of a TidbCluster is false, does it mean that the corresponding TiDBCluster is unavailable?
+
+After you execute the `kubectl get tc` command, if the output shows that the **Ready** field of a TiDBCluster is false, it does not mean that the corresponding TiDBCluster is unavailable, because the cluster might be in any of the following status:
+
+* Upgrading
+* Scaling
+* Any Pod of PD, TiDB, TiKV, or TiFlash is not Ready
+
+To check whether a TiDB cluster is unavailable, you can try connecting to TiDB. If the connection fails, it means that the corresponding TiDBCluster is unavailable.
+
+## After the configuration of a component is modified, why does the new configuration not take effect?
+
+By default, after the configuration is modified, the cluster is not rolling updated and the new configuration does not take effect. To enable the automatic configuration update, you need to set `spec.configUpdateStrategy: RollingUpdate`. For details, refer to [`configUpdateStrategy`](configure-a-tidb-cluster.md#configupdatestrategy).
