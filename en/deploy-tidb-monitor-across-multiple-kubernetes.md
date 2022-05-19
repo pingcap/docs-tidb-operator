@@ -5,7 +5,7 @@ summary:
 
 # Monitor a TiDB Cluster across Multiple Kubernetes Clusters
 
-You can monitor a TiDB cluster that is deployed across multiple Kubernetes clusters and access the monitoring data from a global view. This document describes how to integrate with several popular multi-cluster monitoring solutions based on Prometheus, and use Grafana to visualize the data across multiple Kubernetes clusters:
+You can monitor a TiDB cluster that is deployed across multiple Kubernetes clusters and access the monitoring data from a global view. This document describes how to integrate with several popular multi-cluster monitoring solutions based on Prometheus, and how to use Grafana to visualize the data across multiple Kubernetes clusters:
 
 - [Push data from Prometheus](#push-data-from-prometheus)
 - [The pull method - Using Thanos Query](#using-thanos-query)
@@ -14,7 +14,7 @@ You can monitor a TiDB cluster that is deployed across multiple Kubernetes clust
 
 ## Push data from Prometheus
 
-The push method refers to using the remote write feature of Prometheus, which requests the Prometheus instances in different Kubernetes clusters to push monitoring data to a centralized storage.
+The push method uses the remote write feature of Prometheus, which requests the Prometheus instances in different Kubernetes clusters to push monitoring data to a centralized storage.
 
 The push method described in this section is based on Thanos. If you use [other centralized storage solutions compatible with the Prometheus remote API](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage), you only need to replace the related Thanos components.
 
@@ -24,7 +24,7 @@ The multiple Kubernetes clusters must meet the following condition:
 
 - The Prometheus (`TidbMonitor`) component in each Kubernetes cluster has access to the Thanos Receiver component.
 
-For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite).
+For the deployment instructions of Thanos Receiver, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite).
 
 ### Architecture
 
@@ -95,7 +95,7 @@ For the deployment of Thanos Receiver, refer to [kube-thanos](https://github.com
 
 ## Pull data from Prometheus
 
-The pull method refers to pulling monitoring data from Prometheus instances in different Kubernetes clusters, and aggregating the data into a global view. This section describes how to pull data [using Thanos Query](#using-thanos-query) and [using Prometheus Federation](#using-prometheus-federation).
+The pull method pulls monitoring data from Prometheus instances in different Kubernetes clusters and aggregates the data into a global view. This section describes how to pull data [using Thanos Query](#using-thanos-query) and [using Prometheus Federation](#using-prometheus-federation).
 
 <SimpleTab>
 <div label="Thanos Query">
@@ -111,7 +111,7 @@ You need to configure the network and DNS of the Kubernetes clusters so that the
 - The Thanos Query component has access to the Pod IP of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 - The Thanos Query component has access to the Pod FQDN of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 
-For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos).
+For the deployment instructions of Thanos Query, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos).
 
 #### Architecture
 
@@ -186,7 +186,7 @@ For the deployment of Thanos Query, refer to [kube-thanos](https://github.com/th
 
 3. Configure Thanos Query Stores:
 
-    You can specify the store nodes by the static service discovery method. In the Thanos Query command line's starting parameters, add `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` to specify the store node. Replace the variable with the actual value.
+    You can specify the store nodes by the static service discovery method. In the Thanos Query command line's starting parameters, add `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` to specify the store node. Replace the variables with the actual values.
 
     If you use other service discovery methods, refer to [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md).
 
@@ -296,7 +296,7 @@ scrape_configs:
 
 After collecting data using Prometheus, you can visualize multi-cluster monitoring data using Grafana.
 
-1. Obtain the Grafana Dashboards related to TiDB components by running the following command:
+1. Obtain the Grafana dashboard configuration files related to TiDB components by running the following command:
 
     {{< copyable "shell-regular" >}}
 
