@@ -23,7 +23,7 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade.
+    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
 
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
