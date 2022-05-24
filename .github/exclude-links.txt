@@ -11,3 +11,9 @@ http:/pd1_addr:port
 http:/pd2_addr:port
 http:/pd3_addr:port
 https:/%7BnodeIP%7D:%7BnodePort%7D/dashboard
+https://s.tidb.io/msmo6awg
+https://s.tidb.io/brd9zy53
+https://s.tidb.io/jkdqxudq
+https://kb.pingcap.com/shared/v1/wu2JbFeNa5GMVkQog4sWk5FxjquRlYJ5syRcowMNsDsc_tCTM-w3N-ZKy8EKQR8s7eyJlTfhROBmBpP17_JAMYQPXveCu3ZXrYKNBifsYTo
+https://kb.pingcap.com/shared/v1/wu2JbFeNa5GMVkQog4sWk3kATU-CSeFsr-MXRHp_iaNJyXNTad35IQ7Qljko_2-KOgaFNe5QiMwqNnptRV0o5GTSDQUR-K5Vaxh6DLiwnUI
+https://kb.pingcap.com/shared/v1/wu2JbFeNa5GMVkQog4sWkxGL6HXTuCH3gFFxSzhXu9Zr62TzyXavc-G-bo6qND9xyLYQKs2fHhFI3JsWCaW9_wHiz5hsoAQRjtTm_tKu1GA
