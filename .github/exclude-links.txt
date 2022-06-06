@@ -13,3 +13,5 @@ http:/pd3_addr:port
 https:/%7BnodeIP%7D:%7BnodePort%7D/dashboard
 https://s.tidb.io/*
 https://kb.pingcap.com/shared/v1/*
+https://clinic.pingcap.com:4433/*
+http:/%7Bport%7D/api/v1/data/*
