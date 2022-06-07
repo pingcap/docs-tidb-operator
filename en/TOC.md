@@ -5,7 +5,6 @@
 - Benchmark
   - [Sysbench](benchmark-sysbench.md)
 - Get Started
-  - [kind](deploy-tidb-from-kubernetes-kind.md)
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
   - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
 - Deploy
