@@ -81,6 +81,9 @@
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
+    - Replace Nodes for a TiDB Cluster
+      - [Replace Nodes on Cloud Disks](replace-nodes-for-cloud-disk.md)
+      - [Replace Nodes on Local Disks](replace-nodes-for-local-disk.md)
   - Disaster Recovery
     - [Recover a Deleted TiDB Cluster](recover-deleted-cluster.md)
     - [Recover a PD Cluster](pd-recover.md)
@@ -109,6 +112,7 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
 - Release Notes
   - v1.3
+    - [1.3.3](releases/release-1.3.3.md)
     - [1.3.2](releases/release-1.3.2.md)
     - [1.3.1](releases/release-1.3.1.md)
     - [1.3 GA](releases/release-1.3.0.md)

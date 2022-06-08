@@ -25,7 +25,7 @@ To enable TLS between components of the DM cluster, perform the following steps:
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade.
+    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
 
 3. Configure `dmctl` to connect to the cluster.
 
@@ -518,7 +518,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v5.4.0
+  version: v5.4.1
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -588,7 +588,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v5.4.0
+  version: v5.4.1
   pvReclaimPolicy: Retain
   discovery: {}
   tlsClientSecretNames:
@@ -634,14 +634,14 @@ After configuring `spec.tlsClientSecretNames`, TiDB Operator will mount the Secr
         ssl-ca: /var/lib/source-tls/${tidb_secret_name}/ca.crt
         ssl-cert: /var/lib/source-tls/${tidb_secret_name}/tls.crt
         ssl-key: /var/lib/source-tls/${tidb_secret_name}/tls.key
-    
+
     mysql-instances:
     - source-id: "replica-01"
       loader-config-name: "global"
-      
+
     loaders:
       global:
-        dir: "/var/lib/dm-worker/dumped_data"    
+        dir: "/var/lib/dm-worker/dumped_data"
     ```
 
 ### Step 4: Start the migration tasks

@@ -23,7 +23,7 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade.
+    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
 
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
@@ -1337,7 +1337,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v5.4.0
+     version: v5.4.1
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1396,7 +1396,7 @@ In this step, you need to perform the following operations:
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v5.4.0
+       version: v5.4.1
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1

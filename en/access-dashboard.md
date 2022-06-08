@@ -56,7 +56,7 @@ TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You 
     metadata:
       name: basic
     spec:
-      version: v5.4.0
+      version: v5.4.1
       timezone: UTC
       pvReclaimPolicy: Delete
       pd:
@@ -235,7 +235,7 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
       ngMonitoring:
         requests:
           storage: 10Gi
-        version: v5.4.0
+        version: v5.4.1
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
     ```
