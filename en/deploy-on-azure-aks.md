@@ -245,7 +245,12 @@ Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further cu
 
 > **Note:**
 >
-> By default, TiDB LoadBalancer in `tidb-cluster.yaml` is set to "internal", indicating that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access the internal host of the cluster or use `kubectl port-forward`. You can delete the "internal" schema in the `tidb-cluster.yaml` file to expose the LoadBalancer publicly by default. However, notice that this practice may expose TiDB to risks.
+> By default, TiDB LoadBalancer in `tidb-cluster.yaml` is set to "internal", indicating that the LoadBalancer is only accessible within the cluster virtual network, not externally. To access TiDB over the MySQL protocol, you need to use a bastion to access the internal host of the cluster or use `kubectl port-forward`. You can delete the annotation following in the tidb-cluster.yaml file:
+> 
+> annotations:
+> service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+> 
+> to expose the LoadBalancer publicly. However, notice that this practice may expose TiDB to risks.
 
 To deploy the `TidbCluster` and `TidbMonitor` CR in the AKS cluster, run the following command:
 
