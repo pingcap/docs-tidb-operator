@@ -15,7 +15,7 @@ jobs:
 
       - name: Download Exclude Path
         run: |
-          curl https://raw.githubusercontent.com/pingcap/docs/master/.github/exclude-links.txt --output exclude-links.txt
+          curl https://raw.githubusercontent.com/Oreoxmt/docs/ci/link-checker/.github/exclude-links.txt --output exclude-links.txt
 
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.1.1
