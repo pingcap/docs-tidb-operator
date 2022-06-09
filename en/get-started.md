@@ -44,7 +44,7 @@ kind is a popular tool for running local Kubernetes clusters using Docker contai
 
 Before deployment, make sure the following requirements are satisfied:
 
-- [Docker](https://docs.docker.com/install/): version >= 17.03
+- [Docker](https://docs.docker.com/install/): version >= 18.09
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.8.0
 - For Linux, the value of the sysctl parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`.
