@@ -29,7 +29,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Add remote
       run: |
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
@@ -46,7 +46,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Add remote
       run: |
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
@@ -64,7 +64,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Verify internal links
       run: ./hack/verify-links.sh
   verify-internal-link-anchors:
@@ -75,7 +75,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Verify internal link anchors
       run: ./hack/verify-link-anchors.sh
   check-control-characters:
@@ -86,7 +86,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Add remote
       run: |
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
@@ -103,7 +103,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Add remote
       run: |
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
@@ -120,7 +120,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: '12'
+        node-version: '16'
     - name: Add remote
       run: |
         git remote add upstream https://github.com/pingcap/docs-tidb-operator.git
