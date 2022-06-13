@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Add remote
@@ -42,9 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Add remote
@@ -60,9 +60,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Verify internal links
@@ -71,9 +71,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Verify internal link anchors
@@ -82,9 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Add remote
@@ -99,9 +99,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Add remote
@@ -116,9 +116,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
     - name: Add remote
