@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/tidb-scheduler/']
 
 # TiDB Scheduler 扩展调度器
 
-TiDB Scheduler 是 [Kubernetes 调度器扩展](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md) 的 TiDB 实现。TiDB Scheduler 用于向 Kubernetes 添加新的调度规则。本文介绍 TiDB Scheduler 扩展调度器的工作原理。
+TiDB Scheduler 是 [Kubernetes 调度器扩展](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md) 的 TiDB 实现。TiDB Scheduler 用于向 Kubernetes 添加新的调度规则。本文介绍 TiDB Scheduler 扩展调度器的工作原理。
 
 ## tidb-scheduler 与 default-scheduler
 
@@ -82,7 +82,7 @@ kubectl label nodes node1 zone=zone1
 
 ![TiDB Scheduler 工作原理](/media/tidb-scheduler-overview.png)
 
-TiDB Scheduler 通过实现 Kubernetes 调度器扩展（[Scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md)）来添加自定义调度规则。
+TiDB Scheduler 通过实现 Kubernetes 调度器扩展（[Scheduler extender](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md)）来添加自定义调度规则。
 
 TiDB Scheduler 组件部署为一个或者多个 Pod，但同时只有一个 Pod 在工作。Pod 内部有两个 Container，一个 Container 是原生的 `kube-scheduler`；另外一个 Container 是 `tidb-scheduler`，实现为一个 Kubernetes scheduler extender。
 
