@@ -5,7 +5,7 @@ summary: Learn what is TiDB Scheduler and how it works.
 
 # TiDB Scheduler
 
-TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md). TiDB Scheduler is used to add new scheduling rules to Kubernetes. This document introduces these new scheduling rules and how TiDB Scheduler works.
+TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md). TiDB Scheduler is used to add new scheduling rules to Kubernetes. This document introduces these new scheduling rules and how TiDB Scheduler works.
 
 ## tidb-scheduler and default-scheduler
 
@@ -81,7 +81,7 @@ Scheduling rule 2: If the number of Kubernetes nodes is less than three (in this
 
 ![TiDB Scheduler Overview](/media/tidb-scheduler-overview.png)
 
-TiDB Scheduler adds customized scheduling rules by implementing Kubernetes [Scheduler extender](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md).
+TiDB Scheduler adds customized scheduling rules by implementing Kubernetes [Scheduler extender](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md).
 
 The TiDB Scheduler component is deployed as one or more Pods, though only one Pod is working at the same time. Each Pod has two Containers inside: one Container is a native `kube-scheduler`, and the other is a `tidb-scheduler` implemented as a Kubernetes scheduler extender.
 
