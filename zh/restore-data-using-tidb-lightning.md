@@ -311,7 +311,7 @@ helm uninstall ${release_name} -n ${namespace}
 
     如果使用远程模式进行数据恢复，且异常发生在从网络存储下载数据的过程中，则依据 log 信息进行处理后，直接重新部署 tidb-lightning 进行数据恢复。否则，继续按下述步骤进行处理。
 
-2. 依据 log 并参考 [TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)，了解各故障类型的处理方法。
+2. 依据 log 并参考 [TiDB Lightning 故障排除指南](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)，了解各故障类型的处理方法。
 
 3. 对于不同的故障类型，分别进行处理：
 
@@ -339,13 +339,13 @@ helm uninstall ${release_name} -n ${namespace}
 
         5. 运行 `cat /proc/1/cmdline`，获得启动脚本。
 
-        6. 根据启动脚本中的命令行参数，参考 [TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)并使用 tidb-lightning-ctl 进行故障处理。
+        6. 根据启动脚本中的命令行参数，参考 [TiDB Lightning 故障排除指南](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)并使用 tidb-lightning-ctl 进行故障处理。
 
         7. 故障处理完成后，将 `values.yaml` 中的 `failFast` 设置为 `true` 并再次创建新的 `Job` 用于继续数据恢复。
 
     - 如果不需要使用 tidb-lightning-ctl 进行处理：
 
-        1. 参考 [TiDB Lightning 故障排除指南](https://pingcap.com/docs-cn/stable/troubleshoot-tidb-lightning/)进行故障处理。
+        1. 参考 [TiDB Lightning 故障排除指南](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)进行故障处理。
 
         2. 设置 `values.yaml` 的 `dataSource` 以确保新 `Job` 将使用发生故障的 `Job` 已有的数据源及 checkpoint 信息：
 

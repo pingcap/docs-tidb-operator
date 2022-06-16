@@ -135,7 +135,7 @@ systemctl start irqbalance
 
 ## CPUfreq 调节器模式设置
 
-为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#检查和配置操作系统优化参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -253,6 +253,6 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
 
 ## TiDB 集群资源需求
 
-请根据[服务器建议配置](https://pingcap.com/docs-cn/stable/hardware-and-software-requirements/#生产环境)来规划机器的配置。
+请根据[服务器建议配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements#生产环境)来规划机器的配置。
 
 另外，在生产环境中，尽量不要在 Kubernetes Master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。因为网卡带宽的限制，Master 节点网卡满负荷工作会影响到 Worker 节点和 Master 节点之间的心跳信息汇报，导致比较严重的问题。
