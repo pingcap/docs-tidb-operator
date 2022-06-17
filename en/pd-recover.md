@@ -184,7 +184,7 @@ Execute the following command to set the value of `spec.pd.replicas` to the desi
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}
+kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}'
 ```
 
 ### Step 7. Restart TiDB and TiKV

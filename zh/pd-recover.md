@@ -186,7 +186,7 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}
+kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":{"replicas": $replicas}}}'
 ```
 
 ### 第 7 步：重启 TiDB 和 TiKV
