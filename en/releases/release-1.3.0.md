@@ -25,7 +25,7 @@ TiDB Operator version: 1.3.0
 - Support configuring DNS config for Pods of all components ([#4394](https://github.com/pingcap/tidb-operator/pull/4394), [@handlerww](https://github.com/handlerww))
 - Add a new field `spec.tidb.initializer.createPassword` to support setting a random password for TiDB when deploying a new cluster ([#4328](https://github.com/pingcap/tidb-operator/pull/4328), [@mikechengwei](https://github.com/mikechengwei))
 - Add a new field `failover.recoverByUID` to support one-time recover for TiKV/TiFlash/DM Worker ([#4373](https://github.com/pingcap/tidb-operator/pull/4373), [@better0332](https://github.com/better0332))
-- Add a new field `sepc.pd.startUpScriptVersion` to use the `dig` command instead of `nslookup` to lookup domain in the startup script of PD ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
+- Add a new field `spec.pd.startUpScriptVersion` to use the `dig` command instead of `nslookup` to lookup domain in the startup script of PD ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
 
 ## Improvements
 
