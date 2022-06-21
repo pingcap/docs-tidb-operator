@@ -9,7 +9,7 @@ TiDB Operator 版本：1.2.7
 
 ## 新功能
 
-- 添加新的 `sepc.pd.startUpScriptVersion` 字段，以支持在 PD 启动脚本中使用 `dig` 命令而不是 `nslookup` 命令来解析域名 ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
+- 添加新的 `spec.pd.startUpScriptVersion` 字段，以支持在 PD 启动脚本中使用 `dig` 命令而不是 `nslookup` 命令来解析域名 ([#4379](https://github.com/pingcap/tidb-operator/pull/4379), [@july2993](https://github.com/july2993))
 
 ## 优化提升
 
