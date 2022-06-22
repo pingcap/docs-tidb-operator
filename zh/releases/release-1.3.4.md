@@ -10,4 +10,4 @@ TiDB Operator 版本：1.3.4
 
 ## 优化提升
 
-- 各个组件的状态信息中添加 `volumes` 字段，以展示存储卷状态 ([#4540](https://github.com/pingcap/tidb-operator/pull/4540), [@KanShiori](https://github.com/KanShiori))
+- 在各个组件的状态信息中添加了 `volumes` 字段，以展示存储卷状态 ([#4540](https://github.com/pingcap/tidb-operator/pull/4540), [@KanShiori](https://github.com/KanShiori))
