@@ -22,7 +22,6 @@ Clinic Server is a diagnostic service deployed in the cloud. Currently, you can 
 
 | Data type | Exported file | Parameter for data collection by PingCAP Clinic |
 | :------ | :------ |:-------- |
-| Performance data | `cpu_profile.proto`, `mem_heap.proto`, `goroutine.txt`, `mutex.txt` | `collectors:perf` (Diag does not collect this data type by default) |
 | Real-time configuration | `config.json` | `collectors:config` |
 
 ## TiKV diagnostic data
@@ -30,7 +29,6 @@ Clinic Server is a diagnostic service deployed in the cloud. Currently, you can 
 | Data type | Exported file | Parameter for data collection by PingCAP Clinic |
 | :------ | :------ |:-------- |
 | Real-time configuration | `config.json` | `collectors:config` |
-| Performance data | `cpu_profile.proto` | `collectors:perf` (Diag does not collect this data type by default) |
 
 ## PD diagnostic data
 
@@ -39,14 +37,12 @@ Clinic Server is a diagnostic service deployed in the cloud. Currently, you can 
 | Real-time configuration | `config.json` |`collectors:config` |
 | Outputs of the command `tiup ctl pd -u http://${pd IP}:${PORT} store` | `store.json` | `collectors:config` |
 | Outputs of the command `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` | `placement-rule.json` | `collectors:config` |
-| Performance data | `cpu_profile.proto`, `mem_heap.proto`, `goroutine.txt`, `mutex.txt` | `collectors:perf` (Diag does not collect this data type by default) |
 
 ## TiFlash diagnostic data
 
 | Data type | Exported file | Parameter for data collection by PingCAP Clinic |
 | :------ | :------ |:-------- |
 | Real-time configuration | `config.json` |`collectors:config` |
-| Performance data | `cpu_profile.proto` | `collectors:perf` (Diag does not collect this data type by default)  |
 
 ## TiCDC diagnostic data
 
