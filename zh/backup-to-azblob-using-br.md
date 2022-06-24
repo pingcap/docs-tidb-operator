@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 备份 TiDB 集群数据到 Azure Blob Storage
 summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage 上。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-azblob-using-br/']
 ---
 
 <!-- markdownlint-disable MD007 -->
