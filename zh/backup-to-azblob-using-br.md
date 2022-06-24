@@ -312,7 +312,7 @@ spec:
 
 ### 第 2 步：定时备份数据到 Azure Blob Storage
 
-依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Azure Blob Stroage 上：
+依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Azure Blob Storage 上：
 
 + 方法 1：如果通过了访问密钥的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
 
