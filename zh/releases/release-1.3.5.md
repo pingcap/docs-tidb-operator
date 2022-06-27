@@ -11,4 +11,3 @@ TiDB Operator 版本：1.3.5
 ## 新功能
 
 - 支持使用 Azure Blob Storage 备份与恢复 ([#4534](https://github.com/pingcap/tidb-operator/pull/4534), [@xu21yingan](https://github.com/xu21yingan))
-
