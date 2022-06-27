@@ -109,7 +109,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
 * `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
 * `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h"，"2h45m" 等数据。
-* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限 或者 GCP 权限传输给 TiKV 进程。默认为 `true`。
+* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限、GCP 权限或者 Azure 权限传输给 TiKV 进程。默认为 `true`。
 * `.spec.br.onLine`：restore 时是否启用[在线恢复功能](https://docs.pingcap.com/zh/tidb/stable/use-br-command-line-tool#在线恢复实验性功能)。
 * `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
@@ -204,6 +204,21 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
     如果不设置 bucket ACL 策略，则默认策略为 `private`。ACL 策略的详细介绍，参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
+### Azure Blob Storage 存储字段介绍
+
+* `.spec.azblob.secretName`：指定存储 Azure Blob Storage 用户账号认证信息的 Secret 名称。
+* `.spec.azblob.container`：存储数据的 container 名字。
+* `.spec.azblob.prefix`：如果设置了这个字段，则会使用这个字段来拼接在远端存储的存储路径 `azure://${.spec.azblob.container}/${.spec.azblob.prefix}/backupName`。
+* `.spec.azblob.accessTier`：上传对象的存储类别.
+
+    Azure Blob Storage 支持以下几种 `accessTier` 类型：
+
+    * `Hot`
+    * `Cool`
+    * `Archive`
+
+    如果不设置 `accessTier`，则默认使用 `Cool`。
+
 ### Local 存储字段介绍
 
 * `.spec.local.prefix`：持久卷存储目录。如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
@@ -288,6 +303,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
 * `.spec.s3`：S3 兼容存储相关配置，具体介绍参考 [S3 字段介绍](#s3-存储字段介绍)。
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
+* `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 * `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
 
 ## BackupSchedule CR 字段介绍
