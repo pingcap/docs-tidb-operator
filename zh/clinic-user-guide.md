@@ -149,8 +149,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     >
     > 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
     >
-    > {{< copyable "shell-regular" >}}
-    >
     > ```shell
     > helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
     >     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
@@ -250,15 +248,11 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
     通过以下命令，下载 Clinic Diag chart 文件：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     wget http://charts.pingcap.org/diag-v0.7.1.tgz
     ```
 
     将 `diag-v0.7.1.tgz` 文件拷贝到服务器上并解压到当前目录：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tar zxvf diag-v0.7.1.tgz
@@ -270,16 +264,12 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
     TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.7.1`，通过下面的命令将镜像下载下来：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     docker pull pingcap/diag:v0.7.1
     docker save -o diag-v0.7.1.tar pingcap/diag:v0.7.1
     ```
 
     接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     docker load -i diag-v0.7.1.tar
@@ -299,8 +289,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 4. 安装 Clinic Diag。
 
     使用下面的命令安装 Clinic Diag：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     helm install diag-collector ./diag --namespace=tidb-admin
@@ -359,8 +347,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 2. 通过如下 `helm` 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
         --set diag.clinicToken=${clinic_token} \
@@ -368,8 +354,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     ```
 
     - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -379,8 +363,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
         ```
 
     - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -409,8 +391,6 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 ### 第 4 步：检查 Clinic Diag Pod 的运行状态
 
 使用以下命令查询 Diag 状态：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
@@ -450,15 +430,11 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
 - 如需查看节点 IP，可使用以下命令：
 
-    {{< copyable "bash" >}}
-
     ```bash
     kubectl get node | grep node
     ```
 
 - 如需查看 `diag-collector service` 的端口号，可使用以下命令：
-
-    {{< copyable "bash" >}}
 
     ```bash
     kubectl get service -n tidb-admin
@@ -611,8 +587,6 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload
 
 执行如下命令，获取 `diag-collector-pod-name`：
 
-{{< copyable "bash" >}}
-
 ```bash
 kubectl get pod --all-namespaces  | grep diag
 ```
@@ -626,8 +600,6 @@ tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running   
 其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
 
 #### 2. 进入 Pod 并查看数据
-
-{{< copyable "bash" >}}
 
 ```bash
 kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
@@ -651,8 +623,6 @@ PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支�
 2. 快速诊断
 
     通过 API 请求，在本地对集群进行快速诊断：
-
-    {{< copyable "bash" >}}
 
     ```bash
     curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
