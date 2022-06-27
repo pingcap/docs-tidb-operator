@@ -106,15 +106,15 @@ You can follow these steps to check user access:
 
 An access token is used to identify the user and ensure that the data from Diag is uploaded to the organization created by the user. You need to log in to the Clinic Server to get a token.
 
-#### Sign up and login to the Clinic Server
+#### 1. Sign up and login to the Clinic Server
 
 Go to [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
 
-#### Create an organization
+#### 2. Create an organization
 
 You need to create an organization after your first login. Type the organization name to create one. After creation, you can get the token to upload data to the organization.
 
-#### Get an access token
+#### 3. Get an access token
 
 To get a token, click the icon on the Cluster page, and select **Get Access Token For Diag Tool**. Make sure to copy and save the displayed token information.
 
