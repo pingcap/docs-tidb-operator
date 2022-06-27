@@ -1,9 +1,9 @@
 ---
-title: 使用 PingCAP Clinic
+title: 使用 PingCAP Clinic 诊断 TiDB 集群
 summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、使用 PingCAP Clinic 诊断服务进行数据采集和快速检查。
 ---
 
-# 使用 PingCAP Clinic
+# 使用 PingCAP Clinic 诊断 TiDB 集群
 
 对于使用 TiDB Operator 部署的 TiDB 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 Clinic Server 云诊断平台（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
@@ -13,7 +13,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、�
 >
 > PingCAP Clinic 暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
 
-对于使用 TiDB Operator 部署的集群，Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag Pod 后，通过 API 调用继续数据采集和快速检查。
+对于使用 TiDB Operator 部署的集群，Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag Pod 后，通过调用 API 进行数据采集和快速检查。
 
 ## 使用场景
 
@@ -22,7 +22,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、�
 - [使用 Clinic Diag 采集诊断数据](#使用-clinic-diag-采集诊断数据)
 - [使用 Clinic Diag 快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
 
-## Clinic Diag 安装
+## 安装 Clinic Diag
 
 本节详细介绍了安装 Clinic Diag 的步骤。
 
@@ -48,7 +48,7 @@ pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
 
 #### 检查部署用户的权限
 
-部署 Diag 所使用的用户需要具备创建以下类型 *Role* 和 *Cluster Role* 的权限：
+部署 Diag 所使用的用户需要具备以下资源的 *Role* 和 *Cluster Role* 访问权限：
 
 *Role* 权限：
 
