@@ -1,34 +1,34 @@
 ---
-title: Troubleshoot TiDB cluster using PingCAP Clinic
-summary: Learn how to install and use PingCAP Clinic on a TiDB cluster deployed using TiDB Operator to collect data and quickly check the health of the cluster.
+title: Troubleshoot TiDB Cluster Using PingCAP Clinic
+summary: Learn how to install PingCAP Clinic on a TiDB cluster deployed using TiDB Operator and how to use PingCAP Clinic to collect data from the cluster and check the cluster health.
 ---
 
-# Troubleshoot TiDB cluster using PingCAP Clinic
+# Troubleshoot TiDB Cluster Using PingCAP Clinic
 
-For TiDB clusters deployed using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on cluster status locally using Diag client (Diag) and Clinic Server Platform (Clinic Server).
+For TiDB clusters deployed in Kubernetes using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to remotely troubleshoot cluster problems and locally check the cluster status using the Diag client (Diag) and the Clinic Server Platform (Clinic Server).
 
 > **Note:**
 >
-> This document **only** applies to clusters deployed using TiDB Operator. For clusters deployed using TiUP, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
+> This document **only** applies to clusters deployed using TiDB Operator in Kubernetes. For clusters deployed using TiUP in an on-premises environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
 >
-> PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible for now.
+> PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible.
 
-For clusters deployed using TiDB Operator, Diag needs to be deployed as a standalone Pod. This document describes how to use the `kubectl` command to create and deploy a Pod, then collect data and perform a quick check through the API.
+For clusters deployed using TiDB Operator, Diag is deployed as a standalone Pod. This document describes how to use the `kubectl` command to create and deploy the Diag Pod, then to collect data and perform a quick check through the API.
 
-## Use Scenarios
+## Usage scenarios
 
-You can easily collect data from clusters and perform a quick check using the Clinic Diag of PingCAP Clinic:
+You can easily collect data from clusters and perform a quick check using the Diag of PingCAP Clinic:
 
 - [Use Clinic Diag to collect data](#use-clinic-diag-to-collect-data)
 - [Use Clinic Diag to perform a quick check on the cluster](#use-clinic-diag-to-perform-a-quick-check-on-the-cluster)
 
-## Install Clinic Diag
+## Install Diag client
 
-The following sections describe how to install Clinic Diag.
+The following sections describe how to install Diag client.
 
 ### Step 1: Prepare the environment
 
-Before deploying Clinic Diag, make sure the following items are installed on the cluster:
+Before deploying Diag client, make sure the following items are installed on the cluster:
 
 * Kubernetes >= v1.12
 * [TiDB Operator](tidb-operator-overview.md)
@@ -38,7 +38,7 @@ Before deploying Clinic Diag, make sure the following items are installed on the
 
 #### Install Helm
 
-To install Helm and configure the chart repository `https://charts.pingcap.org/` maintained by PingCAP, you can refer to the [Use Helm](tidb-toolkit.md#use-helm).
+To install Helm and configure the chart repository `https://charts.pingcap.org/` maintained by PingCAP, you can refer to the [Use Helm](tidb-toolkit.md#use-helm) document.
 
 ```shell
 helm search repo diag
@@ -48,7 +48,7 @@ pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
 
 #### Check the privilege of the user
 
-The user should be granted access to the following *Role* and *Cluster Role* resources to deploy Clinic Diag:
+The user used for deploying Diag is expected to have the following *Role* and *Cluster Role* resources:
 
 *Role* access:
 
@@ -84,59 +84,59 @@ PolicyRule:
 
 > **Note:**
 >
-> If the cluster meets the least privilege deployment criteria, you can use a smaller set of privileges. For more information, see [Least privileges deployment](#step-3-deploy-a-diag-pod).
+> If the cluster meets the criteria of least privilege deployment, you can use a smaller set of privileges. For more information, see [Least privileges deployment](#step-3-deploy-a-diag-pod).
 
-You can follow these steps to check user access:
+Follow these steps to check the user access:
 
-1. Check the user's role of *Role* and *clusterRole* :
+1. Check the user's *Role* and *clusterRole*:
 
     ```shell
     kubectl describe rolebinding -n ${namespace} | grep ${user_name} -A 7
     kubectl describe clusterrolebinding -n ${namespace} | grep ${user_name} -A 7
     ```
 
-2. Check the user's access of *Role* and *Cluster Role* :
+2. Check the user's access of *Role* and *Cluster Role*:
 
     ```shell
     kubectl describe role ${role_name} -n ${namespace}
     kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
     ```
 
-### Step 2: Login to Clinic Server and get an access token
+### Step 2: Log in to the Clinic Server and get an access token
 
-An access token is used to identify the user and ensure that the data from Diag is uploaded to the organization created by the user. You need to log in to the Clinic Server to get a token.
+When Diag uploads data, the access token is used to identify the user and ensure that the data from Diag is uploaded to the organization created by the user. You need to log in to the [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) to get a token.
 
-#### 1. Sign up and login to the Clinic Server
+1. Sign up and log in to the Clinic Server.
 
-Go to [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    Go to [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
 
-#### 2. Create an organization
+2. Create an organization.
 
-You need to create an organization after your first login. Type the organization name to create one. After creation, you can get the token to upload data to the organization.
+    You need to create an organization after your first login. Enter the organization name to create one. After the creation, enter the organization page and you can get the token for uploading data to the organization with the following step.
 
-#### 3. Get an access token
+3. Get an access token.
 
-To get a token, click the icon on the Cluster page, and select **Get Access Token For Diag Tool**. Make sure to copy and save the displayed token information.
+    To get a token, click the icon on the Cluster page, and select **Get Access Token For Diag Tool**. Make sure that you have copied and saved the displayed token information.
 
-![An example of a token](/media/clinic-get-token.png)
+    ![An example of a token](/media/clinic-get-token.png)
 
-> **Note:**
->
-> For security reasons, Clinic Server only displays the token once on creation. If you have lost it, you can delete the old token and create a new one.
+    > **Note:**
+    >
+    > For security reasons, Clinic Server only displays the token upon the token creation. If you have lost the token, delete the old token and create a new one.
 
 ### Step 3: Deploy a Diag Pod
 
-Depending on the network setup of the cluster, you can choose one of the following methods to deploy a Diag Pod:
+Depending on the network connection of the cluster, you can choose one of the following methods to deploy a Diag Pod:
 
-- Online rapid deployment: If the cluster has Internet access and you would like to use the default Diag configuration, it is recommended to use this method.
-- Online ordinary deployment: If the cluster has Internet access and you need to customize Diag configuration, it is recommended to use this method.
-- Offline deployment: If the cluster cannot access the Internet, you can use this method.
-- Least privileges deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster to achieve the least privileges.
+- Quick online deployment: If the cluster has Internet access and you would like to use the default Diag configuration, it is recommended to use the quick online deployment.
+- Regular online deployment: If the cluster has Internet access and you need to customize the Diag configuration, it is recommended to use the regular online deployment.
+- Offline deployment: If the cluster cannot access the Internet, you can use the offline deployment.
+- Least privileges deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster to have the least privileges.
 
 <SimpleTab>
-<div label="Online rapid deployment">
+<div label="Quick online deployment">
 
-1. Deploy Diag with the following `helm` command and the latest Diag image is pulled from the Docker Hub.
+1. Deploy Clinic Diag with the following `helm` command and the latest Diag image is pulled from the Docker Hub.
 
     ```shell
     # namespace: same as the namespace of TiDB Operator
@@ -161,7 +161,7 @@ Depending on the network setup of the cluster, you can choose one of the followi
     ```
 
 </div>
-<div label="Online ordinary deployment">
+<div label="Regular online deployment">
 
 1. Get the `values-diag-collector.yaml` file from the Clinic Diag chart.
 
@@ -182,9 +182,9 @@ Depending on the network setup of the cluster, you can choose one of the followi
 
     > **Note:**
     >
-    > To get the token, please refer to [Step 2: Login to Clinic Server and get an access token](#step-2-login-to-clinic-server-and-get-an-access-token)
+    > To get the token, please refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token)
 
-3. Deploy Clinic Diag.
+3. Deploy Diag.
 
     ```shell
     helm install diag-collector pingcap/diag --namespace=tidb-admin --version=${chart_version} -f ${HOME}/diag-collector/values-diag-collector.yaml && \
@@ -193,11 +193,11 @@ Depending on the network setup of the cluster, you can choose one of the followi
 
     > **Note:**
     >
-    > The namespace should be the same as the namespace of TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Clinic Diag.
+    > The namespace should be the same as the namespace of TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Diag.
 
 4. (Optional) Set the persistent volume.
 
-    This step can set the volume for Diag to persist its data. To set the volume, you can set `diag.volume` with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
+    This step can set the volume for CLinic Diag to persist its data. To set the volume, you can set `diag.volume` with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
 
     ```
     # Use PVC volume type
@@ -218,9 +218,9 @@ Depending on the network setup of the cluster, you can choose one of the followi
     > - It is not supported to set the volume on multiple disks.
     > - Support any type of StorageClass.
 
-5. (Optional) Upgrade Clinic Diag.
+5. (Optional) Upgrade Diag.
 
-    If you want to upgrade Clinic Diag, you can modify the `${HOME}/diag-collector/values-diag-collector.yaml` file and then execute the following command.
+    If you want to upgrade Diag, you can modify the `${HOME}/diag-collector/values-diag-collector.yaml` file and then execute the following command.
 
     ```shell
     helm upgrade diag-collector pingcap/diag --namespace=tidb-admin -f ${HOME}/diag-collector/values-diag-collector.yaml
@@ -272,7 +272,7 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
     > **Note:**
     >
-    > To get the token, please refer to [Step 2: Login to Clinic Server and get an access token](#step-2-login-to-clinic-server-and-get-an-access-token)
+    > To get the token, please refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token)
 
 4. Install Clinic Diag.
 
@@ -284,7 +284,7 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
     > **Note:**
     >
-    > The `namespace` should be the same as TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Clinic Diag.
+    > The `namespace` should be the same as TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Diag.
 
 5. (Optional) Set the persistent volume.
 
@@ -368,9 +368,9 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 </div>
 </SimpleTab>
 
-### Step 4: Check the status of the Clinic Diag Pod
+### Step 4: Check the status of the Diag Pod
 
-You can check the status of the Clinic Diag Pod with the following command:
+You can check the status of the Diag Pod with the following command:
 
 ```shell
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
@@ -385,11 +385,11 @@ diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
 
 ## Use Clinic Diag to collect data
 
-You can use Diag to quickly collect diagnostic data from TiDB clusters, including monitoring data and configurations.
+You can use Clinic Diag to quickly collect diagnostic data from TiDB clusters, including monitoring data and configurations.
 
 ### Usage scenarios for Clinic Diag
 
-Clinic Diag is suitable for the following scenarios:
+Diag is suitable for the following scenarios:
 
 - When your cluster has some problems, if you need to contact PingCAP technical support, you can use Clinic Diag to collect the diagnostic data to facilitate remote troubleshooting.
 - Use Clinic Diag to collect and save the data for later analysis.
@@ -432,161 +432,161 @@ You can collect data using Clinic Diag APIs.
     - The port to access `diag-collector service` from outside is `31917`.
     - The service type is NodePort. You can access this service from any host in the Kubernetes cluster with its IP address `${host}` and port `${port}`.
 
-#### 1. Request for collecting data
+1. Request for collecting data.
 
-You can request for collecting data using the following API:
+    You can request for collecting data using the following API:
 
-```bash
-curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
-```
-
-The usage of the API parameters is as follows:
-
-- `clusterName`: the name of the TiDB cluster.
-- `namespace`: the namespace name of the TiDB cluster (not the `namespace` of TiDB Operator).
-- `collector`: optional, which controls the data types to be collected. The supported values include `monitor`, `config`, and `perf`. If the parameter is not specified, `monitor` and `config` data is collected by default.
-- `from` and `to`: specify the start time and end time of the data collection. `+0800` indicates the time zone is UTC+8. The supported time formats are as follows:
-
-    ```
-    "2006-01-02T15:04:05Z07:00"
-    "2006-01-02T15:04:05.999999999Z07:00"
-    "2006-01-02 15:04:05 -0700",
-    "2006-01-02 15:04 -0700",
-    "2006-01-02 15 -0700",
-    "2006-01-02 -0700",
-    "2006-01-02 15:04:05",
-    "2006-01-02 15:04",
-    "2006-01-02 15",
-    "2006-01-02",
+    ```bash
+    curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
     ```
 
-An example output is as follows:
+    The usage of the API parameters is as follows:
 
-```
-"clusterName": "${cluster-namespace}/${cluster-name}",
-"collectors"            "config",
-    "monitor"
-],
-"date": "2021-12-10T10:10:54Z",
-"from": "2021-12-08 12:00 +0800",
-"id": "fMcXDZ4hNzs",
-"status": "accepted",
-"to": "2021-12-08 18:00 +0800"
-```
+    - `clusterName`: the name of the TiDB cluster.
+    - `namespace`: the namespace name of the TiDB cluster (not the `namespace` of TiDB Operator).
+    - `collector`: optional, which controls the data types to be collected. The supported values include `monitor`, `config`, and `perf`. If the parameter is not specified, `monitor` and `config` data is collected by default.
+    - `from` and `to`: specify the start time and end time of the data collection. `+0800` indicates the time zone is UTC+8. The supported time formats are as follows:
 
-Descriptions of the preceding output:
+        ```
+        "2006-01-02T15:04:05Z07:00"
+        "2006-01-02T15:04:05.999999999Z07:00"
+        "2006-01-02 15:04:05 -0700",
+        "2006-01-02 15:04 -0700",
+        "2006-01-02 15 -0700",
+        "2006-01-02 -0700",
+        "2006-01-02 15:04:05",
+        "2006-01-02 15:04",
+        "2006-01-02 15",
+        "2006-01-02",
+        ```
 
-- `date`: the time when the collection task is requested.
-- `id`: the ID of the collection task. It is the only information to identify the collection task in the following operations.
-- `status`: the current status of the task and `accepted` means the task is queued.
+    An example output is as follows:
 
-> **Note:**
->
-> The response of the API indicates that the collection task is started but might not be completed. To check whether the collection task is completed, go to the next step.
+    ```
+    "clusterName": "${cluster-namespace}/${cluster-name}",
+    "collectors"            "config",
+        "monitor"
+    ],
+    "date": "2021-12-10T10:10:54Z",
+    "from": "2021-12-08 12:00 +0800",
+    "id": "fMcXDZ4hNzs",
+    "status": "accepted",
+    "to": "2021-12-08 18:00 +0800"
+    ```
 
-#### 2. Check the status of collecting data
+    Descriptions of the preceding output:
 
-To check the status of the collection task, use the following API:
+    - `date`: the time when the collection task is requested.
+    - `id`: the ID of the collection task. It is the only information to identify the collection task in the following operations.
+    - `status`: the current status of the task and `accepted` means the task is queued.
 
-```bash
-curl -s http://${host}:${port}/api/v1/collectors/${id}
-{
+    > **Note:**
+    >
+    > The response of the API indicates that the collection task is started but might not be completed. To check whether the collection task is completed, go to the next step.
+
+2. Check the status of collecting data.
+
+    To check the status of the collection task, use the following API:
+
+    ```bash
+    curl -s http://${host}:${port}/api/v1/collectors/${id}
+    {
+                "clusterName": "${cluster-namespace}/${cluster-name}",
+            "collectors": [
+                "config",
+                "monitor"
+            ],
+            "date": "2021-12-10T10:10:54Z",
+            "from": "2021-12-08 12:00 +0800",
+            "id": "fMcXDZ4hNzs",
+            "status": "finished",
+            "to": "2021-12-08 18:00 +0800"
+    }
+    ```
+
+    In the preceding command, `id` is the ID of the collection task, which is `fMcXDZ4hNzs` in this case. The output format of this step is the same as the request for collecting data step.
+
+    When the status of the collection task becomes `finished`, the collection task is completed.
+
+3. View the collected data.
+
+    After the collection task, you can get the collection time and data size using the following API:
+
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}
+    {
             "clusterName": "${cluster-namespace}/${cluster-name}",
-        "collectors": [
-            "config",
-            "monitor"
-        ],
-        "date": "2021-12-10T10:10:54Z",
-        "from": "2021-12-08 12:00 +0800",
-        "id": "fMcXDZ4hNzs",
-        "status": "finished",
-        "to": "2021-12-08 18:00 +0800"
-}
-```
+            "date": "2021-12-10T10:10:54Z",
+            "id": "fMcXDZ4hNzs",
+            "size": 1788980746
+    }
+    ```
 
-In the preceding command, `id` is the ID of the collection task, which is `fMcXDZ4hNzs` in this case. The output format of this step is the same as step 1 [Request for collecting data](#1-request-for-collecting-data).
-
-When the status of the collection task becomes `finished`, the collection task is completed.
-
-#### 3. View the collected data
-
-After the collection task, you can get the collection time and data size using the following API:
-
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}
-{
-        "clusterName": "${cluster-namespace}/${cluster-name}",
-        "date": "2021-12-10T10:10:54Z",
-        "id": "fMcXDZ4hNzs",
-        "size": 1788980746
-}
-```
-
-With the preceding command, you can **only** get the size of the dataset but cannot view the detailed data.
+    With the preceding command, you can **only** get the size of the dataset but cannot view the detailed data.
 
 ### Step 3: Upload data
 
 To provide cluster diagnostic data to PingCAP technical support, you need to upload the data to the Clinic Server first, and then send the obtained data access link to the staff. The Clinic Server is a cloud service that stores and shares the collected data.
 
-#### 1. Request for an upload task
+1. Request for an upload task.
 
-You can upload the collected dataset using the following API:
+    You can upload the collected dataset using the following API:
 
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
-{
-        "date": "2021-12-10T11:26:39Z",
-        "id": "fMcXDZ4hNzs",
-        "status": "accepted"
-}
-```
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
+    {
+            "date": "2021-12-10T11:26:39Z",
+            "id": "fMcXDZ4hNzs",
+            "status": "accepted"
+    }
+    ```
 
-The response of the preceding command only indicates that the upload task is started but might not be completed. To check whether the upload task is completed, go to the next step.
+    The response of the preceding command only indicates that the upload task is started but might not be completed. To check whether the upload task is completed, go to the next step.
 
-#### 2. Check the status of the upload task
+2. Check the status of the upload task.
 
-To check the status of the upload task, use the following API:
+    To check the status of the upload task, use the following API:
 
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}/upload
-{
-        "date": "2021-12-10T10:23:36Z",
-        "id": "fMcXDZ4hNzs",
-        "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
-        "status": "finished"
-}
-```
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}/upload
+    {
+            "date": "2021-12-10T10:23:36Z",
+            "id": "fMcXDZ4hNzs",
+            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+            "status": "finished"
+    }
+    ```
 
-When the status of the upload task becomes `finished`, the upload task is completed. At this time, `result` indicates the access link of the uploaded data in the Clinic Server, which is the link you need to send to the staff.
+    When the status of the upload task becomes `finished`, the upload task is completed. At this time, `result` indicates the access link of the uploaded data in the Clinic Server, which is the link you need to send to the staff.
 
 ### View data locally (optional)
 
 The collected data is stored in the `/diag/collector/diag-${id}` directory. You can view the data in the Pod with the following steps.
 
-#### 1. Get `diag-collector-pod-name`
+1. Get `diag-collector-pod-name`.
 
-To get the `diag-collector-pod-name`, you can execute the following command:
+    To get the `diag-collector-pod-name`, you can execute the following command:
 
-```bash
-kubectl get pod --all-namespaces  | grep diag
-```
+    ```bash
+    kubectl get pod --all-namespaces  | grep diag
+    ```
 
-An example output is as follows:
+    An example output is as follows:
 
-```
-tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
-```
+    ```
+    tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
+    ```
 
-In the preceding output, the name of Diag Pod is `diag-collector-69bf78478c-nvt47` and the `namespace` is `tidb-admin`.
+    In the preceding output, the name of Diag Pod is `diag-collector-69bf78478c-nvt47` and the `namespace` is `tidb-admin`.
 
-#### 2. View data in Pod
+2. View data in Pod.
 
-To view data in Pod, you can use the following command. You should replace `${namespace}` with the `namespace` of TiDB Operator (usually `tidb-admin`).
+    To view data in Pod, you can use the following command. You should replace `${namespace}` with the `namespace` of TiDB Operator (usually `tidb-admin`).
 
-```bash
-kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
-cd  /diag/collector/diag-${id}
-```
+    ```bash
+    kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
+    cd  /diag/collector/diag-${id}
+    ```
 
 ## Use Clinic Diag to perform a quick check on the cluster
 
