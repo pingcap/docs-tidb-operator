@@ -34,7 +34,6 @@
   - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
   - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
   - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
-  - [Troubleshoot TiDB cluster using PingCAP Clinic](clinic-user-guide.md)
 - Migrate
   - [Import Data](restore-data-using-tidb-lightning.md)
   - Migrate from MySQL
@@ -96,6 +95,7 @@
   - [Deployment Failures](deploy-failures.md)
   - [Cluster Exceptions](exceptions.md)
   - [Network Issues](network-issues.md)
+  - [Troubleshoot TiDB cluster using PingCAP Clinic](clinic-user-guide.md)
 - [FAQs](faq.md)
 - Reference
   - Architecture
