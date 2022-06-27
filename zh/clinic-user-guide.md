@@ -106,15 +106,15 @@ PolicyRule:
 
 Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认证，保证数据上传到用户创建的组织下。需要注册登录 Clinic Server 后才能获取 Token。
 
-#### 注册并登录 Clinic Server
+#### 1. 注册并登录 Clinic Server
 
 登录 [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login)，选择 **Sign in with AskTUG**，可以通过 TiDB 社区帐号登录 PingCAP Clinic 服务。若你还没有 TiDB 社区帐号，可以在登录界面进行注册。
 
-#### 创建组织
+#### 2. 创建组织
 
 用户第一次登录成功后，需要创建组织。根据页面提示输入组织名称，即可创建。创建成功后进入组织页面，可以获取 Token 后通过 Diag 的命令行或接口上传。
 
-#### 获取客户端上传 Token
+#### 3. 获取客户端上传 Token
 
 点击页面上的上传图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中复制并保存 Token 信息。
 
