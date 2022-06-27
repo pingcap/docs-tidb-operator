@@ -35,7 +35,6 @@
   - [跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
   - [开启 TidbMonitor 动态配置](enable-monitor-dynamic-configuration.md)
   - [开启 TidbMonitor 分片功能](enable-monitor-shards.md)
-  - [使用 PingCAP Clinic 诊断服务 (Technical Preview)](clinic-user-guide.md)
 - 数据迁移
   - [导入集群数据](restore-data-using-tidb-lightning.md)
   - 从 MySQL 迁移
@@ -94,6 +93,7 @@
   - [部署错误](deploy-failures.md)
   - [集群异常](exceptions.md)
   - [网络问题](network-issues.md)
+  - [使用 PingCAP Clinic 诊断服务 (Technical Preview)](clinic-user-guide.md)
 - [常见问题](faq.md)
 - 参考
   - 架构
