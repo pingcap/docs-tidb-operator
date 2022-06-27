@@ -385,9 +385,9 @@ diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
 
 ## Use Clinic Diag to collect data
 
-You can use Diag to quickly collect diagnostic data from TiDB clusters, including monitor data and configurations.
+You can use Diag to quickly collect diagnostic data from TiDB clusters, including monitoring data and configurations.
 
-### Scenarios for Clinic Diag
+### Usage scenarios for Clinic Diag
 
 Clinic Diag is suitable for the following scenarios:
 
@@ -396,7 +396,7 @@ Clinic Diag is suitable for the following scenarios:
 
 > **Note:**
 >
-> For cluster deployed using TiDB Operator, it is not supported to collect the log, configuration file, and system hardware information for now.
+> Currently, Clinic Diag does not support collecting logs, configuration files, and system hardware information from clusters deployed using TiDB Operator.
 
 ### Step 1: Check the data to be collected
 
@@ -404,17 +404,17 @@ For a full list of data that can be collected by Diag, see [Clinic diagnostic Da
 
 ### Step 2: Collect data
 
-All operations of Clinic Diag are performed with API.
+You can collect data using Clinic Diag APIs.
 
-- For the detailed API document, visit `http://${host}:${port}/api/v1`.
+- For detailed API documents, visit `http://${host}:${port}/api/v1`.
 
-- If you want to get the IP of the node, use the following command:
+- To get the IP of the node, use the following command:
 
     ```bash
     kubectl get node | grep node
     ```
 
-- If you want to get the port of `diag-collector service`, use the following command:
+- To get the port of `diag-collector service`, use the following command:
 
     ```bash
     kubectl get service -n tidb-admin
@@ -429,8 +429,8 @@ All operations of Clinic Diag are performed with API.
 
     In the preceding output:
 
-    - The port to access the Server from outside is `31917`.
-    - The Service type is NodePort. You can access this from any host in the Kubernetes cluster with its IP address `${host}` and port `${port}`.
+    - The port to access `diag-collector service` from outside is `31917`.
+    - The service type is NodePort. You can access this service from any host in the Kubernetes cluster with its IP address `${host}` and port `${port}`.
 
 #### 1. Request for collecting data
 
@@ -444,8 +444,8 @@ The usage of the API parameters is as follows:
 
 - `clusterName`: the name of the TiDB cluster.
 - `namespace`: the namespace name of the TiDB cluster (not the `namespace` of TiDB Operator).
-- `collector`: optional, configure the collectors to be collected, it supports monitor, config, and perf. If the parameter is not specified, monitor and config data will be collected by default.
-- `from` and `to`: specify the start time and end time of the data collection separately. `+0800` indicates the time zone is UTC+8. The supported time format is as follows:
+- `collector`: optional, which controls the data types to be collected. The supported values include `monitor`, `config`, and `perf`. If the parameter is not specified, `monitor` and `config` data is collected by default.
+- `from` and `to`: specify the start time and end time of the data collection. `+0800` indicates the time zone is UTC+8. The supported time formats are as follows:
 
     ```
     "2006-01-02T15:04:05Z07:00"
@@ -460,7 +460,7 @@ The usage of the API parameters is as follows:
     "2006-01-02",
     ```
 
-The output is as follows:
+An example output is as follows:
 
 ```
 "clusterName": "${cluster-namespace}/${cluster-name}",
@@ -474,7 +474,7 @@ The output is as follows:
 "to": "2021-12-08 18:00 +0800"
 ```
 
-The description of the preceding output is:
+Descriptions of the preceding output:
 
 - `date`: the time when the collection task is requested.
 - `id`: the ID of the collection task. It is the only information to identify the collection task in the following operations.
@@ -482,11 +482,11 @@ The description of the preceding output is:
 
 > **Note:**
 >
-> The response of the API indicates that the collection task is started, but might not be completed. To check whether the collection task is completed, you can follow the next step.
+> The response of the API indicates that the collection task is started but might not be completed. To check whether the collection task is completed, go to the next step.
 
 #### 2. Check the status of collecting data
 
-To check the status of the collection task, you can request using the following API:
+To check the status of the collection task, use the following API:
 
 ```bash
 curl -s http://${host}:${port}/api/v1/collectors/${id}
@@ -522,13 +522,13 @@ curl -s http://${host}:${port}/api/v1/data/${id}
 }
 ```
 
-With the preceding command, you can **only** get the data size of the dataset and the detailed data cannot be viewed.
+With the preceding command, you can **only** get the size of the dataset but cannot view the detailed data.
 
 ### Step 3: Upload data
 
 To provide cluster diagnostic data to PingCAP technical support, you need to upload the data to the Clinic Server first, and then send the obtained data access link to the staff. The Clinic Server is a cloud service that stores and shares the collected data.
 
-#### 1. Request for uploading task
+#### 1. Request for an upload task
 
 You can upload the collected dataset using the following API:
 
@@ -541,11 +541,11 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
 }
 ```
 
-The response of the preceding command only indicates that the upload task is started, but might not be completed. To check whether the upload task is completed, you can follow the next step.
+The response of the preceding command only indicates that the upload task is started but might not be completed. To check whether the upload task is completed, go to the next step.
 
-#### 2. Check the status of uploading task
+#### 2. Check the status of the upload task
 
-To check the status of the upload task, you can request using the following API:
+To check the status of the upload task, use the following API:
 
 ```bash
 curl -s http://${host}:${port}/api/v1/data/${id}/upload
@@ -561,7 +561,7 @@ When the status of the upload task becomes `finished`, the upload task is comple
 
 ### View data locally (optional)
 
-The collected data stored in the `/diag/collector/diag-${id}` directory. You can view the data in the Pod with the following two steps.
+The collected data is stored in the `/diag/collector/diag-${id}` directory. You can view the data in the Pod with the following steps.
 
 #### 1. Get `diag-collector-pod-name`
 
@@ -571,7 +571,7 @@ To get the `diag-collector-pod-name`, you can execute the following command:
 kubectl get pod --all-namespaces  | grep diag
 ```
 
-The output is as follows:
+An example output is as follows:
 
 ```
 tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
@@ -590,19 +590,19 @@ cd  /diag/collector/diag-${id}
 
 ## Use Clinic Diag to perform a quick check on the cluster
 
-PingCAP Clinic supports performing a quick check on the health of the cluster. It mainly checks the configuration and finds unreasonable configuration items.
+You can use PingCAP Clinic to perform a quick check on cluster health. It mainly checks the configurations for unreasonable configuration items.
 
 ### How to use
 
-The following introduces how to use PingCAP Clinic to perform a quick check on the cluster deployed using TiDB Operator.
+The following introduces how to use PingCAP Clinic to perform a quick check on a cluster deployed using TiDB Operator.
 
-1. Collect data:
+1. Collect data.
 
     For more about how to collect data, see [Use Clinic Diag to collect data](#use-clinic-diag-to-collect-data).
 
-2. Diagnose data:
+2. Diagnose data.
 
-    You can diagnose the data locally using the following command.
+    You can diagnose the data locally using the following command:
 
     ```bash
     curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
@@ -610,7 +610,7 @@ The following introduces how to use PingCAP Clinic to perform a quick check on t
 
     In the preceding output, `id` is the ID of the collection task, which is `fMcXDZ4hNzs` in this case.
 
-    The result lists potential risks found in configuration and detailed configuration suggestions with corresponding knowledge base links. For example:
+    The result lists potential risks found in configurations and detailed configuration suggestions with corresponding knowledge base links. For example:
 
     ```
     # Diagnostic result
