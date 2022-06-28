@@ -95,7 +95,7 @@
   - [Deployment Failures](deploy-failures.md)
   - [Cluster Exceptions](exceptions.md)
   - [Network Issues](network-issues.md)
-  - [Troubleshoot TiDB cluster using PingCAP Clinic](clinic-user-guide.md)
+  - [Troubleshoot TiDB Cluster Using PingCAP Clinic](clinic-user-guide.md)
 - [FAQs](faq.md)
 - Reference
   - Architecture
