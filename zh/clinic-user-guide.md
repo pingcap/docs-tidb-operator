@@ -19,12 +19,12 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、�
 
 通过 PingCAP Clinic 的 Diag 客户端，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
 
-- [使用 Clinic Diag 采集诊断数据](#使用-clinic-diag-采集诊断数据)
-- [使用 Clinic Diag 快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
+- [使用 Diag 采集诊断数据](#使用-diag-采集诊断数据)
+- [使用 Diag 快速诊断集群](#使用-diag-工具快速诊断集群)
 
-## 安装 Clinic Diag
+## 安装 Diag
 
-本节详细介绍了安装 Clinic Diag 的步骤。
+本节详细介绍了安装 Diag 的步骤。
 
 ### 第 1 步：准备环境
 
@@ -136,44 +136,44 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 <SimpleTab>
 <div label="在线快速部署">
 
-1. 通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
+通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
 
-    ```shell
-    # namespace：和 TiDB Operator 处于同一 namespace 中
-    # diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 中登录并获取您的 Token。
-    helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
-          --set diag.clinicToken=${clinic_token}
-    ```
+```shell
+# namespace：和 TiDB Operator 处于同一 namespace 中
+# diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 中登录并获取您的 Token。
+helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
+        --set diag.clinicToken=${clinic_token}
+```
 
-    > **注意：**
-    >
-    > 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
-    >
-    > ```shell
-    > helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
-    >     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
-    >     --set diag.clinicToken= ${clinic_token}
-    > ```
+> **注意：**
+>
+> 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+>
+> ```shell
+> helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
+>     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
+>     --set diag.clinicToken= ${clinic_token}
+> ```
 
-2. 部署成功后会输出以下结果：
+部署成功后会输出以下结果：
 
-    ```
-    NAME: diag-collector
-    LAST DEPLOYED: Tue Mar 15 13:00:44 2022
-    NAMESPACE: tidb-admin
-    STATUS: deployed
-    REVISION: 1
-    NOTES:
-    Make sure diag-collector components are running:
+```
+NAME: diag-collector
+LAST DEPLOYED: Tue Mar 15 13:00:44 2022
+NAMESPACE: tidb-admin
+STATUS: deployed
+REVISION: 1
+NOTES:
+Make sure diag-collector components are running:
 
-      kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
-      kubectl get svc --namespace tidb-admin -l app.kubernetes.io/name=diag-collector
-    ```
+    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
+    kubectl get svc --namespace tidb-admin -l app.kubernetes.io/name=diag-collector
+```
 
 </div>
 <div label="在线普通部署">
 
-1. 获取你要部署的 Clinic Diag chart 中的 `values-diag-collector.yaml` 文件。
+1. 获取你要部署的 Diag chart 中的 `values-diag-collector.yaml` 文件。
 
     ```shell
     mkdir -p ${HOME}/diag-collector && \
@@ -195,7 +195,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     > - 请参照[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
     > - 部署 `diag-collector`，会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
-3. 部署 Clinic Diag。
+3. 部署 Diag。
 
     ```shell
     helm install diag-collector pingcap/diag --namespace=tidb-admin --version=${chart_version} -f ${HOME}/diag-collector/values-diag-collector.yaml && \
@@ -204,7 +204,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
     > **注意：**
     >
-    > namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
+    > namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Diag。
 
 4. 【可选操作】设置持久化数据卷。
 
@@ -229,9 +229,9 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     > - 不支持多盘挂载
     > - 支持任意类型的 StorageClass
 
-5. 【可选操作】升级 Clinic Diag。
+5. 【可选操作】升级 Diag。
 
-    如果需要升级 Clinic Diag，请先修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，然后执行下面的命令进行升级：
+    如果需要升级 Diag，请先修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，然后执行下面的命令进行升级：
 
     ```shell
     helm upgrade diag-collector pingcap/diag --namespace=tidb-admin -f ${HOME}/diag-collector/values-diag-collector.yaml
@@ -240,13 +240,13 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 </div>
 <div label="离线部署">
 
-如果服务器无法访问互联网，需要按照下面的步骤来离线安装 Clinic Diag：
+如果服务器无法访问互联网，需要按照下面的步骤来离线安装 Diag：
 
-1. 下载 Clinic Diag chart。
+1. 下载 Diag chart。
 
-    如果服务器无法访问互联网，就无法通过配置 Helm repo 来安装 Clinic Diag 组件以及其他应用。这时，需要在能访问互联网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
+    如果服务器无法访问互联网，就无法通过配置 Helm repo 来安装 Diag 组件以及其他应用。这时，需要在能访问互联网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
-    通过以下命令，下载 Clinic Diag chart 文件：
+    通过以下命令，下载 Diag chart 文件：
 
     ```shell
     wget http://charts.pingcap.org/diag-v0.7.1.tgz
@@ -258,9 +258,9 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     tar zxvf diag-v0.7.1.tgz
     ```
 
-2. 下载 Clinic Diag 运行所需的 Docker 镜像。
+2. 下载 Diag 运行所需的 Docker 镜像。
 
-    需要在能访问互联网的机器上将 Clinic Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
+    需要在能访问互联网的机器上将 Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
     TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.7.1`，通过下面的命令将镜像下载下来：
 
@@ -286,16 +286,16 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
     > - 部署 `diag-collector` 会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
-4. 安装 Clinic Diag。
+4. 安装 Diag。
 
-    使用下面的命令安装 Clinic Diag：
+    使用下面的命令安装 Diag：
 
     ```shell
     helm install diag-collector ./diag --namespace=tidb-admin
     ```
 
     > **注意：**
-    > `namespace` 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
+    > `namespace` 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Diag。
 
 5. 【可选操作】设置持久化数据卷。
 
@@ -345,7 +345,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     tidbmonitors.pingcap.com                []                 []              [get list]
     ```
 
-2. 通过如下 `helm` 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像。
+2. 通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
 
     ```shell
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -371,7 +371,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
             --set diag.clusterRoleEnabled=false
         ```
 
-3. 部署成功后会输出以下结果：
+    部署成功后会输出以下结果：
 
     ```
     NAME: diag-collector
@@ -388,7 +388,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 </div>
 </SimpleTab>
 
-### 第 4 步：检查 Clinic Diag Pod 的运行状态
+### 第 4 步：检查 Diag Pod 的运行状态
 
 使用以下命令查询 Diag 状态：
 
@@ -403,13 +403,13 @@ NAME                             READY   STATUS    RESTARTS   AGE
 diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
 ```
 
-## 使用 Clinic Diag 采集诊断数据
+## 使用 Diag 采集诊断数据
 
-Clinic Diag 可以快速抓取 TiDB 集群的诊断数据，其中包括监控数据、配置信息等。
+Diag 可以快速抓取 TiDB 集群的诊断数据，其中包括监控数据、配置信息等。
 
-### Clinic Diag 使用场景
+### Diag 使用场景
 
-以下场景适用于使用 Clinic Diag 采集诊断数据：
+以下场景适用于使用 Diag 采集诊断数据：
 
 - 当集群出现问题，要咨询 PingCAP 技术支持时，需要提供集群诊断数据，协助技术支持人员定位问题。
 - 保留集群诊断数据，进行后期分析。
@@ -420,11 +420,11 @@ Clinic Diag 可以快速抓取 TiDB 集群的诊断数据，其中包括监控�
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明](clinic-data-instruction.md)。建议采集完整的监控数据，以便提升诊断效率。
+如需查看 Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明](clinic-data-instruction.md)。建议采集完整的监控数据，以便提升诊断效率。
 
 ### 第 2 步：采集数据
 
-Clinic Diag 工具的各项操作均会通过 API 完成。
+Diag 工具的各项操作均会通过 API 完成。
 
 - 如需查看完整的 API 定义文档，可访问节点 `http://${host}:${port}/api/v1`。
 
@@ -451,6 +451,8 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
     - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
     - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
+
+下面为使用 Clinic 调用 API 采集数据的步骤。
 
 1. 发起采集数据请求。
 
@@ -608,7 +610,7 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
     其中，`${namespace}` 需要替换为 TiDB Operator 所在的 `namespace` 名称（通常为 `tidb-admin`）。
 
-## 使用 Clinic Diag 工具快速诊断集群
+## 使用 Diag 工具快速诊断集群
 
 PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
 
@@ -618,7 +620,7 @@ PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支�
 
 1. 采集数据。
 
-    有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#使用-clinic-diag-采集诊断数据)。
+    有关采集数据具体方法，可参考[使用 Diag 工具采集诊断数据](#使用-diag-采集诊断数据)。
 
 2. 快速诊断。
 
