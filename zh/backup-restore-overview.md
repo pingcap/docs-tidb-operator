@@ -27,6 +27,7 @@ BR 相关使用文档可参考：
 
 - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
 - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
+- [使用 BR 备份 TiDB 集群到 Azure Blob Storage](backup-to-azblob-using-br.md)
 - [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
 
 如果你对数据备份有以下要求，可考虑使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 对 TiDB 进行数据备份：
@@ -46,6 +47,7 @@ Dumpling 相关使用文档可参考：
 
 - [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
 - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+- [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
 - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
 
 如果你需要从由 Dumpling 导出的或其他格式兼容的 SQL 或 CSV 文件对 TiDB 进行数据恢复，则应使用 TiDB Lightning。相关使用文档可参考：
@@ -99,7 +101,7 @@ TiDB Operator v1.2.4 及以后的版本，清理备份文件的方式为：循�
 
 * `.spec.cleanOption.pageSize`：指定每次批量删除的文件数量。默认值为 10000。
 * `.spec.cleanOption.disableBatchConcurrency`：当设置为 true 时，TiDB Operator 会禁用并发批量删除方式，使用并发删除方式。
-  
+
     如果 S3 兼容的后端存储不支持 `DeleteObjects` 接口，默认的并发批量删除会失败，需要配置该字段为 `true` 来使用并发删除方式。
 
 * `.spec.cleanOption.batchConcurrency`: 指定并发批量删除方式下启动的 Go 协程数量。默认值为 10。

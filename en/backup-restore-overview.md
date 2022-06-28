@@ -27,6 +27,7 @@ Refer to the following documents for more information:
 
 - [Back up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
 - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
+- [Back up Data to Azure Blob Storage Using BR](backup-to-azblob-using-br.md)
 - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
 
 If you have the following backup needs, you can use Dumpling to make a backup of the TiDB cluster data:
@@ -46,6 +47,7 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the 
 
 - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
+- [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
 To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
