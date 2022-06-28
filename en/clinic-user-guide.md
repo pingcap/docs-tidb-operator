@@ -136,10 +136,10 @@ Depending on the network connection of the cluster, you can choose one of the fo
 <SimpleTab>
 <div label="Quick online deployment">
 
-1. Deploy Clinic Diag with the following `helm` command and the latest Diag image is pulled from the Docker Hub.
+1. Deploy Clinic Diag using the following `helm` command and the latest Diag image is pulled from the Docker Hub.
 
     ```shell
-    # namespace: same as the namespace of TiDB Operator
+    # namespace: the same as that of TiDB Operator
     # diag.clinicToken: get your token in "https://clinic.pingcap.com.cn"
     helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
           --set diag.clinicToken=${clinic_token}
@@ -182,7 +182,7 @@ Depending on the network connection of the cluster, you can choose one of the fo
 
     > **Note:**
     >
-    > To get the token, please refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token)
+    > To get the token, refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token).
 
 3. Deploy Diag.
 
@@ -193,11 +193,11 @@ Depending on the network connection of the cluster, you can choose one of the fo
 
     > **Note:**
     >
-    > The namespace should be the same as the namespace of TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Diag.
+    > The namespace should be the same as the namespace of TiDB Operator. If TiDB Operator is not deployed, deploy TiDB Operator first and then deploy Diag.
 
-4. (Optional) Set the persistent volume.
+4. (Optional) Set a persistent volume.
 
-    This step can set the volume for CLinic Diag to persist its data. To set the volume, you can set `diag.volume` with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
+    This step sets a data volume for Clinic Diag to persist its data. To set the volume, you can configure the `diag.volume` field with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
 
     ```
     # Use PVC volume type
@@ -215,12 +215,12 @@ Depending on the network connection of the cluster, you can choose one of the fo
 
     > **Note:**
     >
-    > - It is not supported to set the volume on multiple disks.
-    > - Support any type of StorageClass.
+    > - Setting a volume on multiple disks is not supported.
+    > - All types of StorageClass are supported.
 
 5. (Optional) Upgrade Diag.
 
-    If you want to upgrade Diag, you can modify the `${HOME}/diag-collector/values-diag-collector.yaml` file and then execute the following command.
+    To upgrade Diag, modify the `${HOME}/diag-collector/values-diag-collector.yaml` file and then run the following command.
 
     ```shell
     helm upgrade diag-collector pingcap/diag --namespace=tidb-admin -f ${HOME}/diag-collector/values-diag-collector.yaml
@@ -229,11 +229,11 @@ Depending on the network connection of the cluster, you can choose one of the fo
 </div>
 <div label="Offline deployment">
 
-If the cluster cannot access the Internet, you can deploy Clinic Diag with the following step.
+If your cluster cannot access the Internet, you can deploy Clinic Diag using the offline method.
 
 1. Download the Clinic Diag chart.
 
-    If the cluster cannot access the Internet, it is unable to install Clinic Diag and other components by configuring the Helm repo. You need to download the chart files on a machine has Internet access and then copy them to the cluster.
+    If your cluster cannot access the Internet, you cannot install Clinic Diag and other components by configuring the Helm repo. In this situation, you need to download the chart files on a machine with Internet access and then copy the file to the cluster.
 
     To download Clinic Diag chart files, you can use the following command:
 
@@ -249,16 +249,16 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
 2. Download the Clinic Diag image.
 
-    You need to download the Clinic Diag image on a machine that has Internet access and then use the `docker load` command to load the images to the cluster.
+    You need to download the Clinic Diag image on a machine that has Internet access and then use the `docker load` command to load the image to the cluster.
 
-    The Clinic Diag image is `pingcap/diag:v0.7.1`. You can download and archive the image with the following command:
+    The Clinic Diag image is `pingcap/diag:v0.7.1`. You can download and save the image using the following commands:
 
     ```shell
     docker pull pingcap/diag:v0.7.1
     docker save -o diag-v0.7.1.tar pingcap/diag:v0.7.1
     ```
 
-    Then, copy the archive to the cluster and use the `docker load` command to load the image to the cluster:
+    Then, copy the archived image to the cluster and use the `docker load` command to load the image to the cluster:
 
     ```shell
     docker load -i diag-v0.7.1.tar
@@ -272,11 +272,11 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
     > **Note:**
     >
-    > To get the token, please refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token)
+    > To get the token, refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token).
 
 4. Install Clinic Diag.
 
-    Install Clinic Diag with the following command:
+    Install Clinic Diag using the following command:
 
     ```shell
     helm install diag-collector ./diag --namespace=tidb-admin
@@ -284,9 +284,9 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
     > **Note:**
     >
-    > The `namespace` should be the same as TiDB Operator. If TiDB Operator is not deployed, please deploy TiDB Operator first and then deploy Diag.
+    > The `namespace` should be the same as that of TiDB Operator. If TiDB Operator is not deployed, deploy TiDB Operator first and then deploy Diag.
 
-5. (Optional) Set the persistent volume.
+5. (Optional) Set a persistent volume.
 
     This step can set the volume for Diag to persist its data. To set the volume, you can set `diag.volume` with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
 
@@ -310,15 +310,15 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
     > - Support any type of StorageClass.
 
 </div>
-<div label="Least privileges deployment">
+<div label="Least privilege deployment">
 
 > **Note:**
 >
-> Least privileges deployment is to deploy Diag to the namespace of the cluster and Diag can only collect the data in the namespace but not across the namespaces.
+> Least privilege deployment is to deploy Diag to the namespace of the cluster so that Diag can collect data only in the namespace but not across namespaces.
 
 1. Check the privilege of the user.
 
-    Least privileges deployment creates a *Role* with the following access. The user to deploy Diag needs corresponding permissions to create a *Role* of this type.
+    This deployment method creates a *Role* with the following access. The user to deploy Diag needs the corresponding permissions to create a *Role* of this type.
 
     ```
     Resources                               Non-Resource URLs  Resource Names  Verbs
@@ -334,7 +334,7 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
     tidbmonitors.pingcap.com                []                 []              [get list]
     ```
 
-2. Deploy Diag with the following `helm` command, and the latest Diag image is pulled from the Docker Hub.
+2. Deploy Diag using the following `helm` command, and the latest Diag image is pulled from the Docker Hub.
 
     ```shell
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -342,7 +342,7 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
         --set diag.clusterRoleEnabled=false
     ```
 
-    If TLS is not enabled in the cluster, you can use the `--set diag.tls.enabled=false`, then the created *Role* will not have the `get` and `list` privileges of `secrets`.
+    If TLS is not enabled in the cluster, you can add the `--set diag.tls.enabled=false` flag, then the created *Role* will not have the `get` and `list` privileges of `secrets`.
 
     ```shell
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -370,7 +370,7 @@ If the cluster cannot access the Internet, you can deploy Clinic Diag with the f
 
 ### Step 4: Check the status of the Diag Pod
 
-You can check the status of the Diag Pod with the following command:
+You can check the status of the Diag Pod using the following command:
 
 ```shell
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
