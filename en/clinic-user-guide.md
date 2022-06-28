@@ -112,7 +112,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
 2. Create an organization.
 
-    Create an organization on the Clinic Server. Organization is a collection of TiDB clusters. You can upload diagnostic data on the created organization.
+    Create an organization on the Clinic Server. An organization is a collection of TiDB clusters. You can upload diagnostic data to the created organization.
 
 3. Get an access token.
 
@@ -129,9 +129,9 @@ When Diag uploads data, the access token is used to identify the user and ensure
 Depending on the network connection of the cluster, you can choose one of the following methods to deploy a Diag Pod:
 
 - Quick online deployment: If the cluster has Internet access and you would like to use the default Diag configuration, it is recommended to use the quick online deployment.
-- Regular online deployment: If the cluster has Internet access and you need to customize the Diag configuration, it is recommended to use the regular online deployment.
+- Standard online deployment: If the cluster has Internet access and you need to customize the Diag configuration, it is recommended to use the standard online deployment.
 - Offline deployment: If the cluster cannot access the Internet, you can use the offline deployment.
-- Least privilege deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster to have the least privileges.
+- Least privilege deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster so that Diag has the least privileges.
 
 <SimpleTab>
 <div label="Quick online deployment">
@@ -161,7 +161,7 @@ Make sure diag-collector components are running:
 ```
 
 </div>
-<div label="Regular online deployment">
+<div label="Standard online deployment">
 
 1. Get the `values-diag-collector.yaml` file from the Diag chart.
 
