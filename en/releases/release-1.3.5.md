@@ -10,4 +10,4 @@ TiDB Operator version: 1.3.5
 
 ## New Features
 
-- Support BR on Azure Blob Storage in TiDB Operator ([#4534](https://github.com/pingcap/tidb-operator/pull/4534), [@xu21yingan](https://github.com/xu21yingan))
+- Support backing up data to and restoring data from Azure Blob Storage ([#4534](https://github.com/pingcap/tidb-operator/pull/4534), [@xu21yingan](https://github.com/xu21yingan))
