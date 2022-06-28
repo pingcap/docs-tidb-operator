@@ -5,7 +5,7 @@ summary: Learn how to install PingCAP Clinic on a TiDB cluster deployed using Ti
 
 # Troubleshoot TiDB Cluster Using PingCAP Clinic
 
-For TiDB clusters deployed in Kubernetes using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to remotely troubleshoot cluster problems and locally check the cluster status using the Diag client (Diag) and the Clinic Server Platform (Clinic Server).
+For TiDB clusters deployed in Kubernetes using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to remotely troubleshoot cluster problems and locally check the cluster status using the Clinic Diag client (Diag) and the Clinic Server Platform (Clinic Server).
 
 > **Note:**
 >
@@ -19,16 +19,16 @@ For clusters deployed using TiDB Operator, Diag is deployed as a standalone Pod.
 
 You can easily collect data from clusters and perform a quick check using the Diag of PingCAP Clinic:
 
-- [Use Clinic Diag to collect data](#use-clinic-diag-to-collect-data)
-- [Use Clinic Diag to perform a quick check on the cluster](#use-clinic-diag-to-perform-a-quick-check-on-the-cluster)
+- [Use Diag to collect data](#use-diag-to-collect-data)
+- [Use Diag to perform a quick check on the cluster](#use-diag-to-perform-a-quick-check-on-the-cluster)
 
 ## Install Diag client
 
-The following sections describe how to install Diag client.
+The following sections describe how to install Diag.
 
 ### Step 1: Prepare the environment
 
-Before deploying Diag client, make sure the following items are installed on the cluster:
+Before deploying Diag, make sure the following items are installed on the cluster:
 
 * Kubernetes >= v1.12
 * [TiDB Operator](tidb-operator-overview.md)
@@ -84,7 +84,7 @@ PolicyRule:
 
 > **Note:**
 >
-> If the cluster meets the criteria of least privilege deployment, you can use a smaller set of privileges. For more information, see [Least privileges deployment](#step-3-deploy-a-diag-pod).
+> If the cluster meets the criteria of least privilege deployment, you can use a smaller set of privileges. For more information, see [Least privilege deployment](#step-3-deploy-a-diag-pod).
 
 Follow these steps to check the user access:
 
@@ -104,7 +104,7 @@ Follow these steps to check the user access:
 
 ### Step 2: Log in to the Clinic Server and get an access token
 
-When Diag uploads data, the access token is used to identify the user and ensure that the data from Diag is uploaded to the organization created by the user. You need to log in to the [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) to get a token.
+When Diag uploads data, the access token is used to identify the user and ensures that the data from Diag is uploaded to the organization created by the user. You need to log in to the [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) to get a token.
 
 1. Sign up and log in to the Clinic Server.
 
@@ -112,11 +112,11 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
 2. Create an organization.
 
-    You need to create an organization after your first login. Enter the organization name to create one. After the creation, enter the organization page and you can get the token for uploading data to the organization with the following step.
+    Create an organization on the Clinic Server. Organization is a collection of TiDB clusters. You can upload diagnostic data on the created organization.
 
 3. Get an access token.
 
-    To get a token, click the icon on the Cluster page, and select **Get Access Token For Diag Tool**. Make sure that you have copied and saved the displayed token information.
+    To get a token, enter the organization page and click the icon in the lower-right corner of the Clusters page, and select **Get Access Token For Diag Tool**. Make sure that you have copied and saved the displayed token information.
 
     ![An example of a token](/media/clinic-get-token.png)
 
@@ -131,39 +131,39 @@ Depending on the network connection of the cluster, you can choose one of the fo
 - Quick online deployment: If the cluster has Internet access and you would like to use the default Diag configuration, it is recommended to use the quick online deployment.
 - Regular online deployment: If the cluster has Internet access and you need to customize the Diag configuration, it is recommended to use the regular online deployment.
 - Offline deployment: If the cluster cannot access the Internet, you can use the offline deployment.
-- Least privileges deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster to have the least privileges.
+- Least privilege deployment: If all nodes in the cluster are running under the same namespace, you can deploy Diag to the namespace of the cluster to have the least privileges.
 
 <SimpleTab>
 <div label="Quick online deployment">
 
-1. Deploy Clinic Diag using the following `helm` command and the latest Diag image is pulled from the Docker Hub.
+Deploy Diag using the following `helm` command and the latest Diag image is pulled from the Docker Hub.
 
-    ```shell
-    # namespace: the same as that of TiDB Operator
-    # diag.clinicToken: get your token in "https://clinic.pingcap.com.cn"
-    helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
-          --set diag.clinicToken=${clinic_token}
-    ```
+```shell
+# namespace: the same as that of TiDB Operator
+# diag.clinicToken: get your token in "https://clinic.pingcap.com.cn"
+helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
+        --set diag.clinicToken=${clinic_token}
+```
 
-2. The output is as follows:
+The output is as follows:
 
-    ```
-    NAME: diag-collector
-    LAST DEPLOYED: Tue Mar 15 13:00:44 2022
-    NAMESPACE: tidb-admin
-    STATUS: deployed
-    REVISION: 1
-    NOTES:
-    Make sure diag-collector components are running:
+```
+NAME: diag-collector
+LAST DEPLOYED: Tue Mar 15 13:00:44 2022
+NAMESPACE: tidb-admin
+STATUS: deployed
+REVISION: 1
+NOTES:
+Make sure diag-collector components are running:
 
-      kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
-      kubectl get svc --namespace tidb-admin -l app.kubernetes.io/name=diag-collector
-    ```
+    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
+    kubectl get svc --namespace tidb-admin -l app.kubernetes.io/name=diag-collector
+```
 
 </div>
 <div label="Regular online deployment">
 
-1. Get the `values-diag-collector.yaml` file from the Clinic Diag chart.
+1. Get the `values-diag-collector.yaml` file from the Diag chart.
 
     ```shell
     mkdir -p ${HOME}/diag-collector && \
@@ -172,7 +172,7 @@ Depending on the network connection of the cluster, you can choose one of the fo
 
     > **Note:**
     >
-    > In the following sections, `${chart_version}` indicates the version of the Clinic Diag chart, for example, `v0.7.1`. You can get the currently supported versions through the `helm search repo -l diag` command.
+    > In the following sections, `${chart_version}` indicates the version of the Diag chart, for example, `v0.7.1`. You can get the currently supported versions through the `helm search repo -l diag` command.
 
 2. Configure the `values-diag-collector.yaml` file.
 
@@ -197,7 +197,7 @@ Depending on the network connection of the cluster, you can choose one of the fo
 
 4. (Optional) Set a persistent volume.
 
-    This step sets a data volume for Clinic Diag to persist its data. To set the volume, you can configure the `diag.volume` field with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
+    This step sets a data volume for Diag to persist its data. To set the volume, you can configure the `diag.volume` field with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
 
     ```
     # Use PVC volume type
@@ -229,13 +229,13 @@ Depending on the network connection of the cluster, you can choose one of the fo
 </div>
 <div label="Offline deployment">
 
-If your cluster cannot access the Internet, you can deploy Clinic Diag using the offline method.
+If your cluster cannot access the Internet, you can deploy Diag using the offline method.
 
-1. Download the Clinic Diag chart.
+1. Download the Diag chart.
 
-    If your cluster cannot access the Internet, you cannot install Clinic Diag and other components by configuring the Helm repo. In this situation, you need to download the chart files on a machine with Internet access and then copy the file to the cluster.
+    If your cluster cannot access the Internet, you cannot install Diag and other components by configuring the Helm repo. In this situation, you need to download the chart files on a machine with Internet access and then copy the file to the cluster.
 
-    To download Clinic Diag chart files, you can use the following command:
+    To download Diag chart files, you can use the following command:
 
     ```shell
     wget http://charts.pingcap.org/diag-v0.7.1.tgz
@@ -247,11 +247,11 @@ If your cluster cannot access the Internet, you can deploy Clinic Diag using the
     tar zxvf diag-v0.7.1.tgz
     ```
 
-2. Download the Clinic Diag image.
+2. Download the Diag image.
 
-    You need to download the Clinic Diag image on a machine that has Internet access and then use the `docker load` command to load the image to the cluster.
+    You need to download the Diag image on a machine that has Internet access and then use the `docker load` command to load the image to the cluster.
 
-    The Clinic Diag image is `pingcap/diag:v0.7.1`. You can download and save the image using the following commands:
+    The Diag image is `pingcap/diag:v0.7.1`. You can download and save the image using the following commands:
 
     ```shell
     docker pull pingcap/diag:v0.7.1
@@ -274,9 +274,9 @@ If your cluster cannot access the Internet, you can deploy Clinic Diag using the
     >
     > To get the token, refer to [Step 2: Log in to the Clinic Server and get an access token](#step-2-log-in-to-the-clinic-server-and-get-an-access-token).
 
-4. Install Clinic Diag.
+4. Install Diag.
 
-    Install Clinic Diag using the following command:
+    Install Diag using the following command:
 
     ```shell
     helm install diag-collector ./diag --namespace=tidb-admin
@@ -288,7 +288,7 @@ If your cluster cannot access the Internet, you can deploy Clinic Diag using the
 
 5. (Optional) Set a persistent volume.
 
-    This step can set the volume for Diag to persist its data. To set the volume, you can set `diag.volume` with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
+    This step sets a data volume for Diag to persist its data. To set the volume, you can configure the `diag.volume` field with the volume type in the `${HOME}/diag-collector/values-diag-collector.yaml` file. The following examples are PVC and Host:
 
     ```
     # Use PVC volume type
@@ -306,8 +306,8 @@ If your cluster cannot access the Internet, you can deploy Clinic Diag using the
 
     > **Note:**
     >
-    > - It is not supported to set the volume on multiple disks.
-    > - Support any type of StorageClass.
+    > - Setting a volume on multiple disks is not supported.
+    > - All types of StorageClass are supported.
 
 </div>
 <div label="Least privilege deployment">
@@ -351,7 +351,7 @@ If your cluster cannot access the Internet, you can deploy Clinic Diag using the
         --set diag.clusterRoleEnabled=false
     ```
 
-3. The output is as follows:
+    The output is as follows:
 
     ```
     NAME: diag-collector
@@ -376,27 +376,27 @@ You can check the status of the Diag Pod using the following command:
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
 ```
 
-The output is as follows when the Pod is running normally:
+The output is as follows when the Pod is running properly:
 
 ```
 NAME                             READY   STATUS    RESTARTS   AGE
 diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
 ```
 
-## Use Clinic Diag to collect data
+## Use Diag to collect data
 
-You can use Clinic Diag to quickly collect diagnostic data from TiDB clusters, including monitoring data and configurations.
+You can use Diag to quickly collect diagnostic data from TiDB clusters, including monitoring data and configurations.
 
-### Usage scenarios for Clinic Diag
+### Usage scenarios for Diag
 
 Diag is suitable for the following scenarios:
 
-- When your cluster has some problems, if you need to contact PingCAP technical support, you can use Clinic Diag to collect the diagnostic data to facilitate remote troubleshooting.
-- Use Clinic Diag to collect and save the data for later analysis.
+- When your cluster has some problems, if you need to contact PingCAP technical support, you can use Diag to collect the diagnostic data to facilitate remote troubleshooting.
+- Use Diag to collect and save the data for later analysis.
 
 > **Note:**
 >
-> Currently, Clinic Diag does not support collecting logs, configuration files, and system hardware information from clusters deployed using TiDB Operator.
+> Currently, Diag **does not support** collecting logs, configuration files, and system hardware information from clusters deployed using TiDB Operator.
 
 ### Step 1: Check the data to be collected
 
@@ -404,7 +404,7 @@ For a full list of data that can be collected by Diag, see [Clinic diagnostic Da
 
 ### Step 2: Collect data
 
-You can collect data using Clinic Diag APIs.
+You can collect data using Diag APIs.
 
 - For detailed API documents, visit `http://${host}:${port}/api/v1`.
 
@@ -431,6 +431,8 @@ You can collect data using Clinic Diag APIs.
 
     - The port to access `diag-collector service` from outside is `31917`.
     - The service type is NodePort. You can access this service from any host in the Kubernetes cluster with its IP address `${host}` and port `${port}`.
+
+The following describes how to collect data using Diag APIs.
 
 1. Request for collecting data.
 
@@ -561,7 +563,7 @@ To provide cluster diagnostic data to PingCAP technical support, you need to upl
 
 ### View data locally (optional)
 
-The collected data is stored in the `/diag/collector/diag-${id}` directory. You can view the data in the Pod with the following steps.
+The collected data is stored in the `/diag/collector/diag-${id}` directory. You can view the data in the Pod using the following steps.
 
 1. Get `diag-collector-pod-name`.
 
@@ -588,7 +590,7 @@ The collected data is stored in the `/diag/collector/diag-${id}` directory. You 
     cd  /diag/collector/diag-${id}
     ```
 
-## Use Clinic Diag to perform a quick check on the cluster
+## Use Diag to perform a quick check on the cluster
 
 You can use PingCAP Clinic to perform a quick check on cluster health. It mainly checks the configurations for unreasonable configuration items.
 
@@ -598,7 +600,7 @@ The following introduces how to use PingCAP Clinic to perform a quick check on a
 
 1. Collect data.
 
-    For more about how to collect data, see [Use Clinic Diag to collect data](#use-clinic-diag-to-collect-data).
+    For more about how to collect data, see [Use Diag to collect data](#use-diag-to-collect-data).
 
 2. Diagnose data.
 
