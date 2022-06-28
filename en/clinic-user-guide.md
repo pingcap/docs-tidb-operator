@@ -314,7 +314,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
 
 > **Note:**
 >
-> Least privilege deployment is to deploy Diag to the namespace of the cluster so that Diag can collect data only in the namespace but not across namespaces.
+> Least privilege deployment is to deploy Diag to the namespace of the cluster so that Diag can collect data only in that namespace but not across namespaces.
 
 1. Check the privilege of the user.
 
