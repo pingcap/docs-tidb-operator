@@ -227,7 +227,7 @@ This section introduces the fields in the `Backup` CR.
     * `Cool`
     * `Archive`
 
-    If this field is not configured, `Cool` is used by default.
+  If this field is not configured, `Cool` is used by default.
 
 ### Local storage fields
 
