@@ -112,7 +112,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 2. 创建组织。
 
-    在 Clinic Server 中，根据页面提示输入组织名称，即可创建组织 (Organization)。组织是一系列 TiDB 集群的集合，你可以在所创建的组织上上传诊断数据。
+    在 Clinic Server 中，根据页面提示输入组织名称，即可创建组织 (Organization)。组织是一系列 TiDB 集群的集合，你可以往创建的组织上传诊断数据。
 
 3. 获取用于上传数据的 Token。
 
