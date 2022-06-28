@@ -187,7 +187,7 @@ spec:
     # port: ${tidb_port}
     # user: ${tidb_user}
     # secretName: backup-demo1-tidb-secret
- azblob:
+  azblob:
     secretName: azblob-secret-ad
     container: my-container
     prefix: my-folder
@@ -222,7 +222,7 @@ spec:
     # port: ${tidb_port}
     # user: ${tidb_user}
     # secretName: backup-demo1-tidb-secret
- azblob:
+  azblob:
     secretName: azblob-secret-ad
     container: my-container
     prefix: my-folder
@@ -257,7 +257,7 @@ spec:
     # port: ${tidb_port}
     # user: ${tidb_user}
     # secretName: backup-demo1-tidb-secret
- azblob:
+  azblob:
     secretName: azblob-secret-ad
     container: my-container
     prefix: my-folder
@@ -294,7 +294,7 @@ spec:
     # port: ${tidb_port}
     # user: ${tidb_user}
     # secretName: backup-demo1-tidb-secret
- azblob:
+  azblob:
     secretName: azblob-secret-ad
     container: my-container
     prefix: my-folder

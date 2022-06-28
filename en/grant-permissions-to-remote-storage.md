@@ -103,3 +103,43 @@ Create the `gcs-secret` secret which stores the credential used to access GCS. T
 ```shell
 kubectl create secret generic gcs-secret --from-file=credentials=./google-credentials.json -n test1
 ```
+
+## Azure account permissions
+
+Azure provides different methods to grant permissions for different types of Kubernetes clusters. This document describes the following two methods.
+
+### Grant permissions by access key
+
+The Azure client can read `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` from the process environment variables to obtain the associated user or role permissions.
+
+Run the following command to create the `azblob-secret` secret and use your Azure account access key to grant permissions. The secret stores the credential used for accessing Azure Blob Storage.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl create secret generic azblob-secret --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_STORAGE_KEY=yyy --namespace=test1
+```
+
+### Grant permissions by Azure AD
+
+The Azure client can read `AZURE_STORAGE_ACCOUNT`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET` to obtain the associated user or role permissions.
+
+1. Create the `azblob-secret-ad` secret by running the following command. Use the Active Directory (AD) of your Azure account. The secret stores the credential used for accessing Azure Blob Storage.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create secret generic azblob-secret-ad --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_CLIENT_ID=yyy --from-    literal=AZURE_TENANT_ID=zzz --from-literal=AZURE_CLIENT_SECRET=aaa --namespace=test1
+    ```
+
+2. Associate the secret with the TiKV Pod:
+
+    When you use BR to back up TiDB data, the TiKV Pod also needs to perform read and write operations on Azure Blob Storage as the BR Pod does. Therefore, you need to associate the TiKV Pod with the secret.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tikv":{"envFrom":[{"secretRef":{"name":"azblob-secret-ad"}}]}}}'
+    ```
+
+    After the TiKV Pod is restarted, check whether the Pod has the environment variables.
