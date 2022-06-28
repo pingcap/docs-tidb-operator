@@ -69,7 +69,7 @@
       - [Back Up Data Using Dumpling](backup-to-gcs.md)
       - [Restore Data Using TiDB Lightning](restore-from-gcs.md)
     - Azure Blob Storage
-      - [Back up Data Using BR](backup-to-azblob-using-br.md)
+      - [Back Up Data Using BR](backup-to-azblob-using-br.md)
       - [Restore Data Using BR](restore-from-azblob-using-br.md)
     - Persistent Volumes
       - [Back Up Data](backup-to-pv-using-br.md)
