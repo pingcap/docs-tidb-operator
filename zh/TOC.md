@@ -70,6 +70,9 @@
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs.md)
       - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)
+    - 使用 Azure Blob Storage
+      - [使用 BR 备份 TiDB 集群数据到 Azblob](backup-to-azblob-using-br.md)
+      - [使用 BR 恢复 Azblob 上的备份数据](restore-from-azblob-using-br.md)
     - 使用持久卷
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
@@ -115,6 +118,7 @@
   - [PingCAP Clinic 数据采集范围说明](clinic-data-instruction.md)
 - 版本发布历史
   - v1.3
+    - [1.3.5](releases/release-1.3.5.md)
     - [1.3.4](releases/release-1.3.4.md)
     - [1.3.3](releases/release-1.3.3.md)
     - [1.3.2](releases/release-1.3.2.md)
