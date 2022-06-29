@@ -31,7 +31,7 @@ To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) obje
 
 This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to Azure Blob Storage. The following are the detailed steps.
 
-### Step 1: Prepare for an ad-hoc backup
+### Step 1. Prepare for an ad-hoc backup
 
 1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
@@ -46,7 +46,7 @@ This document provides an example about how to back up the data of the `demo1` T
 3. For a TiDB version earlier than v4.0.8, you also need to complete the following preparation steps. For TiDB v4.0.8 or a later version, skip these preparation steps.
 
     1. Make sure that you have the `SELECT` and `UPDATE` privileges on the `mysql.tidb` table of the backup database so that the `Backup` CR can adjust the GC time before and after the backup.
-    2. Create the `backup-demo1-tidb-secret` secret to store the account and password to access the TiDB cluster:
+    2. Create `backup-demo1-tidb-secret` to store the account and password to access the TiDB cluster:
 
         {{< copyable "shell-regular" >}}
 
@@ -54,7 +54,7 @@ This document provides an example about how to back up the data of the `demo1` T
         kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
         ```
 
-### Step 2: Perform an ad-hoc backup
+### Step 2. Perform an ad-hoc backup
 
 Depending on which method you choose to grant permissions to the remote storage when preparing for the ad-hoc backup, export your data to Azure Blob Storage by doing one of the following:
 
@@ -310,11 +310,11 @@ spec:
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
 
-### Step 1: Prepare for a scheduled full backup
+### Step 1. Prepare for a scheduled full backup
 
-The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
+The steps to prepare for a scheduled full backup are the same as those of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
 
-### Step 2: Perform a scheduled full backup
+### Step 2. Perform a scheduled full backup
 
 Depending on which method you choose to grant permissions to the remote storage, perform a scheduled full backup by doing one of the following:
 
@@ -414,12 +414,12 @@ Depending on which method you choose to grant permissions to the remote storage,
           prefix: my-folder
     ```
 
-From the above content in `backup-scheduler-azblob.yaml`, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
+From the preceding content in `backup-scheduler-azblob.yaml`, you can see that the `backupSchedule` configuration consists of two parts. One is the unique configuration of `backupSchedule`, and the other is `backupTemplate`.
 
 - For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 - `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-cr.md#backup-cr-fields).
 
-After creating the scheduled full backup, use the following command to check the backup status:
+After creating the scheduled full backup, you can run the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
 
@@ -427,7 +427,7 @@ After creating the scheduled full backup, use the following command to check the
 kubectl get bks -n test1 -o wide
 ```
 
-You can use the following command to check all the backup items:
+You can run the following command to check all the backup items:
 
 {{< copyable "shell-regular" >}}
 
@@ -437,7 +437,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob 
 
 ## Delete the backup CR
 
-If you no longer need the backup CR, refer to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
+If you no longer need the backup CR, you can delete it by referring to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
 
 ## Troubleshooting
 

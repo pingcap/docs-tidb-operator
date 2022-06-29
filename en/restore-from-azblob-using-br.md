@@ -11,7 +11,7 @@ The restore method described in this document is implemented based on CustomReso
 
 ## Usage Scenarios
 
-After backing up TiDB cluster data to Azure Blob Storage using BR, if you need to recover the backup SST (key-value pairs) files from Azure Blob Storage to a TiDB cluster, you can follow steps in this document to restore the data using BR.
+After backing up TiDB cluster data to Azure Blob Storage using BR, if you need to restore the backup SST (key-value pairs) files from Azure Blob Storage to a TiDB cluster, you can follow the steps in this document to restore the data using BR.
 
 > **Note:**
 >
@@ -20,7 +20,7 @@ After backing up TiDB cluster data to Azure Blob Storage using BR, if you need t
 
 This document provides an example about how to restore the backup data from the `spec.azblob.prefix` folder of the `spec.azblob.container` bucket on Azure Blob Storage to the `demo2` TiDB cluster in the `test2` namespace. The following are the detailed steps.
 
-## Step 1: Prepare the restore environment
+## Step 1. Prepare the restore environment
 
 Before restoring backup data on Azure Blob Storage to TiDB using BR, take the following steps to prepare the restore environment:
 
@@ -46,7 +46,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
         ```
 
-## Step 2: Restore the backup data to a TiDB cluster
+## Step 2. Restore the backup data to a TiDB cluster
 
 Depending on which method you choose to grant permissions to the remote storage when preparing the restore environment, you can restore the data by doing one of the following:
 
