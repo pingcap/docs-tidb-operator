@@ -13,7 +13,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 
 如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份至 Azure Blob Storage 上：
 
-- 需要备份的数据量较大，而且要求备份速度较快
+- 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
 
 如有其他备份需求，请参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。

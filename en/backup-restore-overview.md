@@ -19,7 +19,7 @@ This document describes how to perform backup and restore on the TiDB cluster in
 
 If you have the following backup needs, you can use BR to make a backup of your TiDB cluster data:
 
-- To back up a large volume of data at a fast speed
+- To back up a large volume of data (more than 1 TB) at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
 - To perform incremental backup that is insensitive to latency
 
