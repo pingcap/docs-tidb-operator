@@ -671,4 +671,4 @@ The following introduces how to use PingCAP Clinic to perform a quick check on a
     - The first part is the basic information about the cluster.
     - The second part is the sampling information.
     - The third part is the diagnostic results, including potential configuration problems. For each configuration potential risk found, Diag provides a corresponding knowledge base link with detailed configuration suggestions.
-    - The last line is the result report and record file path.
+    - The last line is the file path of the result report and record.
