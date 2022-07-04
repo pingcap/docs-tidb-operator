@@ -11,7 +11,7 @@ This document describes how to perform backup and restore on the TiDB cluster in
 
 [TiDB Lightning](https://docs.pingcap.com/tidb/stable/get-started-with-tidb-lightning) is a tool used for fast full data import into a TiDB cluster. TiDB Lightning supports Dumpling or CSV format data source. You can use TiDB Lightning to make a logical full data restore or import.
 
-[BR](https://docs.pingcap.com/tidb/stable/br-usage-backup) is a command-line tool for distributed backup and restoration of the TiDB cluster data. Compared with Dumpling and Mydumper, BR is more suitable for huge data volumes. BR only supports TiDB v3.1 and later versions. For incremental backup insensitive to latency, refer to [BR Overview](https://docs.pingcap.com/tidb/stable/br-usage-backup). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
+[BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is a command-line tool for distributed backup and restoration of the TiDB cluster data. Compared with Dumpling and Mydumper, BR is more suitable for huge data volumes. BR only supports TiDB v3.1 and later versions. For incremental backup insensitive to latency, refer to [BR Overview](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview). For real-time incremental backup, refer to [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview).
 
 ## Usage scenarios
 
