@@ -7,7 +7,7 @@ summary: Learn how to restore data from Persistent Volume (PV) using BR.
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes. PVs in this documentation can be any [Kubernetes supported PV types](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes). This document shows how to restore data from NFS to TiDB.
 
-The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/br-usage-backup) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
 ## Usage scenarios
 
