@@ -127,7 +127,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
     When configuring `backup-nfs.yaml`, note the following:
 
-    * If you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview#back-up-incremental-data).
+    * If you want to back up data incrementally, you only need to specify the last backup timestamp `--lastbackupts` in `spec.br.options`. For the limitations of incremental backup, refer to [Use BR to Back up and Restore Data](https://docs.pingcap.com/tidb/stable/br-usage-backup#back-up-incremental-data).
 
     * `spec.local` refers to the configuration related to PVs. For more information about PV configuration, refer to [Local storage fields](backup-restore-cr.md#local-storage-fields).
 
