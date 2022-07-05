@@ -31,7 +31,7 @@ Ad-hoc 备份支持全量备份与增量备份。Ad-hoc 备份通过创建一个
 
 ### 第 1 步：准备 Ad-hoc 备份环境
 
-1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.2/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.6/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
 
 2. 执行以下命令，在 `test1` 这个命名空间中，创建备份需要的 RBAC 相关资源：
 

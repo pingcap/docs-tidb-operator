@@ -24,7 +24,7 @@ This document provides an example about how to restore the backup data from the 
 
 Before restoring backup data on a S3-compatible storage to TiDB using BR, take the following steps to prepare the restore environment:
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.2/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.6/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test2` namespace:
 
     {{< copyable "shell-regular" >}}
 
