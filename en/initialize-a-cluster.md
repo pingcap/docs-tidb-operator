@@ -14,7 +14,7 @@ This document describes how to initialize a TiDB cluster in Kubernetes (K8s), sp
 
 ## Configure TidbInitializer
 
-Refer to [TidbInitializer configuration example](https://github.com/pingcap/tidb-operator/blob/v1.3.2/manifests/initializer/tidb-initializer.yaml), [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md), and the following steps to complete TidbInitializer Custom Resource (CR), and save it to the `${cluster_name}/tidb-initializer.yaml` file. When referring to the TidbInitializer configuration example and API documentation, you need to switch the branch to the TiDB Operator version currently in use.
+Refer to [TidbInitializer configuration example](https://github.com/pingcap/tidb-operator/blob/v1.3.6/manifests/initializer/tidb-initializer.yaml), [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md), and the following steps to complete TidbInitializer Custom Resource (CR), and save it to the `${cluster_name}/tidb-initializer.yaml` file. When referring to the TidbInitializer configuration example and API documentation, you need to switch the branch to the TiDB Operator version currently in use.
 
 ### Set the cluster namespace and name
 
