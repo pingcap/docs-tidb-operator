@@ -114,7 +114,7 @@
     - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
-  - [PingCAP Clinic Diagnostic Data](clinic-data-instruction.md)
+  - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
   - v1.3
     - [1.3.6](releases/release-1.3.6.md)
