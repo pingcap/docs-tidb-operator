@@ -1,6 +1,6 @@
 ---
 title: PingCAP Clinic Diagnostic Data
-summary: Learn what diagnostic data can be collected by PingCAP Clinic Diagnostic Service on a TiDB cluster deployed by TiDB Operator.
+summary: Learn what diagnostic data can be collected by PingCAP Clinic Diagnostic Service on a TiDB cluster deployed using TiDB Operator.
 ---
 
 # PingCAP Clinic Diagnostic Data
