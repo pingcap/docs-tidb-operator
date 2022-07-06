@@ -5,7 +5,7 @@ summary: Learn what diagnostic data can be collected by PingCAP Clinic Diagnosti
 
 # PingCAP Clinic Diagnostic Data
 
-PingCAP Clinic Diagnostic Service (PingCAP Clinic) collects diagnostic data from TiDB clusters that are deployed using TiDB Operator. This document lists the types of data collected and their corresponding parameters. 
+PingCAP Clinic Diagnostic Service (PingCAP Clinic) collects diagnostic data from TiDB clusters that are deployed using TiDB Operator. This document lists the types of data collected and their corresponding parameters.
 
 When you [collect data using Diag client (Diag)](clinic-user-guide.md), you can add the required parameters to the command according to your needs.
 
