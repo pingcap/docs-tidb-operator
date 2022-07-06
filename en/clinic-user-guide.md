@@ -400,7 +400,7 @@ Diag is suitable for the following scenarios:
 
 ### Step 1: Check the data to be collected
 
-For a full list of data that can be collected by Diag, see [Clinic diagnostic Data](clinic-data-instruction.md). It is recommended to collect all data to improve the efficiency of the diagnosis.
+For a full list of data that can be collected by Diag, see [Clinic diagnostic Data](clinic-data-collection.md). It is recommended to collect all data to improve the efficiency of the diagnosis.
 
 ### Step 2: Collect data
 
