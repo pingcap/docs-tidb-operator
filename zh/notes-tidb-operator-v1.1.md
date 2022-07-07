@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator v1.1 重要注意事项
-aliases: ['/docs-cn/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1/','/docs-cn/tidb-in-kubernetes/v1.1/notes-tidb-operator-v1.1/']
+aliases: ['/docs-cn/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1/','/docs-cn/tidb-in-kubernetes/v1.1/notes-tidb-operator-v1.1/','/zh/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1']
 ---
 
 # TiDB Operator v1.1 重要注意事项

@@ -1,7 +1,7 @@
 ---
 title: Configuration of tidb-cluster Chart
 summary: Learn the configurations of the tidb-cluster chart.
-aliases: ['/docs/tidb-in-kubernetes/stable/tidb-cluster-chart-config/','/docs/tidb-in-kubernetes/v1.1/tidb-cluster-chart-config/']
+aliases: ['/docs/tidb-in-kubernetes/stable/tidb-cluster-chart-config/','/docs/tidb-in-kubernetes/v1.1/tidb-cluster-chart-config/','/tidb-in-kubernetes/stable/tidb-cluster-chart-config/']
 ---
 
 # Configuration of tidb-cluster Chart

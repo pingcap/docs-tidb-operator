@@ -1,7 +1,7 @@
 ---
 title: TiDB Operator v1.1 Notes
 summary: Learn the important notes for TiDB Operator v1.1.
-aliases: ['/docs/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1/','/docs/tidb-in-kubernetes/v1.1/notes-tidb-operator-v1.1/']
+aliases: ['/docs/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1/','/docs/tidb-in-kubernetes/v1.1/notes-tidb-operator-v1.1/','/tidb-in-kubernetes/stable/notes-tidb-operator-v1.1']
 ---
 
 # TiDB Operator v1.1 Notes
