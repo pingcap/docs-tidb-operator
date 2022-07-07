@@ -115,7 +115,7 @@
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
-  - [PingCAP Clinic 数据采集范围说明](clinic-data-instruction.md)
+  - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)
 - 版本发布历史
   - v1.3
     - [1.3.6](releases/release-1.3.6.md)

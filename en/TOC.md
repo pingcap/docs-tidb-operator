@@ -95,6 +95,7 @@
   - [Deployment Failures](deploy-failures.md)
   - [Cluster Exceptions](exceptions.md)
   - [Network Issues](network-issues.md)
+  - [Troubleshoot TiDB Cluster Using PingCAP Clinic (Technical Preview)](clinic-user-guide.md)
 - [FAQs](faq.md)
 - Reference
   - Architecture
@@ -113,6 +114,7 @@
     - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
+  - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
   - v1.3
     - [1.3.6](releases/release-1.3.6.md)
