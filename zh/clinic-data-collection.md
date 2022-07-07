@@ -1,6 +1,7 @@
 ---
 title: PingCAP Clinic 数据采集说明
 summary: 详细说明 PingCAP Clinic 诊断服务在使用 Operator 部署的 TiDB 集群中能够采集的诊断数据类型、输出文件及采集参数。
+aliases: ['/zh/tidb-in-kubernetes/stable/clinic-data-instruction']
 ---
 
 # PingCAP Clinic 数据采集说明
