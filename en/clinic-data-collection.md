@@ -1,6 +1,7 @@
 ---
 title: PingCAP Clinic Diagnostic Data
 summary: Learn what diagnostic data can be collected by PingCAP Clinic Diagnostic Service on a TiDB cluster deployed using TiDB Operator.
+aliases: ['/tidb-in-kubernetes/stable/clinic-data-instruction']
 ---
 
 # PingCAP Clinic Diagnostic Data
