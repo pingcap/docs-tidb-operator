@@ -10,8 +10,9 @@ aliases: ['/zh/tidb-in-kubernetes/stable/clinic-data-instruction']
 
 PingCAP Clinic 对使用 TiDB Operator 部署的 TiDB 集群采集的数据**仅**用于集群问题诊断与分析。
 
-Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境内）。如果你把采集的数据上传到了 Clinic Server 供 PingCAP 技术人员远程定位集群问题，这些数据将存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
-
+Clinic Server 是部署在云端的云服务，根据数据存储的位置不同，分为以下两个独立的服务:
+- [Clinic Server 中国区](https://clinic.pingcap.com.cn)：如果你把采集的数据上传到了 Clinic Server 中国区，这些数据将存储于 PingCAP 设立在 AWS 中国区（北京）的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
+- [Clinic Server 美国区](https://clinic.pingcap.com)：如果你把采集的数据上传到了 Clinic Server 美国区，这些数据将存储于 PingCAP 设立在 AWS 美国区的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 ## TiDB 集群信息
 
 |  诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |

@@ -12,7 +12,9 @@ When you [collect data using Diag client (Diag)](clinic-user-guide.md), you can 
 
 The diagnostic data collected by PingCAP Clinic is **only** used for troubleshooting cluster problems.
 
-Clinic Server is a diagnostic service deployed in the cloud. Currently, you can upload the collected diagnostic data only to Clinic Server China. The uploaded data is stored in an Amazon S3 storage set up by PingCAP in AWS China (Beijing) Region. PingCAP strictly controls permissions for data access and only allows authorized internal technical support staff to access the uploaded data.
+Clinic Server is a diagnostic service deployed in the cloud，it has two independent backend services with different data storage localtion:
+- [Clinic Server in China](https://clinic.pingcap.com.cn)：If you upload the collected data to Clinic Server in China, the data will be stored in the S3 service in AWS China (Beijing). PingCAP has strict access control over data access rights, and only authorized PingCAP technicians can access the data.
+- [Clinic Server in US ](https://clinic.pingcap.com)：If you upload the collected data to Clinic Server in US, the data will be stored in the S3 service in AWS US region. PingCAP has strict access control over data access rights, and only authorized PingCAP technicians can access the data.
 
 ## TiDB cluster information
 
