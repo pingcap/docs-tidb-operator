@@ -43,7 +43,7 @@ To install Helm and configure the chart repository `https://charts.pingcap.org/`
 ```shell
 helm search repo diag
 NAME          CHART VERSION  APP VERSION  DESCRIPTION
-pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
+pingcap/diag  v0.9.0         v0.9.0       Clinic Diag Helm chart for Kubernetes
 ```
 
 #### Check the privilege of the user
@@ -104,11 +104,12 @@ Follow these steps to check the user access:
 
 ### Step 2: Log in to the Clinic Server and get an access token
 
-When Diag uploads data, the access token is used to identify the user and ensures that the data from Diag is uploaded to the organization created by the user. You need to log in to the [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) to get a token.
+When Diag uploads data, the access token is used to identify the user and ensures that the data from Diag is uploaded to the organization created by the user. You need to log in to the Clinic Server to get a token.
 
 1. Sign up and log in to the Clinic Server.
 
-    Go to [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    - For global user, go to [Clinic Server in US](https://clinic.pingcap.com/portal/#/login) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB account, you can create one on that page.
+    - For user from from the Chinese mainland, go to [Clinic Server in China](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
 
 2. Create an organization.
 
@@ -140,9 +141,10 @@ Deploy Diag using the following `helm` command and the latest Diag image is pull
 
 ```shell
 # namespace: the same as that of TiDB Operator
-# diag.clinicToken: get your token in "https://clinic.pingcap.com.cn"
-helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
+# diag.clinicToken: get your token in "https://clinic.pingcap.com.cn" or "https://clinic.pingcap.com"
+helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token}
+        --set diag.clinicRegion= ${clinic_region}  # CN or US
 ```
 
 The output is as follows:
@@ -172,11 +174,11 @@ Make sure diag-collector components are running:
 
     > **Note:**
     >
-    > In the following sections, `${chart_version}` indicates the version of the Diag chart, for example, `v0.7.1`. You can get the currently supported versions through the `helm search repo -l diag` command.
+    > In the following sections, `${chart_version}` indicates the version of the Diag chart, for example, `v0.9.0`. You can get the currently supported versions through the `helm search repo -l diag` command.
 
 2. Configure the `values-diag-collector.yaml` file.
 
-    Modify your access token in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
+    Modify your access token and region in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
 
     Other configuration parameters such as `limits`, `requests`, and `volume` can be modified according to your needs.
 
@@ -238,35 +240,35 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
     To download Diag chart files, you can use the following command:
 
     ```shell
-    wget http://charts.pingcap.org/diag-v0.7.1.tgz
+    wget http://charts.pingcap.org/diag-v0.9.0.tgz
     ```
-
-    Copy `diag-v0.7.1.tgz` to the cluster and unpack it to the current directory.
+ 
+    Copy `diag-v0.9.0.tgz` to the cluster and unpack it to the current directory.
 
     ```shell
-    tar zxvf diag-v0.7.1.tgz
+    tar zxvf diag-v0.9.0.tgz
     ```
 
 2. Download the Diag image.
 
     You need to download the Diag image on a machine that has Internet access and then use the `docker load` command to load the image to the cluster.
 
-    The Diag image is `pingcap/diag:v0.7.1`. You can download and save the image using the following commands:
+    The Diag image is `pingcap/diag:v0.9.0`. You can download and save the image using the following commands:
 
     ```shell
-    docker pull pingcap/diag:v0.7.1
-    docker save -o diag-v0.7.1.tar pingcap/diag:v0.7.1
+    docker pull pingcap/diag:v0.9.0
+    docker save -o diag-v0.9.0.tar pingcap/diag:v0.9.0
     ```
 
     Then, copy the archived image to the cluster and use the `docker load` command to load the image to the cluster:
 
     ```shell
-    docker load -i diag-v0.7.1.tar
+    docker load -i diag-v0.9.0.tar
     ```
 
 3. Configure the `values-diag-collector.yaml` file.
 
-    Modify your access token in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
+    Modify your access token and region in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
 
     Other configuration parameters such as `limits`, `requests`, and `volume` can be modified according to your needs.
 
@@ -337,18 +339,20 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
 2. Deploy Diag using the following `helm` command, and the latest Diag image is pulled from the Docker Hub.
 
     ```shell
-    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token} \
-        --set diag.clusterRoleEnabled=false
+        --set diag.clusterRoleEnabled=false \
+        --set diag.clinicRegion=US 
     ```
 
     If TLS is not enabled in the cluster, you can add the `--set diag.tls.enabled=false` flag, then the created *Role* will not have the `get` and `list` privileges of `secrets`.
 
     ```shell
-    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token} \
         --set diag.tlsEnabled=false \
-        --set diag.clusterRoleEnabled=false
+        --set diag.clusterRoleEnabled=false \
+        --set diag.clinicRegion=US 
     ```
 
     The output is as follows:
@@ -554,7 +558,7 @@ To provide cluster diagnostic data to PingCAP technical support, you need to upl
     {
             "date": "2021-12-10T10:23:36Z",
             "id": "fMcXDZ4hNzs",
-            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+            "result": "\"https://clinic.pingcap.com/portal/#/orgs/XXXXXXXX/clusters/XXXXXXXX\"",
             "status": "finished"
     }
     ```
