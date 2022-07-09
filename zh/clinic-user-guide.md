@@ -583,7 +583,7 @@ Diag 工具的各项操作均会通过 API 完成。
     {
             "date": "2021-12-10T10:23:36Z",
             "id": "fMcXDZ4hNzs",
-            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+            "result": "\"https://clinic.pingcap.com/portal/#/orgs/XXXXXXXX/clusters/XXXXXXXX\"",
             "status": "finished"
     }
     ```
