@@ -108,11 +108,23 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 1. 登录 Clinic Server。
 
+    <SimpleTab>
+    <div label="Clinic Server 中国区">
+
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+
+    </div>
+
+    <div label="Clinic Server 美国区">
+
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
+
     > **注意：**
     >
-    > - 中国区用户，打开 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
-    > - 美国区用户，打开 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 登录界面。如果你尚未注册帐号，可以在该界面进行注册。Clinic 只是通过 TiDB Cloud 账号进行 SSO 登录，并不要求用户必须使用该服务。
+    > Clinic Server 只是通过 TiDB Cloud 账号进行 SSO 登录，并不要求用户必须使用 TiDB Cloud 服务。
 
+    </div>
+    </SimpleTab>
 
 2. 创建组织。
 
@@ -192,7 +204,7 @@ Make sure diag-collector components are running:
 
 2. 配置 `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Token 和 Region。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 `clinicToken` 和 `clinicRegion`。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
@@ -283,7 +295,7 @@ Make sure diag-collector components are running:
 
 3. 配置 `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Token 和 Region。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 `clinicToken` 和 `clinicRegion`。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
