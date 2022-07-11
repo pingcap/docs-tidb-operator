@@ -144,7 +144,7 @@ Deploy Diag using the following `helm` command and the latest Diag image is pull
 # diag.clinicToken: get your token in "https://clinic.pingcap.com.cn" or "https://clinic.pingcap.com"
 helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token}
-        --set diag.clinicRegion= ${clinic_region}  # CN or US
+        --set diag.clinicRegion=${clinic_region}  # CN or US
 ```
 
 The output is as follows:
@@ -342,7 +342,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token} \
         --set diag.clusterRoleEnabled=false \
-        --set diag.clinicRegion=US 
+        --set diag.clinicRegion=US
     ```
 
     If TLS is not enabled in the cluster, you can add the `--set diag.tls.enabled=false` flag, then the created *Role* will not have the `get` and `list` privileges of `secrets`.
@@ -352,7 +352,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
         --set diag.clinicToken=${clinic_token} \
         --set diag.tlsEnabled=false \
         --set diag.clusterRoleEnabled=false \
-        --set diag.clinicRegion=US 
+        --set diag.clinicRegion=US
     ```
 
     The output is as follows:

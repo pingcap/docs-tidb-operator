@@ -147,7 +147,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 # diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 或 "https://clinic.pingcap.com" 中登录并获取您的 Token。
 helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token}
-        --set diag.clinicRegion= ${clinic_region}  # CN or US
+        --set diag.clinicRegion=${clinic_region}  # CN or US
 ```
 
 > **注意：**
@@ -156,9 +156,9 @@ helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0
 >
 > ```shell
 > helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
->     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
->     --set diag.clinicToken= ${clinic_token}
-      --set diag.clinicRegion= ${clinic_region}
+>    --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
+>    --set diag.clinicToken=${clinic_token}
+>    --set diag.clinicRegion=${clinic_region}
 > ```
 
 部署成功后会输出以下结果：
@@ -357,7 +357,7 @@ Make sure diag-collector components are running:
     helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token} \
         --set diag.clusterRoleEnabled=false  \
-        --set diag.clinicRegion= ${clinic_region}  
+        --set diag.clinicRegion=${clinic_region}
     ```
 
     - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
@@ -367,7 +367,7 @@ Make sure diag-collector components are running:
             --set diag.clinicToken=${clinic_token} \
             --set diag.tlsEnabled=false \
             --set diag.clusterRoleEnabled=false  \
-            --set diag.clinicRegion= ${clinic_region}  
+            --set diag.clinicRegion=${clinic_region}
         ```
 
     - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -375,9 +375,9 @@ Make sure diag-collector components are running:
         ```shell
         helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
             --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
-            --set diag.clinicToken= ${clinic_token} \
+            --set diag.clinicToken=${clinic_token} \
             --set diag.clusterRoleEnabled=false \
-            --set diag.clinicRegion= ${clinic_region}  
+            --set diag.clinicRegion=${clinic_region}
         ```
 
     部署成功后会输出以下结果：
