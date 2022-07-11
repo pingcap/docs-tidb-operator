@@ -106,10 +106,25 @@ Follow these steps to check the user access:
 
 When Diag uploads data, the access token is used to identify the user and ensures that the data from Diag is uploaded to the organization created by the user. You need to log in to the Clinic Server to get a token.
 
-1. Sign up and log in to the Clinic Server.
+1. Log in to the Clinic Server.
 
-    - For global user, go to [Clinic Server in US](https://clinic.pingcap.com/portal/#/login) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB account, you can create one on that page.
-    - For user from from the Chinese mainland, go to [Clinic Server in China](https://clinic.pingcap.com.cn/portal/#/login) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    <SimpleTab>
+    <div label="Clinic Server in Chinese mainland">
+
+    Go to the [Clinic Server in Chinese mainland](https://clinic.pingcap.com.cn) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+
+    </div>
+
+    <div label="Clinic Server in US">
+
+    Go to the [Clinic Server in US](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB Cloud account, you can create one on that page.
+
+    > **Note:**
+    >
+    > Clinic Server in US only uses TiDB Cloud account to log in. Users are not required to actually use TiDB Cloud service.
+
+    </div>
+    </SimpleTab>
 
 2. Create an organization.
 
@@ -178,7 +193,7 @@ Make sure diag-collector components are running:
 
 2. Configure the `values-diag-collector.yaml` file.
 
-    Modify your access token and region in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
+    Modify your `clinicToken` and `clinicRegion` in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
 
     Other configuration parameters such as `limits`, `requests`, and `volume` can be modified according to your needs.
 
@@ -242,7 +257,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
     ```shell
     wget http://charts.pingcap.org/diag-v0.9.0.tgz
     ```
- 
+
     Copy `diag-v0.9.0.tgz` to the cluster and unpack it to the current directory.
 
     ```shell
@@ -268,7 +283,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
 
 3. Configure the `values-diag-collector.yaml` file.
 
-    Modify your access token and region in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
+    Modify your `clinicToken` and `clinicRegion` in the `${HOME}/diag-collector/values-diag-collector.yaml` file.
 
     Other configuration parameters such as `limits`, `requests`, and `volume` can be modified according to your needs.
 
