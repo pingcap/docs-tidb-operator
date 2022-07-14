@@ -109,21 +109,23 @@ When Diag uploads data, the access token is used to identify the user and ensure
 1. Log in to the Clinic Server.
 
     <SimpleTab>
-    <div label="Clinic Server in Chinese mainland">
 
-    Go to the [Clinic Server in Chinese mainland](https://clinic.pingcap.com.cn) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    <div label="Clinic Server in the US">
 
-    </div>
-
-    <div label="Clinic Server in US">
-
-    Go to the [Clinic Server in US](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB Cloud account, you can create one on that page.
+    Go to the [Clinic Server in the US](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB Cloud account, you can create one on that page.
 
     > **Note:**
     >
     > Clinic Server in US only uses TiDB Cloud account to log in. Users are not required to actually use TiDB Cloud service.
 
     </div>
+
+    <div label="Clinic Server in the Chinese mainland">
+
+    Go to the [Clinic Server in the Chinese mainland](https://clinic.pingcap.com.cn) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+
+    </div>
+
     </SimpleTab>
 
 2. Create an organization.
