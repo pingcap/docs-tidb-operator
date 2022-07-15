@@ -96,7 +96,7 @@
   - [部署错误](deploy-failures.md)
   - [集群异常](exceptions.md)
   - [网络问题](network-issues.md)
-  - [使用 PingCAP Clinic 诊断 TiDB 集群 (Technical Preview)](clinic-user-guide.md)
+  - [使用 PingCAP Clinic 诊断 TiDB 集群](clinic-user-guide.md)
 - [常见问题](faq.md)
 - 参考
   - 架构

@@ -43,7 +43,7 @@ Diag 部署前，请确认以下软件需求：
 ```shell
 helm search repo diag
 NAME          CHART VERSION  APP VERSION  DESCRIPTION
-pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
+pingcap/diag  v0.9.0         v0.9.0       Clinic Diag Helm chart for Kubernetes
 ```
 
 #### 检查部署用户的权限
@@ -106,9 +106,25 @@ PolicyRule:
 
 Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认证，保证数据上传到用户创建的组织下。用户需要注册登录 Clinic Server 后才能获取 Token。
 
-1. 注册并登录 Clinic Server。
+1. 登录 Clinic Server。
 
-    登录 [Clinic Server](https://clinic.pingcap.com.cn/portal/#/login)，选择 **Sign in with AskTUG**，可以通过 TiDB 社区帐号登录 PingCAP Clinic 服务。若你还没有 TiDB 社区帐号，可以在登录界面进行注册。
+    <SimpleTab>
+    <div label="Clinic Server 中国区">
+
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+
+    </div>
+
+    <div label="Clinic Server 美国区">
+
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
+
+    > **注意：**
+    >
+    > Clinic Server 只是通过 TiDB Cloud 账号进行 SSO 登录，并不要求用户必须使用 TiDB Cloud 服务。
+
+    </div>
+    </SimpleTab>
 
 2. 创建组织。
 
@@ -140,9 +156,10 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 
 ```shell
 # namespace：和 TiDB Operator 处于同一 namespace 中
-# diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 中登录并获取您的 Token。
-helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
+# diag.clinicToken：请在 "https://clinic.pingcap.com.cn" 或 "https://clinic.pingcap.com" 中登录并获取您的 Token。
+helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token}
+        --set diag.clinicRegion=${clinic_region}  # CN or US
 ```
 
 > **注意：**
@@ -150,9 +167,10 @@ helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1
 > 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
 >
 > ```shell
-> helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
->     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
->     --set diag.clinicToken= ${clinic_token}
+> helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.9.0 \
+>    --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
+>    --set diag.clinicToken=${clinic_token}
+>    --set diag.clinicRegion=${clinic_region}
 > ```
 
 部署成功后会输出以下结果：
@@ -182,11 +200,11 @@ Make sure diag-collector components are running:
 
     > **注意：**
     >
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v0.7.1`，可以通过 `helm search repo -l diag` 查看当前支持的版本。
+    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v0.9.0`，可以通过 `helm search repo -l diag` 查看当前支持的版本。
 
 2. 配置 `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Token。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 `clinicToken` 和 `clinicRegion`。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
@@ -249,35 +267,35 @@ Make sure diag-collector components are running:
     通过以下命令，下载 Diag chart 文件：
 
     ```shell
-    wget http://charts.pingcap.org/diag-v0.7.1.tgz
+    wget http://charts.pingcap.org/diag-v0.9.0.tgz
     ```
 
-    将 `diag-v0.7.1.tgz` 文件拷贝到服务器上并解压到当前目录：
+    将 `diag-v0.9.0.tgz` 文件拷贝到服务器上并解压到当前目录：
 
     ```shell
-    tar zxvf diag-v0.7.1.tgz
+    tar zxvf diag-v0.9.0.tgz
     ```
 
 2. 下载 Diag 运行所需的 Docker 镜像。
 
     需要在能访问互联网的机器上将 Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.7.1`，通过下面的命令将镜像下载下来：
+    TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.9.0`，通过下面的命令将镜像下载下来：
 
     ```shell
-    docker pull pingcap/diag:v0.7.1
-    docker save -o diag-v0.7.1.tar pingcap/diag:v0.7.1
+    docker pull pingcap/diag:v0.9.0
+    docker save -o diag-v0.9.0.tar pingcap/diag:v0.9.0
     ```
 
     接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
 
     ```shell
-    docker load -i diag-v0.7.1.tar
+    docker load -i diag-v0.9.0.tar
     ```
 
 3. 配置 `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Token。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 `clinicToken` 和 `clinicRegion`。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
@@ -348,27 +366,30 @@ Make sure diag-collector components are running:
 2. 通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
 
     ```shell
-    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
         --set diag.clinicToken=${clinic_token} \
-        --set diag.clusterRoleEnabled=false
+        --set diag.clusterRoleEnabled=false  \
+        --set diag.clinicRegion=${clinic_region}
     ```
 
     - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
 
         ```shell
-        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
             --set diag.clinicToken=${clinic_token} \
             --set diag.tlsEnabled=false \
-            --set diag.clusterRoleEnabled=false
+            --set diag.clusterRoleEnabled=false  \
+            --set diag.clinicRegion=${clinic_region}
         ```
 
     - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
 
         ```shell
-        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+        helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.9.0 \
             --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
-            --set diag.clinicToken= ${clinic_token} \
-            --set diag.clusterRoleEnabled=false
+            --set diag.clinicToken=${clinic_token} \
+            --set diag.clusterRoleEnabled=false \
+            --set diag.clinicRegion=${clinic_region}
         ```
 
     部署成功后会输出以下结果：
@@ -574,7 +595,7 @@ Diag 工具的各项操作均会通过 API 完成。
     {
             "date": "2021-12-10T10:23:36Z",
             "id": "fMcXDZ4hNzs",
-            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+            "result": "\"https://clinic.pingcap.com/portal/#/orgs/XXXXXXXX/clusters/XXXXXXXX\"",
             "status": "finished"
     }
     ```
