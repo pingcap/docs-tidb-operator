@@ -112,7 +112,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
     <div label="Clinic Server in the US">
 
-    Go to the [Clinic Server in the US](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have an TiDB Cloud account, you can create one on that page.
+    Go to the [Clinic Server in the US](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have a TiDB Cloud account, you can create one on that page.
 
     > **Note:**
     >
