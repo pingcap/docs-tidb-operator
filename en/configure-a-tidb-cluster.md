@@ -102,6 +102,8 @@ For example:
 
 <div label="TiKV">
 
+To mount multiple PVs for TiKV:
+
 {{< copyable "" >}}
 
 ```yaml
@@ -125,6 +127,8 @@ For example:
 
 <div label="TiDB">
 
+To mount multiple PVs for TiDB:
+
 {{< copyable "" >}}
 
 ```yaml
@@ -146,6 +150,8 @@ For example:
 
 <div label="PD">
 
+To mount multiple PVs for PD:
+
 {{< copyable "" >}}
 
 ```yaml
@@ -166,6 +172,8 @@ For example:
 </div>
 
 <div label="TiCDC">
+
+To mount multiple PVs for TiCDC:
 
 {{< copyable "" >}}
 
