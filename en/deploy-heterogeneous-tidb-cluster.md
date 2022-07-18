@@ -28,8 +28,6 @@ Depending on whether you need to enable Transport Layer Security (TLS) for a het
 <SimpleTab>
 <div label="non-TLS">
 
-### Deploy a heterogeneous cluster
-
 To deploy a heterogeneous cluster, do the following:
 
 1. Create a cluster configuration file for the heterogeneous cluster.
@@ -100,8 +98,6 @@ To deploy a heterogeneous cluster, do the following:
 </div>
 
 <div label="TLS">
-
-### Deploy a TLS-enabled heterogeneous cluster
 
 To enable TLS for a heterogeneous cluster, you need to explicitly declare the TLS configuration, issue the certificates using the same certification authority (CA) as the target cluster and create new secrets with the certificates.
 

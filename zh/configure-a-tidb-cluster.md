@@ -101,6 +101,8 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 <div label="TiKV">
 
+为 TiKV 挂载多块 PV：
+
 {{< copyable "" >}}
 
 ```yaml
@@ -124,6 +126,8 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 <div label="TiDB">
 
+为 TiDB 挂载多块 PV：
+
 {{< copyable "" >}}
 
 ```yaml
@@ -145,6 +149,8 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 <div label="PD">
 
+为 PD 挂载多块 PV：
+
 {{< copyable "" >}}
 
 ```yaml
@@ -165,6 +171,8 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 </div>
 
 <div label="TiCDC">
+
+为 TiCDC 挂载多块 PV：
 
 {{< copyable "" >}}
 
