@@ -152,7 +152,7 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
 <SimpleTab>
 <div label="在线快速部署">
 
-通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
+通过如下 `helm` 命令在线快速部署 Diag，从 Docker Hub 下载最新 Diag 镜像。
 
 ```shell
 # namespace：和 TiDB Operator 处于同一 namespace 中
@@ -190,6 +190,8 @@ Make sure diag-collector components are running:
 
 </div>
 <div label="在线普通部署">
+
+要在线普通部署 Diag，请进行如下操作：
 
 1. 获取你要部署的 Diag chart 中的 `values-diag-collector.yaml` 文件。
 
@@ -340,6 +342,8 @@ Make sure diag-collector components are running:
 
 </div>
 <div label="最小权限部署">
+
+要最小权限部署 Diag，请进行如下操作：
 
 > **注意：**
 >
