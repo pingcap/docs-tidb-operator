@@ -458,6 +458,8 @@ Depending on which method you choose to grant permissions to the remote storage,
       schedule: "*/2 * * * *"
       backupTemplate:
         backupType: full
+        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # cleanPolicy: Delete
         br:
           cluster: demo1
           sendCredToTikv: false
@@ -508,6 +510,8 @@ Depending on which method you choose to grant permissions to the remote storage,
       serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
+        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # cleanPolicy: Delete
         br:
           cluster: demo1
           sendCredToTikv: false
