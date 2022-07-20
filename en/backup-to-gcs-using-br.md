@@ -293,6 +293,8 @@ The prerequisites for the scheduled full backup is the same with the [prerequisi
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # cleanPolicy: Delete
         # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
         from:
           host: ${tidb_host}
