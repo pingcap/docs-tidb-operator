@@ -448,6 +448,8 @@ spec:
       schedule: "*/2 * * * *"
       backupTemplate:
         backupType: full
+        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # cleanPolicy: Delete
         br:
           cluster: demo1
           sendCredToTikv: false
@@ -496,6 +498,8 @@ spec:
       serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
+        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # cleanPolicy: Delete
         br:
           cluster: demo1
           sendCredToTikv: false
