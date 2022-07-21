@@ -29,8 +29,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
-- [使用 kind](#使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
-- [使用 minikube](#使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
+- [使用 kind](#方法一使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
+- [使用 minikube](#方法二使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
 
