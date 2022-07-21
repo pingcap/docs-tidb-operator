@@ -392,7 +392,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
       schedule: "*/2 * * * *"
       backupTemplate:
         backupType: full
-        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
           cluster: demo1
@@ -446,7 +446,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
       schedule: "*/2 * * * *"
       backupTemplate:
         backupType: full
-        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
           cluster: demo1
@@ -498,7 +498,7 @@ The prerequisites for the scheduled full backup is the same as the [prerequisite
       serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
-        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
           cluster: demo1
