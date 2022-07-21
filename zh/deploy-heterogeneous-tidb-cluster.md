@@ -28,9 +28,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 <SimpleTab>
 <div label="非 TLS">
 
-### 部署未开启 TLS 的异构集群
-
-要部署一个异构集群，请进行以下操作：
+要部署一个未开启 TLS 的异构集群，请进行以下操作：
 
 1. 为异构集群新建一个集群配置文件。
 
@@ -100,8 +98,6 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 </div>
 
 <div label="TLS">
-
-### 部署开启 TLS 的异构集群
 
 开启异构集群 TLS 需要显示声明，需要创建新的 `Secret` 证书文件，使用和目标集群相同的 CA (Certification Authority) 颁发。如果使用 `cert-manager` 方式，需要使用和目标集群相同的 `Issuer` 来创建 `Certificate`。
 
