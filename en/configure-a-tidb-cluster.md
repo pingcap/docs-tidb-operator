@@ -97,6 +97,15 @@ The meanings of the related fields are as follows:
 
 For example:
 
+<<<<<<< HEAD
+=======
+<SimpleTab>
+
+<div label="TiKV">
+
+To mount multiple PVs for TiKV:
+
+>>>>>>> 9f58cd4a (fix simpletab issues (#1944))
 {{< copyable "" >}}
 
 ```yaml
@@ -116,6 +125,84 @@ For example:
       mountPath: "/data_sbj/titan/data"
 ```
 
+<<<<<<< HEAD
+=======
+</div>
+
+<div label="TiDB">
+
+To mount multiple PVs for TiDB:
+
+{{< copyable "" >}}
+
+```yaml
+  tidb:
+    config: |
+      path = "/tidb/data"
+      [log.file]
+        filename = "/tidb/log/tidb.log"
+    storageVolumes:
+    - name: data
+      storageSize: "2Gi"
+      mountPath: "/tidb/data"
+    - name: log
+      storageSize: "2Gi"
+      mountPath: "/tidb/log"
+```
+
+</div>
+
+<div label="PD">
+
+To mount multiple PVs for PD:
+
+{{< copyable "" >}}
+
+```yaml
+  pd:
+    config: |
+      data-dir=/pd/data
+      [log.file]
+        filename=/pd/log/pd.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      mountPath: "/pd/data"
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pd/log"
+```
+
+</div>
+
+<div label="TiCDC">
+
+To mount multiple PVs for TiCDC:
+
+{{< copyable "" >}}
+
+```yaml
+  ticdc:
+    ...
+    config:
+      dataDir: /ticdc/data
+      logFile: /ticdc/log/cdc.log
+    storageVolumes:
+    - name: data
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/data"
+    - name: log
+      storageSize: "10Gi"
+      storageClassName: local-storage
+      mountPath: "/ticdc/log"
+```
+
+</div>
+
+</SimpleTab>
+
+>>>>>>> 9f58cd4a (fix simpletab issues (#1944))
 > **Note:**
 >
 > TiDB Operator uses some mount paths by default. For example, it mounts `EmptyDir` to the `/var/log/tidb` directory for the TiDB Pod. Therefore, avoid duplicate `mountPath` when you configure `storageVolumes`.

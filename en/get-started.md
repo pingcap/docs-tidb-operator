@@ -28,15 +28,12 @@ You can watch the following video (about 12 minutes) to learn how to get started
 
 This section describes two ways to create a simple Kubernetes cluster. After creating a Kubernetes cluster, you can use it to test TiDB clusters managed by TiDB Operator. Choose whichever best matches your environment.
 
-- [Use kind](#create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
-- [Use minikube](#create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
+- [Use kind](#method-1-create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
+- [Use minikube](#method-2-create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
 
 Alternatively, you can deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
-<SimpleTab>
-<div label="kind">
-
-### Create a Kubernetes cluster using kind
+### Method 1: Create a Kubernetes cluster using kind
 
 This section shows how to deploy a Kubernetes cluster using [kind](https://kind.sigs.k8s.io/).
 
@@ -100,11 +97,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 You are now ready to deploy TiDB Operator.
 
-</div>
-
-<div label="minikube">
-
-### Create a Kubernetes cluster using minikube
+### Method 2: Create a Kubernetes cluster using minikube
 
 You can create a Kubernetes cluster in a VM using [minikube](https://minikube.sigs.k8s.io/docs/start/), which supports macOS, Linux, and Windows.
 
@@ -179,9 +172,6 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </details>
 
 You are now ready to deploy TiDB Operator.
-
-</div>
-</SimpleTab>
 
 ## Step 2. Deploy TiDB Operator
 
