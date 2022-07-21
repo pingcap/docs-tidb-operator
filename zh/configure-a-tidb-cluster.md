@@ -97,15 +97,6 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 例子:
 
-<<<<<<< HEAD
-=======
-<SimpleTab>
-
-<div label="TiKV">
-
-为 TiKV 挂载多块 PV：
-
->>>>>>> 9f58cd4a (fix simpletab issues (#1944))
 {{< copyable "" >}}
 
 ```yaml
@@ -125,84 +116,6 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
       mountPath: "/data_sbj/titan/data"
 ```
 
-<<<<<<< HEAD
-=======
-</div>
-
-<div label="TiDB">
-
-为 TiDB 挂载多块 PV：
-
-{{< copyable "" >}}
-
-```yaml
-  tidb:
-    config: |
-      path = "/tidb/data"
-      [log.file]
-        filename = "/tidb/log/tidb.log"
-    storageVolumes:
-    - name: data
-      storageSize: "2Gi"
-      mountPath: "/tidb/data"
-    - name: log
-      storageSize: "2Gi"
-      mountPath: "/tidb/log"
-```
-
-</div>
-
-<div label="PD">
-
-为 PD 挂载多块 PV：
-
-{{< copyable "" >}}
-
-```yaml
-  pd:
-    config: |
-      data-dir=/pd/data
-      [log.file]
-        filename=/pd/log/pd.log
-    storageVolumes:
-    - name: data
-      storageSize: "10Gi"
-      mountPath: "/pd/data"
-    - name: log
-      storageSize: "10Gi"
-      mountPath: "/pd/log"
-```
-
-</div>
-
-<div label="TiCDC">
-
-为 TiCDC 挂载多块 PV：
-
-{{< copyable "" >}}
-
-```yaml
-  ticdc:
-    ...
-    config:
-      dataDir: /ticdc/data
-      logFile: /ticdc/log/cdc.log
-    storageVolumes:
-    - name: data
-      storageSize: "10Gi"
-      storageClassName: local-storage
-      mountPath: "/ticdc/data"
-    - name: log
-      storageSize: "10Gi"
-      storageClassName: local-storage
-      mountPath: "/ticdc/log"
-```
-
-</div>
-
-</SimpleTab>
-
->>>>>>> 9f58cd4a (fix simpletab issues (#1944))
 > **注意：**
 >
 > TiDB Operator 默认会使用一些挂载路径，比如会为 TiDB Pod 挂载 `EmptyDir` 到 `/var/log/tidb` 目录。在配置 `storageVolumes` 的时候要避免配置重复的 `mountPath`。
