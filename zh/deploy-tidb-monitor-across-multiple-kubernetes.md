@@ -97,9 +97,6 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 
 Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控数据，聚合后提供统一全局视图查询。本文中将其分为：[使用 Thanos Query](#使用-thanos-query) 和 [使用 Prometheus Federation](#使用-prometheus-federation)。
 
-<SimpleTab>
-<div label="Thanos Query">
-
 ### 使用 Thanos Query
 
 本节中的示例为每个 Prometheus (TidbMonitor) 组件部署了 Thanos Sidecar，并使用 thanos-query 组件进行聚合查询。如果不需要对监控数据做长期存储，你可以不部署 thanos-store、S3 等组件。
@@ -187,10 +184,6 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 3. 配置 Thanos Query Stores:
 
     通过静态服务发现的方式，在 Thanos Query 的命令行启动参数中添加 `--store=${cluster_name}-prometheus.${cluster_namespace}.svc.${cluster_domain}:10901` 来指定 Store 节点，需要对变量值进行替换。如果你使用了其他服务发现方式，请参考 [thanos-service-discovery](https://thanos.io/tip/thanos/service-discovery.md/) 进行配置。
-
-</div>
-
-<div label="Federation">
 
 ### 使用 Prometheus Federation
 
@@ -287,9 +280,6 @@ scrape_configs:
         - 'source-prometheus-2:9090'
         - 'source-prometheus-3:9090'
 ```
-
-</div>
-</SimpleTab>
 
 ## 使用 Grafana 可视化多集群监控数据
 

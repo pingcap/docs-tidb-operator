@@ -154,6 +154,8 @@ Depending on the network connection of the cluster, you can choose one of the fo
 <SimpleTab>
 <div label="Quick online deployment">
 
+To use the quick online deployment, do the following:
+
 Deploy Diag using the following `helm` command and the latest Diag image is pulled from the Docker Hub.
 
 ```shell
@@ -181,6 +183,8 @@ Make sure diag-collector components are running:
 
 </div>
 <div label="Standard online deployment">
+
+To use the standard online deployment, do the following:
 
 1. Get the `values-diag-collector.yaml` file from the Diag chart.
 
@@ -330,6 +334,8 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
 
 </div>
 <div label="Least privilege deployment">
+
+To use the least privilege deployment, do the following:
 
 > **Note:**
 >

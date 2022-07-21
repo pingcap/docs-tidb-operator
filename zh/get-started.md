@@ -29,15 +29,12 @@ aliases: ['/zh/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind','/docs-
 
 本节介绍了两种创建 Kubernetes 测试集群的方法，可用于测试 TiDB Operator 管理的 TiDB 集群。
 
-- [使用 kind](#使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
-- [使用 minikube](#使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
+- [使用 kind](#方法一使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
+- [使用 minikube](#方法二使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
 
 你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
 
-<SimpleTab>
-<div label="Kind">
-
-### 使用 kind 创建 Kubernetes 集群
+### 方法一：使用 kind 创建 Kubernetes 集群
 
 目前比较通用的方式是使用 [kind](https://kind.sigs.k8s.io/) 部署本地测试 Kubernetes 集群。kind 适用于使用 Docker 容器作为集群节点运行本地 Kubernetes 集群。请参阅 [Docker Hub](https://hub.docker.com/r/kindest/node/tags) 以查看可用 tags。默认使用当前 kind 支持的最新版本。
 
@@ -97,11 +94,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 
-</div>
-
-<div label="minikube">
-
-### 使用 minikube 创建 Kubernetes 集群
+### 方法二：使用 minikube 创建 Kubernetes 集群
 
 [minikube](https://minikube.sigs.k8s.io/docs/start/) 可以在虚拟机中创建一个 Kubernetes 集群。minikube 可在 macOS, Linux 和 Windows 上运行。
 
@@ -188,9 +181,6 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </details>
 
 Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
-
-</div>
-</SimpleTab>
 
 ## 第 2 步：部署 TiDB Operator
 

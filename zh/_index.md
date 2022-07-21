@@ -32,8 +32,8 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 <NavColumn>
 <ColumnTitle>快速上手</ColumnTitle>
 
-- [kind](get-started.md#使用-kind-创建-kubernetes-集群)
-- [Minikube](get-started.md#使用-minikube-创建-kubernetes-集群)
+- [kind](get-started.md#方法一使用-kind-创建-kubernetes-集群)
+- [Minikube](get-started.md#方法二使用-minikube-创建-kubernetes-集群)
 - [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md)
 
 </NavColumn>
