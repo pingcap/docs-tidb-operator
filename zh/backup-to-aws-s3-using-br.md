@@ -448,7 +448,7 @@ spec:
       schedule: "*/2 * * * *"
       backupTemplate:
         backupType: full
-        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
           cluster: demo1
@@ -498,7 +498,7 @@ spec:
       serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
-        # Clean outdated backup data based on maxBackups or maxReservedTime, default policy is Retain
+        # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
           cluster: demo1
