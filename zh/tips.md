@@ -170,7 +170,6 @@ spec:
 >
 > 该操作会导致部分用户请求失败，不建议在生产环境中使用。
 
-
 ## 配置 TiCDC 强制升级
 
 正常情况下，在 TiCDC 滚动升级或者修改配置滚动更新过程中，TiDB Operator 会为每个 TiCD 驱逐 Table，并在 Table 驱逐完成后才开始更新当前 Pod，尽量减小滚动升级或者更新过程对同步延时的影响。在一些测试场景中，如果你不需要在 TiCDC 滚动升级或者修改配置滚动更新过程中等待 TiCDC 上的 Table 迁移，想要加速升级或者更新过程，可以将 TidbCluster 定义中的 `spec.ticdc.gracefulShutdownTimeout` 字段设置为一个很小的值。
