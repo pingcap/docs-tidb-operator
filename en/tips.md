@@ -172,3 +172,21 @@ For more information about this field, refer to [Configure graceful upgrade](con
 > **Warning:**
 >
 > Configuring forceful upgrade causes some user requests to fail. It is not recommended for a production environment.
+
+## Configure forceful upgrade for the TiCDC cluster
+
+Normally, during TiCDC rolling update, TiDB Operator evicts all Tables for TiCDC Pods before restarting the TiCDC Pods. This is meant for minimizing the impact of the rolling update on replication latency.
+
+In some test scenarios, if you do not need to wait for the Tables to migrate during TiCDC rolling upgrade, or if you want to speed up the rolling upgrade, you can configure the `spec.ticdc.gracefulShutdownTimeout` field in the spec of TidbCluster to a small value.
+
+```yaml
+spec:
+  ticdc:
+    gracefulShutdownTimeout: 10s
+```
+
+For more information about this field, refer to [Configure graceful upgrade](configure-a-tidb-cluster.md#configure-graceful-upgrade-for-ticdc-cluster).
+
+> **Warning:**
+>
+> Configuring forceful upgrade causes replication latency increase. It is not recommended for a production environment.
