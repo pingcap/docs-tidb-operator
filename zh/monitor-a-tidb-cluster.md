@@ -117,6 +117,16 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-grafana 3000:3000 &>/tm
 
 也可以设置 `spec.grafana.service.type` 为 `NodePort` 或者 `LoadBalancer`，通过 `NodePort` 或者 `LoadBalancer` 查看监控面板。
 
+目前 Grafana Dashboard 分为:
+- 综合诊断面板：Overview、Performance\_Overview。
+- 组件面板：
+    - Data TransferBinlog、Lightning、TiCDC。
+    - PD：PD。
+    - TiDB：TiDB。
+    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_Trouble\_Shooting。
+    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details。
+    - Other：Nodes\_Info、Pods\_Info。
+
 如果不需要使用 Grafana，可以在部署时将 `TidbMonitor` 中的 `spec.grafana` 部分删除。这一情况下需要使用其他已有或新部署的数据可视化工具直接访问监控数据来完成可视化。
 
 ### 访问 Prometheus 监控数据
