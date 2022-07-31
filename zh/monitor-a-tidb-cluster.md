@@ -118,7 +118,7 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-grafana 3000:3000 &>/tm
 也可以设置 `spec.grafana.service.type` 为 `NodePort` 或者 `LoadBalancer`，通过 `NodePort` 或者 `LoadBalancer` 查看监控面板。
 
 目前 Grafana Dashboard 分为:
-- 综合诊断面板：Overview、Performance\_Overview。
+- 综合诊断面板：Overview。
 - 组件面板：
     - Data TransferBinlog、Lightning、TiCDC。
     - PD：PD。
