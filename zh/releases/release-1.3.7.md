@@ -4,7 +4,7 @@ title: TiDB Operator 1.3.7 Release Notes
 
 # TiDB Operator 1.3.7 Release Notes
 
-发布日期: 2022 年 8 月 1 日
+发布日期：2022 年 8 月 1 日
 
 TiDB Operator 版本：1.3.7
 
@@ -18,7 +18,7 @@ TiDB Operator 版本：1.3.7
 
 - 为了避免 TiKV PVC 扩容流程卡住，当 leader 驱逐超时后直接继续扩容流程 ([#4625](https://github.com/pingcap/tidb-operator/pull/4625), [@KanShiori](https://github.com/KanShiori))
 
-## Bug fixes
+## 错误修复
 
 - 修复使用本地存储时，无法升级 TiKV 的问题 ([#4615](https://github.com/pingcap/tidb-operator/pull/4615), [@KanShiori](https://github.com/KanShiori))
 
