@@ -120,6 +120,7 @@ kubectl port-forward -n ${namespace} svc/${cluster_name}-grafana 3000:3000 &>/tm
 目前 Grafana Dashboard 分为:
 - 综合诊断面板：Overview。
 - 组件面板：
+
     - Data TransferBinlog、Lightning、TiCDC。
     - PD：PD。
     - TiDB：TiDB。
