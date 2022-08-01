@@ -134,7 +134,7 @@ If you need to simulate bare-metal performance, some GCP instance types provide 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.6/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.7/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. Use the local storage.
