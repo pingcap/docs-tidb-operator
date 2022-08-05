@@ -29,9 +29,9 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v5.4.1`
+- `spec.version`，格式为 `imageTag`，例如 `v6.1.0`
 - `spec.<master/worker>.baseImage`，格式为 `imageName`，例如 `pingcap/dm`
-- `spec.<master/worker>.version`，格式为 `imageTag`，例如 `v5.4.1`
+- `spec.<master/worker>.version`，格式为 `imageTag`，例如 `v6.1.0`
 
 TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
@@ -50,7 +50,7 @@ metadata:
   name: ${dm_cluster_name}
   namespace: ${namespace}
 spec:
-  version: v5.4.1
+  version: v6.1.0
   configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
@@ -140,10 +140,10 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 如果服务器没有外网，需要按下述步骤在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上：
 
-1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v5.4.1）：
+1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v6.1.0）：
 
     ```shell
-    pingcap/dm:v5.4.1
+    pingcap/dm:v6.1.0
     ```
 
 2. 通过下面的命令将所有这些镜像下载下来：
@@ -151,9 +151,9 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/dm:v5.4.1
+    docker pull pingcap/dm:v6.1.0
 
-    docker save -o dm-v5.4.1.tar pingcap/dm:v5.4.1
+    docker save -o dm-v6.1.0.tar pingcap/dm:v6.1.0
     ```
 
 3. 将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
@@ -161,7 +161,7 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i dm-v5.4.1.tar
+    docker load -i dm-v6.1.0.tar
     ```
 
 部署 DM 集群完成后，通过下面命令查看 Pod 状态：

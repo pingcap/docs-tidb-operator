@@ -47,7 +47,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
       name: ${heterogeneous_cluster_name}
     spec:
       configUpdateStrategy: RollingUpdate
-      version: v5.4.1
+      version: v6.1.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -125,7 +125,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
       tlsCluster:
         enabled: true
       configUpdateStrategy: RollingUpdate
-      version: v5.4.1
+      version: v6.1.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -215,7 +215,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
         version: 7.5.11
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v5.4.1
+        version: v6.1.0
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
