@@ -13,7 +13,11 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
 
 ## 部署 TiDB Operator
 
-在 ARM64 机器上部署 TiDB Operator 的步骤与[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 的步骤相同。需要注意的是在 v1.3.1 及之前版本，在[自定义部署 TiDB Operator](deploy-tidb-operator.md#自定义部署-tidb-operator) 这一步，当获取到 `tidb-operator` chart 中的 `value.yaml` 文件后，你需要修改文件中的 `operatorImage` 与 `tidbBackupManagerImage` 字段为 ARM64 版本镜像。例如：
+> **注意：**
+> 
+> 如果部署的 TiDB Operator 大于或等于 v1.3.1 版本，可以跳过这一步。
+
+在 ARM64 机器上部署 TiDB Operator 的步骤与[在 Kubernetes 上部署 TiDB Operator](deploy-tidb-operator.md) 的步骤相同。唯一区别是，在[自定义部署 TiDB Operator](deploy-tidb-operator.md#自定义部署-tidb-operator) 这一步，当获取到 `tidb-operator` chart 中的 `value.yaml` 文件后，你需要修改文件中的 `operatorImage` 与 `tidbBackupManagerImage` 字段为 ARM64 版本镜像。例如：
 
 ```yaml
 # ...
@@ -24,6 +28,10 @@ tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.1
 ```
 
 ## 部署 TiDB 集群
+
+> **注意：**
+> 
+> 如果部署的 TiDB 集群大于或等于 v5.4.2 版本，可以跳过这一步。
 
 在 ARM64 机器上部署 TiDB 集群的步骤与[在标准 Kubernetes 上部署 TiDB 集群](deploy-on-general-kubernetes.md) 的步骤相同。唯一区别是，你需要将 TidbCluster 定义文件中相关组件的镜像设置为 ARM64 版本。例如：
 
@@ -76,7 +84,11 @@ spec:
 
 ## 部署 TiDB 集群监控
 
-在 ARM64 机器上部署 TiDB 集群监控的步骤与 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md) 的步骤相同。需要注意的是使用低于 v5.4.0 版本的 TiDB，你需要将 TidbMonitor 定义文件中的 `spec.initializer.baseImage` 字段设置为 ARM64 版本镜像。
+> **注意：**
+> 
+> 如果部署的 TiDB 集群大于或等于 v5.4.2 版本，可以跳过这一步。
+
+在 ARM64 机器上部署 TiDB 集群监控的步骤与 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md) 的步骤相同。唯一区别是，你需要将 TidbMonitor 定义文件中的 `spec.initializer.baseImage` 字段设置为 ARM64 版本镜像。
 
 {{< copyable "" >}}
 
@@ -89,5 +101,6 @@ spec:
   # ...
   initializer:
     baseImage: pingcap/tidb-monitor-initializer-arm64
+    version: v5.4.1
   # ...
 ```
