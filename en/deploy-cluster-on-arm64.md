@@ -34,7 +34,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${cluster_namespace}
 spec:
-  version: "v5.4.1"
+  version: "v6.1.0"
   # ...
   helper:
     image: busybox:1.33.0
