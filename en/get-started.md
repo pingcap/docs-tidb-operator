@@ -23,7 +23,7 @@ You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 
 You can watch the following video (about 12 minutes) to learn how to get started with TiDB Operator.
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/ENG+TiDB+Operation+Quick+Start.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+ENG+TiDB+operator.png"></video>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/llYaXvtlqdE" title="TiDB Operator Quick Start" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Step 1. Create a test Kubernetes cluster
 
