@@ -176,9 +176,9 @@ For more information about this field, refer to [Configure graceful upgrade](con
 
 ## Configure forceful upgrade for the TiCDC cluster
 
-Normally, during TiCDC rolling update, TiDB Operator evicts all Tables for TiCDC Pods before restarting the TiCDC Pods. This is meant for minimizing the impact of the rolling update on replication latency.
+Normally, during TiCDC rolling update, TiDB Operator drains all replication workloads for TiCDC Pods before restarting the TiCDC Pods. This is meant for minimizing the impact of the rolling update on replication latency.
 
-In some test scenarios, if you do not need to wait for the Tables to migrate during TiCDC rolling upgrade, or if you want to speed up the rolling upgrade, you can configure the `spec.ticdc.gracefulShutdownTimeout` field in the spec of TidbCluster to a small value.
+In some test scenarios, if you do not need to wait for the draining to migrate during TiCDC rolling upgrade, or if you want to speed up the rolling upgrade, you can configure the `spec.ticdc.gracefulShutdownTimeout` field in the spec of TidbCluster to a small value.
 
 ```yaml
 spec:
