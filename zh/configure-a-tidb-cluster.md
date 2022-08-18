@@ -468,9 +468,9 @@ spec:
 
 ### 配置 TiCDC 平滑升级
 
-TiCDC 升级过程中，在重启 TiCDC Pod 之前，TiDB Operator 会先驱逐 TiCDC Pod 上的所有的 Table。只有当驱逐完成（即 TiCDC Pod 上的 Table 个数为 0）或者驱逐超时（默认 10 分钟）后，TiCDC Pod 才会重启。如果集群的 TiCDC 副本数小于 2，TiDB Operator 不再等待超时，直接触发强制升级。
+TiCDC 升级过程中，在重启 TiCDC Pod 之前，TiDB Operator 会先转移 TiCDC Pod 上的所有的同步负载。只有当转移完成或者驱逐超时（默认 10 分钟）后，TiCDC Pod 才会重启。如果集群的 TiCDC 实例数小于 2，TiDB Operator 不再等待超时，直接触发强制升级。
 
-如果驱逐 Table 超时，重启 TiCDC Pod 会导致同步延时增加。要避免此问题，你可以将超时时间 `spec.ticdc.gracefulShutdownTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+如果转移超时，重启 TiCDC Pod 会导致同步延时增加。要避免此问题，你可以将超时时间 `spec.ticdc.gracefulShutdownTimeout`（默认 10 分钟）配置为一个更大的值，例如：
 
 ```
 spec:
@@ -481,6 +481,7 @@ spec:
 > **注意：**
 >
 > 如果使用 TiCDC 版本小于 6.3.0，TiDB Operator 会强制升级 TiCDC，导致同步延时上升。
+> 该功能自 TiDB Operator v1.4.0 起可用。
 
 ### 配置 TiDB 慢查询日志持久卷
 
