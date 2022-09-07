@@ -788,13 +788,13 @@ topologySpreadConstraints:
 
     目前，TiDB Operator 会自动为 TiDB Server 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiDB 依赖特殊的 Label `zone` 支持 Follower Read 的部分功能，TiDB Operator 会依次获取如下几个 Label 的值作为 `zone` 的值： `zone`，`failure-domain.beta.kubernetes.io/zone` 或 `topology.kubernetes.io/zone`。TiDB Operator 仅设置 TiDB Server 所在的节点上包含的 Labels 并忽略其他 Labels。
 
-在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名，使用较短的 label 名称在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 设置 PD 的 `location-labels` 为这些别名时，如果对应的节点不包含对应的 labels, TiDB Operator 自动使用对应长 Labels 的值。
+    在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名，使用较短的 label 名称在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 设置 PD 的 `location-labels` 为这些别名时，如果对应的节点不包含对应的 labels, TiDB Operator 自动使用对应长 Labels 的值。
 
-目前 TiDB Operator 支持如下短 Label 的映射：
+    目前 TiDB Operator 支持如下短 Label 的映射：
 
-- `region`。对应 `topology.kubernetes.io/region` 和 `failure-domain.beta.kubernetes.io/region`。
-- `zone`。对应 `topology.kubernetes.io/zone` 和 `failure-domain.beta.kubernetes.io/zone`。
-- `host`。对应 `kubernetes.io/hostname`。
+    - `region`。对应 `topology.kubernetes.io/region` 和 `failure-domain.beta.kubernetes.io/region`。
+    - `zone`。对应 `topology.kubernetes.io/zone` 和 `failure-domain.beta.kubernetes.io/zone`。
+    - `host`。对应 `kubernetes.io/hostname`。
 
-例如，如果 Kubernetes 的各个节点上均没有设置 `region`、`zone` 和 `host` 这些 Labels, 将 PD 的 `location-labels` 设置为 `["topology.kubernetes.io/region", "topology.kubernetes.io/zone", "kubernetes.io/hostname"]` 与 `["region", "zone", "host"]` 效果完全相同。
+    例如，如果 Kubernetes 的各个节点上均没有设置 `region`、`zone` 和 `host` 这些 Labels, 将 PD 的 `location-labels` 设置为 `["topology.kubernetes.io/region", "topology.kubernetes.io/zone", "kubernetes.io/hostname"]` 与 `["region", "zone", "host"]` 效果完全相同。
 
