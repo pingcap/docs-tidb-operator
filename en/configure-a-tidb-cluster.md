@@ -480,9 +480,9 @@ spec:
 
 ### Configure graceful upgrade for TiCDC cluster
 
-During TiCDC upgrade, TiDB Operator drains all replication workloads from TiCDC Pod before restarting TiCDC Pod. Only after the draining is completed or the draining exceeds the specified timeout (1500 minutes by default), TiCDC Pod is restarted. If TiCDC has fewer than 2 instances, TiDB Operator forces an upgrade without waiting for the timeout.
+During TiCDC upgrade, TiDB Operator drains all replication workloads from TiCDC Pod before restarting TiCDC Pod. Only after the draining is completed or the draining exceeds the specified timeout (10 minutes by default), TiCDC Pod is restarted. If TiCDC has fewer than 2 instances, TiDB Operator forces an upgrade without waiting for the timeout.
 
-If the draining of Tables exceeds the specified timeout, restarting TiCDC Pod causes issues such as more replication latency. To avoid the issues, you can configure the timeout `spec.ticdc.gracefulShutdownTimeout` (10 minutes by default) to a larger value. For example:
+If the draining exceeds the specified timeout, restarting TiCDC Pod causes issues such as more replication latency. To avoid the issues, you can configure the timeout `spec.ticdc.gracefulShutdownTimeout` (10 minutes by default) to a larger value. For example:
 
 ```
 spec:
@@ -492,8 +492,8 @@ spec:
 
 > **Note:**
 >
-> If the TiCDC version is earlier than 6.3.0, TiDB Operator forceful upgrade and causes replication latency increase.
-> The feature is available since TiDB Operator v1.4.0.
+> - If the TiCDC version is earlier than v6.3.0, TiDB Operator forces an upgrade on TiCDC, which might cause replication latency increase.
+> - The feature is available since TiDB Operator v1.4.0.
 
 ### Configure PV for TiDB slow logs
 
