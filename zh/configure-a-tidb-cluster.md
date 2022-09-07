@@ -483,6 +483,7 @@ spec:
   ticdc:
     gracefulShutdownTimeout: 100m
 ```
+
 ### 配置 TiDB 慢查询日志持久卷
 
 默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
