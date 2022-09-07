@@ -68,7 +68,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
 2. Create the IAM role:
 
-    [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships`.
+    [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships`.
 
 3. Associate IAM with the `ServiceAccount` resources.
 
