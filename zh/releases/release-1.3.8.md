@@ -10,7 +10,7 @@ TiDB Operator 版本：1.3.8
 
 ## 新功能
 
-- 为 `TidbCluster` 添加一些特殊的 Annotation 以支持配置 TiDB、TiKV 和 TiFlash 的 Pod 的最小等待时间，最小等待时间指的是在滚动升级过程中新创建的 Pod 的变为 Ready 所需要的最小时间 ([#4640](https://github.com/pingcap/tidb-operator/pull/4640), [@KanShiori](https://github.com/KanShiori))
+- 为 `TidbCluster` 添加一些特殊的 Annotation 以支持配置 TiDB、TiKV 和 TiFlash 的 Pod 的最小等待时间，最小等待时间指的是在滚动升级过程中新创建的 Pod 变为 Ready 所需要的最小时间 ([#4640](https://github.com/pingcap/tidb-operator/pull/4640), [@KanShiori](https://github.com/KanShiori))
 
 ## 优化提升
 
