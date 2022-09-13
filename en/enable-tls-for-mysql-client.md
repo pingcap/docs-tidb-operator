@@ -681,7 +681,7 @@ In this step, you create a TiDB cluster and perform the following operations:
 
 ## Configure the MySQL client to use an encrypted connection
 
-To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://pingcap.com/docs/stable/how-to/secure/enable-tls-clients/#configure-the-mysql-client-to-use-encrypted-connections).
+To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 
 Execute the following command to acquire the client-side certificate and connect to the TiDB server:
 
@@ -703,4 +703,4 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 >
 > [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
 
-Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://pingcap.com/docs/stable/enable-tls-between-clients-and-servers/#check-whether-the-current-connection-uses-encryption).
+Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
