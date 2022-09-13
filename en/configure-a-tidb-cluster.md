@@ -16,7 +16,7 @@ This document introduces how to configure a TiDB cluster for production deployme
 
 ## Configure resources
 
-Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV, and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://pingcap.com/docs/stable/hardware-and-software-requirements/).
+Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV, and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://docs.pingcap.com/tidb/stable/hardware-and-software-requirements).
 
 To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level quality of service (QoS) by making `limits` equal to `requests` when configuring resources. For details, refer to [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 
@@ -310,7 +310,7 @@ spec:
       oom-action = "log"
 ```
 
-For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
+For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://docs.pingcap.com/tidb/stable/tidb-configuration-file).
 
 > **Note:**
 >
@@ -331,7 +331,7 @@ spec:
           capacity = "16GB"
 ```
 
-For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/).
+For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://docs.pingcap.com/tidb/stable/tikv-configuration-file).
 
 > **Note:**
 >
@@ -351,7 +351,7 @@ spec:
       enable-prevote = true
 ```
 
-For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
+For all the configurable parameters of PD, refer to [PD Configuration File](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
 
 > **Note:**
 >
@@ -379,7 +379,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
+For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://docs.pingcap.com/tidb/stable/tiflash-configuration).
 
 #### Configure TiCDC start parameters
 
@@ -764,7 +764,7 @@ topologySpreadConstraints:
 
 ### High availability of data
 
-Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/stable/location-awareness/) which describes how high availability of TiDB cluster is implemented.
+Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://docs.pingcap.com/tidb/stable/schedule-replicas-by-topology-labels) which describes how high availability of TiDB cluster is implemented.
 
 To add the data high availability feature in Kubernetes:
 
