@@ -70,7 +70,7 @@ In terms of the deployment topology relationship between the TiDB cluster and Ti
 
 TiDB Operator does not yet support automatically orchestrating TiSpark.
 
-If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://pingcap.com/docs/stable/tispark-overview/#deploy-tispark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
+If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://docs.pingcap.com/tidb/stable/tispark-overview) offers a detailed guide for you to install the TiSpark plugin.
 
 To maintain Spark in Kubernetes, refer to [Spark on Kubernetes](http://spark.apache.org/docs/latest/running-on-kubernetes.html).
 
