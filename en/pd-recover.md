@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
 
 # Use PD Recover to Recover the PD Cluster
 
-PD Recover is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/architecture/#placement-driver-server), used to recover the PD cluster which cannot start or provide services normally. For detailed introduction of this tool, see [TiDB documentation - PD Recover](https://pingcap.com/docs/stable/reference/tools/pd-recover). This document introduces how to download PD Recover and how to use it to recover a PD cluster.
+PD Recover is a disaster recovery tool of [PD](https://docs.pingcap.com/tidb/stable/tidb-scheduling), used to recover the PD cluster which cannot start or provide services normally. For detailed introduction of this tool, see [TiDB documentation - PD Recover](https://docs.pingcap.com/tidb/stable/pd-recover). This document introduces how to download PD Recover and how to use it to recover a PD cluster.
 
 ## Download PD Recover
 
@@ -18,7 +18,7 @@ PD Recover is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/a
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    In the command above, `${version}` is the version of the TiDB cluster, such as `v5.4.1`.
+    In the command above, `${version}` is the version of the TiDB cluster, such as `v6.1.0`.
 
 2. Unpack the TiDB package for installation:
 

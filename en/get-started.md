@@ -23,7 +23,7 @@ You can follow these steps to deploy TiDB Operator and a TiDB cluster:
 
 You can watch the following video (about 12 minutes) to learn how to get started with TiDB Operator.
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/ENG+TiDB+Operation+Quick+Start.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+ENG+TiDB+operator.png"></video>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/llYaXvtlqdE" title="TiDB Operator Quick Start" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Step 1. Create a test Kubernetes cluster
 
@@ -252,7 +252,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.7
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.3.8
     ```
 
     <details>
@@ -479,10 +479,10 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-  tidb_version(): Release Version: v5.4.1
+  tidb_version(): Release Version: v6.1.0
          Edition: Community
  Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
-      Git Branch: heads/refs/tags/v5.4.1
+      Git Branch: heads/refs/tags/v6.1.0
   UTC Build Time: 2021-11-24 13:32:39
        GoVersion: go1.16.4
     Race Enabled: false
@@ -658,7 +658,7 @@ Note that `nightly` is not a fixed version. Running the command above at a diffe
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v5.4.1-alpha-445-g778e188fa
+tidb_version(): Release Version: v6.1.0-alpha-445-g778e188fa
 Edition: Community
 Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
 Git Branch: master
