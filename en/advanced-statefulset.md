@@ -45,7 +45,25 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
       create: true
     ```
 
-    Upgrade TiDB Operator. For details, refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md).
+3. Upgrade TiDB Operator. For details, refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md).
+
+4. After TiDB Operator upgrade, check the AdvancedStatefulSet Controller is deployed by the following command:
+   
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    kubectl get pods -n ${operator-ns} --selector app.kubernetes.io/component=advanced-statefulset-controller
+    ```
+
+    <details>
+    <summary>Expected output</summary>
+    
+    ```
+    NAME                                               READY       STATUS    RESTARTS   AGE
+    advanced-statefulset-controller-67885c5dd9-f522h   1/1         Running   0          10s
+    ```
+    
+    </details> 
 
 > **Note:**
 >
