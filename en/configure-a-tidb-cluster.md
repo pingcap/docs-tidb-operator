@@ -543,7 +543,7 @@ For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/
 
 ### Configure TiDB service
 
-You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
+You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, and so on.
 
 #### General configurations
 
@@ -790,3 +790,19 @@ To add the data high availability feature in Kubernetes:
     ```
 
     In the command above, `region`, `zone`, `rack`, and `kubernetes.io/hostname` are just examples. The name and number of the label to be added can be arbitrarily defined, as long as it conforms to the specification and is consistent with the labels set by `location-labels` in `pd.config`.
+
+3. Set the topological information of the Node where the TiDB node is located. (only supports clusters with TiDB versions >= v6.3.0)
+
+    TiDB Operator automatically obtains the topological information of the Node for TiDB and calls the corresponding interface of the TiDB server to set this information as TiDB's labels. Based on these labels, TiDB sends the [Follower Read](https://docs.pingcap.com/tidb/stable/follower-read) requests to the correct replicas.
+
+    Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
+
+When setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shorter aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases of labels can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+
+Currently, TiDB Operator supports the following label aliases:
+
+- `region`: corresponds to `topology.kubernetes.io/region` and `failure-domain.beta.kubernetes.io/region`.
+- `zone`: corresponds to `topology.kubernetes.io/zone` and `failure-domain.beta.kubernetes.io/zone`.
+- `host`: corresponds to `kubernetes.io/hostname`.
+
+For example, if labels such as `region`, `zone`, and `host` are not set on each node of Kubernetes, setting the `location-labels` of PD as `["topology.kubernetes.io/region", "topology.kubernetes.io/zone", "kubernetes.io/hostname"]` is the same as `["region", "zone", "host"]`.

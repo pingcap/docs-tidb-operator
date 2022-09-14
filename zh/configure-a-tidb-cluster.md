@@ -766,15 +766,15 @@ topologySpreadConstraints:
 
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
 
-* 为 TiDB 节点设置所在的 Node 节点的拓扑信息（仅支持版本 TiDB >=v6.3.0 的集群）
+* 为 TiDB 节点设置所在的 Node 节点的拓扑信息（仅支持 TiDB 版本 >= v6.3.0 的集群）
 
-    TiDB Operator 会自动为 TiDB 获取其所在节点的拓扑信息，并调用 TiDB Server 的对应接口将这些信息设置为 TiDB 的 Labels。这样 TiDB 可以根据这些 Labels 将 [Follower Read](https://docs.pingcap.com/zh/tidb/stable/follower-read) 的请求发送至正确的副本。
+    TiDB Operator 会自动为 TiDB 获取其所在 Node 节点的拓扑信息，并调用 TiDB server 的对应接口将这些信息设置为 TiDB 的 Labels。这样 TiDB 可以根据这些 Labels 将 [Follower Read](https://docs.pingcap.com/zh/tidb/stable/follower-read) 的请求发送至正确的副本。
 
-    目前，TiDB Operator 会自动为 TiDB Server 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiDB 依赖特殊的 Label `zone` 支持 Follower Read 的部分功能。TiDB Operator 会依次获取 Label `zone`、`failure-domain.beta.kubernetes.io/zone` 和 `topology.kubernetes.io/zone` 的值作为 `zone` 的值。TiDB Operator 仅设置 TiDB Server 所在的节点上包含的 Labels 并忽略其他 Labels。
+    目前，TiDB Operator 会自动为 TiDB server 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiDB 依赖 `zone` Label 支持 Follower Read 的部分功能。TiDB Operator 会依次获取 Label `zone`、`failure-domain.beta.kubernetes.io/zone` 和 `topology.kubernetes.io/zone` 的值作为 `zone` 的值。TiDB Operator 仅设置 TiDB server 所在的节点上包含的 Labels 并忽略其他 Labels。
 
-    在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名。使用较短的 Labels 别名在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 把 PD 的 `location-labels` 设置为这些别名时，如果对应的节点不包含对应的 Labels，TiDB Operator 自动使用对应原始 Labels 的值。
+    在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名。使用较短的 Labels 别名在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 把 PD 的 `location-labels` 设置为这些别名时，如果对应的节点不包含对应的 Labels，TiDB Operator 自动使用原始 Labels 的值。
 
-    目前 TiDB Operator 支持如下短 Label 的映射：
+    目前 TiDB Operator 支持如下短 Label 和原始 Label 的映射：
 
     - `region`：对应 `topology.kubernetes.io/region` 和 `failure-domain.beta.kubernetes.io/region`。
     - `zone`：对应 `topology.kubernetes.io/zone` 和 `failure-domain.beta.kubernetes.io/zone`。
