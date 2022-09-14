@@ -51,7 +51,7 @@ This document shows an example in which the backup data stored in the specified 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f resotre-aws-s3.yaml
+    kubectl apply -f restore-aws-s3.yaml
     ```
 
     The content of `restore-aws-s3.yaml` is as follows:
