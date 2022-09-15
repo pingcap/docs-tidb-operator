@@ -472,7 +472,7 @@ spec:
 > **注意：**
 >
 > - 如果使用 TiCDC 版本小于 v6.3.0，TiDB Operator 会强制升级 TiCDC，导致同步延时上升。
-> - 该功能自 TiDB Operator v1.4.0 起可用。
+> - 该功能自 TiDB Operator v1.3.8 起可用。
 
 TiCDC 升级过程中，在重启 TiCDC Pod 之前，TiDB Operator 会先转移 TiCDC Pod 上的所有的同步负载。只有当转移完成或者转移超时（默认 10 分钟）后，TiCDC Pod 才会重启。如果集群的 TiCDC 实例数小于 2，TiDB Operator 不再等待超时，直接触发强制升级。
 
