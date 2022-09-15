@@ -479,6 +479,23 @@ spec:
 >
 > If the TiKV version is earlier than 4.0.14 or 5.0.3, due to [a bug of TiKV](https://github.com/tikv/tikv/pull/10364), you need to configure the timeout `spec.tikv.evictLeaderTimeout` as large as possible to ensure that all Region leaders on the TiKV Pod can be evicted within the timeout. If you are not sure about the proper value, greater than '1500m' is recommended.
 
+### Configure graceful upgrade for TiCDC cluster
+
+> **Note:**
+>
+> - If the TiCDC version is earlier than v6.3.0, TiDB Operator forces an upgrade on TiCDC, which might cause replication latency increase.
+> - The feature is available since TiDB Operator v1.3.8.
+
+During TiCDC upgrade, TiDB Operator drains all replication workloads from TiCDC Pod before restarting TiCDC Pod. Only after the draining is completed or the draining exceeds the specified timeout (10 minutes by default), TiCDC Pod is restarted. If TiCDC has fewer than 2 instances, TiDB Operator forces an upgrade without waiting for the timeout.
+
+If the draining exceeds the specified timeout, restarting TiCDC Pod causes issues such as more replication latency. To avoid the issues, you can configure the timeout `spec.ticdc.gracefulShutdownTimeout` (10 minutes by default) to a larger value. For example:
+
+```
+spec:
+  ticdc:
+    gracefulShutdownTimeout: 100m
+```
+
 ### Configure PV for TiDB slow logs
 
 By default, TiDB Operator creates a `slowlog` volume (which is an `EmptyDir`) to store the slow logs, mounts the `slowlog` volume to `/var/log/tidb`, and prints slow logs in the `stdout` through a sidecar container.
