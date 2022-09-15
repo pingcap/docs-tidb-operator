@@ -483,7 +483,7 @@ spec:
 > **Note:**
 >
 > - If the TiCDC version is earlier than v6.3.0, TiDB Operator forces an upgrade on TiCDC, which might cause replication latency increase.
-> - The feature is available since TiDB Operator v1.4.0.
+> - The feature is available since TiDB Operator v1.3.8.
 
 During TiCDC upgrade, TiDB Operator drains all replication workloads from TiCDC Pod before restarting TiCDC Pod. Only after the draining is completed or the draining exceeds the specified timeout (10 minutes by default), TiCDC Pod is restarted. If TiCDC has fewer than 2 instances, TiDB Operator forces an upgrade without waiting for the timeout.
 
