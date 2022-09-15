@@ -466,6 +466,23 @@ spec:
 >
 > 如果使用 TiKV 版本小于 4.0.14，或者小于 5.0.3，由于 [TiKV 的 bug](https://github.com/tikv/tikv/pull/10364)，需要将 `spec.tikv.evictLeaderTimeout` 的值设置的尽可能大（推荐大于 `1500m`），以保证 TiKV Pod 上所有的 Region Leader 能在设置的时间内驱逐完毕。
 
+### 配置 TiCDC 平滑升级
+
+> **注意：**
+>
+> - 如果使用 TiCDC 版本小于 v6.3.0，TiDB Operator 会强制升级 TiCDC，导致同步延时上升。
+> - 该功能自 TiDB Operator v1.3.8 起可用。
+
+TiCDC 升级过程中，在重启 TiCDC Pod 之前，TiDB Operator 会先转移 TiCDC Pod 上的所有的同步负载。只有当转移完成或者转移超时（默认 10 分钟）后，TiCDC Pod 才会重启。如果集群的 TiCDC 实例数小于 2，TiDB Operator 不再等待超时，直接触发强制升级。
+
+如果转移超时，重启 TiCDC Pod 会导致同步延时增加。要避免此问题，你可以将超时时间 `spec.ticdc.gracefulShutdownTimeout`（默认 10 分钟）配置为一个更大的值，例如：
+
+```
+spec:
+  ticdc:
+    gracefulShutdownTimeout: 100m
+```
+
 ### 配置 TiDB 慢查询日志持久卷
 
 默认配置下，TiDB Operator 会新建名称为 `slowlog` 的 `EmptyDir` 卷来存储慢查询日志，`slowlog` 卷默认挂载到 `/var/log/tidb`，慢查询日志通过 sidecar 容器打印到标准输出。
