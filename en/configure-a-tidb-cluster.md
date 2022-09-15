@@ -809,11 +809,11 @@ To add the data high availability feature in Kubernetes:
 
 3. Set the topological information of the Node where the TiDB node is located.
 
-    From version v1.4.0, if the deployed TiDB verion >= v6.3.0, TiDB Operator automatically obtains the topological information of the Node for TiDB and calls the corresponding interface of the TiDB server to set this information as TiDB's labels. Based on these labels, TiDB sends the [Follower Read](https://docs.pingcap.com/tidb/stable/follower-read) requests to the correct replicas.
+    Since TiDB Operator v1.4.0, if the deployed TiDB version >= v6.3.0, TiDB Operator automatically obtains the topological information of the Node for TiDB and calls the corresponding interface of the TiDB server to set this information as TiDB's labels. Based on these labels, TiDB sends the [Follower Read](https://docs.pingcap.com/tidb/stable/follower-read) requests to the correct replicas.
 
     Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
 
-From version v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shorter aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases of labels can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+Since v1.4.0, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default when setting labels for TiKV and TiDB nodes. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
 
 Currently, TiDB Operator supports the following label aliases:
 
