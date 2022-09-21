@@ -293,14 +293,14 @@ scrape_configs:
 
     ```shell
     # set tidb version here
-    version=v6.0.0
+    version=v6.1.0
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```
 
     > **注意：**
     >
-    > 上述命令中，`${version}` 为 Initializer 的镜像版本，应该和 TiDB 版本保持一致，但是目前仅 `v6.0.0` 版本的 Initializer 镜像适用于**多 Kubernetes 集群**监控，因此示例中使用 `v6.0.0` 版本的镜像。
+    > 上述命令中，`${version}` 为 Initializer 的镜像版本，应该和 TiDB 版本保持一致。目前仅 `v6.0.0` 及以上版本的 Initializer 镜像适用于**多 Kubernetes 集群**监控。
 
     执行上述命令后，可以在当前目录下查看所有组件 dashboard 的 JSON 定义文件。
 
