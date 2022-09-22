@@ -50,7 +50,7 @@ After volume expansion is enabled, expand the PV using the following method:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl patch pvc -n ${namespace} ${pvc_name} -p '{"spec": {"resources": {"requests": {"storage": "100Gi"}}}'
+    kubectl patch pvc -n ${namespace} ${pvc_name} -p '{"spec": {"resources": {"requests": {"storage": "100Gi"}}}}'
     ```
 
 2. View the size of the PV:
