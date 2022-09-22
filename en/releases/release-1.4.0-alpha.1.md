@@ -1,12 +1,12 @@
 ---
-title: TiDB Operator 1.3.8 Release Notes
+title: TiDB Operator 1.4.0-alpha.1 Release Notes
 ---
 
-# TiDB Operator 1.3.8 Release Notes
+# TiDB Operator 1.4.0-alpha.1 Release Notes
 
-Release date: September 13, 2022
+Release date: September 23, 2022
 
-TiDB Operator version: 1.3.8
+TiDB Operator version: 1.4.0-alpha.1
 
 ## Compatibility Change
 
