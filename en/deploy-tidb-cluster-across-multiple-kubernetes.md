@@ -716,3 +716,7 @@ Through the above steps, you can complete exit and resources reclaim of the join
         ```
 
 For more examples and development information, refer to [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster).
+
+## Deploy TiDB monitoring components
+
+Refer to [Deploy TiDB Monitor across Multiple Kubernetes Clusters](deploy-tidb-monitor-across-multiple-kubernetes.md).
