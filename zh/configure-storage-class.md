@@ -51,7 +51,7 @@ kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl patch pvc -n ${namespace} ${pvc_name} -p '{"spec": {"resources": {"requests": {"storage": "100Gi"}}}'
+    kubectl patch pvc -n ${namespace} ${pvc_name} -p '{"spec": {"resources": {"requests": {"storage": "100Gi"}}}}'
     ```
 
 2. 查看 PV 扩容成功
