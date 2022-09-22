@@ -32,6 +32,7 @@
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
   - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+  - [Monitor a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-monitor-across-multiple-kubernetes.md)
 - Migrate
   - [Import Data](restore-data-using-tidb-lightning.md)
   - Migrate from MySQL
