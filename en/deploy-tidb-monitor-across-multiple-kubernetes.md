@@ -309,7 +309,7 @@ After collecting data using Prometheus, you can visualize multi-cluster monitori
 
     > **Note:**
     >
-    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. Currently only `v6.0.0` and later versions of the Initializer image support **multiple Kubernetes clusters** monitoring.
+    > In the command above, `${version}` is the version of the Initializer image, which should be consistent with the TiDB version. Currently, only `v6.0.0` and later versions of the Initializer image support **multiple Kubernetes clusters** monitoring.
 
     After running the command above, you can view all the dashboard JSON files in the current directory.
 
