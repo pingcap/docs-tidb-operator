@@ -22,9 +22,9 @@ TiDB Operator version: 1.4.0-alpha.1
 
 - Add new fields `spec.tikv.scalePolicy` and `spec.tiflash.scalePolicy` to scale multi TiFlash and TiKV Pods simultaneously ([#3881](https://github.com/pingcap/tidb-operator/pull/3881), [@lizhemingi](https://github.com/lizhemingi))
 
-- Add a new field `startScriptVersion` to choose startscript for all components ([#4505](https://github.com/pingcap/tidb-operator/pull/4505), [@KanShiori](https://github.com/KanShiori))
+- Add a new field `startScriptVersion` to choose start script for all components ([#4505](https://github.com/pingcap/tidb-operator/pull/4505), [@KanShiori](https://github.com/KanShiori))
 
-- Allow use shorten label names to refer to some k8s well-known labels when used in pd's location labels ([#4688](https://github.com/pingcap/tidb-operator/pull/4688), [@glorv](https://github.com/glorv))
+- Allow use shorten label names to refer to some k8s well-known labels when used in PD's location labels ([#4688](https://github.com/pingcap/tidb-operator/pull/4688), [@glorv](https://github.com/glorv))
 
 - Support PiTR for BR, point in time restore from a snapshot backup and a log backup ([#4648](https://github.com/pingcap/tidb-operator/pull/4648) [#4682](https://github.com/pingcap/tidb-operator/pull/4682) [#4694](https://github.com/pingcap/tidb-operator/pull/4694) [#4695](https://github.com/pingcap/tidb-operator/pull/4695), [@WizardXiao](https://github.com/WizardXiao))
 
@@ -42,7 +42,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 - Add a new feature gate `VolumeModifying` to enable the volume modification feature, and the feature is disable by default ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
 
-- Support to change the storage class to modify the iops and throughput for EBS volumes used by a cluster ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
+- Support to change the storage class to modify the IOPS and throughput for AWS EBS volumes used by a cluster ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug fixes
 
