@@ -1,7 +1,6 @@
 ---
 title: 导入集群数据
 summary: 使用 TiDB Lightning 导入集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # 导入集群数据
@@ -15,11 +14,11 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 - 对于 `Importer-backend` 后端，需要分别部署 tikv-importer 与 tidb-lightning。
 
     > **注意：**
-    > 
+    >
     > `Importer-backend` 后端在 TiDB 5.3 及之后的版本被废弃。如果必须使用 `Importer-backend` 后端，请参考 v1.2 及以前的[旧版文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#部署-tikv-importer)部署 tikv-importer。
 
 - 对于 `Local-backend` 后端，只需要部署 tidb-lightning。
-  
+
 - 对于 `TiDB-backend` 后端，只需要部署 tidb-lightning。推荐使用基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。具体信息可参考[使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs.md)或[使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据](restore-from-s3.md)。
 
 ## 部署 TiDB Lightning
@@ -186,7 +185,7 @@ dataSource:
             ```
 
 2. 配置 `dataSource` 字段。示例如下：
-   
+
     ```yaml
     dataSource:
       remote:
@@ -197,9 +196,9 @@ dataSource:
         path: s3:bench-data-us/sysbench/sbtest_16_1e7.tar.gz
         # directory: s3:bench-data-us
     ```
-    
+
     相关字段含义如下：
-    
+
     * `dataSource.remote.storageClassName`：创建 PV 使用的 StorageClass 名称。
     * `dataSource.remote.secretName`：上一步所创建的 Secret 的名称。
     * `dataSource.remote.path`：如果备份数据打包为 tarball 文件，使用该字段表明 tarball 文件的路径。
