@@ -1,7 +1,6 @@
 ---
 title: TiDB FAQs in Kubernetes
 summary: Learn about TiDB FAQs in Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/faq/']
 ---
 
 # TiDB FAQs in Kubernetes

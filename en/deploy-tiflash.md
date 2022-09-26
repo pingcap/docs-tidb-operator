@@ -1,10 +1,9 @@
 ---
 title: Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
 summary:  Learn how to deploy TiFlash, the TiDB HTAP storage engine, on Kubernetes for an existing TiDB cluster.
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tiflash/']
 ---
 
-# Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster 
+# Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
 
 This document describes how to add or remove the TiDB HTAP storage engine TiFlash for an existing TiDB cluster in Kubernetes. As a columnar storage extension of TiKV, TiFlash provides both good isolation level and strong consistency guarantee.
 

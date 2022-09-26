@@ -1,7 +1,6 @@
 ---
 title: 访问 TiDB Dashboard
 summary: 介绍如何在 Kubernetes 环境下访问 TiDB Dashboard
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/access-dashboard/']
 ---
 
 # 访问 TiDB Dashboard
@@ -203,7 +202,7 @@ spec:
 1. 部署 TidbMonitor CR。
 
     - 如果 TiDB 集群版本小于 v5.4.0，参考[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)部署 TidbMonitor CR。
-    
+
     - 如果 TiDB 集群版本大于等于 v5.4.0，可以跳过这一步。
 
 2. 部署 TidbNGMonitoring CR。

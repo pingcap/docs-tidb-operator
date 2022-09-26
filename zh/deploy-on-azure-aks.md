@@ -1,7 +1,6 @@
 ---
 title: 在 Azure AKS 上部署 TiDB 集群
 summary: 介绍如何在 Azure AKS (Azure Kubernetes Service) 上部署 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 ---
 
 # 在 Azure AKS 上部署 TiDB 集群

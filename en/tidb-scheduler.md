@@ -1,7 +1,6 @@
 ---
 title: TiDB Scheduler
 summary: Learn what is TiDB Scheduler and how it works.
-aliases: ['/docs/tidb-in-kubernetes/dev/tidb-scheduler/']
 ---
 
 # TiDB Scheduler

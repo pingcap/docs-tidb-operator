@@ -1,7 +1,6 @@
 ---
 title: 升级 TiDB Operator
 summary: 介绍如何升级 TiDB Operator。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 ---
 
 # 升级 TiDB Operator
@@ -31,7 +30,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
     如果输出中未包含你需要的新版本，可以使用 `helm repo update` 命令更新 repo。详情请参考[配置 Helm repo](tidb-toolkit.md#配置-helm-repo)。
 
 2. 更新 Kubernetes 的 CustomResourceDefinition (CRD)。关于 CRD 的更多信息，请参阅 [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)。
-   
+
     * 如果 Kubernetes 版本大于等于 1.16:
 
         1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。

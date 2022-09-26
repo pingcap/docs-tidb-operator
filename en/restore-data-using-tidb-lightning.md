@@ -1,7 +1,6 @@
 ---
 title: Import Data
 summary: Learn how to quickly import data with TiDB Lightning.
-aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Import Data
@@ -57,7 +56,7 @@ Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning c
 
 For versions earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
 
-#### Configure TLS 
+#### Configure TLS
 
 If TLS between components has been enabled on the target TiDB cluster (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiDB Lightning, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 
