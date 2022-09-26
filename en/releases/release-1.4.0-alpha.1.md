@@ -30,7 +30,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 - Add a new feature gate `VolumeModifying` to enable the volume modification feature, and the feature is disable by default ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
 
-- Support changing the storage class to modify the IOPS and throughput for AWS EBS volumes used by a cluster ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
+- Support changing the `StorageClass` of a `TidbCluster` component to modify the IOPS and throughput for AWS EBS volumes used by a cluster ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
 
 - Support setting the `--check-requirements` argument for BR ([#4631](https://github.com/pingcap/tidb-operator/pull/4631), [@KanShiori](https://github.com/KanShiori))
 
@@ -42,7 +42,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 - Add metrics port for TiFlash `Service` ([#4470](https://github.com/pingcap/tidb-operator/pull/4470), [@mikechengwei](https://github.com/mikechengwei))
 
-- Update the default value of `log-file` for TiCDC to avoid overwriting `/dev/stderr` ([#4494](https://github.com/pingcap/tidb-operator/pull/4494), [@KanShiori](https://github.com/KanShiori))
+- Update the default value of the `log-file` configuration item for TiCDC to avoid overwriting `/dev/stderr` ([#4494](https://github.com/pingcap/tidb-operator/pull/4494), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug fixes
 
