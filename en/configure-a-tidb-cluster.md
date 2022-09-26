@@ -560,7 +560,7 @@ For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/
 
 ### Configure TiDB service
 
-You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
+You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, and so on.
 
 #### General configurations
 
@@ -785,7 +785,7 @@ Before configuring the high availability of data, read [Information Configuratio
 
 To add the data high availability feature in Kubernetes:
 
-1. Set the label collection of topological location for PD
+* Set the label collection of topological location for PD.
 
     Replace the `location-labels` information in the `pd.config` with the label collection that describes the topological location on the nodes in the Kubernetes cluster.
 
@@ -794,7 +794,7 @@ To add the data high availability feature in Kubernetes:
     > * For PD versions < v3.0.9, the `/` in the label name is not supported.
     > * If you configure `host` in the `location-labels`, TiDB Operator will get the value from the `kubernetes.io/hostname` in the node label.
 
-2. Set the topological information of the Node where the TiKV node is located.
+* Set the topological information of the Node where the TiKV node is located.
 
     TiDB Operator automatically obtains the topological information of the Node for TiKV and calls the PD interface to set this information as the information of TiKV's store labels. Based on this topological information, the TiDB cluster schedules the replicas of the data.
 
@@ -807,3 +807,19 @@ To add the data high availability feature in Kubernetes:
     ```
 
     In the command above, `region`, `zone`, `rack`, and `kubernetes.io/hostname` are just examples. The name and number of the label to be added can be arbitrarily defined, as long as it conforms to the specification and is consistent with the labels set by `location-labels` in `pd.config`.
+
+* Set the topological information of the Node where the TiDB node is located.
+
+    Since TiDB Operator v1.4.0, if the deployed TiDB version >= v6.3.0, TiDB Operator automatically obtains the topological information of the Node for TiDB and calls the corresponding interface of the TiDB server to set this information as TiDB's labels. Based on these labels, TiDB sends the [Follower Read](https://docs.pingcap.com/tidb/stable/follower-read) requests to the correct replicas.
+
+    Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
+
+Since v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+
+Currently, TiDB Operator supports the following label aliases:
+
+- `region`: corresponds to `topology.kubernetes.io/region` and `failure-domain.beta.kubernetes.io/region`.
+- `zone`: corresponds to `topology.kubernetes.io/zone` and `failure-domain.beta.kubernetes.io/zone`.
+- `host`: corresponds to `kubernetes.io/hostname`.
+
+For example, if labels such as `region`, `zone`, and `host` are not set on each node of Kubernetes, setting the `location-labels` of PD as `["topology.kubernetes.io/region", "topology.kubernetes.io/zone", "kubernetes.io/hostname"]` is the same as `["region", "zone", "host"]`.
