@@ -12,9 +12,9 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB versions | Compatible TiDB Operator versions |
 |:---|:---|
 | dev               | dev                 |
-| TiDB >= 5.4       | 1.3                 |
-| 5.1 <= TiDB < 5.4 | 1.3 (Recommended), 1.2      |
-| 3.0 <= TiDB < 5.1 | 1.3 (Recommended), 1.2, 1.1 |
+| TiDB >= 5.4       | 1.4, 1.3 (Recommended)                 |
+| 5.1 <= TiDB < 5.4 | 1.4, 1.3 (Recommended), 1.2      |
+| 3.0 <= TiDB < 5.1 | 1.4, 1.3 (Recommended), 1.2, 1.1 |
 | 2.1 <= TiDB < v3.0| 1.0 (End of support)       |
 
 <NavColumns>
