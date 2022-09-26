@@ -48,4 +48,4 @@ TiDB Operator 版本：1.4.0-alpha.1
 
 - 修复在集群扩缩容时，挂起集群导致的集群管理阻塞的问题 ([#4679](https://github.com/pingcap/tidb-operator/pull/4679), [@KanShiori](https://github.com/KanShiori))
 
-- 修复在 PD spec 为空时导致 TiDB Operator 崩溃的问题 ([#4679](https://github.com/pingcap/tidb-operator/pull/4691), [@KanShiori](https://github.com/mahjonp))
+- 修复 PD spec 为空导致 TiDB Operator 崩溃的问题 ([#4679](https://github.com/pingcap/tidb-operator/pull/4691), [@KanShiori](https://github.com/mahjonp))
