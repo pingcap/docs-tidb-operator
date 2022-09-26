@@ -14,7 +14,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 ## Rolling Update Changes
 
-- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-beta.1 causes TiCDC to rolling upgrade. 
+- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-alpha.1 causes TiCDC to rolling upgrade. 
 
 ## New Feature
 
@@ -26,7 +26,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 - Allow to use shortened label names to refer to some well-known Kubernetes labels in PD's location labels ([#4688](https://github.com/pingcap/tidb-operator/pull/4688), [@glorv](https://github.com/glorv))
 
-- Support PiTR for BR, point in time restore from a snapshot backup and a log backup ([#4648](https://github.com/pingcap/tidb-operator/pull/4648) [#4682](https://github.com/pingcap/tidb-operator/pull/4682) [#4694](https://github.com/pingcap/tidb-operator/pull/4694) [#4695](https://github.com/pingcap/tidb-operator/pull/4695), [@WizardXiao](https://github.com/WizardXiao))
+- Support point-in-time recovery from a snapshot backup and a log backup ([#4648](https://github.com/pingcap/tidb-operator/pull/4648) [#4682](https://github.com/pingcap/tidb-operator/pull/4682) [#4694](https://github.com/pingcap/tidb-operator/pull/4694) [#4695](https://github.com/pingcap/tidb-operator/pull/4695), [@WizardXiao](https://github.com/WizardXiao))
 
 - Add a new feature gate `VolumeModifying` to enable the volume modification feature, and the feature is disable by default ([#4683](https://github.com/pingcap/tidb-operator/pull/4683), [@liubog2008](https://github.com/liubog2008))
 
