@@ -46,6 +46,6 @@ TiDB Operator version: 1.4.0-alpha.1
 
 ## Bug fixes
 
-- Fix the issue cluster sync stuck caused by suspending cluster when scaling ([#4679](https://github.com/pingcap/tidb-operator/pull/4679), [@KanShiori](https://github.com/KanShiori))
+- Fix the issue that cluster sync gets stuck caused by suspending a cluster when scaling ([#4679](https://github.com/pingcap/tidb-operator/pull/4679), [@KanShiori](https://github.com/KanShiori))
 
 - Fix the issue that TiDB Operator panics if PD spec is nil ([#4679](https://github.com/pingcap/tidb-operator/pull/4691), [@KanShiori](https://github.com/mahjonp))
