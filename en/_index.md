@@ -23,7 +23,6 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 - [TiDB Operator Overview](tidb-operator-overview.md)
 - [TiDB Operator Architecture](architecture.md)
-- [What's New in v1.3](whats-new-in-v1.3.md)
 
 </NavColumn>
 
