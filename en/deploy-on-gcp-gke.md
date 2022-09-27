@@ -29,8 +29,8 @@ Before deploying a TiDB cluster on GCP GKE, make sure the following requirements
 
 * Instance types: to gain better performance, the following is recommended:
     * PD nodes: `n2-standard-4`
-    * TiDB nodes: `n2-standard-8`
-    * TiKV or TiFlash nodes: `n2-highmem-8`
+    * TiDB nodes: `n2-standard-16`
+    * TiKV or TiFlash nodes: `n2-standard-16`
 * Storage: For TiKV or TiFlash, it is recommended to use [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) disk type.
 
 ## Configure the GCP service
