@@ -3,7 +3,6 @@
 
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
-  - [v1.3 新特性](whats-new-in-v1.3.md)
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes

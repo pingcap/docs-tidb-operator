@@ -4,7 +4,7 @@ title: TiDB Operator 1.4.0-alpha.1 Release Notes
 
 # TiDB Operator 1.4.0-alpha.1 Release Notes
 
-Release date: September 26, 2022
+Release date: September 27, 2022
 
 TiDB Operator version: 1.4.0-alpha.1
 
@@ -14,7 +14,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 ## Rolling Update Changes
 
-- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-alpha.1 causes TiCDC to rolling upgrade. 
+- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-alpha.1 causes TiCDC to rolling upgrade.
 
 ## New Feature
 
