@@ -31,13 +31,13 @@ summary: 介绍如何在 AWS EKS (Elastic Kubernetes Service) 上部署 TiDB 集
 
 ## 推荐机型及存储
 
-- 推荐机型：出于性能考虑，推荐:
-    - PD 所在节点: `c5.xlarge`
-    - TiDB 所在节点: `c5.4xlarge`
-    - TiKV 或 TiFlash 所在节点: `m5.4xlarge`
-- 推荐存储：因为 AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 配置，推荐:
-    - TiKV: 400 MiB/s 与 4000 IOPS
-    - TiFlash: 625 MiB/s 与 6000 IOPS
+- 推荐机型：出于性能考虑，推荐：
+    - PD 所在节点：`c5.xlarge`
+    - TiDB 所在节点：`c5.4xlarge`
+    - TiKV 或 TiFlash 所在节点：`m5.4xlarge`
+- 推荐存储：因为 AWS 目前已经支持 [EBS gp3](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) 卷类型，建议使用 EBS gp3 卷类型。对于 gp3 配置，推荐：
+    - TiKV：400 MiB/s 与 4000 IOPS
+    - TiFlash：625 MiB/s 与 6000 IOPS
 - 推荐 AMI 类型：Amazon Linux 2
 
 ## 创建 EKS 集群和节点池
