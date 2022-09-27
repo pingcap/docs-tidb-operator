@@ -16,7 +16,7 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 * Install [Helm 3](https://helm.sh/docs/intro/install/) for deploying TiDB Operator.
 * [Deploy a Kubernetes (AKS) cluster](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster) and install and configure `az cli`.
 
-    > **Note：**
+    > **Note:**
     >
     > To verify whether AZ CLI is configured correctly, run the `az login` command. If login with account credentials succeeds, AZ CLI is configured correctly. Otherwise, you need to re-configure AZ CLI.
 
