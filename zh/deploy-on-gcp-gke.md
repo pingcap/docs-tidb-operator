@@ -29,8 +29,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 
 * 推荐机型：出于性能考虑，推荐以下机型：
     * PD 所在节点：`n2-standard-4`
-    * TiDB 所在节点：`n2-standard-8`
-    * TiKV 或 TiFlash 所在节点：`n2-highmem-8`
+    * TiDB 所在节点：`n2-standard-16`
+    * TiKV 或 TiFlash 所在节点：`n2-standard-16`
 * 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
 
 ## 配置 GCP 服务
