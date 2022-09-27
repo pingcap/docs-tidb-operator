@@ -34,7 +34,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
     例如，将如下配置存为 `cluster.yaml` 文件，并替换 `${heterogeneous_cluster_name}` 为自己想命名的异构集群名字，替换 `${origin_cluster_name}` 为想要加入的已有集群名称。
 
-    > **注意**:
+    > **注意：**
     >
     > 相比于普通 TiDB 集群配置文件，异构集群配置文件的唯一区别是，你需要额外配置 `spec.cluster.name` 字段为已有的 TiDB 集群名。通过此字段，TiDB Operator 会将该异构集群加入到已有的 TiDB 集群。
 
@@ -112,7 +112,7 @@ summary: 本文档介绍如何为已有的 TiDB 集群部署一个异构集群�
 
     例如，将如下配置存为 `cluster.yaml` 文件，并替换 `${heterogeneous_cluster_name}` 为自己想命名的异构集群名字，`${origin_cluster_name}` 替换为想要加入的已有集群名称。
 
-    > **注意**:
+    > **注意：**
     >
     > 相比于普通 TiDB 集群配置文件，异构集群配置文件的唯一区别是，你需要额外配置 `spec.cluster.name` 字段为已有的 TiDB 集群名。通过此字段，TiDB Operator 会将该异构集群加入到已有的 TiDB 集群。
 
