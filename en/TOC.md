@@ -3,7 +3,6 @@
 
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.3](whats-new-in-v1.3.md)
 - [Get Started](get-started.md)
 - Deploy
   - In Self-Managed Kubernetes

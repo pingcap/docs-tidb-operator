@@ -25,7 +25,6 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 
 - [TiDB Operator 简介](tidb-operator-overview.md)
 - [TiDB Operator 架构](architecture.md)
-- [TiDB Operator v1.3 新特性](whats-new-in-v1.3.md)
 
 </NavColumn>
 
