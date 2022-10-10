@@ -10,4 +10,4 @@ TiDB Operator 版本：1.3.9
 
 ## 错误修复
 
-- 修复设置 `acrossK8s` 字段但未设置 `clusterDomain` 情况下，PD 升级流程会卡住的问题 ([#4522](https://github.com/pingcap/tidb-operator/pull/4721), [@liubog2008](https://github.com/liubog2008))
+- 修复了在已设置 `acrossK8s` 字段但未设置 `clusterDomain` 的情况下，PD 升级流程会卡住的问题 ([#4522](https://github.com/pingcap/tidb-operator/pull/4721), [@liubog2008](https://github.com/liubog2008))
