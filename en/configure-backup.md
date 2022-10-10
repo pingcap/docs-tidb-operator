@@ -1,7 +1,7 @@
 ---
 title: Configuration of tidb-backup Chart
 summary: Learn the configurations of the tidb-backup chart.
-aliases: ['/docs/tidb-in-kubernetes/stable/configure-backup/','/docs/tidb-in-kubernetes/v1.1/configure-backup/']
+aliases: ['/docs/tidb-in-kubernetes/stable/configure-backup/','/docs/tidb-in-kubernetes/v1.1/configure-backup/','/tidb-in-kubernetes/stable/configure-backup/']
 ---
 
 # Configuration of tidb-backup Chart
