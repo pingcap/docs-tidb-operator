@@ -33,7 +33,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 ### Step 1: Prepare for an ad-hoc backup
 
-1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.8/manifests/backup/backup-rbac.yaml) to the server that runs the backup task.
+1. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.3.9/manifests/backup/backup-rbac.yaml) to the server that runs the backup task.
 
 2. Execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
