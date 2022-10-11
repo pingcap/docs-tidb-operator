@@ -11,7 +11,7 @@ summary: 介绍如何使用 PITR 备份 TiDB 集群数据到 Azure Blob Storage 
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 PITR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份) 的方式备份至 Azure Blob Storage 上：
+如果你对数据备份有以下要求，可考虑使用 PITR 将 TiDB 集群数据以 Ad-hoc 的方式备份至 Azure Blob Storage 上：
 
 - 需要在新集群上恢复备份集群的历史任意时刻点快照
 - 数据的 RPO 在分钟级别
