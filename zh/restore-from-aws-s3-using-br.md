@@ -58,7 +58,7 @@ summary: 介绍如何使用 BR 恢复 Amazon S3 兼容存储上的备份数据�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f resotre-aws-s3.yaml
+    kubectl apply -f restore-aws-s3.yaml
     ```
 
     `restore-aws-s3.yaml` 文件内容如下：
