@@ -47,7 +47,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
 
 3. Upgrade TiDB Operator. For details, refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md).
 
-4. After TiDB Operator upgrade, check the AdvancedStatefulSet Controller is deployed by the following command:
+4. After upgrading TiDB Operator, check the AdvancedStatefulSet Controller is deployed by the following command:
    
     {{< copyable "shell-regular" >}}
     
