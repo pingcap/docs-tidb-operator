@@ -71,6 +71,8 @@
     - 使用 Azure Blob Storage
       - [使用 BR 备份 TiDB 集群数据到 Azblob](backup-to-azblob-using-br.md)
       - [使用 BR 恢复 Azblob 上的备份数据](restore-from-azblob-using-br.md)
+      - [使用 PITR 备份 TiDB 集群数据到 Azblob](backup-to-azblob-using-pitr.md)
+      - [使用 BR 恢复 Azblob 上的备份数据](restore-from-azblob-using-pitr.md)
     - 使用持久卷
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
