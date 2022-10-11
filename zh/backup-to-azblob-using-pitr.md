@@ -130,7 +130,9 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
     ```shell
     kubectl describe backup -n backup-test
     ```
+
     我们会找到描述名为 `demo1-backup-azblob` 的 `Backup CR` 的如下信息，其中 `Log Checkpoint Ts` 表示日志备份可恢复的最近时间点：
+
     ```
     Status:
     Backup Path:  azure://test/log-backup-test-1/
@@ -150,7 +152,7 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
 
 ---
 
-#### 停止日志备份。
+#### 停止日志备份
 
 + 由于我们已经在开启日志备份的时候已经创建了名为 `demo1-backup-azblob` 的 `Backup CR`，因此可以直接更新该 `Backup CR` 的配置，来激活停止日志备份的操作，具体操作激活优先级可参考 [tidb-operator#4682](https://github.com/pingcap/tidb-operator/pull/4682)。
 
@@ -159,7 +161,9 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
     ```shell
     kubectl edit backup demo1-backup-azblob -n backup-test
     ```
+
     在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
+
     ```yaml
     ---
     apiVersion: pingcap.com/v1alpha1
@@ -251,4 +255,3 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
 ## 故障诊断
 
 在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
-
