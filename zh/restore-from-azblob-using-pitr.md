@@ -24,6 +24,7 @@ summary: 介绍如何使用 PITR 恢复 Azure Blob Storage 上的备份数据。
 ### 前置条件
 
 本文假设 Azure Blob Storage 中的桶 `my-container` 中存在两份备份数据，分别是：
+
 1. 在日志备份期间进行[全量备份](backup-to-azblob-using-br.md)产生的备份数据，存储在 `my-folder-full` 文件夹下；
 2. 日志备份产生的备份数据，存储在 `my-folder` 文件夹下。
 
@@ -101,6 +102,7 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
     ```shell
     kubectl get jobs -n restore-test
     ```
+
     ```
     NAME                     COMPLETIONS   ...
     restore-restore-pitr-1   1/1           ...

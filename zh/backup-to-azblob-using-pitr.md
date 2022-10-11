@@ -96,18 +96,24 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
         prefix: my-folder
     
     ```
+
 + 等待启动操作完成：
+
     ```shell
     kubectl get jobs -n backup-test
     ```
+
     ```
     NAME                                   COMPLETIONS   ...
     backup-demo1-backup-azblob-log-start   1/1           ...
     ```
+
 + 查看新增的 `Backup CR`：
+
     ```shell
     kubectl get backups -n backup-test
     ```
+
     ```
     NAME                   TYPE    MODE    ....
     demo1-backup-azblob            log     ....
@@ -174,7 +180,7 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
       logStop: true
 
     ```
-    
+
 > **提示：**
 >
 > 当然，我们也可以采用和启动日志备份时相同的方法来停止日志备份，并且已经被创建过的 `Backup CR` 会因此被更新。
@@ -190,7 +196,9 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
     ```shell
     kubectl edit backup demo1-backup-azblob -n backup-test
     ```
+
     在最后新增一行字段 `spec.logTruncateUntil: "2022-10-10T15:21:00+08:00"`，保存并退出。更新后的内容如下：
+
     ```yaml
     ---
     apiVersion: pingcap.com/v1alpha1
@@ -211,19 +219,25 @@ Ad-hoc 备份支持 PITR 功能的启动和停止日志备份任务、恢复任�
       logTruncateUntil: "2022-10-10T15:21:00+08:00"
     
     ```
+
 + 等待清理操作完成：
+
     ```shell
     kubectl get jobs -n backup-test
     ```
+
     ```
     NAME                                      COMPLETIONS   ...
     ...
     backup-demo1-backup-azblob-log-truncate   1/1           ...
     ``` 
+
 + 查看 `Backup CR` 的信息：
+
     ```shell
     kubectl describe backup -n backup-test
     ```
+
     ```
     ...
     Log Success Truncate Until:  2022-10-10T15:21:00+08:00
