@@ -27,8 +27,13 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
 
         {{< copyable "shell-regular" >}}
 
+<<<<<<< HEAD
         ```
         kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.9/manifests/advanced-statefulset-crd.v1.yaml
+=======
+        ```shell
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1.yaml
+>>>>>>> caa3cb1a (Add a step to check asts is deployed (#2005))
         ```
 
 2. 在 TiDB Operator chart 的 `values.yaml` 中启用 `AdvancedStatefulSet` 特性：
@@ -42,7 +47,25 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
       create: true
     ```
 
-    然后升级 TiDB Operator，具体可参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)。
+3. 升级 TiDB Operator，具体可参考[升级 TiDB Operator 文档](upgrade-tidb-operator.md)。
+
+4. 升级 TiDB Operator 后，通过以下命令检查是否成功部署 AdvancedStatefulSet Controller：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    kubectl get pods -n ${operator-ns} --selector app.kubernetes.io/component=advanced-statefulset-controller
+    ```
+
+    <details>
+    <summary>点击查看期望输出</summary>
+    
+    ```
+    NAME                                               READY       STATUS    RESTARTS   AGE
+    advanced-statefulset-controller-67885c5dd9-f522h   1/1         Running   0          10s
+    ```
+    
+    </details>
 
 > **注意：**
 >
