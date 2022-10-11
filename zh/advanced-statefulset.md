@@ -27,13 +27,8 @@ Kubernetes 内置 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/co
 
         {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
-        ```
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.9/manifests/advanced-statefulset-crd.v1.yaml
-=======
         ```shell
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/advanced-statefulset-crd.v1.yaml
->>>>>>> caa3cb1a (Add a step to check asts is deployed (#2005))
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.3.9/manifests/advanced-statefulset-crd.v1.yaml
         ```
 
 2. 在 TiDB Operator chart 的 `values.yaml` 中启用 `AdvancedStatefulSet` 特性：
