@@ -16,8 +16,6 @@ summary: 介绍如何使用 PITR 备份 TiDB 集群数据到 Azure Blob Storage 
 - 需要在新集群上恢复备份集群的历史任意时刻点快照
 - 数据的 RPO 在分钟级别
 
-如有其他备份需求，请参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
-
 > **注意：**
 >
 > - BR 的 PITR 功能只支持 TiDB v6.2 及以上版本。
