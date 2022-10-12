@@ -29,7 +29,6 @@ BR 相关使用文档可参考：
 - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
 - [使用 BR 备份 TiDB 集群到 Azure Blob Storage](backup-to-azblob-using-br.md)
 - [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
-- [使用 PITR 备份 TiDB 集群到 Azure Blob Storage](backup-to-azblob-using-pitr.md)
 
 如果你对数据备份有以下要求，可考虑使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview) 对 TiDB 进行数据备份：
 
