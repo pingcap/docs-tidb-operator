@@ -7,21 +7,21 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 
 本文介绍如何将运行在 Kubernetes 环境中的 TiDB 集群数据备份到 Azure Blob Storage 上。其中包括以下两种备份方式：
 
-1. 全量备份和增量备份。
+1. 全量备份。
 2. 日志备份。
 
-在恢复时可以通过全量备份和增量备份的备份方式产生的备份数据将 TiDB 集群恢复到该备份的时刻点。再以该时刻点作为起始时刻点，通过日志备份产生的备份数据将 TiDB 集群恢复到历史任意时刻点。
+在恢复时可以通过全量备份的备份方式产生的备份数据将 TiDB 集群恢复到该备份的时刻点。再以该时刻点作为起始时刻点，也可以通过日志备份产生的备份数据将 TiDB 集群恢复到历史任意时刻点。
 
 本文使用的备份方式基于 TiDB Operator 的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到 Azure Blob Storage 上。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 BR 的**全量备份和增量备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份至 Azure Blob Storage 上：
+如果你对数据备份有以下要求，可考虑使用 BR 的**全量备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份至 Azure Blob Storage 上：
 
 - 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
 
-如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以[Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上：
+如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以[Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上（同时也需要配合全量备份的数据，来更高效的[恢复](restore-from-azblob-using-br.md#PITR+恢复的使用方法)数据）：
 
 - 需要在新集群上恢复备份集群的历史任意时刻点快照
 - 数据的 RPO 在分钟级别
@@ -30,13 +30,13 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 
 > **注意：**
 >
-> - 全量备份和增量备份只支持 TiDB v3.1 及以上版本。
+> - 全量备份只支持 TiDB v3.1 及以上版本。
 > - 日志备份只支持 TiDB v6.2 及以上版本。
 > - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
 
 ## Ad-hoc 备份
 
-Ad-hoc 备份支持全量备份与增量备份，也支持[启动](#启动日志备份)和[停止](#停止日志备份)日志备份任务，以及[清理](#清理日志备份数据)日志备份数据等操作。
+Ad-hoc 备份支持全量备份，也支持[启动](#启动日志备份)和[停止](#停止日志备份)日志备份任务，以及[清理](#清理日志备份数据)日志备份数据等操作。
 
 要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` custom resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
@@ -62,11 +62,11 @@ Ad-hoc 备份支持全量备份与增量备份，也支持[启动](#启动日志
 
 3. 为刚创建的 namespace `backup-test` 授予远程存储访问权限，可以使用两种方式授予权限，可参考文档 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)。创建成功后, namespace `backup-test` 就拥有了名为 `azblob-secret` 或 `azblob-secret-ad` 的 secret 对象。
 
-> **注意：**
->
-> 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
->
-> 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+  > **注意：**
+  >
+  > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
+  >
+  > 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
