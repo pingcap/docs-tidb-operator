@@ -21,7 +21,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 - 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
 
-如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以[Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上（同时也需要配合全量备份的数据，来更高效的[恢复](restore-from-azblob-using-br.md#PITR+恢复的使用方法)数据）：
+如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以[Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上（同时也需要配合全量备份的数据，来更高效的[恢复](restore-from-azblob-using-br.md#PITR-恢复的使用方法)数据）：
 
 - 需要在新集群上恢复备份集群的历史任意时刻点快照
 - 数据的 RPO 在分钟级别
@@ -62,11 +62,11 @@ Ad-hoc 备份支持全量备份，也支持[启动](#启动日志备份)和[停�
 
 3. 为刚创建的 namespace `backup-test` 授予远程存储访问权限，可以使用两种方式授予权限，可参考文档 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)。创建成功后, namespace `backup-test` 就拥有了名为 `azblob-secret` 或 `azblob-secret-ad` 的 secret 对象。
 
-  > **注意：**
-  >
-  > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
-  >
-  > 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > **注意：**
+    >
+    > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
+    >
+    > 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
@@ -478,11 +478,11 @@ spec:
 
 你可以通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。
 
-### 第 1 步：准备定时全量备份环境
+### 前置条件：准备定时全量备份环境
 
-同[准备 Ad-hoc 备份环境](#第-1-步准备-ad-hoc-备份环境)。
+同[准备 Ad-hoc 备份环境](#前置条件：准备-Ad-hoc-备份环境)。
 
-### 第 2 步：定时备份数据到 Azure Blob Storage
+### 全量备份：定时备份数据到 Azure Blob Storage
 
 依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Azure Blob Storage 上：
 
