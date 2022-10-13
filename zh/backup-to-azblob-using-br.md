@@ -125,6 +125,7 @@ Ad-hoc 备份支持全量备份，也支持[启动](#启动日志备份)和[停�
         secretName: azblob-secret
         container: my-container
         prefix: my-full-backup-folder
+        #accessTier: Hot
     ```
 
 在配置 `full-backup-azblob.yaml` 文件时，请参考以下信息：
@@ -176,6 +177,7 @@ kubectl get bk -n backup-test -o wide
         secretName: azblob-secret
         container: my-container
         prefix: my-log-backup-folder
+        #accessTier: Hot
     
     ```
 
@@ -263,6 +265,7 @@ kubectl get bk -n backup-test -o wide
         secretName: azblob-secret
         container: my-container
         prefix: my-log-backup-folder
+        #accessTier: Hot
       logStop: true
 
     ```
@@ -302,6 +305,7 @@ kubectl get bk -n backup-test -o wide
         secretName: azblob-secret
         container: my-container
         prefix: my-log-backup-folder
+        #accessTier: Hot
       logTruncateUntil: "2022-10-10T15:21:00+08:00"
     
     ```
@@ -313,7 +317,7 @@ kubectl get bk -n backup-test -o wide
     ```
 
     ```
-    NAME                                      COMPLETIONS   ...
+    NAME                                          COMPLETIONS   ...
     ...
     backup-demo1-log-backup-azblob-log-truncate   1/1           ...
     ``` 
