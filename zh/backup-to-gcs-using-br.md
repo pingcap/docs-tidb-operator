@@ -11,7 +11,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群到 Google Cloud Storage (GCS)�
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份到 GCS 上：
+如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时快照备份](#定时快照备份)的方式备份到 GCS 上：
 
 - 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
@@ -25,7 +25,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群到 Google Cloud Storage (GCS)�
 
 ## Ad-hoc 备份
 
-Ad-hoc 备份支持全量备份与增量备份。
+Ad-hoc 备份支持快照备份与增量备份。
 
 要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` custom resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
@@ -270,17 +270,17 @@ spec:
 
 </details>
 
-## 定时全量备份
+## 定时快照备份
 
-用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
+用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时快照备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次快照备份，定时快照备份底层通过 Ad-hoc 快照备份来实现。下面是创建定时快照备份的具体步骤：
 
-### 第 1 步：定时全量备份环境准备
+### 第 1 步：定时快照备份环境准备
 
-同 [Ad-hoc 全量备份环境准备](#第-1-步准备-ad-hoc-备份环境)。
+同 [Ad-hoc 快照备份环境准备](#第-1-步准备-ad-hoc-备份环境)。
 
 ### 第 2 步：定时备份数据到 GCS
 
-1. 创建 `BackupSchedule` CR，开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
+1. 创建 `BackupSchedule` CR，开启 TiDB 集群的定时快照备份，将数据备份到 GCS：
 
     {{< copyable "shell-regular" >}}
 
@@ -335,7 +335,7 @@ spec:
     - 关于 `backupSchedule` 独有的配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
     - `backupTemplate` 用于指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
-2. 定时全量备份创建完成后，通过以下命令查看备份的状态：
+2. 定时快照备份创建完成后，通过以下命令查看备份的状态：
 
     {{< copyable "shell-regular" >}}
 
@@ -343,7 +343,7 @@ spec:
     kubectl get bks -n test1 -owide
     ```
 
-    查看定时全量备份下面所有的备份条目：
+    查看定时快照备份下面所有的备份条目：
 
     {{< copyable "shell-regular" >}}
 
