@@ -7,12 +7,12 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
 
 本文介绍如何将 Azure Blob Storage 上的备份数据恢复到 Kubernetes 环境中的 TiDB 集群，其中包括以下两种恢复方式：
 
-1. SST 备份数据恢复，可以将 TiDB 集群恢复到备份的时刻点。SST 备份数据来自于全量备份。
+1. SST 备份数据恢复，可以将 TiDB 集群恢复到备份的时刻点。SST 备份数据来自于快照备份。
 2. SST + LOG 备份数据恢复，可以将 TiDB 集群恢复到历史任意时刻点。LOG 备份数据来自于日志备份。
 
 本文使用的恢复方式基于 TiDB Operator 的 Custom Resource Definition (CRD) 实现，底层使用 [BR](https://pingcap.com/docs-cn/stable/br/backup-and-restore-tool/) 进行数据恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。PITR 全称为 Point-in-time recovery，使用 BR 的该功能可以让你在新集群上恢复备份集群的历史任意时刻点的快照。
 
-本文使用 PITR 功能恢复时需要全量备份数据和日志备份数据。在恢复时，首先将全量备份的数据恢复到 TiDB 集群中，再以全量备份的时刻点作为起始时刻点，并指定任意恢复时刻点，将日志备份数据恢复到 TiDB 集群中。
+本文使用 PITR 功能恢复时需要快照备份数据和日志备份数据。在恢复时，首先将快照备份的数据恢复到 TiDB 集群中，再以快照备份的时刻点作为起始时刻点，并指定任意恢复时刻点，将日志备份数据恢复到 TiDB 集群中。
 
 > **注意：**
 >
@@ -22,11 +22,11 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
 
 ## 全量恢复的使用方法
 
-本节示例将存储在 Azure Blob Storage 上指定路径 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的全量备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。下面是具体的操作过程。
+本节示例将存储在 Azure Blob Storage 上指定路径 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的快照备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。下面是具体的操作过程。
 
 ### 前置条件：数据准备
 
-本节假设 Azure Blob Storage 中的桶 `my-container` 中文件夹 `my-full-backup-folder` 下存储着全量备份产生的备份数据。备份数据的产生请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
+本节假设 Azure Blob Storage 中的桶 `my-container` 中文件夹 `my-full-backup-folder` 下存储着快照备份产生的备份数据。备份数据的产生请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
 
 ### 前置条件：准备恢复环境
 
@@ -68,11 +68,11 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
         ```
 
-### 全量备份恢复：将指定备份数据恢复到 TiDB 集群
+### 快照备份恢复：将指定备份数据恢复到 TiDB 集群
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
-+ 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Backup` CR，用于恢复全量备份产生的数据：
++ 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Backup` CR，用于恢复快照备份产生的数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -129,20 +129,20 @@ kubectl get rt -n test2 -o wide
 
 ## PITR 恢复的使用方法
 
-本节示例在 namespace `test3` 中的 TiDB 集群 `demo3` 上首先通过 `spec.pitrFullBackupStorageProvider.azblob.container` 存储桶中 `spec.pitrFullBackupStorageProvider.azblob.prefix` 文件夹下的全量备份数据恢复到全量备份的时刻点，然后通过 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的日志备份的增量数据恢复到备份集群的历史任意时刻点。下面是具体的操作过程。
+本节示例在 namespace `test3` 中的 TiDB 集群 `demo3` 上首先通过 `spec.pitrFullBackupStorageProvider.azblob.container` 存储桶中 `spec.pitrFullBackupStorageProvider.azblob.prefix` 文件夹下的快照备份数据恢复到快照备份的时刻点，然后通过 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的日志备份的增量数据恢复到备份集群的历史任意时刻点。下面是具体的操作过程。
 
 ### 前置条件：数据准备
 
 本节假设 Azure Blob Storage 中的桶 `my-container` 中存在两份备份数据，分别是：
 
-1. 在**日志备份期间**进行全量备份产生的备份数据，存储在 `my-full-backup-folder-pitr` 文件夹下；
+1. 在**日志备份期间**进行快照备份产生的备份数据，存储在 `my-full-backup-folder-pitr` 文件夹下；
 2. 日志备份产生的备份数据，存储在 `my-log-backup-folder-pitr` 文件夹下。
 
 备份数据的产生请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
 
 > **注意：**
 >
-> 指定的恢复时间点需要在全量备份时刻点之后，日志备份 `checkpoint-ts` 之前。
+> 指定的恢复时间点需要在快照备份时刻点之后，日志备份 `checkpoint-ts` 之前。
 
 ### 前置条件：准备恢复环境
 
