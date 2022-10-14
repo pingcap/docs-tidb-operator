@@ -136,12 +136,22 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
 - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
+#### 查看快照备份的状态
+
 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过如下命令查看备份状态：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get bk -n backup-test -o wide
+```
+
+从上述命令的输出中，你可以找到描述名为 `demo1-full-backup-azblob` 的 `Backup` CR 的如下信息，其中 `Commit Ts` 表示快照备份的时刻点：
+
+```
+Status:
+Backup Path:  azure://my-container/my-full-backup-folder/
+Commit Ts:    436568622965194754
 ```
 
 ### 日志备份：日志备份任务以及日志备份数据的管理
@@ -219,7 +229,7 @@ kubectl get bk -n backup-test -o wide
 
     ```
     Status:
-    Backup Path:  azure://test/log-backup-test-1/
+    Backup Path:  azure://my-container/my-log-backup-folder/
     Commit Ts:    436568622965194754
     Conditions:
         Last Transition Time:  2022-10-10T04:45:20Z
@@ -480,7 +490,7 @@ spec:
 
 ### 前置条件：准备定时快照备份环境
 
-同[准备 Ad-hoc 备份环境](#前置条件准备-Ad-hoc-备份环境)。
+同[准备 Ad-hoc 备份环境](#前置条件准备-ad-hoc-备份环境)。
 
 ### 快照备份：定时备份数据到 Azure Blob Storage
 

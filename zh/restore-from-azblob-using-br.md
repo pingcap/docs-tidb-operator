@@ -174,6 +174,8 @@ kubectl get rt -n test2 -o wide
 
 ### PITR 恢复：将指定备份数据恢复到 TiDB 集群
 
+本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后。并且 PITR 的恢复时刻点需要在[日志备份的全局检查点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。
+
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
 + 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-azblob` 的 `Backup` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
@@ -220,6 +222,12 @@ kubectl get rt -n test2 -o wide
     ```
     NAME                           COMPLETIONS   ...
     restore-demo3-restore-azblob   1/1           ...
+    ```
+
+    也可通过以下命令查看恢复的状态：
+
+    ```shell
+    kubectl get rt -n restore-test -o wide
     ```
 
 ## 故障诊断
