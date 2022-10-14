@@ -72,7 +72,7 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
-+ 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Backup` CR，用于恢复快照备份产生的数据：
++ 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Restore` CR，用于恢复快照备份产生的数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -178,7 +178,7 @@ kubectl get rt -n test2 -o wide
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
-+ 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-azblob` 的 `Backup` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
++ 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-azblob` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
 
     {{< copyable "shell-regular" >}}
 
