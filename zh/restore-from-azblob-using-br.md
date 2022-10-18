@@ -24,9 +24,9 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
 
 本节示例将存储在 Azure Blob Storage 上指定路径 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的快照备份数据恢复到 namespace `test2` 中的 TiDB 集群 `demo2`。下面是具体的操作过程。
 
-### 前置条件：数据准备
+### 前置条件：完成数据备份
 
-本节假设 Azure Blob Storage 中的桶 `my-container` 中文件夹 `my-full-backup-folder` 下存储着快照备份产生的备份数据。备份数据的产生请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
+本节假设 Azure Blob Storage 中的桶 `my-container` 中文件夹 `my-full-backup-folder` 下存储着快照备份产生的备份数据。关于如何备份数据，请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
 
 ### 前置条件：准备恢复环境
 
@@ -106,7 +106,7 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
       #   port: ${tidb_port}
       #   user: ${tidb_user}
       #   secretName: restore-demo2-tidb-secret
-     azblob:
+      azblob:
         secretName: azblob-secret
         container: my-container
         prefix: my-full-backup-folder
@@ -131,14 +131,14 @@ kubectl get rt -n test2 -o wide
 
 本节示例在 namespace `test3` 中的 TiDB 集群 `demo3` 上首先通过 `spec.pitrFullBackupStorageProvider.azblob.container` 存储桶中 `spec.pitrFullBackupStorageProvider.azblob.prefix` 文件夹下的快照备份数据恢复到快照备份的时刻点，然后通过 `spec.azblob.container` 存储桶中 `spec.azblob.prefix` 文件夹下的日志备份的增量数据恢复到备份集群的历史任意时刻点。下面是具体的操作过程。
 
-### 前置条件：数据准备
+### 前置条件：完成数据备份
 
 本节假设 Azure Blob Storage 中的桶 `my-container` 中存在两份备份数据，分别是：
 
 1. 在**日志备份期间**进行快照备份产生的备份数据，存储在 `my-full-backup-folder-pitr` 文件夹下；
 2. 日志备份产生的备份数据，存储在 `my-log-backup-folder-pitr` 文件夹下。
 
-备份数据的产生请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
+关于如何备份数据，请参考[使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)。
 
 > **注意：**
 >
@@ -174,7 +174,7 @@ kubectl get rt -n test2 -o wide
 
 ### PITR 恢复：将指定备份数据恢复到 TiDB 集群
 
-本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后。并且 PITR 的恢复时刻点需要在[日志备份的全局检查点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。
+本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后。并且 PITR 的恢复时刻点需要在[日志备份的最新恢复点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
