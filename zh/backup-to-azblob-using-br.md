@@ -7,10 +7,8 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 
 本文介绍如何将运行在 Kubernetes 环境中的 TiDB 集群数据备份到 Azure Blob Storage 上。其中包括以下两种备份方式：
 
-1. 快照备份。
-2. 日志备份。
-
-在恢复数据时，你可以通过[全量恢复](restore-from-azblob-using-br.md#全量恢复的使用方法)将 TiDB 集群恢复到快照备份的时刻点。你也可以通过快照备份与日志备份产生的备份数据将 TiDB 集群恢复到历史任意时刻点，即 [Point-in-Time Recovery (PITR)](restore-from-azblob-using-br.md#pitr-恢复的使用方法)。
+- **快照备份**。使用快照备份，你可以通过[全量恢复](restore-from-azblob-using-br.md#全量恢复的使用方法)将 TiDB 集群恢复到快照备份的时刻点。
+- **日志备份**。使用快照备份与日志备份，你可以通过快照备份与日志备份产生的备份数据将 TiDB 集群恢复到历史任意时刻点，即 [Point-in-Time Recovery (PITR)](restore-from-azblob-using-br.md#pitr-恢复的使用方法)。
 
 本文使用的备份方式基于 TiDB Operator 的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到 Azure Blob Storage 上。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
@@ -21,7 +19,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 - 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
 
-如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以[Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上（同时也需要配合快照备份的数据，来更高效的[恢复](restore-from-azblob-using-br.md#pitr-恢复的使用方法)数据）：
+如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)的方式备份至 Azure Blob Storage 上（同时也需要配合快照备份的数据，来更高效地[恢复](restore-from-azblob-using-br.md#pitr-恢复的使用方法)数据）：
 
 - 需要在新集群上恢复备份集群的历史任意时刻点快照（PITR）
 - 数据的 RPO 在分钟级别
@@ -46,15 +44,11 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
 1. 创建一个用于管理备份的 namespace，这里创建了名为 `backup-test` 的 namespace。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl create namespace backup-test
     ```
 
 2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `backup-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n backup-test
@@ -66,7 +60,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
     >
     > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
     >
-    > 在创建 secret 对象的时候，你可以自定义它的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > 在创建 secret 对象时，你可以自定义 secret 对象的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
@@ -74,13 +68,11 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
     2. 创建 `backup-demo1-tidb-secret` secret 用于存放访问 TiDB 集群的用户所对应的密码。
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=${password} --namespace=test1
         ```
 
-### 快照备份：备份数据到 Azure Blob Storage
+### 快照备份
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到 Azure Blob Storage 上：
 
@@ -140,8 +132,6 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过如下命令查看备份状态：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl get bk -n backup-test -o wide
 ```
@@ -154,15 +144,13 @@ Backup Path:  azure://my-container/my-full-backup-folder/
 Commit Ts:    436568622965194754
 ```
 
-### 日志备份：日志备份任务以及日志备份数据的管理
+### 日志备份
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。本节示例创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR。具体操作如下所示。
 
 #### 启动日志备份
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `demo1-log-backup-azblob` 的 `Backup` CR。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f log-backup-azblob.yaml
@@ -188,7 +176,6 @@ Commit Ts:    436568622965194754
         container: my-container
         prefix: my-log-backup-folder
         #accessTier: Hot
-    
     ```
 
 2. 等待启动操作完成：
@@ -213,84 +200,71 @@ Commit Ts:    436568622965194754
     demo1-log-backup-azblob            log     ....
     ```
 
----
-
 #### 查看日志备份的状态
 
-+ 通过查看 `Backup` CR 的信息查看日志备份的状态。
+通过查看 `Backup` CR 的信息，可查看日志备份的状态。
 
-    {{< copyable "shell-regular" >}}
+```shell
+kubectl describe backup -n backup-test
+```
 
-    ```shell
-    kubectl describe backup -n backup-test
-    ```
+从上述命令的输出中，你可以找到描述名为 `demo1-log-backup-azblob` 的 `Backup` CR 的如下信息，其中 `Log Checkpoint Ts` 表示日志备份可恢复的最近时间点：
 
-    从上述命令的输出中，你可以找到描述名为 `demo1-log-backup-azblob` 的 `Backup` CR 的如下信息，其中 `Log Checkpoint Ts` 表示日志备份可恢复的最近时间点：
-
-    ```
-    Status:
-    Backup Path:  azure://my-container/my-log-backup-folder/
-    Commit Ts:    436568622965194754
-    Conditions:
-        Last Transition Time:  2022-10-10T04:45:20Z
-        Status:                True
-        Type:                  Scheduled
-        Last Transition Time:  2022-10-10T04:45:31Z
-        Status:                True
-        Type:                  Prepare
-        Last Transition Time:  2022-10-10T04:45:31Z
-        Status:                True
-        Type:                  Running
-    Log Checkpoint Ts:       436569119308644661
-    ```
-
----
+```
+Status:
+Backup Path:  azure://my-container/my-log-backup-folder/
+Commit Ts:    436568622965194754
+Conditions:
+    Last Transition Time:  2022-10-10T04:45:20Z
+    Status:                True
+    Type:                  Scheduled
+    Last Transition Time:  2022-10-10T04:45:31Z
+    Status:                True
+    Type:                  Prepare
+    Last Transition Time:  2022-10-10T04:45:31Z
+    Status:                True
+    Type:                  Running
+Log Checkpoint Ts:       436569119308644661
+```
 
 #### 停止日志备份
 
-+ 由于我们已经在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。
+由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。
 
-    {{< copyable "shell-regular" >}}
+```shell
+kubectl edit backup demo1-log-backup-azblob -n backup-test
+```
 
-    ```shell
-    kubectl edit backup demo1-log-backup-azblob -n backup-test
-    ```
+在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
 
-    在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
-
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-log-backup-azblob
-      namespace: backup-test
-    spec:
-      backupType: log
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-log-backup-folder
-        #accessTier: Hot
-      logStop: true
-
-    ```
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-azblob
+  namespace: backup-test
+spec:
+  backupType: log
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  azblob:
+    secretName: azblob-secret
+    container: my-container
+    prefix: my-log-backup-folder
+    #accessTier: Hot
+  logStop: true
+```
 
 <Tip>
 你也可以采用和启动日志备份时相同的方法来停止日志备份，已经被创建过的 `Backup` CR 会因此被更新。
 </Tip>
 
----
-
 #### 清理日志备份数据
 
-1. 由于我们已经在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
-
-    {{< copyable "shell-regular" >}}
+1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
 
     ```shell
     kubectl edit backup demo1-log-backup-azblob -n backup-test
@@ -317,7 +291,6 @@ Commit Ts:    436568622965194754
         prefix: my-log-backup-folder
         #accessTier: Hot
       logTruncateUntil: "2022-10-10T15:21:00+08:00"
-    
     ```
 
 2. 等待清理操作完成：
@@ -330,7 +303,7 @@ Commit Ts:    436568622965194754
     NAME                                          COMPLETIONS   ...
     ...
     backup-demo1-log-backup-azblob-log-truncate   1/1           ...
-    ``` 
+    ```
 
 3. 查看 `Backup` CR 的信息：
 
@@ -492,7 +465,7 @@ spec:
 
 同[准备 Ad-hoc 备份环境](#前置条件准备-ad-hoc-备份环境)。
 
-### 快照备份：定时备份数据到 Azure Blob Storage
+### 执行快照备份
 
 依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Azure Blob Storage 上：
 
