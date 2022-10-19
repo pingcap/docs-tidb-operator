@@ -66,7 +66,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
     >
     > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
     >
-    > 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > 在创建 secret 对象的时候，你可以自定义它的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要完成以下步骤。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过这些步骤。
 
