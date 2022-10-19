@@ -54,7 +54,7 @@ summary: 介绍如何使用 BR 恢复 Azure Blob Storage 上的备份数据。
     >
     > 授予的账户所拥有的角色至少拥有对 blob 访问的权限（例如[读取器](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#reader)）。
     >
-    > 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > 在创建 secret 对象的时候，你可以自定义它的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 4. 如果你使用的 TiDB 版本低于 v4.0.8，你还需要进行以下操作。如果你使用的 TiDB 为 v4.0.8 及以上版本，请跳过此步骤。
 
@@ -166,11 +166,11 @@ kubectl get rt -n test2 -o wide
 
 3. 为刚创建的 namespace `restore-test` 授予远程存储访问权限，可以使用两种方式授予权限，可参考文档 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)。创建成功后, namespace `restore-test` 就拥有了名为 `azblob-secret` 或 `azblob-secret-ad` 的 secret 对象。
 
-> **注意：**
->
-> 授予的账户所拥有的角色至少拥有对 blob 访问的权限（例如[读取器](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#reader)）。
->
-> 下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > **注意：**
+    >
+    > 授予的账户所拥有的角色至少拥有对 blob 访问的权限（例如[读取器](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#reader)）。
+    >
+    > 在创建 secret 对象的时候，你可以自定义它的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
 
 ### PITR 恢复：将指定备份数据恢复到 TiDB 集群
 
