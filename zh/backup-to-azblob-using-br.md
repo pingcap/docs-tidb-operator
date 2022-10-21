@@ -74,57 +74,56 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
 ### 快照备份
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到 Azure Blob Storage 上：
+执行以下步骤，进行快照备份：
 
-+ 在 `backup-test` 这个 namespace 中创建一个名为 `demo1-full-backup-azblob` 的 `Backup` CR，用于快照备份：
+在 `backup-test` 这个 namespace 中创建一个名为 `demo1-full-backup-azblob` 的 `Backup` CR，用于快照备份：
 
-    {{< copyable "shell-regular" >}}
+```shell
+kubectl apply -f full-backup-azblob.yaml
+```
 
-    ```shell
-    kubectl apply -f full-backup-azblob.yaml
-    ```
+`full-backup-azblob.yaml` 文件内容如下：
 
-    `full-backup-azblob.yaml` 文件内容如下：
-
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-full-backup-azblob
-      namespace: backup-test
-    spec:
-      backupType: full
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        # logLevel: info
-        # statusAddr: ${status_addr}
-        # concurrency: 4
-        # rateLimit: 0
-        # timeAgo: ${time}
-        # checksum: true
-        # sendCredToTikv: true
-        # options:
-        # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      from:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: backup-demo1-tidb-secret
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-full-backup-folder
-        #accessTier: Hot
-    ```
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-full-backup-azblob
+  namespace: backup-test
+spec:
+  backupType: full
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # sendCredToTikv: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  from:
+    host: ${tidb_host}
+    port: ${tidb_port}
+    user: ${tidb_user}
+    secretName: backup-demo1-tidb-secret
+  azblob:
+    secretName: azblob-secret
+    container: my-container
+    prefix: my-full-backup-folder
+    #accessTier: Hot
+```
 
 在配置 `full-backup-azblob.yaml` 文件时，请参考以下信息：
 
 - 自 TiDB Operator v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
 - `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `spec.azblob.secretName`：填写你在创建 secret 对象时自定义的 secret 对象的名字，例如 `azblob-secret`。
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
 - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
