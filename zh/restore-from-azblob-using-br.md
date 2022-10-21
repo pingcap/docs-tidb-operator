@@ -66,50 +66,49 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
+在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Restore` CR，用于恢复快照备份产生的数据：
 
-- 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Restore` CR，用于恢复快照备份产生的数据：
+```shell
+kubectl apply -f resotre-full-azblob.yaml
+```
 
-    ```shell
-    kubectl apply -f resotre-full-azblob.yaml
-    ```
+`restore-full-azblob.yaml` 文件内容如下：
 
-    `restore-full-azblob.yaml` 文件内容如下：
-
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Restore
-    metadata:
-      name: demo2-restore-azblob
-      namespace: restore-test
-    spec:
-      br:
-        cluster: demo2
-        clusterNamespace: test2
-        # logLevel: info
-        # statusAddr: ${status_addr}
-        # concurrency: 4
-        # rateLimit: 0
-        # timeAgo: ${time}
-        # checksum: true
-        # sendCredToTikv: true
-      # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      # to:
-      #   host: ${tidb_host}
-      #   port: ${tidb_port}
-      #   user: ${tidb_user}
-      #   secretName: restore-demo2-tidb-secret
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-full-backup-folder
-    ```
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Restore
+metadata:
+  name: demo2-restore-azblob
+  namespace: restore-test
+spec:
+  br:
+    cluster: demo2
+    clusterNamespace: test2
+    # logLevel: info
+    # statusAddr: ${status_addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # timeAgo: ${time}
+    # checksum: true
+    # sendCredToTikv: true
+  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
+  # to:
+  #   host: ${tidb_host}
+  #   port: ${tidb_port}
+  #   user: ${tidb_user}
+  #   secretName: restore-demo2-tidb-secret
+  azblob:
+    secretName: azblob-secret
+    container: my-container
+    prefix: my-full-backup-folder
+```
 
 在配置 `restore-azblob.yaml` 文件时，请参考以下信息：
 
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
 - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `spec.azblob.secretName`：填写你在创建 secret 对象时自定义的 secret 对象的名字，例如 `azblob-secret`。
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
 - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
 
@@ -167,11 +166,9 @@ kubectl get rt -n test2 -o wide
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
-本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后，并在[日志备份的最新恢复点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。
+本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后，并在[日志备份的最新恢复点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。具体步骤如下：
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
-
-- 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-azblob` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
+1. 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-azblob` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
 
     ```shell
     kubectl apply -f restore-point-azblob.yaml
@@ -203,7 +200,7 @@ kubectl get rt -n test2 -o wide
           prefix: my-full-backup-folder-pitr
     ```
 
-    等待恢复操作完成：
+2. 查看恢复的状态，等待恢复操作完成：
 
     ```shell
     kubectl get jobs -n restore-test
