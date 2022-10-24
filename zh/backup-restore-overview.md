@@ -65,7 +65,7 @@ Dumpling 相关使用文档可参考：
 
 ## 删除备份的 Backup CR
 
-用户可以通过下述语句来删除对应的备份 CR 或定时快照备份 CR。
+你可以通过下述语句来删除对应的备份 CR 或定时快照备份 CR。
 
 {{< copyable "shell-regular" >}}
 
