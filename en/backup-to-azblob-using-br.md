@@ -136,6 +136,179 @@ After you create the `Backup` CR, TiDB Operator starts the backup automatically.
 kubectl get bk -n test1 -o wide
 ```
 
+### Log backup
+
+You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-azblob`. See the following detailed steps.
+
+#### Start log backup
+
+1. In the `backup-test` namespace, create a `Backup` CR named `demo1-log-backup-azblob`.
+
+    ```shell
+    kubectl apply -f log-backup-azblob.yaml
+    ```
+
+    The content of `log-backup-azblob.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-log-backup-azblob
+      namespace: backup-test
+    spec:
+      backupType: log
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+        #accessTier: Hot
+    ```
+
+2. Wait for the start operation to complete:
+
+    ```shell
+    kubectl get jobs -n backup-test
+    ```
+
+    ```
+    NAME                                       COMPLETIONS   ...
+    backup-demo1-log-backup-azblob-log-start   1/1           ...
+    ```
+
+3. View the newly created `Backup` CR:
+
+    ```shell
+    kubectl get backups -n backup-test
+    ```
+
+    ```
+    NAME                       TYPE    MODE    ....
+    demo1-log-backup-azblob            log     ....
+    ```
+
+#### View the log backup status
+
+You can view the log backup status by checking the information of the `Backup` CR:
+
+```shell
+kubectl describe backup -n backup-test
+```
+
+From the output, you can find the following information for the `Backup` CR named `demo1-log-backup-azblob`. The `Log Checkpoint Ts` field indicates the latest point in time that can be recovered:
+
+```
+Status:
+Backup Path:  azure://my-container/my-log-backup-folder/
+Commit Ts:    436568622965194754
+Conditions:
+    Last Transition Time:  2022-10-10T04:45:20Z
+    Status:                True
+    Type:                  Scheduled
+    Last Transition Time:  2022-10-10T04:45:31Z
+    Status:                True
+    Type:                  Prepare
+    Last Transition Time:  2022-10-10T04:45:31Z
+    Status:                True
+    Type:                  Running
+Log Checkpoint Ts:       436569119308644661
+```
+
+#### Stop log backup
+
+Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations are: stop log backup > delete log backup data > start log backup.
+
+```shell
+kubectl edit backup demo1-log-backup-azblob -n backup-test
+```
+
+In the last line of the CR, append `spec.logStop: true`. Then save and quit the editor. The modified content is as follows:
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-azblob
+  namespace: backup-test
+spec:
+  backupType: log
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  azblob:
+    secretName: azblob-secret
+    container: my-container
+    prefix: my-log-backup-folder
+    #accessTier: Hot
+  logStop: true
+```
+
+<Tip>
+You can stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
+</Tip>
+
+#### Clean log backup data
+
+1. Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations are: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
+
+    ```shell
+    kubectl edit backup demo1-log-backup-azblob -n backup-test
+    ```
+
+    In the last line of the CR, append `spec.logTruncateUntil: "2022-10-10T15:21:00+08:00"`. Then save and quit the editor. The modified content is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-backup-azblob
+      namespace: backup-test
+    spec:
+      backupType: log
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+        #accessTier: Hot
+      logTruncateUntil: "2022-10-10T15:21:00+08:00"
+    ```
+
+2. Wait for the clean operation to complete:
+
+    ```shell
+    kubectl get jobs -n backup-test
+    ```
+
+    ```
+    NAME                                          COMPLETIONS   ...
+    ...
+    backup-demo1-log-backup-azblob-log-truncate   1/1           ...
+    ```
+
+3. View the `Backup` CR information:
+
+    ```shell
+    kubectl describe backup -n backup-test
+    ```
+
+    ```
+    ...
+    Log Success Truncate Until:  2022-10-10T15:21:00+08:00
+    ...
+    ```
+
 ### Backup CR examples
 
 <details>
@@ -281,11 +454,11 @@ spec:
 
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled snapshot backup is described by a custom `BackupSchedule` CR object. A snapshot backup is triggered at each backup time point. Its underlying implementation is the ad-hoc snapshot backup.
 
-### Step 1. Prepare for a scheduled snapshot backup
+### Prerequisites: Prepare a scheduled backup environment
 
-The steps to prepare for a scheduled snapshot backup are the same as those of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
+Refer to [Prepare an ad-hoc backup environment](#prerequisites-prepare-an-ad-hoc-backup-environment).
 
-### Step 2. Perform a scheduled snapshot backup
+### Perform a scheduled snapshot backup
 
 Depending on which method you choose to grant permissions to the remote storage, perform a scheduled snapshot backup by doing one of the following:
 
@@ -307,7 +480,7 @@ Depending on which method you choose to grant permissions to the remote storage,
     kind: BackupSchedule
     metadata:
       name: demo1-backup-schedule-azblob
-      namespace: test1
+      namespace: backup-test
     spec:
       #maxBackups: 5
       #pause: true
