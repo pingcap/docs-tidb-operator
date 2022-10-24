@@ -19,7 +19,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot �
 
 recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式的集群将只会启动 PD 节点，同时等待 apply restore CRD 来进行恢复集群。主要的步骤如下：
 
-1. apply restore CRD 后，会首先启动卷的恢复工作，即从 AWS S3 中，拉取备份元数据，根据元数据信息，创建相应的卷。
+1. Apply restore CRD 后，会首先启动卷的恢复工作，即从 AWS S3 中，拉取备份元数据，根据元数据信息，创建相应的卷。
 2. TiDB Operator 在卷恢复工作完成后，把相应的卷挂载到 TiKV 所在的节点，并启动 TiKV.
 3. TiKV 启动完成后，TiDB Operator 启动新的 Job，进行业务数据的恢复。直到所有业务数据恢复到 resolved-ts. Job 退出。TiKV 节点重启。
 4. TiDB 节点启动，集群恢复完成。
@@ -52,9 +52,8 @@ recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式
 
 ## 第 2 步：准备恢复的集群
 
-
 参考 [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md) 的部署 TiDB 集群和监控来部署 TiDB 集群。
-在 Spec 中加入 recoveryMode: true 字段。Apply CRD
+在 Spec 中加入 recoveryMode: true 字段。并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 TiDB 集群相关资源：
 
     {{< copyable "shell-regular" >}}
 
