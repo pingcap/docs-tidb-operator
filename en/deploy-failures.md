@@ -111,7 +111,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 kubectl -n ${namespace} logs -p ${pod_name}
 ```
 
-After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-tidb-server), [Cannot start `tikv-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-tikv-server), and [Cannot start `pd-server`](https://pingcap.com/docs/stable/how-to/troubleshoot/cluster-setup#cannot-start-pd-server) for further troubleshooting.
+After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-tidb-server), [Cannot start `tikv-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-tikv-server), and [Cannot start `pd-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-pd-server) for further troubleshooting.
 
 ### "cluster id mismatch"
 
@@ -168,6 +168,6 @@ spec:
 
 This failure occurs because there is something wrong with the `nslookup` in the base image (see detail in [#4379](https://github.com/pingcap/tidb-operator/pull/4379)). After configuring `startUpScriptVersion` to `v1`, TiDB Operator uses `dig` to check DNS instead of using `nslookup`.
 
-### Other causes 
+### Other causes
 
 If you cannot confirm the cause from the log and `ulimit` is also a normal value, troubleshoot the issue by [using the debug mode](tips.md#use-the-debug-mode).

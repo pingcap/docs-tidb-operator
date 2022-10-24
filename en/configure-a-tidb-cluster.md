@@ -16,7 +16,7 @@ This document introduces how to configure a TiDB cluster for production deployme
 
 ## Configure resources
 
-Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV, and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://pingcap.com/docs/stable/hardware-and-software-requirements/).
+Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV, and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://docs.pingcap.com/tidb/stable/hardware-and-software-requirements).
 
 To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level quality of service (QoS) by making `limits` equal to `requests` when configuring resources. For details, refer to [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 
@@ -310,7 +310,7 @@ spec:
       oom-action = "log"
 ```
 
-For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/).
+For all the configurable parameters of TiDB, refer to [TiDB Configuration File](https://docs.pingcap.com/tidb/stable/tidb-configuration-file).
 
 > **Note:**
 >
@@ -331,7 +331,7 @@ spec:
           capacity = "16GB"
 ```
 
-For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/).
+For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://docs.pingcap.com/tidb/stable/tikv-configuration-file).
 
 > **Note:**
 >
@@ -351,7 +351,7 @@ spec:
       enable-prevote = true
 ```
 
-For all the configurable parameters of PD, refer to [PD Configuration File](https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/).
+For all the configurable parameters of PD, refer to [PD Configuration File](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
 
 > **Note:**
 >
@@ -379,7 +379,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://pingcap.com/docs/stable/tiflash/tiflash-configuration/).
+For all the configurable parameters of TiFlash, refer to [TiFlash Configuration File](https://docs.pingcap.com/tidb/stable/tiflash-configuration).
 
 #### Configure TiCDC start parameters
 
@@ -479,6 +479,23 @@ spec:
 >
 > If the TiKV version is earlier than 4.0.14 or 5.0.3, due to [a bug of TiKV](https://github.com/tikv/tikv/pull/10364), you need to configure the timeout `spec.tikv.evictLeaderTimeout` as large as possible to ensure that all Region leaders on the TiKV Pod can be evicted within the timeout. If you are not sure about the proper value, greater than '1500m' is recommended.
 
+### Configure graceful upgrade for TiCDC cluster
+
+> **Note:**
+>
+> - If the TiCDC version is earlier than v6.3.0, TiDB Operator forces an upgrade on TiCDC, which might cause replication latency increase.
+> - The feature is available since TiDB Operator v1.3.8.
+
+During TiCDC upgrade, TiDB Operator drains all replication workloads from TiCDC Pod before restarting TiCDC Pod. Only after the draining is completed or the draining exceeds the specified timeout (10 minutes by default), TiCDC Pod is restarted. If TiCDC has fewer than 2 instances, TiDB Operator forces an upgrade without waiting for the timeout.
+
+If the draining exceeds the specified timeout, restarting TiCDC Pod causes issues such as more replication latency. To avoid the issues, you can configure the timeout `spec.ticdc.gracefulShutdownTimeout` (10 minutes by default) to a larger value. For example:
+
+```
+spec:
+  ticdc:
+    gracefulShutdownTimeout: 100m
+```
+
 ### Configure PV for TiDB slow logs
 
 By default, TiDB Operator creates a `slowlog` volume (which is an `EmptyDir`) to store the slow logs, mounts the `slowlog` volume to `/var/log/tidb`, and prints slow logs in the `stdout` through a sidecar container.
@@ -543,7 +560,7 @@ For the supported PV types, refer to [Persistent Volumes](https://kubernetes.io/
 
 ### Configure TiDB service
 
-You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc.
+You need to configure `spec.tidb.service` so that TiDB Operator creates a service for TiDB. You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, and so on.
 
 #### General configurations
 
@@ -764,11 +781,11 @@ topologySpreadConstraints:
 
 ### High availability of data
 
-Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://pingcap.com/docs/stable/location-awareness/) which describes how high availability of TiDB cluster is implemented.
+Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://docs.pingcap.com/tidb/stable/schedule-replicas-by-topology-labels) which describes how high availability of TiDB cluster is implemented.
 
 To add the data high availability feature in Kubernetes:
 
-1. Set the label collection of topological location for PD
+* Set the label collection of topological location for PD.
 
     Replace the `location-labels` information in the `pd.config` with the label collection that describes the topological location on the nodes in the Kubernetes cluster.
 
@@ -777,7 +794,7 @@ To add the data high availability feature in Kubernetes:
     > * For PD versions < v3.0.9, the `/` in the label name is not supported.
     > * If you configure `host` in the `location-labels`, TiDB Operator will get the value from the `kubernetes.io/hostname` in the node label.
 
-2. Set the topological information of the Node where the TiKV node is located.
+* Set the topological information of the Node where the TiKV node is located.
 
     TiDB Operator automatically obtains the topological information of the Node for TiKV and calls the PD interface to set this information as the information of TiKV's store labels. Based on this topological information, the TiDB cluster schedules the replicas of the data.
 
@@ -790,3 +807,19 @@ To add the data high availability feature in Kubernetes:
     ```
 
     In the command above, `region`, `zone`, `rack`, and `kubernetes.io/hostname` are just examples. The name and number of the label to be added can be arbitrarily defined, as long as it conforms to the specification and is consistent with the labels set by `location-labels` in `pd.config`.
+
+* Set the topological information of the Node where the TiDB node is located.
+
+    Since TiDB Operator v1.4.0, if the deployed TiDB version >= v6.3.0, TiDB Operator automatically obtains the topological information of the Node for TiDB and calls the corresponding interface of the TiDB server to set this information as TiDB's labels. Based on these labels, TiDB sends the [Follower Read](https://docs.pingcap.com/tidb/stable/follower-read) requests to the correct replicas.
+
+    Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
+
+Since v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+
+Currently, TiDB Operator supports the following label aliases:
+
+- `region`: corresponds to `topology.kubernetes.io/region` and `failure-domain.beta.kubernetes.io/region`.
+- `zone`: corresponds to `topology.kubernetes.io/zone` and `failure-domain.beta.kubernetes.io/zone`.
+- `host`: corresponds to `kubernetes.io/hostname`.
+
+For example, if labels such as `region`, `zone`, and `host` are not set on each node of Kubernetes, setting the `location-labels` of PD as `["topology.kubernetes.io/region", "topology.kubernetes.io/zone", "kubernetes.io/hostname"]` is the same as `["region", "zone", "host"]`.

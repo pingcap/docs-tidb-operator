@@ -32,6 +32,7 @@
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
   - [Aggregate Monitoring Data of Multiple TiDB Clusters](aggregate-multiple-cluster-monitor-data.md)
+  - [Monitor a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-monitor-across-multiple-kubernetes.md)
   - [Enable Dynamic Configuration for TidbMonitor](enable-monitor-dynamic-configuration.md)
   - [Enable Shards for TidbMonitor](enable-monitor-shards.md)
 - Migrate
@@ -116,7 +117,10 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
+  - v1.4
+    - [1.4.0-alpha.1](releases/release-1.4.0-alpha.1.md)
   - v1.3
+    - [1.3.9](releases/release-1.3.9.md)
     - [1.3.8](releases/release-1.3.8.md)
     - [1.3.7](releases/release-1.3.7.md)
     - [1.3.6](releases/release-1.3.6.md)

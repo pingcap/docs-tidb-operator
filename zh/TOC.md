@@ -117,7 +117,10 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
   - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)
 - 版本发布历史
+  - v1.4
+    - [1.4.0-alpha.1](releases/release-1.4.0-alpha.1.md)
   - v1.3
+    - [1.3.9](releases/release-1.3.9.md)
     - [1.3.8](releases/release-1.3.8.md)
     - [1.3.7](releases/release-1.3.7.md)
     - [1.3.6](releases/release-1.3.6.md)
