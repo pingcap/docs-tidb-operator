@@ -57,11 +57,11 @@ recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式
 
 在 Spec 中加入 recoveryMode: true 字段。并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 TiDB 集群相关资源：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f tidb-cluster.yaml -n test2
-    ```
+```shell
+kubectl apply -f tidb-cluster.yaml -n test2
+```
 
 ## 第 3 步：将指定备份数据恢复到 TiDB 集群
 
