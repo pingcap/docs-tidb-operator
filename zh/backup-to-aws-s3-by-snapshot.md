@@ -36,6 +36,7 @@ summary: 介绍如何基于 Snapshot 使用 TiDB Operator 备份 TiDB 集群数�
 ## 基于 Snapshot 备份 TiDB 集备份
 
 基于 AWS EBS Snapshot 备份支持全量备份与增量备份。数据备份以 AWS EBS snapshot 方式进行，同一个节点的第一次备份为全量 snapshot 备份，后续 snapshot 备份自动以增量方式进行。EBS Snapshot 备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
+
 本文档假设对部署在 Kubernetes `test1` 这个命名空间中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
 ### 第 1 步：准备 EBS Snapshot 备份环境

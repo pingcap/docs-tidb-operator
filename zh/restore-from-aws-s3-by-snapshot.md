@@ -10,6 +10,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot �
 本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，基于 AWS EBS snapshot 的备份包含两部分数据，TiDB 集群数据卷的 snapshot, 以及 snapshot和集群相关的备份元信息。
 
 ## 恢复原理介绍
+
 备份数据主要包含两部分内容：
 
    1. AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。数据卷有 raft log 卷，和 data 卷。 raft log 卷存储 raft log 信息，data 卷存储事务数据。
@@ -53,6 +54,7 @@ recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式
 ## 第 2 步：准备恢复的集群
 
 参考 [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md) 的部署 TiDB 集群和监控来部署 TiDB 集群。
+
 在 Spec 中加入 recoveryMode: true 字段。并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 TiDB 集群相关资源：
 
     {{< copyable "shell-regular" >}}
