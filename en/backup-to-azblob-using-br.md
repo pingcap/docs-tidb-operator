@@ -126,7 +126,7 @@ When you configure `backup-azblob.yaml`, note the following:
 - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
 - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-cr.md#backup-cr-fields).
 
-#### Check the backup status
+#### View the snapshot backup status
 
 After you create the `Backup` CR, TiDB Operator starts the backup automatically. You can view the backup status by running the following command:
 

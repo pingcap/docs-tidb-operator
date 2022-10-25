@@ -166,7 +166,58 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
 
 ### Step 2. Restore the backup data to a TiDB cluster
 
-The example in this section restores the snapshot backup data to the cluster.
+The example in this section restores the snapshot backup data to the cluster. The specified restoration time point must be between [the time point of snapshot backup](backup-to-azblob-using-br.md#view-the-snapshot-backup-status) and the [`Log Checkpoint Ts` of log backup](backup-to-azblob-using-br.md#view-the-log-backup-status).
+
+The detailed steps are as follows:
+
+1. Create a `Restore` CR named `demo3-restore-azblob` in the `restore-test` namespace and specify the restoration time point as `2022-10-10T17:21:00+08:00`:
+
+    ```shell
+    kubectl apply -f restore-point-azblob.yaml
+    ```
+
+    The content of `restore-point-azblob.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Restore
+    metadata:
+    name: demo3-restore-azblob
+    namespace: restore-test
+    spec:
+      restoreMode: pitr
+      br:
+        cluster: demo3
+        clusterNamespace: test3
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder-pitr
+      pitrRestoredTs: "2022-10-10T17:21:00+08:00"
+      pitrFullBackupStorageProvider:
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: my-full-backup-folder-pitr
+    ```
+
+2. Wait for the restoration operation to complete:
+
+    ```shell
+    kubectl get jobs -n restore-test
+    ```
+
+    ```
+    NAME                           COMPLETIONS   ...
+    restore-demo3-restore-azblob   1/1           ...
+    ```
+
+    You can also check the restoration status by using the following command:
+
+    ```shell
+    kubectl get rt -n restore-test -o wide
+    ```
 
 ## Troubleshooting
 
