@@ -13,8 +13,8 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot �
 
 备份数据主要包含两部分内容：
 
-   1. AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。数据卷有 raft log 卷，和 data 卷。 raft log 卷存储 raft log 信息，data 卷存储事务数据。
-   2. 备份元信息，包含 TiDB 集群的数据卷和对应快照的关系信息，集群级别的 resolved-ts, 以及 TiDB 集群想关的信息。
+   1. 集群数据卷快照，即 AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。
+   2. 备份元信息，包含 TiDB 集群的数据卷和对应快照的关系信息，快照对应的备份数据的物理时间点 backupts （它可能在备份时间点之前）, 以及 TiDB 集群想关的信息。
 
 恢复时，先创建一个 Spec.recoveryMode:true 的 TiDB 集群，再 apply restore CRD 进行恢复。
 
@@ -22,7 +22,7 @@ recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式
 
 1. Apply restore CRD 后，会首先启动卷的恢复工作，即从 AWS S3 中，拉取备份元数据，根据元数据信息，创建相应的卷。
 2. TiDB Operator 在卷恢复工作完成后，把相应的卷挂载到 TiKV 所在的节点，并启动 TiKV.
-3. TiKV 启动完成后，TiDB Operator 启动新的 Job，进行业务数据的恢复。直到所有业务数据恢复到 resolved-ts. Job 退出。TiKV 节点重启。
+3. TiKV 启动完成后，TiDB Operator 启动新的 Job，进行业务数据的恢复。直到所有业务数据恢复到 backupts. Job 退出。TiKV 节点重启。
 4. TiDB 节点启动，集群恢复完成。
 
 ## 使用场景以及限制
@@ -31,6 +31,7 @@ recoveryMode:true 的 TiDB 集群将会以恢复的模式来启动. 这个模式
 
 > **限制**
 >
+> - TiDB Operator 1.4 及以上的版本支持此功能
 > - TiDB Operator 只支持 TiDB v6.3 及以上版本。
 > - 只支持相同 TiKV 节点以及卷个数的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
 > - TiDB Operator 恢复的数据无法被同步到下游，因为 TiDB Operator 直接挂载卷到上游集群进行恢复，而下游集群目前没有办法获得上游的卷。
@@ -65,7 +66,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 ## 第 3 步：将指定备份数据恢复到 TiDB 集群
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
+根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB 集群：
 
 + 方法 1: 如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
@@ -170,8 +171,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 - 关于 `restoreMode` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 - 关于兼容 S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-cr.md#s3-存储字段介绍)。
-- `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
-- 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
+- `.spec.br` 中的一些参数为可选项，如 `logLevel`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 

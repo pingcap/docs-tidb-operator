@@ -1,0 +1,127 @@
+---
+title: 基于 EBS 卷 Snapshot 备份恢复功能架构
+summary: 了解 TiDB EBS Snapshot 备份恢复架构设计。
+---
+
+基于 EBS Snapshot 的 TiDB 备份恢复功能，以 TiDB-Operator 为使用入口，创建相应的备份或恢复子任务，进行 snapshot 备份或者恢复。下面以用户使用 TiDB-Operator 进行备份恢复为例，介绍备份和恢复的架构和流程。
+
+# 基于 EBS 卷 Snapshot 备份恢复功能架构
+
+基于 EBS 卷 Snapshot 备份恢复功能架构实现如下：
+
+![AWS EBS Snapshot Backup and Restore architecture](/media/volume-snapshot-backup-restore-overview.png)
+
+## 进行 EBS 卷 Snapshot 备份
+
+EBS 卷 Snapshot 备份的流程如下：
+
+![EBS Snapshot backup process design](/media/volume-snapshot-backup-workflow.png)
+
+1. 用户提交备份 CRD
+   * TiDB Operator 检查和收集当前集群 TiKV 已挂载卷信息。
+   * TiDB Operator 使用挂载卷信息创建备份任务。
+
+2. BR 暂停 TiDB 集群调度以及 GC
+   * **pause region scheduler**：BR 向 TiDB Cluster 发起暂停调度请求。
+   * **pause gc**：tBR 向 TiDB Cluster 节点发起暂停 GC 请求。
+
+3. BR 获取备份数据 backupts
+   * **retrieve backupts**：BR 向 TiDB Cluster 获取 backupts
+
+4. BR 向 AWS 服务发起 create snapshot 请求
+   * **ec2 create snapshot**：BR 向 AWS 服务并发创建卷快照。
+
+5. BR 恢复 TiDB 集群调度以及 GC，并等待所有的 EBS 卷的 snapshot 创建完成。
+   * **resume region scheduler**：BR 向 TiDB Cluster 发起恢复调度请求。
+   * **resume gc**：BR 向 TiDB Cluster 恢复 GC。
+
+6. BR 保存元数据信息到 S3。备份完成，退出备份任务。
+   * **ec2 snapshot complete**：BR 向 AWS 服务 查询所有卷的 snapshot 状态，直到所有卷到达 Complete 状态。
+   * **save backupmeta to s3**：BR 保存备份元数据到 S3。
+
+## 进行 EBS 卷 Snapshot 恢复
+
+EBS 卷 Snapshot 恢复的流程如下：
+
+![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
+
+1. 用户以恢复模式创建 TiDB 集群。Spec 中指定 `spec.recoveryMode:true`
+   * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，同时等待用户创建恢复任务进行下一步恢复。
+
+2. 用户创建恢复任务。TiDB-Operator 启动 BR 卷恢复子任务获取备份元数据并恢复 EBS 卷。
+   * **enter recovery mode**: BR 设置 TiDB Cluster 为 recovery mode. 集群在 recovery mode 下恢复数据。
+   * **retrieve bakcupmeta from s3**: BR 获取备份元数据信息，并提取已备份的 snapshot, 以及备份 backupts。
+   * **create volume from snapshot**: BR 调用 AWS API 从备份 snapshot 创建出卷，并返回给 TiDB-Operator **volume complete**
+
+3. TiDB-Operator 使用恢复的 EBS 卷配置 TiDB 集群，同时启动所有的 TiKV 节点。
+   * TiDB-Operator 配置 kubernetes， 并挂载恢复的卷到相应的节点。
+   * **config cluster and start tikv**: 配置完成后，启动 tikv 节点。tikv 进入 recovery mode, 等待下一步的数据恢复。recovery mode 下，raft 状态机以及相关的状态检查操作被停止。
+
+4. TiDB-Operator 启动 BR 数据恢复子任务获取恢复 TiDB Cluster 数据。
+   * **raft log recovery**：BR 读取 集群的 region meta, 汇总计算决策出每个 region 的 leader, 让 leader 在 tikv上主动发起竞选来启动 raft 共识层的 log 恢复。
+   * **k-v data recovery**：BR 使用备份的 backupts 进行数据恢复。以删除所有 key 的 ts 大于 backupts 的数据，从而达到事务数据的全局一致性。
+   * **exit recovery mode**：TiDB 集群退出 recovery mode. 数据恢复完成。BR 返回给 TiDB-Operator **data complete**
+
+5. TiDB-Operator 启动 TiDB Cluster 的 TiDB 节点，恢复工作完成。
+   * **start tidb**：TiDB-Operator 启动 TiDB Cluster 的所有 TiDB 节点，集群对外提供服务。
+
+### 备份元数据信息
+
+```
+.
+├── backupmeta
+│   ├── cluster-info
+│   │   ├── version
+│   │   ├── backup_type
+│   │   ├── resolved_ts
+│   ├── store_volumes
+│   │   ├── volume_id
+│   │   ├── volume_type
+│   │   ├── snapshot_id
+│   │   ├── volume_az
+│   ├── kubernetes
+│   │   ├── pvcs
+│   │   ├── crd
+```   
+
+具体示例如下
+
+```json
+{
+    "cluster_info": {
+        "cluster_version": "6.3.0-alpha",
+        "full_backup_type": "aws-ebs",
+        "resolved_ts": 436732770870624257,
+    },
+    "tikv": {
+        "replicas": 1,
+        "stores": [
+            {
+                "store_id": 1,
+                "volumes": [
+                    {
+                        "volume_id": "vol-0bedb7ec0993f8a41",
+                        "type": "raft-engine.dir",
+                        "snapshot_id": "snap-074769e94078a89b7",
+                        "volume_az": "us-west-2a",
+                    },
+                    {
+                        "volume_id": "vol-08b303894657288a9",
+                        "type": "storage.data-dir",
+                        "snapshot_id": "snap-07b969994a363fdab",
+                        "volume_az": "us-west-2a",
+                    }
+                ]
+            },
+        ]
+    },
+    "kubernetes": {
+        "pvs": [
+        ],
+        "pvcs": [
+        ],
+        "crd_tidb_cluster": {
+        },
+    },
+}
+```
