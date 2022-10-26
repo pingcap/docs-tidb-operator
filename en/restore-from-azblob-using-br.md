@@ -225,4 +225,4 @@ The detailed steps are as follows:
 
 ## Troubleshooting
 
-If you encounter any problem during the restore process, refer to [Common Deployment Failures](deploy-failures.md).
+If you encounter any problem during the restoration process, refer to [Common Deployment Failures](deploy-failures.md).
