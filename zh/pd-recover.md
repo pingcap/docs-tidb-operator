@@ -113,12 +113,12 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl edit sts ${cluster_name}-pd -n ${namespace}
     ```
 
-    通过如下命令确认 PD Pod 已经启动：
+    通过如下命令确认 PD 已经启动：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod -n ${namespace}
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
     ```
 
 ### 使用 PD Recover 恢复集群
