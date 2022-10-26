@@ -200,6 +200,11 @@ kubectl get rt -n test2 -o wide
           prefix: my-full-backup-folder-pitr
     ```
 
+    在配置 `restore-point-azblob.yaml` 文件时，请参考以下信息：
+
+    - `spec.restoreMode`: 在进行 PITR 恢复时，需要设置值为 `pitr`。默认值为 `snapshot`，即进行全量恢复。
+
+
 2. 查看恢复的状态，等待恢复操作完成：
 
     ```shell
@@ -216,10 +221,6 @@ kubectl get rt -n test2 -o wide
     ```shell
     kubectl get rt -n restore-test -o wide
     ```
-
-在配置 `restore-point-azblob.yaml` 文件时，请参考以下信息：
-
-- `spec.restoreMode`: 在进行 PITR 恢复时，需要设置值为 `pitr`。默认值为 `snapshot`，即进行全量恢复。
 
 ## 故障诊断
 
