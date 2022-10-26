@@ -122,7 +122,7 @@ spec:
 
 - 自 TiDB Operator v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
-- `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 - `spec.azblob.secretName`：填写你在创建 secret 对象时自定义的 secret 对象的名字，例如 `azblob-secret`。
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
 - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
@@ -327,7 +327,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -360,7 +360,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -395,7 +395,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -430,7 +430,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -530,7 +530,7 @@ spec:
     kind: BackupSchedule
     metadata:
       name: demo1-backup-schedule-azblob
-      namespace: test1
+      namespace: backup-test
     spec:
       #maxBackups: 5
       #pause: true
