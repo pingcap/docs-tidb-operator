@@ -11,7 +11,7 @@ TiDB Operator 版本：1.4.0-beta.1
 
 ## 新功能
 
-- br: support ebs snapshot ([#4698](https://github.com/pingcap/tidb-operator/pull/4698), [@gozssky](https://github.com/gozssky))
+- 支持基于 AWS EBS 的 TiDB 集群 volume-snapshot 的备份和恢复 ([#4698](https://github.com/pingcap/tidb-operator/pull/4698), [@gozssky](https://github.com/gozssky))
 
 
 ## 错误修复
