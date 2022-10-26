@@ -29,10 +29,15 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `db`：对 TiDB 集群一个 database 的数据执行备份。
     * `table`：对 TiDB 集群中指定表的数据执行备份。
 
-* `.spec.backupMode`：指定 Backup 的模式，默认为基于 KV 层的快照备份 `snapshot`。该字段仅在使用 BR 备份时有效，目前支持以下三种类型：
+* `.spec.backupMode`：指定 Backup 的模式，默认为基于 KV 层的快照备份 `snapshot`。该字段仅在备份时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照备份。
-    * `volume-snapshot`：基于 snapshot 的 TiDB 集群卷快照备份。
-    * `log`：基于 log 的 TiDB 集群 point-in-time 备份。
+    * `volume-snapshot`：基于卷快照的 TiDB 集群备份。
+    * `log`：基于日志将 TiDB 集群数据备份到指定时间点。
+
+* `.spec.restoreMode`：指定 Restore 的模式，默认为基于 KV 层的快照恢复 `snapshot`。该字段仅在恢复时有效，目前支持以下三种类型：
+    * `snapshot`：基于 KV 层的快照恢复。
+    * `volume-snapshot`：基于卷快照的 TiDB 集群恢复。
+    * `log`：基于日志将 TiDB 集群数据恢复到指定时间点。
 
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 `72h`。
 
