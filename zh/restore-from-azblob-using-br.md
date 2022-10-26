@@ -217,6 +217,10 @@ kubectl get rt -n test2 -o wide
     kubectl get rt -n restore-test -o wide
     ```
 
+在配置 `restore-point-azblob.yaml` 文件时，请参考以下信息：
+
+- `spec.restoreMode`: 在进行 PITR 恢复时，需要设置值为 `pitr`。默认值为 `snapshot`，即进行全量恢复。
+
 ## 故障诊断
 
 在使用过程中如果遇到问题，可以参考[故障诊断](deploy-failures.md)。
