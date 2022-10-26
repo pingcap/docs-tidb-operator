@@ -36,7 +36,7 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 
 Ad-hoc backup includes snapshot backup and log backup. For log backup, you can start or stop a log backup task and clean log backup data.
 
-To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+To get an ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
 This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to Azure Blob Storage. The following are the detailed steps.
 
@@ -123,7 +123,7 @@ When you configure `backup-azblob.yaml`, note the following:
 - For more information about Azure Blob Storage configuration, refer to [Azure Blob Storage fields](backup-restore-cr.md#azure-blob-storage-fields).
 - Some parameters in `.spec.br` are optional, such as `logLevel` and `statusAddr`. For more information about BR configuration, refer to [BR fields](backup-restore-cr.md#br-fields).
 - `spec.azblob.secretName`: fill in the name of the secret object, such as `azblob-secret`.
-- For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
+- For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure the `spec.tikvGCLifeTime` and `spec.from` fields in the `Backup` CR.
 - For more information about the `Backup` CR fields, refer to [Backup CR fields](backup-restore-cr.md#backup-cr-fields).
 
 #### View the snapshot backup status
@@ -221,7 +221,7 @@ Log Checkpoint Ts:       436569119308644661
 
 #### Stop log backup
 
-Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations are: stop log backup > delete log backup data > start log backup.
+Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup.
 
 ```shell
 kubectl edit backup demo1-log-backup-azblob -n backup-test
@@ -256,7 +256,7 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
 
 #### Clean log backup data
 
-1. Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations are: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
+1. Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
 
     ```shell
     kubectl edit backup demo1-log-backup-azblob -n backup-test
