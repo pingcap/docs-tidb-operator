@@ -202,6 +202,10 @@ The detailed steps are as follows:
           prefix: my-full-backup-folder-pitr
     ```
 
+    When you configure `backup-azblob.yaml`, note the following:
+
+    - `spec.restoreMode`: when you perform PITR, set this field to `pitr`. The default value of this field is `snapshot`, which means snapshot backup.
+
 2. Wait for the restoration operation to complete:
 
     ```shell
