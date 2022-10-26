@@ -13,7 +13,7 @@ The backup method described in this document is implemented based on CustomResou
 
 ## Usage scenarios
 
-If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled snapshot backup](#scheduled-full-backup) of the TiDB cluster data to S3-compatible storages.
+If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled snapshot backup](#scheduled-snapshot-backup) of the TiDB cluster data to S3-compatible storages.
 
 - To back up a large volume of data (more than 1 TB) at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
