@@ -320,7 +320,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -353,7 +353,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -388,7 +388,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -423,7 +423,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-azblob
-  namespace: test1
+  namespace: backup-test
 spec:
   backupType: full
   serviceAccount: tidb-backup-manager
@@ -528,7 +528,7 @@ Depending on which method you choose to grant permissions to the remote storage,
     kind: BackupSchedule
     metadata:
       name: demo1-backup-schedule-azblob
-      namespace: test1
+      namespace: backup-test
     spec:
       #maxBackups: 5
       #pause: true
