@@ -38,8 +38,6 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
     如果是进行基于 AWS EBS snapshot 的备份和恢复除完整的 S3 权限 `AmazonS3FullAccess` 外还需要以下权限：
     
-    {{< copyable "shell-regular" >}}
-
     ```json
             {
             "Effect": "Allow",

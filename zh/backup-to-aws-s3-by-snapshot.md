@@ -54,15 +54,13 @@ summary: 介绍如何基于 EBS Snapshot 使用 TiDB Operator 备份 TiDB 集群
 
 3. 授予远程存储访问权限。
 
-    - 如果使用 Amazon S3 来备份集群元数据，可以使用三种方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
+    如果使用 Amazon S3 来备份集群元数据，可以使用三种方式授予权限，请参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
 
 ### 第 2 步：备份数据到 S3 的存储
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据备份到 S3 的存储上：
 
-+ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 1：如果通过 accessKey 和 secretKey 授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
 
     ```shell
     kubectl apply -f backup-aws-s3.yaml
@@ -92,9 +90,7 @@ summary: 介绍如何基于 EBS Snapshot 使用 TiDB Operator 备份 TiDB 集群
         prefix: my-folder
     ```
 
-+ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 2：如果通过 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
 
     ```shell
     kubectl apply -f backup-aws-s3.yaml
@@ -124,9 +120,7 @@ summary: 介绍如何基于 EBS Snapshot 使用 TiDB Operator 备份 TiDB 集群
         prefix: my-folder
     ```
 
-+ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 3：如果通过 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
 
     ```shell
     kubectl apply -f backup-aws-s3.yaml
@@ -163,8 +157,6 @@ summary: 介绍如何基于 EBS Snapshot 使用 TiDB Operator 备份 TiDB 集群
 - `.spec.br` 中的一些参数是可选的，例如 `logLevel` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 
 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过如下命令查看备份状态：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get bk -n test1 -o wide
