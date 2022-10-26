@@ -38,8 +38,6 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
     如果是进行基于 AWS Elastic Block Store (EBS) 快照的备份和恢复，除完整的 S3 权限 `AmazonS3FullAccess` 外，还需要以下权限：
     
-    {{< copyable "shell-regular" >}}
-
     ```json
             {
             "Effect": "Allow",
