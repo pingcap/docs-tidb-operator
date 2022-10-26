@@ -10,7 +10,7 @@ TiDB Operator version: 1.4.0-beta.1
 
 ## New Feature
 
-- br: support ebs snapshot ([#4698](https://github.com/pingcap/tidb-operator/pull/4698), [@gozssky](https://github.com/gozssky))
+- TiDB Operator supports AWS EBS snapshot Backup and Restore ([#4698](https://github.com/pingcap/tidb-operator/pull/4698), [@gozssky](https://github.com/gozssky))
 
 ## Bug fixes
 
