@@ -113,12 +113,12 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
-    Execute the following command to confirm that the PD Pod is started:
+    Execute the following command to confirm that the PD is started:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod -n ${namespace}
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
     ```
 
 ### Step 4. Recover the cluster
