@@ -1,11 +1,11 @@
 ---
-title: 基于 AWS EBS Snapshot 恢复 S3 上的备份数据
+title: 基于 AWS EBS 卷快照的恢复
 summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot 恢复到 TiDB 集群。
 ---
 
-# 基于 AWS EBS Snapshot 恢复 S3 上的备份数据
+# 基于 AWS EBS 卷快照的恢复
 
-本文档介绍如何将基于 AWS EBS Snapshot 恢复 S3 上的备份数据恢复到 TiDB 集群。
+本文档介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
 
 本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，基于 AWS EBS snapshot 的备份包含两部分数据，TiDB 集群数据卷的 snapshot, 以及 snapshot和集群相关的备份元信息。
 
@@ -14,7 +14,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot �
 备份数据主要包含两部分内容：
 
    1. 集群数据卷快照，即 AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。
-   2. 备份元信息，包含 TiDB 集群的数据卷和对应快照的关系信息，快照对应的备份数据的物理时间点 backupts （它可能在备份时间点之前）, 以及 TiDB 集群想关的信息。
+   2. 备份元信息，包含 TiDB 集群的数据卷和对应快照的关系信息，快照对应的备份数据的物理时间点 backupts （它可能在备份时间点之前）, 以及 TiDB 集群相关的信息。
 
 恢复时，先创建一个 Spec.recoveryMode:true 的 TiDB 集群，再 apply restore CRD 进行恢复。
 
@@ -25,16 +25,18 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot �
 3. TiKV 启动完成后，TiDB Operator 启动新的 Job，进行业务数据的恢复。直到所有业务数据恢复到 backupts. Job 退出。TiKV 节点重启。
 4. TiDB 节点启动，集群恢复完成。
 
-## 使用场景以及限制
+## 推荐使用场景以及限制
+
+### 使用场景
 
 当使用 TiDB Operator 将 TiDB 集群数据备份到 AWS S3 后，如果需要从 AWS S3 将备份的 元数据以及相关的 snapshot 恢复到 TiDB 集群，请参考本文进行恢复。
 
-> **限制**
->
-> - TiDB Operator 1.4 及以上的版本支持此功能
-> - TiDB Operator 只支持 TiDB v6.3 及以上版本。
-> - 只支持相同 TiKV 节点以及卷个数的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
-> - TiDB Operator 恢复的数据无法被同步到下游，因为 TiDB Operator 直接挂载卷到上游集群进行恢复，而下游集群目前没有办法获得上游的卷。
+### 使用限制
+
+- TiDB Operator 1.4 及以上的版本支持此功能
+- 此功能只支持 TiDB v6.3 及以上版本。
+- 只支持相同 TiKV 节点以及卷个数的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
+- 暂不支持 TiFlash, CDC，DM 和 binlog 相关节点的卷快照恢复
 
 ## 第 1 步：准备恢复环境
 

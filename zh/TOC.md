@@ -74,10 +74,10 @@
     - 使用持久卷
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
-    - 基于 Snapshot 的备份和恢复
-      - [基于 EBS 卷 Snapshot 备份恢复功能架构](volume-snapshot-backup-restore.md)
-      - [基于 EBS 卷 Snapshot, 使用 TiDB Operator 备份 TiDB 集群数据到 S3](backup-to-aws-s3-by-snapshot.md)
-      - [基于 EBS 卷 Snapshot, 使用 TiDB Operator 从 S3 恢复 TiDB 集群数据的备份数据](restore-from-aws-s3-by-snapshot.md)
+    - 基于快照的备份和恢复
+      - [功能架构](volume-snapshot-backup-restore.md)
+      - [基于 EBS 快照 TiDB 集群数据的备份](backup-to-aws-s3-by-snapshot.md)
+      - [基于 EBS 快照 TiDB 集群数据的恢复](restore-from-aws-s3-by-snapshot.md)
   - 运维
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
