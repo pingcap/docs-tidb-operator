@@ -64,7 +64,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
         ```
 
-### Step 2. Restore the backup data to a TiDB cluster
+### Step 2: Restore the backup data to a TiDB cluster
 
 Create a `Restore` CR named `demo2-restore-azblob` in the `restore-test` namespace to restore cluster data as described below:
 
@@ -140,7 +140,7 @@ For detailed steps of how to perform data backup, refer to [Back up data to Azur
 >
 > The specified restoration time point must be between the snapshot backup time point and the log backup `checkpoint-ts`.
 
-### Step 1. Prepare the restoration environment
+### Step 1: Prepare the restoration environment
 
 Before restoring backup data on Azure Blob Storage to TiDB using BR, take the following steps to prepare the restoration environment:
 
@@ -164,7 +164,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
     >
     > When you create a secret object, you can use a customized name for the object. In this document, the name is `azblob-secret`.
 
-### Step 2. Restore the backup data to a TiDB cluster
+### Step 2: Restore the backup data to a TiDB cluster
 
 The example in this section restores the snapshot backup data to the cluster. The specified restoration time point must be between [the time point of snapshot backup](backup-to-azblob-using-br.md#view-the-snapshot-backup-status) and the [`Log Checkpoint Ts` of log backup](backup-to-azblob-using-br.md#view-the-log-backup-status).
 
