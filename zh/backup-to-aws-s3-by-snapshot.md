@@ -5,9 +5,9 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 # 基于 AWS EBS 卷快照的备份
 
-本文档介绍如何将 Kubernetes 上部署在 AWS Elastic Block Store (EBS) 的 TiDB 集群的数据备份到 AWS S3。
+本文介绍如何将 Kubernetes 上部署在 AWS Elastic Block Store (EBS) 的 TiDB 集群备份到 AWS S3。
 
-本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)。如果 TiDB 集群部署在 AWS EKS 上且使用了 EBS 卷，可以使用本文描述的方法进行备份。
+本文介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)。如果 TiDB 集群部署在 AWS EKS 上且使用了 EBS 卷，也可以使用本文描述的方法进行备份。
 
 ## 推荐使用场景以及限制
 
@@ -16,15 +16,14 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 如果你对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
 
 - 需要备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
-- 需要快速的部分和恢复，比如 1h 完成备份，2h 完成恢复。
+- 需要快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
 
 如有其他备份需求，参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
 
 ### 使用限制
 
-- TiDB Operator v1.4 及以上的版本支持此功能
-- 此功能只支持 TiDB v6.3 及以上版本。
-- TiDB 集群部署在 EKS 上，且使用的 AWS EBS 卷。
+- 要使用此功能，TiDB Operator 应为 v1.4.0 及以上，TiDB 应为 v6.3.0 及以上。
+- TiDB 集群部署在 EKS 上，且使用了 AWS EBS 卷。
 - 暂不支持 TiFlash、TiCDC、DM 和 TiDB Binlog 相关节点的卷快照备份。
 
 ## 备份操作

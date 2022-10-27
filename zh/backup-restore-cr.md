@@ -31,7 +31,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 * `.spec.backupMode`：指定 Backup 的模式，默认为基于 KV 层的快照备份 `snapshot`。该字段仅在备份时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照备份。
-    * `volume-snapshot`：基于卷快照的 TiDB 集群备份。
+    * `volume-snapshot`：基于卷快照的备份。
     * `log`：从 KV 层备份实时数据变更日志数据。
 
 * `.spec.restoreMode`：指定 Restore 的模式，默认为基于 KV 层的快照恢复 `snapshot`。该字段仅在恢复时有效，目前支持以下三种类型：

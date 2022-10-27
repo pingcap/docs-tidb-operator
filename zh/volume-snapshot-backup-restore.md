@@ -3,17 +3,17 @@ title: 基于 EBS 卷快照的备份恢复功能架构
 summary: 了解 TiDB EBS 卷快照的备份恢复架构设计。
 ---
 
-基于 EBS 卷快照的 TiDB 备份恢复功能，以 TiDB Operator 为使用入口，创建相应的备份或恢复子任务，进行 snapshot 备份或者恢复。下面以用户使用 TiDB Operator 进行备份恢复为例，介绍备份和恢复的架构和流程。
-
 # 基于 EBS 卷快照的备份恢复功能架构
 
-基于 EBS 卷快照的备份恢复功能架构实现如下：
+基于 EBS 卷快照的备份恢复功能以 TiDB Operator 为使用入口。本文以使用 TiDB Operator 进行备份恢复为例，介绍备份和恢复的功能架构和流程。
+
+基于 EBS 卷快照的备份恢复功能架构如下：
 
 ![AWS EBS Snapshot Backup and Restore architecture](/media/volume-snapshot-backup-restore-overview.png)
 
-## 进行 EBS 卷 Snapshot 备份
+## 备份 EBS 卷快照
 
-EBS 卷快照备份的流程如下：
+EBS 卷快照备份流程如下：
 
 ![EBS Snapshot backup process design](/media/volume-snapshot-backup-workflow.png)
 
@@ -26,7 +26,7 @@ EBS 卷快照备份的流程如下：
    * **pause gc**：BR 向 TiDB Cluster 发起暂停 GC 请求。
 
 3. BR 获取备份数据 backupts
-   * **retrieve backupts**：BR 向 TiDB Cluster 获取 backupts
+   * **retrieve backupts**：BR 向 TiDB Cluster 获取 backupts。
 
 4. BR 向 AWS 服务发起创建卷快照请求
    * **ec2 create snapshot**：BR 向 AWS 服务发起创建卷快照请求。
@@ -36,33 +36,33 @@ EBS 卷快照备份的流程如下：
    * **resume gc**：BR 请求 TiDB Cluster 恢复 GC。
 
 6. BR 保存元数据信息到 S3 并退出。备份完成。
-   * **ec2 snapshot complete**：BR 向 AWS 服务查询所有卷的快照状态，直到所有卷到达 Complete 状态。
+   * **ec2 snapshot complete**：BR 向 AWS 服务查询所有卷的快照状态，直到所有卷达到 Complete 状态。
    * **save backupmeta to s3**：BR 保存备份元数据到 S3。
 
-## 进行 EBS 卷 Snapshot 恢复
+## 恢复 EBS 卷快照
 
-EBS 卷 Snapshot 恢复的流程如下：
+EBS 卷快照恢复流程如下：
 
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
-1. 用户以恢复模式创建 TiDB 集群，即在 Spec 中指定 `spec.recoveryMode:true`
+1. 用户以恢复模式创建 TiDB 集群，即在 Spec 中指定 `spec.recoveryMode:true`。
    * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，同时等待用户创建恢复任务进行下一步恢复。
 
-2. 用户创建恢复任务。TiDB Operator 启动 BR 卷恢复子任务获取备份元数据并恢复 EBS 卷。
-   * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode. 集群在 recovery mode 下恢复数据。
-   * **retrieve bakcupmeta from s3**：BR 获取备份元数据信息，并提取已备份的 snapshot, 以及备份 backupts。
-   * **create volume from snapshot**：BR 调用 AWS API 从备份 snapshot 创建出卷，并返回给 TiDB Operator `volume complete`
+2. 用户创建恢复任务。TiDB Operator 启动 BR 卷恢复子任务，获取备份元数据，并恢复 EBS 卷。
+   * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode。集群在 recovery mode 下恢复数据。
+   * **retrieve bakcupmeta from s3**：BR 获取备份元数据信息，并提取已备份的快照以及 backupts。
+   * **create volume from snapshot**：BR 调用 AWS API，从备份快照创建卷，并返回给 TiDB Operator。
 
 3. TiDB Operator 使用恢复的 EBS 卷配置 TiDB 集群，同时启动所有的 TiKV 节点。
-   * TiDB Operator 配置 Kubernetes， 并挂载恢复的卷到相应的节点。
-   * **config cluster and start tikv**： 配置完成后，启动 TiKV 节点。TiKV 进入 recovery mode, 等待下一步的数据恢复。在 recovery mode 下，raft 状态机以及相关的状态检查操作被停止。
+   * TiDB Operator 配置 Kubernetes，并挂载恢复的卷到相应的节点。
+   * **config cluster and start tikv**：配置完成后，启动 TiKV 节点。TiKV 进入 recovery mode，等待下一步的数据恢复。在 recovery mode 下，raft 状态机以及相关的状态检查操作被停止。
 
 4. TiDB Operator 启动 BR 数据恢复子任务，获取并恢复 TiDB Cluster 数据。
    * **raft log recovery**：BR 读取集群的 region meta, 汇总计算决策出每个 region 的 leader, 让 leader 在 TiKV 上主动发起竞选来启动 raft 共识层的日志恢复。
    * **k-v data recovery**：BR 使用备份的 backupts 进行数据恢复。以删除所有版本大于 backupts 的 key-value 数据，从而达到事务数据的全局一致性。
    * **exit recovery mode**：TiDB 集群退出恢复模式. 数据恢复完成。BR 返回给 TiDB Operator `data complete`
 
-5. TiDB Operator 启动 TiDB Cluster 的 TiDB 节点，恢复工作完成。
+5. TiDB Operator 启动 TiDB Cluster 的 TiDB 节点，恢复完成。
    * **start tidb**：TiDB Operator 启动 TiDB Cluster 的所有 TiDB 节点，集群对外提供服务。
 
 ### 备份元数据信息
@@ -128,4 +128,4 @@ EBS 卷 Snapshot 恢复的流程如下：
 
 > **注意：**
 >
-> - 示例中，resolved_ts 是 backupts 的实现。为实现上的方便，在代码中我们使用 resolved_ts.
+> 示例中，`resolved_ts` 是 backupts 的实现。为实现上的方便，在代码中我们使用 `resolved_ts`。
