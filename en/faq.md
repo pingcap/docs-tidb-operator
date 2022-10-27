@@ -44,7 +44,7 @@ If the TiDB cluster is already running, first upgrade the cluster, and then conf
 
 2. Configure TiDB to support the new time zone:
 
-    Refer to [Time Zone Support](https://docs.pingcap.com/tidb/v4.0/configure-time-zone) to modify TiDB service time zone settings.
+    Refer to [Time Zone Support](https://docs.pingcap.com/tidb/stable/configure-time-zone) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
 
