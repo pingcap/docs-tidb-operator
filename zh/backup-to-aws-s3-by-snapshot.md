@@ -9,23 +9,14 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 本文档介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)。如果 TiDB 集群部署在 AWS EKS 上且使用了 EBS 卷，可以使用本文描述的方法进行备份。
 
-## 备份原理介绍
-
-备份数据主要包含两部分内容：
-
-   1. 集群数据卷快照，即 AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。数据卷有 raft log 卷和 data 卷。 raft log 卷存储 raft log 信息，data 卷存储事务数据。
-   2.   - 备份元信息：包含数据卷和快照的关系，集群级别的 backupts，以及 TiDB 集群相关的信息，如表和对应的备份文件、data checksum 和 file checksum 等信息。
-
-备份时，先停止 PD 相关的调度, 再获取 TiDB 集群全局一致性事务备份数据时间点 backupts，再发起 AWS EBS snapshot, 调用 AWS 服务为数据卷创建 snapshot. 当 snapshot 完成后，退出备份并保存集群备份元信息。
-
 ## 推荐使用场景以及限制
 
 ### 使用场景
 
 如果你对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
 
-- 需要备份的影响降到最小，如备份时 QPS < 5%，集群 CPU 以及内存占用足够小。
-- 需要定期备份，且备份时间短。
+- 需要备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
+- 需要快速的部分和恢复，比如 1h 完成备份，2h 完成恢复。
 
 如有其他备份需求，参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
 
@@ -156,7 +147,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 - 如果要基于卷快照进行备份，需在 `spec.br.backupMode` 中指定备份模式为 `volume-snapshot`。
 - Amazon S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-cr.md#s3-存储字段介绍)。
-- `.spec.br` 中存在一些可选参数，如 `logLevel`，可根据需要决定是否配置。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `.spec.br` 中存在一些可选参数，如 `logLevel`，可根据需要决定是否配置。
 
 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过如下命令查看备份状态：
 
