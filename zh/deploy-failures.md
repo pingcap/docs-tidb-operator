@@ -112,7 +112,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 kubectl -n ${namespace} logs -p ${pod_name}
 ```
 
-确认日志中的错误信息后，可以根据 [tidb-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#tidb-server-启动报错)，[tikv-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#tikv-server-启动报错)，[pd-server 启动报错](https://pingcap.com/docs-cn/v3.0/how-to/troubleshoot/cluster-setup/#pd-server-启动报错)中的指引信息进行进一步排查解决。
+确认日志中的错误信息后，可以根据 [tidb-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#tidb-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)，[tikv-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#tikv-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)，[pd-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#pd-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)中的指引信息进行进一步排查解决。
 
 ### cluster id mismatch
 

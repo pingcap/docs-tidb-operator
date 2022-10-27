@@ -91,7 +91,7 @@ Kubelet 正常工作需要关闭 Swap，并且把 `/etc/fstab` 里面有关 Swap
 
 ```shell
 swapoff -a
-sed -i 's/^\(.*swap.*\)$/#\1/' /etc/fstab 
+sed -i 's/^\(.*swap.*\)$/#\1/' /etc/fstab
 ```
 
 ## 内核参数设置
@@ -136,7 +136,7 @@ systemctl start irqbalance
 
 ## CPUfreq 调节器模式设置
 
-为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://pingcap.com/docs-cn/stable/online-deployment-using-ansible/#查看系统支持的调节器模式)。
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 performance 模式。详细参考[在部署目标机器上配置 CPUfreq 调节器模式](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#检查和配置操作系统优化参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -242,18 +242,18 @@ Kubernetes Master 节点的配置取决于 Kubernetes 集群中 Node 节点个�
 1. 将 Kubelet 的数据保存到一块单独盘上（可跟 Docker 共用一块盘），Kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。通过设置 `--root-dir` 参数来实现：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     echo "KUBELET_EXTRA_ARGS=--root-dir=/data1/kubelet" > /etc/sysconfig/kubelet
     systemctl restart kubelet
     ```
-   
+
     上面会将 Kubelet 数据目录设置为 `/data1/kubelet`。
-    
+
 2. 通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)，保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
 
 ## TiDB 集群资源需求
 
-请根据[服务器建议配置](https://pingcap.com/docs-cn/stable/hardware-and-software-requirements/#生产环境)来规划机器的配置。
+请根据[服务器建议配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements#生产环境)来规划机器的配置。
 
 另外，在生产环境中，尽量不要在 Kubernetes Master 节点部署 TiDB 实例，或者尽可能少地部署 TiDB 实例。因为网卡带宽的限制，Master 节点网卡满负荷工作会影响到 Worker 节点和 Master 节点之间的心跳信息汇报，导致比较严重的问题。
