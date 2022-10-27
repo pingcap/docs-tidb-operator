@@ -13,7 +13,7 @@ The backup method described in this document is implemented based on CustomResou
 
 ## Usage scenarios
 
-If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled full backup](#scheduled-full-backup) of the TiDB cluster data to S3-compatible storages.
+If you have the following backup needs, you can use BR to make an [ad-hoc backup](#ad-hoc-backup) or [scheduled snapshot backup](#scheduled-snapshot-backup) of the TiDB cluster data to S3-compatible storages.
 
 - To back up a large volume of data (more than 1 TB) at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
@@ -27,7 +27,7 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 
 ## Ad-hoc backup
 
-Ad-hoc backup supports both full backup and incremental backup.
+Ad-hoc backup supports both snapshot backup and incremental backup.
 
 To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
@@ -365,17 +365,17 @@ spec:
 
 </details>
 
-## Scheduled full backup
+## Scheduled snapshot backup
 
-You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled full backup is described by a custom `BackupSchedule` CR object. A full backup is triggered at each backup time point. Its underlying implementation is the ad-hoc full backup.
+You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled snapshot backup is described by a custom `BackupSchedule` CR object. A snapshot backup is triggered at each backup time point. Its underlying implementation is the ad-hoc snapshot backup.
 
-### Step 1: Prepare for a scheduled full backup
+### Step 1: Prepare for a scheduled snapshot backup
 
-The steps to prepare for a scheduled full backup are the same as that of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
+The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#step-1-prepare-for-an-ad-hoc-backup).
 
-### Step 2: Perform a scheduled full backup
+### Step 2: Perform a scheduled snapshot backup
 
-Depending on which method you choose to grant permissions to the remote storage, perform a scheduled full backup by doing one of the following:
+Depending on which method you choose to grant permissions to the remote storage, perform a scheduled snapshot backup by doing one of the following:
 
 + Method 1: If you grant permissions by importing AccessKey and SecretKey, create the `BackupSchedule` CR, and back up cluster data as described below:
 
@@ -539,7 +539,7 @@ From the above content in `backup-scheduler-aws-s3.yaml`, you can see that the `
 - For the unique configuration of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 - `backupTemplate` specifies the configuration related to the cluster and remote storage, which is the same as the `spec` configuration of [the `Backup` CR](backup-restore-cr.md#backup-cr-fields).
 
-After creating the scheduled full backup, use the following command to check the backup status:
+After creating the scheduled snapshot backup, use the following command to check the backup status:
 
 {{< copyable "shell-regular" >}}
 
