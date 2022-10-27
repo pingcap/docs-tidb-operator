@@ -134,7 +134,7 @@ systemctl start irqbalance
 
 ## Configure the CPUfreq governor mode
 
-To make full use of CPU performance, set the CPUfreq governor mode to `performance`. For details, see [Configure the CPUfreq governor mode on the target machine](https://docs.pingcap.com/tidb/v4.0/online-deployment-using-ansible#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
+To make full use of CPU performance, set the CPUfreq governor mode to `performance`. For details, see [Configure the CPUfreq governor mode on the target machine](https://docs.pingcap.com/tidb/stable/check-before-deployment#check-and-configure-the-optimal-parameters-of-the-operating-system).
 
 {{< copyable "shell-regular" >}}
 
@@ -251,6 +251,6 @@ After Kubelet is installed, take the following steps:
 
 ## TiDB cluster's requirements for resources
 
-To determine the machine configuration, see [Server recommendations](https://docs.pingcap.com/tidb/v4.0/hardware-and-software-requirements#production-environment).
+To determine the machine configuration, see [Server recommendations](https://docs.pingcap.com/tidb/stable/hardware-and-software-requirements#production-environment).
 
 In a production environment, avoid deploying TiDB instances on a kubernetes master, or deploy as few TiDB instances as possible. Due to the NIC bandwidth, if the NIC of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.
