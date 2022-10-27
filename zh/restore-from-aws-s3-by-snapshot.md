@@ -18,7 +18,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 ## 第 1 步：准备恢复环境
 
-使用 TiDB Operator 将 S3 兼容存储上的备份元数据以及 EBS snapshot 恢复到 TiDB 前，请按照以下步骤准备恢复环境。
+使用 TiDB Operator 将 S3 兼容存储上的备份元数据以及 EBS 快照恢复到 TiDB 之前，请按照以下步骤准备恢复环境。
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
 
@@ -26,15 +26,15 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. 授予远程存储访问权限。
+3. 授予远程存储访问权限。
 
-    - 如果要恢复的数据在 Amazon S3 上，可以使用三种权限授予方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
+    如果要恢复的数据在 Amazon S3 上，可以使用三种方式授予权限，请参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
 
 ## 第 2 步：准备恢复的集群
 
-参考 [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md) 的部署 TiDB 集群和监控来部署 TiDB 集群。
+参考[在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md) 部署恢复数据的集群。
 
-在 Spec 中加入 recoveryMode: true 字段。并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 TiDB 集群相关资源：
+在 Spec 中加入 `recoveryMode: true` 字段。并执行以下命令在 `test2` 这个命名空间中创建恢复需要的 TiDB 集群相关资源：
 
 ```shell
 kubectl apply -f tidb-cluster.yaml -n test2
