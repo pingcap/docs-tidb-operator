@@ -39,8 +39,6 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 2. 执行以下命令，在 `test1` 这个命名空间中，创建备份需要的 RBAC 相关资源：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
     ```
