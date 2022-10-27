@@ -1,9 +1,9 @@
 ---
 title: 基于 EBS 卷快照的备份恢复功能架构
-summary: 了解 TiDB EBS Snapshot 备份恢复架构设计。
+summary: 了解 TiDB EBS 卷快照的备份恢复架构设计。
 ---
 
-基于 EBS Snapshot 的 TiDB 备份恢复功能，以 TiDB-Operator 为使用入口，创建相应的备份或恢复子任务，进行 snapshot 备份或者恢复。下面以用户使用 TiDB-Operator 进行备份恢复为例，介绍备份和恢复的架构和流程。
+基于 EBS 卷快照的 TiDB 备份恢复功能，以 TiDB-Operator 为使用入口，创建相应的备份或恢复子任务，进行 snapshot 备份或者恢复。下面以用户使用 TiDB-Operator 进行备份恢复为例，介绍备份和恢复的架构和流程。
 
 # 基于 EBS 卷快照的备份恢复功能架构
 
@@ -13,7 +13,7 @@ summary: 了解 TiDB EBS Snapshot 备份恢复架构设计。
 
 ## 进行 EBS 卷 Snapshot 备份
 
-EBS 卷 Snapshot 备份的流程如下：
+EBS 卷快照备份的流程如下：
 
 ![EBS Snapshot backup process design](/media/volume-snapshot-backup-workflow.png)
 
@@ -125,3 +125,7 @@ EBS 卷 Snapshot 恢复的流程如下：
     },
 }
 ```
+
+> **注意：**
+>
+> - 示例中，resolved_ts 是 backupts 的实现。为实现上的方便，在代码中我们使用 resolved_ts.

@@ -1,37 +1,15 @@
 ---
 title: 基于 AWS EBS 卷快照的恢复
-summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS Snapshot 恢复到 TiDB 集群。
+summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照恢复到 TiDB 集群。
 ---
 
 # 基于 AWS EBS 卷快照的恢复
 
 本文档介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
 
-本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，基于 AWS EBS snapshot 的备份包含两部分数据，TiDB 集群数据卷的 snapshot, 以及 snapshot和集群相关的备份元信息。
+本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)，基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
 
-## 恢复原理介绍
-
-备份数据主要包含两部分内容：
-
-   1. 集群数据卷快照，即 AWS EBS volume snapshot，卷快照主要包含 TiDB 集群的数据卷的快照。
-   2. 备份元信息，包含 TiDB 集群的数据卷和对应快照的关系信息，快照对应的备份数据的物理时间点 backupts （它可能在备份时间点之前）, 以及 TiDB 集群相关的信息。
-
-恢复时，先创建一个 Spec.recoveryMode:true 的 TiDB 集群，再 apply restore CRD 进行恢复。
-
-`recoveryMode:true` 的 TiDB 集群将会以恢复的模式来启动。这个模式的集群将只会启动 PD 节点，同时等待 apply restore CRD 来进行恢复集群。主要的步骤如下：
-
-1. Apply restore CRD 后，会首先启动卷的恢复工作，即从 AWS S3 中，拉取备份元数据，根据元数据信息，创建相应的卷。
-2. TiDB Operator 在卷恢复工作完成后，把相应的卷挂载到 TiKV 所在的节点，并启动 TiKV.
-3. TiKV 启动完成后，TiDB Operator 启动新的 Job，进行业务数据的恢复。直到所有业务数据恢复到 backupts. Job 退出。TiKV 节点重启。
-4. TiDB 节点启动，集群恢复完成。
-
-## 推荐使用场景以及限制
-
-### 使用场景
-
-当使用 TiDB Operator 将 TiDB 集群数据备份到 AWS S3 后，如果需要从 AWS S3 将备份的 元数据以及相关的 snapshot 恢复到 TiDB 集群，请参考本文进行恢复。
-
-### 使用限制
+## 使用限制
 
 - TiDB Operator 1.4 及以上的版本支持此功能
 - 此功能只支持 TiDB v6.3 及以上版本。
@@ -70,7 +48,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB 集群：
 
-+ 方法 1: 如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 1：如果通过 accessKey 和 secretKey 授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -102,7 +80,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
         prefix: my-folder
     ```
 
-+ 方法 2: 如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 2：如果通过 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -136,7 +114,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
         prefix: my-folder
     ```
 
-+ 方法 3: 如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 3: 如果通过 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -173,7 +151,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 - 关于 `restoreMode` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 - 关于兼容 S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-cr.md#s3-存储字段介绍)。
-- `.spec.br` 中的一些参数为可选项，如 `logLevel`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `.spec.br` 中的一些参数为可选项，如 `logLevel`。可根据需要决定是否配置。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
