@@ -36,7 +36,7 @@ EBS 卷快照备份的流程如下：
    * **resume gc**：BR 请求 TiDB Cluster 恢复 GC。
 
 6. BR 保存元数据信息到 S3 并退出。备份完成。
-   * **ec2 snapshot complete**：BR 向 AWS 服务 查询所有卷的 snapshot 状态，直到所有卷到达 Complete 状态。
+   * **ec2 snapshot complete**：BR 向 AWS 服务查询所有卷的快照状态，直到所有卷到达 Complete 状态。
    * **save backupmeta to s3**：BR 保存备份元数据到 S3。
 
 ## 进行 EBS 卷 Snapshot 恢复
