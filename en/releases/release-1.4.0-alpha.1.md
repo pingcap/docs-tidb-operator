@@ -14,7 +14,7 @@ TiDB Operator version: 1.4.0-alpha.1
 
 ## Rolling Update Changes
 
-- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-beta.1 causes TiCDC to rolling upgrade.
+- Due to changes in [#4494](https://github.com/pingcap/tidb-operator/pull/4494), if you deploy TiCDC without setting the `log-file` configuration item, upgrading TiDB Operator to v1.4.0-alpha.1 causes TiCDC to rolling upgrade.
 
 ## New Feature
 
