@@ -19,7 +19,9 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 使用 TiDB Operator 将 S3 兼容存储上的备份元数据以及 EBS 快照恢复到 TiDB 之前，请按照以下步骤准备恢复环境。
 
-1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)。
+
+2. 执行以下命令在 `test2` 这个命名空间中创建恢复需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test2
