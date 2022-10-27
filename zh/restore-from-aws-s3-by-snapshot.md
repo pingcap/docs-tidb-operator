@@ -22,8 +22,6 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f backup-rbac.yaml -n test2
     ```
@@ -38,8 +36,6 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 在 Spec 中加入 recoveryMode: true 字段。并执行以下命令在 `test2` 这个 namespace 中创建恢复需要的 TiDB 集群相关资源：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl apply -f tidb-cluster.yaml -n test2
 ```
@@ -49,8 +45,6 @@ kubectl apply -f tidb-cluster.yaml -n test2
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB 集群：
 
 + 方法 1：如果通过 accessKey 和 secretKey 授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
@@ -81,8 +75,6 @@ kubectl apply -f tidb-cluster.yaml -n test2
     ```
 
 + 方法 2：如果通过 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
@@ -115,8 +107,6 @@ kubectl apply -f tidb-cluster.yaml -n test2
     ```
 
 + 方法 3: 如果通过 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
@@ -154,8 +144,6 @@ kubectl apply -f tidb-cluster.yaml -n test2
 - `.spec.br` 中的一些参数为可选项，如 `logLevel`。可根据需要决定是否配置。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get rt -n test2 -o wide
