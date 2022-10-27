@@ -5,14 +5,13 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 # 基于 AWS EBS 卷快照的恢复
 
-本文档介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
+本文介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
 
-本文档介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)，基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
+本文介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)，基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
 
 ## 使用限制
 
-- TiDB Operator 1.4 及以上的版本支持此功能
-- 此功能只支持 TiDB v6.3 及以上版本。
+- 要使用此功能，TiDB Operator 应为 v1.4.0 及以上，TiDB 应为 v6.3.0 及以上。
 - 只支持相同 TiKV 节点以及卷个数的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
 - 暂不支持 TiFlash, CDC，DM 和 binlog 相关节点的卷快照恢复
 
