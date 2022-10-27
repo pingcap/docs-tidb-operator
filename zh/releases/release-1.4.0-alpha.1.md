@@ -14,7 +14,7 @@ TiDB Operator 版本：1.4.0-alpha.1
 
 ## 滚动升级改动
 
-- 由于 [#4494](https://github.com/pingcap/tidb-operator/pull/4494) 的变更，如果你部署的 TiCDC 没有设置 `log-file` 配置项，那么升级 TiDB Operator 到 v1.4.0-alpha.1 后会导致 TiCDC 滚动重建。
+- 由于 [#4494](https://github.com/pingcap/tidb-operator/pull/4494) 的变更，如果你部署的 TiCDC 没有设置 `log-file` 配置项，那么升级 TiDB Operator 到 v1.4.0-beta.1 后会导致 TiCDC 滚动重建。
 
 ## 新功能
 
