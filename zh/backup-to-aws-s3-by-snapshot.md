@@ -46,7 +46,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
     如果使用 Amazon S3 来备份集群元数据，可以使用三种方式授予权限，请参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
 
-### 第 2 步：备份数据到 S3 的存储
+### 第 2 步：备份数据到 S3 存储
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据备份到 S3 的存储上：
 

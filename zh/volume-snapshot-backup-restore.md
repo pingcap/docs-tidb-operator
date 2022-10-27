@@ -58,9 +58,9 @@ EBS 卷快照恢复流程如下：
    * **config cluster and start tikv**：配置完成后，启动 TiKV 节点。TiKV 进入 recovery mode，等待下一步的数据恢复。在 recovery mode 下，raft 状态机以及相关的状态检查操作被停止。
 
 4. TiDB Operator 启动 BR 数据恢复子任务，获取并恢复 TiDB Cluster 数据。
-   * **raft log recovery**：BR 读取集群的 region meta, 汇总计算决策出每个 region 的 leader, 让 leader 在 TiKV 上主动发起竞选来启动 raft 共识层的日志恢复。
+   * **raft log recovery**：BR 读取集群的 region meta, 汇总计算决策出每个 region 的 leader，让 leader 在 TiKV 上主动发起竞选来启动 raft 共识层的日志恢复。
    * **k-v data recovery**：BR 使用备份的 backupts 进行数据恢复。以删除所有版本大于 backupts 的 key-value 数据，从而达到事务数据的全局一致性。
-   * **exit recovery mode**：TiDB 集群退出恢复模式. 数据恢复完成。BR 返回给 TiDB Operator `data complete`
+   * **exit recovery mode**：TiDB 集群退出恢复模式. 数据恢复完成。BR 返回给 TiDB Operator `data complete`。
 
 5. TiDB Operator 启动 TiDB Cluster 的 TiDB 节点，恢复完成。
    * **start tidb**：TiDB Operator 启动 TiDB Cluster 的所有 TiDB 节点，集群对外提供服务。
