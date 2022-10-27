@@ -134,6 +134,14 @@ After you create the `Backup` CR, TiDB Operator starts the backup automatically.
 kubectl get bk -n backup-test -o wide
 ```
 
+From the output, you can find the following information for the `Backup` CR named `demo1-full-backup-azblob`. The `Commit Ts` field indicates the time point of the snapshot backup:
+
+```
+Status:
+Backup Path:  azure://my-container/my-full-backup-folder/
+Commit Ts:    436568622965194754
+```
+
 ### Log backup
 
 You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-azblob`. See the following detailed steps.
@@ -202,7 +210,7 @@ From the output, you can find the following information for the `Backup` CR name
 
 ```
 Status:
-Backup Path:  azure://my-container/my-log-backup-folder/
+Backup Path: azure://my-container/my-log-backup-folder/
 Commit Ts:    436568622965194754
 Conditions:
     Last Transition Time:  2022-10-10T04:45:20Z
