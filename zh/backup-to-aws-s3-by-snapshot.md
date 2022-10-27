@@ -25,7 +25,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 - TiDB Operator v1.4 及以上的版本支持此功能
 - 此功能只支持 TiDB v6.3 及以上版本。
 - TiDB 集群部署在 EKS 上，且使用的 AWS EBS 卷。
-- 暂不支持 TiFlash, CDC，DM 和 binlog 相关节点的卷快照备份
+- 暂不支持 TiFlash、TiCDC、DM 和 TiDB Binlog 相关节点的卷快照备份。
 
 ## 备份操作
 
