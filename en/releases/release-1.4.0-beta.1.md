@@ -12,7 +12,7 @@ TiDB Operator version: 1.4.0-beta.1
 
 - TiDB Operator supports snapshot backup and restore based on Amazon EBS ([#4698](https://github.com/pingcap/tidb-operator/pull/4698), [@gozssky](https://github.com/gozssky)). This feature has the following benefits:
 
-    - Reduce backup impact (QPS < 5%)
+    - Reduce the impact of backup on QPS to less than 5%
     - Shorten the backup and restore time
 
 ## Bug fixes
