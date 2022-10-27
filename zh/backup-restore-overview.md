@@ -50,7 +50,7 @@ Dumpling 相关使用文档可参考：
 - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
 - [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
 - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
-- [基于 AWS EBS 卷快照的恢复](restore-to-aws-s3-by-snapshot.md)
+- [基于 AWS EBS 卷快照的恢复](restore-from-aws-s3-by-snapshot.md)
 
 如果你需要从由 Dumpling 导出的或其他格式兼容的 SQL 或 CSV 文件对 TiDB 进行数据恢复，则应使用 TiDB Lightning。相关使用文档可参考：
 
