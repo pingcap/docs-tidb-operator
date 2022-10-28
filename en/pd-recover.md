@@ -113,7 +113,7 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl edit sts ${cluster_name}-pd -n ${namespace}
     ```
 
-    Execute the following command to confirm that the PD is started:
+    Execute the following command to confirm that the PD cluster is started:
 
     {{< copyable "shell-regular" >}}
 
