@@ -58,7 +58,7 @@ hide_commit: true
 
 [Upgrade TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/upgrade-tidb-operator)
 
-[Scale a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/dev/scale-a-tidb-cluster.md)
+[Scale a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/dev/scale-a-tidb-cluster)
 
 [Backup and Restore Data](https://docs.pingcap.com/tidb-in-kubernetes/dev/backup-restore-overview)
 
@@ -72,7 +72,7 @@ hide_commit: true
 
 <LearningPath label="Reference" icon="cloud-dev">
 
-[API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs)
+[API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
 
 [Command Cheat Sheet](https://docs.pingcap.com/tidb-in-kubernetes/dev/cheat-sheet)
 
