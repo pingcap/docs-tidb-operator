@@ -74,6 +74,8 @@ hide_commit: true
 
 [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
 
+[Tools](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-toolkit)
+
 [Command Cheat Sheet](https://docs.pingcap.com/tidb-in-kubernetes/dev/cheat-sheet)
 
 </LearningPath>
