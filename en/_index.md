@@ -6,7 +6,7 @@ hide_sidebar: true
 hide_commit: true
 ---
 
-<LearningPathContainer platform="tidb-operator" title="TiDB in Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly in the Kubernetes clusters deployed on a public or on premise.">
+<LearningPathContainer platform="tidb-operator" title="TiDB in Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly in the Kubernetes clusters deployed on a public cloud or on premise.">
 
 <LearningPath label="Learn" icon="cloud1">
 
@@ -72,11 +72,9 @@ hide_commit: true
 
 <LearningPath label="Reference" icon="cloud-dev">
 
-[TiDB Scheduler](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-scheduler)
-
 [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs)
 
-[Configure TiDB Binlog Drainer](https://docs.pingcap.com/tidb-in-kubernetes/dev/configure-tidb-binlog-drainer)
+[Command Cheat Sheet](https://docs.pingcap.com/tidb-in-kubernetes/dev/cheat-sheet)
 
 </LearningPath>
 
