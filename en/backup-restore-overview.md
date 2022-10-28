@@ -29,6 +29,7 @@ Refer to the following documents for more information:
 - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
 - [Back up Data to Azure Blob Storage Using BR](backup-to-azblob-using-br.md)
 - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
+- [Back up Data Using EBS Snapshots](backup-to-aws-s3-by-snapshot.md)
 
 If you have the following backup needs, you can use Dumpling to make a backup of the TiDB cluster data:
 
@@ -49,6 +50,7 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the 
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
+- [Restore Data Using EBS Snapshots](restore-from-aws-s3-by-snapshot.md)
 
 To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
@@ -75,6 +77,8 @@ kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
 If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
+
+If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans all the volume snapshots on AWS when it deletes the CR and cleans up the backup files.
 
 In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup`/`BackupSchedule` CRs and then delete the namespace.
 
