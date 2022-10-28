@@ -115,7 +115,12 @@ spec:
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
 ```shell
-kubectl get rt -n test2 -o wide
+kubectl get restore -n test2 -o wide
+```
+
+```
+NAME                   STATUS     ...
+demo2-restore-azblob   Complete   ...
 ```
 
 ## PITR 恢复
@@ -181,8 +186,8 @@ kubectl get rt -n test2 -o wide
     apiVersion: pingcap.com/v1alpha1
     kind: Restore
     metadata:
-    name: demo3-restore-azblob
-    namespace: restore-test
+      name: demo3-restore-azblob
+      namespace: restore-test
     spec:
       restoreMode: pitr
       br:
@@ -218,7 +223,12 @@ kubectl get rt -n test2 -o wide
     也可通过以下命令查看恢复的状态：
 
     ```shell
-    kubectl get rt -n restore-test -o wide
+    kubectl get restore -n restore-test -o wide
+    ```
+
+    ```
+    NAME                   STATUS     ...
+    demo3-restore-azblob   Complete   ...
     ```
 
 ## 故障诊断

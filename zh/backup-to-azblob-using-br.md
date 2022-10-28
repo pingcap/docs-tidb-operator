@@ -132,15 +132,14 @@ spec:
 创建好 `Backup` CR 后，TiDB Operator 会根据 `Backup` CR 自动开始备份。你可以通过如下命令查看备份状态：
 
 ```shell
-kubectl get bk -n backup-test -o wide
+kubectl get backup -n backup-test -o wide
 ```
 
-从上述命令的输出中，你可以找到描述名为 `demo1-full-backup-azblob` 的 `Backup` CR 的如下信息，其中 `Commit Ts` 表示快照备份的时刻点：
+从上述命令的输出中，你可以找到描述名为 `demo1-full-backup-azblob` 的 `Backup` CR 的如下信息，其中 `COMMITTS` 表示快照备份的时刻点：
 
 ```
-Status:
-Backup Path:  azure://my-container/my-full-backup-folder/
-Commit Ts:    436568622965194754
+NAME                       TYPE   MODE       STATUS     BACKUPPATH                                    COMMITTS             ...
+demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-full-backup-folder/   436979621972148225   ...
 ```
 
 ### 日志备份
@@ -191,12 +190,12 @@ Commit Ts:    436568622965194754
 3. 查看新增的 `Backup` CR：
 
     ```shell
-    kubectl get backups -n backup-test
+    kubectl get backup -n backup-test
     ```
 
     ```
-    NAME                       TYPE    MODE    ....
-    demo1-log-backup-azblob            log     ....
+    NAME                       TYPE    MODE   STATUS   ....
+    demo1-log-backup-azblob            log    Running  ....
     ```
 
 #### 查看日志备份的状态
@@ -257,6 +256,17 @@ spec:
   logStop: true
 ```
 
+可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Complete`：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       TYPE    MODE   STATUS    ....
+demo1-log-backup-azblob            log    Complete  ....
+```
+
 <Tip>
 你也可以采用和启动日志备份时相同的方法来停止日志备份，已经被创建过的 `Backup` CR 会因此被更新。
 </Tip>
@@ -314,6 +324,16 @@ spec:
     ...
     Log Success Truncate Until:  2022-10-10T15:21:00+08:00
     ...
+    ```
+
+    也可以通过以下命令查看：
+    ```shell
+    kubectl get backup -n backup-test -o wide
+    ```
+
+    ```
+    NAME                TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup           log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### 备份示例
@@ -570,7 +590,7 @@ spec:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get bks -n test1 -o wide
+kubectl get backup -n test1 -o wide
 ```
 
 查看定时快照备份下面所有的备份条目：
@@ -578,7 +598,7 @@ kubectl get bks -n test1 -o wide
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
+kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
 ```
 
 ## 删除备份的 Backup CR
