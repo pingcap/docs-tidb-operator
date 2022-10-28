@@ -75,7 +75,7 @@
     - Persistent Volumes
       - [Back Up Data](backup-to-pv-using-br.md)
       - [Restore Data](restore-from-pv-using-br.md)
-    - Snapshot backup and restore
+    - Snapshot Backup and Restore
       - [Architecture](volume-snapshot-backup-restore.md)
       - [Back Up Data Using EBS Snapshots](backup-to-aws-s3-by-snapshot.md)
       - [Restore Data from EBS Snapshots](restore-from-aws-s3-by-snapshot.md)

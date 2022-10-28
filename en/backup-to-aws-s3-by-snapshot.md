@@ -28,7 +28,7 @@ If you have any other requirements, select an appropriate backup method based on
 
 ## Backup process
 
-You can either fully or incrementally back up snapshots based on AWS EBS volumes. The first backup of a node is a full backup, and subsequent backups are incremental. Snapshot backup is defined by a customized `Backup` custom resource (CR) object. TiDB Operator completes the backup task based on this object. If an error occurs during the backup process, TiDB Operator does not retry automatically. At this time, you need to handle it manually.
+You can either fully or incrementally back up snapshots based on AWS EBS volumes. The first backup of a node is a full, and subsequent backups are incremental. Snapshot backup is defined by a customized `Backup` custom resource (CR) object. TiDB Operator completes the backup task based on this object. If an error occurs during the backup process, TiDB Operator does not retry automatically. At this time, you need to handle it manually.
 
 The following sections exemplify how to back up data of the TiDB cluster `demo1`. `demo1` is deployed in the `test1` namespace in Kubernetes.
 
@@ -44,7 +44,7 @@ The following sections exemplify how to back up data of the TiDB cluster `demo1`
 
 3. Grant permissions to access remote storage.
 
-    If you use Amazon S3 to back up cluster metadata, you can grant permissions in three ways. For details, see [AWS account authorization](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    To back up cluster metadata to Amazon S3, you need to grant the permissions to remote storage. Three ways are available. See [AWS account authorization](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
 ### Step 2. Back up data to S3 storage
 
