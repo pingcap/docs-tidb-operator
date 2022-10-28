@@ -165,7 +165,7 @@ Commit Ts:    436568622965194754
       name: demo1-log-backup-azblob
       namespace: backup-test
     spec:
-      backupType: log
+      backupMode: log
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -244,7 +244,7 @@ metadata:
   name: demo1-log-backup-azblob
   namespace: backup-test
 spec:
-  backupType: log
+  backupMode: log
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -279,7 +279,7 @@ spec:
       name: demo1-backup-azblob
       namespace: backup-test
     spec:
-      backupType: log
+      backupMode: log
       br:
         cluster: demo1
         clusterNamespace: test1
