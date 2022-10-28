@@ -327,6 +327,7 @@ demo1-log-backup-azblob            log    Complete  ....
     ```
 
     也可以通过以下命令查看：
+
     ```shell
     kubectl get backup -n backup-test -o wide
     ```
