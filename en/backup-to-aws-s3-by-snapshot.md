@@ -7,11 +7,11 @@ summary: Learn how to back up TiDB cluster data to S3 based on EBS volume snapsh
 
 > **Warning:**
 >
-> This feature is still experimental. It is NOT recommended that you use it in the production environment
+> This feature is still experimental. It is NOT recommended that you use it in the production environment.
 
 This document describes how to back up a TiDB cluster deployed on AWS Elastic Block Store (EBS) in Kubernetes to AWS S3.
 
-The backup method described in this document is based on the CustomResourceDefinition (CRD) of TiDB Operator. If your TiDB cluster is deployed on AWS EKS and uses EBS volumes, you can use the method described in this document to back up the TiDB cluster.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data. If your TiDB cluster is deployed on AWS EKS and uses EBS volumes, you can use the method described in this document to back up the TiDB cluster.
 
 ## Recommended scenarios and limitations
 
