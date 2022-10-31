@@ -38,7 +38,7 @@ This section introduces the fields in the `Backup` CR.
 
 * `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots of the KV layer. This field is valid only for restore and has three value options currently:
     * `snapshot`: restore data from snapshots of the KV layer.
-    * `volume-snapshot`: restore volume snapshots.
+    * `volume-snapshot`: restore data from volume snapshots.
     * `log`: restore cluster data to a specified time based on snapshots and log data.
 
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to `72h`.

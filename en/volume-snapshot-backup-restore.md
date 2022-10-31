@@ -11,7 +11,7 @@ The architecture of backup and restore based on EBS volume snapshots is as follo
 
 ![AWS EBS Snapshot Backup and Restore architecture](/media/volume-snapshot-backup-restore-overview.png)
 
-## Back up EBS volume snapshots
+## Back up TiDB cluster data by EBS volume snapshots
 
 Workflow of EBS volume snapshot backup:
 
@@ -21,12 +21,12 @@ Workflow of EBS volume snapshot backup:
    * TiDB Operator checks and collects information of volumes currently mounted to TiKV.
    * TiDB Operator creates a backup job using the volume information collected.
 
-2. Pauses scheduling and GC.
-   * **pause region scheduler**: BR requests TiDB to pause scheduling.
+2. BR pauses the schedulers and GC.
+   * **pause region scheduler**: BR requests TiDB to pause the schedulers.
    * **pause gc**: BR requests TiDB to pause GC.
 
 3. BR retrieves `backupts`.
-   * **retrieve backupts**: BR requests `backupts` of the backup data from TiDB.
+   * **retrieve backupts**: BR retrieves `backupts` of the backup data from TiDB.
 
 4. BR creates volume snapshots.
    * **ec2 create snapshot**: BR requests AWS to create volume snapshots.
@@ -46,7 +46,7 @@ Workflow of EBS volume snapshot restore:
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
 1. (The user) creates a TiDB cluster with `spec.recoveryMode:true` configured in the spec.
-   * A TiDB cluster in restore mode is created. The PD node is started first. The user is expected to create a restore job to continue the restore process.
+   * A TiDB cluster in restore mode is created. The PD nodes are started first. The user is expected to create a restore job to continue the restore process.
 
 2. The user creates a restore job.
    * **enter recovery mode**: BR configures the TiDB cluster to run in recovery mode.
@@ -58,7 +58,7 @@ Workflow of EBS volume snapshot restore:
    * **config cluster and start tikv**: TiKV nodes start and enter the recovery mode. The raft state machine and related region state check operations are suspended.
 
 4. TiDB Operator starts the BR restore sub-task, and obtains and restores the data of the TiDB cluster.
-   * **raft log recovery**: BR reads the region metadata of the cluster, and selects the leader of each region after calculation. Then the candidate region leaders compete for the leader on TiKV, which triggers log restore in the raft consensus layer.
+   * **raft log recovery**: BR reads the Region metadata from each TiKV, and selects the leader of each Region with the proper leader selection algorithm. Then assign region leaders to campaign on TiKV, which triggers raft log alignment in the raft consensus layer.
    * **k-v data recovery**: BR uses `backupts` to restore data. For key-value data with version greater than `backupts`, BR deletes them to keep the cluster-level consistency of transaction data.
    * **exit recovery mode**: The TiDB cluster exits the restore mode and data restore is completed. BR returns `data complete` to TiDB Operator.
 
