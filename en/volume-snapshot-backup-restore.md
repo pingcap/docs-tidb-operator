@@ -46,7 +46,7 @@ Workflow of EBS volume snapshot restore:
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
 1. (The user) creates a TiDB cluster with `spec.recoveryMode:true` configured in the spec.
-   * A TiDB cluster in restore mode is created. The PD nodes are started first. The user is expected to create a restore job to continue the restore process.
+   * When a TiDB cluster is started in restore mode, the PD nodes are started and no TiKVs are started. The user is expected to create a restore job to continue the restore process.
 
 2. The user creates a restore job.
    * **enter recovery mode**: BR configures the TiDB cluster to run in recovery mode.
