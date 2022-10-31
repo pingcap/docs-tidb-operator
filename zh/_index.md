@@ -76,7 +76,7 @@ hide_commit: true
 
 [工具](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/tidb-toolkit)
 
-[Command Cheat Sheet](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/cheat-sheet)
+[常用命令汇总](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/cheat-sheet)
 
 </LearningPath>
 
