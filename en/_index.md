@@ -1,12 +1,8 @@
 ---
 title: TiDB in Kubernetes Documentation
 summary: Learn about TiDB in Kubernetes documentation.
-<<<<<<< HEAD
-=======
-aliases: ['/docs/tidb-in-kubernetes/dev/']
 hide_sidebar: true
 hide_commit: true
->>>>>>> d773fa2b (*: changed to learning path style (#2064))
 ---
 
 <LearningPathContainer platform="tidb-operator" title="TiDB in Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly in the Kubernetes clusters deployed on a public cloud or on premises.">
@@ -19,12 +15,7 @@ hide_commit: true
 
 [What's New in v1.3](https://docs.pingcap.com/tidb-in-kubernetes/dev/whats-new-in-v1.3)
 
-<<<<<<< HEAD
-- [TiDB Operator Overview](tidb-operator-overview.md)
-- [TiDB Operator Architecture](architecture.md)
-=======
 [Get Started](https://docs.pingcap.com/tidb-in-kubernetes/dev/get-started)
->>>>>>> d773fa2b (*: changed to learning path style (#2064))
 
 [Relationship between TiDB Operator and TiDB Versions](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview)
 
