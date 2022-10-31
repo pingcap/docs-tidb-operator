@@ -46,11 +46,11 @@ EBS 卷快照恢复流程如下：
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
 1. 用户以恢复模式创建 TiDB 集群，即在 Spec 中指定 `spec.recoveryMode:true`。
-   * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，同时等待用户创建恢复任务进行下一步恢复。
+   * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，不启动 TiKV 节点，同时等待用户创建恢复任务进行下一步恢复。
 
-2. 用户创建恢复任务。TiDB Operator 启动 BR 卷恢复子任务，获取备份元数据，并恢复 EBS 卷。
-   * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode。集群在 recovery mode 下恢复数据。
-   * **retrieve bakcupmeta from s3**：BR 获取备份元数据信息，并提取已备份的快照以及 backupts。
+2. 用户创建恢复任务。
+   * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode。
+   * **retrieve bakcupmeta from s3**：BR 获取备份元数据信息，并从中提取已备份的快照以及 backupts。
    * **create volume from snapshot**：BR 调用 AWS API，从备份快照创建卷，并返回给 TiDB Operator。
 
 3. TiDB Operator 使用恢复的 EBS 卷配置 TiDB 集群，同时启动所有的 TiKV 节点。
@@ -59,10 +59,10 @@ EBS 卷快照恢复流程如下：
 
 4. TiDB Operator 启动 BR 数据恢复子任务，获取并恢复 TiDB Cluster 数据。
    * **raft log recovery**：BR 读取集群的 region meta, 汇总计算决策出每个 region 的 leader，让 leader 在 TiKV 上主动发起竞选来启动 raft 共识层的日志恢复。
-   * **k-v data recovery**：BR 使用备份的 `backupts` 进行数据恢复。BR 删除数据版本大于 `backupts` 的 key-value 数据，从而确保事务数据的全局一致性。
-   * **exit recovery mode**：TiDB 集群退出恢复模式. 数据恢复完成。BR 返回给 TiDB Operator `data complete`。
+   * **k-v data recovery**：BR 使用备份的 `backupts` 进行数据恢复。BR 删除数据版本大于 `backupts` 的 key-value 数据，从而确保事务数据集群级别的一致性。
+   * **exit recovery mode**：TiDB 集群退出恢复模式，数据恢复完成。BR 返回给 TiDB Operator `data complete`。
 
-5. TiDB Operator 启动 TiDB Cluster 的 TiDB 节点，恢复完成。
+5. TiDB Operator 启动 TiDB Cluster 的 TiDB 节点，整个恢复任务完成。
    * **start tidb**：TiDB Operator 启动 TiDB Cluster 的所有 TiDB 节点，集群对外提供服务。
 
 ### 备份元数据信息

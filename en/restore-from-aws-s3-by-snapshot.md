@@ -5,6 +5,10 @@ summary: Learn how to restore backup metadata and EBS volume snapshots from S3 s
 
 # Restore a TiDB Cluster from EBS Volume Snapshots
 
+> **Warning:**
+>
+> This feature is still experimental. It is NOT recommended that you use it in the production environment.
+
 This document describes how to restore backup data in AWS EBS snapshots from S3 storage to a TiDB cluster.
 
 The restore method described in this document is based on TiDB Operator's CustomResourceDefinition (CRD). The backup data based on AWS EBS snapshots contains two parts, the snapshots of the TiDB cluster data volumes, and the backup metadata of the snapshots and the cluster.

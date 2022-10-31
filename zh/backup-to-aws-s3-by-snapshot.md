@@ -5,6 +5,10 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 # 基于 AWS EBS 卷快照的备份
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 本文介绍如何将 Kubernetes 上部署在 AWS Elastic Block Store (EBS) 的 TiDB 集群备份到 AWS S3。
 
 本文介绍的备份方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)。如果 TiDB 集群部署在 AWS EKS 上且使用了 EBS 卷，也可以使用本文描述的方法进行备份。
@@ -44,7 +48,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 3. 授予远程存储访问权限。
 
-    如果使用 Amazon S3 来备份集群元数据，可以使用三种方式授予权限，请参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
+    如果使用 Amazon S3 来备份集群数据并保存快照元数据，可以使用三种方式授予权限，请参考 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
 
 ### 第 2 步：备份数据到 S3 存储
 
