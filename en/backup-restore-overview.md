@@ -78,7 +78,7 @@ kubectl delete backupschedule ${name} -n ${namespace}
 
 If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
 
-If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans all the volume snapshots on AWS when it deletes the CR and cleans up the backup files.
+If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the CR, cleans up the backup meta file, and the volume snapshots on AWS.
 
 In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup`/`BackupSchedule` CRs and then delete the namespace.
 
