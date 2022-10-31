@@ -50,7 +50,7 @@ Workflow of EBS volume snapshot restore:
 
 2. The user creates a restore job.
    * **enter recovery mode**: BR configures the TiDB cluster to run in recovery mode.
-   * **retrieve bakcupmeta from s3**: BR retrieves the backup metadata from S3 and then extracts the snapshot information and `backupts` of the backup data from backup metadata.
+   * **retrieve backupmeta from s3**: BR retrieves the backup metadata from S3 and then extracts the snapshot information and `backupts` of the backup data from backup metadata.
    * **create volume from snapshot**: BR invokes the AWS API to create volumes from the snapshots and returns the created volume information to TiDB Operator.
 
 3. TiDB Operator configures the restored EBS volumes on the TiDB cluster and starts all TiKV nodes.
