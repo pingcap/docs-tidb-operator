@@ -13,7 +13,7 @@ The architecture of backup and restore based on EBS volume snapshots is as follo
 
 ## Back up EBS volume snapshots
 
-Process of EBS volume snapshot backup:
+Workflow of EBS volume snapshot backup:
 
 ![EBS Snapshot backup process design](/media/volume-snapshot-backup-workflow.png)
 
@@ -25,45 +25,45 @@ Process of EBS volume snapshot backup:
    * **pause region scheduler**: BR requests TiDB to pause scheduling.
    * **pause gc**: BR requests TiDB to pause GC.
 
-3. Obtains `backupts`.
+3. BR retrieves `backupts`.
    * **retrieve backupts**: BR requests `backupts` of the backup data from TiDB.
 
-4. Creates volume snapshots.
+4. BR creates volume snapshots.
    * **ec2 create snapshot**: BR requests AWS to create volume snapshots.
 
-5. Resumes scheduling and GC, and waits for all EBS volume snapshots to be created.
-   * **resume region scheduler**: BR requests TiDB to resume scheduling.
+5. BR resumes the schedulers and GC, and waits for all EBS volume snapshots to be created.
+   * **resume region scheduler**: BR requests TiDB to resume the schedulers.
    * **resume gc**: BR requests TiDB to resume GC.
 
-6. Saves the metadata to S3. The backup is complete.
+6. BR saves the metadata to S3. The backup is complete.
    * **ec2 snapshot complete**: BR queries the snapshot status of all volumes from the AWS service and ensures that snapshots of all volumes reach the `Complete` state.
    * **save backupmeta to s3**: BR saves the backup metadata to S3.
 
 ## Restore EBS volume snapshots
 
-Process of EBS volume snapshot restore:
+Workflow of EBS volume snapshot restore:
 
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
-1. (The user) creates a TiDB cluster with `spec.recoveryMode:true` specified.
+1. (The user) creates a TiDB cluster with `spec.recoveryMode:true` configured in the spec.
    * A TiDB cluster in restore mode is created. The PD node is started first. The user is expected to create a restore job to continue the restore process.
 
 2. The user creates a restore job.
    * **enter recovery mode**: BR configures the TiDB cluster to run in recovery mode.
-   * **retrieve bakcupmeta from s3**: BR retrieves the backup metadata from S3 and extracts the snapshot information and `backupts` of the backup data.
-   * **create volume from snapshot**: BR calls the AWS API to create volumes from the backup snapshots and returns the volume information to TiDB Operator.
+   * **retrieve bakcupmeta from s3**: BR retrieves the backup metadata from S3 and then extracts the snapshot information and `backupts` of the backup data from backup metadata.
+   * **create volume from snapshot**: BR invokes the AWS API to create volumes from the snapshots and returns the created volume information to TiDB Operator.
 
-3. TiDB Operator configures the EBS volumes for restore on the TiDB cluster and starts all TiKV nodes.
+3. TiDB Operator configures the restored EBS volumes on the TiDB cluster and starts all TiKV nodes.
    * TiDB Operator configures Kubernetes and mounts the restored volumes to the corresponding nodes.
-   * **config cluster and start tikv**: TiKV nodes start after the configuration and enter the recovery mode. The raft state machine and related state check operations are suspended.
+   * **config cluster and start tikv**: TiKV nodes start and enter the recovery mode. The raft state machine and related region state check operations are suspended.
 
 4. TiDB Operator starts the BR restore sub-task, and obtains and restores the data of the TiDB cluster.
    * **raft log recovery**: BR reads the region metadata of the cluster, and selects the leader of each region after calculation. Then the candidate region leaders compete for the leader on TiKV, which triggers log restore in the raft consensus layer.
-   * **k-v data recovery**: BR uses `backupts` to restore data. For key-value data with version greater than `backupts`, BR deletes them to keep the global consistency of transaction data.
+   * **k-v data recovery**: BR uses `backupts` to restore data. For key-value data with version greater than `backupts`, BR deletes them to keep the cluster-level consistency of transaction data.
    * **exit recovery mode**: The TiDB cluster exits the restore mode and data restore is completed. BR returns `data complete` to TiDB Operator.
 
 5. TiDB Operator starts the TiDB nodes of the TiDB cluster.
-   * **start tidb**: TiDB Operator starts all TiDB nodes and the TiDB cluster resumes services.
+   * **start tidb**: TiDB Operator starts all TiDB nodes and the TiDB cluster is ready to serve.
 
 ### Backup metadata
 

@@ -32,12 +32,12 @@ This section introduces the fields in the `Backup` CR.
     * `table`: back up a specified table in a TiDB cluster.
 
 * `.spec.backupMode`: the backup mode. The default value is `snapshot`, which means snapshot backup in the KV layer. This field is valid only for backup and has three value options currently:
-    * `snapshot`: back up snapshots in the KV layer.
-    * `volume-snapshot`: back up volume snapshots.
+    * `snapshot`: back up data through a snapshot of the KV layer.
+    * `volume-snapshot`: back up data by volume snapshots.
     * `log`: back up log data in real time in the KV layer.
 
-* `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means snapshot restore in the KV layer. This field is valid only for restore and has three value options currently:
-    * `snapshot`: restore snapshots in the KV layer.
+* `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots of the KV layer. This field is valid only for restore and has three value options currently:
+    * `snapshot`: restore data from snapshots of the KV layer.
     * `volume-snapshot`: restore volume snapshots.
     * `log`: restore cluster data to a specified time based on snapshots and log data.
 

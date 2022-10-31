@@ -11,9 +11,9 @@ The restore method described in this document is based on TiDB Operator's Custom
 
 ## Requirements
 
-- Snapshot restore is only applicable to TiDB Operator v1.4.0 and later, and TiDB v6.3.0 and later.
-- Snapshot restore only supports restoring to a cluster with the same number of TiKV nodes and volumes. That is, the number of TiKV nodes and volume configurations in the restore cluster must be the same as those in the backup cluster.
-- Snapshot restore is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog.
+- Snapshot restore is applicable to TiDB Operator v1.4.0 or above, and TiDB v6.3.0 or above.
+- Snapshot restore only supports restoring to a cluster with the same number of TiKV nodes and volumes configuration. That is, the number of TiKV nodes and volume configurations is identical between the restore cluster and backup cluster.
+- Snapshot restore is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
 ## Step 1. Set up the environment for EBS volume snapshot restore
 
@@ -29,13 +29,13 @@ Before using TiDB Operator to restore backup metadata and EBS snapshots from S3 
 
 3. Grant permissions to access remote storage.
 
-    To restore data from Amazon S3, you need to grant the permissions to remote storage. Three ways are available. See [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    To restore data from Amazon S3, you need to grant permissions to remote storage. Three ways are available. See [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
 ## Step 2. Prepare the restore cluster
 
 Deploy a cluster to which you want to restore data. See [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md).
 
-Add the `recoveryMode: true` field to Spec and run the following command to create the resources required for the restore in the `test2` namespace:
+Add the `recoveryMode: true` field to spec and run the following command to create the resources required for the restore in the `test2` namespace:
 
 ```shell
 kubectl apply -f tidb-cluster.yaml -n test2
@@ -43,9 +43,9 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 ## Step 3. Restore backup data to the TiDB cluster
 
-Based on the authorization method you selected in the previous step to grant remote storage access, you can restore data to TiDB using any of the following methods accordingly:
+Based on the authorization method you selected in [step 1](#step-1-set-up-the-environment-for-ebs-volume-snapshot-restore) to grant remote storage access, you can restore data to TiDB using any of the following methods accordingly:
 
-+ Method 1: If you authorize permission by accessKey and secretKey, you can create the `Restore` CR as follows:
++ Method 1: If you grant permissions by accessKey and secretKey, you can create the `Restore` CR as follows:
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
@@ -75,7 +75,7 @@ Based on the authorization method you selected in the previous step to grant rem
         prefix: my-folder
     ```
 
-+ Method 2: If you authorize permission by associating Pod with IAM, you can create the `Restore` CR as follows:
++ Method 2: If you grant permissions by associating Pod with IAM, you can create the `Restore` CR as follows:
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
@@ -107,7 +107,7 @@ Based on the authorization method you selected in the previous step to grant rem
         prefix: my-folder
     ```
 
-+ Method 3: If you authorize permission by associating ServiceAccount with IAM, you can create the `Restore` CR as follows:
++ Method 3: If you grant permissions by associating ServiceAccount with IAM, you can create the `Restore` CR as follows:
 
     ```shell
     kubectl apply -f restore-aws-s3.yaml
