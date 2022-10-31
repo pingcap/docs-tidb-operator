@@ -1,12 +1,8 @@
 ---
 title: TiDB in Kubernetes 用户文档
 summary: 了解 TiDB in Kubernetes 的用户文档。
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/']
 hide_sidebar: true
 hide_commit: true
->>>>>>> d773fa2b (*: changed to learning path style (#2064))
 ---
 
 <LearningPathContainer platform="tidb-operator" title="TiDB in Kubernetes" subTitle="使用 PingCAP 提供的 TiDB Operator，你可以在公有云或私有部署的 Kubernetes 集群上自动运维 TiDB 集群，实现 TiDB 在 Kubernetes 上的无缝运行。">
@@ -17,17 +13,7 @@ hide_commit: true
 
 [TiDB Operator 架构](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/architecture)
 
-<<<<<<< HEAD
-| TiDB 版本 | 适用的 TiDB Operator 版本 |
-|:---|:---|
-| dev               | dev                 |
-| TiDB >= 5.4       | 1.3                 |
-| 5.1 <= TiDB < 5.4 | 1.3（推荐），1.2      |
-| 3.0 <= TiDB < 5.1 | 1.3（推荐），1.2，1.1 |
-| 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
-=======
 [TiDB Operator v1.3 新特性](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/whats-new-in-v1.3)
->>>>>>> d773fa2b (*: changed to learning path style (#2064))
 
 [快速上手](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started)
 
