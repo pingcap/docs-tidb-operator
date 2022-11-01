@@ -49,7 +49,7 @@ EBS 卷快照恢复流程如下：
    * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，不启动 TiKV 节点，同时等待用户创建恢复任务进行下一步恢复。
 
 2. 用户创建恢复任务。
-   * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode。
+   * **enter recovery mode**：BR 设置 TiDB 集群为 recovery mode。
    * **retrieve backupmeta from s3**：BR 获取备份元数据信息，并从中提取已备份的快照以及 backupts。
    * **create volume from snapshot**：BR 调用 AWS API，从备份快照创建卷，并返回给 TiDB Operator。
 
