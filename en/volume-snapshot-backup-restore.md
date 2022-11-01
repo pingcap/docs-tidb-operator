@@ -17,7 +17,7 @@ Workflow of EBS volume snapshot backup:
 
 ![EBS Snapshot backup process design](/media/volume-snapshot-backup-workflow.png)
 
-1. (The user) submits a backup CRD.
+1. The user submits a backup CRD.
    * TiDB Operator checks and collects information of volumes currently mounted to TiKV.
    * TiDB Operator creates a backup job using the volume information collected.
 
@@ -45,7 +45,7 @@ Workflow of EBS volume snapshot restore:
 
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
-1. (The user) creates a TiDB cluster with `spec.recoveryMode:true` configured in the spec.
+1. The user creates a TiDB cluster with `spec.recoveryMode:true` configured in the spec.
    * When a TiDB cluster is started in restore mode, the PD nodes are started and no TiKVs are started. The user is expected to create a restore job to continue the restore process.
 
 2. The user creates a restore job.
