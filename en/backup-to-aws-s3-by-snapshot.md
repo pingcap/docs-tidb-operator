@@ -158,7 +158,7 @@ kubectl get bk -n test1 -o wide
 
 ## Delete the `Backup` CR
 
-After backup is completed, you might need to delete the `Backup` CR. For details, see [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
+After a backup is completed, you might need to delete the `Backup` CR. For details, see [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).
 
 ## Troubleshooting
 
