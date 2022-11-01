@@ -5,14 +5,18 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 # 基于 AWS EBS 卷快照的恢复
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 本文介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
 
-本文介绍的恢复方法基于 TiDB Operator 的 CustomResourceDefinition (CRD)，基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
+本文使用的恢复方式基于 TiDB Operator 的 Custom Resource Definition(CRD)，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview) 进行数据恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
 
 ## 使用限制
 
 - 要使用此功能，TiDB Operator 应为 v1.4.0 及以上，TiDB 应为 v6.3.0 及以上。
-- 只支持相同 TiKV 节点以及卷个数的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
+- 只支持相同 TiKV 节点个数以及卷配置的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
 - 暂不支持 TiFlash, CDC，DM 和 binlog 相关节点的卷快照恢复
 
 ## 第 1 步：准备恢复环境
@@ -43,7 +47,7 @@ kubectl apply -f tidb-cluster.yaml -n test2
 
 ## 第 3 步：将指定备份数据恢复到 TiDB 集群
 
-根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB 集群：
+根据[第 1 步：准备恢复环境](#第-1-步准备恢复环境)选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB 集群：
 
 + 方法 1：如果通过 accessKey 和 secretKey 授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 

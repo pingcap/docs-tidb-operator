@@ -30,6 +30,17 @@ This section introduces the fields in the `Backup` CR.
     * `full`: back up all databases in a TiDB cluster.
     * `db`: back up a specified database in a TiDB cluster.
     * `table`: back up a specified table in a TiDB cluster.
+
+* `.spec.backupMode`: the backup mode. The default value is `snapshot`, which means backing up data through the snapshots in the KV layer. This field is valid only for backup and has three value options currently:
+    * `snapshot`: back up data through snapshots in the KV layer.
+    * `volume-snapshot`: back up data by volume snapshots.
+    * `log`: back up log data in real time in the KV layer.
+
+* `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots in the KV layer. This field is valid only for restore and has three value options currently:
+    * `snapshot`: restore data from snapshots in the KV layer.
+    * `volume-snapshot`: restore data from volume snapshots.
+    * `pitr`: restore cluster data to a specific point in time based on snapshots and log data.
+
 * `.spec.tikvGCLifeTime`: The temporary `tikv_gc_life_time` time setting during the backup, which defaults to `72h`.
 
     Before the backup begins, if the `tikv_gc_life_time` setting in the TiDB cluster is smaller than `spec.tikvGCLifeTime` set by the user, TiDB Operator [adjusts the value of `tikv_gc_life_time`](https://docs.pingcap.com/tidb/stable/dumpling-overview#tidb-gc-settings-when-exporting-a-large-volume-of-data) to the value of `spec.tikvGCLifeTime`. This operation makes sure that the backup data is not garbage-collected by TiKV.
