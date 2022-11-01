@@ -37,7 +37,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.restoreMode`：指定 Restore 的模式，默认为 `snapshot`，即基于 KV 层的快照恢复。该字段仅在恢复时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照恢复。
     * `volume-snapshot`：基于卷快照的 TiDB 集群恢复。
-    * `log`：基于快照数据和日志备份数据将 TiDB 集群数据恢复到指定时间点。
+    * `pitr`：基于备份的快照数据和日志数据将 TiDB 集群数据恢复到指定时间点。
 
 * `.spec.tikvGCLifeTime`：备份中的临时 `tikv_gc_life_time` 时间设置，默认为 `72h`。
 
