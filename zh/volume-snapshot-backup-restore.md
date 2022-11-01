@@ -46,7 +46,7 @@ EBS 卷快照恢复流程如下：
 ![EBS Snapshot restore process design](/media/volume-snapshot-restore-workflow.png)
 
 1. 用户以恢复模式创建 TiDB 集群，即在 Spec 中指定 `spec.recoveryMode:true`。
-   * 恢复模式创建 TiDB 集群，将会首先启动 PD 节点，不启动 TiKV 节点，同时等待用户创建恢复任务进行下一步恢复。
+   * 恢复模式创建的 TiDB 集群，将会首先启动 PD 节点，不启动 TiKV 节点，同时等待用户创建恢复任务进行下一步恢复。
 
 2. 用户创建恢复任务。
    * **enter recovery mode**：BR 设置 TiDB Cluster 为 recovery mode。
