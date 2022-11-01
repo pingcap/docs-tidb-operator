@@ -9,63 +9,63 @@ hide_commit: true
 
 <LearningPath label="Learn" icon="cloud1">
 
-[TiDB Operator Overview](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview)
+[TiDB Operator Overview](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/tidb-operator-overview)
 
-[TiDB Operator Architecture](https://docs.pingcap.com/tidb-in-kubernetes/dev/architecture)
+[TiDB Operator Architecture](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/architecture)
 
 [What's New in v1.3](https://docs.pingcap.com/tidb-in-kubernetes/dev/whats-new-in-v1.3)
 
-[Get Started](https://docs.pingcap.com/tidb-in-kubernetes/dev/get-started)
+[Get Started](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/get-started)
 
-[Relationship between TiDB Operator and TiDB Versions](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview)
+[Relationship between TiDB Operator and TiDB Versions](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/tidb-operator-overview)
 
 </LearningPath>
 
 <LearningPath label="Deploy TiDB" icon="deploy">
 
-[On Amazon EKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-aws-eks)
+[On Amazon EKS](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/deploy-on-aws-eks)
 
-[On GCP GKE](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-gcp-gke)
+[On GCP GKE](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/deploy-on-gcp-gke)
 
-[On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-azure-aks)
+[On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/deploy-on-azure-aks)
 
-[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud)
+[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/deploy-on-alibaba-cloud)
 
-[On Self-managed Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-general-kubernetes)
+[On Self-managed Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/deploy-on-general-kubernetes)
 
 </LearningPath>
 
 <LearningPath label="Secure" icon="cloud3">
 
-[Enable TLS for the MySQL Client](https://docs.pingcap.com/tidb-in-kubernetes/dev/enable-tls-for-mysql-client)
+[Enable TLS for the MySQL Client](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/enable-tls-for-mysql-client)
 
-[Enable TLS between TiDB Components](https://docs.pingcap.com/tidb-in-kubernetes/dev/enable-tls-between-components)
+[Enable TLS between TiDB Components](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/enable-tls-between-components)
 
-[Enable TLS for TiDB Data Migration](https://docs.pingcap.com/tidb-in-kubernetes/dev/enable-tls-for-dm)
+[Enable TLS for TiDB Data Migration](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/enable-tls-for-dm)
 
-[Replicate Data to TLS-enabled Downstream Services](https://docs.pingcap.com/tidb-in-kubernetes/dev/enable-tls-for-ticdc-sink)
+[Replicate Data to TLS-enabled Downstream Services](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/enable-tls-for-ticdc-sink)
 
-[Renew and Replace the TLS Certificate](https://docs.pingcap.com/tidb-in-kubernetes/dev/renew-tls-certificate)
+[Renew and Replace the TLS Certificate](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/renew-tls-certificate)
 
-[Run Containers as a Non-root User](https://docs.pingcap.com/tidb-in-kubernetes/dev/containers-run-as-non-root-user)
+[Run Containers as a Non-root User](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/containers-run-as-non-root-user)
 
 </LearningPath>
 
 <LearningPath label="Manage" icon="maintain">
 
-[Upgrade a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster)
+[Upgrade a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/upgrade-a-tidb-cluster)
 
-[Upgrade TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/upgrade-tidb-operator)
+[Upgrade TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/upgrade-tidb-operator)
 
-[Scale a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/dev/scale-a-tidb-cluster)
+[Scale a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/scale-a-tidb-cluster)
 
-[Backup and Restore Data](https://docs.pingcap.com/tidb-in-kubernetes/dev/backup-restore-overview)
+[Backup and Restore Data](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/backup-restore-overview)
 
-[Deploy Monitoring and Alerts](https://docs.pingcap.com/tidb-in-kubernetes/dev/monitor-a-tidb-cluster)
+[Deploy Monitoring and Alerts](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/monitor-a-tidb-cluster)
 
-[Maintain Kubernetes Nodes](https://docs.pingcap.com/tidb-in-kubernetes/dev/maintain-a-kubernetes-node)
+[Maintain Kubernetes Nodes](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/maintain-a-kubernetes-node)
 
-[Use Automatic Failover](https://docs.pingcap.com/tidb-in-kubernetes/dev/use-auto-failover)
+[Use Automatic Failover](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/use-auto-failover)
 
 </LearningPath>
 
@@ -73,9 +73,9 @@ hide_commit: true
 
 [API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
 
-[Tools](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-toolkit)
+[Tools](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/tidb-toolkit)
 
-[Command Cheat Sheet](https://docs.pingcap.com/tidb-in-kubernetes/dev/cheat-sheet)
+[Command Cheat Sheet](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/cheat-sheet)
 
 </LearningPath>
 
