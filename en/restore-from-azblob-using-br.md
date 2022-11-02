@@ -115,7 +115,12 @@ When configuring `restore-azblob.yaml`, note the following:
 After creating the `Restore` CR, execute the following command to check the restore status:
 
 ```shell
-kubectl get rt -n test2 -o wide
+kubectl get restore -n test2 -o wide
+```
+
+```
+NAME                   STATUS     ...
+demo2-restore-azblob   Complete   ...
 ```
 
 ## Point-in-time recovery
@@ -183,8 +188,8 @@ The detailed steps are as follows:
     apiVersion: pingcap.com/v1alpha1
     kind: Restore
     metadata:
-    name: demo3-restore-azblob
-    namespace: restore-test
+      name: demo3-restore-azblob
+      namespace: restore-test
     spec:
       restoreMode: pitr
       br:
@@ -220,7 +225,12 @@ The detailed steps are as follows:
     You can also check the restoration status by using the following command:
 
     ```shell
-    kubectl get rt -n restore-test -o wide
+    kubectl get restore -n restore-test -o wide
+    ```
+
+    ```
+    NAME                   STATUS     ...
+    demo3-restore-azblob   Complete   ...
     ```
 
 ## Troubleshooting

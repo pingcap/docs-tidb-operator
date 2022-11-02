@@ -131,15 +131,14 @@ When you configure `backup-azblob.yaml`, note the following:
 After you create the `Backup` CR, TiDB Operator starts the backup automatically. You can view the backup status by running the following command:
 
 ```shell
-kubectl get bk -n backup-test -o wide
+kubectl get backup -n backup-test -o wide
 ```
 
-From the output, you can find the following information for the `Backup` CR named `demo1-full-backup-azblob`. The `Commit Ts` field indicates the time point of the snapshot backup:
+From the output, you can find the following information for the `Backup` CR named `demo1-full-backup-azblob`. The `COMMITTS` field indicates the time point of the snapshot backup:
 
 ```
-Status:
-Backup Path:  azure://my-container/my-full-backup-folder/
-Commit Ts:    436568622965194754
+NAME                       TYPE   MODE       STATUS     BACKUPPATH                                    COMMITTS             ...
+demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-full-backup-folder/   436979621972148225   ...
 ```
 
 ### Log backup
@@ -164,7 +163,7 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
       name: demo1-log-backup-azblob
       namespace: backup-test
     spec:
-      backupType: log
+      backupMode: log
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -190,12 +189,12 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
 3. View the newly created `Backup` CR:
 
     ```shell
-    kubectl get backups -n backup-test
+    kubectl get backup -n backup-test
     ```
 
     ```
-    NAME                       TYPE    MODE    ....
-    demo1-log-backup-azblob            log     ....
+    NAME                       TYPE    MODE   STATUS   ....
+    demo1-log-backup-azblob            log    Running  ....
     ```
 
 #### View the log backup status
@@ -243,7 +242,7 @@ metadata:
   name: demo1-log-backup-azblob
   namespace: backup-test
 spec:
-  backupType: log
+  backupMode: log
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -254,6 +253,17 @@ spec:
     prefix: my-log-backup-folder
     #accessTier: Hot
   logStop: true
+```
+
+You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-azblob` change from `Running` to `Complete`:
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       TYPE    MODE   STATUS    ....
+demo1-log-backup-azblob            log    Complete  ....
 ```
 
 <Tip>
@@ -278,7 +288,7 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
       name: demo1-backup-azblob
       namespace: backup-test
     spec:
-      backupType: log
+      backupMode: log
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -313,6 +323,17 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
     ...
     Log Success Truncate Until:  2022-10-10T15:21:00+08:00
     ...
+    ```
+
+    You can also view the information by running the following command:
+
+    ```shell
+    kubectl get backup -n backup-test -o wide
+    ```
+
+    ```
+    NAME                TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup           log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### Backup CR examples
@@ -574,7 +595,7 @@ After creating the scheduled snapshot backup, you can run the following command 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get bks -n test1 -o wide
+kubectl get backup -n test1 -o wide
 ```
 
 You can run the following command to check all the backup items:
@@ -582,7 +603,7 @@ You can run the following command to check all the backup items:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
+kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
 ```
 
 ## Delete the backup CR
