@@ -1,12 +1,20 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+<<<<<<< HEAD
 - [TiDB Operator 简介](tidb-operator-overview.md)
 - Benchmark
   - [Sysbench](benchmark-sysbench.md)
 - 快速上手
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
   - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
+=======
+- [TiDB in Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
+- 关于 TiDB Operator
+  - [简介](tidb-operator-overview.md)
+  - [v1.3 新特性](whats-new-in-v1.3.md)
+- [快速上手](get-started.md)
+>>>>>>> 4f5fd3d6 (en, zh: add index page to left navigation (#2077))
 - 部署
   - [集群环境要求](prerequisites.md)
   - [部署 TiDB Operator](deploy-tidb-operator.md)
