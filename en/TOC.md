@@ -1,20 +1,13 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-<<<<<<< HEAD
+- [TiDB in Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/v1.0)
 - [About TiDB Operator](tidb-operator-overview.md)
 - Benchmark
   - [Sysbench](benchmark-sysbench.md)
 - Get Started
   - [GKE](deploy-tidb-from-kubernetes-gke.md)
   - [Minikube](deploy-tidb-from-kubernetes-minikube.md)
-=======
-- [TiDB in Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
-- Introduction
-  - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.3](whats-new-in-v1.3.md)
-- [Get Started](get-started.md)
->>>>>>> 4f5fd3d6 (en, zh: add index page to left navigation (#2077))
 - Deploy
   - [Prerequisites](prerequisites.md)
   - [TiDB Operator](deploy-tidb-operator.md)
