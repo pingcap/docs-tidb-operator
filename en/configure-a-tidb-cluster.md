@@ -84,7 +84,6 @@ Versions of the start script are as follows:
     * Use 'dig' instead of 'nslookup' to resolve DNS.
     * All components support [debug mode](tips.md#use-the-debug-mode).
 
-
 It is recommended that you configure `spec.startScriptVersion` as the latest version for the new cluster.
 
 > **Warning:**
