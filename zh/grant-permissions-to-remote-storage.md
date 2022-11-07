@@ -87,7 +87,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
 2. 创建 IAM 角色：
 
-    可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html)创建一个 IAM 角色，为角色赋予 `AmazonS3FullAccess` 的权限，并且编辑角色的 `Trust relationships`。
+    可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)创建一个 IAM 角色，为角色赋予 `AmazonS3FullAccess` 的权限，并且编辑角色的 `Trust relationships`。
 
     如果是进行基于 AWS EBS 快照的备份和恢复，除完整的 S3 权限 `AmazonS3FullAccess` 外，还需要以下权限：
 

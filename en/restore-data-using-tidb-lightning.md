@@ -264,7 +264,7 @@ The method of deploying TiDB Lightning varies with different methods of granting
 
     2. Create the IAM role:
 
-        [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html). Grant the `AmazonS3FullAccess` permission to the role, and edit `Trust relationships` of the role.
+        [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html). Grant the `AmazonS3FullAccess` permission to the role, and edit `Trust relationships` of the role.
 
     3. Associate IAM with the ServiceAccount resources:
 
