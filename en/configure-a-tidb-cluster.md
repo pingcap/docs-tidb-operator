@@ -71,6 +71,26 @@ It is recommended that you configure `spec.pvReclaimPolicy: Retain` to ensure th
 
 PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled between cluster components](enable-tls-between-components.md), it is recommended to configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`. Under such configuration, TiDB Operator automatically mounts the `${cluster_name}-cluster-client-secret` certificate to the PD and TiKV container, so you can conveniently [use `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster).
 
+#### startScriptVersion
+
+In order to optimize the startup scripts of each component and not cause the rolling restart of the cluster after upgrading the Operator, the cluster spec add the `spec.startScriptVersion` to choose the different versions of the startup scripts for each component.
+
+Versions of the start script are as follows:
+
+* `v1`: the default value and the original version of the startup script
+
+* `v2`: (Operator version >= 1.4.0) add the following optimizations:
+
+    * Use 'dig' instead of 'nslookup' to resolve DNS.
+    * All components support [debug mode](tips.md#use-the-debug-mode).
+
+
+It is recommended that you configure `spec.startScriptVersion` as the latest version for the new cluster.
+
+> **Warning:**
+>
+> Modify the `startScriptVersion` field of the deployed cluster will cause the rolling restart.
+
 ### Storage
 
 #### Storage Class
