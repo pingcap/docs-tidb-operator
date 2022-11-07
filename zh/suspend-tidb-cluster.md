@@ -3,11 +3,13 @@ title: 挂起 TiDB 集群
 summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
 ---
 
-本文介绍如何通过配置 `TidbCluster` 对象来挂起 Kubernetes 上的 TiDB 集群。挂起集群指的是：保留 `TidbCluster` 对象，并停止所有组件或者某个组件的 Pod。
+本文介绍如何通过配置 `TidbCluster` 对象来挂起 Kubernetes 上的 TiDB 集群。挂起集群指的是：保留 `TidbCluster` 对象，并停止所有组件或者某个组件的 Pod，其他资源（例如 Service、PVC 等）都会被保留。
 
-在某些测试场景下，你可以在不使用 TiDB 集群时挂起集群，并且可以移除 TiDB 集群所占用的 Node 或者 Service，以此来节省成本。等待再次使用时恢复 TiDB 集群。
+在某些测试场景下，你可以在不使用 TiDB 集群时挂起集群，以节省资源。
 
-目前，挂起 TiDB 集群只支持删除组件的 Pod，其他资源（例如 Service、PVC 等）都会被保留。
+> **注意：**
+>
+> 要求 TiDB Operator 版本 >= 1.3.7
 
 ## 挂起 TiDB 集群
 
