@@ -10,7 +10,7 @@ Kubernetes 上的 TiDB 运维管理需要使用一些开源工具。同时，在
 
 ## 在 Kubernetes 上使用 PD Control
 
-[PD Control](https://pingcap.com/docs-cn/stable/pd-control/) 是 PD 的命令行工具，在使用 PD Control 操作 Kubernetes 上的 TiDB 集群时，需要先使用 `kubectl port-forward` 打开本地到 PD 服务的连接：
+[PD Control](https://docs.pingcap.com/zh/tidb/stable/pd-control) 是 PD 的命令行工具，在使用 PD Control 操作 Kubernetes 上的 TiDB 集群时，需要先使用 `kubectl port-forward` 打开本地到 PD 服务的连接：
 
 {{< copyable "shell-regular" >}}
 
@@ -44,7 +44,7 @@ pd-ctl -u 127.0.0.1:${local_port} -d config show
 
 ## 在 Kubernetes 上使用 TiKV Control
 
-[TiKV Control](https://pingcap.com/docs-cn/stable/tikv-control/) 是 TiKV 的命令行工具。在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作模式，有不同的操作步骤。
+[TiKV Control](https://docs.pingcap.com/zh/tidb/stable/tikv-control) 是 TiKV 的命令行工具。在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作模式，有不同的操作步骤。
 
 * **远程模式**：此模式下 `tikv-ctl` 命令需要通过网络访问 TiKV 服务或 PD 服务，因此需要先使用 `kubectl port-forward` 打开本地到 PD 服务以及目标 TiKV 节点的连接：
 
@@ -110,7 +110,7 @@ pd-ctl -u 127.0.0.1:${local_port} -d config show
 
 ## 在 Kubernetes 上使用 TiDB Control
 
-[TiDB Control](https://pingcap.com/docs-cn/stable/tidb-control/) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 `kubectl port-forward` 打开到集群中 TiDB 节点和 PD 服务的连接：
+[TiDB Control](https://docs.pingcap.com/zh/tidb/stable/tidb-control) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 `kubectl port-forward` 打开到集群中 TiDB 节点和 PD 服务的连接：
 
 {{< copyable "shell-regular" >}}
 
@@ -201,12 +201,12 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.3.7                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.3.7                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.3.7                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.3.7                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.3.7          v1.3.7          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.3.7                          A Helm chart for TiKV Importer
+pingcap/tidb-backup     v1.4.0-beta.1                          A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.4.0-beta.1                          A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.4.0-beta.1                          A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  v1.4.0-beta.1                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.4.0-beta.1          v1.4.0-beta.1          tidb-operator Helm chart for Kubernetes
+pingcap/tikv-importer   v1.4.0-beta.1                          A Helm chart for TiKV Importer
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -266,9 +266,9 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.3.7.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.3.7.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.3.7.tgz
+wget http://charts.pingcap.org/tidb-operator-v1.4.0-beta.1.tgz
+wget http://charts.pingcap.org/tidb-drainer-v1.4.0-beta.1.tgz
+wget http://charts.pingcap.org/tidb-lightning-v1.4.0-beta.1.tgz
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
@@ -276,7 +276,7 @@ wget http://charts.pingcap.org/tidb-lightning-v1.3.7.tgz
 {{< copyable "shell-regular" >}}
 
 ```shell
-tar zxvf tidb-operator.v1.3.7.tgz
+tar zxvf tidb-operator.v1.4.0-beta.1.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 

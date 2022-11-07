@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/pd-recover/']
 
 # Use PD Recover to Recover the PD Cluster
 
-PD Recover is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/architecture/#placement-driver-server), used to recover the PD cluster which cannot start or provide services normally. For detailed introduction of this tool, see [TiDB documentation - PD Recover](https://pingcap.com/docs/stable/reference/tools/pd-recover). This document introduces how to download PD Recover and how to use it to recover a PD cluster.
+PD Recover is a disaster recovery tool of [PD](https://docs.pingcap.com/tidb/stable/tidb-scheduling), used to recover the PD cluster which cannot start or provide services normally. For detailed introduction of this tool, see [TiDB documentation - PD Recover](https://docs.pingcap.com/tidb/stable/pd-recover). This document introduces how to download PD Recover and how to use it to recover a PD cluster.
 
 ## Download PD Recover
 
@@ -113,12 +113,12 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
-    Execute the following command to confirm that the PD Pod is started:
+    Execute the following command to confirm that the PD cluster is started:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod -n ${namespace}
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
     ```
 
 ### Step 4. Recover the cluster

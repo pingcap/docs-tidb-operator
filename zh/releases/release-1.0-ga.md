@@ -139,7 +139,7 @@ monitor:
   ...
 ```
 
-Please check [cluster configuration](https://pingcap.com/docs/v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster/) for detailed configuration.
+Please check [cluster configuration](../configure-a-tidb-cluster.md) for detailed configuration.
 
 ### Stability Test Cases Added
 

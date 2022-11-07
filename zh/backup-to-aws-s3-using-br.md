@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 ## 使用场景
 
-如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时全量备份](#定时全量备份)的方式备份至兼容 S3 的存储上：
+如果你对数据备份有以下要求，可考虑使用 BR 将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时快照备份](#定时快照备份)的方式备份至兼容 S3 的存储上：
 
 - 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
@@ -28,7 +28,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 
 ## Ad-hoc 备份
 
-Ad-hoc 备份支持全量备份与增量备份。
+Ad-hoc 备份支持快照备份与增量备份。
 
 要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` custom resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
@@ -361,11 +361,11 @@ spec:
 
 </details>
 
-## 定时全量备份
+## 定时快照备份
 
-你可以通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。
+你可以通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时快照备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次快照备份，定时快照备份底层通过 Ad-hoc 快照备份来实现。
 
-### 第 1 步：准备定时全量备份环境
+### 第 1 步：准备定时快照备份环境
 
 同[准备 Ad-hoc 备份环境](#第-1-步准备-ad-hoc-备份环境)。
 
@@ -373,7 +373,7 @@ spec:
 
 依据准备 Ad-hoc 备份环境时所选择的远程存储访问授权方式，你需要使用下面对应的方法将数据定时备份到 Amazon S3 存储上：
 
-+ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
++ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -423,7 +423,7 @@ spec:
           prefix: my-folder
     ```
 
-+ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
++ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -474,7 +474,7 @@ spec:
           prefix: my-folder
     ```
 
-+ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时全量备份：
++ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -529,7 +529,7 @@ spec:
 - 关于 `backupSchedule` 独有的配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 - `backupTemplate` 用于指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
-定时全量备份创建完成后，可以通过以下命令查看定时全量备份的状态：
+定时快照备份创建完成后，可以通过以下命令查看定时快照备份的状态：
 
 {{< copyable "shell-regular" >}}
 
@@ -537,7 +537,7 @@ spec:
 kubectl get bks -n test1 -o wide
 ```
 
-查看定时全量备份下面所有的备份条目：
+查看定时快照备份下面所有的备份条目：
 
 {{< copyable "shell-regular" >}}
 

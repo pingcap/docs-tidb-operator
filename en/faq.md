@@ -44,7 +44,7 @@ If the TiDB cluster is already running, first upgrade the cluster, and then conf
 
 2. Configure TiDB to support the new time zone:
 
-    Refer to [Time Zone Support](https://docs.pingcap.com/tidb/v4.0/configure-time-zone) to modify TiDB service time zone settings.
+    Refer to [Time Zone Support](https://docs.pingcap.com/tidb/stable/configure-time-zone) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
 
@@ -71,7 +71,7 @@ In terms of the deployment topology relationship between the TiDB cluster and Ti
 
 TiDB Operator does not yet support automatically orchestrating TiSpark.
 
-If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://pingcap.com/docs/stable/tispark-overview/#deploy-tispark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
+If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](https://docs.pingcap.com/tidb/stable/tispark-overview) offers a detailed guide for you to install the TiSpark plugin.
 
 To maintain Spark in Kubernetes, refer to [Spark on Kubernetes](http://spark.apache.org/docs/latest/running-on-kubernetes.html).
 

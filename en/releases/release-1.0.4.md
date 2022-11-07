@@ -16,7 +16,7 @@ There is no action required if you are upgrading from [v1.0.3](release-1.0.3.md)
 
 ### Highlights
 
-[#1202](https://github.com/pingcap/tidb-operator/pull/1202) introduced `HostNetwork` support, which offers better performance compared to the Pod network. Check out our [benchmark report](https://pingcap.com/docs/dev/benchmark/sysbench-in-k8s/#pod-network-vs-host-network) for details.
+[#1202](https://github.com/pingcap/tidb-operator/pull/1202) introduced `HostNetwork` support, which offers better performance compared to the Pod network. Check out our [benchmark report](../benchmark-sysbench.md) for details.
 
 > **Note:**
 >
@@ -27,11 +27,11 @@ There is no action required if you are upgrading from [v1.0.3](release-1.0.3.md)
 > - `v1.15.4` or later
 > - any version since `v1.16.0`
 
-[#1175](https://github.com/pingcap/tidb-operator/pull/1175) added the `podSecurityContext` support for TiDB cluster Pods. We recommend setting the namespaced kernel parameters for TiDB cluster Pods according to our [Environment Recommendation](https://pingcap.com/docs/dev/tidb-in-kubernetes/deploy/prerequisites/#the-configuration-of-kernel-parameters).
+[#1175](https://github.com/pingcap/tidb-operator/pull/1175) added the `podSecurityContext` support for TiDB cluster Pods. We recommend setting the namespaced kernel parameters for TiDB cluster Pods according to our [Environment Recommendation](../prerequisites.md).
 
-New Helm chart `tidb-lightning` brings [TiDB Lightning](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/overview/) support for TiDB in Kubernetes. Check out the [document](https://pingcap.com/docs/dev/tidb-in-kubernetes/maintain/lightning/) for detailed user guide.
+New Helm chart `tidb-lightning` brings [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) support for TiDB in Kubernetes. Check out the [document](../restore-data-using-tidb-lightning.md) for detailed user guide.
 
-Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog in Kubernetes. Check out the [document](https://pingcap.com/docs/dev/tidb-in-kubernetes/maintain/tidb-binlog/#deploy-multiple-drainers) for detailed user guide.
+Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog in Kubernetes. Check out the [document](../deploy-tidb-binlog.md) for detailed user guide.
 
 ### Improvements
 
