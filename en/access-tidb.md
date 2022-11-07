@@ -1,6 +1,6 @@
 ---
-title: Access the TiDB Cluster in Kubernetes
-summary: Learn how to access the TiDB cluster in Kubernetes.
+title: Access the TiDB Cluster on Kubernetes
+summary: Learn how to access the TiDB cluster on Kubernetes.
 aliases: ['/docs/tidb-in-kubernetes/dev/access-tidb/']
 ---
 
@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/access-tidb/']
 
 This document describes how to access the TiDB cluster.
 
-You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc., and use different access methods for different types. 
+You can configure Service with different types according to the scenarios, such as `ClusterIP`, `NodePort`, `LoadBalancer`, etc., and use different access methods for different types.
 
 You can obtain TiDB Service information by running the following command:
 

@@ -1,12 +1,12 @@
 ---
-title: Manually Scale TiDB in Kubernetes
-summary: Learn how to manually scale a TiDB cluster in Kubernetes.
+title: Manually Scale TiDB on Kubernetes
+summary: Learn how to manually scale a TiDB cluster on Kubernetes.
 aliases: ['/docs/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 ---
 
-# Manually Scale TiDB in Kubernetes
+# Manually Scale TiDB on Kubernetes
 
-This document introduces how to horizontally and vertically scale a TiDB cluster in Kubernetes.
+This document introduces how to horizontally and vertically scale a TiDB cluster on Kubernetes.
 
 ## Horizontal scaling
 
@@ -28,7 +28,7 @@ To scale PD, TiKV, or TiDB horizontally, use kubectl to modify `spec.pd.replicas
     kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pd":{"replicas":3}}}'
     ```
 
-2. Check whether your configuration has been updated in the corresponding TiDB cluster in Kubernetes.
+2. Check whether your configuration has been updated in the corresponding TiDB cluster on Kubernetes.
 
     {{< copyable "shell-regular" >}}
 
@@ -118,7 +118,7 @@ To scale in TiFlash horizontally, perform the following steps:
 
 6. Modify `spec.tiflash.replicas` to scale in TiFlash.
 
-    Check whether TiFlash in the TiDB cluster in Kubernetes has updated to your desired definition. Run the following command and see whether the value of `spec.tiflash.replicas` returned is expected:
+    Check whether TiFlash in the TiDB cluster on Kubernetes has updated to your desired definition. Run the following command and see whether the value of `spec.tiflash.replicas` returned is expected:
 
     {{< copyable "shell-regular" >}}
 

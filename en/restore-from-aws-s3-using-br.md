@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-aws-s3-using-br/']
 
 # Restore Data from S3-Compatible Storage Using BR
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator on Kubernetes.
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 

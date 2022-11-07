@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 # Import Data
 
-This document describes how to import data into a TiDB cluster in Kubernetes using [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview).
+This document describes how to import data into a TiDB cluster on Kubernetes using [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview).
 
 TiDB Lightning contains two components: tidb-lightning and tikv-importer. In Kubernetes, the tikv-importer is inside the separate Helm chart of the TiDB cluster. And tikv-importer is deployed as a `StatefulSet` with `replicas=1` while tidb-lightning is in a separate Helm chart and deployed as a `Job`.
 
@@ -57,7 +57,7 @@ Starting from v1.1.10, the tidb-lightning Helm chart saves the [TiDB Lightning c
 
 For versions earlier than v1.1.10, you can modify `config` in `values.yaml` to save the checkpoint information in the target TiDB cluster, other MySQL-compatible databases or a shared storage directory. For more information, refer to [TiDB Lightning checkpoint](https://docs.pingcap.com/tidb/stable/tidb-lightning-checkpoints).
 
-#### Configure TLS 
+#### Configure TLS
 
 If TLS between components has been enabled on the target TiDB cluster (`spec.tlsCluster.enabled: true`), refer to [Generate certificates for components of the TiDB cluster](enable-tls-between-components.md#generate-certificates-for-components-of-the-tidb-cluster) to genereate a server-side certificate for TiDB Lightning, and configure `tlsCluster.enabled: true` in `values.yaml` to enable TLS between components.
 

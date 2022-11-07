@@ -40,7 +40,7 @@ TiDB Operator is actually a container running in Kubernetes. For this reason, yo
 
 It is recommended to deploy a host monitoring system via [Prometheus Operator](https://github.com/coreos/prometheus-operator) based on [Node Exporter](https://github.com/prometheus/node_exporter) and Prometheus. This solution can also be compatible with and used for monitoring host resources.
 
-### Alerts in Kubernetes
+### Alerts on Kubernetes
 
 If you deploy a monitoring system for Kubernetes hosts and services using Prometheus Operator, some alert rules are configured by default, and an AlertManager service is deployed. For details, see [kube-prometheus](https://github.com/coreos/kube-prometheus).
 

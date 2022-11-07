@@ -29,9 +29,9 @@ There is no action required if you are upgrading from [v1.0.3](release-1.0.3.md)
 
 [#1175](https://github.com/pingcap/tidb-operator/pull/1175) added the `podSecurityContext` support for TiDB cluster Pods. We recommend setting the namespaced kernel parameters for TiDB cluster Pods according to our [Environment Recommendation](../prerequisites.md).
 
-New Helm chart `tidb-lightning` brings [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) support for TiDB in Kubernetes. Check out the [document](../restore-data-using-tidb-lightning.md) for detailed user guide.
+New Helm chart `tidb-lightning` brings [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) support for TiDB on Kubernetes. Check out the [document](../restore-data-using-tidb-lightning.md) for detailed user guide.
 
-Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog in Kubernetes. Check out the [document](../deploy-tidb-binlog.md) for detailed user guide.
+Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog on Kubernetes. Check out the [document](../deploy-tidb-binlog.md) for detailed user guide.
 
 ### Improvements
 

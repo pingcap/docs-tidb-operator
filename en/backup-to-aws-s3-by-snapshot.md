@@ -162,4 +162,4 @@ After a backup is completed, you might need to delete the `Backup` CR. For detai
 
 ## Troubleshooting
 
-If you encounter any problem during the backup process, see [Common Deployment Failures of TiDB in Kubernetes](deploy-failures.md).
+If you encounter any problem during the backup process, see [Common Deployment Failures of TiDB on Kubernetes](deploy-failures.md).

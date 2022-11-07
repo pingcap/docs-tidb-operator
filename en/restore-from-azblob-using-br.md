@@ -5,7 +5,7 @@ summary: Learn how to restore data from Azure Blob Storage using BR.
 
 # Restore Data from Azure Blob Storage Using BR
 
-This document describes how to restore the backup data stored in Azure Blob Storage to a TiDB cluster in Kubernetes, including two restoration methods:
+This document describes how to restore the backup data stored in Azure Blob Storage to a TiDB cluster on Kubernetes, including two restoration methods:
 
 - Full restoration. This method takes the backup data of snapshot backup and restores a TiDB cluster to the time point of the snapshot backup.
 - Point-in-time recovery (PITR). This method takes the backup data of both snapshot backup and log backup and restores a TiDB cluster to any point in time.

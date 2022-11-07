@@ -196,7 +196,7 @@ kubectl -n demo patch tc basic --type merge -p '{"spec":{"pd":{"replicas":${pd_r
 
 ## Access the Grafana dashboard
 
-To access the Grafana dashboards, you can forward a port from the Cloud Shell to the Grafana service in Kubernetes. (Cloud Shell already uses port 3000 so we use port 8080 in this example instead.)
+To access the Grafana dashboards, you can forward a port from the Cloud Shell to the Grafana service on Kubernetes. (Cloud Shell already uses port 3000 so we use port 8080 in this example instead.)
 
 To do so, use the following command:
 
@@ -210,7 +210,7 @@ The default username and password are both "admin".
 
 ## Destroy the TiDB cluster
 
-To destroy a TiDB cluster in Kubernetes, run the following command:
+To destroy a TiDB cluster on Kubernetes, run the following command:
 
 ```shell
 kubectl delete tc basic -n demo

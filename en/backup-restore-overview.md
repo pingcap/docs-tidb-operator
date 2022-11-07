@@ -1,11 +1,11 @@
 ---
 title: Backup and Restore Overview
-summary: Learn how to perform backup and restore on the TiDB cluster in Kubernetes using BR, Dumpling, and TiDB Lightning.
+summary: Learn how to perform backup and restore on the TiDB cluster on Kubernetes using BR, Dumpling, and TiDB Lightning.
 ---
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
+This document describes how to perform backup and restore on the TiDB cluster on Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
 
 [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool, which exports data stored in TiDB or MySQL as SQL or CSV data files. You can use Dumpling to make a logical full backup or export.
 
@@ -59,9 +59,9 @@ To restore data from SQL or CSV files exported by Dumpling or other compatible d
 
 ## Backup and restore process
 
-To make a backup of the TiDB cluster in Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
+To make a backup of the TiDB cluster on Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
 
-To restore data to the TiDB cluster in Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
+To restore data to the TiDB cluster on Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
 
 After creating the CR object, according to your configuration, TiDB Operator chooses the corresponding tool and performs the backup or restore.
 

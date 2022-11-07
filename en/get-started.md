@@ -1,10 +1,10 @@
 ---
-title: Get Started With TiDB Operator in Kubernetes
-summary: Learn how to quickly deploy a TiDB cluster in Kubernetes using TiDB Operator.
+title: Get Started With TiDB Operator on Kubernetes
+summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
 aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube']
 ---
 
-# Get Started with TiDB Operator in Kubernetes
+# Get Started with TiDB Operator on Kubernetes
 
 This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
@@ -370,7 +370,7 @@ To connect to TiDB, you need a MySQL-compatible client installed on the host whe
 
 ### Forward port 4000
 
-You can connect to TiDB by first forwarding a port from the local host to the TiDB **service** in Kubernetes.
+You can connect to TiDB by first forwarding a port from the local host to the TiDB **service** on Kubernetes.
 
 First, get a list of services in the `tidb-cluster` namespace:
 
@@ -771,7 +771,7 @@ On public clouds:
 
 In a self-managed Kubernetes cluster:
 
-- Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
+- Familiarize yourself with [Prerequisites for TiDB on Kubernetes](prerequisites.md)
 - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
-- [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
+- [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md)
 - [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)

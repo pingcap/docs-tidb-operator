@@ -124,7 +124,7 @@ Different clusters can be in the same or different `namespace`, which is based o
 
 ## Initialize the TiDB cluster
 
-If you want to initialize your cluster after deployment, refer to [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md).
+If you want to initialize your cluster after deployment, refer to [Initialize a TiDB Cluster on Kubernetes](initialize-a-cluster.md).
 
 > **Note:**
 >
