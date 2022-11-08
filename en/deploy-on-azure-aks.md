@@ -7,7 +7,7 @@ summary: Learn how to deploy a TiDB cluster on Azure Kubernetes Service (AKS).
 
 This document describes how to deploy a TiDB cluster on Azure Kubernetes Service (AKS).
 
-To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
+To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Prerequisites
 
@@ -214,7 +214,7 @@ Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* 
 
 ## Deploy a TiDB cluster and the monitoring component
 
-This section describes how to deploy a TiDB cluster and its monitoring component in Azure AKS.
+This section describes how to deploy a TiDB cluster and its monitoring component on Azure AKS.
 
 ### Create namespace
 

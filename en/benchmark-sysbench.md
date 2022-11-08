@@ -1,11 +1,11 @@
 ---
-title: TiDB in Kubernetes Sysbench Performance Test
-summary: Learn the Sysbench performance test of TiDB in Kubernetes.
+title: TiDB on Kubernetes Sysbench Performance Test
+summary: Learn the Sysbench performance test of TiDB on Kubernetes.
 ---
 
-# TiDB in Kubernetes Sysbench Performance Test
+# TiDB on Kubernetes Sysbench Performance Test
 
-Since the release of [TiDB Operator GA](https://pingcap.com/blog/database-cluster-deployment-and-management-made-easy-with-kubernetes/), more users begin to deploy and manage the TiDB cluster in Kubernetes using TiDB Operator. In this report, an in-depth and comprehensive test of TiDB has been conducted on GKE, which offers insight into the influencing factors that affect the performance of TiDB in Kubernetes.
+Since the release of [TiDB Operator GA](https://pingcap.com/blog/database-cluster-deployment-and-management-made-easy-with-kubernetes/), more users begin to deploy and manage the TiDB cluster on Kubernetes using TiDB Operator. In this report, an in-depth and comprehensive test of TiDB has been conducted on GKE, which offers insight into the influencing factors that affect the performance of TiDB on Kubernetes.
 
 ## Test purpose
 
@@ -452,7 +452,7 @@ From the images above, the impact of network latency goes down as the concurrenc
 
 ## Conclusion
 
-This is a test of TiDB using sysbench running in Kubernetes deployed on a typical public cloud platform. The purpose is to learn how different factors might affect the performance of TiDB. On the whole, these influencing factors include the following items:
+This is a test of TiDB using sysbench running on Kubernetes deployed on a typical public cloud platform. The purpose is to learn how different factors might affect the performance of TiDB. On the whole, these influencing factors include the following items:
 
 - In the VPC-Native mode, TiDB performs slightly better in Host network than in Pod network. (The difference, ~7%, is measured in QPS. Performance differences caused by the factors below are also measured by QPS.)
 - In Host network, TiDB performs better (~9%) in the read test on Ubuntu provided by GCP than on COS.

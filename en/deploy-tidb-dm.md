@@ -1,11 +1,11 @@
 ---
-title: Deploy DM in Kubernetes
-summary: Learn how to deploy TiDB DM cluster in Kubernetes.
+title: Deploy DM on Kubernetes
+summary: Learn how to deploy TiDB DM cluster on Kubernetes.
 ---
 
-# Deploy DM in Kubernetes
+# Deploy DM on Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to deploy DM in Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
+[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to deploy DM on Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
 
 ## Prerequisites
 
@@ -174,7 +174,7 @@ You can use TiDB Operator to deploy and manage multiple DM clusters in a single 
 
 Different clusters can be in the same or different `namespace`, which is based on your actual needs.
 
-## Access the DM cluster in Kubernetes
+## Access the DM cluster on Kubernetes
 
 To access DM-master in the pod within a Kubernetes cluster, use the DM-master service domain name `${cluster_name}-dm-master.${namespace}`.
 
@@ -194,5 +194,5 @@ For more service exposure methods, refer to [Access the TiDB Cluster](access-tid
 
 ## What’s next
 
-- To migrate MySQL data to your TiDB cluster using DM in Kubernetes, see [Migrate MySQL Data to TiDB Cluster Using DM](use-tidb-dm.md).
-- To enable TLS between components of the DM cluster in Kubernetes, see [Enable TLS for DM](enable-tls-for-dm.md).
+- To migrate MySQL data to your TiDB cluster using DM on Kubernetes, see [Migrate MySQL Data to TiDB Cluster Using DM](use-tidb-dm.md).
+- To enable TLS between components of the DM cluster on Kubernetes, see [Enable TLS for DM](enable-tls-for-dm.md).

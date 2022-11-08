@@ -1,10 +1,10 @@
 ---
-title: Get Started With TiDB Operator in Kubernetes
-summary: Learn how to quickly deploy a TiDB cluster in Kubernetes using TiDB Operator.
+title: Get Started With TiDB Operator on Kubernetes
+summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
 aliases: ['/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind','/docs/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/','/docs/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/']
 ---
 
-# Get Started with TiDB Operator in Kubernetes
+# Get Started with TiDB Operator on Kubernetes
 
 This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
@@ -32,7 +32,7 @@ This section describes two ways to create a simple Kubernetes cluster. After cre
 - [Use kind](#method-1-create-a-kubernetes-cluster-using-kind) to deploy a Kubernetes cluster in Docker. It is a common and recommended way.
 - [Use minikube](#method-2-create-a-kubernetes-cluster-using-minikube) to deploy a Kubernetes cluster running locally in a VM.
 
-Alternatively, you can deploy a Kubernetes cluster in Google Kubernetes Engine in Google Cloud Platform using the [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
+Alternatively, you can deploy a Kubernetes cluster on Google Kubernetes Engine on Google Cloud Platform using the [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
 ### Method 1: Create a Kubernetes cluster using kind
 
@@ -370,7 +370,7 @@ To connect to TiDB, you need a MySQL-compatible client installed on the host whe
 
 ### Forward port 4000
 
-You can connect to TiDB by first forwarding a port from the local host to the TiDB **service** in Kubernetes.
+You can connect to TiDB by first forwarding a port from the local host to the TiDB **service** on Kubernetes.
 
 First, get a list of services in the `tidb-cluster` namespace:
 
@@ -771,7 +771,7 @@ On public clouds:
 
 In a self-managed Kubernetes cluster:
 
-- Familiarize yourself with [Prerequisites for TiDB in Kubernetes](prerequisites.md)
+- Familiarize yourself with [Prerequisites for TiDB on Kubernetes](prerequisites.md)
 - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
-- [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md)
-- [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
+- [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md)
+- [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md)

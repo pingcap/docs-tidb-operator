@@ -5,7 +5,7 @@ summary: Learn how to back up data to Azure Blob Storage using BR.
 
 # Back up Data to Azure Blob Storage Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to Azure Blob Storage.
+This document describes how to back up the data of a TiDB cluster on Kubernetes to Azure Blob Storage.
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to get the backup data of the TiDB cluster, and then send the data to Azure Blob Storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
