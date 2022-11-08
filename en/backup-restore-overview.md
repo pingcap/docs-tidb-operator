@@ -109,4 +109,4 @@ For TiDB Operator v1.2.4 and later versions, you can configure the following fie
     If your S3-compatible backend storage does not support the `DeleteObjects` API, the default concurrent batch deletion method fails. You need to configure this field to `true` to use the concurrent deletion method.
 
 * `.spec.cleanOption.batchConcurrency`: Specifies the number of goroutines to start for the concurrent batch deletion method. The default value is `10`.
-* `.spec.cleanOption.routineConcurrency`: Specifies the number of goroutines to start  for the concurrent deletion method. The default value is `100`.
+* `.spec.cleanOption.routineConcurrency`: Specifies the number of goroutines to start for the concurrent deletion method. The default value is `100`.

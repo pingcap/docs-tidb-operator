@@ -284,6 +284,6 @@ helm install ${release_name} ./tidb-operator --namespace=${namespace}
 
 ## Use Terraform
 
-[Terraform](https://www.terraform.io/) is a Infrastructure as Code management tool. It enables users to define their own infrastructure in a  manifestation style, based on which execution plans are generated to create or schedule real world compute resources. TiDB on Kubernetes use Terraform to create and manage TiDB clusters on public clouds.
+[Terraform](https://www.terraform.io/) is a Infrastructure as Code management tool. It enables users to define their own infrastructure in a manifestation style, based on which execution plans are generated to create or schedule real world compute resources. TiDB on Kubernetes use Terraform to create and manage TiDB clusters on public clouds.
 
 Follow the steps in [Terraform Documentation](https://www.terraform.io/downloads.html) to install Terraform.
