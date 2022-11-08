@@ -1,7 +1,11 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+<<<<<<< HEAD
 - [TiDB in Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4)
+=======
+- [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
 - [快速上手](get-started.md)

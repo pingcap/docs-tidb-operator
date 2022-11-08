@@ -19,9 +19,9 @@ lang=(en zh)
 for d in "${lang[@]}"
 do
 if [ $d = "en" ]; then
-    docs_title=" TiDB in Kubernetes Documentation"
+    docs_title=" TiDB on Kubernetes Documentation"
 else
-    docs_title=" TiDB in Kubernetes 用户文档"
+    docs_title=" TiDB on Kubernetes 用户文档"
 fi
 pandoc -N --toc --smart --latex-engine=xelatex \
 --template=templates/template.tex \

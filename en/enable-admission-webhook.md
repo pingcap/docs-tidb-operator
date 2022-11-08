@@ -66,7 +66,7 @@ With a default installation, TiDB Operator disables the admission controller. Ta
 
 3. Install or update TiDB Operator.
 
-    To install or update TiDB Operator, see [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md).
+    To install or update TiDB Operator, see [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md).
 
 ## Set the TLS certificate for the admission controller
 

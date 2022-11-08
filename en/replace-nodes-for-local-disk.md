@@ -13,7 +13,7 @@ This document describes a method for replacing and upgrading nodes without downt
 
 ## Prerequisites
 
-- A TiDB cluster is deployed. If not, refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md) and deploy a cluster.
+- A TiDB cluster is deployed. If not, refer to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md) and deploy a cluster.
 - The new node is ready and joins the Kubernetes cluster.
 
 ## Step 1: Clone the configuration of the original TiDB cluster

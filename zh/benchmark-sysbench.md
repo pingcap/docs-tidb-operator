@@ -1,8 +1,13 @@
 ---
+<<<<<<< HEAD
 title: TiDB in Kubernetes Sysbench 性能测试
+=======
+title: TiDB on Kubernetes Sysbench 性能测试
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/benchmark-sysbench/']
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
-# TiDB in Kubernetes Sysbench 性能测试
+# TiDB on Kubernetes Sysbench 性能测试
 
 随着 [TiDB Operator GA 发布](https://cn.pingcap.com/blog/tidb-operator-1.0-ga)，越来越多用户开始使用 TiDB Operator 在 Kubernetes 中部署管理 TiDB 集群。在本次测试中，我们选择 GKE 平台做了一次深入、全方位的测试，方便大家了解 TiDB 在 Kubernetes 中性能影响因素。
 

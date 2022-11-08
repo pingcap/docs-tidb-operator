@@ -5,7 +5,7 @@ summary: Learn how to use the tkctl (TiDB Kubernetes Control) tool.
 
 # TiDB Kubernetes Control User Guide
 
-TiDB Kubernetes Control (`tkctl`) is a command line utility that is used for TiDB Operator to maintain and diagnose the TiDB cluster in Kubernetes.
+TiDB Kubernetes Control (`tkctl`) is a command line utility that is used for TiDB Operator to maintain and diagnose the TiDB cluster on Kubernetes.
 
 > **Note:**
 >

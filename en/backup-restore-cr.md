@@ -5,11 +5,11 @@ summary: Learn the fields in the Backup and Restore custom resources (CR).
 
 # Backup and Restore Custom Resources
 
-This document describes the fields in the `Backup`, `Restore`, and `BackupSchedule` custom resources (CR). You can use these fields to better perform the backup or restore of TiDB clusters in Kubernetes.
+This document describes the fields in the `Backup`, `Restore`, and `BackupSchedule` custom resources (CR). You can use these fields to better perform the backup or restore of TiDB clusters on Kubernetes.
 
 ## Backup CR fields
 
-To back up data for a TiDB cluster in Kubernetes, you can create a `Backup` custom resource (CR) object. For detailed backup process, refer to documents listed in [Back up data](backup-restore-overview.md#back-up-data).
+To back up data for a TiDB cluster on Kubernetes, you can create a `Backup` custom resource (CR) object. For detailed backup process, refer to documents listed in [Back up data](backup-restore-overview.md#back-up-data).
 
 This section introduces the fields in the `Backup` CR.
 
@@ -248,7 +248,7 @@ This section introduces the fields in the `Backup` CR.
 
 ## Restore CR fields
 
-To restore data to a TiDB cluster in Kubernetes, you can create a `Restore` CR object. For detailed restore process, refer to documents listed in [Restore data](backup-restore-overview.md#restore-data).
+To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR object. For detailed restore process, refer to documents listed in [Restore data](backup-restore-overview.md#restore-data).
 
 This section introduces the fields in the `Restore` CR.
 

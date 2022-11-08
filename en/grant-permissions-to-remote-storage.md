@@ -93,7 +93,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
     [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships`.
 
-     When backing up a TiDB cluster using EBS volume snapshots,  besides the `AmazonS3FullAccess` permission, the following permissions are also required:
+     When backing up a TiDB cluster using EBS volume snapshots, besides the `AmazonS3FullAccess` permission, the following permissions are also required:
 
     ```json
             {

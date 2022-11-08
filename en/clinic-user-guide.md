@@ -5,11 +5,11 @@ summary: Learn how to install PingCAP Clinic on a TiDB cluster deployed using Ti
 
 # Troubleshoot TiDB Cluster Using PingCAP Clinic
 
-For TiDB clusters deployed in Kubernetes using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to remotely troubleshoot cluster problems and locally check the cluster status using the Clinic Diag client (Diag) and the Clinic Server Platform (Clinic Server).
+For TiDB clusters deployed on Kubernetes using TiDB Operator, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to remotely troubleshoot cluster problems and locally check the cluster status using the Clinic Diag client (Diag) and the Clinic Server Platform (Clinic Server).
 
 > **Note:**
 >
-> This document **only** applies to clusters deployed using TiDB Operator in Kubernetes. For clusters deployed using TiUP in an on-premises environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
+> This document **only** applies to clusters deployed using TiDB Operator on Kubernetes. For clusters deployed using TiUP in an on-premises environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
 >
 > PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible.
 

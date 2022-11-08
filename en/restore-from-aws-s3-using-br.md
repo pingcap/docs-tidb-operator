@@ -5,7 +5,7 @@ summary: Learn how to restore data from Amazon S3-compatible storage using BR.
 
 # Restore Data from S3-Compatible Storage Using BR
 
-This document describes how to restore the TiDB cluster data backed up using TiDB Operator in Kubernetes.
+This document describes how to restore the TiDB cluster data backed up using TiDB Operator on Kubernetes.
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 

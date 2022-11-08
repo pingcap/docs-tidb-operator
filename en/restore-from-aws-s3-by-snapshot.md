@@ -156,4 +156,4 @@ kubectl get rt -n test2 -o wide
 
 ## Troubleshooting
 
-If you encounter any problem during the restore process, see [Common Deployment Failures of TiDB in Kubernetes](deploy-failures.md).
+If you encounter any problem during the restore process, see [Common Deployment Failures of TiDB on Kubernetes](deploy-failures.md).
