@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
-title: TiDB in Kubernetes Sysbench 性能测试
-=======
 title: TiDB on Kubernetes Sysbench 性能测试
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/benchmark-sysbench/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # TiDB on Kubernetes Sysbench 性能测试

@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Get Started With TiDB Operator in Kubernetes
-summary: Learn how to quickly deploy a TiDB cluster in Kubernetes using TiDB Operator.
-=======
 title: Get Started With TiDB Operator on Kubernetes
 summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
-aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-kind/', '/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-minikube/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind/','/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube/','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-kind','/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-minikube']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Get Started with TiDB Operator on Kubernetes

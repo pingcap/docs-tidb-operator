@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Configure a TiDB Cluster in Kubernetes
-summary: Learn how to configure a TiDB cluster in Kubernetes.
-=======
 title: Configure a TiDB Cluster on Kubernetes
 summary: Learn how to configure a TiDB cluster on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/docs/tidb-in-kubernetes/dev/configure-cluster-using-tidbcluster/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Configure a TiDB Cluster on Kubernetes

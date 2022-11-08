@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: TiDB in Kubernetes Documentation
-summary: Learn about TiDB in Kubernetes documentation.
-=======
 title: TiDB on Kubernetes Documentation
 summary: Learn about TiDB on Kubernetes documentation.
-aliases: ['/docs/tidb-in-kubernetes/dev/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 hide_sidebar: true
 hide_commit: true
 ---

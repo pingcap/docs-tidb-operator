@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: TiDB in Kubernetes 用户文档
-summary: 了解 TiDB in Kubernetes 的用户文档。
-=======
 title: TiDB on Kubernetes 用户文档
 summary: 了解 TiDB on Kubernetes 的用户文档。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 hide_sidebar: true
 hide_commit: true
 ---
