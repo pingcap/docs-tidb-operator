@@ -774,4 +774,4 @@ In a self-managed Kubernetes cluster:
 - Familiarize yourself with [Prerequisites for TiDB on Kubernetes](prerequisites.md)
 - [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
 - [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md)
-- [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md)
+- [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md)

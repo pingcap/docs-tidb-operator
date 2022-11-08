@@ -25,7 +25,7 @@ tidbBackupManagerImage: pingcap/tidb-backup-manager-arm64:v1.3.1
 
 ## Deploy a TiDB cluster
 
-The process of deploying a TiDB cluster on ARM64 machines is the same as the process of [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md). The only difference is that, in the TidbCluster definition file, you need to set the images of the related components to the ARM64 versions. For example:
+The process of deploying a TiDB cluster on ARM64 machines is the same as the process of [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md). The only difference is that, in the TidbCluster definition file, you need to set the images of the related components to the ARM64 versions. For example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
