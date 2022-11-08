@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Tips for troubleshooting TiDB in Kubernetes
-summary: Learn the commonly used tips for troubleshooting TiDB in Kubernetes.
-=======
 title: Tips for troubleshooting TiDB on Kubernetes
 summary: Learn the commonly used tips for troubleshooting TiDB on Kubernetes.
-aliases: ['/tidb-in-kubernetes/dev/troubleshoot']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Tips for troubleshooting TiDB on Kubernetes

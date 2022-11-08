@@ -13,11 +13,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
 
 ## Deploy TiDB operator
 
-<<<<<<< HEAD
-The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). Note that with TiDB Operator versions earlier than v1.3.1, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
-=======
-The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md). Note that with TiDB Operator versions earlier than v1.3.2, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
+The process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md). Note that with TiDB Operator versions earlier than v1.3.1, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. For example:
 
 ```yaml
 # ...

@@ -1,11 +1,6 @@
 ---
 title: Access TiDB Dashboard
-<<<<<<< HEAD
-summary: Learn how to access TiDB Dashboard in Kubernetes.
-=======
 summary: Learn how to access TiDB Dashboard on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/access-dashboard/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Access TiDB Dashboard

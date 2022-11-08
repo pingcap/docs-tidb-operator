@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Tools in Kubernetes
-summary: Learn about operation tools for TiDB in Kubernetes.
-=======
 title: Tools on Kubernetes
 summary: Learn about operation tools for TiDB on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/tidb-toolkit/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Tools on Kubernetes

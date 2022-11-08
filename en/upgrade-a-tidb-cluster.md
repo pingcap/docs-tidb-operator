@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Upgrade a TiDB Cluster in Kubernetes
-summary: Learn how to upgrade a TiDB cluster in Kubernetes.
-=======
 title: Upgrade a TiDB Cluster on Kubernetes
 summary: Learn how to upgrade a TiDB cluster on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Upgrade a TiDB Cluster on Kubernetes

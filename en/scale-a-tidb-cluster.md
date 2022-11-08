@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: Manually Scale TiDB in Kubernetes
-summary: Learn how to manually scale a TiDB cluster in Kubernetes.
-=======
 title: Manually Scale TiDB on Kubernetes
 summary: Learn how to manually scale a TiDB cluster on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
->>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Manually Scale TiDB on Kubernetes
