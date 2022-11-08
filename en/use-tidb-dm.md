@@ -22,7 +22,7 @@ You can access the DM-master service using dmctl in the following two methods:
 
 **Method #1**: Attach to the DM-master or DM-worker Pod to use the built-in `dmctl` in the image.
 
-**Method #2**: Expose the DM-master service by [accessing the DM cluster on Kubernetes](deploy-tidb-dm.md#access-the-dm-cluster-in-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
+**Method #2**: Expose the DM-master service by [accessing the DM cluster on Kubernetes](deploy-tidb-dm.md#access-the-dm-cluster-on-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
 
 It is recommended to use **Method #1** for migration. The following steps take **Method #1** as an example to introduce how to start a DM data migration task.
 
