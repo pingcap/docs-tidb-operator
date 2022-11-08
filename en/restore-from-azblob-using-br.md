@@ -5,7 +5,11 @@ summary: Learn how to restore data from Azure Blob Storage using BR.
 
 # Restore Data from Azure Blob Storage Using BR
 
+<<<<<<< HEAD
 This document describes how to restore the backup SST files stored in Azure Blob Storage to a TiDB cluster in Kubernetes.
+=======
+This document describes how to restore the backup data stored in Azure Blob Storage to a TiDB cluster on Kubernetes, including two restoration methods:
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-tool) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 

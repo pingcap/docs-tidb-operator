@@ -1,11 +1,16 @@
 ---
 title: Deploy TiDB Binlog
+<<<<<<< HEAD
 summary: Learn how to deploy TiDB Binlog for a TiDB cluster in Kubernetes.
+=======
+summary: Learn how to deploy TiDB Binlog for a TiDB cluster on Kubernetes.
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
 # Deploy TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) of a TiDB cluster in Kubernetes.
+This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) of a TiDB cluster on Kubernetes.
 
 ## Prerequisites
 
@@ -212,7 +217,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     The `initialCommitTs` is the starting commit timestamp of data replication when Drainer has no checkpoint. The value must be set as a string type, such as `"424364429251444742"`.
 
-    For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](configure-tidb-binlog-drainer.md).
+    For complete configuration details, refer to [TiDB Binlog Drainer Configurations on Kubernetes](configure-tidb-binlog-drainer.md).
 
 4. Deploy Drainer:
 

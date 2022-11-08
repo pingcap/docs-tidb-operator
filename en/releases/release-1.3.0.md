@@ -38,4 +38,4 @@ TiDB Operator version: 1.3.0
 
 ## Bug fixes
 
-- Fix the issue that tidb scheduler cannot be deployed in Kubernetes v1.23 or later versions ([#4386](https://github.com/pingcap/tidb-operator/pull/4386), [@just1900](https://github.com/just1900))
+- Fix the issue that tidb scheduler cannot be deployed on Kubernetes v1.23 or later versions ([#4386](https://github.com/pingcap/tidb-operator/pull/4386), [@just1900](https://github.com/just1900))

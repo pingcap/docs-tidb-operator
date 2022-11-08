@@ -55,7 +55,7 @@ When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-sc
         kubectl -n ${namespace} label tidbcluster ${cluster_name} user=dev
         ```
 
-    2. Refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md) to deploy the TiDB cluster. Confirm that each component in the cluster is started normally.
+    2. Refer to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md) to deploy the TiDB cluster. Confirm that each component in the cluster is started normally.
 
 3. Deploy the second set of TiDB Operator.
 
@@ -105,7 +105,7 @@ When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-sc
         kubectl -n ${namespace} label tidbcluster ${cluster_name} user=qa
         ```
 
-    2. Refer to [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md) to deploy the TiDB cluster. Confirm that each component in the cluster is started normally.
+    2. Refer to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md) to deploy the TiDB cluster. Confirm that each component in the cluster is started normally.
 
 5. View the logs of the two sets of TiDB Operator, and confirm that each TiDB Operator manages the TiDB cluster that matches the corresponding selectors.
 

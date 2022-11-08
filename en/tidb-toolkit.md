@@ -1,15 +1,21 @@
 ---
+<<<<<<< HEAD
 title: Tools in Kubernetes
 summary: Learn about operation tools for TiDB in Kubernetes.
+=======
+title: Tools on Kubernetes
+summary: Learn about operation tools for TiDB on Kubernetes.
+aliases: ['/docs/tidb-in-kubernetes/dev/tidb-toolkit/']
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
-# Tools in Kubernetes
+# Tools on Kubernetes
 
-Operations on TiDB in Kubernetes require some open source tools. In the meantime, there are some special requirements for operations using TiDB tools in the Kubernetes environment. This documents introduces in details the related operation tools for TiDB in Kubernetes.
+Operations on TiDB on Kubernetes require some open source tools. In the meantime, there are some special requirements for operations using TiDB tools in the Kubernetes environment. This documents introduces in details the related operation tools for TiDB on Kubernetes.
 
-## Use PD Control in Kubernetes
+## Use PD Control on Kubernetes
 
-[PD Control](https://docs.pingcap.com/tidb/stable/pd-control) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters in Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
+[PD Control](https://docs.pingcap.com/tidb/stable/pd-control) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters on Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 
@@ -41,9 +47,9 @@ Then you need to explicitly assign a PD port for `pd-ctl`:
 pd-ctl -u 127.0.0.1:${local_port} -d config show
 ```
 
-## Use TiKV Control in Kubernetes
+## Use TiKV Control on Kubernetes
 
-[TiKV Control](https://docs.pingcap.com/tidb/stable/tikv-control) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters in Kubernetes, be aware that each operation mode involves different steps, as described below:
+[TiKV Control](https://docs.pingcap.com/tidb/stable/tikv-control) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters on Kubernetes, be aware that each operation mode involves different steps, as described below:
 
 * **Remote Mode**: In this mode, `tikv-ctl` accesses the TiKV service or the PD service through network. Firstly you need to establish the connection from local to the PD service and the target TiKV node using `kubectl port-forward`:
 
@@ -107,9 +113,9 @@ pd-ctl -u 127.0.0.1:${local_port} -d config show
         ./tikv-ctl --data-dir /var/lib/tikv size -r 2
         ```
 
-## Use TiDB Control in Kubernetes
+## Use TiDB Control on Kubernetes
 
-[TiDB Control](https://docs.pingcap.com/tidb/stable/tidb-control) is the command-line tool for TiDB. To use TiDB Control in Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
+[TiDB Control](https://docs.pingcap.com/tidb/stable/tidb-control) is the command-line tool for TiDB. To use TiDB Control on Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 
@@ -173,7 +179,7 @@ version.BuildInfo{Version:"v3.4.1", GitCommit:"c4e74854886b2efe3321e185578e6db9b
 
 ### Configure the Helm repo
 
-Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB in Kubernetes:
+Kubernetes applications are packed as charts in Helm. PingCAP provides the following Helm charts for TiDB on Kubernetes:
 
 * `tidb-operator`: used to deploy TiDB Operator;
 * `tidb-cluster`: used to deploy TiDB clusters;
@@ -283,6 +289,6 @@ helm install ${release_name} ./tidb-operator --namespace=${namespace}
 
 ## Use Terraform
 
-[Terraform](https://www.terraform.io/) is a Infrastructure as Code management tool. It enables users to define their own infrastructure in a  manifestation style, based on which execution plans are generated to create or schedule real world compute resources. TiDB in Kubernetes use Terraform to create and manage TiDB clusters on public clouds.
+[Terraform](https://www.terraform.io/) is a Infrastructure as Code management tool. It enables users to define their own infrastructure in a manifestation style, based on which execution plans are generated to create or schedule real world compute resources. TiDB on Kubernetes use Terraform to create and manage TiDB clusters on public clouds.
 
 Follow the steps in [Terraform Documentation](https://www.terraform.io/downloads.html) to install Terraform.

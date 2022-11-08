@@ -1,11 +1,11 @@
 ---
-title: Initialize a TiDB Cluster in Kubernetes
+title: Initialize a TiDB Cluster on Kubernetes
 summary: Learn how to initialize a TiDB cluster in K8s.
 ---
 
-# Initialize a TiDB Cluster in Kubernetes
+# Initialize a TiDB Cluster on Kubernetes
 
-This document describes how to initialize a TiDB cluster in Kubernetes (K8s), specifically, how to configure the initial account and password and how to initialize the database by executing SQL statements automatically in batch.
+This document describes how to initialize a TiDB cluster on Kubernetes (K8s), specifically, how to configure the initial account and password and how to initialize the database by executing SQL statements automatically in batch.
 
 > **Note:**
 >

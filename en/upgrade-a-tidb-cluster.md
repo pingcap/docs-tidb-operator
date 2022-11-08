@@ -1,13 +1,19 @@
 ---
+<<<<<<< HEAD
 title: Upgrade a TiDB Cluster in Kubernetes
 summary: Learn how to upgrade a TiDB cluster in Kubernetes.
+=======
+title: Upgrade a TiDB Cluster on Kubernetes
+summary: Learn how to upgrade a TiDB cluster on Kubernetes.
+aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-a-tidb-cluster/']
+>>>>>>> edb0d53b (en,zh: in k8s -> on k8s (#2087))
 ---
 
-# Upgrade a TiDB Cluster in Kubernetes
+# Upgrade a TiDB Cluster on Kubernetes
 
-If you deploy and manage your TiDB clusters in Kubernetes using TiDB Operator, you can upgrade your TiDB clusters using the rolling update feature. Rolling update can limit the impact of upgrade on your application.
+If you deploy and manage your TiDB clusters on Kubernetes using TiDB Operator, you can upgrade your TiDB clusters using the rolling update feature. Rolling update can limit the impact of upgrade on your application.
 
-This document describes how to upgrade a TiDB cluster in Kubernetes using rolling updates.
+This document describes how to upgrade a TiDB cluster on Kubernetes using rolling updates.
 
 ## Rolling update introduction
 

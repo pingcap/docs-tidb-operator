@@ -10,7 +10,7 @@ summary: Learn how to deploy a TiDB cluster on GCP GKE.
 
 This document describes how to deploy a GCP Google Kubernetes Engine (GKE) cluster and deploy a TiDB cluster on GCP GKE.
 
-To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
+To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Prerequisites
 
@@ -91,7 +91,7 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: pd-custom
-provisioner: kubernetes.io/gce-pd 
+provisioner: kubernetes.io/gce-pd
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 parameters:
@@ -106,7 +106,7 @@ mountOptions:
 
 ### Use local storage
 
-For the production environment, use [zonal persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs). 
+For the production environment, use [zonal persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs).
 
 If you need to simulate bare-metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
