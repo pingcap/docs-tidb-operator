@@ -1,9 +1,9 @@
 ---
-title: Configure a TiDB Cluster in Kubernetes
-summary: Learn how to configure a TiDB cluster in Kubernetes.
+title: Configure a TiDB Cluster on Kubernetes
+summary: Learn how to configure a TiDB cluster on Kubernetes.
 ---
 
-# Configure a TiDB Cluster in Kubernetes
+# Configure a TiDB Cluster on Kubernetes
 
 This document introduces how to configure a TiDB cluster for production deployment. It covers the following content:
 
@@ -17,7 +17,7 @@ This document introduces how to configure a TiDB cluster for production deployme
 
 Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV, and TiDB are the core service components of a TiDB cluster. In a production environment, you need to configure resources of these components according to their needs. For details, refer to [Hardware Recommendations](https://docs.pingcap.com/tidb/stable/hardware-and-software-requirements).
 
-To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level quality of service (QoS) by making `limits` equal to `requests` when configuring resources. For details, refer to [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
+To ensure the proper scheduling and stable operation of the components of the TiDB cluster on Kubernetes, it is recommended to set Guaranteed-level quality of service (QoS) by making `limits` equal to `requests` when configuring resources. For details, refer to [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 
 If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management policy on the node for better performance. In order to allow the TiDB cluster component to monopolize the corresponding CPU resources, the CPU quota must be an integer greater than or equal to `1`, apart from setting Guaranteed-level QoS as mentioned above. For details, refer to [Control CPU Management Policies on the Node](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies).
 
@@ -80,7 +80,7 @@ Different components of a TiDB cluster have different disk requirements. Before 
 
 > **Note:**
 >
-> When you create the TiDB cluster, if you set a storage class that does not exist in the Kubernetes cluster, then the TiDB cluster creation goes to the Pending state. In this situation, you must [destroy the TiDB cluster in Kubernetes](destroy-a-tidb-cluster.md) and retry the creation.
+> When you create the TiDB cluster, if you set a storage class that does not exist in the Kubernetes cluster, then the TiDB cluster creation goes to the Pending state. In this situation, you must [destroy the TiDB cluster on Kubernetes](destroy-a-tidb-cluster.md) and retry the creation.
 
 #### Multiple disks mounting
 
@@ -782,7 +782,7 @@ topologySpreadConstraints:
 
 Before configuring the high availability of data, read [Information Configuration of the Cluster Typology](https://docs.pingcap.com/tidb/stable/schedule-replicas-by-topology-labels) which describes how high availability of TiDB cluster is implemented.
 
-To add the data high availability feature in Kubernetes:
+To add the data high availability feature on Kubernetes:
 
 * Set the label collection of topological location for PD.
 

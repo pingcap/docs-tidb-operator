@@ -5,7 +5,7 @@ summary: Learn how to back up data to Azure Blob Storage using BR.
 
 # Back up Data to Azure Blob Storage Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to Azure Blob Storage. There are two backup types:
+This document describes how to back up the data of a TiDB cluster on Kubernetes to Azure Blob Storage. There are two backup types:
 
 - **Snapshot backup**. With snapshot backup, you can restore a TiDB cluster to the time point of the snapshot backup using [full restoration](restore-from-azblob-using-br.md#full-restoration).
 - **Log backup**. With snapshot backup and log backup, you can restore a TiDB cluster to any point in time. This is also known as [Point-in-Time Recovery (PITR)](restore-from-azblob-using-br.md#point-in-time-recovery).

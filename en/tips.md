@@ -1,11 +1,11 @@
 ---
-title: Tips for troubleshooting TiDB in Kubernetes
-summary: Learn the commonly used tips for troubleshooting TiDB in Kubernetes.
+title: Tips for troubleshooting TiDB on Kubernetes
+summary: Learn the commonly used tips for troubleshooting TiDB on Kubernetes.
 ---
 
-# Tips for troubleshooting TiDB in Kubernetes
+# Tips for troubleshooting TiDB on Kubernetes
 
-This document describes the commonly used tips for troubleshooting TiDB in Kubernetes.
+This document describes the commonly used tips for troubleshooting TiDB on Kubernetes.
 
 ## Use the debug mode
 

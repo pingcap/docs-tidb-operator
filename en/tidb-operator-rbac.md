@@ -5,7 +5,7 @@ summary: Introduces the RBAC rules required by TiDB Operator.
 
 # RBAC rules required by TiDB Operator
 
-The [role-based access control (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) rules implemented in Kubernetes use Role or ClusterRole for management, and use RoleBinding or ClusterRoleBinding to grant permissions to a user or a group of users.
+The [role-based access control (RBAC)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) rules implemented on Kubernetes use Role or ClusterRole for management, and use RoleBinding or ClusterRoleBinding to grant permissions to a user or a group of users.
 
 ## Manage TiDB clusters at the cluster level
 
@@ -64,7 +64,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 > **Note:**
 >
-> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs.
 > * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 > * In the **Actions** column, `*` indicates that the resource supports all actions that can be performed on a Kubernetes cluster.
 
@@ -85,10 +85,10 @@ The following table lists the permissions corresponding to the `tidb-scheduler` 
 
 > **Note:**
 >
-> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs.
 > * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 
-## Manage TiDB clusters at the namespace level 
+## Manage TiDB clusters at the namespace level
 
 If `clusterScoped=false` is set during the TiDB Operator deployment, TiDB Operator manages TiDB clusters at the Namespace level.
 
@@ -144,7 +144,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 > **Note:**
 >
-> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs.
 > * In the **Resource name** column, `-` indicates that the item does not have a resource name.
 
 ### `tidb-controller-manager` Role permissions
@@ -174,7 +174,7 @@ The following table lists the permissions corresponding to the `tidb-controller-
 
 > **Note:**
 >
-> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs.
 > * In the **Resource names** column, `-` indicates that the item does not have a resource name.
 > * In the **Actions** column, `*` indicates that the resource supports all actions that can be performed on a Kubernetes cluster.
 
@@ -195,5 +195,5 @@ The following table lists the permissions corresponding to the `tidb-scheduler` 
 
 > **Note:**
 >
-> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs. 
+> * In the **Non-resource URLs** column, `-` indicates that the item does not have non-resource URLs.
 > * In the **Resource name** column, `-` indicates that the item does not have a resource name.

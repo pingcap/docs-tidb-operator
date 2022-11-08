@@ -1,15 +1,15 @@
 ---
 title: Enable TLS for DM
-summary: Learn how to enable TLS for DM in Kubernetes.
+summary: Learn how to enable TLS for DM on Kubernetes.
 ---
 
 # Enable TLS for DM
 
-This document describes how to enable TLS between components of the DM cluster in Kubernetes and how to use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client.
+This document describes how to enable TLS between components of the DM cluster on Kubernetes and how to use DM to migrate data between MySQL/TiDB databases that enable TLS for the MySQL client.
 
 ## Enable TLS between DM components
 
-Starting from v1.2, TiDB Operator supports enabling TLS between components of the DM cluster in Kubernetes.
+Starting from v1.2, TiDB Operator supports enabling TLS between components of the DM cluster on Kubernetes.
 
 To enable TLS between components of the DM cluster, perform the following steps:
 
@@ -274,7 +274,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
 1. Install `cert-manager`.
 
-    Refer to [cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html) for details.
+    Refer to [cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html) for details.
 
 2. Create an Issuer to issue certificates to the DM cluster.
 

@@ -1,11 +1,11 @@
 ---
-title: Destroy TiDB Clusters in Kubernetes
-summary: Learn how to delete TiDB Cluster in Kubernetes.
+title: Destroy TiDB Clusters on Kubernetes
+summary: Learn how to delete TiDB Cluster on Kubernetes.
 ---
 
-# Destroy TiDB Clusters in Kubernetes
+# Destroy TiDB Clusters on Kubernetes
 
-This document describes how to destroy TiDB clusters in Kubernetes.
+This document describes how to destroy TiDB clusters on Kubernetes.
 
 ## Destroy a TiDB cluster managed by `TidbCluster`
 

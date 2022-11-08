@@ -5,11 +5,11 @@ summary:  Learn how to deploy TiFlash, the TiDB HTAP storage engine, on Kubernet
 
 # Deploy the HTAP Storage Engine Tiflash for an Existing TiDB Cluster
 
-This document describes how to add or remove the TiDB HTAP storage engine TiFlash for an existing TiDB cluster in Kubernetes. As a columnar storage extension of TiKV, TiFlash provides both good isolation level and strong consistency guarantee.
+This document describes how to add or remove the TiDB HTAP storage engine TiFlash for an existing TiDB cluster on Kubernetes. As a columnar storage extension of TiKV, TiFlash provides both good isolation level and strong consistency guarantee.
 
 > **Note**:
 >
-> If a TiDB cluster has not been deployed yet, instead of referring to this document, you can [configure a TiDB cluster in Kubernetes](configure-a-tidb-cluster.md) with the TiFlash-related parameters, and then [deploy the TiDB cluster](deploy-on-general-kubernetes.md).
+> If a TiDB cluster has not been deployed yet, instead of referring to this document, you can [configure a TiDB cluster on Kubernetes](configure-a-tidb-cluster.md) with the TiFlash-related parameters, and then [deploy the TiDB cluster](deploy-on-general-kubernetes.md).
 
 ## Usage scenarios
 
@@ -158,7 +158,7 @@ If your TiDB cluster no longer needs the TiDB HTAP storage engine TiFlash, take 
 
     To completely remove TiFlash, you need to set the number of replicas of all tables replicated to the TiFlash to `0`.
 
-    1. To connect to the TiDB service, refer to the steps in [Access the TiDB Cluster in Kubernetes](access-tidb.md).
+    1. To connect to the TiDB service, refer to the steps in [Access the TiDB Cluster on Kubernetes](access-tidb.md).
 
     2. To adjust the number of replicas of the tables replicated to the TiFlash cluster, run the following command:
 

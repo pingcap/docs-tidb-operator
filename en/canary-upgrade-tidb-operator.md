@@ -1,6 +1,6 @@
 ---
 title: Perform a Canary Upgrade on TiDB Operator
-summary: Learn how to perform a canary upgrade on TiDB Operator in Kubernetes. Canary upgrade avoids the unpredictable impact of a TiDB Operator upgrade on all TiDB clusters in the entire Kubernetes cluster.
+summary: Learn how to perform a canary upgrade on TiDB Operator on Kubernetes. Canary upgrade avoids the unpredictable impact of a TiDB Operator upgrade on all TiDB clusters in the entire Kubernetes cluster.
 ---
 
 # Perform a Canary Upgrade on TiDB Operator

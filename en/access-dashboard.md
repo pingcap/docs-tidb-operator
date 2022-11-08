@@ -1,13 +1,13 @@
 ---
 title: Access TiDB Dashboard
-summary: Learn how to access TiDB Dashboard in Kubernetes.
+summary: Learn how to access TiDB Dashboard on Kubernetes.
 ---
 
 # Access TiDB Dashboard
 
 TiDB Dashboard is a visualized tool introduced since TiDB v4.0 and is used to monitor and diagnose TiDB clusters. For details, see [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-intro).
 
-This document describes how to access TiDB Dashboard in Kubernetes.
+This document describes how to access TiDB Dashboard on Kubernetes.
 
 - In a test environment, you can [access TiDB Dashboard by port forward](#method-1-access-tidb-dashboard-by-port-forward).
 - In a production environment, it is recommended to [access TiDB Dashboard by Ingress](#method-2-access-tidb-dashboard-by-ingress). You can also enable the TLS transfer. See [Use Ingress with TLS](#use-ingress-with-tls) for details.
@@ -25,7 +25,7 @@ In this document, you can use the Discovery service to access TiDB Dashboard. Ti
 
 ## Prerequisites
 
-To access TiDB Dashboard smoothly in Kubernetes, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster (v4.0.1 or later versions).
+To access TiDB Dashboard smoothly on Kubernetes, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster (v4.0.1 or later versions).
 
 You need to configure the `TidbCluster` object file as follows to enable quick access to TiDB Dashboard:
 
@@ -45,7 +45,7 @@ spec:
 >
 > This guide shows how to quickly access TiDB Dashboard. Do **NOT** use this method in the production environment. For production environments, refer to [Access TiDB Dashboard by Ingress](#method-2-access-tidb-dashboard-by-ingress).
 
-TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You can refer to the following example to quickly deploy a TiDB cluster in Kubernetes.
+TiDB Dashboard is built in the PD component in TiDB 4.0 and later versions. You can refer to the following example to quickly deploy a TiDB cluster on Kubernetes.
 
 1. Deploy the following example `.yaml` file into the Kubernetes cluster by running the `kubectl apply -f` command:
 

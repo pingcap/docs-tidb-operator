@@ -1,11 +1,11 @@
 ---
-title: TiDB in Kubernetes Documentation
-summary: Learn about TiDB in Kubernetes documentation.
+title: TiDB on Kubernetes Documentation
+summary: Learn about TiDB on Kubernetes documentation.
 hide_sidebar: true
 hide_commit: true
 ---
 
-<LearningPathContainer platform="tidb-operator" title="TiDB in Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly in the Kubernetes clusters deployed on a public cloud or on premises.">
+<LearningPathContainer platform="tidb-operator" title="TiDB on Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly on the Kubernetes clusters deployed on a public cloud or on premises.">
 
 <LearningPath label="Learn" icon="cloud1">
 

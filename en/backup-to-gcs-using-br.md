@@ -5,7 +5,7 @@ summary: Learn how to back up data to Google Cloud Storage (GCS) using BR.
 
 # Back up Data to GCS Using BR
 
-This document describes how to back up the data of a TiDB cluster in Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS).
+This document describes how to back up the data of a TiDB cluster on Kubernetes to [Google Cloud Storage](https://cloud.google.com/storage/docs/) (GCS).
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 

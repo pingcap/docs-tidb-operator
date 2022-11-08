@@ -106,7 +106,7 @@ kubectl cordon -l alpha.eksctl.io/nodegroup-name=${origin_nodegroup2}
 
 ## Step 3: Rolling restart the TiDB cluster
 
-Refer to [Restart a TiDB Cluster in Kubernetes](restart-a-tidb-cluster.md#perform-a-graceful-rolling-restart-to-all-pods-in-a-component) and perform a rolling restart on the TiDB cluster.
+Refer to [Restart a TiDB Cluster on Kubernetes](restart-a-tidb-cluster.md#perform-a-graceful-rolling-restart-to-all-pods-in-a-component) and perform a rolling restart on the TiDB cluster.
 
 ## Step 4: Delete the original node groups
 

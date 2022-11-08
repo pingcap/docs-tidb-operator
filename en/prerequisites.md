@@ -1,11 +1,11 @@
 ---
-title: Prerequisites for TiDB in Kubernetes
-summary: Learn the prerequisites for TiDB in Kubernetes.
+title: Prerequisites for TiDB on Kubernetes
+summary: Learn the prerequisites for TiDB on Kubernetes.
 ---
 
-# Prerequisites for TiDB in Kubernetes
+# Prerequisites for TiDB on Kubernetes
 
-This document introduces the hardware and software prerequisites for deploying a TiDB cluster in Kubernetes.
+This document introduces the hardware and software prerequisites for deploying a TiDB cluster on Kubernetes.
 
 ## Software version
 
