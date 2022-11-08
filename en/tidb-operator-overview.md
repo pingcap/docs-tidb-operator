@@ -36,7 +36,7 @@ TiDB Operator provides several ways to deploy TiDB clusters on Kubernetes:
 
     - In an existing Kubernetes cluster:
 
-        First install TiDB Operator in a Kubernetes cluster according to [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md), then deploy your TiDB clusters according to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
+        First install TiDB Operator on a Kubernetes cluster according to [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md), then deploy your TiDB clusters according to [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
 
         You also need to adjust the configuration of the Kubernetes cluster based on [Prerequisites for TiDB on Kubernetes](prerequisites.md) and configure the local PV for your Kubernetes cluster to achieve low latency of local storage for TiKV according to [Local PV Configuration](configure-storage-class.md#local-pv-configuration).
 

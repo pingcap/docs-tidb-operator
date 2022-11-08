@@ -214,7 +214,7 @@ Deploy TiDB Operator in the AKS cluster by referring to [*Deploy TiDB Operator* 
 
 ## Deploy a TiDB cluster and the monitoring component
 
-This section describes how to deploy a TiDB cluster and its monitoring component in Azure AKS.
+This section describes how to deploy a TiDB cluster and its monitoring component on Azure AKS.
 
 ### Create namespace
 
