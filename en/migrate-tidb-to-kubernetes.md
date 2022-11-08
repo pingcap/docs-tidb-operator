@@ -45,7 +45,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
     64 bytes from basic-pd-2.basic-pd-peer.blade.svc (10.24.66.178): icmp_seq=4 ttl=61 time=0.157 ms
     ```
 
-## Step 2: Create a TiDB cluster in Kubernetes
+## Step 2: Create a TiDB cluster on Kubernetes
 
 1. Get the PD node address and port of the source cluster via [PD Control](https://docs.pingcap.com/tidb/stable/pd-control):
 
@@ -55,7 +55,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
     pd-ctl -u http://<address>:<port> member | jq '.members | .[] | .client_urls'
     ```
 
-2. Create the target TiDB cluster in Kubernetes, which must have at least 3 TiKV nodes. Specify the PD node address of the source cluster in the `spec.pdAddresses` field (starting with `http://`):
+2. Create the target TiDB cluster on Kubernetes, which must have at least 3 TiKV nodes. Specify the PD node address of the source cluster in the `spec.pdAddresses` field (starting with `http://`):
 
     ```yaml
     spec
@@ -79,7 +79,7 @@ This document describes how to migrate a TiDB cluster deployed in the physical o
         pd-ctl -u http://<address>:<port> store | jq '.stores | .[] | .store.state_name'
         ```
 
-    - [Access the TiDB cluster in Kubernetes](access-tidb.md) via MySQL client.
+    - [Access the TiDB cluster on Kubernetes](access-tidb.md) via MySQL client.
 
 ## Step 3: Scale in the TiDB nodes of the source cluster
 

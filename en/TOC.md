@@ -1,13 +1,13 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [TiDB in Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
+- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
   - [Overview](tidb-operator-overview.md)
   - [What's New in v1.3](whats-new-in-v1.3.md)
 - [Get Started](get-started.md)
 - Deploy
-  - In Self-Managed Kubernetes
+  - On Self-Managed Kubernetes
     - [Prerequisites](prerequisites.md)
     - [Configure Storage Class](configure-storage-class.md)
     - [Deploy TiDB Operator](deploy-tidb-operator.md)
@@ -15,7 +15,7 @@
     - [Deploy a TiDB Cluster](deploy-on-general-kubernetes.md)
     - [Initialize a TiDB Cluster](initialize-a-cluster.md)
     - [Access a TiDB Cluster](access-tidb.md)
-  - In Public Cloud Kubernetes
+  - On Public Cloud Kubernetes
     - [Amazon EKS](deploy-on-aws-eks.md)
     - [GCP GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)

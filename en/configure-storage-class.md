@@ -1,12 +1,12 @@
 ---
-title: Persistent Storage Class Configuration in Kubernetes
+title: Persistent Storage Class Configuration on Kubernetes
 summary: Learn how to configure local PVs and network PVs.
 aliases: ['/docs/tidb-in-kubernetes/dev/configure-storage-class/','/docs/dev/tidb-in-kubernetes/reference/configuration/local-pv/']
 ---
 
-# Persistent Storage Class Configuration in Kubernetes
+# Persistent Storage Class Configuration on Kubernetes
 
-TiDB cluster components such as PD, TiKV, TiDB monitoring, TiDB Binlog, and `tidb-backup` require the persistent storage of data. To persist the data in Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports several types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which are mainly divided into two parts:
+TiDB cluster components such as PD, TiKV, TiDB monitoring, TiDB Binlog, and `tidb-backup` require the persistent storage of data. To persist the data on Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports several types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which are mainly divided into two parts:
 
 - Network storage
 
@@ -222,7 +222,7 @@ Steps of offline deployment is same as online deployment, except the following:
 - For I/O isolation, a dedicated physical disk per PV is recommended to ensure hardware-based isolation.
 - For capacity isolation, a partition per PV or a physical disk per PV is recommended.
 
-For more information on local PV in Kubernetes, refer to [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md).
+For more information on local PV on Kubernetes, refer to [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md).
 
 ## Data safety
 

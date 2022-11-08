@@ -16,7 +16,7 @@ This document is applicable to scenarios in which you need to create differentia
 
 ## Prerequisites
 
-You already have a TiDB cluster. If not, [deploy a TiDB cluster in Kubernetes](deploy-on-general-kubernetes.md) first.
+You already have a TiDB cluster. If not, [deploy a TiDB cluster on Kubernetes](deploy-on-general-kubernetes.md) first.
 
 ## Deploy a heterogeneous cluster
 
