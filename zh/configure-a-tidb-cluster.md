@@ -69,13 +69,13 @@ PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组�
 
 #### startScriptVersion
 
-为了优化各个组件的启动脚本，并且确保在升级 TiDB Operator 后不会导致集群滚动重启，集群配置中增加了 `spec.startScriptVersion` 字段，用于选择各个组件的不同版本的启动脚本。
+你可以配置 `spec.startScriptVersion` 字段，用于选择各个组件的不同版本的启动脚本。
 
 目前支持的启动脚本的版本如下：
 
 * `v1`：默认值，最初版本的启动脚本。
 
-* `v2`：自 TiDB Operator v1.4.0 起支持 `v2`。
+* `v2`：为了优化各个组件的启动脚本，并且确保在升级 TiDB Operator 后不会导致集群滚动重启，自 TiDB Operator v1.4.0 起新增 `v2` 版本。相比于 `v1`，`v2` 有以下优化：
 
     * 使用 `dig` 命令替换 `nslookup` 命令来解析 DNS。
     * 所有组件都支持[诊断模式](tips.md#诊断模式)。
