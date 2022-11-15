@@ -72,18 +72,18 @@ PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled 
 
 #### startScriptVersion
 
-In order to optimize the startup scripts of each component and not cause the rolling restart of the cluster after upgrading the Operator, the cluster spec add the `spec.startScriptVersion` to choose the different versions of the startup scripts for each component.
+To choose the different versions of the startup scripts for each component, you can configure the `spec.startScriptVersion` field in the cluster spec.
 
-Versions of the start script are as follows:
+The supported versions of the start script are as follows:
 
-* `v1`: the default value and the original version of the startup script
+* `v1` (default): the original version of the startup script.
 
-* `v2`: (Operator version >= 1.4.0) add the following optimizations:
+* `v2`: to optimize the start script for each component and make sure that upgrading TiDB Operator does not result in cluster rolling restart, TiDB Operator v1.4.0 introduces `v2`. Compared to `v1`, `v2` has the following optimizations:
 
-    * Use 'dig' instead of 'nslookup' to resolve DNS.
+    * Use `dig` instead of `nslookup` to resolve DNS.
     * All components support [debug mode](tips.md#use-the-debug-mode).
 
-It is recommended that you configure `spec.startScriptVersion` as the latest version for the new cluster.
+It is recommended that you configure `spec.startScriptVersion` as the latest version (`v2`) for the new cluster.
 
 > **Warning:**
 >
