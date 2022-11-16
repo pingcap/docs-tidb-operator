@@ -1,20 +1,24 @@
 ---
 title: 挂起 TiDB 集群
-summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
+summary: 了解如何通过配置挂起 Kubernetes 上的 TiDB 集群。
 ---
 
-本文介绍如何通过配置 `TidbCluster` 对象来挂起 Kubernetes 上的 TiDB 集群。挂起集群指的是：保留 `TidbCluster` 对象，并停止所有组件或者某个组件的 Pod，其他资源（例如 Service、PVC 等）都会被保留。
+# 挂起 TiDB 集群
 
-在某些测试场景下，你可以在不使用 TiDB 集群时挂起集群，以节省资源。
+本文介绍如何通过配置 `TidbCluster` 对象来挂起 Kubernetes 上的 TiDB 集群，或挂起 TiDB 集群组件。挂起集群后，你可以停止所有组件或某个组件的 Pod，保留 `TidbCluster` 对象以及其他资源（例如 Service、PVC 等）。
+
+在某些测试场景下，如果你需要节省资源，你可以在不使用 TiDB 集群时挂起集群，
 
 > **注意：**
 >
-> 要求 TiDB Operator 版本 >= 1.3.7
+> 挂起 TiDB 集群，要求 TiDB Operator 版本 >= 1.3.7。
 
-## 挂起 TiDB 集群
+## 配置挂起 TiDB 集群
 
-1. 通过配置 `TidbCluster` 对象的 `spec.suspendAction` 字段来挂起整个 TiDB 集群。
-   
+如果你需要挂起 TiDB 集群，执行以下步骤：
+
+1. 在 `TidbCluster` 对象中，配置 `spec.suspendAction` 字段，挂起整个 TiDB 集群：
+
     ```yaml
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
@@ -40,12 +44,10 @@ summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
         suspendAction:
           suspendStatefulSet: true
       # ...
-    ``` 
+    ```
 
 2. 挂起 TiDB 集群后，通过以下命令观察到挂起的组件的 Pod 逐步被删除。
-   
-    {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl -n ${namespace} get pods
     ```
@@ -58,10 +60,12 @@ summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
     * TiKV
     * Pump
     * PD
-  
+
 ## 恢复 TiDB 集群
 
-1. 通过配置 `TidbCluster` 对象的 `spec.suspendAction` 字段来恢复整个 TiDB 集群。
+在 TiDB 集群或组件被挂起后，如果你需要恢复 TiDB 集群，执行以下步骤：
+
+1. 在 `TidbCluster` 对象中，配置 `spec.suspendAction` 字段，恢复被挂起的整个 TiDB 集群：
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -74,7 +78,7 @@ summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
         suspendStatefulSet: false
       # ...
     ```
-  
+
     TiDB Operator 也支持恢复一个或多个 TiDB 集群的组件。以 TiKV 为例，通过配置 `TidbCluster` 对象的 `spec.tikv.suspendAction` 字段来恢复 TiDB 集群中的 TiKV。
 
     ```yaml
@@ -88,12 +92,10 @@ summary: 介绍如何通过配置挂起 Kubernetes 上的 TiDB 集群
         suspendAction:
           suspendStatefulSet: false
       # ...
-    ``` 
+    ```
 
 2. 恢复 TiDB 集群后，通过以下命令观察到挂起的组件的 Pod 逐步被创建。
-   
-    {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl -n ${namespace} get pods
     ```
