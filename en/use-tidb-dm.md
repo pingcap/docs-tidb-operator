@@ -1,16 +1,16 @@
 ---
-title: Use DM in Kubernetes
-summary: Learn how to migrate MySQL data to TiDB cluster using DM in Kubernetes.
+title: Use DM on Kubernetes
+summary: Learn how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 ---
 
-# Use DM in Kubernetes
+# Use DM on Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM in Kubernetes.
+[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 
 ## Prerequisites
 
 * Complete [deploying TiDB Operator](deploy-tidb-operator.md).
-* Complete [deploying DM in Kubernetes](deploy-tidb-dm.md).
+* Complete [deploying DM on Kubernetes](deploy-tidb-dm.md).
 
 > **Note:**
 >
@@ -22,7 +22,7 @@ You can access the DM-master service using dmctl in the following two methods:
 
 **Method #1**: Attach to the DM-master or DM-worker Pod to use the built-in `dmctl` in the image.
 
-**Method #2**: Expose the DM-master service by [accessing the DM cluster in Kubernetes](deploy-tidb-dm.md#access-the-dm-cluster-in-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
+**Method #2**: Expose the DM-master service by [accessing the DM cluster on Kubernetes](deploy-tidb-dm.md#access-the-dm-cluster-on-kubernetes) and use `dmctl` outside the pods to access the exposed DM-master service.
 
 It is recommended to use **Method #1** for migration. The following steps take **Method #1** as an example to introduce how to start a DM data migration task.
 
@@ -64,7 +64,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
 
 3. In the `task.yaml` file, take the following steps:
 
-    - Add the `loaders.${customized_name}.dir` field as the import and export directory for the full volume data, where `${customized_name}` is a name that you can customize. 
+    - Add the `loaders.${customized_name}.dir` field as the import and export directory for the full volume data, where `${customized_name}` is a name that you can customize.
     - Configure the `loaders.${customized_name}.dir` field as the subdirectory of the persistent volume in the Pod `/var/lib/dm-worker` directory. For example, `/var/lib/dm-worker/dumped_data`.
     - Reference `${customized_name}` in the instance configuration. For example, `mysql-instances[0].loader-config-name: "{customized_name}"`.
 

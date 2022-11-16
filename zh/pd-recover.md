@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/pd-recover/']
 
 # 使用 PD Recover 恢复 PD 集群
 
-PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。该工具的详细介绍参见 [TiDB 文档 - PD Recover](https://pingcap.com/docs-cn/stable/reference/tools/pd-recover)。本文档介绍如何下载 PD Recover 工具，以及如何使用该工具恢复 PD 集群。
+PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。该工具的详细介绍参见 [TiDB 文档 - PD Recover](https://docs.pingcap.com/zh/tidb/stable/pd-recover)。本文档介绍如何下载 PD Recover 工具，以及如何使用该工具恢复 PD 集群。
 
 ## 下载 PD Recover
 
@@ -115,12 +115,12 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl patch sts ${cluster_name}-pd -n ${namespace} -p '{"spec":{"replicas": 1}}'
     ```
 
-    通过如下命令确认 PD Pod 已经启动：
+    通过如下命令确认 PD 已经启动：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get pod -n ${namespace}
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
     ```
 
 ### 第 4 步：使用 PD Recover 恢复 PD 集群

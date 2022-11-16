@@ -1,10 +1,10 @@
 ---
-title: TiDB Log Collection in Kubernetes
+title: TiDB Log Collection on Kubernetes
 summary: Learn the methods of collecting logs of TiDB and its related components.
 aliases: ['/docs/tidb-in-kubernetes/dev/collect-tidb-logs/']
 ---
 
-# TiDB Log Collection in Kubernetes
+# TiDB Log Collection on Kubernetes
 
 The system and application logs can be useful for troubleshooting issues and automating operations. This article briefly introduces the methods of collecting logs of TiDB and its related components.
 

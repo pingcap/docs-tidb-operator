@@ -1,11 +1,11 @@
 ---
-title: Common Cluster Exceptions of TiDB in Kubernetes
-summary: Learn the common exceptions during the operation of TiDB clusters in Kubernetes and their solutions.
+title: Common Cluster Exceptions of TiDB on Kubernetes
+summary: Learn the common exceptions during the operation of TiDB clusters on Kubernetes and their solutions.
 ---
 
-# Common Cluster Exceptions of TiDB in Kubernetes
+# Common Cluster Exceptions of TiDB on Kubernetes
 
-This document describes the common exceptions during the operation of TiDB clusters in Kubernetes and their solutions.
+This document describes the common exceptions during the operation of TiDB clusters on Kubernetes and their solutions.
 
 ## TiKV Store is in `Tombstone` status abnormally
 

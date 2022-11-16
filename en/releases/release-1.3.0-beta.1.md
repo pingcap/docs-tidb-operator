@@ -33,8 +33,8 @@ TiDB Operator version: 1.3.0-beta.1
 - Support `PodSecurityContext` and other configurations for Discovery ([#4259](https://github.com/pingcap/tidb-operator/pull/4259), [@csuzhangxc](https://github.com/csuzhangxc), [#4208](https://github.com/pingcap/tidb-operator/pull/4208), [@KanShiori](https://github.com/KanShiori))
 - Support configuring `PodManagementPolicy` in TidbCluster CR ([#4211](https://github.com/pingcap/tidb-operator/pull/4211), [@mianhk](https://github.com/mianhk))
 - Support configuring Prometheus shards in TidbMonitor CR ([#4198](https://github.com/pingcap/tidb-operator/pull/4198), [@mikechengwei](https://github.com/mikechengwei))
-- Support deploying TiDB Operator in Kubernetes v1.22 or later versions ([#4195](https://github.com/pingcap/tidb-operator/pull/4195), [#4202](https://github.com/pingcap/tidb-operator/pull/4202), [@KanShiori](https://github.com/KanShiori))
-- Generate v1 CRD to support deploying in Kubernetes v1.22 or later versions ([#4151](https://github.com/pingcap/tidb-operator/pull/4151), [@KanShiori](https://github.com/KanShiori))
+- Support deploying TiDB Operator on Kubernetes v1.22 or later versions ([#4195](https://github.com/pingcap/tidb-operator/pull/4195), [#4202](https://github.com/pingcap/tidb-operator/pull/4202), [@KanShiori](https://github.com/KanShiori))
+- Generate v1 CRD to support deploying on Kubernetes v1.22 or later versions ([#4151](https://github.com/pingcap/tidb-operator/pull/4151), [@KanShiori](https://github.com/KanShiori))
 
 ## Improvements
 

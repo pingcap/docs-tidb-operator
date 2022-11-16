@@ -1,6 +1,6 @@
 ---
 title: Deploy Monitoring and Alerts for a TiDB Cluster
-summary: Learn how to monitor a TiDB cluster in Kubernetes.
+summary: Learn how to monitor a TiDB cluster on Kubernetes.
 aliases: ['/docs/tidb-in-kubernetes/dev/monitor-a-tidb-cluster/','/docs/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/','/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
 ---
 
@@ -337,6 +337,7 @@ kind: TidbMonitor
 metadata:
   name: basic
 spec:
+  clusterScoped: true
   clusters:
     - name: ns1
       namespace: ns1

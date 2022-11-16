@@ -206,7 +206,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 1. 安装 cert-manager。
 
-    请参考官网安装：[cert-manager installation in Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
+    请参考官网安装：[cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
 
 2. 创建一个 Issuer 用于给 TiDB 集群颁发证书。
 
@@ -677,7 +677,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 ## 第三步：配置 MySQL 客户端使用加密连接
 
-可以根据[官网文档](https://pingcap.com/docs-cn/stable/how-to/secure/enable-tls-clients/#配置-mysql-客户端使用加密连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
+可以根据[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-mysql-client-使用安全连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
 
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
 
@@ -699,4 +699,4 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 >
 > [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 
-最后请参考 [官网文档](https://pingcap.com/docs-cn/stable/enable-tls-between-clients-and-servers/#检查当前连接是否是加密连接) 来验证是否正确开启了 TLS。
+最后请参考 [官网文档](hhttps://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#检查当前连接是否是加密连接) 来验证是否正确开启了 TLS。

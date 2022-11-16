@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-aws-eks/']
 
 This document describes how to deploy a TiDB cluster on AWS Elastic Kubernetes Service (EKS).
 
-To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB in General Kubernetes](deploy-on-general-kubernetes.md).
+To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Prerequisites
 
@@ -33,9 +33,9 @@ To verify whether AWS CLI is configured correctly, run the `aws configure list` 
 
 - Instance types: to gain better performance, the following is recommended:
     - PD nodes: `c5.xlarge`
-    - TiDB nodes: `c5.2xlarge`
-    - TiKV or TiFlash nodes: `r5b.2xlarge`
-- Storage: Because AWS supports the [EBS `gp3`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) volume type, it is recommended to use EBS `gp3`. For `gp3` provisioning, the following is recommended:
+    - TiDB nodes: `c5.4xlarge`
+    - TiKV or TiFlash nodes: `m5.4xlarge`
+- Storage: Because AWS supports the [EBS `gp3`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type) volume type, it is recommended to use EBS `gp3`. For `gp3` provisioning, the following is recommended:
     - TiKV: 400 MiB/s, 4000 IOPS
     - TiFlash: 625 MiB/s, 6000 IOPS
 - AMI type: Amazon Linux 2

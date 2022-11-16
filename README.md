@@ -1,6 +1,6 @@
-# TiDB in Kubernetes Documentation
+# TiDB on Kubernetes Documentation
 
-This repository stores all the source files of [TiDB in Kubernetes documentation](https://pingcap.com/docs/tidb-in-kubernetes/stable/) at the PingCAP website. That is, the documentation for [TiDB Operator](https://github.com/pingcap/tidb-operator).
+This repository stores all the source files of [TiDB on Kubernetes documentation](https://docs.pingcap.com/tidb-in-kubernetes/stable/) at the PingCAP website. That is, the documentation for [TiDB Operator](https://github.com/pingcap/tidb-operator).
 
 Currently, the official documentation supports two languages:
 
@@ -15,7 +15,7 @@ You can use Google Translate to view the documentation in different languages. F
 
 ## Documentation versions
 
-Currently, we maintain the following versions for TiDB in Kubernetes documentation, each with a separate branch:
+Currently, we maintain the following versions for TiDB on Kubernetes documentation, each with a separate branch:
 
 | Branch name | Version description |
 | :--- | :-- |
@@ -25,5 +25,5 @@ Currently, we maintain the following versions for TiDB in Kubernetes documentati
 
 > **Note:**
 >
-> - Previously, we maintain the TiDB in Kubernetes documentation in the [docs](https://github.com/pingcap/docs) and [docs-cn](https://github.com/pingcap/docs-cn) repository.
-> - Since March 31, 2020, all the TiDB in Kubernetes documentation has been moved to this repository, and maintained based on versions in the branches above.
+> - Previously, we maintain the TiDB on Kubernetes documentation in the [docs](https://github.com/pingcap/docs) and [docs-cn](https://github.com/pingcap/docs-cn) repository.
+> - Since March 31, 2020, all the TiDB on Kubernetes documentation has been moved to this repository, and maintained based on versions in the branches above.

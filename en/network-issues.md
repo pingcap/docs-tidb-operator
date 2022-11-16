@@ -1,11 +1,11 @@
 ---
-title: Common Network Issues of TiDB in Kubernetes
-summary: Learn the common network issues of TiDB in Kubernetes and their solutions.
+title: Common Network Issues of TiDB on Kubernetes
+summary: Learn the common network issues of TiDB on Kubernetes and their solutions.
 ---
 
-# Common Network Issues of TiDB in Kubernetes
+# Common Network Issues of TiDB on Kubernetes
 
-This document describes the common network issues of TiDB in Kubernetes and their solutions.
+This document describes the common network issues of TiDB on Kubernetes and their solutions.
 
 ## Network connection failure between Pods
 

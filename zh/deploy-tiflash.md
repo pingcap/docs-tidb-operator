@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 本文介绍在 Kubernetes 上如何为已有的 TiDB 集群部署或删除 TiDB HTAP 存储引擎 TiFlash。TiFlash 是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了与 TiKV 的强一致性。
 
-> **注意**:
+> **注意：**
 >
 > 如果尚未部署 TiDB 集群, 你可以在[配置 TiDB 集群](configure-a-tidb-cluster.md)时增加 TiFlash 相关配置，然后[部署 TiDB 集群](deploy-on-general-kubernetes.md)，因此无需参考本文。
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 如果你需要在现有的 TiDB 集群上部署 TiFlash 组件，请进行以下操作：
 
-> **注意:**
+> **注意：**
 >
 > 如果服务器没有外网，请参考[部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群)在有外网的机器上将 `pingcap/tiflash` Docker 镜像下载下来并上传到服务器上, 然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
@@ -71,7 +71,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
           storageClassName: local-storage
     ```
 
-    > **注意**:
+    > **注意：**
     >
     > - 建议第一次部署 TiFlash 时规划好使用几个 PV，配置好 `storageClaims` 中`resources` 项的个数。
     > - 当 TiFlash 组件部署完成后，如果你需要为 TiFlash 挂载额外的 PV，直接更新 `storageClaims` 添加磁盘不会生效。因为 TiDB Operator 是通过创建 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) 管理 TiFlash 的，而 `StatefulSet` 创建后不支持修改 `volumeClaimTemplates`。
@@ -95,7 +95,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
     要获取更多可配置的 TiFlash 配置参数，请参考 [TiFlash 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiflash-configuration)。
 
-    > **注意:**
+    > **注意：**
     >
     > 针对不同 TiFlash 版本，请注意以下配置区别：
     >
@@ -107,7 +107,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tiflash/']
 
 当 TiFlash 组件部署完成后，如果要为 TiFlash 新增 PV，你需要在更新 `storageClaims` 添加磁盘后，手动删除 TiFlash StatefulSet。具体操作如下：
 
-> **警告**:
+> **警告：**
 >
 > 删除 TiFlash StatefulSet 将会导致 TiFlash 集群在删除期间不可用并影响相关业务，请谨慎选择是否要进行以下操作。
 

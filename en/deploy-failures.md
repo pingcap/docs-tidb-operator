@@ -1,11 +1,11 @@
 ---
-title: Common Deployment Failures of TiDB in Kubernetes
-summary: Learn the common deployment failures of TiDB in Kubernetes and their solutions.
+title: Common Deployment Failures of TiDB on Kubernetes
+summary: Learn the common deployment failures of TiDB on Kubernetes and their solutions.
 ---
 
-# Common Deployment Failures of TiDB in Kubernetes
+# Common Deployment Failures of TiDB on Kubernetes
 
-This document describes the common deployment failures of TiDB in Kubernetes and their solutions.
+This document describes the common deployment failures of TiDB on Kubernetes and their solutions.
 
 ## The Pod is not created normally
 

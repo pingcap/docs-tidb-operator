@@ -15,7 +15,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
 
 * If your TiDB operator is v1.3.1 or later, you don't need to do the following to change images.
 
-* If your TiDB operator is earlier than v1.3.1, the process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator in Kubernetes](deploy-tidb-operator.md). The only difference is that, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. 
+* If your TiDB operator is earlier than v1.3.1, the process of deploying TiDB operator on ARM64 machines is the same as the process of [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md). The only difference is that, you should change the following configuration in the step [Customize TiDB operator deployment](deploy-tidb-operator.md#customize-tidb-operator-deployment): after getting the `values.yaml` file of the `tidb-operator` chart, you need to modify the `operatorImage` and `tidbBackupManagerImage` fields in that file to the ARM64 image versions. 
   
   ```yaml
   # ...
@@ -38,7 +38,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
     name: ${cluster_name}
     namespace: ${cluster_namespace}
   spec:
-    version: "v5.4.1"
+    version: "v6.1.0"
     # ...
     helper:
       image: busybox:1.33.0
@@ -65,7 +65,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
 
 ## Initialize a TiDB cluster
 
-The process of initializing a TiDB cluster on ARM64 machines is the same as the process of [Initialize a TiDB Cluster in Kubernetes](initialize-a-cluster.md). The only difference is that you need to modify the `spec.image` field in the TidbInitializer definition file to the ARM64 image version. For example:
+The process of initializing a TiDB cluster on ARM64 machines is the same as the process of [Initialize a TiDB Cluster on Kubernetes](initialize-a-cluster.md). The only difference is that you need to modify the `spec.image` field in the TidbInitializer definition file to the ARM64 image version. For example:
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1

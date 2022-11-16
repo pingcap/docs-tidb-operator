@@ -1,11 +1,11 @@
 ---
 title: Backup and Restore Overview
-summary: Learn how to perform backup and restore on the TiDB cluster in Kubernetes using BR, Dumpling, and TiDB Lightning.
+summary: Learn how to perform backup and restore on the TiDB cluster on Kubernetes using BR, Dumpling, and TiDB Lightning.
 ---
 
 # Backup and Restore Overview
 
-This document describes how to perform backup and restore on the TiDB cluster in Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
+This document describes how to perform backup and restore on the TiDB cluster on Kubernetes. To back up and restore your data, you can use the Dumpling, TiDB Lightning, and Backup & Restore (BR) tools.
 
 [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is a data export tool, which exports data stored in TiDB or MySQL as SQL or CSV data files. You can use Dumpling to make a logical full backup or export.
 
@@ -29,6 +29,7 @@ Refer to the following documents for more information:
 - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
 - [Back up Data to Azure Blob Storage Using BR](backup-to-azblob-using-br.md)
 - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
+- [Back up Data Using EBS Snapshots](backup-to-aws-s3-by-snapshot.md)
 
 If you have the following backup needs, you can use Dumpling to make a backup of the TiDB cluster data:
 
@@ -49,6 +50,7 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the 
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
+- [Restore Data Using EBS Snapshots](restore-from-aws-s3-by-snapshot.md)
 
 To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
@@ -57,9 +59,9 @@ To restore data from SQL or CSV files exported by Dumpling or other compatible d
 
 ## Backup and restore process
 
-To make a backup of the TiDB cluster in Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
+To make a backup of the TiDB cluster on Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
 
-To restore data to the TiDB cluster in Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
+To restore data to the TiDB cluster on Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
 
 After creating the CR object, according to your configuration, TiDB Operator chooses the corresponding tool and performs the backup or restore.
 
@@ -75,6 +77,8 @@ kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
 If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
+
+If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the CR, and cleans up the backup file and the volume snapshots on AWS.
 
 In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup`/`BackupSchedule` CRs and then delete the namespace.
 
@@ -105,4 +109,4 @@ For TiDB Operator v1.2.4 and later versions, you can configure the following fie
     If your S3-compatible backend storage does not support the `DeleteObjects` API, the default concurrent batch deletion method fails. You need to configure this field to `true` to use the concurrent deletion method.
 
 * `.spec.cleanOption.batchConcurrency`: Specifies the number of goroutines to start for the concurrent batch deletion method. The default value is `10`.
-* `.spec.cleanOption.routineConcurrency`: Specifies the number of goroutines to start  for the concurrent deletion method. The default value is `100`.
+* `.spec.cleanOption.routineConcurrency`: Specifies the number of goroutines to start for the concurrent deletion method. The default value is `100`.

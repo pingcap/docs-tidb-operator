@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/tips/','/zh/tidb-in-kubernetes/dev/tr
 
 ## 诊断模式
 
-当 Pod 处于 `CrashLoopBackoff` 状态时，Pod 内容器不断退出，导致无法正常使用 `kubectl exec`，给诊断带来不便。为了解决这个问题，TiDB in Kubernetes 提供了 PD/TiKV/TiDB Pod 诊断模式。在诊断模式下，Pod 内的容器启动后会直接挂起，不会再进入重复 Crash 的状态，此时，便可以通过 `kubectl exec` 连接 Pod 内的容器进行诊断。
+当 Pod 处于 `CrashLoopBackoff` 状态时，Pod 内容器不断退出，导致无法正常使用 `kubectl exec`，给诊断带来不便。为了解决这个问题，TiDB on Kubernetes 提供了 PD/TiKV/TiDB Pod 诊断模式。在诊断模式下，Pod 内的容器启动后会直接挂起，不会再进入重复 Crash 的状态，此时，便可以通过 `kubectl exec` 连接 Pod 内的容器进行诊断。
 
 操作方式：
 
@@ -93,7 +93,7 @@ Pod 重建后会自动回到正常运行模式。
     > 如果 TiKV Pod 持续处于 `CrashLoopBackoff` 状态，无法从日志中获取启动命令，可以按照上述的命令格式来拼接出启动命令。
 
 2. 对 Pod 开启诊断模式，并重启 Pod。
-   
+
     执行以下命令为 Pod 添加 Annotation，等待下一次 Pod 重启。
 
     {{< copyable "shell-regular" >}}
@@ -105,7 +105,7 @@ Pod 重建后会自动回到正常运行模式。
     如果 Pod 一直处于运行中，你可以执行以下命令强制让 TiKV 容器重启。
 
     {{< copyable "shell-regular" >}}
-  
+
     ```shell
     kubectl exec ${pod_name} -n ${namespace} -c tikv -- kill -SIGTERM 1
     ```
@@ -119,13 +119,13 @@ Pod 重建后会自动回到正常运行模式。
     ```
 
     期望的日志内容如下：
-    
+
     ```
     entering debug mode.
     ```
 
 3. 执行下面命令进入 TiKV 容器。
-   
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -133,7 +133,7 @@ Pod 重建后会自动回到正常运行模式。
     ```
 
 4. 在 TiKV 容器中，复制 TiKV 的配置文件，然后在新的文件上修改 TiKV 的配置。
-   
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -141,7 +141,7 @@ Pod 重建后会自动回到正常运行模式。
     ```
 
 5. 在 TiKV 容器中，根据第 1 步中获取的 TiKV 的启动命令，修改启动参数 `--config` 为刚刚新创建的配置文件路径后，启动 TiKV 进程。
-   
+
     ```shell
     /tikv-server --pd=http://${tc_name}-pd:2379 --advertise-addr=${pod_name}.${tc_name}-tikv-peer.default.svc:20160 --addr=0.0.0.0:20160 --status-addr=0.0.0.0:20180 --data-dir=/var/lib/tikv --capacity=0 --config=/tmp/tikv.toml
     ```
@@ -169,3 +169,19 @@ spec:
 > **警告：**
 >
 > 该操作会导致部分用户请求失败，不建议在生产环境中使用。
+
+## 配置 TiCDC 强制升级
+
+> **警告：**
+>
+> 该操作会导致同步延时上升，不建议在生产环境中使用。
+
+正常情况下，在 TiCDC 滚动升级或者修改配置滚动更新过程中，TiDB Operator 会转移 TiCDC 上的同步负载，并在同步负载转移完成后才开始更新当前 Pod，尽量减小滚动升级或者更新过程对同步延时的影响。在一些测试场景中，如果你不需要在 TiCDC 滚动升级或者修改配置滚动更新过程中等待 TiCDC 上的同步负载迁移，想要加速升级或者更新过程，可以将 TidbCluster 定义中的 `spec.ticdc.gracefulShutdownTimeout` 字段设置为一个很小的值。
+
+```yaml
+spec:
+  ticdc:
+    gracefulShutdownTimeout: 10s
+```
+
+关于该字段更多的说明，见[配置 TiCDC 平滑升级](configure-a-tidb-cluster.md#配置-ticdc-平滑升级)。
