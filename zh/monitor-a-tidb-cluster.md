@@ -105,28 +105,29 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 
 ### 访问 Grafana 监控面板
 
-可以通过 `kubectl port-forward` 访问 Grafana 监控面板：
+你可以通过以下两种方式访问 Grafana 监控面板：
 
-{{< copyable "shell-regular" >}}
+* 方法 1：通过 `kubectl port-forward` 访问：
 
-```shell
-kubectl port-forward -n ${namespace} svc/${cluster_name}-grafana 3000:3000 &>/tmp/portforward-grafana.log &
-```
+    ```shell
+    kubectl port-forward -n ${namespace} svc/${cluster_name}-grafana 3000:3000 &>/tmp/portforward-grafana.log &
+    ```
 
-然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
+    在浏览器中打开 <http://localhost:3000>，默认用户名和密码都为 `admin`。
 
-也可以设置 `spec.grafana.service.type` 为 `NodePort` 或者 `LoadBalancer`，通过 `NodePort` 或者 `LoadBalancer` 查看监控面板。
+* 方法 2：设置 `spec.grafana.service.type` 为 `NodePort` 或者 `LoadBalancer`，通过 `NodePort` 或者 `LoadBalancer` 查看监控面板。
 
-目前 Grafana Dashboard 分为:
-- 综合诊断面板：Overview。
+目前 Grafana Dashboard 分为以下几个面板:
+
+- 综合诊断面板：Overview
 - 组件面板：
 
-    - Data TransferBinlog、Lightning、TiCDC。
-    - PD：PD。
-    - TiDB：TiDB。
-    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_Trouble\_Shooting。
-    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details。
-    - Other：Nodes\_Info、Pods\_Info。
+    - Data TransferBinlog、Lightning、TiCDC
+    - PD
+    - TiDB
+    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_Trouble\_Shooting
+    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details
+    - 其他：Nodes\_Info、Pods\_Info
 
 如果不需要使用 Grafana，可以在部署时将 `TidbMonitor` 中的 `spec.grafana` 部分删除。这一情况下需要使用其他已有或新部署的数据可视化工具直接访问监控数据来完成可视化。
 
