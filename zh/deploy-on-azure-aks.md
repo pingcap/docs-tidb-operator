@@ -243,8 +243,10 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 >
 > 默认情况下，`tidb-cluster.yaml` 文件中 TiDB 服务的 LoadBalancer 配置为 "internal"。这意味着 LoadBalancer 只能在集群虚拟网络内部访问，而不能在外部访问。要通过 MySQL 协议访问 TiDB，您需要使用一个堡垒机进入集群节点或使用 `kubectl port-forward`。如果您想在互联网上公开访问 TiDB，并且知晓这样做的风险，您可以在 `tidb-cluster.yaml` 文件中将以下注释删除：
 > 
+> ```yaml
 > annotations:
-> service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+>   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+> ```
 > 
 > 之后重新创建的 LoadBalancer 及其关联的 TiDB 服务将能够在外部访问。
 
