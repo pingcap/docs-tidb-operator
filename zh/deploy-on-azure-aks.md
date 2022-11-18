@@ -248,7 +248,7 @@ curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/
 >   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 > ```
 > 
-> 之后重新创建的 LoadBalancer 及其关联的 TiDB 服务将能够在外部访问。
+> 删除后，重新创建的 LoadBalancer 及其关联的 TiDB 服务将能够在外部访问。
 
 执行以下命令，在 AKS 集群中部署 TidbCluster 和 TidbMonitor CR。
 
