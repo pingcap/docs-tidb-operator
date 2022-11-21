@@ -536,11 +536,7 @@ spec:
 kubectl get bks -n test1 -o wide
 ```
 
-<<<<<<< HEAD
-查看定时全量备份下面所有的备份条目：
-=======
 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，这些备份的名称以定时快照备份名称为前缀：
->>>>>>> d013d703 (BR: Fix backup schedule not clear about "prefix" for restore and wrong use of "serviceAccount" (#2100))
 
 {{< copyable "shell-regular" >}}
 
