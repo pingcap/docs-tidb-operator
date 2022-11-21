@@ -506,9 +506,9 @@ Depending on which method you choose to grant permissions to the remote storage,
       #pause: true
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
-      serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
+        serviceAccount: tidb-backup-manager
         # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
