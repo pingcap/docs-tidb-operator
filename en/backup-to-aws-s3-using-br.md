@@ -507,9 +507,9 @@ Depending on which method you choose to grant permissions to the remote storage,
       #pause: true
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
-      serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
+        serviceAccount: tidb-backup-manager
         # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
@@ -548,7 +548,7 @@ After creating the scheduled snapshot backup, use the following command to check
 kubectl get bks -n test1 -o wide
 ```
 
-You can use the following command to check all the backup items:
+During cluster recovery, you need to specify the backup path. You can use the following command to check all the backup items. The names of these backups are prefixed with the scheduled snapshot backup name:
 
 {{< copyable "shell-regular" >}}
 
