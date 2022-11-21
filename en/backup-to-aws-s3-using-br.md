@@ -547,7 +547,7 @@ After creating the scheduled snapshot backup, use the following command to check
 kubectl get bks -n test1 -o wide
 ```
 
-You can use the following command to check all the backup items:
+During cluster recovery, you need to specify the backup path. You can use the following command to check all the backup items. The names of these backups are prefixed with the scheduled snapshot backup name:
 
 {{< copyable "shell-regular" >}}
 
