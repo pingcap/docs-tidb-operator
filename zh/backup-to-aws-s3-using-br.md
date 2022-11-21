@@ -495,9 +495,9 @@ spec:
       #pause: true
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
-      serviceAccount: tidb-backup-manager
       backupTemplate:
         backupType: full
+        serviceAccount: tidb-backup-manager
         # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
         br:
@@ -536,7 +536,7 @@ spec:
 kubectl get bks -n test1 -o wide
 ```
 
-查看定时全量备份下面所有的备份条目：
+在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，这些备份的名称以定时快照备份名称为前缀：
 
 {{< copyable "shell-regular" >}}
 
