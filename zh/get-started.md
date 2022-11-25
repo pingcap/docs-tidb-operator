@@ -348,6 +348,31 @@ tidbcluster.pingcap.com/basic created
 
 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
+### 部署独立的 TiDB Dashboard
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
+```
+
+如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-dashboard.yaml
+```
+
+<details>
+<summary>点击查看期望输出</summary>
+
+```
+tidbdashboard.pingcap.com/basic created
+```
+
+</details>
+
 ### 部署 TiDB 集群监控
 
 {{< copyable "shell-regular" >}}
@@ -615,6 +640,26 @@ kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > 
 然后通过 <http://${远程服务器IP}:3000> 访问 Grafana。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+### 访问 TiDB Dashboard Web UI
+
+你可以转发 TiDB Dashboard 服务端口，以便本地访问 TiDB Dashboard 界面。
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl port-forward -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
+```
+
+TiDB Dashboard 面板可在 kubectl 所运行的主机上通过 <http://localhost:12333> 访问。
+
+请注意，如果你是非本机（比如 Docker 容器或远程服务器）上运行 `kubectl port-forward`，将无法在本地浏览器里通过 `localhost` 访问，可以通过下面命令监听所有地址：
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
+```
+
+然后通过 <http://${远程服务器IP}:12333> 访问 TiDB Dashboard。
 
 ## 第 5 步：升级 TiDB 集群
 
