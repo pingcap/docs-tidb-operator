@@ -8,9 +8,6 @@ TiDB Operator v1.3 引入了以下关键特性，从扩展性、易用性、安�
 
 ## 兼容性改动
 
-- 支持独立部署 TiDB Dashboard。
-  使用 `TidbDashboard` CRD，可以将 TiDB Dashboard 部署成独立的 StatefulSet，从而为 TiDB 集群提供更强的稳定性和可观测性。
-
 - 跨 Kubernetes 部署 TiDB 集群优化。如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并进入异常状态。如果从更早版本升级 TiDB Operator 到 v1.3，你需要执行以下操作：
 
   1. 更新 CRD。

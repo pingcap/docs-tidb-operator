@@ -25,7 +25,7 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 > - 内嵌在 PD 进程中。这种部署方式下 TiDB Dashboard 位于 PD web server 的 `/dashboard` 路径中，其他路径可能无法访问。
 > - 作为独立的服务。这种部署方式下 TiDB Dashboard 是独立的 StatefulSet，并且有专用的 service。Web server 的路径可以通过 `TidbDashboard.spec.pathPrefix` 配置。
 > 
->  内嵌在 PD 进程中的 TiDB Dashboard 将会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
+> 内嵌在 PD 进程中的 TiDB Dashboard 将会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
 
 ## 前置条件：确定 TiDB Dashboard 的 service
 
