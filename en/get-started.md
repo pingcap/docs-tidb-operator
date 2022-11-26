@@ -318,6 +318,32 @@ tidbcluster.pingcap.com/basic created
 
 If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploy a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
+### Deploy TiDB Dashboard independently
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
+```
+
+If Docker Hub is slow to access, you can use the mirror on UCloud:
+<!--Other similar places have deleted this description. Confirm whether to keep it-->
+
+{{< copyable "shell-regular" >}}
+
+```
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-dashboard.yaml
+```
+
+<details>
+<summary>Expected output</summary>
+
+```
+tidbdashboard.pingcap.com/basic created
+```
+
+</details>
+
 ### Deploy TiDB monitoring services
 
 {{< copyable "shell-regular" >}}
@@ -579,6 +605,26 @@ kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > 
 Then access Grafana through <http://${remote-server-IP}:3000>.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
+
+### Access TiDB Dashboard web UI
+
+You can forward the port for TiDB Dashboard to access TiDB Dashboard web UI locally:
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl port-forward -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
+```
+
+You can access the panel of TiDB Dashboard at <http://localhost:12333> on the host where you run `kubectl`.
+
+Note that if you run `kubectl port-forward` in a Docker container or on a remote host instead of your local host, you can not access TiDB Dashboard using `localhost` from your browser. In this case, you can run the following command to listen on all addresses.
+
+```bash
+kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
+```
+
+Then access TiDB Dashboard through <http://${remote-server-IP}:12333>.
 
 ## Step 5. Upgrade a TiDB cluster
 
