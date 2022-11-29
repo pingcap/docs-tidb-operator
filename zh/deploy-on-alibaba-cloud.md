@@ -293,7 +293,7 @@ mysql --comments -h ${tidb_lb_ip} -P 4000 -u root
 
 你可以通过浏览器访问 `<tidb-dashboard-exposed>:12333` 地址查看 Grafana 监控指标。
 
-`tidb-dashboard-exposed` 是集群 TiDB Dashboard Service 的 LoadBalancer IP。
+`tidb-dashboard-exposed` 是集群 TiDB Dashboard Service 的 `LoadBalancer` IP。
 
 > **警告：**
 >
