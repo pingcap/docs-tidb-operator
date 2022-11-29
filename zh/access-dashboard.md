@@ -145,8 +145,8 @@ spec:
       http:
         paths:
           - backend:
-               serviceName: ${SERVICE_NAME}
-               servicePort: ${PORT}
+              serviceName: ${SERVICE_NAME}
+              servicePort: ${PORT}
             path: ${HTTP_PATH}
 ```
 
