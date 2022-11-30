@@ -326,15 +326,6 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploy a TiD
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
 ```
 
-If Docker Hub is slow to access, you can use the mirror on UCloud:
-<!--Other similar places have deleted this description. Confirm whether to keep it-->
-
-{{< copyable "shell-regular" >}}
-
-```
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-dashboard.yaml
-```
-
 <details>
 <summary>Expected output</summary>
 

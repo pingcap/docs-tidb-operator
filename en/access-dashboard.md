@@ -21,7 +21,7 @@ In this document, you can use the Discovery service to access TiDB Dashboard. Ti
 
 ## Prerequisites: Determine the TiDB Dashboard service
 
-This section describes how to determine the TiDB Dashboard `service` and `HTTP` path in different deployment of TiDB Dashboard. You can fill in the `service` and `HTTP` path obtained in this section in the target configuration file to access TiDB Dashboard.
+This section describes how to determine the TiDB Dashboard `service` and `HTTP` path in different deployment methods of TiDB Dashboard. You can fill in the `service` and `HTTP` path obtained in this section in the target configuration file to access TiDB Dashboard.
 
 TiDB supports two methods to deploy TiDB Dashboard. You can choose one of the two methods to access TiDB Dashboard:
 
