@@ -26,9 +26,9 @@ This section describes how to determine the TiDB Dashboard `service` and `HTTP` 
 
 TiDB supports two methods to deploy TiDB Dashboard. You can choose one of the two methods to access TiDB Dashboard:
 
+- Deployed as an independent service. In this deployment method, TiDB Dashboard is an independent StatefulSet and has a dedicated service. The Web server path can be configured through `TidbDashboard.spec.pathPrefix`.
 - Built in PD. The TiDB Dashboard deployed in this method is available in the `/dashboard` path of the PD. Other paths outside of this might not have access control. Note that this deployment method will be removed in future TiDB releases. Therefore, it is recommended to deploy TiDB Dashboard as an independent service.
 
-- Deployed as an independent service. In this deployment method, TiDB Dashboard is an independent StatefulSet and has a dedicated service. The Web server path can be configured through `TidbDashboard.spec.pathPrefix`.
 
 ### Access TiDB Dashboard built in PD
 
@@ -46,7 +46,7 @@ spec:
     enableDashboardInternalProxy: true
 ```
 
-In this deployment method, the `service`, `port`, and `HTTP` path of TiDB Dashboard are as follows:
+In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashboard are as follows:
 
 ```yaml
 
@@ -62,7 +62,7 @@ To access an independently deployed TiDB Dashboard, you need to use TiDB Operato
 
 Before accessing TiDB Dashboard, ensure that you have [deployed an independent TiDB Dashboard](get-started.md#deploy-an-independent-tidb-dashboard).
 
-In this deployment method, the `service`, `port`, and `HTTP` path of TiDB Dashboard are as follows (default values):
+In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashboard are as follows (default values):
 
 ```shell
 export SERVICE_NAME=${cluster_name}-tidb-dashboard-exposed && \

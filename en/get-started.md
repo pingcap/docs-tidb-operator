@@ -610,7 +610,7 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf
 
 You can access the panel of TiDB Dashboard at <http://localhost:12333> on the host where you run `kubectl`.
 
-Note that if you run `kubectl port-forward` in a Docker container or on a remote host instead of your local host, you can not access TiDB Dashboard using `localhost` from your browser. In this case, you can run the following command to listen on all addresses.
+Note that if you run `kubectl port-forward` in a Docker container or on a remote host instead of your local host, you cannot access TiDB Dashboard using `localhost` from your local browser. In this case, you can run the following command to listen on all addresses.
 
 ```bash
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
