@@ -26,8 +26,8 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 
 目前 TiDB Dashboard 在集群中有两种部署方式，两种方式都可以访问 TiDB Dashboard，你可以根据需要选择其一：
 
-- 内嵌在 PD 进程中。这种部署方式下 TiDB Dashboard 位于 PD web server 的 `/dashboard` 路径中，其他路径可能无法访问。该部署方式会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
 - 作为独立的服务。这种部署方式下 TiDB Dashboard 是独立的 StatefulSet，并且有专用的 service。Web server 的路径可以通过 `TidbDashboard.spec.pathPrefix` 配置。
+- 内嵌在 PD 进程中。这种部署方式下 TiDB Dashboard 位于 PD web server 的 `/dashboard` 路径中，其他路径可能无法访问。注意该部署方式会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
 
 
 ### 访问内嵌在 PD 进程中的 TiDB Dashboard
@@ -60,7 +60,7 @@ export HTTP_PATH=/dashboard
 
 访问前，确保你已经[部署独立的 TiDB Dashboard](get-started.md#部署独立的-tidb-dashboard)。
 
-这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下(默认值)：
+这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下（默认值）：
 
 {{< copyable "shell-regular" >}}
 
