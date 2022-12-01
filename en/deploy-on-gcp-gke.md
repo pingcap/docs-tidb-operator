@@ -173,7 +173,7 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 
 ```shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml %% \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml && \
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-dashboard.yaml
 ```
 
