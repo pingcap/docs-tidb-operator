@@ -492,7 +492,11 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
+<<<<<<< HEAD
 helm inspect values pingcap/tidb-operator --version=v1.4.0-beta.2 > values-tidb-operator.yaml
+=======
+helm inspect values pingcap/tidb-operator --version=v1.4.0-beta.3 > values-tidb-operator.yaml
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 ```
 
 ### Deploy using Helm chart
@@ -508,7 +512,11 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
+<<<<<<< HEAD
 helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.4.0-beta.2 -f values-tidb-operator.yaml
+=======
+helm install tidb-operator pingcap/tidb-operator --namespace=tidb-admin --version=v1.4.0-beta.3 -f values-tidb-operator.yaml
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 ```
 
 ### View the deployed Helm release
@@ -532,7 +540,11 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```shell
+<<<<<<< HEAD
 helm upgrade tidb-operator pingcap/tidb-operator --version=v1.4.0-beta.2 -f values-tidb-operator.yaml
+=======
+helm upgrade tidb-operator pingcap/tidb-operator --version=v1.4.0-beta.3 -f values-tidb-operator.yaml
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 ```
 
 ### Delete Helm release

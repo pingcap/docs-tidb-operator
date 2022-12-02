@@ -260,7 +260,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```shell
+<<<<<<< HEAD
     helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.2
+=======
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.3
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -268,9 +272,15 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```
+<<<<<<< HEAD
     helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.2 \
         --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.4.0-beta.2 \
         --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.4.0-beta.2 \
+=======
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.3 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.4.0-beta.3 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.4.0-beta.3 \
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 

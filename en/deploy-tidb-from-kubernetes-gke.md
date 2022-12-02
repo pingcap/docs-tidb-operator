@@ -108,7 +108,11 @@ After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes
 
 ```shell
 kubectl create namespace tidb-admin
+<<<<<<< HEAD
 helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.2
+=======
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.0-beta.3
+>>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
