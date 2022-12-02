@@ -100,11 +100,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     > **注意：**
     >
-<<<<<<< HEAD
-    > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.4.0-beta.2`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
-=======
     > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v1.4.0-beta.3`，可以通过 `helm search repo -l tidb-operator` 查看当前支持的版本。
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 
 2. 配置 TiDB Operator
 
@@ -154,26 +150,15 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    wget http://charts.pingcap.org/tidb-operator-v1.4.0-beta.2.tgz
-    ```
-
-    将 `tidb-operator-v1.4.0-beta.2.tgz` 文件拷贝到服务器上并解压到当前目录：
-=======
     wget http://charts.pingcap.org/tidb-operator-v1.4.0-beta.3.tgz
     ```
 
     将 `tidb-operator-v1.4.0-beta.3.tgz` 文件拷贝到服务器上并解压到当前目录：
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    tar zxvf tidb-operator.v1.4.0-beta.2.tgz
-=======
     tar zxvf tidb-operator.v1.4.0-beta.3.tgz
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
     ```
 
 2. 下载 TiDB Operator 运行所需的 Docker 镜像
@@ -183,13 +168,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     TiDB Operator 用到的 Docker 镜像有：
 
     ```shell
-<<<<<<< HEAD
-    pingcap/tidb-operator:v1.4.0-beta.2
-    pingcap/tidb-backup-manager:v1.4.0-beta.2
-=======
     pingcap/tidb-operator:v1.4.0-beta.3
     pingcap/tidb-backup-manager:v1.4.0-beta.3
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -202,15 +182,6 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    docker pull pingcap/tidb-operator:v1.4.0-beta.2
-    docker pull pingcap/tidb-backup-manager:v1.4.0-beta.2
-    docker pull bitnami/kubectl:latest
-    docker pull pingcap/advanced-statefulset:v0.3.3
-
-    docker save -o tidb-operator-v1.4.0-beta.2.tar pingcap/tidb-operator:v1.4.0-beta.2
-    docker save -o tidb-backup-manager-v1.4.0-beta.2.tar pingcap/tidb-backup-manager:v1.4.0-beta.2
-=======
     docker pull pingcap/tidb-operator:v1.4.0-beta.3
     docker pull pingcap/tidb-backup-manager:v1.4.0-beta.3
     docker pull bitnami/kubectl:latest
@@ -218,7 +189,6 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
     docker save -o tidb-operator-v1.4.0-beta.3.tar pingcap/tidb-operator:v1.4.0-beta.3
     docker save -o tidb-backup-manager-v1.4.0-beta.3.tar pingcap/tidb-backup-manager:v1.4.0-beta.3
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -228,13 +198,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-<<<<<<< HEAD
-    docker load -i tidb-operator-v1.4.0-beta.2.tar
-    docker load -i tidb-backup-manager-v1.4.0-beta.2.tar
-=======
     docker load -i tidb-operator-v1.4.0-beta.3.tar
     docker load -i tidb-backup-manager-v1.4.0-beta.3.tar
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```

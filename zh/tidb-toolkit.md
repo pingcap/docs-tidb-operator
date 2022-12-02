@@ -200,21 +200,12 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-<<<<<<< HEAD
-pingcap/tidb-backup     v1.4.0-beta.2                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.4.0-beta.2                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.4.0-beta.2                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.4.0-beta.2                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.4.0-beta.2          v1.4.0-beta.2          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.4.0-beta.2                          A Helm chart for TiKV Importer
-=======
 pingcap/tidb-backup     v1.4.0-beta.3                          A Helm chart for TiDB Backup or Restore
 pingcap/tidb-cluster    v1.4.0-beta.3                          A Helm chart for TiDB Cluster
 pingcap/tidb-drainer    v1.4.0-beta.3                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.4.0-beta.3                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.4.0-beta.3          v1.4.0-beta.3          tidb-operator Helm chart for Kubernetes
 pingcap/tikv-importer   v1.4.0-beta.3                          A Helm chart for TiKV Importer
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -274,15 +265,9 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-wget http://charts.pingcap.org/tidb-operator-v1.4.0-beta.2.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.4.0-beta.2.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.4.0-beta.2.tgz
-=======
 wget http://charts.pingcap.org/tidb-operator-v1.4.0-beta.3.tgz
 wget http://charts.pingcap.org/tidb-drainer-v1.4.0-beta.3.tgz
 wget http://charts.pingcap.org/tidb-lightning-v1.4.0-beta.3.tgz
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
@@ -290,11 +275,7 @@ wget http://charts.pingcap.org/tidb-lightning-v1.4.0-beta.3.tgz
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-tar zxvf tidb-operator.v1.4.0-beta.2.tgz
-=======
 tar zxvf tidb-operator.v1.4.0-beta.3.tgz
->>>>>>> 0b7aa9c5 (bump v1.4.0-beta.2 to v1.4.0-beta.3 (#2109))
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 
