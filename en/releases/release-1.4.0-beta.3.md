@@ -15,7 +15,7 @@ TiDB Operator version: 1.4.0-beta.3
 - Snapshot backup and restore based on Amazon EBS becomes GA ([#4784](https://github.com/pingcap/tidb-operator/pull/4784), [@fengou1](https://github.com/fengou1)). This feature has the following benefits:
 
     - Reduce the impact of backup on QPS to less than 5%
-    - Shorten the backup and restore time
+    - Back up and restore data in a short time. For example, finish backup within 1 hour and restore in 2 hours.
 
 ## Bug fixes
 

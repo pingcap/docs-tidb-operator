@@ -15,7 +15,7 @@ TiDB Operator 版本：1.4.0-beta.3
 - 基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复 GA ([#4784](https://github.com/pingcap/tidb-operator/pull/4784), [@fengou1](https://github.com/fengou1))，此功能有以下特点：
 
     - 将备份对 QPS 的影响降至小于 5%
-    - 缩短备份和恢复时间
+    - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
 
 ## 错误修复
 
