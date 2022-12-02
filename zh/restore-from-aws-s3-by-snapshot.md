@@ -5,10 +5,6 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 
 # 基于 AWS EBS 卷快照的恢复
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 本文介绍如何基于 AWS Elastic Block Store (EBS) 快照恢复 S3 上的备份数据到 TiDB 集群。
 
 本文使用的恢复方式基于 TiDB Operator 的 Custom Resource Definition(CRD)，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview) 进行数据恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。基于 AWS EBS 快照的备份包含两部分数据，TiDB 集群数据卷的快照，以及快照和集群相关的备份元信息。
