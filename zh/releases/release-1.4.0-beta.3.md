@@ -12,6 +12,11 @@ TiDB Operator 版本：1.4.0-beta.3
 
 - 实验性支持 TiProxy ([#4693](https://github.com/pingcap/tidb-operator/pull/4693)), [@xhebox](https://github.com/xhebox)
 
+- 基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复 GA ([#4784](https://github.com/pingcap/tidb-operator/pull/4784), [@fengou1](https://github.com/fengou1))，此功能有以下特点：
+
+    - 将备份对 QPS 的影响降至小于 5%
+    - 缩短备份和恢复时间
+
 ## 错误修复
 
 - 修复错误信息中的拼写错误 ([#4773](https://github.com/pingcap/tidb-operator/pull/4773), [@dveeden](https://github.com/dveeden))
