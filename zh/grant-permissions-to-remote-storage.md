@@ -87,7 +87,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
 2. 创建 IAM 角色：
 
-    可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)创建一个 IAM 角色，为角色赋予 `AmazonS3FullAccess` 的权限，并且编辑角色的 `Trust relationships`，赋予 tidb-backup-manager 使用此 IAM 角色的权限。
+    可以参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)创建一个 IAM 角色，为角色赋予 `AmazonS3FullAccess` 的权限，并且编辑角色的 `Trust relationships`，
 
     如果是进行基于 AWS EBS 快照的备份和恢复，除完整的 S3 权限 `AmazonS3FullAccess` 外，还需要以下权限：
 
@@ -114,22 +114,12 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
         }
     ```
 
-    同时编辑角色的 `Trust relationships`，赋予 tidb-controller-manager 使用此 IAM 角色的权限。
-
 3. 绑定 IAM 到 ServiceAccount 资源上：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
-    ```
-
-    如果是进行基于 AWS EBS 快照的备份和恢复，需要绑定 IAM 到 controller 的 ServiceAccount 上：
-
-     {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl annotate sa tidb-controller-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
     ```
 
 4. 将 ServiceAccount 绑定到 TiKV Pod：
