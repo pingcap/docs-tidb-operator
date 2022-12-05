@@ -165,8 +165,9 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml &&
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-dashboard.yaml
 ```
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
@@ -318,6 +319,26 @@ basic-grafana            LoadBalancer   10.15.255.169   34.123.168.114   3000:30
 > **注意：**
 >
 > Grafana 默认用户名和密码均为 admin。
+
+### 访问 TiDB Dashboard Web UI
+
+先获取 TiDB Dashboard 的 LoadBalancer 域名：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl -n tidb-cluster get svc basic-tidb-dashboard-exposed
+```
+
+示例：
+
+```
+$ kubectl -n tidb-cluster get svc basic-tidb-dashboard-exposed
+NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)               AGE
+basic-tidb-dashboard-exposed            LoadBalancer   10.15.255.169   34.123.168.114   12333:30657/TCP        35m
+```
+
+你可以通过浏览器访问 `${EXTERNAL-IP}:12333` 地址查看 TiDB Dashboard 监控指标。
 
 ## 升级 TiDB 集群
 

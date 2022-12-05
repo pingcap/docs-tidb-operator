@@ -157,12 +157,14 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
 
 ### 部署 TiDB 集群和监控
 
-1. 准备 TidbCluster 和 TidbMonitor CR 文件：
+1. 准备 TidbCluster、TidbDashboard 和 TidbMonitor CR 文件：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
+    cp manifests/db.yaml.example db.yaml && \
+    cp manifests/db-monitor.yaml.example db-monitor.yaml && \
+    cp manifests/dashboard.yaml.example tidb-dashboard.yaml
     ```
 
     参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
@@ -271,7 +273,7 @@ mysql --comments -h ${tidb_lb_ip} -P 4000 -u root
 > * [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
 > * TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)。
 
-## 监控
+## 访问 Grafana 监控
 
 你可以通过浏览器访问 `<monitor-lb>:3000` 地址查看 Grafana 监控指标。
 
@@ -281,6 +283,16 @@ mysql --comments -h ${tidb_lb_ip} -P 4000 -u root
 
 - 用户名：admin
 - 密码：admin
+
+> **警告：**
+>
+> 出于安全考虑，假如你已经或将要配置 VPN 用于访问 VPC，强烈建议将 `db-monitor.yaml` 文件里 `spec.grafana.service.annotations` 中的 `service.beta.kubernetes.io/alicloud-loadbalancer-address-type` 设置为 `intranet` 以禁止监控服务的公网访问。
+
+## 访问 TiDB Dashboard Web UI
+
+你可以通过浏览器访问 `<tidb-dashboard-exposed>:12333` 地址查看 Grafana 监控指标。
+
+`tidb-dashboard-exposed` 是集群 TiDB Dashboard Service 的 `LoadBalancer` IP。
 
 > **警告：**
 >

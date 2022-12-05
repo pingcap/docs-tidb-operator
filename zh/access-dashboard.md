@@ -17,11 +17,16 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 
 本文档介绍的方法通过 Discovery 服务访问 TiDB Dashboard。TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。此外，Discovery 服务也会发送代理请求到 TiDB Dashboard。
 
-> **警告：**
->
-> TiDB Dashboard 位于 PD 的 `/dashboard` 路径中。其他路径可能无法访问控制。
+## 前置条件：确定 TiDB Dashboard 的 service
 
-## 前置条件
+本章节介绍在不同部署方式下，如何确定 TiDB Dashboard 的 service 和 HTTP 路径，后续访问 TiDB Dashboard 只需要将这一小节的确定的 service 和 HTTP 路径填入对应配置文件即可。
+
+目前 TiDB Dashboard 在集群中有两种部署方式，两种方式都可以访问 TiDB Dashboard，你可以根据需要选择其一：
+
+- 作为独立的服务。这种部署方式下 TiDB Dashboard 是独立的 StatefulSet，并且有专用的 service。Web server 的路径可以通过 `TidbDashboard.spec.pathPrefix` 配置。
+- 内嵌在 PD 进程中。这种部署方式下 TiDB Dashboard 位于 PD web server 的 `/dashboard` 路径中，其他路径可能无法访问。注意该部署方式会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
+
+### 访问内嵌在 PD 进程中的 TiDB Dashboard
 
 你需要使用 v1.1.1 版本及以上的 TiDB Operator 以及 v4.0.1 版本及以上的 TiDB 集群，才能在 Kubernetes 环境中流畅使用 `Dashboard`。你需要在 `TidbCluster` 对象文件中通过以下方式开启 `Dashboard` 快捷访问:
 
@@ -35,60 +40,52 @@ spec:
     enableDashboardInternalProxy: true
 ```
 
+这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export SERVICE_NAME=${cluster_name}-discovery && \
+export PORT=10261 && \
+export HTTP_PATH=/dashboard
+```
+
+### 访问独立部署的 TiDB Dashboard
+
+你需要使用 v1.1.1 版本及以上的 TiDB Operator 以及 v4.0.1 版本及以上的 TiDB 集群。
+
+访问前，确保你已经[部署独立的 TiDB Dashboard](get-started.md#部署独立的-tidb-dashboard)。
+
+这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下（默认值）：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export SERVICE_NAME=${cluster_name}-tidb-dashboard-exposed && \
+export PORT=12333 && \
+export HTTP_PATH=""
+```
+
 ## 方法 1. 通过端口转发访问 TiDB Dashboard
 
 > **警告：**
 >
 > 以下教程仅为演示如何快速访问 TiDB Dashboard，请勿在生产环境中直接使用以下方法。
 
-在 4.0.0 及以上版本的 TiDB 中，TiDB Dashboard 目前已经内嵌在了 PD 组件中，你可以通过以下的例子在 Kubernetes 环境下快速部署一个 TiDB 集群。
+在 4.0.0 及以上版本的 TiDB 中，TiDB Dashboard 目前已经内嵌在了 PD 组件中。当集群创建完毕时，可以通过以下命令将 TiDB Dashboard 暴露在本地机器:
 
-1. 运行 `kubectl apply -f` 命令，本文档以如下 YAML 文件为例，将该 YAML 文件部署到 Kubernetes 集群中：
+{{< copyable "shell-regular" >}}
 
-    ```yaml
-    apiVersion: pingcap.com/v1alpha1
-    kind: TidbCluster
-    metadata:
-      name: basic
-    spec:
-      version: v6.1.0
-      timezone: UTC
-      pvReclaimPolicy: Delete
-      pd:
-        enableDashboardInternalProxy: true
-        baseImage: pingcap/pd
-        maxFailoverCount: 0
-        replicas: 1
-        requests:
-          storage: "10Gi"
-        config: {}
-      tikv:
-        baseImage: pingcap/tikv
-        maxFailoverCount: 0
-        replicas: 1
-        requests:
-          storage: "100Gi"
-        config: {}
-    tidb:
-        baseImage: pingcap/tidb
-        maxFailoverCount: 0
-        replicas: 1
-        service:
-          type: ClusterIP
-        config: {}
-    ```
+```shell
+kubectl port-forward svc/${SERVICE_NAME} -n ${namespace} ${PORT}:${PORT}
+```
 
-2. 当集群创建完毕时，可以通过以下命令将 TiDB Dashboard 暴露在本地机器:
+以上命令中：
 
-    {{< copyable "shell-regular" >}}
+- `${namespace}` 是 `TidbCluster.namespace`。
+- `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
 
-    ```shell
-    kubectl port-forward svc/basic-discovery -n ${namespace} 10262:10262
-    ```
-
-    `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
-
-3. 在浏览器中访问 <http://localhost:10262/dashboard>，即可访问到 TiDB Dashboard。
+在浏览器中访问 <http://localhost:${PORT}${HTTP_PATH}>，即可访问到 TiDB Dashboard。
 
 ## 方法 2. 通过 Ingress 访问 TiDB Dashboard
 
@@ -116,12 +113,12 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: ${cluster_name}-discovery
-              servicePort: 10262
-            path: /dashboard
+              serviceName: ${SERVICE_NAME}
+              servicePort: ${PORT}
+            path: ${HTTP_PATH}
 ```
 
-当部署了 Ingress 后，你可以在 Kubernetes 集群外通过 <http://${host}/dashboard> 访问 TiDB Dashboard。
+当部署了 Ingress 后，你可以在 Kubernetes 集群外通过 <http://${host}${path}> 访问 TiDB Dashboard。
 
 ### 使用 Ingress 并开启 TLS
 
@@ -143,9 +140,9 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: ${cluster_name}-discovery
-              servicePort: 10262
-            path: /dashboard
+              serviceName: ${SERVICE_NAME}
+              servicePort: ${PORT}
+            path: ${HTTP_PATH}
 ```
 
 以下是 `testsecret-tls` 的一个例子:
@@ -162,11 +159,15 @@ data:
 type: kubernetes.io/tls
 ```
 
-当 Ingress 部署完成以后，你就可以通过 <https://{host}/dashboard> 访问 TiDB Dashboard。
+当 Ingress 部署完成以后，你就可以通过 <https://{host}${path}> 访问 TiDB Dashboard。
 
 ## 方法 3. 使用 NodePort Service
 
 由于 Ingress 必需使用域名访问，在某些场景下可能难以使用，此时可以通过添加一个 `NodePort` 类型的 `Service` 来访问和使用 TiDB Dashboard。
+
+### 访问内嵌在 PD 进程中的 TiDB Dashboard
+
+内嵌在 PD 进程中的 TiDB Dashboard 需要为 PD 新建 `NodePort` service。
 
 以下是一个使用 `NodePort` 类型的 `Service` 访问 TiDB Dashboard 的 yaml 文件例子。运行 `kubectl apply -f` 命令，将以下 yaml 文件部署到 Kubernetes 集群中。
 
@@ -192,6 +193,14 @@ spec:
 当 `Service` 部署完成后，可以通过 <https://{nodeIP}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
 
 需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
+
+### 访问独立部署的 TiDB Dashboard
+
+> **注意：**
+>
+> 独立部署的 TiDB Dashboard 需要将 `TidbDashboard.spec.service.type` 设置为 `NodePort`。
+
+当 TiDB Dashboard 独立部署后，可以通过 `kubectl get svc` 命令获取 `${cluster_name}-tidb-dashboard-exposed` 的 `nodePort`，然后通过 <https://{nodeIP}:{nodePort}> 访问 TiDB Dashboard。
 
 ## 启用持续性能分析
 
