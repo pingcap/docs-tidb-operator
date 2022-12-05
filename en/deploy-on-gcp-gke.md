@@ -173,7 +173,8 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 
 ```shell
 curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-dashboard.yaml
 ```
 
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
@@ -327,6 +328,26 @@ You can access the `${grafana-lb}:3000` address using your web browser to view m
 > **Note:**
 >
 > The default Grafana username and password are both `admin`.
+
+### Access TiDB Dashboard Web UI
+
+Obtain the `LoadBalancer` domain name of TiDB Dashboard by running the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl -n tidb-cluster get svc basic-tidb-dashboard-exposed
+```
+
+The following is an example:
+
+```
+$ kubectl -n tidb-cluster get svc basic-tidb-dashboard-exposed
+NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)               AGE
+basic-tidb-dashboard-exposed            LoadBalancer   10.15.255.169   34.123.168.114   12333:30657/TCP        35m
+```
+
+You can view monitoring metrics of TiDB Dashboard by visiting `${EXTERNAL-IP}:12333` using your web browser.
 
 ## Upgrade
 
