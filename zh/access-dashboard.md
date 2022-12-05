@@ -18,8 +18,6 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 
 本文档介绍的方法通过 Discovery 服务访问 TiDB Dashboard。TiDB Operator 会为每一个 TiDB 集群启动一个 Discovery 服务。Discovery 服务会为每个 PD Pod 返回相应的启动参数，来辅助 PD 集群启动。此外，Discovery 服务也会发送代理请求到 TiDB Dashboard。
 
->
-
 ## 前置条件：确定 TiDB Dashboard 的 service
 
 本章节介绍在不同部署方式下，如何确定 TiDB Dashboard 的 service 和 HTTP 路径，后续访问 TiDB Dashboard 只需要将这一小节的确定的 service 和 HTTP 路径填入对应配置文件即可。
@@ -28,7 +26,6 @@ TiDB Dashboard 是从 TiDB 4.0 版本起引入的可视化面板，用于帮助�
 
 - 作为独立的服务。这种部署方式下 TiDB Dashboard 是独立的 StatefulSet，并且有专用的 service。Web server 的路径可以通过 `TidbDashboard.spec.pathPrefix` 配置。
 - 内嵌在 PD 进程中。这种部署方式下 TiDB Dashboard 位于 PD web server 的 `/dashboard` 路径中，其他路径可能无法访问。注意该部署方式会在后续 TiDB release 中去除，因此建议使用独立部署的 TiDB Dashboard。
-
 
 ### 访问内嵌在 PD 进程中的 TiDB Dashboard
 
@@ -88,7 +85,6 @@ kubectl port-forward svc/${SERVICE_NAME} -n ${namespace} ${PORT}:${PORT}
 
 - `${namespace}` 是 `TidbCluster.namespace`。
 - `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
-
 
 在浏览器中访问 <http://localhost:${PORT}${HTTP_PATH}>，即可访问到 TiDB Dashboard。
 
@@ -216,7 +212,7 @@ spec:
 1. 部署 TidbMonitor CR。
 
     - 如果 TiDB 集群版本小于 v5.4.0，参考[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)部署 TidbMonitor CR。
-    
+
     - 如果 TiDB 集群版本大于等于 v5.4.0，可以跳过这一步。
 
 2. 部署 TidbNGMonitoring CR。
