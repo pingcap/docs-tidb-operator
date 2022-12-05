@@ -28,7 +28,6 @@ TiDB supports two methods to deploy TiDB Dashboard. You can choose one of the tw
 - Deployed as an independent service. In this deployment method, TiDB Dashboard is an independent StatefulSet and has a dedicated service. The Web server path can be configured through `TidbDashboard.spec.pathPrefix`.
 - Built in PD. The TiDB Dashboard deployed in this method is available in the `/dashboard` path of the PD. Other paths outside of this might not have access control. Note that this deployment method will be removed in future TiDB releases. Therefore, it is recommended to deploy TiDB Dashboard as an independent service.
 
-
 ### Access TiDB Dashboard built in PD
 
 To access TiDB Dashboard built in PD, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster v4.0.1 (or later versions).
