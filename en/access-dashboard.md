@@ -46,8 +46,6 @@ spec:
 
 In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashboard are as follows:
 
-```yaml
-
 ```shell
 export SERVICE_NAME=${cluster_name}-discovery && \
 export PORT=10261 && \
@@ -58,7 +56,7 @@ export HTTP_PATH=/dashboard
 
 To access an independently deployed TiDB Dashboard, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster v4.0.1 (or later versions).
 
-Before accessing TiDB Dashboard, ensure that you have [deployed an independent TiDB Dashboard](get-started.md#deploy-an-independent-tidb-dashboard).
+Before accessing TiDB Dashboard, ensure that you have [deployed an independent TiDB Dashboard](get-started.md#deploy-tidb-dashboard-independently).
 
 In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashboard are as follows (default values):
 
