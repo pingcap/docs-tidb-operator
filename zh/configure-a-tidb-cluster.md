@@ -66,6 +66,25 @@ category: how-to
 
 PD 和 TiKV 支持配置 `mountClusterClientSecret`。如果开启了[集群组件间 TLS 支持](enable-tls-between-components.md)，建议配置 `spec.pd.mountClusterClientSecret: true` 和 `spec.tikv.mountClusterClientSecret: true`，这样 TiDB Operator 会自动将 `${cluster_name}-cluster-client-secret` 证书挂载到 PD 和 TiKV 容器，方便[使用 `pd-ctl` 和 `tikv-ctl`](enable-tls-between-components.md#第三步配置-pd-ctltikv-ctl-连接集群)。
 
+#### startScriptVersion
+
+你可以配置 `spec.startScriptVersion` 字段，用于选择各个组件的不同版本的启动脚本。
+
+目前支持的启动脚本的版本如下：
+
+* `v1`：默认值，最初版本的启动脚本。
+
+* `v2`：为了优化各个组件的启动脚本，并且确保在升级 TiDB Operator 后不会导致集群滚动重启，自 TiDB Operator v1.4.0 起新增 `v2` 版本。相比于 `v1`，`v2` 有以下优化：
+
+    * 使用 `dig` 命令替换 `nslookup` 命令来解析 DNS。
+    * 所有组件都支持[诊断模式](tips.md#诊断模式)。
+
+新部署的集群建议配置 `spec.startScriptVersion` 为最新的版本，即 `v2`。
+
+> **警告：**
+>
+> 修改已经部署的集群的 `spec.startScriptVersion` 会导致集群滚动重启。
+
 ### 存储
 
 #### 存储类型
