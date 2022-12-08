@@ -14,7 +14,7 @@ EBS 卷快照备份阶段包含创建备份任务，停止调度，停止 GC，�
 
 ## EBS 卷快照备份的性能
 
-卷快照备份时间取决于最长数据卷快照完成时间，这部分工作由 AWS EBS 服务来完成，当前 AWS 并没有提供卷快照完成量化指标。根据我们的测试，在 TiDB-Operator 推荐配置下 （GP3 卷）整个备份时间大致如下：
+卷快照备份时间取决于最长数据卷快照完成时间，这部分工作由 AWS EBS 服务来完成，当前 AWS 并没有提供卷快照完成量化指标。根据我们的测试，在 TiDB-Operator 推荐配置下 （c c c c）整个备份时间大致如下：
 
 ![EBS Snapshot backup perf](/media/volume-snapshot-backup-perf.png)
 
@@ -27,9 +27,6 @@ EBS 卷快照备份阶段包含创建备份任务，停止调度，停止 GC，�
 | 1024 GB  | 3500 GB | 125MB/7000IOPS | 350 min   |
 
 # EBS 卷快照恢复的性能
-
-本节介绍影响恢复性能的因素以及性能测试结果。
-
 ## EBS 卷快照恢复各阶段的耗时
 
 EBS 卷快照恢复阶段包含以下阶段，详细见 [基于 EBS 卷快照的备份恢复功能架构](backup-restore-overview.md)
@@ -47,6 +44,34 @@ TiDB Operator 挂载 TiKV 卷，启动 TiKV。
 TiDB Operator 创建 TiKV 卷数据恢复子任务，BR 把所以 TiKV 数据卷恢复到一致性状态。
 
 5. 启动 TiDB：启动 TiDB，恢复完成
+
+| 恢复阶段     | 恢复大致耗时 | 恢复总占比 | 备注                                          |
+| :--------: | :---------: | :------: | :-------------------------------------------: |
+| 创建集群     | 30s         | %1       | 包含下载 docker image 和启动 pd                 |
+| 卷恢复      | 20s         | %1       | 包含启动 br pod 和卷恢复                         |
+| TiKV 启动   | 3min/30min  | 58%      | 有写入的备份恢复，rocksdb 启动产生额外耗时 2～30min |
+| 数据恢复阶段 | 20min       | 38%      | 20 min 是已验证最大数据量 20 TB 的耗时            |
+| 启动 TiDB   | 1min        | 2%       | 包含下载 tidb docker image， 和启动 tidb         |
+
+Notice: 因为卷快照是 crash consistency 的状态，EBS 卷快照恢复阶段 TiKV 启动阶段， 需要先启动 kv db (rocksdb), 此阶段在有写入的备份恢复中，会产生额外的耗时。经测试额外的耗时在 30 分钟以内，如使用高性能盘恢复，如 io2, 额外耗时可缩短到 5 分钟内，如果使用标准 GP3 盘 （3000IOPS/125MBps），额外耗时可能到达在 30 分钟左右。
+
+## EBS 卷快照恢复阶段的性能
+
+卷快照恢复时间取主要决于 TiKV 启动和数据恢复阶段，TiKV 启动受 EBS 卷快照恢复延迟初始化影响，启动时间在2分钟到30分钟之间，这部分工作由 AWS EBS 服务来完成，当前 AWS 并没有提供卷快照完成量化指标。根据我们的测试，在 TiDB-Operator 推荐 EC2 机型配置下 使用 GP3 整个恢复时间大致如下：
+
+![EBS Snapshot backup perf](/media/volume-snapshot-restore-perf.png)
+
+| 单卷数据  | 卷大小   | 卷配置         | 备份大致耗时 |
+| :------: | :-----: | :-----------: | :--------: |
+| 50 GB    | 500 GB  | 400MB/7000IOPS | 16 min    |
+| 100 GB   | 500 GB  | 400MB/7000IOPS | 18 min    |
+| 200 GB   | 500 GB  | 400MB/7000IOPS | 21 min   |
+| 500 GB   | 1024 GB | 400MB/7000IOPS | 25 min   |
+| 1024 GB  | 3500 GB | 400MB/7000IOPS | 34 min   |
+
+本节介绍影响恢复性能的因素以及性能测试结果。
+
+
 
 ### EKS 集群配置
 | 节点类型 | EC2 型号     | 个数  | AZ         |

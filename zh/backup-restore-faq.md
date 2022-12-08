@@ -40,6 +40,7 @@ summary: 介绍卷快照备份恢复上的 TiDB 集群常见问题以及解决�
     ```shell
     metadata.annotations: Too long: must have at most 262144 bytes, spec.template.annotations: Too long: must have at most 262144 bytes
     ```
+    
 原因：因为我们使用 annotation 来传递 PVC/PV 的配置信息，每个备份 job 的 annotation 最大的限制是 256K，当 TiKV 集群规模较大时，PVC/PV 的信息会大于256K导致 Kubernetes API 调用失败。
 
 现象二：应用备份 CRD yaml 文件后，pod/job 创建成功。备份立即失败
@@ -52,22 +53,20 @@ summary: 介绍卷快照备份恢复上的 TiDB 集群常见问题以及解决�
     exec /entrypoint.sh: argument list too long
     ```
 原因：TiDB Operator 使用环境变量的方式，在 backup pod 启动前，把 PVC/PV 的信息注入到 backup pod 环境变量中，并启动备份任务。因操作系统环境变量限制在 1MB 左右，当 PVC/PV 配置信息大于 1MB 时，backup pod 无法取得环境变量导致失败。
-
-
 问题发生的场景：大量的 TiKV 节点 （40+) 或者卷的配置较多的集群，使用了 TiDB Operator 版本 v1.4.0-beta.2 或者更早的版本
 解决方案：升级 TiDB Operator 到最新版本
 
-
 ### 备份失败后，备份 CR 无法删除。
+
 相关的问题：[#4778](https://github.com/pingcap/tidb-operator/issues/4778)
 现象：删除备份 CR 卡住。
-问题发生的场景：使用了 TiDB Operator 版本 v1.4.0-beta.2 或者更早的版本
-解决方案：升级 TiDB Operator 到最新版本
+问题发生的场景：使用了 TiDB Operator 版本 v1.4.0-beta.2 或者更早的版本。
+解决方案：升级 TiDB Operator 到最新版本。
 
 ### 备份发起后，立即失败
-相关的问题：https://github.com/tikv/tikv/issues/13838
-现象：应用备份 CRD yaml 文件后，pod/job 创建成功。备份立即失败
 
+相关的问题：[#13838](https://github.com/tikv/tikv/issues/13838)
+现象：应用备份 CRD yaml 文件后，pod/job 创建成功。备份立即失败
 * 检查备份 log 信息是否包含以下错误
 
     {{< copyable "shell-regular" >}}
@@ -91,9 +90,9 @@ summary: 介绍卷快照备份恢复上的 TiDB 集群常见问题以及解决�
     ```shell
     error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
     ```
+
 问题发生的场景：数据规模较大且使用的 TiDB Cluster v6.3.0 的版本
 解决方案：
-
 1. 升级 TiDB Cluster 到 v6.4.0 或者更高的版本
 
 2. 编辑 TiDB Cluster 配置，调大 TiKV keepalive 参数：
