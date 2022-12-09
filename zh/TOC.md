@@ -87,6 +87,7 @@
     - [修改 TiDB 集群配置](modify-tidb-configuration.md)
     - [配置集群故障自动转移](use-auto-failover.md)
     - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
+    - [挂起 TiDB 集群](suspend-tidb-cluster.md)
     - [使用多套 TiDB Operator 单独管理不同的 TiDB 集群](deploy-multiple-tidb-operator.md)
     - [维护 TiDB 集群所在的 Kubernetes 节点](maintain-a-kubernetes-node.md)
     - [从 Helm 2 迁移到 Helm 3](migrate-to-helm3.md)
