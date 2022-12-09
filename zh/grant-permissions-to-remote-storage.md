@@ -124,7 +124,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
-    如果是进行基于 AWS EBS 快照的备份和恢复，需要绑定 IAM 到 controller 的 ServiceAccount 上：
+    如果是进行基于 AWS EBS 快照的备份和恢复，需要绑定 IAM 到 tidb-controller-manager 的 ServiceAccount 上：
 
       {{< copyable "shell-regular" >}}
 
