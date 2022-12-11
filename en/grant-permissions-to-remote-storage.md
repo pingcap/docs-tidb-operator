@@ -91,7 +91,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
 2. Create the IAM role:
 
-    [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships`.
+    [Create an IAM role](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) and grant the `AmazonS3FullAccess` permissions to the role. Edit the role's `Trust relationships` to grant tidb-backup-manager the access to this IAM role.
 
      When backing up a TiDB cluster using EBS volume snapshots, besides the `AmazonS3FullAccess` permission, the following permissions are also required:
 
@@ -116,13 +116,21 @@ When you use this method to grant permissions, you can [create the EKS cluster](
         }
     ```
 
-3. Associate IAM with the `ServiceAccount` resources.
+    At the same time, edit the role's `Trust relationships` to grant tidb-controller-manager the access to this IAM role.
+
+3. Associate the IAM role with the `ServiceAccount` resources.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
+
+    When backing up or restoring a TiDB cluster using EBS volume snapshots, you need to associate the IAM role with the `ServiceAccount` resources of tidb-controller-manager.
+
+     ```shell
+     kubectl annotate sa tidb-controller-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
+     ```
 
 4. Associate the `ServiceAccount` with the TiKV Pod:
 
