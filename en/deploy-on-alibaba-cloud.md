@@ -89,7 +89,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.4.0-beta.1"
+    operator_version = "v1.4.0-beta.3"
     ```
 
     * To deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
@@ -163,12 +163,14 @@ All the instances except ACK mandatory workers are deployed across availability 
 
 ### Deploy the TiDB cluster and monitor
 
-1. Prepare the `TidbCluster` and `TidbMonitor` CR files:
+1. Prepare the `TidbCluster`, `TidbDashboard`, and `TidbMonitor` CR files:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cp manifests/db.yaml.example db.yaml && cp manifests/db-monitor.yaml.example db-monitor.yaml
+    cp manifests/db.yaml.example db.yaml && \
+    cp manifests/db-monitor.yaml.example db-monitor.yaml && \
+    cp manifests/dashboard.yaml.example tidb-dashboard.yaml
     ```
 
     To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
@@ -277,7 +279,7 @@ mysql --comments -h ${tidb_lb_ip} -P 4000 -u root
 > * [The default authentication plugin of MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin) is updated from `mysql_native_password` to `caching_sha2_password`. Therefore, if you use MySQL client from MySQL 8.0 to access the TiDB service (TiDB version < v4.0.7), and if the user account has a password, you need to explicitly specify the `--default-auth=mysql_native_password` parameter.
 > * By default, TiDB (starting from v4.0.2) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry).
 
-## Monitor
+## Access Grafana
 
 Visit `<monitor-lb>:3000` to view the Grafana dashboards. `monitor-lb` is the LoadBalancer IP of the Monitor service.
 
@@ -285,6 +287,16 @@ The initial login user account and password:
 
 - User: admin
 - Password: admin
+
+> **Warning:**
+>
+> If you already have a VPN connecting to your VPC or plan to set up one, it is strongly recommended that you go to the `spec.grafana.service.annotations` section in the `db-monitor.yaml` file and set `service.beta.kubernetes.io/alicloud-loadbalancer-address-type` to `intranet` for security.
+
+## Access TiDB Dashboard Web UI
+
+You can view Grafana monitoring metrics by visiting `<tidb-dashboard-exposed>:12333` in your browser.
+
+`tidb-dashboard-exposed` is the `LoadBalancer` IP of the TiDB Dashboard service.
 
 > **Warning:**
 >
