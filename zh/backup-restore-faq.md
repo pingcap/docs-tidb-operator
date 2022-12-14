@@ -12,7 +12,7 @@ summary: 介绍卷快照备份恢复中的常见问题以及解决方案。
 使用基于 EBS 快照备份，你可能遇到以下问题：
 
 - [备份无法启动或者启动后立即失败](#备份发起后立即失败)
-- [备份失败后，备份 CR 无法删除](#备份失败后，备份CR无法删除)
+- [备份失败后，备份 CR 无法删除](#备份失败后备份-CR-无法删除)
 - [备份发起后立即失败](#备份发起后立即失败)
 
 ### 备份无法启动或者启动后立即失败
@@ -71,7 +71,7 @@ issue 链接：[#4778](https://github.com/pingcap/tidb-operator/issues/4778)
 
 现象：应用备份 CRD yaml 文件后，pod/job 创建成功。备份立即失败
 
-    检查备份 log 信息是否包含以下错误：
+检查备份 log 信息是否包含以下错误：
 
     ```shell
     GC safepoint 437271276493996032 exceed TS 437270540511608835
@@ -86,7 +86,7 @@ issue 链接：[#4778](https://github.com/pingcap/tidb-operator/issues/4778)
 使用基于 EBS 快照恢复，你可能遇到以下问题：
 
 - [恢复集群失败，报错 `keepalive watchdog timeout`](#恢复集群失败报错-keepalive-watchdog-timeout)
-- [恢复时间太长 （大于 2 小时）](#恢复时间太长-大于-2-小时)
+- [恢复时间太长 （大于 2 小时）](#恢复时间太长大于-2-小时)
 
 ### 恢复集群失败，报错 `keepalive watchdog timeout`
 
@@ -119,7 +119,7 @@ error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
 
 1. 升级 TiDB Cluster v6.3.0 的版本至 v6.5.0。
 
-2. 在 BR spec 中，临时提升卷性能进行恢复，待恢复完成后，再手动降低卷性能参数。通过指定参数 `--volume-iops=8000`，以及 `--volume-throughput=600` 来获得更高的恢复卷配置。
+2. 在 BR spec 中，临时提升卷性能进行恢复，待恢复完成后，再手动降低卷性能参数。通过指定参数来获得更高的恢复卷配置, 例如指定 `--volume-iops=8000`，以及 `--volume-throughput=600` 或者更高配置。
 
     ```yaml
     spec:
