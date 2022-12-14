@@ -44,7 +44,7 @@ EBS 卷快照备份阶段包含创建备份任务、停止调度、停止 GC、�
 
 ### 备份影响
 
-因 AWS EBS 卷快照特点，使用 gp3 卷进行备份时，经过测试集群影响小于 3%。如下图所示，10:25 分之后发起备份。
+使用 gp3 卷进行备份时，经过测试集群影响小于 3%。如下图所示，10:25 分之后发起备份。
 
 ![EBS Snapshot backup impact](/media/volume-snapshot-backup-impact.jpg)
 
