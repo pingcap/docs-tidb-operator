@@ -65,7 +65,7 @@ issue 链接：[#4778](https://github.com/pingcap/tidb-operator/issues/4778)
 
 解决方案：升级 TiDB Operator 到最新版本。
 
-### 备份发起后立即失败
+### 备份失败
 
 相关的问题：[#13838](https://github.com/tikv/tikv/issues/13838)
 
@@ -79,7 +79,7 @@ GC safepoint 437271276493996032 exceed TS 437270540511608835
 
 问题发生的场景：在大集群 (20+ tikv) 中，集群使用 BR 进行大规模数据恢复后，再发起卷备份操作。
 
-解决方案：打开 grafana ${cluster-name}-TiKV-Details 面板，检查 Resolved-TS，确认是否有数值较大的 Max Resolved TS gap。找到对应的 TiKV 重启。
+解决方案：打开 grafana ${cluster-name}-TiKV-Details 监控页面，展开 Resolved-TS，检查 Max Resolved TS gap 面板。确认是否有数值较大 （大于 1 min) 的 Max Resolved TS，找到对应的 TiKV 重启。
 
 ## 恢复问题
 
