@@ -81,6 +81,11 @@ GC safepoint 437271276493996032 exceed TS 437270540511608835
 
 解决方案：打开 grafana ${cluster-name}-TiKV-Details 监控页面，展开 Resolved-TS，检查 Max Resolved TS gap 面板。确认是否有数值较大 （大于 1 min) 的 Max Resolved TS，找到对应的 TiKV 重启。
 
+> **注意：**
+>
+> 备份失败可能产生中间残留文件，如：clustermeta, backup.lock，需要清理后，才能使用相同的备份目录再次进行备份。
+>
+
 ## 恢复问题
 
 使用基于 EBS 快照恢复，你可能遇到以下问题：
