@@ -13,14 +13,14 @@ This section introduces the performance of EBS snapshot backup using volumes, th
 
 ### Backup time consumption
 
-EBS snapshot backup using volumes consists of the following processes: creates a backup task, stops scheduling, stops GC, and obtains the backupts and volume snapshots. For more detailed information about these processes, see [Architecture of EBS snapshot volume backup and restore](backup-restore-overview.md). Among these processes, creating a volume snapshot consumes most of the time. Volume snapshots are created in parallel and the time taken to complete a backup task depends on when the last volume snapshot is backed up.
+EBS snapshot backup using volumes consists of the following processes: creates a backup task, stops scheduling, stops GC, and obtains the backupts and volume snapshots. For more detailed information about these processes, see [Architecture of EBS snapshot volume backup and restore](volume-snapshot-backup-restore.md). Among these processes, creating a volume snapshot consumes most of the time. Volume snapshots are created in parallel, and the time taken to complete the entire backup task depends on when the most time-consuming volume is created.
 
 ### Time consumption ratio of backup
 
 | Backup stage     | Time taken    | Total ratio | Remarks                                     |
 | :--------: | :---------: | :------: | :-------------------------------------: |
-| Volume snapshot creation  | 16 m (50GB) | %99      | Time for AWS EBS snapshots                  |
-| Others        | 1s          | %1       | Including the time for stopping scheduling, stopping GC, and obtaining the backupts |
+| Create volume snapshots  | 16 m (50GB) | %99      | Including the time for creating AWS EBS snapshots                  |
+| Others        | 1s          | %1       | Including the time for stopping scheduling, disabling GC, and obtaining the backupts |
 
 ### Backup performance data
 
@@ -28,7 +28,7 @@ Time taken by snapshot backup using volumes depends on when the last volume snap
 
 ![EBS Snapshot backup perf](/media/volume-snapshot-backup-perf.png)
 
-| Data of a volume  | Volume size  | Volume configuration             | Appropriate backup duration |
+| Volume data  | Total volume size  | Volume configuration             | Appropriate backup duration |
 | :------: | :-----: | :---------------: | :--------: |
 | 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 20 min    |
 | 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 50 min    |
@@ -54,7 +54,7 @@ This document describes the performance of EBS snapshot restore using volumes, t
 
 ### Restore time consumption
 
-EBS snapshot restore using volumes consists of the following processes. For detailed information, see [Architecture of EBS snapshot volume backup and restore](backup-restore-overview.md).
+EBS snapshot restore using volumes consists of the following processes. For detailed information, see [Architecture of EBS snapshot volume backup and restore](volume-snapshot-backup-restore.md).
 
 1. Create a cluster.
 
@@ -88,15 +88,15 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 
 > **Note:**
 >
-> Volume snapshots are consistent upon crash. Before TiKV starts, you need to start rocksDB first. If there is newly written data, the time taken in starting TiKV is longer. It is tested that the extra time is less than 30 minutes. If you use high-performance volumes, such as io2, the extra time can be shortened to 5 minutes. If you use standard GP3 volumes (3000 IOPS/125 MiB/s), the extra time may reach 30 minutes.
+> Volume snapshots are consistent upon crash. During restore, before TiKV starts, data self-check and repair are performed, which might take less than 30 minutes. If you restore using high-performance disks that can increase the IOPS and bandwidth, the time can be shortened to 5 minutes. For details about how to use high-performance disks, see [Restore period is excessively long (longer than 2 hours)](backup-restore-faq.md#restore-period-is-excessively-long-longer-than-2-hours).
 
 ### Restore performance data
 
-The duration of volume snapshot restore depends on the time taken by TiKV to start and data restore. TiKV can be started in 2 to 30 minutes, considering the impact of initialization delay of EBS volume snapshot restore. Data restore is completed by AWS EBS. Currently, AWS does not provide quantitative metrics. The time taken by the entire restore process is as follows under the recommended machine type and GP3 storage volume:
+The duration of volume snapshot restore depends on the time taken to start TiKV and that for data restore. Time taken to start TiKV might be affected by lazy initialization of EBS volume snapshot restore, for which AWS does not provide quantitative metrics. Test data is as follows under the recommended machine type and GP3 storage volume:
 
 ![EBS Snapshot restore perf](/media/volume-snapshot-restore-perf.png)
 
-| Data of a volume  | Volume size   | Volume configuration             | Appropriate restore duration |
+| Volume data  | Total volume size   | Volume configuration             | Appropriate restore duration |
 | :------: | :-----: | :---------------: | :--------: |
 | 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 16 min    |
 | 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 18 min    |
