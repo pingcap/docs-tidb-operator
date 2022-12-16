@@ -13,7 +13,7 @@ You might encounter the following problems during EBS snapshot backup:
 
 - [Failed to start a backup or the backup failed immediately after it started](#failed-to-start-a-backup-or-the-backup-failed-immediately-after-it-started)
 - [The backup CR of a failed task could not be deleted](#the-backup-cr-of-a-failed-task-could-not-be-deleted)
-- [Backup failed immediately after being initiated](#backup-failed-immediately-after-being-initiated)
+- [Backup failed](#backup-failed)
 
 ### Failed to start a backup or the backup failed immediately after it started
 
@@ -33,13 +33,13 @@ Issue: [#4781](https://github.com/pingcap/tidb-operator/issues/4781)
         kubectl -n ${namespace} logs ${tidb-controller-manager}
         ```
 
-    * Check whether the log contains the following error message:
+    * Check for the following error message:
 
         ```shell
         metadata.annotations: Too long: must have at most 262144 bytes, spec.template.annotations: Too long: must have  at most 262144 bytes
         ```
 
-    Cause: TiDB uses annotations to pass in the PVC or PV configuration and the annotation of a backup job should not exceed 256 KB. When a TiKV cluster is excessively large, the configuration of PVC or PV will be larger than 256 KB. As a result, calling Kubernetes API fails.
+    Cause: TiDB uses annotations to pass in the PVC or PV configuration, and the annotation of a backup job should not exceed 256 KB. When a TiKV cluster is excessively large, the configuration of PVC or PV will be larger than 256 KB. As a result, calling Kubernetes API fails.
 
 - Symptom 2: Apply the backup CRD yaml file. The pod and job are successfully created, but the backup failed immediately.
 
@@ -49,7 +49,7 @@ Issue: [#4781](https://github.com/pingcap/tidb-operator/issues/4781)
     exec /entrypoint.sh: argument list too long
     ```
 
-    Cause: In TiDB Operator, before the backup pod starts, the PVC or PV configuration is injected to the environment variables of the backup pod. Then the backup task starts. The environment variables cannot exceed 1 MB. When the configuration of PVC or PV is larger than 1 MB, the backup pod cannot get the environment variables and the backup fails.
+    Cause: In TiDB Operator, before the backup pod starts, the PVC or PV configuration is injected to the environment variables of the backup pod. Then the backup task starts. The environment variables cannot exceed 1 MB. Therefore, when the configuration of PVC or PV is larger than 1 MB, the backup pod cannot get the environment variables and the backup fails.
 
     Scenario: This issue occurs when the TiKV cluster is excessively large (40+ TiKV nodes) or too many volumes have been configured, and the TiDB Operator is v1.4.0-beta.2 or earlier.
 
@@ -65,7 +65,7 @@ Scenario: This issue occurs when the TiDB Operator is v1.4.0-beta.2 or earlier.
 
 Solution: Upgrade TiDB Operator to the latest version.
 
-### Backup failed immediately after being initiated
+### Backup failed
 
 Issue: [#13838](https://github.com/tikv/tikv/issues/13838)
 
@@ -79,7 +79,11 @@ GC safepoint 437271276493996032 exceed TS 437270540511608835
 
 Scenario: This issue occurs when you initiate backup tasks using volumes in a large cluster (20+ TiKV nodes), after you perform large-scale data restore using BR.
 
-Solution: Start the `grafana ${cluster-name}-TiKV-Details` panel. Check the Resolved-TS and confirm whether there is a large `Max Resolved TS gap`. Then restart the corresponding TiKV.
+Solution: Start the `grafana ${cluster-name}-TiKV-Details` panel. Unfold `Resolved-TS` and check the `Max Resolved TS gap` panel. Locate the Max Resolved TS with a large value (greater than 1 min). Then restart the corresponding TiKV.
+
+> **Note:**
+>
+> If the backup fails, intermediate files such as `clustermeta` or `backup.lock` might persist. You need to clean them up before using the same backup directory to perform the backup again.
 
 ## Restore issues
 
@@ -90,7 +94,7 @@ You might encounter the following problems during EBS snapshot restore:
 
 ### Failed to restore the cluster with the error `keepalive watchdog timeout`
 
-Symptom: The subtasks of BR data restore failed. The first restore subtask succeeded (volume complete) but the second subtask failed. Check the log of the failed task and find the following log information:
+Symptom: The subtasks of BR data restore failed. The first restore subtask succeeded (volume complete) but the second one failed. Check the log of the failed task and find the following log information:
 
 ```shell
 error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
