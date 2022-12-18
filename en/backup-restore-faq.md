@@ -21,19 +21,19 @@ Issue: [#4781](https://github.com/pingcap/tidb-operator/issues/4781)
 
 - Symptom 1: After the backup CRD yaml file is applied, the pod and job are not created, and the backup cannot be started.
 
-    * Run the following command to check the pod of TiDB Operator:
+    1. Run the following command to check the pod of TiDB Operator:
 
         ```shell
         kubectl get po -n ${namespace}
         ```
 
-    * Run the following command to check the log of `tidb-controller-manager`:
+    2. Run the following command to check the log of `tidb-controller-manager`:
 
         ```shell
         kubectl -n ${namespace} logs ${tidb-controller-manager}
         ```
 
-    * Check whether the log contains the following error message:
+    3. Check whether the log contains the following error message:
 
         ```shell
         metadata.annotations: Too long: must have at most 262144 bytes, spec.template.annotations: Too long: must have  at most 262144 bytes
