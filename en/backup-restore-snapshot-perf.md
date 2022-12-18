@@ -9,18 +9,18 @@ This document describes the performance of EBS snapshot backup and restore, the 
 
 ## Backup performance
 
-This section introduces the performance of EBS snapshot backup using volumes, the factors that affect performance, and the performance test results. Backup performance is scalable and increases linearly with the number of TiKV nodes.
+This section introduces the performance of EBS snapshot backup using volumes, the factors that affect performance, and the performance test results.
 
 ### Backup time consumption
 
-EBS snapshot backup using volumes consists of the following processes: creates a backup task, stops scheduling, stops GC, and obtains the backupts and volume snapshots. For more detailed information about these processes, see [Architecture of EBS snapshot volume backup and restore](volume-snapshot-backup-restore.md). Among these processes, creating a volume snapshot consumes most of the time. Volume snapshots are created in parallel, and the time taken to complete the entire backup task depends on when the most time-consuming volume is created.
+EBS snapshot backup using volumes consists of the following processes: creates a backup task, stops scheduling, disables GC, and obtains the backupts and volume snapshots. For more detailed information about these processes, see [Architecture of EBS snapshot volume backup and restore](volume-snapshot-backup-restore.md). Among these processes, creating a volume snapshot consumes most of the time. Volume snapshots are created in parallel, and the time taken to complete the entire backup task depends on when the most time-consuming volume is created.
 
 ### Time consumption ratio of backup
 
 | Backup stage     | Time taken    | Total ratio | Remarks                                     |
 | :--------: | :---------: | :------: | :-------------------------------------: |
-| Create volume snapshots  | 16 m (50GB) | %99      | Including the time for creating AWS EBS snapshots                  |
-| Others        | 1s          | %1       | Including the time for stopping scheduling, disabling GC, and obtaining the backupts |
+| Create volume snapshots  | 16 m (50 GB) | 99%      | Including the time for creating AWS EBS snapshots                  |
+| Others        | 1s          | 1%       | Including the time for stopping scheduling, disabling GC, and obtaining the backupts |
 
 ### Backup performance data
 
@@ -68,7 +68,7 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 
     TiDB Operator mounts the TiKV volumes and starts TiKV.
 
-4. Restores data.
+4. Restore data.
 
     TiDB Operator creates volume data restore subtasks. BR restores the data volumes to a consistent state.
 
@@ -80,8 +80,11 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 
 | Restore stage     | Appropriate time taken | Restore ratio | Remarks                                                            |
 | :--------: | :---------: | :------: | :-------------------------------------------------------------: |
-| Creates clusters     | 30 s         | %1       | Including the time for downloading docker image and starting PD                                   |
-| Restores volumes     | 20 s         | %1       | Including the time for starting the BR Pod and restoring volumes                                         |
+| Creates clusters     | 30s         |  1%      | Including the time for downloading docker image and starting PD                                   |
+| Restores volumes     | 20s         |  1%     | Including the time for starting the BR Pod and restoring volumes                                         |
+| Starts TiKV   | 2 to 30 min    | 58%      | The time taken to start TiKV is affected by volume performance and usually takes about 3 minutes. When the task restores backup data that contains trasactions, it might take up to 30 minutes to start TiKV. |
+| Restores data | 2 to 20 min    | 38%       |  Including the time for restoring data in the raft consensus layer and deleting MVCC data                                 |
+| Starts TiDB   | 1 min        | 2%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
 | Starts TiKV   | 2～30 min    | 58%      | If there are ongoing transactions during backup, rocksDB consumes extra 5-30 minutes to start during restore |
 | Restores data | 2～20 min    | 38%       |   Including the time for restoring data in the raft consensus layer and deleting MVCC data                    |
 | Starts TiDB   | 1 min        | 2%       |  Including the time for download the TiDB docker image and starting TiDB                     |
