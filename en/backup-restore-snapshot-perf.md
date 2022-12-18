@@ -89,8 +89,8 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 | Starts TiKV   | 2 to 30 min    | 58%      | The time taken to start TiKV is affected by volume performance and usually takes about 3 minutes. When the task restores backup data that contains trasactions, it might take up to 30 minutes to start TiKV. |
 | Restores data | 2 to 20 min    | 38%       |  Including the time for restoring data in the raft consensus layer and deleting MVCC data                                 |
 | Starts TiDB   | 1 min        | 2%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
-| Starts TiKV   | 2～30 min    | 58%      | If there are ongoing transactions during backup, rocksDB consumes extra 5-30 minutes to start during restore |
-| Restores data | 2～20 min    | 38%       |   Including the time for restoring data in the raft consensus layer and deleting MVCC data                    |
+| Starts TiKV   | 2 to 30 min    | 58%      | If there are ongoing transactions during backup, rocksDB consumes extra 5-30 minutes to start during restore |
+| Restores data | 2 to 20 min    | 38%       |   Including the time for restoring data in the raft consensus layer and deleting MVCC data                    |
 | Starts TiDB   | 1 min        | 2%       |  Including the time for download the TiDB docker image and starting TiDB                     |
 
 > **Note:**
