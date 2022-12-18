@@ -7,6 +7,10 @@ summary: Learn about the performance of EBS snapshot backup and restore.
 
 This document describes the performance of EBS snapshot backup and restore, the factors that affect performance, and the performance test results. The performance metrics are based on the AWS region `us-west-2`.
 
+> **Note:**
+>
+> The preceding performance data is for reference only. The actual performance may vary.
+
 ## Backup performance
 
 This section introduces the performance of EBS snapshot backup using volumes, the factors that affect performance, and the performance test results.
@@ -106,7 +110,3 @@ The duration of volume snapshot restore depends on the time taken to start TiKV 
 | 200 GB   | 500 GB  | 7000IOPS/400MiB/s | 21 min   |
 | 500 GB   | 1024 GB | 7000IOPS/400MiB/s | 25 min   |
 | 1024 GB  | 3500 GB | 7000IOPS/400MiB/s | 34 min   |
-
-> **Note:**
->
-> The preceding performance data is for reference only. The actual performance may vary.
