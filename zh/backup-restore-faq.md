@@ -21,19 +21,19 @@ issue 链接：[#4781](https://github.com/pingcap/tidb-operator/issues/4781)
 
 - 现象一：应用备份 CRD yaml 文件后，pod/job 并没有创建。备份无法启动。
 
-    * 通过以下命令查看 TiDB Operator pod 信息：
+    1. 通过以下命令查看 TiDB Operator pod 信息：
 
         ```shell
         kubectl get po -n ${namespace}
         ```
 
-    * 查看 TiDB Operator controller manager pod 的 log 信息：
+    2. 查看 TiDB Operator controller manager pod 的 log 信息：
 
         ```shell
         kubectl -n ${namespace} logs ${tidb-controller-manager}
         ```
 
-    * 检查 log 信息是否包含以下错误：
+    3. 检查 log 信息是否包含以下错误：
 
         ```shell
         metadata.annotations: Too long: must have at most 262144 bytes, spec.template.annotations: Too long: must have  at most 262144 bytes
