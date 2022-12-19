@@ -55,7 +55,7 @@ export HTTP_PATH=/dashboard
 
 ### Access independently deployed TiDB Dashboard
 
-To access an independently deployed TiDB Dashboard, you need to use TiDB Operator v1.1.1 (or later versions) and the TiDB cluster v4.0.1 (or later versions).
+To access an independently deployed TiDB Dashboard, you need to use TiDB Operator v1.4.0 (or later versions) and the TiDB cluster v6.5.0 (or later versions).
 
 Before accessing TiDB Dashboard, ensure that you have [deployed an independent TiDB Dashboard](get-started.md#deploy-tidb-dashboard-independently).
 
