@@ -108,7 +108,7 @@ error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
 
 2. 编辑 TiDB 集群配置，调大 TiKV `keepalive` 参数：
 
-    ```shell
+    ```toml
     config: |
       [server]
         grpc-keepalive-time = "500s"
