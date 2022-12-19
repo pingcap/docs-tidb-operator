@@ -5,7 +5,7 @@ summary: Learn about the common questions and solutions for EBS snapshot backup 
 
 # FAQs on EBS Snapshot Backup and Restore
 
-This document describes the common questions occur during ESB snapshot backup and restore and the solutions.
+This document describes the common questions that occur during EBS snapshot backup and restore and the solutions.
 
 ## Backup issues
 
