@@ -52,7 +52,7 @@ export HTTP_PATH=/dashboard
 
 ### 访问独立部署的 TiDB Dashboard
 
-你需要使用 v1.4.0 版本及以上的 TiDB Operator 以及 v6.5.0 版本及以上的 TiDB 集群。
+你需要使用 v1.4.0 版本及以上的 TiDB Operator 以及 v4.0.1 版本及以上的 TiDB 集群。
 
 访问前，确保你已经[部署独立的 TiDB Dashboard](get-started.md#部署独立的-tidb-dashboard)。
 
