@@ -79,6 +79,8 @@
       - [功能架构](volume-snapshot-backup-restore.md)
       - [基于 EBS 快照备份 TiDB 集群](backup-to-aws-s3-by-snapshot.md)
       - [基于 EBS 快照恢复 TiDB 集群](restore-from-aws-s3-by-snapshot.md)
+      - [基于 EBS 卷快照备份恢复的性能介绍](backup-restore-snapshot-perf.md)
+      - [基于 EBS 快照备份恢复的常见问题](backup-restore-faq.md)
   - 运维
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
