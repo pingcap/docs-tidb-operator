@@ -9,7 +9,7 @@ This document describes the performance of EBS snapshot backup and restore, the 
 
 > **Note:**
 >
-> The preceding performance data is for reference only. The actual performance may vary.
+> The performance data is for reference only. The actual performance may vary.
 
 ## Backup performance
 
@@ -44,7 +44,7 @@ Time taken by snapshot backup using volumes depends on when the last volume snap
 >
 > The preceding performance data is based on full data backup.
 >
-> AWS EBS snapshot backup is performed on the per volume basis. Only the first volume snapshot is full, and the subsequent volume snapshots are incremental. You can complete a daily backup within about 1 hour. In special scenarios, you can shorten the backup interval, for example, 12 hours or 8 hours.
+> AWS EBS snapshot backup is performed on the per volume basis. Only the first volume snapshot is full, and the subsequent volume snapshots are incremental. You can complete a daily backup within about 1 hour. In special scenarios, you can shorten the backup interval, for example, to 12 hours or 8 hours.
 
 ### Backup impact
 
@@ -89,9 +89,6 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 | Starts TiKV   | 2 to 30 min    | 58%      | The time taken to start TiKV is affected by volume performance and usually takes about 3 minutes. When the task restores backup data that contains trasactions, it might take up to 30 minutes to start TiKV. |
 | Restores data | 2 to 20 min    | 38%       |  Including the time for restoring data in the raft consensus layer and deleting MVCC data                                 |
 | Starts TiDB   | 1 min        | 2%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
-| Starts TiKV   | 2 to 30 min    | 58%      | If there are ongoing transactions during backup, rocksDB consumes extra 5-30 minutes to start during restore |
-| Restores data | 2 to 20 min    | 38%       |   Including the time for restoring data in the raft consensus layer and deleting MVCC data                    |
-| Starts TiDB   | 1 min        | 2%       |  Including the time for download the TiDB docker image and starting TiDB                     |
 
 > **Note:**
 >
