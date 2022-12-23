@@ -31,4 +31,3 @@ TiDB Operator v1.4 引入了以下关键特性，从扩展性、易用性等方�
 - 支持使用字段 `additionalContainers` 来自定义 Pod 容器的配置
 - 支持配置 BR 的 `--check-requirements` 参数
 - 为 TiFlash `Service` 添加 metric 端口
-
