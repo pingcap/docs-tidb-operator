@@ -13,13 +13,11 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 | TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
 | dev               | dev                 |
-| TiDB >= 6.5*       | 1.4（推荐），1.3     |
+| TiDB >= 6.5       | 1.4（推荐），1.3     |
 | TiDB >= 5.4       | 1.4，1.3（推荐）          |
 | 5.1 <= TiDB < 5.4 | 1.4，1.3（推荐），1.2      |
 | 3.0 <= TiDB < 5.1 | 1.4，1.3（推荐），1.2，1.1 |
 | 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
-
-* 从 TiDB v6.5 开始，[TiDB Dashboard](https://github.com/pingcap/tidb-dashboard) 拆分为了独立的组件，需要使用 TiDB Operator 1.4+ 版本提供的 `TidbDashboard` CRD 进行管理。
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 
