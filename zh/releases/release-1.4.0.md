@@ -19,4 +19,4 @@ TiDB Operator 版本：1.4.0
 
 ## Bug 修复
 
-- 修复基于 EBS 快照备份恢复到不同 namespace 的问题 ([#4795](https://github.com/pingcap/tidb-operator/pull/4795), [@fengou1](https://github.com/fengou1))
+- 修复基于 EBS 快照备份无法恢复到不同 namespace 的问题 ([#4795](https://github.com/pingcap/tidb-operator/pull/4795), [@fengou1](https://github.com/fengou1))
