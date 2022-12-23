@@ -1,0 +1,22 @@
+---
+title: TiDB Operator 1.4.0 Release Notes
+---
+
+# TiDB Operator 1.4.0 Release Notes
+
+发布日期: 2022 年 12 月 29 日
+
+TiDB Operator 版本：1.4.0
+
+## 新功能
+
+- 支持使用新的 `TidbDashboard` CRD 独立管理 [TiDB Dashboard](https://github.com/pingcap/tidb-dashboard) ([#4787](https://github.com/pingcap/tidb-operator/pull/4787), [@SabaPing](https://github.com/SabaPing))
+- 支持为 TiKV 与 PD 配置 Liveness Probe ([#4763](https://github.com/pingcap/tidb-operator/pull/4763), [@mikechengwei](https://github.com/mikechengwei))
+
+## 优化提升
+
+- 适配新的 TiProxy 版本 ([#4802](https://github.com/pingcap/tidb-operator/pull/4802), [@xhebox](https://github.com/xhebox))
+
+## Bug 修复
+
+- 修复基于 EBS 快照到不同 namespace 的问题 ([#4795](https://github.com/pingcap/tidb-operator/pull/4795), [@fengou1](https://github.com/fengou1))
