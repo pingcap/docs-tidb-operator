@@ -15,7 +15,11 @@ When you perform a rolling update to a TiDB cluster in Kubernetes, the Pod is sh
 
 If the TiDB cluster is deployed directly using TidbCluster CR, or deployed using Helm but switched to management by TidbCluster CR, you can upgrade the TiDB cluster by the following steps.
 
+<<<<<<< HEAD
 ### Upgrade the version of TiDB using TidbCluster CR
+=======
+When you perform a rolling update, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of PD, TiFlash, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
+>>>>>>> 4ee997b6 (add-tiflash-in-upgrade-doc (#2125))
 
 1. Modify the image configurations of all components in TidbCluster CR.
 

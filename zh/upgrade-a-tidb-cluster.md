@@ -12,7 +12,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/','/docs-cn
 
 对于有连接重试功能的客户端，滚动更新 TiDB 同样不会影响业务。对于无法进行重试的客户端，滚动更新 TiDB 则会导致连接到被关闭节点的数据库连接失效，造成部分业务请求失败。对于这类业务，推荐在客户端添加重试功能或在低峰期进行 TiDB 的滚动升级操作。
 
+<<<<<<< HEAD
 滚动更新可以用于升级 TiDB 版本，也可以用于更新集群配置。
+=======
+使用滚动更新时，TiDB Operator 会按 PD、TiFlash、TiKV、TiDB 的顺序，串行地删除旧版本的 Pod，并创建新版本的 Pod。当新版本的 Pod 正常运行后，再处理下一个 Pod。
+>>>>>>> 4ee997b6 (add-tiflash-in-upgrade-doc (#2125))
 
 ## 通过 TidbCluster CR 升级
 
