@@ -214,6 +214,7 @@ kubectl get rt -n restore-test -o wide
 NAME               STATUS     ...
 demo2-restore-s3   Complete   ...
 ```
+
 ## PITR 恢复
 
 本节示例在 namespace `test3` 中的 TiDB 集群 `demo3` 上执行 PITR 恢复，分为以下两步：
