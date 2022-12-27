@@ -17,7 +17,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 > **注意：**
 >
 > - BR 只支持 TiDB v3.1 及以上版本。
-> - BR 的 PITR 恢复功能只支持 TiDB v6.2 及以上版本。
+> - BR 的 PITR 恢复功能只支持 TiDB v6.3 及以上版本。
 > - BR 恢复的数据无法被同步到下游，因为 BR 直接导入 SST/LOG 文件，而下游集群目前没有办法获得上游的 SST/LOG 文件。
 
 ## 全量恢复

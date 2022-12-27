@@ -32,7 +32,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-aws-s3-using-br/']
 > **注意：**
 >
 > - 快照备份只支持 TiDB v3.1 及以上版本。
-> - 日志备份只支持 TiDB v6.2 及以上版本。
+> - 日志备份只支持 TiDB v6.3 及以上版本。
 > - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
 
 ## Ad-hoc 备份
@@ -293,7 +293,7 @@ demo1-full-backup-s3   full   snapshot   Complete   s3://my-bucket/my-full-backu
 
     ```
     NAME                       TYPE    MODE   STATUS   ....
-    demo1-log-backup-s3        log    Running  ....
+    demo1-log-backup-s3                log    Running  ....
     ```
 
 #### 查看日志备份的状态
@@ -362,8 +362,8 @@ kubectl get backup -n backup-test
 ```
 
 ```
-NAME                       TYPE    MODE     STATUS    ....
-demo1-log-backup-s3        log     Stopped  ....
+NAME                       MODE     STATUS    ....
+demo1-log-backup-s3        log      Stopped   ....
 ```
 
 <Tip>
@@ -433,8 +433,8 @@ demo1-log-backup-s3        log     Stopped  ....
     ```
 
     ```
-    NAME                   TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
-    demo1-log-backup-s3           log        Stopped    ...   2022-10-10T15:21:00+08:00
+    NAME                   MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup-s3    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
 ### 备份示例
