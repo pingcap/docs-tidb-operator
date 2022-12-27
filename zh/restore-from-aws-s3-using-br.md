@@ -207,7 +207,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get rt -n restore-test -o wide
+kubectl get restore -n restore-test -o wide
 ```
 
 ```
@@ -290,10 +290,10 @@ demo2-restore-s3   Complete   ...
       pitrRestoredTs: "2022-10-10T17:21:00+08:00"
       pitrFullBackupStorageProvider:
         s3:
-        provider: aws
-        region: us-west-1
-        bucket: my-bucket
-        prefix: my-full-backup-folder-pitr
+          provider: aws
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-full-backup-folder-pitr
     ```
 
     在配置 `restore-point-s3.yaml` 文件时，请参考以下信息：

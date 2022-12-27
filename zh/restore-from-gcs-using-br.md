@@ -121,7 +121,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     {{< copyable "shell-regular" >}}
 
      ```shell
-     kubectl get rt -n test2 -owide
+     kubectl get restore -n restore-test -owide
      ```
 
      ```
@@ -203,10 +203,10 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
       pitrRestoredTs: "2022-10-10T17:21:00+08:00"
       pitrFullBackupStorageProvider:
         gcs:
-        projectId: ${project_id}
-        secretName: gcs-secret
-        bucket: my-bucket
-        prefix: my-full-backup-folder-pitr
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: my-full-backup-folder-pitr
     ```
 
     在配置 `restore-point-gcs.yaml` 文件时，请参考以下信息：

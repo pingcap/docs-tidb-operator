@@ -387,7 +387,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-gcs
-  namespace: test1
+  namespace: backup-test
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
@@ -424,7 +424,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-gcs
-  namespace: test1
+  namespace: backup-test
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
@@ -461,7 +461,7 @@ apiVersion: pingcap.com/v1alpha1
 kind: Backup
 metadata:
   name: demo1-backup-gcs
-  namespace: test1
+  namespace: backup-test
 spec:
   # backupType: full
   # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
@@ -558,7 +558,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get bks -n test1 -owide
+    kubectl get bks -n backup-test -owide
     ```
 
     查看定时快照备份下面所有的备份条目：
@@ -566,7 +566,7 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n test1
+    kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n backup-test
     ```
 
 ## 删除备份的 Backup CR
