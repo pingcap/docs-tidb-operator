@@ -591,7 +591,7 @@ spec:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -n test1 -o wide
+kubectl get bks -n backup-test -o wide
 ```
 
 查看定时快照备份下面所有的备份条目：
@@ -599,7 +599,7 @@ kubectl get backup -n test1 -o wide
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
+kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n backup-test
 ```
 
 ## 删除备份的 Backup CR
