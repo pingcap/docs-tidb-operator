@@ -256,7 +256,7 @@ spec:
   logStop: true
 ```
 
-可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Complete`：
+可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
 
 ```shell
 kubectl get backup -n backup-test
@@ -264,7 +264,7 @@ kubectl get backup -n backup-test
 
 ```
 NAME                       TYPE    MODE   STATUS    ....
-demo1-log-backup-azblob            log    Complete  ....
+demo1-log-backup-azblob            log    Stopped  ....
 ```
 
 <Tip>

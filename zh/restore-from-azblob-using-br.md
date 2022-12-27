@@ -115,7 +115,7 @@ spec:
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
 ```shell
-kubectl get restore -n test2 -o wide
+kubectl get restore -n restore-test -o wide
 ```
 
 ```
