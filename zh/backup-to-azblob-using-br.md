@@ -29,7 +29,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 > **注意：**
 >
 > - 快照备份只支持 TiDB v3.1 及以上版本。
-> - 日志备份只支持 TiDB v6.2 及以上版本。
+> - 日志备份只支持 TiDB v6.3 及以上版本。
 > - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
 
 ## Ad-hoc 备份
@@ -263,8 +263,8 @@ kubectl get backup -n backup-test
 ```
 
 ```
-NAME                       TYPE    MODE   STATUS    ....
-demo1-log-backup-azblob            log    Stopped  ....
+NAME                       MODE   STATUS    ....
+demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
@@ -333,8 +333,8 @@ demo1-log-backup-azblob            log    Stopped  ....
     ```
 
     ```
-    NAME                TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
-    demo1-log-backup           log        Complete   ...   2022-10-10T15:21:00+08:00
+    NAME                MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup    log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### 备份示例
