@@ -8,7 +8,7 @@ TiDB Operator 1.4 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-Due to the change in [#4683](https://github.com/pingcap/tidb-operator/pull/4683), the feature of modifying storage is disabled by default. If you want to scale out the PVC for a component, you need to first enable this feature.
+Due to the change in [#4683](https://github.com/pingcap/tidb-operator/pull/4683), the feature of modifying storage is disabled by default. If you want to resize the PVC for a component, you need to first enable this feature.
 
 ## Rolling upgrade changes
 
