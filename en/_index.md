@@ -1,6 +1,6 @@
 ---
 title: TiDB on Kubernetes Documentation
-summary: Learn about TiDB on Kubernetes documentation.
+summary: Learn about the TiDB on Kubernetes documentation.
 hide_sidebar: true
 hide_commit: true
 ---
