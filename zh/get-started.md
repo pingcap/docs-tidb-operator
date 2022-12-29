@@ -489,7 +489,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 5.7.25-TiDB-v6.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 5.7.25-TiDB-v6.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -538,10 +538,10 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v6.1.0
+         tidb_version(): Release Version: v6.5.0
                 Edition: Community
         Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
-             Git Branch: heads/refs/tags/v6.1.0
+             Git Branch: heads/refs/tags/v6.5.0
          UTC Build Time: 2021-11-24 13:32:39
               GoVersion: go1.16.4
            Race Enabled: false
@@ -733,7 +733,7 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v6.1.0-alpha-445-g778e188fa
+tidb_version(): Release Version: v6.5.0-alpha-445-g778e188fa
 Edition: Community
 Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
 Git Branch: master
