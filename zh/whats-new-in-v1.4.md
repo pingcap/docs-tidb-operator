@@ -1,6 +1,5 @@
 ---
 title: TiDB Operator v1.4 新特性
-aliases: ['/zh/tidb-in-kubernetes/dev/whats-new-in-v1.3']
 ---
 
 # TiDB Operator v1.4 新特性
@@ -22,7 +21,7 @@ TiDB Operator v1.4 引入了以下关键特性，从扩展性、易用性等方�
 - 支持同时缩容或者扩容多个 TiKV 和 TiFlash Pods。
 - 支持使用 BR 恢复集群到快照备份和日志备份的某个时间点。
 - 支持修改 TiDB 集群所用的 AWS EBS 存储的 IOPS 与 throughput。
-- 实验性支持 TiProxy。
+- 实验性支持 [TiProxy](https://github.com/pingcap/tiproxy)。
 
 ## 易用性
 

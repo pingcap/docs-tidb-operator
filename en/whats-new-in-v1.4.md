@@ -1,6 +1,5 @@
 ---
 title: What's New in TiDB Operator 1.4
-aliases: ['/tidb-in-kubernetes/dev/whats-new-in-v1.3']
 ---
 
 # What's New in TiDB Operator 1.4
@@ -22,7 +21,7 @@ Due to the change in [#4493](https://github.com/pingcap/tidb-operator/pull/4494)
 - Support scaling in or out multiple TiKV and TiFlash Pods at the same time.
 - Support restoring a cluster to a specific time point from a snapshot backup or a log backup using BR.
 - Support modifying the IOPS and throughput of AWS EBS storage used by a TiDB cluster.
-- Support TiProxy as an experimental feature.
+- Support [TiProxy](https://github.com/pingcap/tiproxy) as an experimental feature.
 
 ## Usability
 

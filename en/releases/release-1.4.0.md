@@ -16,7 +16,7 @@ TiDB Operator version: 1.4.0
 
 ## Improvements
 
-- Adapt to the new TiProxy version ([#4802](https://github.com/pingcap/tidb-operator/pull/4802), [@xhebox](https://github.com/xhebox))
+- Support configuring `.spce.preferIPv6: true` for compatibility with IPv6 network environments ([#4811](https://github.com/pingcap/tidb-operator/pull/4811)，[@KanShiori](https://github.com/KanShiori)
 
 ## Bug fixes
 
