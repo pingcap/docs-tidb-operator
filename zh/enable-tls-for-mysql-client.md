@@ -550,7 +550,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
          name: ${cluster_name}
          namespace: ${namespace}
         spec:
-         version: v6.1.0
+         version: v6.5.0
          timezone: UTC
          pvReclaimPolicy: Retain
          pd:
