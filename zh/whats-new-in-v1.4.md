@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator v1.4 新特性
+aliases: ['/zh/tidb-in-kubernetes/dev/whats-new-in-v1.3']
 ---
 
 # TiDB Operator v1.4 新特性
