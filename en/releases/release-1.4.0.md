@@ -16,7 +16,7 @@ TiDB Operator version: 1.4.0
 
 ## Improvements
 
-- Support configuring `.spce.preferIPv6: true` for compatibility with IPv6 network environments ([#4811](https://github.com/pingcap/tidb-operator/pull/4811)，[@KanShiori](https://github.com/KanShiori)
+- Support configuring `.spec.preferIPv6: true` for compatibility with IPv6 network environments ([#4811](https://github.com/pingcap/tidb-operator/pull/4811)，[@KanShiori](https://github.com/KanShiori)
 
 ## Bug fixes
 
