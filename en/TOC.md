@@ -4,7 +4,7 @@
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.3](whats-new-in-v1.3.md)
+  - [What's New in v1.4](whats-new-in-v1.4.md)
 - [Get Started](get-started.md)
 - Deploy
   - On Self-Managed Kubernetes
@@ -125,6 +125,7 @@
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
   - v1.4
+    - [1.4 GA](releases/release-1.4.0.md)
     - [1.4.0-beta.3](releases/release-1.4.0-beta.3.md)
     - [1.4.0-beta.2](releases/release-1.4.0-beta.2.md)
     - [1.4.0-beta.1](releases/release-1.4.0-beta.1.md)
