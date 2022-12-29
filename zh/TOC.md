@@ -4,6 +4,10 @@
 - [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4)
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
+<<<<<<< HEAD
+=======
+  - [v1.4 新特性](whats-new-in-v1.4.md)
+>>>>>>> 683c7e33 (en,zh: add v1.4 GA release notes and whats new (#2144))
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes
@@ -125,6 +129,7 @@
   - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)
 - 版本发布历史
   - v1.4
+    - [1.4 GA](releases/release-1.4.0.md)
     - [1.4.0-beta.3](releases/release-1.4.0-beta.3.md)
     - [1.4.0-beta.2](releases/release-1.4.0-beta.2.md)
     - [1.4.0-beta.1](releases/release-1.4.0-beta.1.md)
