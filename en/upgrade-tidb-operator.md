@@ -24,12 +24,12 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     * If your Kubernetes version >= v1.16:
 
-        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
+        1. If you upgrade TiDB Operator from v1.3.x to v1.4.0 or later versions, you need to execute the following command to create the new TidbDashboard CRD. If you upgrade TiDB Operator from v1.4.0 or later versions, you can skip this step.
 
             {{< copyable "shell-regular" >}}
 
             ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbdashboards.yaml
             ```
 
         2. Update CRD.
@@ -43,12 +43,12 @@ If your server has access to the internet, you can perform online upgrade by tak
 
     * If your Kubernetes version < v1.16:
 
-        1. If you upgrade TiDB Operator from v1.2.x or earlier versions to v1.3.x or later versions, you need to execute the following command to create the new TidbNGMonitoring CRD. If you upgrade TiDB Operator from v1.3.x or later versions, you can skip this step.
+        1. If you upgrade TiDB Operator from v1.3.x to v1.4.0 or later versions, you need to execute the following command to create the new TidbDashboard CRD. If you upgrade TiDB Operator from v1.4.0 or later versions, you can skip this step.
 
             {{< copyable "shell-regular" >}}
 
             ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbngmonitorings.yaml
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbdashboards.yaml
             ```
 
         2. Update CRD.
