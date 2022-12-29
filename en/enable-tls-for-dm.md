@@ -518,7 +518,7 @@ metadata:
 spec:
   tlsCluster:
     enabled: true
-  version: v6.1.0
+  version: v6.5.0
   pvReclaimPolicy: Retain
   discovery: {}
   master:
@@ -588,7 +588,7 @@ metadata:
   name: ${cluster_name}
   namespace: ${namespace}
 spec:
-  version: v6.1.0
+  version: v6.5.0
   pvReclaimPolicy: Retain
   discovery: {}
   tlsClientSecretNames:

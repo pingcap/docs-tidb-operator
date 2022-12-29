@@ -44,17 +44,17 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v6.1.0）：
+    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v6.5.0）：
 
     ```shell
-    pingcap/pd:v6.1.0
-    pingcap/tikv:v6.1.0
-    pingcap/tidb:v6.1.0
-    pingcap/tidb-binlog:v6.1.0
-    pingcap/ticdc:v6.1.0
-    pingcap/tiflash:v6.1.0
+    pingcap/pd:v6.5.0
+    pingcap/tikv:v6.5.0
+    pingcap/tidb:v6.5.0
+    pingcap/tidb-binlog:v6.5.0
+    pingcap/ticdc:v6.5.0
+    pingcap/tiflash:v6.5.0
     pingcap/tidb-monitor-reloader:v1.0.1
-    pingcap/tidb-monitor-initializer:v6.1.0
+    pingcap/tidb-monitor-initializer:v6.5.0
     grafana/grafana:6.0.1
     prom/prometheus:v2.18.1
     busybox:1.26.2
@@ -65,26 +65,26 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/pd:v6.1.0
-    docker pull pingcap/tikv:v6.1.0
-    docker pull pingcap/tidb:v6.1.0
-    docker pull pingcap/tidb-binlog:v6.1.0
-    docker pull pingcap/ticdc:v6.1.0
-    docker pull pingcap/tiflash:v6.1.0
+    docker pull pingcap/pd:v6.5.0
+    docker pull pingcap/tikv:v6.5.0
+    docker pull pingcap/tidb:v6.5.0
+    docker pull pingcap/tidb-binlog:v6.5.0
+    docker pull pingcap/ticdc:v6.5.0
+    docker pull pingcap/tiflash:v6.5.0
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-    docker pull pingcap/tidb-monitor-initializer:v6.1.0
+    docker pull pingcap/tidb-monitor-initializer:v6.5.0
     docker pull grafana/grafana:6.0.1
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
-    docker save -o pd-v6.1.0.tar pingcap/pd:v6.1.0
-    docker save -o tikv-v6.1.0.tar pingcap/tikv:v6.1.0
-    docker save -o tidb-v6.1.0.tar pingcap/tidb:v6.1.0
-    docker save -o tidb-binlog-v6.1.0.tar pingcap/tidb-binlog:v6.1.0
-    docker save -o ticdc-v6.1.0.tar pingcap/ticdc:v6.1.0
-    docker save -o tiflash-v6.1.0.tar pingcap/tiflash:v6.1.0
+    docker save -o pd-v6.5.0.tar pingcap/pd:v6.5.0
+    docker save -o tikv-v6.5.0.tar pingcap/tikv:v6.5.0
+    docker save -o tidb-v6.5.0.tar pingcap/tidb:v6.5.0
+    docker save -o tidb-binlog-v6.5.0.tar pingcap/tidb-binlog:v6.5.0
+    docker save -o ticdc-v6.5.0.tar pingcap/ticdc:v6.5.0
+    docker save -o tiflash-v6.5.0.tar pingcap/tiflash:v6.5.0
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-    docker save -o tidb-monitor-initializer-v6.1.0.tar pingcap/tidb-monitor-initializer:v6.1.0
+    docker save -o tidb-monitor-initializer-v6.5.0.tar pingcap/tidb-monitor-initializer:v6.5.0
     docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
@@ -95,14 +95,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i pd-v6.1.0.tar
-    docker load -i tikv-v6.1.0.tar
-    docker load -i tidb-v6.1.0.tar
-    docker load -i tidb-binlog-v6.1.0.tar
-    docker load -i ticdc-v6.1.0.tar
-    docker load -i tiflash-v6.1.0.tar
+    docker load -i pd-v6.5.0.tar
+    docker load -i tikv-v6.5.0.tar
+    docker load -i tidb-v6.5.0.tar
+    docker load -i tidb-binlog-v6.5.0.tar
+    docker load -i ticdc-v6.5.0.tar
+    docker load -i tiflash-v6.5.0.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
-    docker load -i tidb-monitor-initializer-v6.1.0.tar
+    docker load -i tidb-monitor-initializer-v6.5.0.tar
     docker load -i grafana-6.0.1.tar
     docker load -i prometheus-v2.18.1.tar
     docker load -i busybox-1.26.2.tar

@@ -18,7 +18,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
     ```
 
-    `${version}` 是 TiDB 集群版本，例如，`v6.1.0`。
+    `${version}` 是 TiDB 集群版本，例如，`v6.5.0`。
 
 2. 解压安装包：
 
