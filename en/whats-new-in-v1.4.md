@@ -17,13 +17,6 @@ Due to the change in [#4493](https://github.com/pingcap/tidb-operator/pull/4494)
 
 ## Extensibility
 
-- 支持使用新的 `TidbDashboard` CRD 独立管理 [TiDB Dashboard](https://github.com/pingcap/tidb-dashboard)
-- 支持基于 Amazon EBS 的 TiDB 集群 volume-snapshot 的备份和恢复
-- 支持同时缩容或者扩容多个 TiKV 和 TiFlash Pods
-- 支持使用 BR 恢复集群到快照备份和日志备份的某个时间点
-- 支持修改 TiDB 集群所用的 AWS EBS 存储的 IOPS 与 throughput
-- 实验性支持 TiProxy
-
 - Support managing [TiDB Dashboard](https://github.com/pingcap/tidb-dashboard) in a separate `TidbDashboard` CRD.
 - Support backup and restore based on Amazon EBS volume-snapshot.
 - Support scaling in or out multiple TiKV and TiFlash Pods at the same time.
