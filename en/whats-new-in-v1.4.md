@@ -22,7 +22,7 @@ Due to the change in [#4493](https://github.com/pingcap/tidb-operator/pull/4494)
 - Support scaling in or out multiple TiKV and TiFlash Pods at the same time.
 - Support restoring a cluster to a specific time point from a snapshot backup or a log backup using BR.
 - Support modifying the IOPS and throughput of AWS EBS storage used by a TiDB cluster.
-- Support TiProxy. (Experimental feature)
+- Support TiProxy as an experimental feature.
 
 ## Usability
 
