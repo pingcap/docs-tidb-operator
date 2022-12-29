@@ -20,4 +20,4 @@ TiDB Operator 版本：1.4.0
 ## Bug 修复
 
 - 修复基于 EBS 快照备份无法恢复到不同 namespace 的问题 ([#4795](https://github.com/pingcap/tidb-operator/pull/4795), [@fengou1](https://github.com/fengou1))
-- 修复日志备份停止占用 Complete 状态, 导致调用方误认为日志备份 CR 已完成, 从而无法继续对日志备份进行 Truncate 操作的问题 ([#4810](https://github.com/pingcap/tidb-operator/pull/4810), [@WizardXiao](https://github.com/WizardXiao))
+- 修复日志备份停止占用 Complete 状态，导致调用方误认为日志备份 CR 已完成，从而无法继续对日志备份进行 Truncate 操作的问题 ([#4810](https://github.com/pingcap/tidb-operator/pull/4810), [@WizardXiao](https://github.com/WizardXiao))

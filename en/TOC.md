@@ -4,7 +4,7 @@
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.3](whats-new-in-v1.3.md)
+  - [What's New in v1.4](whats-new-in-v1.4.md)
 - [Get Started](get-started.md)
 - Deploy
   - On Self-Managed Kubernetes
