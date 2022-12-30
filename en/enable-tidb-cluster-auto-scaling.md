@@ -125,19 +125,19 @@ For more information about configuration fields, refer to [API references](https
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
     ```
 
 2. Prepare data using [sysbench](https://github.com/akopytov/sysbench).
