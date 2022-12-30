@@ -33,12 +33,12 @@ summary: 介绍如何升级 TiDB Operator。
 
     * 如果 Kubernetes 版本大于等于 1.16:
 
-        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
+        1. 如果 TiDB Operator 从 v1.3.x 升级到 v1.4.0 及以后版本，需要先执行下面命令创建新增加的 TidbDashboard CRD。如果是 v1.4.0 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
             {{< copyable "shell-regular" >}}
 
             ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbngmonitorings.yaml
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbdashboards.yaml
             ```
 
         2. 更新 CRD。
@@ -52,12 +52,12 @@ summary: 介绍如何升级 TiDB Operator。
 
     * 如果 Kubernetes 版本小于 1.16:
 
-        1. 如果 TiDB Operator 从 v1.2.x 及更早版本升级到 v1.3.x 及以后版本，需要先执行下面命令创建新增加的 TidbNGMonitoring CRD。如果是 v1.3.x 及以后版本的 TiDB Operator 升级，可跳过这一步。
+        1. 如果 TiDB Operator 从 v1.3.x 升级到 v1.4.0 及以后版本，需要先执行下面命令创建新增加的 TidbDashboard CRD。如果是 v1.4.0 及以后版本的 TiDB Operator 升级，可跳过这一步。
 
             {{< copyable "shell-regular" >}}
 
             ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbngmonitorings.yaml
+            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbdashboards.yaml
             ```
 
         2. 更新 CRD。
