@@ -48,12 +48,12 @@ GRANT
 
 ### Step 1: Prepare for ad-hoc full backup
 
-1. Execute the following command to create the role-based access control (RBAC) resources in the `tidb-cluster` namespace based on [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml):
+1. Execute the following command to create the role-based access control (RBAC) resources in the `tidb-cluster` namespace based on [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/manifests/backup/backup-rbac.yaml):
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/backup/backup-rbac.yaml -n tidb-cluster
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/manifests/backup/backup-rbac.yaml -n tidb-cluster
     ```
 
 2. Grant permissions to the remote storage.

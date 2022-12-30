@@ -303,7 +303,7 @@ This section describes how to deploy a TiDB cluster and its monitoring services.
 
 ``` shell
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/examples/basic/tidb-cluster.yaml
 ```
 
 <details>
@@ -323,7 +323,7 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploy a TiD
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.2.7/examples/basic/tidb-monitor.yaml
 ```
 
 <details>
