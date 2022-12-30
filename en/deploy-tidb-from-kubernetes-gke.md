@@ -122,13 +122,13 @@ To deploy the TiDB cluster, perform the following steps:
 2. Deploy the TiDB cluster:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic/tidb-cluster.yaml -n demo
     ```
 
 3. Deploy the TiDB cluster monitor:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic/tidb-monitor.yaml -n demo
     ```
 
 4. View the Pod status:
