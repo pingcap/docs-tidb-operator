@@ -109,19 +109,19 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
     ```
 
 2. After the TiDB cluster is created, expose the TiDB cluster service to the local machine by running the following command:
@@ -233,6 +233,7 @@ spec:
 1. Set the auto-scaling interval.
 
     Compared with the stateless web service, a distributed database software is often sensitive to the instance auto-scaling. You need to make sure that there is a certain interval between each auto-scaling in case scaling operations are too frequent.
+
     You can set the interval (in seconds) between each auto-scaling by configuring `spec.tikv.scaleInIntervalSeconds` and `spec.tikv.ScaleOutIntervalSeconds` in TiKV. This also applies to TiDB.
 
     ```yaml

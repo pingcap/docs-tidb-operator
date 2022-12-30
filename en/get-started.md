@@ -361,7 +361,7 @@ This section describes how to deploy a TiDB cluster and its monitoring services.
 
 ``` shell
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic/tidb-cluster.yaml
 ```
 
 If you have trouble accessing Docker Hub, you can try images hosted in Alibaba Cloud:
@@ -370,7 +370,7 @@ If you have trouble accessing Docker Hub, you can try images hosted in Alibaba C
 
 ```
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic-cn/tidb-cluster.yaml
 ```
 
 Expected output:
@@ -389,7 +389,7 @@ tidbcluster.pingcap.com/basic created
 {{< copyable "shell-regular" >}}
 
 ``` shell
-curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml && \
+curl -LO https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic/tidb-monitor.yaml && \
 kubectl -n tidb-cluster apply -f tidb-monitor.yaml
 ```
 
@@ -398,7 +398,7 @@ If you have trouble accessing Docker Hub, you can try images hosted in Alibaba C
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/basic-cn/tidb-monitor.yaml
 ```
 
 Expected output:

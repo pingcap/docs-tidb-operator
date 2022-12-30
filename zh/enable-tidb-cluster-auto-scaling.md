@@ -109,19 +109,19 @@ spec:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
+    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-cluster.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
+    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-monitor.yaml -n ${namespace}
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
+    $ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.1.15/examples/auto-scale/tidb-cluster-auto-scaler.yaml  -n ${namespace}
     ```
 
 2. 当 TiDB 集群创建完毕以后，使用以下方式暴露 TiDB 集群服务到本地。
@@ -225,6 +225,7 @@ spec:
 1. 设置弹性伸缩间隔
 
     相比无状态的 Web 服务，一个分布式数据库软件对于实例的伸缩往往是非常敏感的。我们需要保证每次弹性伸缩之间存在一定的间隔，从而避免引起频繁的弹性伸缩。
+
     你可以通过 `spec.tikv.scaleInIntervalSeconds` 和 `spec.tikv.ScaleOutIntervalSeconds` 来配置每两次弹性伸缩之间的时间间隔(秒)，对于 TiDB 也同样如此。
 
     ```yaml
