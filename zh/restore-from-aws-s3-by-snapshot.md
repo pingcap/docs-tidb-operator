@@ -78,11 +78,11 @@ kubectl apply -f tidb-cluster.yaml -n test2
       name: demo2-restore-s3
       namespace: test2
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       br:
         cluster: demo2
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
         # logLevel: info
       s3:
         provider: aws
@@ -110,12 +110,12 @@ kubectl apply -f tidb-cluster.yaml -n test2
       annotations:
         iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       br:
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
         # logLevel: info
       s3:
         provider: aws
@@ -140,13 +140,14 @@ kubectl apply -f tidb-cluster.yaml -n test2
       name: demo2-restore-s3
       namespace: test2
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
       br:
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
+
         # logLevel: info
       s3:
         provider: aws
