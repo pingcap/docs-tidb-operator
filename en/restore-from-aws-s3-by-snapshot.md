@@ -78,11 +78,11 @@ Based on the authorization method you selected in [step 1](#step-1-set-up-the-en
       name: demo2-restore-s3
       namespace: test2
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       br:
         cluster: demo2
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
         # logLevel: info
       s3:
         provider: aws
@@ -110,12 +110,12 @@ Based on the authorization method you selected in [step 1](#step-1-set-up-the-en
       annotations:
         iam.amazonaws.com/role: arn:aws:iam::123456789012:role/user
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       br:
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
         # logLevel: info
       s3:
         provider: aws
@@ -140,13 +140,13 @@ Based on the authorization method you selected in [step 1](#step-1-set-up-the-en
       name: demo2-restore-s3
       namespace: test2
     spec:
+      backupType: full
+      restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
       br:
         cluster: demo2
         sendCredToTikv: false
         clusterNamespace: test2
-        backupType: full
-        restoreMode: volume-snapshot
         # logLevel: info
       s3:
         provider: aws
