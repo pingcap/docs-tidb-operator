@@ -14,7 +14,7 @@ hide_commit: true
 
 [TiDB Operator Architecture](https://docs.pingcap.com/tidb-in-kubernetes/dev/architecture)
 
-[What's New in v1.3](https://docs.pingcap.com/tidb-in-kubernetes/dev/whats-new-in-v1.3)
+[What's New in v1.4](https://docs.pingcap.com/tidb-in-kubernetes/dev/whats-new-in-v1.4)
 
 [Get Started](https://docs.pingcap.com/tidb-in-kubernetes/dev/get-started)
 
