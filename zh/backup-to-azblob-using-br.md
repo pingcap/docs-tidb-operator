@@ -29,7 +29,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到 Azure Blob Storage �
 > **注意：**
 >
 > - 快照备份只支持 TiDB v3.1 及以上版本。
-> - 日志备份只支持 TiDB v6.2 及以上版本。
+> - 日志备份只支持 TiDB v6.3 及以上版本。
 > - 使用 BR 备份出的数据只能恢复到 TiDB 数据库中，无法恢复到其他数据库中。
 
 ## Ad-hoc 备份
@@ -194,8 +194,8 @@ demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-
     ```
 
     ```
-    NAME                       TYPE    MODE   STATUS   ....
-    demo1-log-backup-azblob            log    Running  ....
+    NAME                       MODE   STATUS   ....
+    demo1-log-backup-azblob    log    Running  ....
     ```
 
 #### 查看日志备份的状态
@@ -256,15 +256,15 @@ spec:
   logStop: true
 ```
 
-可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Complete`：
+可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
 
 ```shell
 kubectl get backup -n backup-test
 ```
 
 ```
-NAME                       TYPE    MODE   STATUS    ....
-demo1-log-backup-azblob            log    Complete  ....
+NAME                       MODE   STATUS    ....
+demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
@@ -333,8 +333,8 @@ demo1-log-backup-azblob            log    Complete  ....
     ```
 
     ```
-    NAME                TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
-    demo1-log-backup           log        Complete   ...   2022-10-10T15:21:00+08:00
+    NAME                MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup    log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### 备份示例
@@ -591,7 +591,7 @@ spec:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -n test1 -o wide
+kubectl get bks -n backup-test -o wide
 ```
 
 查看定时快照备份下面所有的备份条目：
@@ -599,7 +599,7 @@ kubectl get backup -n test1 -o wide
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
+kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n backup-test
 ```
 
 ## 删除备份的 Backup CR
