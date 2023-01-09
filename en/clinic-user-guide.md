@@ -458,6 +458,7 @@ You can collect data using Diag APIs.
 
     - The port to access `diag-collector service` from outside is `31917`.
     - The service type is NodePort. You can access this service from any host in the Kubernetes cluster with its IP address `${host}` and port `${port}`.
+    - If there are network restrictions between hosts, you can use the `port-forward` command to redirect the service port `4917` to local, and then use `127.0.0.1:4917` to access this service.
 
 The following describes how to collect data using Diag APIs.
 
