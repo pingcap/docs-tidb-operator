@@ -17,7 +17,7 @@ PITR allows you to restore a new TiDB cluster to any point in time of the backup
 > **Note:**
 >
 > - BR is only applicable to TiDB v3.1 or later releases.
-> - PITR is only applicable to TiDB v6.2 or later releases.
+> - PITR is only applicable to TiDB v6.3 or later releases.
 > - Data restored by BR cannot be replicated to a downstream cluster, because BR directly imports SST and LOG files to TiDB and the downstream cluster currently cannot access the upstream SST and LOG files.
 
 ## Full restoration
@@ -115,7 +115,7 @@ When configuring `restore-azblob.yaml`, note the following:
 After creating the `Restore` CR, execute the following command to check the restore status:
 
 ```shell
-kubectl get restore -n test2 -o wide
+kubectl get restore -n restore-test -o wide
 ```
 
 ```
@@ -207,7 +207,7 @@ The detailed steps are as follows:
           prefix: my-full-backup-folder-pitr
     ```
 
-    When you configure `backup-azblob.yaml`, note the following:
+    When you configure `restore-point-azblob.yaml`, note the following:
 
     - `spec.restoreMode`: when you perform PITR, set this field to `pitr`. The default value of this field is `snapshot`, which means snapshot backup.
 
