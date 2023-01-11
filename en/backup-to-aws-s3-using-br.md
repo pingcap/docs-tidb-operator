@@ -10,7 +10,7 @@ summary: Learn how to back up data to Amazon S3-compatible storage using BR.
 This document describes how to back up the data of a TiDB cluster on AWS Kubernetes to AWS storage. There are two backup types:
 
 - **Snapshot backup**. With snapshot backup, you can restore a TiDB cluster to the time point of the snapshot backup using [full restoration](restore-from-aws-s3-using-br.md).
-- **Log backup**. With snapshot backup and log backup, you can restore a TiDB cluster to any point in time. This is also known as [Point-in-Time Recovery (PITR)](restore-from-aws-s3-using-br.md#pitr).
+- **Log backup**. With snapshot backup and log backup, you can restore a TiDB cluster to any point in time. This is also known as [Point-in-Time Recovery (PITR)](restore-from-aws-s3-using-br.md#point-in-time-recovery).
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
@@ -21,7 +21,7 @@ If you have the following backup needs, you can use BR's **snapshot backup** met
 - To back up a large volume of data (more than 1 TB) at a fast speed
 - To get a direct backup of data as SST files (key-value pairs)
 
-If you have the following backup needs, you can use BR **log backup** to make an [ad-hoc backup](#ad-hoc-backup) of the TiDB cluster data to S3-compatible storages (you can combine log backup and snapshot backup to [restore data](restore-from-aws-s3-using-br.md#pitr) more efficiently):
+If you have the following backup needs, you can use BR **log backup** to make an [ad-hoc backup](#ad-hoc-backup) of the TiDB cluster data to S3-compatible storages (you can combine log backup and snapshot backup to [restore data](restore-from-aws-s3-using-br.md#point-in-time-recovery) more efficiently):
 
 - To restore data of any point in time to a new cluster
 - The recovery point object (RPO) is within several minutes.
