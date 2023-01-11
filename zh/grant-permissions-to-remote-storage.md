@@ -130,7 +130,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
      kubectl annotate sa tidb-controller-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
      ```
 
-     重启 tidb-controller-manager Pod，使得 ServiceAccount tidb-controller-manager 生效。
+     重启 TiDB Operator 的 tidb-controller-manager Pod。使得配置的 ServiceAccount 生效。
 
 4. 将 ServiceAccount 绑定到 TiKV Pod：
 
