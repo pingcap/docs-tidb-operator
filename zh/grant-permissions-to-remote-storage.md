@@ -71,7 +71,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
+    kubectl annotate sa tidb-backup-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
 4. 将 ServiceAccount 绑定到 TiKV Pod：
