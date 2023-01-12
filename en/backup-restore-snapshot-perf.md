@@ -87,7 +87,7 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 | Creates clusters     | 30 seconds         |  2%      | Including the time for downloading docker image and starting PD                                   |
 | Restores volumes     | 20 seconds         |  1%     | Including the time for starting the BR Pod and restoring volumes                                         |
 | Starts TiKV   | 10 to 16 minutes    | 42%      | Including the time for starting RocksDB and reading the meta data of all Regions |
-| Restores data | 2 to 20 minutes    | 52%       |  Including the time for restoring data in the raft consensus layer and deleting MVCC data                                 |
+| Restores data | 2 to 20 minutes    | 52%       |  Including the time for restoring data in the Raft consensus layer and deleting MVCC data                                 |
 | Starts TiDB   | 1 minute        | 3%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
 
 > **Note:**
@@ -96,7 +96,7 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 
 ### Restore performance data
 
-Time taken by snapshot restore using volumes mainly depends on the time taken by starting TiKV and restoring data. TiKV startup and data restore need to read volume data that is restored from snapshots. Such volume data is loaded with certain latency. Specifically, the data does not reach optimal performance immediately after restore but is available only after it is downloaded from Amazon S3 and written to the volumes.
+Time taken by snapshot restore using volumes mainly depends on the time taken by starting TiKV and restoring data. TiKV startup and data restore need to read volume data that is restored from snapshots. Such volume data is loaded with certain latency. Specifically, the data does not reach optimal performance immediately after restore. This is because the data is available only after it is downloaded from Amazon S3 and written to the volumes.
 
 The data load latency results in high I/O operation latency when each block is accessed for the first time. Due to the impact of data load latency, TiKV startup and data restore consume most of the time in the whole process of snapshot restore using volumes. Test data is as follows under the recommended machine type and GP3 storage volume:
 
