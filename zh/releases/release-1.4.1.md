@@ -10,7 +10,7 @@ TiDB Operator 版本：1.4.1
 
 ## 新功能
 
-- 故障自动转移支持在 Kubernetes 节点异常时通过强制移除 Pod 和 PVC 来清理异常的 PD、TiKV 和 TiFlash 节点 ([#4824](https://github.com/pingcap/tidb-operator/pull/4824), [@lalitkfk](https://github.com/lalitkfk))
+- 故障自动转移功能支持在 Kubernetes 节点异常时通过强制移除 Pod 和 PVC 来清理异常的 PD、TiKV 和 TiFlash 节点 ([#4824](https://github.com/pingcap/tidb-operator/pull/4824), [@lalitkfk](https://github.com/lalitkfk))
 
     - 需要在 TiDB Operator 的 Helm Chart 中配置 `controllerManager.detectNodeFailure` 并在 TidbCluster CR 中配置 `app.kubernetes.io/auto-failure-recovery: "true"` annotation 进行开启
 

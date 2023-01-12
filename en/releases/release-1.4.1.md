@@ -10,7 +10,7 @@ TiDB Operator version: 1.4.1
 
 ## New features
 
-- Support cleaning up failed instances of PD, TIKV and TiFlash components by removing the failed Pod and PVCs to handle unplanned failures of Kubernetes nodes in auto failure recovery feature ([#4824](https://github.com/pingcap/tidb-operator/pull/4824), [@lalitkfk](https://github.com/lalitkfk))
+- Support cleaning up failed instances of PD, TiKV and TiFlash components by removing the failed Pods and PVCs to handle unplanned failures of Kubernetes nodes in auto failure recovery feature ([#4824](https://github.com/pingcap/tidb-operator/pull/4824), [@lalitkfk](https://github.com/lalitkfk))
 
     - Need to configure `controllerManager.detectNodeFailure` in TiDB Operator Helm chart and configure `app.kubernetes.io/auto-failure-recovery: "true"` annotation in TidbCluster CR to enable this
 
