@@ -71,9 +71,18 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
+    kubectl annotate sa tidb-backup-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
+<<<<<<< HEAD
+=======
+    如果是进行基于 AWS EBS 快照的备份和恢复，需要绑定 IAM 到 tidb-controller-manager 的 ServiceAccount 上：
+
+     ```shell
+     kubectl annotate sa tidb-controller-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
+     ```
+
+>>>>>>> 111afde4 (fix-annotate-command (#2163))
 4. 将 ServiceAccount 绑定到 TiKV Pod：
 
     {{< copyable "shell-regular" >}}
