@@ -123,13 +123,13 @@ When you use this method to grant permissions, you can [create the EKS cluster](
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
+    kubectl annotate sa tidb-backup-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
     When backing up or restoring a TiDB cluster using EBS volume snapshots, you need to associate the IAM role with the `ServiceAccount` resources of tidb-controller-manager.
 
      ```shell
-     kubectl annotate sa tidb-controller-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
+     kubectl annotate sa tidb-controller-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
      ```
 
 4. Associate the `ServiceAccount` with the TiKV Pod:
