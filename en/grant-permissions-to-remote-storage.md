@@ -75,7 +75,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate sa tidb-backup-manager -n eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
+    kubectl annotate sa tidb-backup-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=test1
     ```
 
 4. Associate the `ServiceAccount` with the TiKV Pod:
