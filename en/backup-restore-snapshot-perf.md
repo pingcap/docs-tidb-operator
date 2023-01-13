@@ -23,8 +23,8 @@ EBS snapshot backup using volumes consists of the following processes: creates a
 
 | Backup stage     | Time taken    | Total ratio | Remarks                                     |
 | :--------: | :---------: | :------: | :-------------------------------------: |
-| Create volume snapshots  | 16 m (50 GB) | 99%      | Including the time for creating AWS EBS snapshots                  |
-| Others        | 1s          | 1%       | Including the time for stopping scheduling, disabling GC, and obtaining the backupts |
+| Create volume snapshots  | 16 minutes (50 GB) | 99%      | Including the time for creating AWS EBS snapshots                  |
+| Others        | 1 second          | 1%       | Including the time for stopping scheduling, disabling GC, and obtaining the backupts |
 
 ### Backup performance data
 
@@ -34,11 +34,11 @@ Time taken by snapshot backup using volumes depends on when the last volume snap
 
 | Volume data  | Total volume size  | Volume configuration             | Appropriate backup duration |
 | :------: | :-----: | :---------------: | :--------: |
-| 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 20 min    |
-| 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 50 min    |
-| 200 GB   | 500 GB  | 7000IOPS/400MiB/s | 100 min   |
-| 500 GB   | 1024 GB | 7000IOPS/400MiB/s | 150 min   |
-| 1024 GB  | 3500 GB | 7000IOPS/400MiB/s | 350 min   |
+| 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 20 minutes    |
+| 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 50 minutes    |
+| 200 GB   | 500 GB  | 7000IOPS/400MiB/s | 100 minutes   |
+| 500 GB   | 1024 GB | 7000IOPS/400MiB/s | 150 minutes   |
+| 1024 GB  | 3500 GB | 7000IOPS/400MiB/s | 350 minutes   |
 
 > **Note:**
 >
@@ -84,26 +84,32 @@ EBS snapshot restore using volumes consists of the following processes. For deta
 
 | Restore stage     | Appropriate time taken | Restore ratio | Remarks                                                            |
 | :--------: | :---------: | :------: | :-------------------------------------------------------------: |
-| Creates clusters     | 30s         |  1%      | Including the time for downloading docker image and starting PD                                   |
-| Restores volumes     | 20s         |  1%     | Including the time for starting the BR Pod and restoring volumes                                         |
-| Starts TiKV   | 2 to 30 min    | 58%      | The time taken to start TiKV is affected by volume performance and usually takes about 3 minutes. When the task restores backup data that contains trasactions, it might take up to 30 minutes to start TiKV. |
-| Restores data | 2 to 20 min    | 38%       |  Including the time for restoring data in the raft consensus layer and deleting MVCC data                                 |
-| Starts TiDB   | 1 min        | 2%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
+| Creates clusters     | 30 seconds         |  2%      | Including the time for downloading docker image and starting PD                                   |
+| Restores volumes     | 20 seconds         |  1%     | Including the time for starting the BR Pod and restoring volumes                                         |
+| Starts TiKV   | 10 to 16 minutes    | 42%      | Including the time for starting RocksDB and reading the meta data of all Regions |
+| Restores data | 2 to 20 minutes    | 52%       |  Including the time for restoring data in the Raft consensus layer and deleting MVCC data                                 |
+| Starts TiDB   | 1 minute        | 3%       |  Including the time for downloading the tidb docker image and starting TiDB                                           |
 
 > **Note:**
 >
-> Volume snapshots are consistent upon crash. During restore, before TiKV starts, data self-check and repair are performed, which might take less than 30 minutes. If you restore using high-performance disks that can increase the IOPS and bandwidth, the time can be shortened to 5 minutes. For details about how to use high-performance disks, see [Restore period is excessively long (longer than 2 hours)](backup-restore-faq.md#restore-period-is-excessively-long-longer-than-2-hours).
+> Volume snapshots are consistent upon crash. To start TiKV and restore data during EBS volume snapshot restore, data needs to be initialized first, that is, to be downloaded from Amazon S3. The initialization takes no more than 30 minutes and can be shortened to less than 5 minutes if you use high-performance disks that can increase the IOPS and bandwidth. For details about how to use high-performance disks, see [Restore period is excessively long (longer than 2 hours)](backup-restore-faq.md#restore-period-is-excessively-long-longer-than-2-hours).
 
 ### Restore performance data
 
-The duration of volume snapshot restore depends on the time taken to start TiKV and that for data restore. Time taken to start TiKV might be affected by lazy initialization of EBS volume snapshot restore, for which AWS does not provide quantitative metrics. Test data is as follows under the recommended machine type and GP3 storage volume:
+Time taken by snapshot restore using volumes mainly depends on the time taken by starting TiKV and restoring data. TiKV startup and data restore need to read volume data that is restored from snapshots. Such volume data is loaded with certain latency. Specifically, the data does not reach optimal performance immediately after restore. This is because the data is available only after it is downloaded from Amazon S3 and written to the volumes.
+
+The data load latency results in high I/O operation latency when each block is accessed for the first time. Due to the impact of data load latency, TiKV startup and data restore consume most of the time in the whole process of snapshot restore using volumes. Test data is as follows under the recommended machine type and GP3 storage volume:
 
 ![EBS Snapshot restore perf](/media/volume-snapshot-restore-perf.png)
 
 | Volume data  | Total volume size   | Volume configuration             | Appropriate restore duration |
 | :------: | :-----: | :---------------: | :--------: |
-| 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 16 min    |
-| 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 18 min    |
-| 200 GB   | 500 GB  | 7000IOPS/400MiB/s | 21 min   |
-| 500 GB   | 1024 GB | 7000IOPS/400MiB/s | 25 min   |
-| 1024 GB  | 3500 GB | 7000IOPS/400MiB/s | 34 min   |
+| 50 GB    | 500 GB  | 7000IOPS/400MiB/s | 16 minutes    |
+| 100 GB   | 500 GB  | 7000IOPS/400MiB/s | 18 minutes    |
+| 200 GB   | 500 GB  | 7000IOPS/400MiB/s | 21 minutes   |
+| 500 GB   | 1024 GB | 7000IOPS/400MiB/s | 25 minutes   |
+| 1024 GB  | 3500 GB | 7000IOPS/400MiB/s | 34 minutes   |
+
+> **Note:**
+>
+> The performance curve of data restore is not completely linear and monotonically increasing. This is because, although volume data is the user data used by TiKV, different volume blocks might be loaded and scanned to start TiKV and restore data. In addition, the network speed of downloading volume blocks from AWS might also affect the restore performance.

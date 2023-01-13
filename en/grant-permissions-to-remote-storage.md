@@ -132,6 +132,8 @@ When you use this method to grant permissions, you can [create the EKS cluster](
      kubectl annotate sa tidb-controller-manager eks.amazonaws.com/role-arn=arn:aws:iam::123456789012:role/user --namespace=tidb-admin
      ```
 
+     Restart the tidb-controller-manager Pod of TiDB Operator to make the configured `ServiceAccount` take effect.
+
 4. Associate the `ServiceAccount` with the TiKV Pod:
 
     {{< copyable "shell-regular" >}}
