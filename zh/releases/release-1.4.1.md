@@ -16,7 +16,7 @@ TiDB Operator 版本：1.4.1
 
 ## 优化提升
 
-- 支持在 TiDB Operator 的 Helm Chart 中配置 `controllerManager.kubeClientQPS` 与 `controllerManager.kubeClientBurst` 来设置 TiDB Controller Manager 中 Kubernetes client 的 QPS 和 Burst ([#4830](https://github.com/pingcap/tidb-operator/pull/4830)，[@Thearas](https://github.com/Thearas))
+- 支持在 TiDB Operator 的 Helm Chart 中配置 `controllerManager.kubeClientQPS` 与 `controllerManager.kubeClientBurst` 来设置 TiDB Controller Manager 中 Kubernetes client 的 QPS 和 Burst ([#4830](https://github.com/pingcap/tidb-operator/pull/4830), [@Thearas](https://github.com/Thearas))
 
 ## Bug 修复
 
