@@ -264,7 +264,7 @@ Before restoring backup data on S3-compatible storages to TiDB using BR, take th
 
 The example in this section restores the snapshot backup data to the cluster. The specified restoration time point must be between [the time point of snapshot backup](backup-to-aws-s3-using-br.md#view-the-snapshot-backup-status) and the [`Log Checkpoint Ts` of log backup](backup-to-aws-s3-using-br.md#view-the-log-backup-status).
 
-PITR grant permissions to remote storages in the same way as snapshot backup. The example in this section grant permissions by using AccessKey and SecretKey.
+PITR grants permissions to remote storages in the same way as snapshot backup. The example in this section grants permissions by using AccessKey and SecretKey.
 
 The detailed steps are as follows:
 
