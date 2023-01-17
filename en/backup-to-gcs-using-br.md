@@ -148,7 +148,7 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 ### Log backup
 
-You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-s3`. See the following detailed steps.
+You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. Log backup grants permissions to remote storages in the same way as snapshot backup. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-s3`. See the following detailed steps.
 
 #### Start log backup
 
@@ -272,7 +272,7 @@ demo1-log-backup-gcs       log      Stopped   ....
 ```
 
 <Tip>
-You can stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
+You can also stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
 </Tip>
 
 #### Clean log backup data
