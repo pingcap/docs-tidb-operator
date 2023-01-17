@@ -29,7 +29,7 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 > **Note:**
 >
 > - Snapshot backup is only applicable to TiDB v3.1 or later releases.
-> - Log backup is only applicable to TiDB v6.2 or later releases.
+> - Log backup is only applicable to TiDB v6.3 or later releases.
 > - Data that is backed up using BR can only be restored to TiDB instead of other databases.
 
 ## Ad-hoc backup
@@ -193,8 +193,8 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
     ```
 
     ```
-    NAME                       TYPE    MODE   STATUS   ....
-    demo1-log-backup-azblob            log    Running  ....
+    NAME                       MODE   STATUS   ....
+    demo1-log-backup-azblob    log    Running  ....
     ```
 
 #### View the log backup status
@@ -255,15 +255,15 @@ spec:
   logStop: true
 ```
 
-You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-azblob` change from `Running` to `Complete`:
+You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-azblob` change from `Running` to `Stopped`:
 
 ```shell
 kubectl get backup -n backup-test
 ```
 
 ```
-NAME                       TYPE    MODE   STATUS    ....
-demo1-log-backup-azblob            log    Complete  ....
+NAME                       MODE   STATUS    ....
+demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
@@ -332,8 +332,8 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
     ```
 
     ```
-    NAME                TYPE   MODE       STATUS     ...   LOGTRUNCATEUNTIL
-    demo1-log-backup           log        Complete   ...   2022-10-10T15:21:00+08:00
+    NAME                MODE       STATUS     ...   LOGTRUNCATEUNTIL
+    demo1-log-backup    log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### Backup CR examples
@@ -595,7 +595,7 @@ After creating the scheduled snapshot backup, you can run the following command 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -n test1 -o wide
+kubectl get bks -n backup-test -o wide
 ```
 
 You can run the following command to check all the backup items:
@@ -603,7 +603,7 @@ You can run the following command to check all the backup items:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n test1
+kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n backup-test
 ```
 
 ## Delete the backup CR
