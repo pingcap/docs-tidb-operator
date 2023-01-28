@@ -32,15 +32,16 @@ To deploy a heterogeneous cluster, do the following:
 
 1. Create a cluster configuration file for the heterogeneous cluster.
 
-    For example, save the following configuration as the `cluster.yaml` file. Replace `${heterogeneous_cluster_name}` with the desired name of your heterogeneous cluster, and replace `${origin_cluster_name}` with the name of the existing cluster.
+    Run the following command to create a cluster configuration file for the heterogeneous cluster. Replace `${origin_cluster_name}` with the name of the existing cluster, and replace `${heterogeneous_cluster_name}` with the name of the heterogeneous cluster. To view the monitoring data of both the existing cluster and the heterogeneous cluster in the same Grafana of TidbMonitor, you need to name the heterogeneous cluster with the prefix of the existing cluster name.
 
     > **Note:**
     >
     > Comparing with the the configuration file of a normal TiDB cluster, the only difference in the configuration file of a heterogeneous TiDB cluster is that you need to additionally specify the `spec.cluster.name` field as the name of an existing TiDB cluster. According to this field, TiDB Operator adds the heterogeneous cluster to the existing TiDB cluster.
 
-    {{< copyable "" >}}
-
-    ```yaml
+    ```bash
+    origin_cluster_name=basic
+    heterogeneous_cluster_name=basic-heterog
+    cat > cluster.yaml << EOF
     apiVersion: pingcap.com/v1alpha1
     kind: TidbCluster
     metadata:
@@ -77,6 +78,7 @@ To deploy a heterogeneous cluster, do the following:
           - resources:
               requests:
                 storage: 100Gi
+    EOF
     ```
 
     For more configurations and field meanings of TiDB cluster, see the [TiDB cluster configuration document](configure-a-tidb-cluster.md).
