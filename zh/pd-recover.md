@@ -15,7 +15,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
+    wget https://download.pingcap.org/tidb-community-toolkit-${version}-linux-amd64.tar.gz
     ```
 
     `${version}` 是 TiDB 集群版本，例如，`v6.5.0`。
@@ -25,10 +25,11 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar -xzf tidb-${version}-linux-amd64.tar.gz
+    tar -xzf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+    tar -xzf tidb-community-toolkit-${version}-linux-amd64/pd-recover-${version}-linux-amd64.tar.gz
     ```
 
-    `pd-recover` 在 `tidb-${version}-linux-amd64/bin` 目录下。
+    `pd-recover` 在当前目录下。
 
 ## 使用 PD Recover 恢复 PD 集群
 
@@ -125,20 +126,20 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### 第 4 步：使用 PD Recover 恢复 PD 集群
 
-1. 通过 `port-forward` 暴露 PD 服务：
+1. 拷贝 `pd-recover` 到 PD pod：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    kubectl cp ./pd-recover ${namespace}/${cluster_name}-pd-0:./
     ```
 
-2. 打开一个**新**终端标签或窗口，进入到 `pd-recover` 所在的目录，使用 `pd-recover` 恢复 PD 集群：
+2. 使用 `pd-recover` 恢复 PD 集群：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
+    kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
     `${cluster_id}` 是[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID，`${alloc_id}` 是[获取 Alloc ID](#第-2-步获取-alloc-id) 步骤中获取的 `pd_cluster_id` 的最大值再乘以 `100`。
@@ -148,8 +149,6 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     ```shell
     recover success! please restart the PD cluster
     ```
-
-3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
 ### 第 5 步：重启 PD Pod
 
@@ -161,23 +160,14 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
-2. Pod 正常启动后，通过 `port-forward` 暴露 PD 服务：
+2. 通过如下命令确认 Cluster ID 为[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- wget -q http://127.0.0.1:2379/pd/api/v1/cluster
+    kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- cat cluster
     ```
-
-3. 打开一个**新**终端标签或窗口，通过如下命令确认 Cluster ID 为[获取 Cluster ID](#第-1-步获取-cluster-id) 步骤中获取的 Cluster ID：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl 127.0.0.1:2379/pd/api/v1/cluster
-    ```
-
-4. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并退出。
 
 ### 第 6 步：扩容 PD 集群
 
