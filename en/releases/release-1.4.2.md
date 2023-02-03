@@ -10,4 +10,4 @@ TiDB Operator version: 1.4.2
 
 ## Bug fix
 
-- Fix the issue that TiFlash not listen on IPv6 address when the `preferIPv6` config is enabled ([#4850](https://github.com/pingcap/tidb-operator/pull/4850), [@KanShiori](https://github.com/KanShiori))
+- Fix the issue that TiFlash does not listen on IPv6 addresses when the `preferIPv6` configuration is enabled ([#4850](https://github.com/pingcap/tidb-operator/pull/4850), [@KanShiori](https://github.com/KanShiori))
