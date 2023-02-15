@@ -32,13 +32,24 @@ error="min resolved ts not enabled"
 show config where type='pd' and name like '%min-resolved%'
 ```
 
-输出显示如下：
+关闭状态输出显示如下：
 
 ```sql
 +------+------------------------------------------------+------------------------------------------------+-------+
 | Type | Instance                                       | Name                                           | Value |
 +------+------------------------------------------------+------------------------------------------------+-------+
 | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 0s    |
++------+------------------------------------------------+------------------------------------------------+-------+
+1 row in set (0.03 sec)
+```
+
+打开状态输出显示如下：
+
+```sql
++------+------------------------------------------------+------------------------------------------------+-------+
+| Type | Instance                                       | Name                                           | Value |
++------+------------------------------------------------+------------------------------------------------+-------+
+| pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 1s    |
 +------+------------------------------------------------+------------------------------------------------+-------+
 1 row in set (0.03 sec)
 ```
@@ -81,7 +92,6 @@ set config pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
 ```shell
 kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
 ```
-
 
 ### 备份无法启动或者启动后立即失败
 
