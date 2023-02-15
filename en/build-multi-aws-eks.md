@@ -377,7 +377,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+    kubectl --context ${context_1} -n ${namespace_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
     ```
 
     If the output is the welcome page of nginx, the network is connected.
