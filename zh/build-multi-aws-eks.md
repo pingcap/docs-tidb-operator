@@ -360,7 +360,7 @@ summary: 介绍如何构建多个 AWS EKS 集群互通网络，为跨 Kubernetes
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+    kubectl --context ${context_1} -n ${namespace_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
     ```
 
     如果输出为 NGINX 的欢迎页面，那么就表明网络是正常连通的。
