@@ -32,13 +32,24 @@ The backup failed because the PD configuration `min-resolved-ts-persistence-inte
     SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
     ```
 
-    The following output is displayed:
+     If the globally consistent min-resolved-ts service is disabled, the following output is displayed:
 
     ```sql
     +------+------------------------------------------------+------------------------------------------------+-------+
     | Type | Instance                                       | Name                                           | Value |
     +------+------------------------------------------------+------------------------------------------------+-------+
     | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 0s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
+
+    If this service is enabled, the following output is displayed:
+
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 1s    |
     +------+------------------------------------------------+------------------------------------------------+-------+
     1 row in set (0.03 sec)
     ```
