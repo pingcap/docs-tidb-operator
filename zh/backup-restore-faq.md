@@ -29,10 +29,10 @@ error="min resolved ts not enabled"
 1. 使用如下 SQL 语句检查 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```sql
-    show config where type='pd' and name like '%min-resolved%'
+    SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
     ```
 
-    输出显示如下：
+    关闭状态输出，显示如下：
 
     ```sql
     +------+------------------------------------------------+------------------------------------------------+-------+
@@ -43,45 +43,55 @@ error="min resolved ts not enabled"
     1 row in set (0.03 sec)
     ```
 
-2. 使用 pd-ctl 工具检查 PD min-resolved-ts-persistence-interval 配置。命令如下：
+    打开状态输出，显示如下：
 
-```shell
-kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
-```
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 1s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
 
-关闭状态输出显示如下：
+2. 使用 pd-ctl 工具检查 PD `min-resolved-ts-persistence-interval` 配置：
 
-```json
-{
-  "min_resolved_ts": 439357537983660033,
-  "persist_interval": "0s"
-}
-```
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
+    ```
 
-打开状态输出显示如下：
+    关闭状态输出，显示如下：
 
-```json
-{
-  "is_real_time": true,
-  "min_resolved_ts": 439357519607365634,
-  "persist_interval": "1s"
-}
-```
+    ```json
+    {
+    "min_resolved_ts": 439357537983660033,
+    "persist_interval": "0s"
+    }
+    ```
+
+    打开状态输出，显示如下：
+
+    ```json
+    {
+    "is_real_time": true,
+    "min_resolved_ts": 439357519607365634,
+    "persist_interval": "1s"
+    }
+    ```
 
 解决方案：
 
-1. 使用 SQL 语句更新 PD min-resolved-ts-persistence-interval 配置。更新 SQL 语句如下：
+1. 使用如下 SQL 语句更新 PD `min-resolved-ts-persistence-interval` 配置：
 
-```sql
-set config pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
-```
+    ```sql
+    set config pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
+    ```
 
-2. 使用 pd-ctl 工具更新 PD min-resolved-ts-persistence-interval 配置。命令如下：
+2. 使用 pd-ctl 工具更新 PD `min-resolved-ts-persistence-interval` 配置：
 
-```shell
-kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
-```
-
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
+    ```
 
 ### 备份无法启动或者启动后立即失败
 
