@@ -84,7 +84,7 @@ Solution:
 1. Modify the configuration of  `min-resolved-ts-persistence-interval` using the following SQL statement:
 
     ```sql
-    SET config pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
+    SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
     ```
 
 2. Modify the configuration of  `min-resolved-ts-persistence-interval` using pd-ctl:

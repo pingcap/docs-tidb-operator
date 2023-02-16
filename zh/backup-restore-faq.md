@@ -84,7 +84,7 @@ error="min resolved ts not enabled"
 1. 使用 SQL 语句更新 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```sql
-    SET config pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
+    SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
     ```
 
 2. 使用 pd-ctl 工具更新 PD `min-resolved-ts-persistence-interval` 配置：
