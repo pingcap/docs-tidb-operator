@@ -24,9 +24,9 @@ summary: 介绍卷快照备份恢复中的常见问题以及解决方案。
 error="min resolved ts not enabled"
 ```
 
-原因是 PD 配置 `min-resolved-ts-persistence-interval` 值为 0，即关闭了 PD 全局一致性 min-resolved-ts 服务。EBS 卷快照需要此服务获取集群全局一致性 ts。通过以下方法检查配置：
+原因是 PD 配置 `min-resolved-ts-persistence-interval` 值为 0，即关闭了 PD 全局一致性 min-resolved-ts 服务。EBS 卷快照需要此服务获取集群全局一致性时时间戳。可通过 SQL 语句或 pd-ctl 检查配置：
 
-1. 使用如下 SQL 语句检查 PD `min-resolved-ts-persistence-interval` 配置：
+- 使用 SQL 语句检查 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```sql
     SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
@@ -54,7 +54,7 @@ error="min resolved ts not enabled"
     1 row in set (0.03 sec)
     ```
 
-2. 使用 pd-ctl 工具检查 PD `min-resolved-ts-persistence-interval` 配置：
+- 使用 pd-ctl 工具检查 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```shell
     kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
@@ -79,15 +79,15 @@ error="min resolved ts not enabled"
     }
     ```
 
-解决方案：
+解决方案（二选一）：
 
-1. 使用 SQL 语句更新 PD `min-resolved-ts-persistence-interval` 配置：
+- 使用 SQL 语句更新 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```sql
     SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
     ```
 
-2. 使用 pd-ctl 工具更新 PD `min-resolved-ts-persistence-interval` 配置：
+- 使用 pd-ctl 工具更新 PD `min-resolved-ts-persistence-interval` 配置：
 
     ```shell
     kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s

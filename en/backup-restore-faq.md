@@ -24,9 +24,9 @@ After the TiDB cluster is upgraded from an earlier version to v6.5.0, the backup
 error="min resolved ts not enabled"
 ```
 
-The backup failed because the PD configuration `min-resolved-ts-persistence-interval` is set to 0, which means that the globally consistent min-resolved-ts service of PD is disabled. The EBS volume snapshot requires this service to obtain the globally consistent timestamp of the cluster. You can check this configuration using either of the following ways:
+The backup failed because the PD configuration `min-resolved-ts-persistence-interval` is set to 0, which means that the globally consistent min-resolved-ts service of PD is disabled. The EBS volume snapshot requires this service to obtain the globally consistent timestamp of the cluster. You can check this configuration using either the SQL statement or pd-ctl:
 
-1. Check the PD configuration `min-resolved-ts-persistence-interval` using the following SQL statement:
+- Check the PD configuration `min-resolved-ts-persistence-interval` using the SQL statement:
 
     ```sql
     SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
@@ -54,7 +54,7 @@ The backup failed because the PD configuration `min-resolved-ts-persistence-inte
     1 row in set (0.03 sec)
     ```
 
-2. Check the PD configuration `min-resolved-ts-persistence-interval` using pd-ctl:
+- Check the PD configuration `min-resolved-ts-persistence-interval` using pd-ctl:
 
     ```shell
     kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
@@ -81,13 +81,13 @@ The backup failed because the PD configuration `min-resolved-ts-persistence-inte
 
 Solution:
 
-1. Modify the configuration of `min-resolved-ts-persistence-interval` using the following SQL statement:
+- Solution 1: Modify the configuration of `min-resolved-ts-persistence-interval` using the SQL statement:
 
     ```sql
     SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
     ```
 
-2. Modify the configuration of `min-resolved-ts-persistence-interval` using pd-ctl:
+- Solution 2: Modify the configuration of `min-resolved-ts-persistence-interval` using pd-ctl:
 
     ```shell
     kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
