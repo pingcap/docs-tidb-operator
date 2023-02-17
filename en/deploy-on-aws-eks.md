@@ -176,6 +176,10 @@ This section describes how to configure the storage class for different storage 
 
 ### Configure `gp2`
 
+> **note:**
+>
+> From EKS Kubernetes 1.23 you need to deploy Amazon EBS CSI driver first to allow Amazon EKS cluster to manage the lifecycle of gp2 volumes. See [Amazon EKS Kubernetes 1.23 important note](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-1.23) for details.
+
 After you create an EKS cluster, the default StorageClass is `gp2`. To improve I/O write performance, it is recommended to configure `nodelalloc` and `noatime` in the `mountOptions` field of the `StorageClass` resource.
 
 ```yaml

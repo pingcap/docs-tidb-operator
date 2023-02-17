@@ -173,6 +173,10 @@ eksctl create cluster -f cluster.yaml
 
 ### gp2
 
+> **注意：**
+>
+> 从 EKS Kubernetes 1.23 开始需要先部署 EBS CSI 驱动后才能使用默认的 gp2 存储类型，详情可见 [Amazon EKS Kubernetes 1.23 的重要通知](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-1.23)。
+
 创建 EKS 集群后默认会存在一个 gp2 存储类型的 StorageClass。为了提高存储的 IO 写入性能，推荐配置 StorageClass 的 `mountOptions` 字段来设置存储挂载选项 `nodelalloc` 和 `noatime`。详情可见 [TiDB 环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment#%E5%9C%A8-tikv-%E9%83%A8%E7%BD%B2%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E7%9B%98-ext4-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8F%82%E6%95%B0)。
 
 ```yaml
