@@ -26,6 +26,10 @@ If you have any other requirements, select an appropriate backup method based on
 - To use this backup method, the TiDB cluster must be deployed on AWS EKS and uses AWS EBS volumes.
 - This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
+> **Note:**
+>
+> After you upgrade the TiDB cluster from an earlier version to v6.5.0, you might find the volume snapshot backup does not work. To address this issue, see [Backup failed after an upgrade of the TiDB cluster](backup-restore-faq.md#backup-failed-after-an-upgrade-of-the-tidb-cluster).
+
 ## Backup process
 
 You can either fully or incrementally back up snapshots based on AWS EBS volumes. The first backup of a node is full, and subsequent backups are incremental. Snapshot backup is defined by a customized `Backup` custom resource (CR) object. TiDB Operator completes the backup task based on this object. If an error occurs during the backup process, TiDB Operator does not retry automatically. At this time, you need to handle it manually.
