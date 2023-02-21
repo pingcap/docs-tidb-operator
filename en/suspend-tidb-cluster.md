@@ -5,7 +5,7 @@ summary: Learn how to suspend the TiDB cluster on Kubernetes through configurati
 
 # Suspend TiDB cluster
 
-This document introduces how to suspend the TiDB cluster  or suspend the TiDB cluster components on Kubernetes by configuring the `TidbCluster` object. After suspending the cluster, you can stop the Pods of all components or one component, and retain the `TidbCluster` object and other resources (such as Service, PVC, etc.).
+This document introduces how to suspend the TiDB cluster  or suspend the TiDB cluster components on Kubernetes by configuring the `TidbCluster` object. After suspending the cluster, you can stop the Pods of all components or one component, and retain the `TidbCluster` object and other resources (such as Service, PVC, and so on).
 
 In some test scenarios, if you need to save resources, you can suspend the TiDB cluster when you are not using it,
 
