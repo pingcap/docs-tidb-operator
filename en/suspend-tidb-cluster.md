@@ -5,17 +5,17 @@ summary: Learn how to suspend the TiDB cluster on Kubernetes through configurati
 
 # Suspend TiDB cluster
 
-This document introduces how to suspend the TiDB cluster  or suspend the TiDB cluster components on Kubernetes by configuring the `TidbCluster` object. After suspending the cluster, you can stop the Pods of all components or one component, and retain the `TidbCluster` object and other resources (such as Service, PVC, and so on).
+This document introduces how to suspend the TiDB cluster or suspend the TiDB cluster components on Kubernetes by configuring the `TidbCluster` object. After suspending the cluster, you can stop the Pods of all components or one specfic component and retain the `TidbCluster` object and other resources (such as Service and PVC).
 
-In some test scenarios, if you need to save resources, you can suspend the TiDB cluster when you are not using it,
+In some test scenarios, if you need to save resources, you can suspend the TiDB cluster when you are not using it.
 
 > **Note:**
 >
-> Suspending the TiDB cluster requires TiDB Operator version >= 1.3.7.
+> To suspend the TiDB cluster, the TiDB Operator version must be >= v1.3.7.
 
 ## Configure TiDB cluster suspending
 
-If you need to suspend the TiDB cluster, execute the following steps:
+If you need to suspend the TiDB cluster, take the following steps:
 
 1. In the `TidbCluster` object, configure `spec.suspendAction` field to suspend the entire TiDB cluster:
 
@@ -31,7 +31,7 @@ If you need to suspend the TiDB cluster, execute the following steps:
       # ...
     ```
 
-    TiDB Operator also supports suspending one or more components in TiDB clusters. Take TiKV as an example, suspend TiKV in the TiDB cluster by configuring `spec.tikv.suspendAction` field in the `TidbCluster` object.
+    TiDB Operator also supports suspending one or more components in TiDB clusters. Taking TiKV as an example, you can suspend TiKV in the TiDB cluster by configuring `spec.tikv.suspendAction` field in the `TidbCluster` object:
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -46,7 +46,7 @@ If you need to suspend the TiDB cluster, execute the following steps:
       # ...
     ```
 
-2. After suspending the TiDB cluster, observe that the Pod of the suspended component is gradually deleted through the following command.
+2. After suspending the TiDB cluster, you can run the following command to observe that the Pods of the suspended component are gradually deleted.
 
     ```shell
     kubectl -n ${namespace} get pods
@@ -63,9 +63,9 @@ If you need to suspend the TiDB cluster, execute the following steps:
 
 ## Restore TiDB cluster
 
-After the TiDB cluster or component is suspended, if you need to restore the TiDB cluster, execute the following steps:
+After a TiDB cluster or its component is suspended, if you need to restore the TiDB cluster, take the following steps:
 
-1. In the `TidbCluster` object, configure `spec.suspendAction` field to restore the entire suspended TiDB cluster:
+1. In the `TidbCluster` object, configure the `spec.suspendAction` field to restore the entire suspended TiDB cluster:
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -79,7 +79,7 @@ After the TiDB cluster or component is suspended, if you need to restore the TiD
       # ...
     ```
 
-    TiDB Operator also supports to restore one or more components in the TiDB clusters. Take TiKV as an example, restore TiKV in the TiDB cluster by configuring `spec.tikv.suspendAction` field in the `TidbCluster` object.
+    TiDB Operator also supports restoring one or more components in the TiDB cluster. Taking TiKV as an example, you can restore TiKV in the TiDB cluster by configuring `spec.tikv.suspendAction` field in the `TidbCluster` object.
 
     ```yaml
     apiVersion: pingcap.com/v1alpha1
@@ -94,7 +94,7 @@ After the TiDB cluster or component is suspended, if you need to restore the TiD
       # ...
     ```
 
-2. After restoring the TiDB cluster, observe that the Pod of the suspended component is gradually created through the following command.
+2. After restoring the TiDB cluster, you can run the following command to observe that the Pods of the suspended component are gradually created.
 
     ```shell
     kubectl -n ${namespace} get pods
