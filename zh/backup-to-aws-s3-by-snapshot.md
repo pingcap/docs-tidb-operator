@@ -28,7 +28,9 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 > **注意：**
 >
-> 集群从低于 v6.5.0 版本升级到 v6.5.0 时，可能无法进行卷快照备份。详细解决办法见[升级后备份无法工作](backup-restore-faq.md#升级后备份无法工作)。
+> - 集群从低于 v6.5.0 版本升级到 v6.5.0 时，可能无法进行卷快照备份。详细解决办法见[升级后备份无法工作](backup-restore-faq.md#升级后备份无法工作)。
+>
+> - 对于集群已经打开 TiKV KMS [静态加密](https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#tikv-静态加密)，需要在恢复阶段确保 AWS KMS 服务中主密钥或者旧的主密钥是可用的状态。
 
 ## 备份操作
 
