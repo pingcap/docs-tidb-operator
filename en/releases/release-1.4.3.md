@@ -4,7 +4,7 @@ title: TiDB Operator 1.4.3 Release Notes
 
 # TiDB Operator 1.4.3 Release Notes
 
-Release date: February 23, 2023
+Release date: February 24, 2023
 
 TiDB Operator version: 1.4.3
 
