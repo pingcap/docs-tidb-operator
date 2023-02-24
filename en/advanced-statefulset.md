@@ -20,7 +20,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.2/manifests/advanced-statefulset-crd.v1beta1.yaml
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/manifests/advanced-statefulset-crd.v1beta1.yaml
         ```
 
     * For Kubernetes versions >= 1.16:
@@ -28,7 +28,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
         {{< copyable "shell-regular" >}}
 
         ```
-        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.2/manifests/advanced-statefulset-crd.v1.yaml
+        kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/manifests/advanced-statefulset-crd.v1.yaml
         ```
 
 2. Enable the `AdvancedStatefulSet` feature in `values.yaml` of the TiDB Operator chart:
