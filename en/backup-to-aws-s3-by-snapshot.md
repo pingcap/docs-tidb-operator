@@ -29,8 +29,8 @@ If you have any other requirements, select an appropriate backup method based on
 > **Note:**
 >
 > - After you upgrade the TiDB cluster from an earlier version to v6.5.0, you might find the volume snapshot backup does not work. To address this issue, see [Backup failed after an upgrade of the TiDB cluster](backup-restore-faq.md#backup-failed-after-an-upgrade-of-the-tidb-cluster).
-> - To perform volume snapshot restore, ensure that the TiKV configuration is consistent in backup and restore. To check consistency, download the `backupmeta` file from the backup file stored in Amazon S3, and check the filed `kubernetes.crd_tidb_cluster.spec`. If this field is inconsistent, you can modify the TiKV configuration based on [Configure a TiDB Cluster on Kubernetes](configure-a-tidb-cluster.md).
-> - If [Encryption at Rest](https://docs.pingcap.com/tidb/dev/encryption-at-rest) is enabled for TiKV KMS, ensure that the primary key is enabled during restore.
+> - To perform volume snapshot restore, ensure that the TiKV configuration during restore is consistent with the configuration during backup. To check consistency, download the `backupmeta` file from the backup file stored in Amazon S3, and check the `kubernetes.crd_tidb_cluster.spec` field. If this field is inconsistent, you can modify the TiKV configuration by referring to [Configure a TiDB Cluster on Kubernetes](configure-a-tidb-cluster.md).
+> - If [Encryption at Rest](https://docs.pingcap.com/tidb/stable/encryption-at-rest) is enabled for TiKV KMS, ensure that the master key is enabled for AWS KMS during restore.
 
 ## Backup process
 
