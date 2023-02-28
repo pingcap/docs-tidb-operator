@@ -30,7 +30,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 >
 > - 集群从低于 v6.5.0 版本升级到 v6.5.0 时，可能无法进行卷快照备份。详细解决办法见[升级后备份无法工作](backup-restore-faq.md#升级后备份无法工作)。
 >
-> - 推荐集群备份和恢复的 CRD 需要保持一致，此功能要求 TiKV 备份和恢复配置一致。可以从备份目标 S3 中，下载 backupmeta 文件，检查 kubernetes.crd_tidb_cluster.spec, 确保恢复时 TiKV 配置与备份时一致。
+> - 要进行卷快照备份，需要确保 TiKV 备份和恢复时的配置一致。可以从备份目标 S3 中，下载 `backupmeta` 文件，检查 `kubernetes.crd_tidb_cluster.spec`， 确保恢复时 TiKV 的配置与备份时一致。
 >
 > - 如果集群打开了 TiKV KMS [静态加密](https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#tikv-静态加密)，则需要在恢复阶段确保 AWS KMS 服务中主密钥是可用的状态。
 
