@@ -14,7 +14,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
 - 要使用此功能，TiDB Operator 应为 v1.4.0 及以上，TiDB 应为 v6.3.0 及以上。
 - 只支持相同 TiKV 节点个数以及卷配置的恢复。即恢复集群 TiKV 个数以及卷相关的配置需要和备份集群的完全一致。
 - 暂不支持 TiFlash, CDC，DM 和 binlog 相关节点的卷快照恢复
-- 目前 restore 仅支持 gp3 默认配置 (3000IOPS/125 MB) 进行恢复, 如需其他配置可指定卷类型或者配置进行恢复，如：`- --volume-type=io2`，`--volume-iops=7000`，`--volume-throughput=400`
+- 目前 restore 仅支持 gp3 默认配置 (3000IOPS/125 MB) 进行恢复, 如需其他配置可指定卷类型或者配置进行恢复，如：`--volume-type=io2`，`--volume-iops=7000`，`--volume-throughput=400`
 
   ```yaml
   spec:
