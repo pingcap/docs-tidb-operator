@@ -324,7 +324,8 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 ## BackupSchedule CR 字段介绍
 
 `backupSchedule` 的配置由三部分组成。快照备份相关配置 `backupTemplate`，日志备份相关配置`logBackupTemplate`，`backupSchedule` 独有的配置。
-+ 全量备份相关配置 `backupTemplate`：指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
+
++ 快照备份相关配置 `backupTemplate`：指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
 + 日志备份相关配置`logBackupTemplate`：指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除, 且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
 
     > **注意：**
