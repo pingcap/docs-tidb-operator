@@ -64,6 +64,10 @@ kubectl get tc test -n test -o='go-template={{.status.clusterID}}{{"\n"}}'
 
 ### 第 3 步：恢复 PD 集群 Pod
 
+> **警告：**
+>
+> 通过新建 PD 方式来恢复集群，会丢失之前 PD 已生效的所有配置信息。
+
 1. 删除 PD 集群 Pod。
 
     通过如下命令设置 `spec.pd.replicas` 为 `0`：

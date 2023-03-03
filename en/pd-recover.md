@@ -62,6 +62,10 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 ### Step 3. Recover the PD Pod
 
+> **Warning:**
+>
+> Restoring the cluster by creating a new PD will lose all the configuration information that the PD has taken effect before.
+
 1. Delete the Pod of the PD cluster.
 
     Execute the following command to set the value of `spec.pd.replicas` to `0`:
