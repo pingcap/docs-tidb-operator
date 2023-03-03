@@ -14,7 +14,7 @@ The restore method described in this document is implemented based on CustomReso
 - Snapshot restore is applicable to TiDB Operator v1.4.0 or above, and TiDB v6.3.0 or above.
 - Snapshot restore only supports restoring to a cluster with the same number of TiKV nodes and volumes configuration. That is, the number of TiKV nodes and volume configurations is identical between the restore cluster and backup cluster.
 - Snapshot restore is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
-- Snapshot restore supports only the default configuration (3000IOPS/125 MB) of GP3. To perform restore using other configurations, you can specify the volume type or configuration, such as `- --volume-type=io2`, `--volume-iops=7000`, or `--volume-throughput=400`.
+- Snapshot restore supports only the default configuration (3000IOPS/125 MB) of GP3. To perform restore using other configurations, you can specify the volume type or configuration, such as `--volume-type=io2`, `--volume-iops=7000`, or `--volume-throughput=400`.
 
   ```yaml
   spec:
