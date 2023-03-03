@@ -108,7 +108,10 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     > - "*.*"
     > - "!db.table"
     > ```
-
+* `.spec.backoffRetryPolicy`：指定备份的 Job/Pod 非正常失败（如节点资源不足被 k8s 杀死）时的重试策略，目前只对 `snapshot` 备份生效。
+    * `minRetryDuration`：发现异常失败后的最小重试间隔，重试间隔随失败次数增加，`RetryDuration` = `minRetryDuration` << (`retryNum` -1)。单位：秒，默认 300。
+    * `maxRetryTimes`：最大重试次数，默认 2。
+    * `retryTimeout`：重试超时时间，从首次发现异常失败开始计算，单位：分钟，默认 30。
 ### BR 字段介绍
 
 * `.spec.br.cluster`：代表需要备份的集群名字。
@@ -318,9 +321,15 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## BackupSchedule CR 字段介绍
 
-`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。下面介绍 `backupSchedule` 独有的配置项：
-
-+ `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
-+ `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
-+ `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-+ `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为 `false`。
+`backupSchedule` 的配置由三部分组成。全量备份相关配置 `backupTemplate`，日志备份相关配置`logBackupTemplate`，`backupSchedule` 独有的配置。
++ 全量备份相关配置 `backupTemplate`：指定全量备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
++ 日志备份相关配置`logBackupTemplate`：指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除, 且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
+    > **注意：**
+    >
+    > 若删除日志备份，需要先停止日志备份，避免由于未停止 TiKV 中的日志备份任务，造成资源浪费或者后续无法重新开启日志备份。
+  
++ `backupSchedule` 独有的配置：
+    + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
+    + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
+    + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
+    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为 `false`。由于目前没有实现日志备份暂停功能，因此，对日志备份无效。
