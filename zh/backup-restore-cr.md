@@ -108,10 +108,12 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     > - "*.*"
     > - "!db.table"
     > ```
+
 * `.spec.backoffRetryPolicy`：指定备份的 Job/Pod 非正常失败（如节点资源不足被 k8s 杀死）时的重试策略，目前只对 `snapshot` 备份生效。
     * `minRetryDuration`：发现异常失败后的最小重试间隔，重试间隔随失败次数增加，`RetryDuration` = `minRetryDuration` << (`retryNum` -1)。单位：秒，默认 300。
     * `maxRetryTimes`：最大重试次数，默认 2。
     * `retryTimeout`：重试超时时间，从首次发现异常失败开始计算，单位：分钟，默认 30。
+
 ### BR 字段介绍
 
 * `.spec.br.cluster`：代表需要备份的集群名字。
@@ -321,9 +323,10 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## BackupSchedule CR 字段介绍
 
-`backupSchedule` 的配置由三部分组成。全量备份相关配置 `backupTemplate`，日志备份相关配置`logBackupTemplate`，`backupSchedule` 独有的配置。
-+ 全量备份相关配置 `backupTemplate`：指定全量备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
+`backupSchedule` 的配置由三部分组成。快照备份相关配置 `backupTemplate`，日志备份相关配置`logBackupTemplate`，`backupSchedule` 独有的配置。
++ 全量备份相关配置 `backupTemplate`：指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
 + 日志备份相关配置`logBackupTemplate`：指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除, 且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
+
     > **注意：**
     >
     > 若删除日志备份，需要先停止日志备份，避免由于未停止 TiKV 中的日志备份任务，造成资源浪费或者后续无法重新开启日志备份。
