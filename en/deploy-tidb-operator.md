@@ -15,7 +15,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * Kubernetes >= v1.12
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-* [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
+* [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) enabled (optional)
 * [Helm 3](https://helm.sh)
 
 ### Deploy the Kubernetes cluster
@@ -30,7 +30,7 @@ For some public cloud environments, refer to the following documents:
 
 TiDB Operator uses [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, and backup data), so the Kubernetes cluster must provide at least one kind of persistent volumes.
 
-It is recommended to enable [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) in the Kubernetes cluster.
+It is recommended to enable [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) in the Kubernetes cluster.
 
 ### Install Helm
 

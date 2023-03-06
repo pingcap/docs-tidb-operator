@@ -33,7 +33,7 @@ Before deploying Diag, make sure the following items are installed on the cluste
 * Kubernetes >= v1.12
 * [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-* [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)
+* [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 * [Helm 3](https://helm.sh)
 
 #### Install Helm
