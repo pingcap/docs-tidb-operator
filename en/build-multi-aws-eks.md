@@ -207,11 +207,11 @@ Each cluster needs to expose its CoreDNS service to other clusters via a [networ
     {{< copyable "shell-regular" >}}
 
     ```bash
-    lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    lb_name_1=$(kubectl --context ${context_1} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
 
-    lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    lb_name_2=$(kubectl --context ${context_2} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
 
-    lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer. ingress[0].hostname}" | cut -d - -f 1)
+    lb_name_3=$(kubectl --context ${context_3} -n kube-system get svc across-cluster-dns-tcp -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" | cut -d - -f 1)
     ```
 
     Check the load balancer status of each cluster by running the following commands. If the output of all commands is `active`, all load balancers are in the `Active` state.
@@ -377,7 +377,7 @@ Before you deploy the TiDB cluster, you need to verify that the network between 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --context ${context_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
+    kubectl --context ${context_1} -n ${namespace_1} exec sample-nginx -- curl http://sample-nginx.sample-nginx-peer.${namespace_2}.svc.cluster.local:80
     ```
 
     If the output is the welcome page of nginx, the network is connected.
