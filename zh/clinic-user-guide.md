@@ -33,7 +33,7 @@ Diag 部署前，请确认以下软件需求：
 * Kubernetes v1.12 或者更高版本
 * [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-* [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)
+* [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 * [Helm 3](https://helm.sh)
 
 #### 安装 Helm

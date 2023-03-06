@@ -14,7 +14,7 @@ TiDB Operator 部署前，请确认以下软件需求：
 * Kubernetes v1.12 或者更高版本
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-* [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) 启用（可选）
+* [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) 启用（可选）
 * [Helm 3](https://helm.sh)
 
 ## 部署 Kubernetes 集群
@@ -29,7 +29,7 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页
 
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化存储 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。
 
-Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。
+Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)。
 
 ## 安装 Helm
 
