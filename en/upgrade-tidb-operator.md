@@ -46,7 +46,7 @@ If your server has access to the internet, you can perform online upgrade by tak
     {{< copyable "shell-regular" >}}
 
     ```bash
-    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.7 -f ${HOME}/tidb-operator/v1.2.7/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.7 -f ${HOME}/tidb-operator/v1.2.7/values-tidb-operator.yaml -n tidb-admin
     ```
 
 7. After all the Pods start normally, check the image of TiDB Operator:

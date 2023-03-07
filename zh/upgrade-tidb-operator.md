@@ -46,7 +46,7 @@ summary: 介绍如何升级 TiDB Operator。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.7 -f ${HOME}/tidb-operator/v1.2.7/values-tidb-operator.yaml
+    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.2.7 -f ${HOME}/tidb-operator/v1.2.7/values-tidb-operator.yaml -n tidb-admin
     ```
 
 7. Pod 全部正常启动之后，运行以下命令确认 TiDB Operator 镜像版本：
