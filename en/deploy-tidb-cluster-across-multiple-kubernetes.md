@@ -607,7 +607,7 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
     1. If TiFlash is deployed in clusters, upgrade the TiFlash versions for all the Kubernetes clusters that have TiFlash deployed.
     2. Upgrade TiKV versions for all Kubernetes clusters.
     3. If Pump is deployed in clusters, upgrade the Pump versions for all the Kubernetes clusters that have Pump deployed.
-    4. Upgrade TiDM versions for all Kubernetes clusters.
+    4. Upgrade TiDB versions for all Kubernetes clusters.
     5. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
 
 ## Exit and reclaim clusters that already join a cross-Kubernetes cluster
