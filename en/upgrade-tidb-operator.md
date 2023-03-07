@@ -30,7 +30,7 @@ This document describes how to upgrade TiDB Operator and Kubernetes.
 
     ```shell
     mkdir -p ${HOME}/tidb-operator/v1.1.15 && \
-    helm inspect values pingcap/tidb-operator --version=v1.1.15 > ${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml
+    helm inspect values pingcap/tidb-operator --version=v1.1.15 > ${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml -n tidb-admin
     ```
 
 3. In the `${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version. Merge the customized configuration in the old `values.yaml` file to the `${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml` file, and then execute `helm upgrade`:

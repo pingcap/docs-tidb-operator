@@ -30,7 +30,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/stable/upgrade-tidb-operator/','/docs-cn/
 
     ```shell
     mkdir -p ${HOME}/tidb-operator/v1.1.15 && \
-    helm inspect values pingcap/tidb-operator --version=v1.1.15 > ${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml
+    helm inspect values pingcap/tidb-operator --version=v1.1.15 > ${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml -n tidb-admin
     ```
 
 3. 修改 `${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml` 中 `operatorImage` 镜像版本为要升级到的版本，并将旧版本 `values.yaml` 中的自定义配置合并到 `${HOME}/tidb-operator/v1.1.15/values-tidb-operator.yaml`，然后执行 `helm upgrade`：
