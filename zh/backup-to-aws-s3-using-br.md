@@ -826,7 +826,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
-`backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
+2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
 {{< copyable "shell-regular" >}}
 
