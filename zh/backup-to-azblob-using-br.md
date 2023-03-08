@@ -604,7 +604,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 ## 集成管理定时快照备份和日志备份
 
-`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PiTR 恢复。本节示例创建了名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR 为例，具体操作如下所示。
+`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PiTR 恢复。本节示例创建了名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR 为例，其中访问 Azure 远程存储的方式参考[Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)，具体操作如下所示。
 
 ### 前置条件：准备定时快照备份环境
 
@@ -612,7 +612,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 ### 创建 `BackupSchedule`
 
-在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR。
+1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR。
 
   {{< copyable "shell-regular" >}}
 
@@ -661,7 +661,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
-`backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
+2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
 {{< copyable "shell-regular" >}}
 
@@ -677,7 +677,7 @@ kubectl get bks -n backup-test -o wide
 kubectl describe bks integrated-backup-schedule-azblob -n backup-test
 ```
 
-在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 为快照备份，`log` 为日志备份。
+3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 为快照备份，`log` 为日志备份。
 
 {{< copyable "shell-regular" >}}
 
