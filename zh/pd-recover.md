@@ -42,8 +42,12 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 ### 第 1 步：恢复 PD 集群 Pod
 
 1. 使用一个可用 PD 节点强制重建 PD 集群。
+   
+    > **提示：**
+    >
+    > 这里以 pd-0 为例，若使用其他 PD pod 请调整对应的命令。
 
-    这里以 pd-0 为例，让 pd-0 pod 进入 Debug 模式：
+    让 pd-0 pod 进入 Debug 模式：
 
     {{< copyable "shell-regular" >}}
 
@@ -52,7 +56,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- kill -SIGTERM 1
     ```
 
-    通过如下命令进入 pd-0 pod：
+    进入 pd-0 pod：
 
     {{< copyable "shell-regular" >}}
 
@@ -60,7 +64,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     kubectl -n ${cluster_name} exec -it basic-pd-0 -- sh
     ```
 
-    参考默认启动脚本 [_start_pd.sh.tpl](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl)，配置环境变量：
+    参考默认启动脚本 [_start_pd.sh.tpl](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl)，在 pd-0 里配置环境变量：
 
     {{< copyable "shell-regular" >}}
 
@@ -122,7 +126,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     fi
     ```
 
-    使用 pd-0 的数据目录强制启动一个新的 PD 集群：
+    然后使用原始的 pd-0 数据目录强制启动一个新的 PD 集群：
 
     {{< copyable "shell-regular" >}}
 
