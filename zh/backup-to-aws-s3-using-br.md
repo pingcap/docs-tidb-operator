@@ -777,84 +777,84 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR。
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```shell
-  kubectl apply -f integrated-backup-scheduler-aws-s3.yaml
-  ```
+    ```shell
+    kubectl apply -f integrated-backup-scheduler-aws-s3.yaml
+    ```
 
-  `integrated-backup-scheduler-aws-s3` 文件内容如下：
+    `integrated-backup-scheduler-aws-s3` 文件内容如下：
 
-  ```yaml
-  ---
-  apiVersion: pingcap.com/v1alpha1
-  kind: BackupSchedule
-  metadata:
-    name: integrated-backup-schedule-s3
-    namespace: backup-test
-  spec:
-    maxReservedTime: "3h"
-    schedule: "* */2 * * *"
-    backupTemplate:
-      backupType: full
-      cleanPolicy: Delete
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      s3:
-        provider: aws
-        secretName: s3-secret
-        region: us-west-1
-        bucket: my-bucket
-        prefix: my-folder-snapshot
-    logBackupTemplate:
-      backupMode: log
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      s3:
-        provider: aws
-        secretName: s3-secret
-        region: us-west-1
-        bucket: my-bucket
-        prefix: my-folder-log
-  ```
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-s3
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-snapshot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-log
+    ```
 
-以上 `integrated-backup-scheduler-aws-s3.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
+    以上 `integrated-backup-scheduler-aws-s3.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
 
-- 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
+    - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get bks -n backup-test -o wide
-```
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
 
-日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `backupSchedule` 的 `status.logBackup`，即日志备份名称。
+    日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `backupSchedule` 的 `status.logBackup`，即日志备份名称。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl describe bks integrated-backup-schedule-s3 -n backup-test
-```
+    ```shell
+    kubectl describe bks integrated-backup-schedule-s3 -n backup-test
+    ```
 
 3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 为快照备份，`log` 为日志备份。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-s3 -n backup-test
-```
+    ```shell
+    kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-s3 -n backup-test
+    ```
 
-```
-NAME                                                   MODE       STATUS    ....
-integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....  
-log-integrated-backup-schedule-s3                      log        Running   ....
-```
+    ```
+    NAME                                                   MODE       STATUS    ....
+    integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....  
+    log-integrated-backup-schedule-s3                      log        Running   ....
+    ```
 
 ## 删除备份的 Backup CR
 
