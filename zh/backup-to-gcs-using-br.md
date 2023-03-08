@@ -597,7 +597,6 @@ spec:
     name: integrated-backup-schedule-gcs
     namespace: backup-test
   spec:
-    #pause: true
     maxReservedTime: "3h"
     schedule: "* */2 * * *"
     backupTemplate:
@@ -625,7 +624,7 @@ spec:
         prefix: schedule-backup-folder-log
   ```
 
-以上 `integrated-backup-scheduler-gcs.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置。
+以上 `integrated-backup-scheduler-gcs.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
 
 - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
@@ -651,6 +650,12 @@ kubectl describe bks integrated-backup-schedule-gcs -n backup-test
 
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-gcs -n backup-test
+```
+
+```
+NAME                                                       MODE       STATUS    ....
+integrated-backup-schedule-gcs-2023-03-08t02-50-00         snapshot   Complete  ....  
+log-integrated-backup-schedule-gcs                         log        Running   ....
 ```
 
 ## 删除备份的 Backup CR

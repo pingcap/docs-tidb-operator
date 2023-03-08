@@ -630,7 +630,6 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     name: integrated-backup-schedule-azblob
     namespace: backup-test
   spec:
-    #pause: true
     maxReservedTime: "3h"
     schedule: "* */2 * * *"
     backupTemplate:
@@ -658,7 +657,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
         #accessTier: Hot
   ```
 
-以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate `。
+以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
 
 - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
@@ -684,6 +683,12 @@ kubectl describe bks integrated-backup-schedule-azblob -n backup-test
 
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-azblob -n backup-test
+```
+
+```
+NAME                                                       MODE       STATUS    ....
+integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....  
+log-integrated-backup-schedule-azblob                      log        Running   ....
 ```
 
 ## 删除备份的 Backup CR
