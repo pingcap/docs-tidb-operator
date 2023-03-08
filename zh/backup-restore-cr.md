@@ -110,9 +110,9 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     > ```
 
 * `.spec.backoffRetryPolicy`：指定备份的 Job/Pod 发生非正常失败（如节点资源不足被 Kubernetes 杀死）时的重试策略。这个策略目前只适用于 `snapshot` 备份。
-    * `minRetryDuration`：发现异常失败后的最小重试间隔，重试间隔随失败次数增加，`RetryDuration` = `minRetryDuration` << (`retryNum` -1)。单位：秒，默认 300。
+    * `minRetryDuration`：发现异常失败后的最小重试间隔，重试间隔随失败次数增加，`RetryDuration` = `minRetryDuration` << (`retryNum` -1)。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)，默认 300s。
     * `maxRetryTimes`：最大重试次数，默认 2。
-    * `retryTimeout`：重试超时时间，从首次发现异常失败开始计算，单位：分钟，默认 30。
+    * `retryTimeout`：重试超时时间，从首次发现异常失败开始计算。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)，默认 30m。
 
 ### BR 字段介绍
 
