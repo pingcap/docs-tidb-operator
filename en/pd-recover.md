@@ -36,13 +36,17 @@ This section introduces how to recover the PD cluster using PD Recover and alive
 
 > **Note:**
 >
-> If you restore the cluster by using alive PD, the cluster can keep all the configuration information that has taken effect in PD before the restoration.
+> If you restore the cluster by using alive PD, the cluster can keep all the configuration informations that has taken effect in PD before the restoration.
 
 ### Step 1. Recover the PD Pod
 
 1. Use one alive PD force recreate a new PD cluster.
 
-    Here use pd-0 as example, let pd-0 pod enter Debug mode:
+    > **Note:**
+    >
+    > Here use pd-0 as example, please change the command if use other PD pod.
+
+    Let pd-0 pod enter Debug mode:
 
     {{< copyable "shell-regular" >}}
 
@@ -51,7 +55,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- kill -SIGTERM 1
     ```
 
-    Use below command enter pd-0 pod:
+    Enter the pd-0 pod:
 
     {{< copyable "shell-regular" >}}
 
@@ -59,7 +63,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     kubectl -n ${cluster_name} exec -it basic-pd-0 -- sh
     ```
 
-    Reference [_start_pd.sh.tpl](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl) and do some ENV configuration:
+    Reference default start script [_start_pd.sh.tpl](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl), in pd-0 pod do some ENV configuration:
 
     {{< copyable "shell-regular" >}}
 
@@ -121,7 +125,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     fi
     ```
 
-    use original pd-0 data directory force start a new PD cluster:
+    Then use original pd-0 data directory force start a new PD cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -132,7 +136,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     exec /pd-server --force-new-cluster ${ARGS} &
     ```
 
-    exit pd-0 pod:
+    Exit pd-0 pod:
 
     ```shell
     exit
