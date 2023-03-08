@@ -792,7 +792,6 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     name: integrated-backup-schedule-s3
     namespace: backup-test
   spec:
-    #pause: true
     maxReservedTime: "3h"
     schedule: "* */2 * * *"
     backupTemplate:
@@ -848,6 +847,12 @@ kubectl describe bks integrated-backup-schedule-s3 -n backup-test
 
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-s3 -n backup-test
+```
+
+```
+NAME                                                   MODE       STATUS    ....
+integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....  
+log-integrated-backup-schedule-s3                      log        Running   ....
 ```
 
 ## 删除备份的 Backup CR
