@@ -619,7 +619,7 @@ spec:
 
 ### IPv6 支持
 
-自 TiDB Operator v1.4.3 起，可以通过配置 `spec.preferIPv6` 为 `ture` 来部署监听 IPv6 地址的 TiDB 集群。
+自 TiDB 集群 v6.5.1 起，v1.4.3 或以上版本的 TiDB Operator 支持通过配置 `spec.preferIPv6` 为 `ture` 来部署监听 IPv6 地址的 TiDB 集群。
 
 ```yaml
 spec:

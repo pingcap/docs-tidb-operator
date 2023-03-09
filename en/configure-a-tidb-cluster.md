@@ -644,7 +644,7 @@ See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/servi
 
 ### IPv6 Support
 
-Starting from TiDB Operator v1.4.3, TiDB clusters that listen on IPv6 addresses can be deployed by configuring `spec.preferIPv6` to `true`.
+Starting from TiDB v6.5.1, TiDB clusters that listen on IPv6 addresses can be deployed by TiDB Operator whose version is larger or equal than v1.4.3 with configuring `spec.preferIPv6` to `true`.
 
 ```yaml
 spec:
