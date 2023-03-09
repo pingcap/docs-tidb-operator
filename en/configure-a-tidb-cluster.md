@@ -651,6 +651,7 @@ spec:
   preferIPv6: true
   # ...
 ```
+
 > **Warning:**
 >
 > This configuration can only be applied when deploying the TiDB cluster and cannot be enabled on deployed clusters, as it may cause the cluster to become unavailable.
