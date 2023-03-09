@@ -844,7 +844,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     kubectl describe bks integrated-backup-schedule-s3 -n backup-test
     ```
 
-3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 为快照备份，`log` 为日志备份。
+3. 在进行集群恢复时，需要指定备份的路径。你可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
 
     {{< copyable "shell-regular" >}}
 
