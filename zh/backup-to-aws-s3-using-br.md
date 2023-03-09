@@ -767,7 +767,9 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 ## 集成管理定时快照备份和日志备份
 
-`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PiTR 恢复。本节示例创建了名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR，对远程存储访问授权方式仅以通过 accessKey 和 secretKey 的方式为例，详细地授权方式参考[AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。具体操作如下所示。
+`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份。通过设置备份的保留时间，可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
+
+本节示例创建了名为 `integrated-backup-schedule-aws-s3` 的 `BackupSchedule` CR，使用 accessKey 和 secretKey 的方式为例对远程存储进行访问授权，详细的授权方式参考[AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。具体操作如下所示。
 
 ### 前置条件：准备定时快照备份环境
 
