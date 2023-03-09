@@ -659,7 +659,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
     以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
 
-    - 关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
+    关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
