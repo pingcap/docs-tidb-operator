@@ -777,7 +777,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 You can use the `BackupSchedule` CR to integrate the management of scheduled snapshot backup and log backup for TiDB clusters. By setting the backup retention time, you can regularly recycle the scheduled snapshot backup and log backup, and ensure that you can perform PITR recovery through the scheduled snapshot backup and log backup within the retention period.
 
-The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-aws-s3`. In the example, accessKey and secretKey are used to access the remote storage. For more information about the authorization method, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-s3`. In the example, accessKey and secretKey are used to access the remote storage. For more information about the authorization method, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
 
 ### Prerequisites: Prepare for a scheduled snapshot backup environment
 
@@ -785,13 +785,13 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
 
 ### Create `BackupSchedule`
 
-1. Create a `BackupSchedule` CR named `integrated-backup-schedule-aws-s3` in the `backup-test` namespace.
+1. Create a `BackupSchedule` CR named `integrated-backup-schedule-s3` in the `backup-test` namespace.
 
     ```shell
-    kubectl apply -f integrated-backup-scheduler-aws-s3.yaml
+    kubectl apply -f integrated-backup-schedule-s3.yaml
     ```
 
-    The content of `integrated-backup-scheduler-aws-s3.yaml` is as follows:
+    The content of `integrated-backup-schedule-s3.yaml` is as follows:
 
     ```yaml
     ---
@@ -830,7 +830,7 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
           prefix: my-folder-log
     ```
 
-    In the above example of `integrated-backup-scheduler-aws-s3.yaml`, the `backupSchedule` configuration consists of three parts: the unique configuration of `backupSchedule`, the configuration of the snapshot backup `backupTemplate`, and the configuration of the log backup `logBackupTemplate`.
+    In the above example of `integrated-backup-schedule-s3.yaml`, the `backupSchedule` configuration consists of three parts: the unique configuration of `backupSchedule`, the configuration of the snapshot backup `backupTemplate`, and the configuration of the log backup `logBackupTemplate`.
 
     For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 
