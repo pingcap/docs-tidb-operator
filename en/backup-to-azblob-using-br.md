@@ -606,6 +606,91 @@ You can run the following command to check all the backup items:
 kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azblob -n backup-test
 ```
 
+## Integrated management of scheduled snapshot backup and log backup
+
+You can use the `BackupSchedule` CR to integrate the management of scheduled snapshot backup and log backup for TiDB clusters. By setting the backup retention time, you can regularly recycle the scheduled snapshot backup and log backup, and ensure that you can perform PITR recovery through the scheduled snapshot backup and log backup within the retention period.
+
+The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-azblob`. For more information about the authorization method, refer to [Azure account permissions](grant-permissions-to-remote-storage.md#azure-account-permissions).
+
+### Prerequisites: Prepare a scheduled snapshot backup environment
+
+The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-an-ad-hoc-backup-environment).
+
+### Create `BackupSchedule`
+
+1. Create a `BackupSchedule` CR named `integrated-backup-schedule-azblob` in the `backup-test` namespace.
+
+    ```shell
+    kubectl apply -f integrated-backup-scheduler-azblob.yaml
+    ```
+
+    The content of `integrated-backup-scheduler-azblob.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-azblob
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-snapshot
+          #accessTier: Hot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-log
+          #accessTier: Hot
+    ```
+
+    In the above example of `integrated-backup-scheduler-azblob.yaml`, the `backupSchedule` configuration consists of three parts: the unique configuration of `backupSchedule`, the configuration of the snapshot backup `backupTemplate`, and the configuration of the log backup `logBackupTemplate`.
+
+    For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
+
+2. After creating `backupSchedule`, use the following command to check the backup status:
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    A log backup task is created together with `backupSchedule`. You can check the log backup name through the `status.logBackup` field of the `backupSchedule` CR.
+
+    ```shell
+    kubectl describe bks integrated-backup-schedule-azblob -n backup-test
+    ```
+
+3. To perform data restoration for a cluster, you need to specify the backup path. You can use the following command to check all the backup items under the scheduled snapshot backup.
+
+    ```shell
+    kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-azblob -n backup-test
+    ```
+
+    The `MODE` field in the output indicates the backup mode. `snapshot` indicates the scheduled snapshot backup, and `log` indicates the log backup.
+
+    ```
+    NAME                                                       MODE       STATUS    ....
+    integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....
+    log-integrated-backup-schedule-azblob                      log        Running   ....
+    ```
+
 ## Delete the backup CR
 
 If you no longer need the backup CR, you can delete it by referring to [Delete the Backup CR](backup-restore-overview.md#delete-the-backup-cr).

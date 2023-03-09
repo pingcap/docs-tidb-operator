@@ -120,10 +120,10 @@ This section introduces the fields in the `Backup` CR.
     > - "!db.table"
     > ```
 
-* `.spec.backoffRetryPolicy`: the retry policy for abnormal failures (such as Kubernetes killing the node due to insufficient resources) of the Job/Pod during the backup. This parameter only takes effect for the `snapshot` backup.
-    * `minRetryDuration`: the minimum retry interval after an abnormal failure is found. The retry interval increases with the number of failures. `RetryDuration` = `minRetryDuration` << (`retryNum` -1). The unit is seconds. The default value is `300`.
+* `.spec.backoffRetryPolicy`: the retry policy for abnormal failures (such as Kubernetes killing the node due to insufficient resources) of the Job/Pod during the backup. This configuration currently only takes effect on the `snapshot` backup.
+    * `minRetryDuration`: the minimum retry interval after an abnormal failure is found. The retry interval increases with the number of failures. `RetryDuration` = `minRetryDuration` << (`retryNum` -1). The time format is specified in [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration), and the default value is `300s`.
     * `maxRetryTimes`: the maximum number of retries. The default value is `2`.
-    * `retryTimeout`: the retry timeout. The timeout starts from the first abnormal failure. The unit is minutes. The default value is `30`.
+    * `retryTimeout`: the retry timeout. The timeout starts from the first abnormal failure. The time format is specified in [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration), and the default value is `30m`.
 
 ### BR fields
 
