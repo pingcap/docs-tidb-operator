@@ -642,7 +642,7 @@ spec:
 
 See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/) to know more about the features of Service and what LoadBalancer in the cloud platform supports.
 
-### IPv6 支持
+### IPv6 Support
 
 Starting from TiDB Operator v1.4.3, TiDB clusters that listen on IPv6 addresses can be deployed by configuring `spec.preferIPv6` to `true`.
 
