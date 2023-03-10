@@ -616,6 +616,20 @@ spec:
 
 访问 [Kubernetes Service 文档](https://kubernetes.io/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。
 
+### IPv6 支持
+
+TiDB 自 v6.5.1 起支持使用 IPv6 地址进行所有网络连接。如果你使用 v1.4.3 或以上版本的 TiDB Operator 部署 TiDB，你可以通过配置 `spec.preferIPv6` 为 `ture` 来部署监听 IPv6 地址的 TiDB 集群。
+
+```yaml
+spec:
+  preferIPv6: true
+  # ...
+```
+
+> **警告：**
+>
+> 该配置只适用于部署集群时配置，无法在已经部署的 TiDB 集群上开启，否则会导致集群不可用。
+
 ## 高可用配置
 
 > **注意：**
