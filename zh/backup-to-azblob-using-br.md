@@ -657,7 +657,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
           #accessTier: Hot
     ```
 
-    以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成： `backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
+    以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成：`backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
 
     关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 
@@ -677,7 +677,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     kubectl describe bks integrated-backup-schedule-azblob -n backup-test
     ```
 
-3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，其中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
+3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
 
     {{< copyable "shell-regular" >}}
 
