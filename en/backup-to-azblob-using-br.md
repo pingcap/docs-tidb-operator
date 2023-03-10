@@ -614,7 +614,7 @@ The following example creates a `BackupSchedule` CR named `integrated-backup-sch
 
 ### Prerequisites: Prepare a scheduled snapshot backup environment
 
-The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-an-ad-hoc-backup-environment).
+The steps to prepare for a scheduled snapshot backup are the same as those of [Prepare for an ad-hoc backup](#prerequisites-prepare-an-ad-hoc-backup-environment).
 
 ### Create `BackupSchedule`
 
