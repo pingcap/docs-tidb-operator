@@ -744,7 +744,7 @@ spec:
           prefix: my-folder
     ```
 
-从以上 `backup-scheduler-aws-s3.yaml` 文件配置示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。
+以上 `backup-scheduler-aws-s3.yaml` 文件配置示例中，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。
 
 - 关于 `backupSchedule` 独有的配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 - `backupTemplate` 用于指定集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
@@ -764,6 +764,99 @@ kubectl get bks -n test1 -o wide
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
 ```
+
+## 集成管理定时快照备份和日志备份
+
+`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份。通过设置备份的保留时间，可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
+
+本节示例创建了名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR，使用 accessKey 和 secretKey 的方式为例对远程存储进行访问授权，详细的授权方式参考[AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。具体操作如下所示。
+
+### 前置条件：准备定时快照备份环境
+
+同[准备 Ad-hoc 备份环境](#前置条件准备-ad-hoc-备份环境)。
+
+### 创建 `BackupSchedule`
+
+1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f integrated-backup-schedule-s3.yaml
+    ```
+
+    `integrated-backup-schedule-s3` 文件内容如下：
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-s3
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-snapshot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-log
+    ```
+
+    以上 `integrated-backup-schedule-s3.yaml` 文件配置示例中，`backupSchedule` 的配置由三部分组成：`backupSchedule` 独有的配置，快照备份配置 `backupTemplate`，日志备份配置 `logBackupTemplate`。
+
+    关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
+
+2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `backupSchedule` 的 `status.logBackup`，即日志备份名称。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl describe bks integrated-backup-schedule-s3 -n backup-test
+    ```
+
+3. 在进行集群恢复时，需要指定备份的路径。你可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-s3 -n backup-test
+    ```
+
+    ```
+    NAME                                                   MODE       STATUS    ....
+    integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....  
+    log-integrated-backup-schedule-s3                      log        Running   ....
+    ```
 
 ## 删除备份的 Backup CR
 
