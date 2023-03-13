@@ -291,7 +291,7 @@ mountOptions:
 
     2. 通过[普通挂载方式](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)将本地存储挂载到 `/mnt/ssd` 目录。
 
-    3. 根据本地存储的挂载情况，修改 [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/manifests/eks/local-volume-provisioner.yaml) 文件。
+    3. 根据本地存储的挂载情况，修改 [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/manifests/eks/local-volume-provisioner.yaml) 文件。
 
     4. 使用修改后的 `local-volume-provisioner.yaml`，部署并创建一个 `local-storage` 的 Storage Class：
 
@@ -336,9 +336,9 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/aws/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/aws/tidb-monitor.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/aws/tidb-dashboard.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/aws/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/aws/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/aws/tidb-dashboard.yaml
 ```
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)

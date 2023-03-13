@@ -59,27 +59,27 @@ If your server has access to the internet, you can perform online upgrade by tak
             kubectl get crd tidbclusters.pingcap.com
             ```
 
-    This document takes TiDB v1.4.3 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
+    This document takes TiDB v1.4.4 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
 3. Get the `values.yaml` file of the `tidb-operator` chart:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    mkdir -p ${HOME}/tidb-operator/v1.4.3 && \
-    helm inspect values pingcap/tidb-operator --version=v1.4.3 > ${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml
+    mkdir -p ${HOME}/tidb-operator/v1.4.4 && \
+    helm inspect values pingcap/tidb-operator --version=v1.4.4 > ${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml
     ```
 
-4. In the `${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version.
+4. In the `${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version.
 
-5. If you have added customized configuration in the old `values.yaml` file, merge your customized configuration to the `${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml` file.
+5. If you have added customized configuration in the old `values.yaml` file, merge your customized configuration to the `${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml` file.
 
 6. Perform upgrade:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.4.3 -f ${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml -n tidb-admin
+    helm upgrade tidb-operator pingcap/tidb-operator --version=v1.4.4 -f ${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml -n tidb-admin
     ```
 
 7. After all the Pods start normally, check the image of TiDB Operator:
@@ -90,13 +90,13 @@ If your server has access to the internet, you can perform online upgrade by tak
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-    If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.4.3` represents the TiDB Operator version you have upgraded to.
+    If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.4.4` represents the TiDB Operator version you have upgraded to.
 
     ```
-    image: pingcap/tidb-operator:v1.4.3
-    image: docker.io/pingcap/tidb-operator:v1.4.3
-    image: pingcap/tidb-operator:v1.4.3
-    image: docker.io/pingcap/tidb-operator:v1.4.3
+    image: pingcap/tidb-operator:v1.4.4
+    image: docker.io/pingcap/tidb-operator:v1.4.4
+    image: pingcap/tidb-operator:v1.4.4
+    image: docker.io/pingcap/tidb-operator:v1.4.4
     ```
 
 ## Offline upgrade
@@ -123,14 +123,14 @@ If your server cannot access the Internet, you can offline upgrade by taking the
             wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml
             ```
 
-        This document takes TiDB v1.4.3 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
+        This document takes TiDB v1.4.4 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
     2. Download the `tidb-operator` chart package file.
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        wget http://charts.pingcap.org/tidb-operator-v1.4.3.tgz
+        wget http://charts.pingcap.org/tidb-operator-v1.4.4.tgz
         ```
 
     3. Download the Docker images required for the new TiDB Operator version:
@@ -138,11 +138,11 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         {{< copyable "shell-regular" >}}
 
         ```bash
-        docker pull pingcap/tidb-operator:v1.4.3
-        docker pull pingcap/tidb-backup-manager:v1.4.3
+        docker pull pingcap/tidb-operator:v1.4.4
+        docker pull pingcap/tidb-backup-manager:v1.4.4
 
-        docker save -o tidb-operator-v1.4.3.tar pingcap/tidb-operator:v1.4.3
-        docker save -o tidb-backup-manager-v1.4.3.tar pingcap/tidb-backup-manager:v1.4.3
+        docker save -o tidb-operator-v1.4.4.tar pingcap/tidb-operator:v1.4.4
+        docker save -o tidb-backup-manager-v1.4.4.tar pingcap/tidb-backup-manager:v1.4.4
         ```
 
 2. Upload the downloaded files and images to the server where TiDB Operator is deployed, and install the new TiDB Operator version:
@@ -170,9 +170,9 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tar zxvf tidb-operator-v1.4.3.tgz && \
-        mkdir -p ${HOME}/tidb-operator/v1.4.3 && \
-        cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml
+        tar zxvf tidb-operator-v1.4.4.tgz && \
+        mkdir -p ${HOME}/tidb-operator/v1.4.4 && \
+        cp tidb-operator/values.yaml ${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml
         ```
 
     4. Install the Docker images on the server:
@@ -180,20 +180,20 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         {{< copyable "shell-regular" >}}
 
         ```bash
-        docker load -i tidb-operator-v1.4.3.tar && \
-        docker load -i tidb-backup-manager-v1.4.3.tar
+        docker load -i tidb-operator-v1.4.4.tar && \
+        docker load -i tidb-backup-manager-v1.4.4.tar
         ```
 
-3. In the `${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version.
+3. In the `${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml` file, modify the `operatorImage` version to the new TiDB Operator version.
 
-4. If you have added customized configuration in the old `values.yaml` file, merge your customized configuration to the `${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml` file.
+4. If you have added customized configuration in the old `values.yaml` file, merge your customized configuration to the `${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml` file.
 
 5. Perform upgrade:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    helm upgrade tidb-operator ./tidb-operator --version=v1.4.3 -f ${HOME}/tidb-operator/v1.4.3/values-tidb-operator.yaml
+    helm upgrade tidb-operator ./tidb-operator --version=v1.4.4 -f ${HOME}/tidb-operator/v1.4.4/values-tidb-operator.yaml
     ```
 
 6. After all the Pods start normally, check the image version of TiDB Operator:
@@ -204,13 +204,13 @@ If your server cannot access the Internet, you can offline upgrade by taking the
     kubectl get po -n tidb-admin -l app.kubernetes.io/instance=tidb-operator -o yaml | grep 'image:.*operator:'
     ```
 
-    If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.4.3` represents the TiDB Operator version you have upgraded to.
+    If you see a similar output as follows, TiDB Operator is successfully upgraded. `v1.4.4` represents the TiDB Operator version you have upgraded to.
 
     ```
-    image: pingcap/tidb-operator:v1.4.3
-    image: docker.io/pingcap/tidb-operator:v1.4.3
-    image: pingcap/tidb-operator:v1.4.3
-    image: docker.io/pingcap/tidb-operator:v1.4.3
+    image: pingcap/tidb-operator:v1.4.4
+    image: docker.io/pingcap/tidb-operator:v1.4.4
+    image: pingcap/tidb-operator:v1.4.4
+    image: docker.io/pingcap/tidb-operator:v1.4.4
     ```
 
     > **Note:**

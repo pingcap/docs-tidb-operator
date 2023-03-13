@@ -24,7 +24,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/monitor-with-thanos/tidb-monitor.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
 2. Deploy the Thanos Query component.
@@ -34,7 +34,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
         {{< copyable "shell-regular" >}}
 
         ```
-        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/monitor-with-thanos/thanos-query.yaml
+        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
     2. Manually modify the `--store` parameter in the `thanos-query.yaml` file by updating `basic-prometheus:10901` to `basic-prometheus.${namespace}:10901`.
