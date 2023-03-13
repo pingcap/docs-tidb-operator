@@ -24,7 +24,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
     {{< copyable "shell-regular" >}}
 
     ```
-    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/monitor-with-thanos/tidb-monitor.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
 2. 部署 Thanos Query 组件。
@@ -34,7 +34,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
         {{< copyable "shell-regular" >}}
 
         ```
-        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.3/examples/monitor-with-thanos/thanos-query.yaml
+        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.4/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
     2. 手动修改 `thanos-query.yaml` 文件中的 `--store` 参数，将 `basic-prometheus:10901` 改为 `basic-prometheus.${namespace}:10901`。
