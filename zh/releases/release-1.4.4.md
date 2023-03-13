@@ -26,4 +26,4 @@ TiDB Operator 版本：1.4.4
 
 - 修复当两个快照之间没有块变更时，卷快照备份可能崩溃的问题 ([#4922](https://github.com/pingcap/tidb-operator/pull/4922), [@fengou1](https://github.com/fengou1))
 
-- 通过在卷快照恢复时增加加密检查，修复了卷快照可能在恢复最后阶段失败的问题 ([#4914](https://github.com/pingcap/tidb-operator/pull/4914), [@fengou1](https://github.com/fengou1))
+- 通过在卷快照恢复时增加加密检查，修复了卷快照恢复可能在最后阶段失败的问题 ([#4914](https://github.com/pingcap/tidb-operator/pull/4914), [@fengou1](https://github.com/fengou1))
