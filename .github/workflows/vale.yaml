@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Vale Linter
-      uses: errata-ai/vale-action@v1.4.3
+      uses: errata-ai/vale-action@v1.4.4
       with:
         # Optional
         #styles: |
