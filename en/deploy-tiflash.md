@@ -32,7 +32,7 @@ If you need to deploy TiFlash for an existing TiDB cluster, do the following:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl eidt tc ${cluster_name} -n ${namespace}
+    kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
 2. Add the TiFlash configuration as the following example:
