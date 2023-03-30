@@ -23,12 +23,10 @@ Edit the `TidbCluster` Custom Resource:
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl eidt tc ${cluster_name} -n ${namespace}
+kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
 Add the TiFlash configuration as follows:
-
-{{< copyable "" >}}
 
 ```yaml
 spec:
