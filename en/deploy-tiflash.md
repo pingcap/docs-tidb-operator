@@ -23,18 +23,10 @@ Edit the `TidbCluster` Custom Resource:
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl eidt tc ${cluster_name} -n ${namespace}
+kubectl edit tc ${cluster_name} -n ${namespace}
 ```
 
 Add the TiFlash configuration as follows:
-
-<<<<<<< HEAD
-{{< copyable "" >}}
-=======
-    ``` shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
-    ```
->>>>>>> bbac5985 (Typo in the kubectl edit command (#2283))
 
 ```yaml
 spec:
@@ -212,7 +204,6 @@ If the server does not have an external network, refer to [deploy the TiDB clust
 
       {{< copyable "shell-regular" >}}
 
-<<<<<<< HEAD
       ```shell
       kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
       ```
@@ -230,8 +221,3 @@ Therefore, for different TiFlash and TiDB Operator versions, you need to pay att
     * If the TiFlash version <= v4.0.4, you need to set `spec.tiflash.config.config.flash.service_addr` to `${clusterName}-tiflash-POD_NUM.${clusterName}-tiflash-peer.${namespace}.svc:3930` in the `TidbCluster` CR. `${clusterName}` and `${namespace}` need to be replaced according to the real case.
     * If the TiFlash version >= v4.0.5, no need to manually configure `spec.tiflash.config.config.flash.service_addr`.
     * If you upgrade from TiFlash v4.0.4 or lower versions to TiFlash v4.0.5 or higher versions, you need to delete the configuration of `spec.tiflash.config.config.flash.service_addr` in the `TidbCluster` CR.
-=======
-        ```shell
-        kubectl get pv -l app.kubernetes.io/component=tiflash,app.kubernetes.io/instance=${cluster_name}
-        ```
->>>>>>> bbac5985 (Typo in the kubectl edit command (#2283))
