@@ -142,6 +142,12 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     exit
     ```
 
+6. 确认 pd-0 已启动：
+
+    ```shell
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
+    ```
+
 ### 第 2 步：使用 PD Recover 恢复 PD 集群
 
 1. 拷贝 `pd-recover` 到 PD pod：
