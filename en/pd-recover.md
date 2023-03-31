@@ -143,6 +143,12 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     exit
     ```
 
+    Execute the following command to confirm that the PD is started:
+
+    ```shell
+    kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
+    ```
+
 ### Step 2. Recover the cluster
 
 1. Copy `pd-recover` command to the PD pod:
