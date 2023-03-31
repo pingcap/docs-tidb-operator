@@ -137,7 +137,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     exec /pd-server --force-new-cluster ${ARGS} &
     ```
 
-    退出 pd-0 pod:
+5. 退出 pd-0 pod：
 
     ```shell
     exit
