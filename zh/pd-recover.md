@@ -229,7 +229,7 @@ kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instanc
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```
 
-## 使用 PD Recover 恢复 PD 集群（所有 PD 都故障且无法恢复）
+## 场景 2：所有 PD 节点都故障且无法恢复
 
 本小节详细介绍如何使用 PD Recover 并通过新建 PD 的方式来恢复 PD 集群。
 
