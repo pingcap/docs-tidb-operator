@@ -30,7 +30,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
     `pd-recover` 在当前目录下。
 
-## 使用 PD Recover 恢复 PD 集群（有可用 PD 节点）
+## 场景 1：集群中有可用 PD 节点
 
 本小节详细介绍如何使用 PD Recover 并通过可用 PD 节点来恢复 PD 集群。
 
