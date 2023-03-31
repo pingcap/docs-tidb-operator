@@ -47,7 +47,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     
 使用一个可用 PD 节点 `pd-0` 强制重建 PD 集群。具体步骤如下：
 
-    让 pd-0 pod 进入 Debug 模式：
+1. 让 pd-0 pod 进入 Debug 模式：
 
     {{< copyable "shell-regular" >}}
 
