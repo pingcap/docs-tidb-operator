@@ -231,7 +231,7 @@ kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instanc
 
 ## 场景 2：所有 PD 节点都故障且无法恢复
 
-本小节详细介绍如何使用 PD Recover 并通过新建 PD 的方式来恢复 PD 集群。
+本小节详细介绍如何使用 PD Recover 并通过新建 PD 的方式来恢复 PD 集群。本小节内容仅适用于集群中所有 PD 节点均故障且无法恢复的情况，如集群中有可用的 PD 节点，请参考[这篇文档](#场景-1-集群中有可用-PD-节点)。
 
 > **警告：**
 >
