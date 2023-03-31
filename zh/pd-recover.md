@@ -55,7 +55,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- kill -SIGTERM 1
     ```
 
-    进入 pd-0 pod：
+2. 进入 pd-0 pod：
 
     {{< copyable "shell-regular" >}}
 
