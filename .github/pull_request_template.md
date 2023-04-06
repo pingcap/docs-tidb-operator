@@ -16,7 +16,6 @@
 - [ ] v1.4 (TiDB Operator 1.4 versions)
 - [ ] v1.3 (TiDB Operator 1.3 versions)
 - [ ] v1.2 (TiDB Operator 1.2 versions)
-- [ ] v1.1 (TiDB Operator 1.1 versions)
 
 ### What is the related PR or file link(s)?
 
