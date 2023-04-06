@@ -15,8 +15,11 @@
 - [ ] master (the latest development version)
 - [ ] v1.3 (TiDB Operator 1.3 versions)
 - [ ] v1.2 (TiDB Operator 1.2 versions)
+<<<<<<< HEAD
 - [ ] v1.1 (TiDB Operator 1.1 versions)
 - [ ] v1.0 (TiDB Operator 1.0 versions)
+=======
+>>>>>>> f5da8f02 (update the deprecated set-output command (#2298))
 
 ### What is the related PR or file link(s)?
 
