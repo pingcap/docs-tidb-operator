@@ -636,7 +636,7 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-然后通过 <http://${远程服务器IP}:3000> 访问 Grafana。
+然后通过 `http://${远程服务器IP}:3000` 访问 Grafana。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
@@ -658,7 +658,7 @@ TiDB Dashboard 面板可在 kubectl 所运行的主机上通过 <http://localhos
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
 ```
 
-然后通过 <http://${远程服务器IP}:12333> 访问 TiDB Dashboard。
+然后通过 `http://${远程服务器IP}:12333` 访问 TiDB Dashboard。
 
 ## 第 5 步：升级 TiDB 集群
 
