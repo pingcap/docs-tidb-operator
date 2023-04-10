@@ -228,6 +228,7 @@ spec:
         version: v6.1.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
+    EOF
     ```
 
     关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。
