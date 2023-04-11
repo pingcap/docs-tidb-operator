@@ -12,6 +12,8 @@ TiDB Operator version: 1.5.0-beta.1
 
 - Support using the `tidb.pingcap.com/pd-transfer-leader` annotation to restart PD Pod gracefully ([#4896](https://github.com/pingcap/tidb-operator/pull/4896), [@luohao](https://github.com/luohao))
 
+- Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pod gracefully ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
+
 - Support managing TiCDC with Advanced StatefulSet ([#4881](https://github.com/pingcap/tidb-operator/pull/4881), [@charleszheng44](https://github.com/charleszheng44))
 
 - Support managing TiProxy with Advanced StatefulSet ([#4917](https://github.com/pingcap/tidb-operator/pull/4917), [@xhebox](https://github.com/xhebox))
@@ -19,8 +21,6 @@ TiDB Operator version: 1.5.0-beta.1
 - Add a new field `bootstrapSQLConfigMapName` in the TiDB spec to specify an initialization SQL file on TiDB's first bootstrap ([#4862](https://github.com/pingcap/tidb-operator/pull/4862), [@fgksgf](https://github.com/fgksgf))
 
 - Allow users to define a strategy to restart failed backup jobs, enhancing backup stability ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
-
-- Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pod gracefully ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
 
 ## Improvements
 
