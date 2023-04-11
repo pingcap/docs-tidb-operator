@@ -16,15 +16,15 @@ TiDB Operator 版本：1.5.0-beta.1
 
 - 支持使用 Advanced StatefulSet 管理 TiProxy ([#4917](https://github.com/pingcap/tidb-operator/pull/4917), [@xhebox](https://github.com/xhebox))
 
-- TiDB Spec 添加新的字段 `bootstrapSQLConfigMapName` 用来指定 TiDB 第一次启动时执行的初始 SQL 文件 ([#4862](https://github.com/pingcap/tidb-operator/pull/4862), [@fgksgf](https://github.com/fgksgf))
+- TiDB Spec 新增 `bootstrapSQLConfigMapName` 字段，用于指定 TiDB 首次启动时执行的初始 SQL 文件 ([#4862](https://github.com/pingcap/tidb-operator/pull/4862), [@fgksgf](https://github.com/fgksgf))
 
-- 允许用户定义策略重启失败的备份以提高备份的稳定性 ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
+- 允许用户定义策略来重启失败的备份任务，以提高备份的稳定性 ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
 
 ## 优化提升
 
 - 升级 Kubernetes 依赖库至 v1.20 版本 ([#4954](https://github.com/pingcap/tidb-operator/pull/4954), [@KanShiori](https://github.com/KanShiori))
 
-- 添加 reconciler 与 worker queue 相关的 Metric 以提高可观测性  ([#4882](https://github.com/pingcap/tidb-operator/pull/4882), [@hanlins](https://github.com/hanlins))
+- 添加与 reconciler 与 worker queue 相关的 Metric 以提高可观测性 ([#4882](https://github.com/pingcap/tidb-operator/pull/4882), [@hanlins](https://github.com/hanlins))
 
 - 在滚动升级 TiKV 节点时，等待当前升级后的 TiKV 节点的 Leader 转移回来后，再升级下一个 TiKV 节点，以降低滚动升级时的性能下降 ([#4863](https://github.com/pingcap/tidb-operator/pull/4863), [@KanShiori](https://github.com/KanShiori))
 
@@ -32,8 +32,8 @@ TiDB Operator 版本：1.5.0-beta.1
 
 - TiProxy 支持共享部分 TiDB 的证书 ([#4880](https://github.com/pingcap/tidb-operator/pull/4880), [@xhebox](https://github.com/xhebox))
 
-- 当配置 `spec.preferIPv6` 为 `true` 时，为所有组件的 Service 的 `ipFamilyPolicy` 配置为 `PreferDualStack` ([#4959](https://github.com/pingcap/tidb-operator/pull/4959), [@KanShiori](https://github.com/KanShiori))
+- 当配置 `spec.preferIPv6` 为 `true` 时，所有组件的 Service 的 `ipFamilyPolicy` 将被配置为 `PreferDualStack` ([#4959](https://github.com/pingcap/tidb-operator/pull/4959), [@KanShiori](https://github.com/KanShiori))
 
 ## Bug 修复
 
-- 修复由于与 metric 接口冲突导致 pprof 接口不可访问的问题 ([#4874](https://github.com/pingcap/tidb-operator/pull/4874), [@hanlins](https://github.com/hanlins))
+- 修复了因为 metric 接口冲突而导致 pprof 接口无法访问的问题 ([#4874](https://github.com/pingcap/tidb-operator/pull/4874), [@hanlins](https://github.com/hanlins))
