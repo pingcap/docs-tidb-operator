@@ -12,6 +12,8 @@ TiDB Operator 版本：1.5.0-beta.1
 
 - 支持通过给 PD Pod 加上 `tidb.pingcap.com/pd-transfer-leader` Annotation 来优雅重启 PD Pod ([#4896](https://github.com/pingcap/tidb-operator/pull/4896), [@luohao](https://github.com/luohao))
 
+- 支持通过给 TiDB Pod 加上 `tidb.pingcap.com/tidb-graceful-shutdown` Annotation 来优雅重启 TiDB Pod ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
+
 - 支持使用 Advanced StatefulSet 管理 TiCDC ([#4881](https://github.com/pingcap/tidb-operator/pull/4881), [@charleszheng44](https://github.com/charleszheng44))
 
 - 支持使用 Advanced StatefulSet 管理 TiProxy ([#4917](https://github.com/pingcap/tidb-operator/pull/4917), [@xhebox](https://github.com/xhebox))
@@ -19,8 +21,6 @@ TiDB Operator 版本：1.5.0-beta.1
 - TiDB Spec 新增 `bootstrapSQLConfigMapName` 字段，用于指定 TiDB 首次启动时执行的初始 SQL 文件 ([#4862](https://github.com/pingcap/tidb-operator/pull/4862), [@fgksgf](https://github.com/fgksgf))
 
 - 允许用户定义策略来重启失败的备份任务，以提高备份的稳定性 ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
-
-- 支持通过给 TiDB Pod 加上 `tidb.pingcap.com/tidb-graceful-shutdown` Annotation 来优雅重启 TiDB Pod ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
 
 ## 优化提升
 
