@@ -20,6 +20,8 @@ TiDB Operator version: 1.5.0-beta.1
 
 - Allow users to define a strategy to restart failed backup jobs, enhancing backup stability ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
 
+- Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pod gracefully ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
+
 ## Improvements
 
 - Upgrade Kubernetes dependencies to v1.20 ([#4954](https://github.com/pingcap/tidb-operator/pull/4954), [@KanShiori](https://github.com/KanShiori))
@@ -33,6 +35,8 @@ TiDB Operator version: 1.5.0-beta.1
 - Support sharing some of TiDB's certificates with TiProxy ([#4880](https://github.com/pingcap/tidb-operator/pull/4880), [@xhebox](https://github.com/xhebox))
 
 - Configure the field `ipFamilyPolicy` as `PreferDualStack` for all components' Services when `spec.preferIPv6` is set to `true` ([#4959](https://github.com/pingcap/tidb-operator/pull/4959), [@KanShiori](https://github.com/KanShiori))
+
+- Add the metrics for counting errors about the reconciliation to improve observability ([#4952](https://github.com/pingcap/tidb-operator/pull/4952), [@coderplay](https://github.com/coderplay))
 
 ## Bug fixes
 

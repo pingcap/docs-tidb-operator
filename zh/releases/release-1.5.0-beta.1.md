@@ -20,6 +20,8 @@ TiDB Operator 版本：1.5.0-beta.1
 
 - 允许用户定义策略来重启失败的备份任务，以提高备份的稳定性 ([#4883](https://github.com/pingcap/tidb-operator/pull/4883), [@WizardXiao](https://github.com/WizardXiao)) ([#4925](https://github.com/pingcap/tidb-operator/pull/4925), [@WizardXiao](https://github.com/WizardXiao))
 
+- 支持通过给 TiDB Pod 加上 `tidb.pingcap.com/tidb-graceful-shutdown` Annotation 来优雅重启 TiDB Pod ([#4948](https://github.com/pingcap/tidb-operator/pull/4948), [@wxiaomou](https://github.com/wxiaomou))
+
 ## 优化提升
 
 - 升级 Kubernetes 依赖库至 v1.20 版本 ([#4954](https://github.com/pingcap/tidb-operator/pull/4954), [@KanShiori](https://github.com/KanShiori))
@@ -33,6 +35,10 @@ TiDB Operator 版本：1.5.0-beta.1
 - TiProxy 支持共享部分 TiDB 的证书 ([#4880](https://github.com/pingcap/tidb-operator/pull/4880), [@xhebox](https://github.com/xhebox))
 
 - 当配置 `spec.preferIPv6` 为 `true` 时，所有组件的 Service 的 `ipFamilyPolicy` 将被配置为 `PreferDualStack` ([#4959](https://github.com/pingcap/tidb-operator/pull/4959), [@KanShiori](https://github.com/KanShiori))
+
+- Add the metrics for counting errors about the reconciliation to improve observability ([#4952](https://github.com/pingcap/tidb-operator/pull/4952), [@coderplay](https://github.com/coderplay))
+
+- 添加统计协调流程失败计数的 Metric 以提高可观测性 ([#4952](https://github.com/pingcap/tidb-operator/pull/4952), [@coderplay](https://github.com/coderplay))
 
 ## Bug 修复
 
