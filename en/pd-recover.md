@@ -31,42 +31,36 @@ PD Recover is a disaster recovery tool of [PD](https://docs.pingcap.com/tidb/sta
 
     `pd-recover` is in the current directory.
 
-## Recover the PD cluster (has alive pd)
+## Scenario 1: At least one PD node is alive
 
-This section introduces how to recover the PD cluster using PD Recover and alive PD.
+This section introduces how to recover the PD cluster using PD Recover and alive PD nodes. This section is only applicable to the scenario where the PD cluster has alive PD nodes. If all PD nodes are unavailable, refer to [Scenario 2](#scenario-2-all-pd-nodes-are-unavailable).
 
 > **Note:**
 >
-> If you restore the cluster by using alive PD, the cluster can keep all the configuration informations that has taken effect in PD before the restoration.
+> If you restore the cluster by using alive PD, the cluster can keep all the configuration information that has taken effect in PD before the restoration.
 
 ### Step 1. Recover the PD Pod
 
-1. Use one alive PD force recreate a new PD cluster.
+> **Note:**
+>
+> This document takes pd-0 as an example. If you use other PD pods, modify the corresponding command.
 
-    > **Note:**
-    >
-    > Here use pd-0 as example, please change the command if use other PD pod.
+Use an alive PD node `pd-0` to force recreate the PD cluster. The detailed steps are as follows:
 
-    Let pd-0 pod enter Debug mode:
-
-    {{< copyable "shell-regular" >}}
+1. Let pd-0 pod enter debug mode:
 
     ```shell
     kubectl annotate pod ${cluster_name}-pd-0 -n ${namespace} runmode=debug
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- kill -SIGTERM 1
     ```
 
-    Enter the pd-0 pod:
-
-    {{< copyable "shell-regular" >}}
+2. Enter the pd-0 pod:
 
     ```shell
     kubectl -n ${cluster_name} exec -it basic-pd-0 -- sh
     ```
 
-    Reference default start script [_start_pd.sh.tpl](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl), in pd-0 pod do some ENV configuration:
-
-    {{< copyable "shell-regular" >}}
+3. Refer to the default startup script [`_start_pd.sh.tpl`](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl) and configure environment variables in pd-0:
 
     ```shell
     # Use HOSTNAME if POD_NAME is unset for backward compatibility.
@@ -82,13 +76,13 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     while true; do
     sleep ${period}
     elapseTime=$(( elapseTime+period ))
-    
+
     if [[ ${elapseTime} -ge ${threshold} ]]
     then
     echo "waiting for pd cluster ready timeout" >&2
     exit 1
     fi
-    
+
     if nslookup ${domain} 2>/dev/null
     then
     echo "nslookup domain ${domain}.svc success"
@@ -97,7 +91,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     echo "nslookup domain ${domain} failed" >&2
     fi
     done
-    
+
     ARGS="--data-dir=/var/lib/pd \
     --name=${POD_NAME} \
     --peer-urls=http://0.0.0.0:2380 \
@@ -106,7 +100,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     --advertise-client-urls=http://${domain}:2379 \
     --config=/etc/pd/pd.toml \
     "
-    
+
     if [[ -f /var/lib/pd/join ]]
     then
     # The content of the join file is:
@@ -126,9 +120,7 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     fi
     ```
 
-    Then use original pd-0 data directory force start a new PD cluster:
-
-    {{< copyable "shell-regular" >}}
+4. Use original pd-0 data directory to force start a new PD cluster:
 
     ```shell
     echo "starting pd-server ..."
@@ -137,39 +129,35 @@ This section introduces how to recover the PD cluster using PD Recover and alive
     exec /pd-server --force-new-cluster ${ARGS} &
     ```
 
-    Exit pd-0 pod:
+5. Exit pd-0 pod:
 
     ```shell
     exit
     ```
 
-    Execute the following command to confirm that the PD is started:
+6. Execute the following command to confirm that PD is started:
 
     ```shell
     kubectl logs -f ${cluster_name}-pd-0 -n ${namespace} | grep "Welcome to Placement Driver (PD)"
     ```
 
-### Step 2. Recover the cluster
+### Step 2. Recover the PD cluster
 
-1. Copy `pd-recover` command to the PD pod:
-
-    {{< copyable "shell-regular" >}}
+1. Copy `pd-recover` to the PD pod:
 
     ```shell
     kubectl cp ./pd-recover ${namespace}/${cluster_name}-pd-0:./
     ```
 
-2. Execute the `pd-recover` command to recover the PD cluster:
-   
-    Here use the new created cluster in previous step:
+2. Recover the PD cluster by running the `pd-recover` command:
 
-    {{< copyable "shell-regular" >}}
+    In the command, use the newly created cluster in the previous step:
 
     ```shell
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- ./pd-recover --from-old-member -endpoints http://127.0.0.1:2379
     ```
 
-    ```shell
+    ```
     recover success! please restart the PD cluster
     ```
 
@@ -177,26 +165,20 @@ This section introduces how to recover the PD cluster using PD Recover and alive
 
 1. Delete the PD Pod:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
-2. Execute the following command to confirm the Cluster ID is generated.
-
-    {{< copyable "shell-regular" >}}
+2. Confirm the Cluster ID is generated:
 
     ```shell
     kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- wget -q http://127.0.0.1:2379/pd/api/v1/cluster
     kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- cat cluster
     ```
 
-### Step 4. Recreate other crash and alive PD node
+### Step 4. Recreate other failed or available PD nodes
 
-Here use pd-1 and pd-2 as example:
-
-{{< copyable "shell-regular" >}}
+In this example, recreate pd-1 and pd-2:
 
 ```shell
 kubectl -n ${namespace} delete pvc pd-${cluster_name}-pd-1 --wait=false
@@ -210,15 +192,11 @@ kubectl -n ${namespace} delete pod ${cluster_name}-pd-2
 
 Check health:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl health
 ```
 
-Check configuration, here use placement rules as example:
-
-{{< copyable "shell-regular" >}}
+Check configuration. The following command uses placement rules as an example:
 
 ```shell
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placement-rules show
@@ -228,20 +206,18 @@ kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placeme
 
 Use the following commands to restart the TiDB and TiKV clusters:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} &&
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```
 
-## Recover the PD cluster (all pd crash and can not recover)
+## Scenarios 2: All PD nodes are down and cannot be recovered
 
-This section introduces how to recover the PD cluster using PD Recover and creating new PD.
+This section introduces how to recover the PD cluster by using PD Recover and creating new PD nodes. This section is only applicable when all PD nodes in the cluster have failed and cannot be recovered. If there are alive PD nodes in the cluster, refer to [Scenario 1](#scenario-1-at-least-one-pd-node-is-alive).
 
 > **Warning:**
 >
-> If you restore the cluster by creating a new PD, the cluster will lose all the configuration information that has taken effect in PD before the restoration.
+> If you restore the cluster by creating new PD nodes, the cluster will lose all the configuration information that has taken effect in PD before the restoration.
 
 ### Step 1: Get Cluster ID
 
