@@ -125,6 +125,8 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
+  - v1.5
+    - [1.5.0-beta.1](releases/release-1.5.0-beta.1.md)
   - v1.4
     - [1.4.4](releases/release-1.4.4.md)
     - [1.4.3](releases/release-1.4.3.md)
