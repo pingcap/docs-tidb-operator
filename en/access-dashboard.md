@@ -240,6 +240,7 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
         version: v6.5.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
+    EOF
     ```
 
     For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml).
