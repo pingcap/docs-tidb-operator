@@ -34,4 +34,4 @@ Currently, we maintain the following versions for TiDB on Kubernetes documentati
 
 ## License
 
-All documentation starting from TiDB Operator v1.5 is available under the terms of CC BY-SA 3.0.
+All documentation starting from TiDB Operator v1.5 is available under the terms of [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
