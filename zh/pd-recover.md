@@ -42,13 +42,11 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 > **提示：**
 >
-> 这里以 pd-0 为例，若使用其他 PD pod 请调整对应的命令。
-    
+> 这里以 pd-0 为例，若使用其他 PD pod，请调整对应的命令。
+
 使用一个可用 PD 节点 `pd-0` 强制重建 PD 集群。具体步骤如下：
 
 1. 让 pd-0 pod 进入 Debug 模式：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl annotate pod ${cluster_name}-pd-0 -n ${namespace} runmode=debug
@@ -57,15 +55,11 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 2. 进入 pd-0 pod：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl -n ${cluster_name} exec -it basic-pd-0 -- sh
     ```
 
 3. 参考默认启动脚本 [`_start_pd.sh.tpl`](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl)，在 pd-0 里配置环境变量：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # Use HOSTNAME if POD_NAME is unset for backward compatibility.
@@ -81,13 +75,13 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     while true; do
     sleep ${period}
     elapseTime=$(( elapseTime+period ))
-    
+
     if [[ ${elapseTime} -ge ${threshold} ]]
     then
     echo "waiting for pd cluster ready timeout" >&2
     exit 1
     fi
-    
+
     if nslookup ${domain} 2>/dev/null
     then
     echo "nslookup domain ${domain}.svc success"
@@ -96,7 +90,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     echo "nslookup domain ${domain} failed" >&2
     fi
     done
-    
+
     ARGS="--data-dir=/var/lib/pd \
     --name=${POD_NAME} \
     --peer-urls=http://0.0.0.0:2380 \
@@ -105,7 +99,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     --advertise-client-urls=http://${domain}:2379 \
     --config=/etc/pd/pd.toml \
     "
-    
+
     if [[ -f /var/lib/pd/join ]]
     then
     # The content of the join file is:
@@ -126,8 +120,6 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     ```
 
 4. 使用原始的 pd-0 数据目录强制启动一个新的 PD 集群：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     echo "starting pd-server ..."
@@ -152,8 +144,6 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 1. 拷贝 `pd-recover` 到 PD pod：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl cp ./pd-recover ${namespace}/${cluster_name}-pd-0:./
     ```
@@ -162,13 +152,11 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
     这里使用上一步创建的新集群：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- ./pd-recover --from-old-member -endpoints http://127.0.0.1:2379
     ```
 
-    ```shell
+    ```
     recover success! please restart the PD cluster
     ```
 
@@ -176,15 +164,11 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 1. 删除 PD Pod：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
 2. 通过如下命令确认 Cluster ID 已生成：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- wget -q http://127.0.0.1:2379/pd/api/v1/cluster
@@ -194,8 +178,6 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 ### 第 4 步：重建其他故障和可用的 PD 节点
 
 这里以 pd-1 和 pd-2 为例：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl -n ${namespace} delete pvc pd-${cluster_name}-pd-1 --wait=false
@@ -209,15 +191,11 @@ kubectl -n ${namespace} delete pod ${cluster_name}-pd-2
 
 检查健康情况：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl health
 ```
 
 检查配置信息，这里以 placement rules 为例：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placement-rules show
@@ -226,8 +204,6 @@ kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placeme
 ### 第 6 步：重启 TiDB 和 TiKV
 
 使用以下命令重启 TiDB 和 TiKV 实例：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} &&
