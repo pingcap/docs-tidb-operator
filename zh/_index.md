@@ -14,8 +14,6 @@ hide_commit: true
 
 [TiDB Operator 架构](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/architecture)
 
-[TiDB Operator v1.4 新特性](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/whats-new-in-v1.4)
-
 [快速上手](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started)
 
 [TiDB 与 TiDB Operator 版本关系](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/tidb-operator-overview)

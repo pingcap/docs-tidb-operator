@@ -15,20 +15,21 @@ PD Recover is a disaster recovery tool of [PD](https://docs.pingcap.com/tidb/sta
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://download.pingcap.org/tidb-${version}-linux-amd64.tar.gz
+    wget https://download.pingcap.org/tidb-community-toolkit-${version}-linux-amd64.tar.gz
     ```
 
     In the command above, `${version}` is the version of the TiDB cluster, such as `v6.5.0`.
 
-2. Unpack the TiDB package for installation:
+2. Unpack the TiDB package:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar -xzf tidb-${version}-linux-amd64.tar.gz
+    tar -xzf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+    tar -xzf tidb-community-toolkit-${version}-linux-amd64/pd-recover-${version}-linux-amd64.tar.gz
     ```
 
-    `pd-recover` is in the `tidb-${version}-linux-amd64/bin` directory.
+    `pd-recover` is in the current directory.
 
 ## Recover the PD cluster
 
@@ -60,6 +61,10 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 3. Multiply the largest value in the query result by `100`. Use the multiplied value as the `alloc-id` value specified when using `pd-recover`.
 
 ### Step 3. Recover the PD Pod
+
+> **Warning:**
+>
+> If you restore the cluster by creating a new PD, the cluster will lose all the configuration information that has taken effect in PD before the restoration.
 
 1. Delete the Pod of the PD cluster.
 
@@ -123,20 +128,20 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
 
 ### Step 4. Recover the cluster
 
-1. Execute the `port-forward` command to expose the PD service:
+1. Copy `pd-recover` command to the PD pod:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    kubectl cp ./pd-recover ${namespace}/${cluster_name}-pd-0:./
     ```
 
-2. Open a **new** terminal tab or window, enter the directory where `pd-recover` is located, and execute the `pd-recover` command to recover the PD cluster:
+2. Execute the `pd-recover` command to recover the PD cluster:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
+    kubectl exec ${cluster_name}-pd-0 -n ${namespace} -- ./pd-recover -endpoints http://127.0.0.1:2379 -cluster-id ${cluster_id} -alloc-id ${alloc_id}
     ```
 
     In the command above, `${cluster_id}` is the cluster ID got in [Get Cluster ID](#step-1-get-cluster-id). `${alloc_id}` is the largest value of `pd_cluster_id` (got in [Get Alloc ID](#step-2-get-alloc-id)) multiplied by `100`.
@@ -146,8 +151,6 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     ```shell
     recover success! please restart the PD cluster
     ```
-
-3. Go back to the window where the `port-forward` command is executed, and then press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
 ### Step 5. Restart the PD Pod
 
@@ -159,23 +162,14 @@ When you use `pd-recover` to recover the PD cluster, you need to specify `alloc-
     kubectl delete pod ${cluster_name}-pd-0 -n ${namespace}
     ```
 
-2. After the Pod is started successfully, execute the `port-forward` command to expose the PD service:
+2. Execute the following command to confirm the Cluster ID is the one got in [Get Cluster ID](#step-1-get-cluster-id).
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n ${namespace} svc/${cluster_name}-pd 2379:2379
+    kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- wget -q http://127.0.0.1:2379/pd/api/v1/cluster
+    kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- cat cluster
     ```
-
-3. Open a **new** terminal tab or window, execute the following command to confirm the Cluster ID is the one got in [Get Cluster ID](#step-1-get-cluster-id).
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl 127.0.0.1:2379/pd/api/v1/cluster
-    ```
-
-4. Go back to the window where the `port-forward` command is executed, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop and exit.
 
 ### Step 6. Scale out the PD cluster
 

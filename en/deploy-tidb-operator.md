@@ -15,7 +15,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * Kubernetes >= v1.12
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-* [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
+* [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) enabled (optional)
 * [Helm 3](https://helm.sh)
 
 ### Deploy the Kubernetes cluster
@@ -30,7 +30,7 @@ For some public cloud environments, refer to the following documents:
 
 TiDB Operator uses [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, and backup data), so the Kubernetes cluster must provide at least one kind of persistent volumes.
 
-It is recommended to enable [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) in the Kubernetes cluster.
+It is recommended to enable [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) in the Kubernetes cluster.
 
 ### Install Helm
 
@@ -101,7 +101,7 @@ When you use TiDB Operator, `tidb-scheduler` is not mandatory. Refer to [tidb-sc
 
     > **Note:**
     >
-    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.4.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
+    > `${chart_version}` represents the chart version of TiDB Operator. For example, `v1.5.0-beta.1`. You can view the currently supported versions by running the `helm search repo -l tidb-operator` command.
 
 2. Configure TiDB Operator
 
@@ -149,15 +149,15 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-v1.4.1.tgz
+    wget http://charts.pingcap.org/tidb-operator-v1.5.0-beta.1.tgz
     ```
 
-    Copy the `tidb-operator-v1.4.1.tgz` file to the target server and extract it to the current directory:
+    Copy the `tidb-operator-v1.5.0-beta.1.tgz` file to the target server and extract it to the current directory:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar zxvf tidb-operator.v1.4.1.tgz
+    tar zxvf tidb-operator.v1.5.0-beta.1.tgz
     ```
 
 2. Download the Docker images used by TiDB Operator
@@ -169,8 +169,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "" >}}
 
     ```shell
-    pingcap/tidb-operator:v1.4.1
-    pingcap/tidb-backup-manager:v1.4.1
+    pingcap/tidb-operator:v1.5.0-beta.1
+    pingcap/tidb-backup-manager:v1.5.0-beta.1
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
@@ -183,13 +183,13 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-operator:v1.4.1
-    docker pull pingcap/tidb-backup-manager:v1.4.1
+    docker pull pingcap/tidb-operator:v1.5.0-beta.1
+    docker pull pingcap/tidb-backup-manager:v1.5.0-beta.1
     docker pull bitnami/kubectl:latest
     docker pull pingcap/advanced-statefulset:v0.3.3
 
-    docker save -o tidb-operator-v1.4.1.tar pingcap/tidb-operator:v1.4.1
-    docker save -o tidb-backup-manager-v1.4.1.tar pingcap/tidb-backup-manager:v1.4.1
+    docker save -o tidb-operator-v1.5.0-beta.1.tar pingcap/tidb-operator:v1.5.0-beta.1
+    docker save -o tidb-backup-manager-v1.5.0-beta.1.tar pingcap/tidb-backup-manager:v1.5.0-beta.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
     docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
     ```
@@ -199,8 +199,8 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i tidb-operator-v1.4.1.tar
-    docker load -i tidb-backup-manager-v1.4.1.tar
+    docker load -i tidb-operator-v1.5.0-beta.1.tar
+    docker load -i tidb-backup-manager-v1.5.0-beta.1.tar
     docker load -i bitnami-kubectl.tar
     docker load -i advanced-statefulset-v0.3.3.tar
     ```

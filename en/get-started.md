@@ -252,7 +252,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1
     ```
 
     <details>
@@ -616,7 +616,7 @@ Note that if you run `kubectl port-forward` in a Docker container or on a remote
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
 ```
 
-Then access TiDB Dashboard through <http://${remote-server-IP}:12333>.
+Then access TiDB Dashboard through `http://${remote-server-IP}:12333`.
 
 ## Step 5. Upgrade a TiDB cluster
 

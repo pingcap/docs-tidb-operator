@@ -4,7 +4,6 @@
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
   - [Overview](tidb-operator-overview.md)
-  - [What's New in v1.4](whats-new-in-v1.4.md)
 - [Get Started](get-started.md)
 - Deploy
   - On Self-Managed Kubernetes
@@ -88,7 +87,8 @@
     - [View TiDB Logs](view-logs.md)
     - [Modify TiDB Cluster Configuration](modify-tidb-configuration.md)
     - [Configure Automatic Failover](use-auto-failover.md)
-    - [Pause Sync of TiDB Cluster](pause-sync-of-tidb-cluster.md)
+    - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
+    - [Suspend a TiDB Cluster](suspend-tidb-cluster.md)
     - [Maintain Different TiDB Clusters Separately Using Multiple TiDB Operator](deploy-multiple-tidb-operator.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
     - [Migrate from Helm 2 to Helm 3](migrate-to-helm3.md)
@@ -124,7 +124,12 @@
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
+  - v1.5
+    - [1.5.0-beta.1](releases/release-1.5.0-beta.1.md)
   - v1.4
+    - [1.4.4](releases/release-1.4.4.md)
+    - [1.4.3](releases/release-1.4.3.md)
+    - [1.4.2](releases/release-1.4.2.md)
     - [1.4.1](releases/release-1.4.1.md)
     - [1.4 GA](releases/release-1.4.0.md)
     - [1.4.0-beta.3](releases/release-1.4.0-beta.3.md)
@@ -132,6 +137,7 @@
     - [1.4.0-beta.1](releases/release-1.4.0-beta.1.md)
     - [1.4.0-alpha.1](releases/release-1.4.0-alpha.1.md)
   - v1.3
+    - [1.3.10](releases/release-1.3.10.md)
     - [1.3.9](releases/release-1.3.9.md)
     - [1.3.8](releases/release-1.3.8.md)
     - [1.3.7](releases/release-1.3.7.md)

@@ -26,6 +26,12 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 - TiDB 集群部署在 EKS 上，且使用了 AWS EBS 卷。
 - 暂不支持 TiFlash、TiCDC、DM 和 TiDB Binlog 相关节点的卷快照备份。
 
+> **注意：**
+>
+> - 集群从低于 v6.5.0 版本升级到 v6.5.0 时，可能无法进行卷快照备份。详细解决办法见[升级后备份无法工作](backup-restore-faq.md#升级后备份无法工作)。
+> - 要进行卷快照恢复，需要确保恢复时 TiKV 的配置与备份时的配置一致。可以从备份目标 S3 中，下载 `backupmeta` 文件，检查 `kubernetes.crd_tidb_cluster.spec` 字段，确认 TiKV 的配置是否一致。如果不一致，可参考[在 Kubernetes 中配置 TiDB 集群](configure-a-tidb-cluster.md)修改 TiKV 的配置。
+> - 如果集群打开了 TiKV KMS [静态加密](https://docs.pingcap.com/zh/tidb/stable/encryption-at-rest#tikv-静态加密)，则需要在恢复阶段确保 AWS KMS 服务已启用主密钥。
+
 ## 备份操作
 
 基于 AWS EBS 卷快照备份支持全量备份和增量备份。数据备份以 AWS EBS 卷快照方式进行，同一个节点的第一次备份为全量快照备份，后续备份自动以增量方式进行。EBS 快照备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。

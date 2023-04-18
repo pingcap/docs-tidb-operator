@@ -261,7 +261,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -269,9 +269,9 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.4.1 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.4.1 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.4.1 \
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.5.0-beta.1 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.5.0-beta.1 \
         --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
     ```
 
@@ -637,7 +637,7 @@ Grafana 面板可在 kubectl 所运行的主机上通过 <http://localhost:3000>
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-grafana 3000 > pf3000.out &
 ```
 
-然后通过 <http://${远程服务器IP}:3000> 访问 Grafana。
+然后通过 `http://${远程服务器IP}:3000` 访问 Grafana。
 
 了解更多使用 TiDB Operator 部署 TiDB 集群监控的信息，可以查阅 [TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
 
@@ -659,7 +659,7 @@ TiDB Dashboard 面板可在 kubectl 所运行的主机上通过 <http://localhos
 kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-exposed 12333 > pf12333.out &
 ```
 
-然后通过 <http://${远程服务器IP}:12333> 访问 TiDB Dashboard。
+然后通过 `http://${远程服务器IP}:12333` 访问 TiDB Dashboard。
 
 ## 第 5 步：升级 TiDB 集群
 

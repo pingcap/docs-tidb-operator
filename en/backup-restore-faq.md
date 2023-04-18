@@ -11,9 +11,87 @@ This document describes the common questions that occur during EBS snapshot back
 
 You might encounter the following problems during EBS snapshot backup:
 
+- [Backup failed after an upgrade of the TiDB cluster](#backup-failed-after-an-upgrade-of-the-tidb-cluster)
 - [Failed to start a backup or the backup failed immediately after it started](#failed-to-start-a-backup-or-the-backup-failed-immediately-after-it-started)
 - [The backup CR of a failed task could not be deleted](#the-backup-cr-of-a-failed-task-could-not-be-deleted)
 - [Backup failed](#backup-failed)
+
+### Backup failed after an upgrade of the TiDB cluster
+
+After the TiDB cluster is upgraded from an earlier version to v6.5.0, the backup using volume snapshots might fail with the following error:
+
+```shell
+error="min resolved ts not enabled"
+```
+
+The backup failed because the PD configuration `min-resolved-ts-persistence-interval` is set to 0, which means that the globally consistent min-resolved-ts service of PD is disabled. The EBS volume snapshot requires this service to obtain the globally consistent timestamp of the cluster. You can check this configuration using either the SQL statement or pd-ctl:
+
+- Check the PD configuration `min-resolved-ts-persistence-interval` using the SQL statement:
+
+    ```sql
+    SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
+    ```
+
+    If the globally consistent min-resolved-ts service is disabled, the following output is displayed:
+
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 0s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
+
+    If this service is enabled, the following output is displayed:
+
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 1s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
+
+- Check the PD configuration `min-resolved-ts-persistence-interval` using pd-ctl:
+
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
+    ```
+
+    If the globally consistent min-resolved-ts service is disabled, the following output is displayed:
+
+    ```json
+    {
+      "min_resolved_ts": 439357537983660033,
+      "persist_interval": "0s"
+    }
+    ```
+
+    If this service is enabled, the following output is displayed:
+
+    ```json
+    {
+      "is_real_time": true,
+      "min_resolved_ts": 439357519607365634,
+      "persist_interval": "1s"
+    }
+    ```
+
+Solution:
+
+- Solution 1: Modify the configuration of `min-resolved-ts-persistence-interval` using the SQL statement:
+
+    ```sql
+    SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
+    ```
+
+- Solution 2: Modify the configuration of `min-resolved-ts-persistence-interval` using pd-ctl:
+
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
+    ```
 
 ### Failed to start a backup or the backup failed immediately after it started
 

@@ -15,15 +15,7 @@ jobs:
         id: extract
         shell: bash
         run: |
-          echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
-
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
-          repository: pingcap/website-docs
-          event-type: ${{ github.repository }}/${{ github.ref_name }}-${{ steps.extract.outputs.sha }}
-          client-payload: '{ "repo": "${{ github.repository }}", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}" }'
+          echo "sha=$(sha=${{ github.sha }}; echo ${sha:0:6})" >> $GITHUB_OUTPUT
 
       - name: trigger docs-staging workflow
         run: |

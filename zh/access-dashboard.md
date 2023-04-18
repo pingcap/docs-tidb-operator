@@ -86,7 +86,7 @@ kubectl port-forward svc/${SERVICE_NAME} -n ${namespace} ${PORT}:${PORT}
 - `${namespace}` 是 `TidbCluster.namespace`。
 - `port-forward` 默认绑定 IP 地址 127.0.0.1。如果你需要使用其它 IP 地址访问运行 `port-forward` 命令的机器，可以通过 `--address` 选项指定需要绑定的 IP 地址。
 
-在浏览器中访问 <http://localhost:${PORT}${HTTP_PATH}>，即可访问到 TiDB Dashboard。
+在浏览器中访问 `http://localhost:${PORT}${HTTP_PATH}`，即可访问到 TiDB Dashboard。
 
 ## 方法 2. 通过 Ingress 访问 TiDB Dashboard
 
@@ -119,7 +119,7 @@ spec:
             path: ${HTTP_PATH}
 ```
 
-当部署了 Ingress 后，你可以在 Kubernetes 集群外通过 <http://${host}${path}> 访问 TiDB Dashboard。
+当部署了 Ingress 后，你可以在 Kubernetes 集群外通过 `http://${host}${path}` 访问 TiDB Dashboard。
 
 ### 使用 Ingress 并开启 TLS
 
@@ -160,7 +160,7 @@ data:
 type: kubernetes.io/tls
 ```
 
-当 Ingress 部署完成以后，你就可以通过 <https://{host}${path}> 访问 TiDB Dashboard。
+当 Ingress 部署完成以后，你就可以通过 `https://{host}${path}` 访问 TiDB Dashboard。
 
 ## 方法 3. 使用 NodePort Service
 
@@ -191,7 +191,7 @@ spec:
     app.kubernetes.io/name: tidb-cluster
 ```
 
-当 `Service` 部署完成后，可以通过 <https://{nodeIP}:{nodePort}/dashboard> 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
+当 `Service` 部署完成后，可以通过 `https://{nodeIP}:{nodePort}/dashboard` 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
 
 需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
 
@@ -201,7 +201,7 @@ spec:
 >
 > 独立部署的 TiDB Dashboard 需要将 `TidbDashboard.spec.service.type` 设置为 `NodePort`。
 
-当 TiDB Dashboard 独立部署后，可以通过 `kubectl get svc` 命令获取 `${cluster_name}-tidb-dashboard-exposed` 的 `nodePort`，然后通过 <https://{nodeIP}:{nodePort}> 访问 TiDB Dashboard。
+当 TiDB Dashboard 独立部署后，可以通过 `kubectl get svc` 命令获取 `${cluster_name}-tidb-dashboard-exposed` 的 `nodePort`，然后通过 `https://{nodeIP}:{nodePort}` 访问 TiDB Dashboard。
 
 ## 启用持续性能分析
 
@@ -238,6 +238,7 @@ spec:
         version: v6.5.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
+    EOF
     ```
 
     关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml)。

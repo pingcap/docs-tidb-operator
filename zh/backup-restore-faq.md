@@ -11,9 +11,87 @@ summary: 介绍卷快照备份恢复中的常见问题以及解决方案。
 
 使用基于 EBS 快照备份，你可能遇到以下问题：
 
+- [升级后备份无法工作](#升级后备份无法工作)
 - [备份无法启动或者启动后立即失败](#备份无法启动或者启动后立即失败)
 - [备份失败后，备份 CR 无法删除](#备份失败后备份-cr-无法删除)
 - [备份失败](#备份失败)
+
+### 升级后备份无法工作
+
+从低版本的集群升级到 v6.5.0 后，进行卷快照备份，备份可能会失败，错误信息如下：
+
+```shell
+error="min resolved ts not enabled"
+```
+
+原因是 PD 配置 `min-resolved-ts-persistence-interval` 值为 0，即关闭了 PD 全局一致性 min-resolved-ts 服务。EBS 卷快照需要此服务获取集群全局一致性时时间戳。可通过 SQL 语句或 pd-ctl 检查配置：
+
+- 使用 SQL 语句检查 PD `min-resolved-ts-persistence-interval` 配置：
+
+    ```sql
+    SHOW CONFIG WHERE type='pd' AND name LIKE '%min-resolved%'
+    ```
+
+    如果全局一致性 min-resolved-ts 服务关闭，则输出显示如下：
+
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 0s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
+
+    如果全局一致性 min-resolved-ts 服务打开，则输出显示如下：
+
+    ```sql
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | Type | Instance                                       | Name                                           | Value |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    | pd   | basic-pd-0.basic-pd-peer.tidb-cluster.svc:2379 | pd-server.min-resolved-ts-persistence-interval | 1s    |
+    +------+------------------------------------------------+------------------------------------------------+-------+
+    1 row in set (0.03 sec)
+    ```
+
+- 使用 pd-ctl 工具检查 PD `min-resolved-ts-persistence-interval` 配置：
+
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl min-resolved-ts
+    ```
+
+    如果全局一致性 min-resolved-ts 服务关闭，则输出显示如下：
+
+    ```json
+    {
+      "min_resolved_ts": 439357537983660033,
+      "persist_interval": "0s"
+    }
+    ```
+
+    如果全局一致性 min-resolved-ts 服务打开，则输出显示如下：
+
+    ```json
+    {
+      "is_real_time": true,
+      "min_resolved_ts": 439357519607365634,
+      "persist_interval": "1s"
+    }
+    ```
+
+解决方案（二选一）：
+
+- 使用 SQL 语句更新 PD `min-resolved-ts-persistence-interval` 配置：
+
+    ```sql
+    SET CONFIG pd `pd-server.min-resolved-ts-persistence-interval` = "1s"
+    ```
+
+- 使用 pd-ctl 工具更新 PD `min-resolved-ts-persistence-interval` 配置：
+
+    ```shell
+    kubectl -n ${namespace} exec -it ${pd-pod-name} -- /pd-ctl config set min-resolved-ts-persistence-interval 1s
+    ```
 
 ### 备份无法启动或者启动后立即失败
 

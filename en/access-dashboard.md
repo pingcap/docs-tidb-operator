@@ -84,7 +84,7 @@ In the preceding command:
 - `${namespace}` is `TidbCluster.namespace`.
 - `port-forward` binds to the IP address 127.0.0.1 by default. If you need to use another IP address to access the machine running the `port-forward` command, you can add the `--address` option and specify the IP address to be bound.
 
-Visit <http://localhost:${PORT}${HTTP_PATH}> in your browser to access TiDB Dashboard.
+Visit `http://localhost:${PORT}${HTTP_PATH}` in your browser to access TiDB Dashboard.
 
 ## Method 2. Access TiDB Dashboard by Ingress
 
@@ -121,7 +121,7 @@ The following is an `.yaml` example of accessing TiDB Dashboard using Ingress:
                 path: ${HTTP_PATH}
     ```
 
-2. After Ingress is deployed, you can access TiDB Dashboard via <http://${host}${path}> outside the Kubernetes cluster.
+2. After Ingress is deployed, you can access TiDB Dashboard via `http://${host}${path}` outside the Kubernetes cluster.
 
 ### Use Ingress with TLS
 
@@ -164,7 +164,7 @@ data:
 type: kubernetes.io/tls
 ```
 
-After Ingress is deployed, visit <https://{host}${path}> to access TiDB Dashboard.
+After Ingress is deployed, visit `https://${host}${path}` to access TiDB Dashboard.
 
 ## Method 3. Use NodePort Service
 
@@ -205,7 +205,7 @@ Note that if there is more than one PD `Pod` in the cluster, you need to set `sp
 >
 > When deploying TiDB Dashboard independently, you need to set `TidbDashboard.spec.service.type` to `NodePort`.
 
-After deploying TiDB Dashboard independently, you can get the `nodePort` of `${cluster_name}-tidb-dashboard-exposed` by running the `kubectl get svc` command, and then access TiDB Dashboard via <https://{nodeIP}:{nodePort}>.
+After deploying TiDB Dashboard independently, you can get the `nodePort` of `${cluster_name}-tidb-dashboard-exposed` by running the `kubectl get svc` command, and then access TiDB Dashboard via `https://{nodeIP}:{nodePort}>`.
 
 ## Enable Continuous Profiling
 
@@ -241,6 +241,7 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
         version: v6.5.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
+    EOF
     ```
 
     For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-ng-monitoring.yaml).
