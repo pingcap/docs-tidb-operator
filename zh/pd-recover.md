@@ -60,7 +60,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     kubectl exec ${cluster_name}-pd-0 -n ${namespace} -it -- sh
     ```
 
-3. 参考默认启动脚本 [`_start_pd.sh.tpl`](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl)，在 pd-0 里配置环境变量：
+3. 参考默认启动脚本 [`pd-start-script`](https://github.com/pingcap/tidb-operator/blob/91f4edf549c9a268972dfe1aaf8e7f89feec65ff/pkg/manager/member/startscript/v1/template.go#L116)，或者参考其他可用 PD 节点的启动脚本，在 pd-0 里配置环境变量：
 
     ```shell
     # Use HOSTNAME if POD_NAME is unset for backward compatibility.
