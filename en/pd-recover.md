@@ -56,10 +56,10 @@ Use an alive PD node `pd-0` to force recreate the PD cluster. The detailed steps
 2. Enter the pd-0 pod:
 
     ```shell
-    kubectl -n ${cluster_name} exec -it basic-pd-0 -- sh
+    kubectl exec ${cluster_name}-pd-0 -n ${namespace} -it -- sh
     ```
 
-3. Refer to the default startup script [`_start_pd.sh.tpl`](https://github.com/pingcap/tidb-operator/blob/master/charts/tidb-cluster/templates/scripts/_start_pd.sh.tpl) and configure environment variables in pd-0:
+3. Refer to the default startup script [`pd-start-script`](https://github.com/pingcap/tidb-operator/blob/91f4edf549c9a268972dfe1aaf8e7f89feec65ff/pkg/manager/member/startscript/v1/template.go#L116) or the start script of an alive PD node, and configure environment variables in pd-0:
 
     ```shell
     # Use HOSTNAME if POD_NAME is unset for backward compatibility.
