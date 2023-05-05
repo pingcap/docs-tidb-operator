@@ -32,7 +32,7 @@ PD Recover is a disaster recovery tool of [PD](https://pingcap.com/docs/stable/a
 
 ## Scenario 1: At least one PD node is alive
 
-This section introduces how to recover the PD cluster using PD Recover and alive PD nodes. This section is only applicable to the scenario where the PD cluster has alive PD nodes. If all PD nodes are unavailable, refer to [Scenario 2](#scenario-2-all-pd-nodes-are-unavailable).
+This section introduces how to recover the PD cluster using PD Recover and alive PD nodes. This section is only applicable to the scenario where the PD cluster has alive PD nodes. If all PD nodes are unavailable, refer to [Scenario 2](#scenarios-2-all-pd-nodes-are-down-and-cannot-be-recovered).
 
 > **Note:**
 >
