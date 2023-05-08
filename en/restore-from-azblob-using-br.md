@@ -48,7 +48,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
 
     > **Note:**
     >
-    > The role owned by the account must have the permission to access blob at least (for example, a [reader](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#reader)).
+    > The role owned by the account must have the permission to modify blob at least (for example, a [contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor)).
     >
     > When you create a secret object, you can use a customized name for the object. In this document, the name is `azblob-secret`.
 
