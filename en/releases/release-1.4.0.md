@@ -11,7 +11,7 @@ TiDB Operator version: 1.4.0
 ## New features
 
 - Support managing [TiDB Dashboard](https://github.com/pingcap/tidb-dashboard) in a separate `TidbDashboard` CRD ([#4787](https://github.com/pingcap/tidb-operator/pull/4787), [@SabaPing](https://github.com/SabaPing))
-- Support configuring Liveness Probe for TiKV and PD ([#4763](https://github.com/pingcap/tidb-operator/pull/4763), [@mikechengwei](https://github.com/mikechengwei))
+- Support configuring Readiness Probe for TiKV and PD ([#4763](https://github.com/pingcap/tidb-operator/pull/4763), [@mikechengwei](https://github.com/mikechengwei))
 - Support backup and restore based on Amazon EBS volume-snapshot ([#4698](https://github.com/pingcap/tidb-operator/pull/4698)，[@gozssky](https://github.com/gozssky))
 
 ## Improvements
