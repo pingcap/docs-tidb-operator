@@ -34,7 +34,7 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
     - TiDB v6.5.1 [compatibility changes](https://docs.pingcap.com/tidb/stable/release-6.5.1#compatibility-changes)
     - TiDB v6.5.2 [compatibility changes](https://docs.pingcap.com/tidb/stable/release-6.5.2#compatibility-changes)
 
-    If you upgrade from v6.3.0 or earlier versions to v6.5.2, you also need to check the compatibility changes in all intermediate versions.
+    If you upgrade from v6.3.0 or an earlier version to v6.5.2, you also need to check the compatibility changes in all intermediate versions.
 
 ## Upgrade steps
 
