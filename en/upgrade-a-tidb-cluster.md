@@ -22,6 +22,19 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 > - For the clients that cannot retry stale connections, **performing a rolling update to TiDB servers closes the client connections and cause the request to fail**. In such cases, it is recommended to add a retry function for the clients to retry, or to perform a rolling update to TiDB servers in idle time.
 > - Before upgrading, refer to the [documentation](https://docs.pingcap.com/tidb/stable/sql-statement-admin-show-ddl) to confirm that there are no DDL operations in progress.
 
+## Preparations before upgrade
+
+1. Refer to the [upgrade caveat](https://docs.pingcap.com/tidb/dev/upgrade-tidb-using-tiup#upgrade-caveat) to learn about the precautions. Note that all TiDB versions, including patch versions, currently do not support downgrade or rollback after upgrade.
+2. Refer to [TiDB release notes](https://docs.pingcap.com/tidb/dev/release-notes) to learn about the compatibility changes in each intermediate version. If any changes affect your upgrade, take appropriate measures.
+
+    For example, if you upgrade from TiDB v6.4.0 to v6.5.2, you need to check the compatibility changes in the following versions:
+
+    - TiDB v6.5.0 [compatibility changes](https://docs.pingcap.com/tidb/stable/release-6.5.0#compatibility-changes) and [deprecated features](https://docs.pingcap.com/tidb/stable/release-6.5.0#deprecated-feature)
+    - TiDB v6.5.1 [compatibility changes](https://docs.pingcap.com/tidb/stable/release-6.5.1#compatibility-changes)
+    - TiDB v6.5.2 [compatibility changes](https://docs.pingcap.com/tidb/stable/release-6.5.2#compatibility-changes)
+
+    If you upgrade from v6.3.0 or an earlier version to v6.5.2, you also need to check the compatibility changes in all intermediate versions.
+
 ## Upgrade steps
 
 > **Note:**
