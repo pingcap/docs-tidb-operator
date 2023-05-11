@@ -21,6 +21,19 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
 > - 对于无法进行连接重试的客户端，**滚动更新 TiDB 会导致连接到被关闭节点的数据库的连接失效**，造成部分业务请求失败。对于这类业务，推荐在客户端添加重试功能，或者在低峰期进行 TiDB 的滚动更新操作。
 > - 升级前，请参考[文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-admin-show-ddl)确认没有正在进行的 DDL 操作。
 
+## 升级前准备
+
+1. 查阅[升级兼容性说明](https://docs.pingcap.com/zh/tidb/dev/upgrade-tidb-using-tiup#1-升级兼容性说明)，了解升级的注意事项。注意包括补丁版本在内的所有 TiDB 版本目前暂不支持降级或升级后回退。
+2. 查阅 [TiDB release notes](https://docs.pingcap.com/zh/tidb/dev/release-notes) 中各中间版本的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
+
+    例如，从 TiDB v6.4.0 升级至 v6.5.2 时，需查阅以下各版本的兼容性变更：
+
+    - TiDB v6.5.0 release notes 中的[兼容性变更](https://docs.pingcap.com/zh/tidb/dev/release-6.5.0#兼容性变更)和[废弃功能](https://docs.pingcap.com/zh/tidb/dev/release-6.5.0#废弃功能)
+    - TiDB v6.5.1 release notes 中的[兼容性变更](https://docs.pingcap.com/zh/tidb/dev/release-6.5.1#兼容性变更)
+    - TiDB v6.5.2 release notes 中的[兼容性变更](https://docs.pingcap.com/zh/tidb/dev/release-6.5.2#兼容性变更)
+
+    如果从 v6.3.0 或之前版本升级到 v6.5.2，也需要查看中间版本 release notes 中提到的兼容性变更信息。
+
 ## 升级步骤
 
 > **注意：**
