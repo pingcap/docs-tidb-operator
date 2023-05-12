@@ -1,10 +1,10 @@
 ---
-title: 快速上手 TiDB Operator
+title: 在 Kubernetes 上快速上手 TiDB
 summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群
 aliases: ['/zh/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind','/docs-cn/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind/','/docs-cn/dev/get-started/deploy-tidb-from-kubernetes-dind/','/docs-cn/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs-cn/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs-cn/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/']
 ---
 
-# 快速上手 TiDB Operator
+# 在 Kubernetes 上快速上手 TiDB
 
 本文档介绍了如何创建一个简单的 Kubernetes 集群，部署 TiDB Operator，并使用 TiDB Operator 部署 TiDB 集群。
 
