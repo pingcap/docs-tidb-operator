@@ -1,9 +1,9 @@
 ---
-title: Get Started With TiDB Operator on Kubernetes
+title: Get Started with TiDB on Kubernetes
 summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
 ---
 
-# Get Started with TiDB Operator on Kubernetes
+# Get Started with TiDB on Kubernetes
 
 This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
