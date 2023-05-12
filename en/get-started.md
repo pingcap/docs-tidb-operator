@@ -1,10 +1,10 @@
 ---
-title: Get Started With TiDB Operator on Kubernetes
+title: Get Started with TiDB on Kubernetes
 summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
 aliases: ['/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind','/docs/tidb-in-kubernetes/v1.0/deploy-tidb-from-kubernetes-kind/','/docs/dev/tidb-in-kubernetes/deploy-tidb-from-kubernetes-dind/','/docs/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/','/docs/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind/']
 ---
 
-# Get Started with TiDB Operator on Kubernetes
+# Get Started with TiDB on Kubernetes
 
 This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
