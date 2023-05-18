@@ -52,7 +52,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    /cdc cli capture list --pd=http://${cluster_name}-pd:2379
+    # 通过 TiDB operator 部署的 TiCDC 服务器的默认端口为 8301 
+    /cdc cli capture list --server=http://127.0.0.1:8301
     ```
 
     ```shell
@@ -82,7 +83,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-ticdc/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    /cdc cli capture list --pd=https://${cluster_name}-pd:2379 --ca=/var/lib/cluster-client-tls/ca.crt --cert=/var/lib/cluster-client-tls/tls.crt --key=/var/lib/cluster-client-tls/tls.key
+    /cdc cli capture list --server=http://127.0.0.1:8301 --ca=/var/lib/cluster-client-tls/ca.crt --cert=/var/lib/cluster-client-tls/tls.crt --key=/var/lib/cluster-client-tls/tls.key
     ```
 
 如果服务器没有外网，请参考 [部署 TiDB 集群](deploy-on-general-kubernetes.md#部署-tidb-集群) 在有外网的机器上将用到的 Docker 镜像下载下来并上传到服务器上。
