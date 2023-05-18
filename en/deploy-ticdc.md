@@ -55,7 +55,8 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB on Genera
     {{< copyable "shell-regular" >}}
 
     ```shell
-    /cdc cli capture list --pd=http://${cluster_name}-pd:2379
+    # The default port for TiCDC server deployed through TiDB operator is 8301
+    /cdc cli capture list --server=http://127.0.0.1:8301   
     ```
 
     ```shell
@@ -85,7 +86,7 @@ To deploy TiCDC when deploying the TiDB cluster, refer to [Deploy TiDB on Genera
     {{< copyable "shell-regular" >}}
 
     ```shell
-    /cdc cli capture list --pd=https://${cluster_name}-pd:2379 --ca=/var/lib/cluster-client-tls/ca.crt --cert=/var/lib/cluster-client-tls/tls.crt --key=/var/lib/cluster-client-tls/tls.key
+    /cdc cli capture list --server=http://127.0.0.1:8301 --ca=/var/lib/cluster-client-tls/ca.crt --cert=/var/lib/cluster-client-tls/tls.crt --key=/var/lib/cluster-client-tls/tls.key
     ```
 
     If the server does not have an external network, refer to [deploy TiDB cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the required Docker image on the machine with an external network and upload it to the server.
