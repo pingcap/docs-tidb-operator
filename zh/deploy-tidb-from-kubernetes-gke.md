@@ -1,12 +1,12 @@
 ---
-title: 在 GCP 上通过 Kubernetes 部署 TiDB 集群
-summary: 在 GCP 上通过 Kubernetes 部署 TiDB 集群教程。
+title: 在 Google Cloud 上通过 Kubernetes 部署 TiDB 集群
+summary: 在 Google Cloud 上通过 Kubernetes 部署 TiDB 集群教程。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 ---
 
-# 在 GCP 上通过 Kubernetes 部署 TiDB 集群
+# 在 Google Cloud 上通过 Kubernetes 部署 TiDB 集群
 
-本文介绍如何使用 [TiDB Operator](https://github.com/pingcap/tidb-operator) 在 GCP 上部署 TiDB 集群。本教程需要在 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs-tidb-operator&tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 上运行。
+本文介绍如何使用 [TiDB Operator](https://github.com/pingcap/tidb-operator) 在 Google Cloud 上部署 TiDB 集群。本教程需要在 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs-tidb-operator&tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 上运行。
 
 <a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
 
@@ -22,7 +22,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 
 > **警告：**
 >
-> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 GCP 上通过 Kubernetes 部署 TiDB 集群](deploy-on-gcp-gke.md)。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 Google Cloud 上通过 Kubernetes 部署 TiDB 集群](deploy-on-gcp-gke.md)。
 
 ## 选择一个项目
 

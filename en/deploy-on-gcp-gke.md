@@ -1,24 +1,24 @@
 ---
-title: Deploy TiDB on GCP GKE
-summary: Learn how to deploy a TiDB cluster on GCP GKE.
+title: Deploy TiDB on Google Cloud GKE
+summary: Learn how to deploy a TiDB cluster on Google Cloud GKE.
 aliases: ['/docs/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 ---
 
-# Deploy TiDB on GCP GKE
+# Deploy TiDB on Google Cloud GKE
 
 <!-- markdownlint-disable MD029 -->
 <!-- markdownlint-disable MD037 -->
 
-This document describes how to deploy a GCP Google Kubernetes Engine (GKE) cluster and deploy a TiDB cluster on GCP GKE.
+This document describes how to deploy a Google Kubernetes Engine (GKE) cluster and deploy a TiDB cluster on GKE.
 
 To deploy TiDB Operator and the TiDB cluster in a self-managed Kubernetes environment, refer to [Deploy TiDB Operator](deploy-tidb-operator.md) and [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md).
 
 ## Prerequisites
 
-Before deploying a TiDB cluster on GCP GKE, make sure the following requirements are satisfied:
+Before deploying a TiDB cluster on GKE, make sure the following requirements are satisfied:
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/): used for deploying TiDB Operator.
-* Install [gcloud](https://cloud.google.com/sdk/gcloud): a command-line tool used for creating and managing GCP services.
+* Install [gcloud](https://cloud.google.com/sdk/gcloud): a command-line tool used for creating and managing Google Cloud services.
 * Complete the operations in the **Before you begin** section of [GKE Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin).
 
     This guide includes the following contents:
@@ -34,15 +34,15 @@ Before deploying a TiDB cluster on GCP GKE, make sure the following requirements
     * TiKV or TiFlash nodes: `n2-standard-16`
 * Storage: For TiKV or TiFlash, it is recommended to use [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) disk type.
 
-## Configure the GCP service
+## Configure the Google Cloud service
 
-Configure your GCP project and default region:
+Configure your Google Cloud project and default region:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-gcloud config set core/project <gcp-project>
-gcloud config set compute/region <gcp-region>
+gcloud config set core/project <google-cloud-project>
+gcloud config set compute/region <google-cloud-region>
 ```
 
 ## Create a GKE cluster and node pool
@@ -109,7 +109,7 @@ mountOptions:
 
 For the production environment, use [zonal persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs).
 
-If you need to simulate bare-metal performance, some GCP instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
+If you need to simulate bare-metal performance, some Google Cloud instance types provide additional [local store volumes](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd). You can choose such instances for the TiKV node pool to achieve higher IOPS and lower latency.
 
 > **Note:**
 >
@@ -150,7 +150,7 @@ To deploy TiDB Operator on GKE, refer to [deploy TiDB Operator](get-started.md#s
 
 ## Deploy a TiDB cluster and the monitoring component
 
-This section describes how to deploy a TiDB cluster and its monitoring component on GCP GKE.
+This section describes how to deploy a TiDB cluster and its monitoring component on GKE.
 
 ### Create namespace
 

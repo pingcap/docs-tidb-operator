@@ -22,7 +22,7 @@ It takes you through the following steps:
 
 > **Warning:**
 >
-> This document is for testing purposes only. **Do not** follow it in production environments. For production environments, see the instructions in [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
+> This document is for testing purposes only. **Do not** follow it in production environments. For production environments, see the instructions in [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md).
 
 ## Select a project
 

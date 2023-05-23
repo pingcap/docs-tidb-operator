@@ -603,7 +603,7 @@ NodePort 有两种模式：
 
 #### LoadBalancer
 
-若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台的 LoadBalancer 特性。
+若运行在有 LoadBalancer 的环境，比如 Google Cloud、AWS 平台，建议使用云平台的 LoadBalancer 特性。
 
 ```yaml
 spec:

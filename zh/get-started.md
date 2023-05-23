@@ -32,7 +32,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 - [使用 kind](#方法一使用-kind-创建-kubernetes-集群) 创建在 Docker 中运行的 Kubernetes，这是目前比较通用的部署方式。
 - [使用 minikube](#方法二使用-minikube-创建-kubernetes-集群) 创建在虚拟机中运行的 Kubernetes
 
-你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud Platform 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
+你也可以使用 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 在 Google Cloud 的 Google Kubernetes Engine 中部署 Kubernetes 集群。
 
 ### 方法一：使用 kind 创建 Kubernetes 集群
 
@@ -841,7 +841,7 @@ minikube delete
 在公有云上部署：
 
 - [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
-- [在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
+- [在 Google Cloud GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
 - [在 Azure AKS 上部署 TiDB 集群](deploy-on-azure-aks.md)
 - [在阿里云 ACK 上部署 TiDB 集群](deploy-on-alibaba-cloud.md)
 

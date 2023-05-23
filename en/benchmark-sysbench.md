@@ -84,7 +84,7 @@ For the test in single AZ (Available Zone), the following machine types are chos
 | TiDB     | c2-standard-16 | 3     |
 | Sysbench | c2-standard-30 | 1     |
 
-For the test (2019.08) where the result in multiple AZs is compared with that in a single AZ, the c2 machine is not simultaneously available in three AZs within the same GCP region, so the following machine types are chosen:
+For the test (2019.08) where the result in multiple AZs is compared with that in a single AZ, the c2 machine is not simultaneously available in three AZs within the same Google Cloud region, so the following machine types are chosen:
 
 | Component     | Instance type       | Count  |
 | :---     | :---------     | :---- |
@@ -97,7 +97,7 @@ Sysbench, the pressure test platform, has a high demand on CPU in the high concu
 
 > **Note:**
 >
-> The usable machine types vary among GCP regions. In the test, the disk also performs differently. Therefore, only the machines in us-central1 are applied for test.
+> The usable machine types vary among Google Cloud regions. In the test, the disk also performs differently. Therefore, only the machines in us-central1 are applied for test.
 
 #### Disk
 
@@ -114,7 +114,7 @@ GKE uses a more scalable and powerful [VPC-Native](https://cloud.google.com/kube
 #### CPU
 
 - In the test on a single AZ cluster, the c2-standard-16 machine mode is chosen for TiDB/TiKV.
-- In the comparison test on a single AZ cluster and on multiple AZs cluster, the c2-standard-16 machine type cannot be simultaneously adopted in three AZs within the same GCP region, so n1-standard-16 machine type is chosen.
+- In the comparison test on a single AZ cluster and on multiple AZs cluster, the c2-standard-16 machine type cannot be simultaneously adopted in three AZs within the same Google Cloud region, so n1-standard-16 machine type is chosen.
 
 ### Operation system and parameters
 
@@ -293,7 +293,7 @@ From the images above, TiDB performs better on Ubuntu than on COS in the Point S
 > - This test is conducted only for the single test case and indicates that the performance might be affected by different operating systems, different optimization, and default settings. Therefore, PingCAP makes no recommendation for the operating system.
 > - COS is officially recommended by GKE, because it is optimized for containers and improved substantially on security and disk performance.
 
-#### Kubernetes Service vs GCP LoadBalancer
+#### Kubernetes Service vs Google Cloud LoadBalancer
 
 After TiDB is deployed on Kubernetes, there are two ways of accessing TiDB: via Kubernetes Service inside the cluster, or via Load Balancer IP outside the cluster. TiDB is tested in both ways.
 
@@ -329,7 +329,7 @@ Latency comparison:
 
 ![Service vs Load Balancer](/media/service-vs-load-balancer-latency.png)
 
-From the images above, TiDB performs better when accessed via Kubernetes Service than accessed via GCP Load Balancer in the Point Select test.
+From the images above, TiDB performs better when accessed via Kubernetes Service than accessed via Google Cloud Load Balancer in the Point Select test.
 
 #### n1-standard-16 vs c2-standard-16
 
@@ -417,7 +417,7 @@ The Point Select test is conducted on different operating systems and in differe
 
 ### Performance comparison between single AZ and multiple AZs
 
-The network latency on communication across multiple AZs in GCP is slightly higher than that within the same zone. In this test, machines of the same configuration are used in different deployment plans under the same standard. The purpose is to learn how the latency across multiple AZs might affect the performance of TiDB.
+The network latency on communication across multiple AZs in Google Cloud is slightly higher than that within the same zone. In this test, machines of the same configuration are used in different deployment plans under the same standard. The purpose is to learn how the latency across multiple AZs might affect the performance of TiDB.
 
 Single AZ:
 
@@ -456,7 +456,7 @@ From the images above, the impact of network latency goes down as the concurrenc
 This is a test of TiDB using sysbench running on Kubernetes deployed on a typical public cloud platform. The purpose is to learn how different factors might affect the performance of TiDB. On the whole, these influencing factors include the following items:
 
 - In the VPC-Native mode, TiDB performs slightly better in Host network than in Pod network. (The difference, ~7%, is measured in QPS. Performance differences caused by the factors below are also measured by QPS.)
-- In Host network, TiDB performs better (~9%) in the read test on Ubuntu provided by GCP than on COS.
+- In Host network, TiDB performs better (~9%) in the read test on Ubuntu provided by Google Cloud than on COS.
 - The TiDB performance is slightly lower (~5%) if it is accessed outside the cluster via Load Balancer.
 - Increased latency among nodes in multiple AZs has a certain impact on the TiDB performance (30% ~ 6%; the impact diminishes as the concurrent number increases).
 - The QPS performance is greatly improved (50% ~ 60%) if the Point Select read test is conducted on machines of computing type (compared with general types), because the test mainly consumes CPU resources.
