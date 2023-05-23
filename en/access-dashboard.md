@@ -237,7 +237,7 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
       ngMonitoring:
         requests:
           storage: 10Gi
-        version: v6.5.0
+        version: v7.1.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
     EOF
