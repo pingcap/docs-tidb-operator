@@ -24,7 +24,7 @@ hide_commit: true
 
 [On Amazon EKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-aws-eks)
 
-[On GCP GKE](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-gcp-gke)
+[On Google Cloud GKE](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-gcp-gke)
 
 [On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-azure-aks)
 

@@ -1,30 +1,30 @@
 ---
-title: Build Multiple Interconnected GCP GKE Clusters
-summary: Learn how to build multiple interconnected GCP GKE clusters and prepare for deploying a TiDB cluster across multiple GKE clusters.
+title: Build Multiple Interconnected Google Cloud GKE Clusters
+summary: Learn how to build multiple interconnected Google Cloud GKE clusters and prepare for deploying a TiDB cluster across multiple GKE clusters.
 ---
 
-# Build Multiple Interconnected GCP GKE Clusters
+# Build Multiple Interconnected Google Cloud GKE Clusters
 
-This document describes how to create multiple GCP GKE clusters and configure network peering between these clusters. These interconnected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to configure three-cluster network peering.
+This document describes how to create multiple Google Kubernetes Engine (GKE) clusters and configure network peering between these clusters. These interconnected clusters can be used for [deploying TiDB clusters across multiple Kubernetes clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). The example in this document shows how to configure three-cluster network peering.
 
-If you need to deploy TiDB on a single GCP GKE cluster, refer to [Deploy TiDB on GCP GKE](deploy-on-gcp-gke.md).
+If you need to deploy TiDB on a single GKE cluster, refer to [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md).
 
 ## Prerequisites
 
 Before you deploy GKE clusters, make sure you have completed the following preparations:
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/). You need to use Helm to install TiDB Operator.
-* Install [gcloud](https://cloud.google.com/sdk/gcloud): `gcloud` is the CLI for creating and managing GCP services
+* Install [gcloud](https://cloud.google.com/sdk/gcloud): `gcloud` is the CLI for creating and managing Google Cloud services
 * Complete the *Before you begin* section in [GKE Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin).
 
-## Configure GCP service
+## Configure Google Cloud service
 
-Configure your GCP project by running the following command:
+Configure your Google Cloud project by running the following command:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-gcloud config set core/project <gcp-project>
+gcloud config set core/project <google-cloud-project>
 ```
 
 ## Step 1. Create a VPC network

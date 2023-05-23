@@ -150,7 +150,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
 ### 通过服务账号密钥授权
 
-创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)。
+创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 Google Cloud console 上下载的 service account key。具体操作参考 [Google Cloud 官方文档](https://cloud.google.com/docs/authentication/getting-started)。
 
 {{< copyable "shell-regular" >}}
 
