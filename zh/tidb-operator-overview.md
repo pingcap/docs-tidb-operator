@@ -34,7 +34,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
     - 在公有云上部署生产可用的 TiDB 集群并进行后续的运维管理；
 
         - [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
-        - [在 Google Cloud GKE 上部署 TiDB 集群 (beta)](deploy-on-gcp-gke.md)
+        - [在 Google Cloud GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
         - [在 Azure AKS 上部署 TiDB 集群](deploy-on-azure-aks.md)
         - [在阿里云 ACK 上部署 TiDB 集群](deploy-on-alibaba-cloud.md)
 
