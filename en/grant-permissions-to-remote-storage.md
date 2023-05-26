@@ -152,7 +152,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
 ### Grant permissions by the service account
 
-Create the `gcs-secret` secret which stores the credential used to access GCS. The `google-credentials.json` file stores the service account key that you have downloaded from the GCP console. Refer to [GCP documentation](https://cloud.google.com/docs/authentication/getting-started) for details.
+Create the `gcs-secret` secret which stores the credential used to access GCS. The `google-credentials.json` file stores the service account key that you have downloaded from the Google Cloud console. Refer to [Google Cloud documentation](https://cloud.google.com/docs/authentication/getting-started) for details.
 
 {{< copyable "shell-regular" >}}
 

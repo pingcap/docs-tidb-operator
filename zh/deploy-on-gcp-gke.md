@@ -1,14 +1,14 @@
 ---
-title: 在 GCP GKE 上部署 TiDB 集群
-summary: 了解如何在 GCP GKE 上部署 TiDB 集群。
+title: 在 Google Cloud GKE 上部署 TiDB 集群
+summary: 了解如何在 Google Cloud GKE 上部署 TiDB 集群。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 ---
 
-# 在 GCP GKE 上部署 TiDB 集群
+# 在 Google Cloud GKE 上部署 TiDB 集群
 
 <!-- markdownlint-disable MD029 -->
 
-本文介绍了如何部署 GCP Google Kubernetes Engine (GKE) 集群，并在其中部署 TiDB 集群。
+本文介绍了如何部署 Google Kubernetes Engine (GKE) 集群，并在其中部署 TiDB 集群。
 
 如果需要部署 TiDB Operator 及 TiDB 集群到自托管 Kubernetes 环境，请参考[部署 TiDB Operator](deploy-tidb-operator.md)及[部署 TiDB 集群](deploy-on-general-kubernetes.md)等文档。
 
@@ -17,7 +17,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
 部署前，请确认已完成以下环境准备：
 
 * [Helm 3](https://helm.sh/docs/intro/install/)：用于安装 TiDB Operator
-* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
+* [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 Google Cloud 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
     该教程包含以下内容：
@@ -33,16 +33,16 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-gcp-gke/']
     * TiKV 或 TiFlash 所在节点：`n2-standard-16`
 * 推荐存储：推荐 TiKV 与 TiFlash 使用 [pd-ssd](https://cloud.google.com/compute/docs/disks/performance#type_comparison) 类型的存储。
 
-## 配置 GCP 服务
+## 配置 Google Cloud 服务
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-gcloud config set core/project <gcp-project>
-gcloud config set compute/region <gcp-region>
+gcloud config set core/project <google-cloud-project>
+gcloud config set compute/region <google-cloud-region>
 ```
 
-使用以上命令，设置好你的 GCP 项目和默认的区域。
+使用以上命令，设置好你的 Google Cloud 项目和默认的区域。
 
 ## 创建 GKE 集群和节点池
 
@@ -105,7 +105,7 @@ mountOptions:
 
 ### 使用本地存储
 
-请使用[区域永久性磁盘](https://cloud.google.com/compute/docs/disks#pdspecs)作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 GCP 部分实例类型提供的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
+请使用[区域永久性磁盘](https://cloud.google.com/compute/docs/disks#pdspecs)作为生产环境的存储类型。如果需要模拟测试裸机部署的性能，可以使用 Google Cloud 部分实例类型提供的[本地存储卷](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)。可以为 TiKV 节点池选择这一类型的实例，以便提供更高的 IOPS 和低延迟。
 
 > **注意：**
 >
@@ -143,7 +143,7 @@ mountOptions:
 
 ## 部署 TiDB 集群和监控
 
-下面介绍如何在 GCP GKE 上部署 TiDB 集群和监控组件。
+下面介绍如何在 GKE 上部署 TiDB 集群和监控组件。
 
 ### 创建 namespace
 

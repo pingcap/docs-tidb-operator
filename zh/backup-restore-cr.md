@@ -124,7 +124,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.br.rateLimit`：是否对流量进行限制。单位为 MB/s，例如设置为 `4` 代表限速 4 MB/s，默认不限速。
 * `.spec.br.checksum`：是否在备份结束之后对文件进行验证。默认为 `true`。
 * `.spec.br.timeAgo`：备份 timeAgo 以前的数据，默认为空（备份当前数据），[支持](https://golang.org/pkg/time/#ParseDuration) "1.5h"，"2h45m" 等数据。
-* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限、GCP 权限或者 Azure 权限传输给 TiKV 进程。默认为 `true`。
+* `.spec.br.sendCredToTikv`：BR 进程是否将自己的 AWS 权限、Google Cloud 权限或者 Azure 权限传输给 TiKV 进程。默认为 `true`。
 * `.spec.br.onLine`：restore 时是否启用[在线恢复功能](https://docs.pingcap.com/zh/tidb/stable/use-br-command-line-tool#在线恢复实验性功能)。
 * `.spec.br.options`：BR 工具支持的额外参数，需要以字符串数组的形式传入。自 v1.1.6 版本起支持该参数。可用于指定 `lastbackupts` 以进行增量备份。
 
@@ -178,7 +178,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ### GCS 存储字段介绍
 
-* `.spec.gcs.projectId`：代表 GCP 上用户项目的唯一标识。具体获取该标识的方法可参考 [GCP 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
+* `.spec.gcs.projectId`：代表 Google Cloud 上用户项目的唯一标识。具体获取该标识的方法可参考 [Google Cloud 官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 * `.spec.gcs.location`：指定 GCS bucket 所在的区域，例如 `us-west2`。
 * `.spec.gcs.path`：指定备份文件在远端存储的存储路径，该字段仅在使用 Dumpling 备份或 Lightning 恢复时有效，例如 `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`。
 * `.spec.gcs.secretName`：指定存储 GCS 用户账号认证信息的 Secret 名称。

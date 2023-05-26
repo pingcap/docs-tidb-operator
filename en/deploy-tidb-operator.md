@@ -25,7 +25,7 @@ TiDB Operator runs in the Kubernetes cluster. You can refer to [the document of 
 For some public cloud environments, refer to the following documents:
 
 - [Deploy on AWS EKS](deploy-on-aws-eks.md)
-- [Deploy on GCP GKE](deploy-on-gcp-gke.md)
+- [Deploy on Google Cloud GKE](deploy-on-gcp-gke.md)
 - [Deploy on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
 TiDB Operator uses [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, and backup data), so the Kubernetes cluster must provide at least one kind of persistent volumes.

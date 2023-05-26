@@ -135,7 +135,7 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.br.rateLimit`: the speed limit, in MB/s. If set to `4`, the speed limit is 4 MB/s. The speed limit is not set by default.
 * `.spec.br.checksum`: whether to verify the files after the backup is completed. Defaults to `true`.
 * `.spec.br.timeAgo`: backs up the data before `timeAgo`. If the parameter value is not specified (empty by default), it means backing up the current data. It supports data formats such as `"1.5h"` and `"2h45m"`. See [ParseDuration](https://golang.org/pkg/time/#ParseDuration) for more information.
-* `.spec.br.sendCredToTikv`: whether the BR process passes its AWS, GCP, or Azure permissions to the TiKV process. Defaults to `true`.
+* `.spec.br.sendCredToTikv`: whether the BR process passes its AWS, Google Cloud, or Azure permissions to the TiKV process. Defaults to `true`.
 * `.spec.br.onLine`: whether to enable the [online restore](https://docs.pingcap.com/tidb/stable/use-br-command-line-tool#online-restore-experimental-feature) feature when restoring data.
 * `.spec.br.options`: the extra arguments that BR supports. This field is supported since TiDB Operator v1.1.6. It accepts an array of strings and can be used to specify the last backup timestamp `--lastbackupts` for incremental backup.
 
@@ -187,7 +187,7 @@ This section introduces the fields in the `Backup` CR.
 
 ### GCS fields
 
-* `.spec.gcs.projectId`: the unique identifier of the user project on GCP. To obtain the project ID, refer to [GCP documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+* `.spec.gcs.projectId`: the unique identifier of the user project on Google Cloud. To obtain the project ID, refer to [Google Cloud documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 * `.spec.gcs.location`: the location of the GCS bucket. For example, `us-west2`.
 * `.spec.gcs.path`: the storage path of backup files on the remote storage. This field is valid only when the data is backed up using Dumpling or restored using TiDB Dumpling. For example, `gcs://test1-demo1/backup-2019-11-11T16:06:05Z.tgz`.
 * `.spec.gcs.secretName`: the name of the secret that stores the GCS account credential.
