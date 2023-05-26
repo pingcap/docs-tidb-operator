@@ -627,7 +627,7 @@ NodePort has two modes:
 
 #### LoadBalancer
 
-If the TiDB cluster runs in an environment with LoadBalancer, such as on GCP or AWS, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
+If the TiDB cluster runs in an environment with LoadBalancer, such as on Google Cloud or AWS, it is recommended to use the LoadBalancer feature of these cloud platforms by setting `tidb.service.type=LoadBalancer`.
 
 ```yaml
 spec:

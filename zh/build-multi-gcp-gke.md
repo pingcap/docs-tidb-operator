@@ -1,13 +1,13 @@
 ---
-title: 构建多个网络互通的 GCP GKE 集群
-summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
+title: 构建多个网络互通的 Google Cloud GKE 集群
+summary: 介绍如何构建多个 Google Cloud GKE 集群互通网络，为跨 Kubernetes 集群部署 TiDB 集群作准备
 ---
 
-# 构建多个网络互通的 GCP GKE 集群
+# 构建多个网络互通的 Google Cloud GKE 集群
 
-本文介绍了如何构建多个 GCP GKE 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
+本文介绍了如何构建多个 Google Kubernetes Engine (GKE) 集群，并配置集群之间的网络互通，为跨 Kubernetes 集群部署 TiDB 集群作准备。
 
-如果仅需要部署一个 TiDB 集群到一个 GCP GKE 集群，请参考[在 GCP GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)文档。
+如果仅需要部署一个 TiDB 集群到一个 GKE 集群，请参考[在 Google Cloud GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)文档。
 
 ## 环境准备
 
@@ -17,14 +17,14 @@ summary: 介绍如何构建多个 GCP GKE 集群互通网络，为跨 Kubernetes
 * [gcloud](https://cloud.google.com/sdk/gcloud)：用于创建和管理 GCP 服务的命令行工具
 * 完成 [GKE 快速入门](https://cloud.google.com/kubernetes-engine/docs/quickstart#before-you-begin) 中的**准备工作** (Before you begin)
 
-## 配置 GCP 服务
+## 配置 Google Cloud 服务
 
-使用以下命令，设置好你的 GCP 项目：
+使用以下命令，设置好你的 Google Cloud 项目：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-gcloud config set core/project <gcp-project>
+gcloud config set core/project <google-cloud-project>
 ```
 
 ## 第 1 步：创建网络
