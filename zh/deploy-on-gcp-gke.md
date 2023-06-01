@@ -272,7 +272,7 @@ gcloud compute instances create bastion \
     Your MySQL connection id is 7823
     Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
-    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+    Copyright (c) 2000, 2022, Oracle and/or its affiliates.
 
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
