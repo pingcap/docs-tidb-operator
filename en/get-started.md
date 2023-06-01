@@ -695,15 +695,16 @@ Note that `nightly` is not a fixed version. Running the command above at a diffe
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v7.1.0-alpha-445-g778e188fa
+tidb_version(): Release Version: v7.1.0
 Edition: Community
-Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
-Git Branch: master
-UTC Build Time: 2021-12-17 17:02:49
-GoVersion: go1.16.4
+Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
+Git Branch: heads/refs/tags/v7.1.0
+UTC Build Time: 2023-05-30 10:58:57
+GoVersion: go1.20.3
 Race Enabled: false
-TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
+Store: tikv
 ```
 
 </details>
