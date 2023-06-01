@@ -541,13 +541,14 @@ mysql> select tidb_version()\G
 *************************** 1. row ***************************
          tidb_version(): Release Version: v7.1.0
                 Edition: Community
-        Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
+        Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
              Git Branch: heads/refs/tags/v7.1.0
-         UTC Build Time: 2021-11-24 13:32:39
-              GoVersion: go1.16.4
+         UTC Build Time: 2023-05-30 10:58:57
+              GoVersion: go1.20.3
            Race Enabled: false
-       TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+       TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
+                  Store: tikv
 1 row in set (0.01 sec)
 ```
 
