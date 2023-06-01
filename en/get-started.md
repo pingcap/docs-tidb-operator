@@ -496,7 +496,6 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-  tidb_version(): Release Version: v7.1.0
          tidb_version(): Release Version: v7.1.0
                 Edition: Community
         Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
