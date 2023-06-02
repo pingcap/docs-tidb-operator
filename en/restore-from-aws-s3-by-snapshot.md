@@ -21,7 +21,7 @@ The restore method described in this document is implemented based on CustomReso
     backupType: full
     restoreMode: volume-snapshot
     serviceAccount: tidb-backup-manager
-    toolImage: pingcap/br:v6.5.0
+    toolImage: pingcap/br:v7.1.0
     br:
       cluster: basic
       clusterNamespace: tidb-cluster

@@ -170,7 +170,7 @@ spec:
     version: 7.5.11
   initializer:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-initializer
-    version: v6.5.0
+    version: v7.1.0
   reloader:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-reloader
     version: v1.0.1

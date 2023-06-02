@@ -489,7 +489,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 5.7.25-TiDB-v6.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -538,15 +538,16 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v6.5.0
+         tidb_version(): Release Version: v7.1.0
                 Edition: Community
-        Git Commit Hash: 4a1b2e9fe5b5afb1068c56de47adb07098d768d6
-             Git Branch: heads/refs/tags/v6.5.0
-         UTC Build Time: 2021-11-24 13:32:39
-              GoVersion: go1.16.4
+        Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
+             Git Branch: heads/refs/tags/v7.1.0
+         UTC Build Time: 2023-05-30 10:58:57
+              GoVersion: go1.20.3
            Race Enabled: false
-       TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+       TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
+                  Store: tikv
 1 row in set (0.01 sec)
 ```
 
@@ -733,15 +734,16 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v6.5.0-alpha-445-g778e188fa
+tidb_version(): Release Version: v7.1.0
 Edition: Community
-Git Commit Hash: 778e188fa7af4f48497ff9e05ca6681bf9a5fa16
-Git Branch: master
-UTC Build Time: 2021-12-17 17:02:49
-GoVersion: go1.16.4
+Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
+Git Branch: heads/refs/tags/v7.1.0
+UTC Build Time: 2023-05-30 10:58:57
+GoVersion: go1.20.3
 Race Enabled: false
-TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
+Store: tikv
 ```
 
 </details>
