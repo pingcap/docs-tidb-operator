@@ -18,7 +18,7 @@ You might encounter the following problems during EBS snapshot backup:
 
 ### Backup failed after an upgrade of the TiDB cluster
 
-After the TiDB cluster is upgraded from an earlier version to v6.5.0, the backup using volume snapshots might fail with the following error:
+After the TiDB cluster is upgraded from an earlier version to v6.5.0+, the backup using volume snapshots might fail with the following error:
 
 ```shell
 error="min resolved ts not enabled"
@@ -199,7 +199,7 @@ Scenario: This issue occurs when the TiDB cluster version is v6.3.0 or v6.4.0.
 
 Solution:
 
-1. Upgrade the TiDB cluster to v6.5.0.
+1. Upgrade the TiDB cluster to v6.5.0+.
 
 2. In BR spec, temporarily increase the volume performance for restore, and then manually degrade the performance after the restore is completed. Specifically, you can specify parameters to get higher volume configuration, such as specifying `--volume-iops=8000`, `--volume-throughput=600`, or other configurations.
 
@@ -208,7 +208,7 @@ Solution:
       backupType: full
       restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v6.5.0
+      toolImage: pingcap/br:v7.1.0
       br:
         cluster: basic
         clusterNamespace: tidb-cluster

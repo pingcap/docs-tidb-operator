@@ -18,7 +18,7 @@ summary: 介绍卷快照备份恢复中的常见问题以及解决方案。
 
 ### 升级后备份无法工作
 
-从低版本的集群升级到 v6.5.0 后，进行卷快照备份，备份可能会失败，错误信息如下：
+从低版本的集群升级到 v6.5.0+ 后，进行卷快照备份，备份可能会失败，错误信息如下：
 
 ```shell
 error="min resolved ts not enabled"
@@ -199,7 +199,7 @@ error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
 
 解决方案：
 
-1. 升级 TiDB 集群版本至 v6.5.0。
+1. 升级 TiDB 集群版本至 v6.5.0+。
 
 2. 在 BR spec 中，临时提升卷性能进行恢复，待恢复完成后，再手动降低卷性能参数。通过指定参数来获得更高的恢复卷配置, 例如指定 `--volume-iops=8000`，以及 `--volume-throughput=600` 或者更高配置。
 
@@ -208,7 +208,7 @@ error="rpc error: code = Unavailable desc = keepalive watchdog timeout"
       backupType: full
       restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v6.5.0
+      toolImage: pingcap/br:v7.1.0
       br:
         cluster: basic
         clusterNamespace: tidb-cluster
