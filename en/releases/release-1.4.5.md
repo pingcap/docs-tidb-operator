@@ -16,5 +16,5 @@ TiDB Operator version: 1.4.5
 
 ## Bug fixes
 
-- Supress gc when scheduled backup is newly created ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
-- Make LogBackupTemplate optional in backup CR ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
+- Supress GC when scheduled backup is newly created ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
+- Make `backupTemplate` optional in backup CR ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
