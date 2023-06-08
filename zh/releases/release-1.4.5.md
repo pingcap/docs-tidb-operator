@@ -15,3 +15,6 @@ TiDB Operator 版本：1.4.5
 - 为 DM master 组件增加 `startUpScriptVersion` 字段以用于指定启动脚本的版本 ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
 
 ## Bug 修复
+
+- 在新创建的计划备份中取消 gc ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
+- 让 Backup CR 字段里的 LogBackupTemplate 字段变成可选值 ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
