@@ -16,5 +16,5 @@ TiDB Operator 版本：1.4.5
 
 ## Bug 修复
 
-- 在新创建的计划备份中取消 gc ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
-- 让 Backup CR 字段里的 LogBackupTemplate 字段变成可选值 ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
+- 在新创建的计划备份中取消 GC ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
+- 让 Backup CR 字段里的 `backupTemplate` 字段变成可选值 ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
