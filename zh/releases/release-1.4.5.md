@@ -13,6 +13,7 @@ TiDB Operator 版本：1.4.5
 - 为 TidbCluster 增加细粒度的调协处理错误相关的 metrics ([#4952](https://github.com/pingcap/tidb-operator/pull/4952), [@coderplay](https://github.com/coderplay))
 - 增加调协处理与 worker 队列相关的 metrics 以提升可观测性 ([#4882](https://github.com/pingcap/tidb-operator/pull/4882), [@hanlins](https://github.com/hanlins))
 - 为 DM master 组件增加 `startUpScriptVersion` 字段以用于指定启动脚本的版本 ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
+- 增加跨 Kubernetes 集群滚动重启/缩容 TiCDC 集群的能力 ([#5040](https://github.com/pingcap/tidb-operator/pull/5040)), [@charleszheng44](https://github.com/charleszheng44)
 
 ## Bug 修复
 
