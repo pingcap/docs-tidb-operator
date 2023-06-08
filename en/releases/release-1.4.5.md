@@ -15,3 +15,6 @@ TiDB Operator version: 1.4.5
 - Introduce `startUpScriptVersion` field for DM master to specify startup script version ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
 
 ## Bug fixes
+
+- Supress gc when scheduled backup is newly created ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
+- Make LogBackupTemplate optional in backup CR ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
