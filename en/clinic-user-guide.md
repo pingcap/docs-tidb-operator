@@ -40,10 +40,14 @@ Before deploying Diag, make sure the following items are installed on the cluste
 
 To install Helm and configure the chart repository `https://charts.pingcap.org/` maintained by PingCAP, you can refer to the [Use Helm](tidb-toolkit.md#use-helm) document.
 
+> **Note:**
+>
+> In the following sections, `${chart_version}` refers to the version of the Diag chart, for example `v1.3.1`. You can get a list of the currently supported versions by executing the `helm search repo -l diag` command.
+
 ```shell
 helm search repo diag
 NAME          CHART VERSION  APP VERSION  DESCRIPTION
-pingcap/diag  v1.2.1         v1.2.1       Clinic Diag Helm chart for Kubernetes
+pingcap/diag  v1.3.1         v1.3.1       Clinic Diag Helm chart for Kubernetes
 ```
 
 #### Check the privilege of the user
@@ -161,7 +165,7 @@ Deploy Diag using the following `helm` command and the latest Diag image is pull
 ```shell
 # namespace: the same as that of TiDB Operator
 # diag.clinicToken: get your token in "https://clinic.pingcap.com.cn" or "https://clinic.pingcap.com"
-helm install --namespace tidb-admin diag-collector pingcap/diag --version v1.2.1 \
+helm install --namespace tidb-admin diag-collector pingcap/diag --version ${chart_version} \
         --set diag.clinicToken=${clinic_token}
         --set diag.clinicRegion=${clinic_region}  # CN or US
 ```
@@ -192,10 +196,6 @@ To use the standard online deployment, do the following:
     mkdir -p ${HOME}/diag-collector && \
     helm inspect values pingcap/diag --version=${chart_version} > ${HOME}/diag-collector/values-diag-collector.yaml
     ```
-
-    > **Note:**
-    >
-    > In the following sections, `${chart_version}` indicates the version of the Diag chart, for example, `v1.2.1`. You can get the currently supported versions through the `helm search repo -l diag` command.
 
 2. Configure the `values-diag-collector.yaml` file.
 
@@ -261,30 +261,30 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
     To download Diag chart files, you can use the following command:
 
     ```shell
-    wget http://charts.pingcap.org/diag-v1.2.1.tgz
+    wget http://charts.pingcap.org/diag-${chart_version}.tgz
     ```
 
-    Copy `diag-v1.2.1.tgz` to the cluster and unpack it to the current directory.
+    Copy `diag-${chart_version}.tgz` to the cluster and unpack it to the current directory.
 
     ```shell
-    tar zxvf diag-v1.2.1.tgz
+    tar zxvf diag-${chart_version}.tgz
     ```
 
 2. Download the Diag image.
 
     You need to download the Diag image on a machine that has Internet access and then use the `docker load` command to load the image to the cluster.
 
-    The Diag image is `pingcap/diag:v1.2.1`. You can download and save the image using the following commands:
+    The Diag image is `pingcap/diag:${chart_version}`. You can download and save the image using the following commands:
 
     ```shell
-    docker pull pingcap/diag:v1.2.1
-    docker save -o diag-v1.2.1.tar pingcap/diag:v1.2.1
+    docker pull pingcap/diag:${chart_version}
+    docker save -o diag-${chart_version}.tar pingcap/diag:${chart_version}
     ```
 
     Then, copy the archived image to the cluster and use the `docker load` command to load the image to the cluster:
 
     ```shell
-    docker load -i diag-v1.2.1.tar
+    docker load -i diag-${chart_version}.tar
     ```
 
 3. Configure the `values-diag-collector.yaml` file.
@@ -362,7 +362,7 @@ To use the least privilege deployment, do the following:
 2. Deploy Diag using the following `helm` command, and the latest Diag image is pulled from the Docker Hub.
 
     ```shell
-    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v1.2.1 \
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version ${chart_version} \
         --set diag.clinicToken=${clinic_token} \
         --set diag.clusterRoleEnabled=false \
         --set diag.clinicRegion=US
@@ -371,7 +371,7 @@ To use the least privilege deployment, do the following:
     If TLS is not enabled in the cluster, you can add the `--set diag.tls.enabled=false` flag, then the created *Role* will not have the `get` and `list` privileges of `secrets`.
 
     ```shell
-    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v1.2.1 \
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version ${chart_version} \
         --set diag.clinicToken=${clinic_token} \
         --set diag.tlsEnabled=false \
         --set diag.clusterRoleEnabled=false \
