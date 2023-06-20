@@ -42,7 +42,7 @@ To install Helm and configure the chart repository `https://charts.pingcap.org/`
 
 > **Note:**
 >
-> In the following sections, `${chart_version}` indicates the version of the Diag chart, for example, `v1.3.1`. You can get the currently supported versions through the `helm search repo -l diag` command.
+> In the following sections, `${chart_version}` refers to the version of the Diag chart, for example `v1.3.1`. You can get a list of the currently supported versions by executing the `helm search repo -l diag` command.
 
 ```shell
 helm search repo diag
