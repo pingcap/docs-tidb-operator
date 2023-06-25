@@ -19,3 +19,5 @@ TiDB Operator 版本：1.4.5
 
 - 在新创建的定时备份中取消 GC ([#4940](https://github.com/pingcap/tidb-operator/pull/4940), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
 - 让 Backup CR 字段里的 `backupTemplate` 字段变成可选值 ([#4956](https://github.com/pingcap/tidb-operator/pull/4956), [@Ehco1996](https://github.com/Ehco1996))
+- 修复 TiDB Operator 在未配置任何 Kubernetes 集群级别权限时 panic 的问题 ([#5058](https://github.com/pingcap/tidb-operator/pull/5058), [@liubog2008](https://github.com/liubog2008))
+- 修复在 TidbCluster 中设置 `AdditionalVolumeMounts` 时 TiDB Operator 可能 panic 的问题 ([#5058](https://github.com/pingcap/tidb-operator/pull/5058), [@liubog2008](https://github.com/liubog2008))
