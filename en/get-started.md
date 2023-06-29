@@ -195,11 +195,11 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 > **Note:**
 >
-> If you are using Kubernetes version earlier than 1.16, only the v1beta1 CRD is supported. In that case, you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
+> If you are using Kubernetes version earlier than 1.16, only the v1beta1 CRD is supported. In that case, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
 
 ### Install TiDB Operator
 
-To install TiDB Operator, you can use Helm 3. Follow these steps:
+To install TiDB Operator, you can use [Helm 3](https://helm.sh/docs/intro/install/). Follow these steps:
 
 1. Add the PingCAP repository:
 
@@ -274,11 +274,11 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 Once all the Pods are in the "Running" state, you can proceed to the next step.
 
-## Step 3: Deploying a TiDB Cluster and its Monitoring Services
+## Step 3: Deploy a TiDB cluster and its monitoring services
 
 This section provides instructions on how to deploy a TiDB cluster and its monitoring services.
 
-### Deploying a TiDB Cluster
+### Deploy a TiDB cluster
 
 ```shell
 kubectl create namespace tidb-cluster && \
@@ -295,9 +295,9 @@ tidbcluster.pingcap.com/basic created
 
 </details>
 
-If you need to deploy a TiDB cluster on an ARM64 machine, please refer to the [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md) guide.
+If you need to deploy a TiDB cluster on an ARM64 machine, refer to the [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md) guide.
 
-### Deploying TiDB Dashboard Independently
+### Deploy TiDB Dashboard independently
 
 ```shell
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
@@ -312,22 +312,22 @@ tidbdashboard.pingcap.com/basic created
 
 </details>
 
-### Deploying TiDB Monitoring Services
+### Deploy TiDB monitoring services
 
 ```shell
-...
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
 ```
 
 <details>
 <summary>Expected output</summary>
 
 ```
-...
+tidbmonitor.pingcap.com/basic created
 ```
 
 </details>
 
-### Viewing the Pod Status
+### View the Pod status
 
 ```shell
 watch kubectl get po -n tidb-cluster
@@ -353,11 +353,11 @@ Wait until all Pods for each service are started. Once you see that the Pods for
 
 To connect to TiDB, you can use the MySQL client since TiDB supports the MySQL protocol and most of its syntax.
 
-### Installing the MySQL client
+### Install the MySQL client
 
 Before connecting to TiDB, make sure you have a MySQL-compatible client installed on the host where `kubectl` is installed. This can be the `mysql` executable from an installation of MySQL Server, MariaDB Server, Percona Server, or a standalone client executable from your operating system's package.
 
-### Forwarding port 4000
+### Forward port 4000
 
 To connect to TiDB, you need to forward a port from the local host to the TiDB service on Kubernetes.
 
@@ -393,7 +393,7 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 14000:4000 > pf14000.out &
 
 If port `14000` is already occupied, you can replace it with an available port. This command runs in the background and writes its output to a file named `pf14000.out`. You can continue to run the command in the current shell session.
 
-### Connecting to the TiDB service
+### Connect to the TiDB service
 
 > **Note:**
 >
@@ -427,7 +427,7 @@ mysql>
 After connecting to the cluster, you can run the following commands to verify that some features are available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
 <details>
-<summary>Create a `hello_world` table</summary>
+<summary>Create a<code>hello_world</code>table</summary>
 
 ```sql
 mysql> use test;
@@ -543,7 +543,7 @@ mysql> select * from information_schema.cluster_info\G
 
 </details>
 
-### Accessing the Grafana dashboard
+### Access the Grafana dashboard
 
 To access the Grafana dashboard locally, you need to forward the port for Grafana:
 
@@ -563,7 +563,7 @@ Then access Grafana through <http://${remote-server-IP}:3000>.
 
 For more information about monitoring the TiDB cluster in TiDB Operator, refer to [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
-### Accessing the TiDB Dashboard web UI
+### Access the TiDB Dashboard web UI
 
 To access the TiDB Dashboard web UI locally, you need to forward the port for TiDB Dashboard:
 
@@ -581,13 +581,13 @@ kubectl port-forward --address 0.0.0.0 -n tidb-cluster svc/basic-tidb-dashboard-
 
 Then access TiDB Dashboard through `http://${remote-server-IP}:12333`.
 
-## Step 5: Upgrading a TiDB Cluster
+## Step 5: Upgrade a TiDB cluster
 
-The TiDB Operator simplifies the process of performing a rolling upgrade of a TiDB cluster. This section provides instructions on how to upgrade your TiDB cluster to the "nightly" release.
+TiDB Operator simplifies the process of performing a rolling upgrade of a TiDB cluster. This section provides instructions on how to upgrade your TiDB cluster to the "nightly" release.
 
 Before proceeding, it is important to familiarize yourself with the `kubectl patch` sub-command. This command allows you to directly apply changes to the running cluster resources. There are different patch strategies available, each with its own capabilities, limitations, and allowed formats. For more information, refer to the [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) documentation.
 
-### Modifying the TiDB Cluster Version
+### Modify the TiDB cluster version
 
 To update the version of the TiDB cluster to "nightly," you can use a JSON merge patch. Execute the following command:
 
@@ -604,7 +604,7 @@ tidbcluster.pingcap.com/basic patched
 
 </details>
 
-### Monitoring Pod Restarts
+### Monitor Pod restarts
 
 To monitor the progress of the cluster upgrade and observe the restart of its components, run the following command. You should see some Pods transitioning from `Terminating` to `ContainerCreating` and finally to `Running`.
 
@@ -625,11 +625,11 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 </details>
 
-### Forwarding the TiDB Service Port
+### Forward the TiDB service port
 
 Once all Pods have been restarted, you can verify that the cluster's version number has been updated.
 
-Please note that if you had previously set up port forwarding, you will need to reset it as the pods it was forwarding to have been destroyed and recreated.
+Note that if you had previously set up port forwarding, you will need to reset it as the Pods it was forwarding to have been destroyed and recreated.
 
 ```
 kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
@@ -637,7 +637,7 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
 
 If port `24000` is already in use, you can replace it with an available port.
 
-### Checking the TiDB Cluster Version
+### Check the TiDB cluster version
 
 To confirm the TiDB cluster's version, execute the following command:
 
@@ -648,7 +648,7 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 <details>
 <summary>Expected output</summary>
 
-Please note that the version may vary depending on the time the command is run.
+Note that the version might vary depending on the time the command is run.
 
 ```
 *************************** 1. row ***************************
@@ -666,15 +666,15 @@ Store: tikv
 
 </details>
 
-## Step 6: Destroying the TiDB Cluster and the Kubernetes Cluster
+## Step 6: Destroy the TiDB cluster and the Kubernetes cluster
 
 Once you have finished testing, it is time to destroy the TiDB cluster and the Kubernetes cluster.
 
-### Destroying the TiDB Cluster
+### Destroy the TiDB cluster
 
 To destroy the TiDB cluster, follow these steps:
 
-#### Stop `kubectl` Port Forwarding
+#### Stop `kubectl` port forwarding
 
 If you have any running `kubectl` processes that are forwarding ports, make sure to end them by running the following command:
 
@@ -682,7 +682,7 @@ If you have any running `kubectl` processes that are forwarding ports, make sure
 pgrep -lfa kubectl
 ```
 
-#### Delete the TiDB Cluster
+#### Delete the TiDB cluster
 
 To delete the TiDB cluster, use the following command:
 
@@ -692,7 +692,7 @@ kubectl delete tc basic -n tidb-cluster
 
 In this command, `tc` is a shorthand for `tidbclusters`.
 
-#### Delete TiDB Monitoring Services
+#### Delete TiDB monitoring services
 
 To delete the TiDB monitoring services, run the following command:
 
@@ -700,16 +700,16 @@ To delete the TiDB monitoring services, run the following command:
 kubectl delete tidbmonitor basic -n tidb-cluster
 ```
 
-#### Delete PV Data
+#### Delete PV data
 
-If your deployment includes persistent data storage, deleting the TiDB cluster will not remove the data in the cluster. If you do not need the data, you can clean it by running the following commands:
+If your deployment includes persistent data storage, deleting the TiDB cluster does not remove the data in the cluster. If you do not need the data, you can clean it by running the following commands:
 
 ```shell
 kubectl delete pvc -n tidb-cluster -l app.kubernetes.io/instance=basic,app.kubernetes.io/managed-by=tidb-operator && \
 kubectl get pv -l app.kubernetes.io/namespace=tidb-cluster,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=basic -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```
 
-#### Delete Namespaces
+#### Delete namespaces
 
 To ensure that there are no remaining resources, delete the namespace used for your TiDB cluster by running the following command:
 
@@ -717,7 +717,7 @@ To ensure that there are no remaining resources, delete the namespace used for y
 kubectl delete namespace tidb-cluster
 ```
 
-### Destroying the Kubernetes Cluster
+### Destroy the Kubernetes cluster
 
 The method for destroying a Kubernetes cluster depends on how it was created. Here are the steps for destroying a Kubernetes cluster based on the creation method:
 
@@ -743,20 +743,20 @@ minikube delete
 </div>
 </SimpleTab>
 
-## See Also
+## See also
 
 If you are interested in deploying a TiDB cluster in production environments, refer to the following documents:
 
 On public clouds:
 
-- [Deploying TiDB on AWS EKS](deploy-on-aws-eks.md)
-- [Deploying TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
-- [Deploying TiDB on Azure AKS](deploy-on-azure-aks.md)
-- [Deploying TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
+- [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
+- [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
+- [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
+- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
 In a self-managed Kubernetes cluster:
 
 - Familiarize yourself with the [Prerequisites for TiDB on Kubernetes](prerequisites.md)
-- [Configure the Local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
+- [Configure the local PV](configure-storage-class.md#local-pv-configuration) for your Kubernetes cluster to achieve high performance for TiKV
 - [Deploy TiDB Operator on Kubernetes](deploy-tidb-operator.md)
-- [Deploy TiDB on a General Kubernetes Cluster](deploy-on-general-kubernetes.md)
+- [Deploy TiDB on General Kubernetes](deploy-on-general-kubernetes.md)
