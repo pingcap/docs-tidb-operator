@@ -14,7 +14,7 @@ TiDB cluster components such as PD, TiKV, TiDB monitoring, TiDB Binlog, and `tid
 
 - Local storage
 
-    Local storage is located on the current node and typically provides lower latency compared to network storage. However, it does not have redundant replicas, so data may be lost if the node fails. If the node is an IDC server, data can be partially restored, but if it is a virtual machine using local disk on a public cloud, data cannot be retrieved after a node failure.
+    Local storage is located on the current node and typically provides lower latency compared to network storage. However, it does not have redundant replicas, so data might be lost if the node fails. If the node is an IDC server, data can be partially restored, but if it is a virtual machine using local disk on a public cloud, data cannot be retrieved after a node failure.
 
 PVs are automatically created by the system administrator or volume provisioner. PVs and Pods are bound by [PersistentVolumeClaim (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Instead of creating a PV directly, users request to use a PV through a PVC. The corresponding volume provisioner creates a PV that meets the requirements of the PVC and then binds the PV to the PVC.
 
@@ -52,7 +52,7 @@ After enabling volume expansion, you can expand the PV using the following metho
 
 2. View the size of the PV:
 
-    After the expansion, the size displayed by running `kubectl get pvc -n ${namespace} ${pvc_name}` will still show the original size. However, if you run the following command to view the size of the PV, it will show that the size has been expanded to the expected value.
+    After the expansion, the size displayed by running `kubectl get pvc -n ${namespace} ${pvc_name}` still shows the original size. However, if you run the following command to view the size of the PV, it shows that the size has been expanded to the expected value.
 
     ```shell
     kubectl get pv | grep ${pvc_name}
@@ -72,19 +72,19 @@ Currently, Kubernetes supports statically allocated local storage. To create a l
 
     >**Note:**
     >
-    > The number of directories you create depends on the planned number of TiDB clusters and the number of PD servers in each cluster. Each directory will have a corresponding PV created, and each PD server will use one PV.
+    > The number of directories you create depends on the planned number of TiDB clusters and the number of PD servers in each cluster. Each directory has a corresponding PV created, and each PD server uses one PV.
 
 - For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/monitoring` directory.
 
     >**Note:**
     >
-    > The number of directories you create depends on the planned number of TiDB clusters. Each directory will have a corresponding PV created, and each TiDB cluster's monitoring data will use one PV.
+    > The number of directories you create depends on the planned number of TiDB clusters. Each directory has a corresponding PV created, and each TiDB cluster's monitoring data uses one PV.
 
 - For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/backup` directory.
 
     >**Note:**
     >
-    > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. Each directory will have a corresponding PV created, and each Pump and Drainer will use one PV. All [Ad-hoc full backup](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage) tasks and [scheduled full backup](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage) tasks will share one PV.
+    > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. Each directory has a corresponding PV created, and each Pump and Drainer use one PV. All [Ad-hoc full backup](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage) tasks and [scheduled full backup](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage) tasks share one PV.
 
 The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directories mentioned above are discovery directories used by local-volume-provisioner. For each subdirectory in the discovery directory, local-volume-provisioner creates a corresponding PV.
 
@@ -206,9 +206,9 @@ The steps for offline deployment are the same as for online deployment, except f
 - To ensure I/O isolation, it is recommended to use a dedicated physical disk per PV for hardware-based isolation.
 - For capacity isolation, it is recommended to use either a partition per PV or a physical disk per PV.
 
-For more information on local PV on Kubernetes, please refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) documentation.
+For more information on local PV on Kubernetes, refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) documentation.
 
-## Data Safety
+## Data safety
 
 In general, when a PVC is deleted and no longer in use, the PV bound to it is reclaimed and placed in the resource pool for scheduling by the provisioner. To prevent accidental data loss, you can configure the reclaim policy of the `StorageClass` to `Retain` globally or change the reclaim policy of a single PV to `Retain`. With the `Retain` policy, a PV is not automatically reclaimed.
 
@@ -236,9 +236,9 @@ In general, when a PVC is deleted and no longer in use, the PV bound to it is re
 
 > **Note:**
 >
-> By default, to ensure data safety, the TiDB Operator automatically changes the reclaim policy of the PVs of PD and TiKV to `Retain`.
+> By default, to ensure data safety, TiDB Operator automatically changes the reclaim policy of the PVs of PD and TiKV to `Retain`.
 
-### Deleting PV and Data
+### Delete PV and data
 
 When the reclaim policy of PVs is set to `Retain`, if you have confirmed that the data of a PV can be deleted, you can delete the PV and its corresponding data by following these steps:
 
@@ -248,10 +248,10 @@ When the reclaim policy of PVs is set to `Retain`, if you have confirmed that th
     kubectl delete pvc ${pvc_name} --namespace=${namespace}
     ```
 
-2. Set the reclaim policy of the PV to `Delete`. This will automatically delete and reclaim the PV.
+2. Set the reclaim policy of the PV to `Delete`. This automatically deletes and reclaims the PV.
 
     ```shell
     kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
     ```
 
-For more details, please refer to the [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/) documentation.
+For more details, refer to the [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/) documentation.
