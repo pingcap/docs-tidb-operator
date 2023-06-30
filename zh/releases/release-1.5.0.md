@@ -14,8 +14,8 @@ TiDB Operator 版本：1.5.0
 
 ## 优化提升
 
-- 为 DmCluster 增加 `startUpScriptVersion` 字段以支持设置启动脚本版本 ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
-- 为 DmCluster、TidbDashboard、TidbMonitor 以及 TidbNGMonitoringAdd 增加 `spec.preferIPv6` 支持 ([#4977](https://github.com/pingcap/tidb-operator/pull/4977), [@KanShiori](https://github.com/KanShiori))
+- 为 DM master 增加 `startUpScriptVersion` 字段以支持设置启动脚本版本 ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
+- 为 DmCluster、TidbDashboard、TidbMonitor 以及 TidbNGMonitoring 增加 `spec.preferIPv6` 支持 ([#4977](https://github.com/pingcap/tidb-operator/pull/4977), [@KanShiori](https://github.com/KanShiori))
 - 支持为 TiKV 驱逐 leader 和 PD 转移 leader 设置过期时间 ([#4997](https://github.com/pingcap/tidb-operator/pull/4997), [@Tema](https://github.com/Tema))
 - 支持为 TidbInitializer 设置 tolerations  ([#5047](https://github.com/pingcap/tidb-operator/pull/5047), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 PD 设置启动超时时间 ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
