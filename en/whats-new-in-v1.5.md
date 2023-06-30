@@ -8,7 +8,7 @@ TiDB Operator 1.5 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-When using the `PreferDualStack` feature introduced in ([#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
+When using the `PreferDualStack` feature introduced in [#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
 
 ## Extensibility
 
