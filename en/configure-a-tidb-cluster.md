@@ -175,9 +175,9 @@ To mount multiple PVs for PD:
 ```yaml
   pd:
     config: |
-      data-dir=/pd/data
+      data-dir = "/pd/data"
       [log.file]
-        filename=/pd/log/pd.log
+        filename = "/pd/log/pd.log"
     storageVolumes:
     - name: data
       storageSize: "10Gi"
