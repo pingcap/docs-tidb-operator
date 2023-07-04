@@ -176,9 +176,9 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 ```yaml
   pd:
     config: |
-      data-dir=/pd/data
+      data-dir = "/pd/data"
       [log.file]
-        filename=/pd/log/pd.log
+        filename = "/pd/log/pd.log"
     storageVolumes:
     - name: data
       storageSize: "10Gi"
