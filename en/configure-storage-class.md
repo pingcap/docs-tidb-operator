@@ -125,7 +125,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
               mountDir: /mnt/backup
         ```
 
-        For more configuration options for the local-volume-provisioner, refer to the [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) documentation.
+        For more configuration options for the local-volume-provisioner, refer to the [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) document.
 
     * Modify the `volumes` and `volumeMounts` fields in the DaemonSet spec to ensure that the discovery directory can be mounted to the corresponding directory in the Pod:
 
@@ -179,7 +179,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
     >
     > If there are no mount points in the discovery directory, no PV is created and the output is empty.
 
-For more information, refer to the [Kubernetes local storage](https://kubernetes.io/docs/concepts/storage/volumes/#local) and [local-static-provisioner document](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview).
+For more information, refer to the [Kubernetes local storage](https://kubernetes.io/docs/concepts/storage/volumes/#local) and [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview) documents.
 
 #### Offline deployment
 
@@ -200,13 +200,13 @@ The steps for offline deployment are the same as for online deployment, except f
     docker load -i local-volume-provisioner-v2.3.4.tar
     ```
 
-### Best Practices
+### Best practices
 
 - The unique identifier for a local PV is its path. To avoid conflicts, it is recommended to generate a unique path using the UUID of the device.
 - To ensure I/O isolation, it is recommended to use a dedicated physical disk per PV for hardware-based isolation.
 - For capacity isolation, it is recommended to use either a partition per PV or a physical disk per PV.
 
-For more information on local PV on Kubernetes, refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) documentation.
+For more information on local PV on Kubernetes, refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) document.
 
 ## Data safety
 
@@ -254,4 +254,4 @@ When the reclaim policy of PVs is set to `Retain`, if you have confirmed that th
     kubectl patch pv ${pv_name} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
     ```
 
-For more details, refer to the [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/) documentation.
+For more details, refer to the [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/) document.
