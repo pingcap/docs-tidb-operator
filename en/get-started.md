@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/get-started/','/docs/dev/tidb-in-kuberne
 
 # Get Started with TiDB on Kubernetes
 
-This document provides an introduction to creating a simple Kubernetes cluster and using it to deploy a basic test TiDB cluster using TiDB Operator.
+This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
 > **Warning:**
 >
@@ -195,7 +195,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 
 > **Note:**
 >
-> If you are using Kubernetes version earlier than 1.16, only the v1beta1 CRD is supported. In that case, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
+> If you are using a Kubernetes version earlier than 1.16, only the v1beta1 CRD is supported. In that case, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
 
 ### Install TiDB Operator
 
@@ -276,7 +276,7 @@ Once all the Pods are in the "Running" state, you can proceed to the next step.
 
 ## Step 3: Deploy a TiDB cluster and its monitoring services
 
-This section provides instructions on how to deploy a TiDB cluster and its monitoring services.
+This section describes how to deploy a TiDB cluster and its monitoring services.
 
 ### Deploy a TiDB cluster
 
@@ -295,7 +295,7 @@ tidbcluster.pingcap.com/basic created
 
 </details>
 
-If you need to deploy a TiDB cluster on an ARM64 machine, refer to the [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md) guide.
+If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
 ### Deploy TiDB Dashboard independently
 
@@ -583,9 +583,9 @@ Then access TiDB Dashboard through `http://${remote-server-IP}:12333`.
 
 ## Step 5: Upgrade a TiDB cluster
 
-TiDB Operator simplifies the process of performing a rolling upgrade of a TiDB cluster. This section provides instructions on how to upgrade your TiDB cluster to the "nightly" release.
+TiDB Operator simplifies the process of performing a rolling upgrade of a TiDB cluster. This section describes how to upgrade your TiDB cluster to the "nightly" release.
 
-Before proceeding, it is important to familiarize yourself with the `kubectl patch` sub-command. This command allows you to directly apply changes to the running cluster resources. There are different patch strategies available, each with its own capabilities, limitations, and allowed formats. For more information, refer to the [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) documentation.
+Before proceeding, it is important to familiarize yourself with the `kubectl patch` sub-command. This command lets you directly apply changes to the running cluster resources. There are different patch strategies available, each with its own capabilities, limitations, and allowed formats. For more information, refer to the [Kubernetes Patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/) document.
 
 ### Modify the TiDB cluster version
 
@@ -604,7 +604,7 @@ tidbcluster.pingcap.com/basic patched
 
 </details>
 
-### Monitor Pod restarts
+### Wait for Pods to restart
 
 To monitor the progress of the cluster upgrade and observe the restart of its components, run the following command. You should see some Pods transitioning from `Terminating` to `ContainerCreating` and finally to `Running`.
 
@@ -629,7 +629,7 @@ basic-tikv-0                      1/1     Running       0          4m13s
 
 Once all Pods have been restarted, you can verify that the cluster's version number has been updated.
 
-Note that if you had previously set up port forwarding, you will need to reset it as the Pods it was forwarding to have been destroyed and recreated.
+Note that if you had previously set up port forwarding, you will need to reset it because the Pods it forwarded to have been destroyed and recreated.
 
 ```
 kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
@@ -648,7 +648,7 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 <details>
 <summary>Expected output</summary>
 
-Note that the version might vary depending on the time the command is run.
+Note that `nightly` is not a fixed version and the version might vary depending on the time the command is run.
 
 ```
 *************************** 1. row ***************************
@@ -668,7 +668,7 @@ Store: tikv
 
 ## Step 6: Destroy the TiDB cluster and the Kubernetes cluster
 
-Once you have finished testing, it is time to destroy the TiDB cluster and the Kubernetes cluster.
+After you finish testing, you can destroy the TiDB cluster and the Kubernetes cluster.
 
 ### Destroy the TiDB cluster
 
@@ -690,7 +690,7 @@ To delete the TiDB cluster, use the following command:
 kubectl delete tc basic -n tidb-cluster
 ```
 
-In this command, `tc` is a shorthand for `tidbclusters`.
+In this command, `tc` is short for `tidbclusters`.
 
 #### Delete TiDB monitoring services
 
