@@ -25,11 +25,7 @@ PVs are automatically created by the system administrator or volume provisioner.
 
 TiKV uses the Raft protocol to replicate data. When a node fails, PD automatically schedules data to fill the missing data replicas. TiKV requires low read and write latency, so it is strongly recommended to use local SSD storage in a production environment.
 
-<<<<<<< HEAD
-PD also uses Raft to replicate data. PD is not an I/O-intensive application, but a database for storing cluster meta information, so a local SAS disk or network SSD storage such as EBS General Purpose SSD (gp2) volumes on AWS or SSD persistent disks on GCP can meet the requirements.
-=======
 PD also uses Raft to replicate data. PD is not an I/O-intensive application, but rather a database for storing cluster meta information. Therefore, a local SAS disk or network SSD storage such as EBS General Purpose SSD (gp2) volumes on AWS or SSD persistent disks on Google Cloud can meet the requirements.
->>>>>>> 495d0a8c (en: optimize 2 docs (#2396))
 
 To ensure availability, it is recommended to use network storage for components such as TiDB monitoring, TiDB Binlog, and `tidb-backup` because they do not have redundant replicas. TiDB Binlog's Pump and Drainer components are I/O-intensive applications that require low read and write latency, so it is recommended to use high-performance network storage such as EBS Provisioned IOPS SSD (io1) volumes on AWS or SSD persistent disks on GCP.
 

@@ -298,15 +298,8 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a 
 
 ### Deploy TiDB Dashboard independently
 
-<<<<<<< HEAD
-{{< copyable "shell-regular" >}}
-
 ``` shell
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.5/examples/basic/tidb-dashboard.yaml
-=======
-```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
->>>>>>> 495d0a8c (en: optimize 2 docs (#2396))
 ```
 
 <details>
@@ -320,15 +313,8 @@ tidbdashboard.pingcap.com/basic created
 
 ### Deploy TiDB monitoring services
 
-<<<<<<< HEAD
-{{< copyable "shell-regular" >}}
-
 ``` shell
 kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.4.5/examples/basic/tidb-monitor.yaml
-=======
-```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
->>>>>>> 495d0a8c (en: optimize 2 docs (#2396))
 ```
 
 <details>
