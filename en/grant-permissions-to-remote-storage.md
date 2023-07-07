@@ -48,6 +48,7 @@ If you associate the user's [IAM](https://aws.amazon.com/cn/iam/) role with the 
             "Action": [
                 "ec2:AttachVolume",
                 "ec2:CreateSnapshot",
+                "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
                 "ec2:DeleteSnapshot",
@@ -57,7 +58,8 @@ If you associate the user's [IAM](https://aws.amazon.com/cn/iam/) role with the 
                 "ec2:DescribeSnapshots",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
-                "ec2:DetachVolume"
+                "ec2:DetachVolume",
+                "ebs:ListSnapshotBlocks"
             ],
             "Resource": "*"
         }
@@ -100,7 +102,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
             "Effect": "Allow",
             "Action": [
                 "ec2:AttachVolume",
-                "ec2:CreateSnapshot",
+                "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
                 "ec2:DeleteSnapshot",
