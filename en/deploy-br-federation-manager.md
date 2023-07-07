@@ -292,3 +292,59 @@ spec:
 ```shell
 kubectl apply -f restore.yaml -n {namespace}
 ```
+
+# Scheduled volume backup across Kubernetes Clusters
+
+You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled snapshot backup is described by a custom `VolumeBackupSchedule` CR object. A volume backup is triggered at each backup time point. Its underlying implementation is the ad-hoc volume backup.
+
+## Perform a scheduled volume backup
+
+Depending on which method you choose to grant permissions to the remote storage, perform a scheduled volume backup by doing one of the following:
+
++ Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
+
+  {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f volume-backup-scheduler.yaml
+    ```
+
+  The content of `volume-backup-scheduler.yaml` is as follows:
+
+  {{< copyable "" >}}
+
+    ```yaml
+    ---
+    apiVersion: federation.pingcap.com/v1alpha1
+    kind: VolumeBackupSchedule
+    metadata:
+      name: {scheduler-name}
+      namespace: {namespace-name}
+    spec:
+      #maxBackups: {number}
+      #pause: {bool}
+      maxReservedTime: {number}
+      schedule: {cron-expression}
+      backupTemplate:
+        clusters:
+          - k8sClusterName: {k8s-name1}
+            tcName: {tc-name1}
+            tcNamespace: {tc-namespace1}
+            backup:
+          - k8sClusterName: {k8s-name2}
+            tcName: {tc-name2}
+            tcNamespace: {tc-namespace2} 
+          - ...
+        template:
+          br:
+            sendCredToTikv: false
+            cleanPolicy: Delete
+            resources: {}
+          s3:
+            provider: aws
+            region: {region-name}
+            bucket: {bucket-name}
+            prefix: {backup-path}
+          serviceAccount: tidb-backup-manager
+          toolImage: {br-image}
+    ```
