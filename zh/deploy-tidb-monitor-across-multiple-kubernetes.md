@@ -65,12 +65,12 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
       - name: ${cluster_name}
         namespace: ${cluster_namespace}
       externalLabels:
-        # k8s_clsuter indicates the k8s cluster name, you can change
+        # k8s_cluster indicates the k8s cluster name, you can change
         # the label's name on your own, but you should notice that the
         # "cluster" label has been used by the TiDB metrics already.
         # For more information, please refer to the issue
         # https://github.com/pingcap/tidb-operator/issues/4219.
-        k8s_clsuter: ${kubernetes_cluster_name}
+        k8s_cluster: ${kubernetes_cluster_name}
         # add other meta labels here
         #region: us-east-1
       initializer:
