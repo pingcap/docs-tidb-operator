@@ -265,7 +265,7 @@ This section introduces the fields in the `Restore` CR.
 
 * `.spec.backupType`: the restore type. This field is valid only when you use BR to restore data. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
     * `full`: restore all databases in a TiDB cluster.
-    * `db`: restore a specifed database in a TiDB cluster.
+    * `db`: restore a specified database in a TiDB cluster.
     * `table`: restore a specified table in a TiDB cluster.
 
 * `.spec.tikvGCLifeTime`: the temporary `tikv_gc_life_time` setting during the restore, which defaults to `72h`.
