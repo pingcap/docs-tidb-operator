@@ -14,5 +14,5 @@ TiDB Operator version: 1.4.6
 
 ## Bug fixes
 
-- Fix the issue that `Error loading shared library libresolv.so.2` when execute backup/restore with BR version >=v6.6.0 ([#4935](https://github.com/pingcap/tidb-operator/pull/4935), [@Ehco1996](https://github.com/Ehco1996))
+- Fix the issue of `Error loading shared library libresolv.so.2` when executing backup and restore with BR >=v6.6.0 ([#4935](https://github.com/pingcap/tidb-operator/pull/4935), [@Ehco1996](https://github.com/Ehco1996))
 - Fix the issue that graceful drain for TiCDC does not work if a non-SemVer image tag is used for TiCDC ([#5173](https://github.com/pingcap/tidb-operator/pull/5173), [@csuzhangxc](https://github.com/csuzhangxc))
