@@ -14,5 +14,5 @@ TiDB Operator 版本：1.4.6
 
 ## 错误修复
 
-- 修复使用 >=v6.6.0 BR 做备份恢复时报 `Error loading shared library libresolv.so.2` 的错误 ([#4935](https://github.com/pingcap/tidb-operator/pull/4935), [@Ehco1996](https://github.com/Ehco1996))
+- 修复使用 v6.6.0 及以上版本的 BR 执行备份恢复时报 `Error loading shared library libresolv.so.2` 的错误的问题 ([#4935](https://github.com/pingcap/tidb-operator/pull/4935), [@Ehco1996](https://github.com/Ehco1996))
 - 修复使用的 TiCDC image tag 不符合语义化版本时无法 Graceful Drain TiCDC 的问题 ([#5173](https://github.com/pingcap/tidb-operator/pull/5173), [@csuzhangxc](https://github.com/csuzhangxc))
