@@ -21,6 +21,7 @@ TiDB Operator 版本：1.5.0
 - 支持为 PD 设置启动超时时间 ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
 - 当 TiKV 在扩展 PVC 的大小时不再执行驱逐 leader 操作 ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持更新 PD、TiKV、TiFlash、TiProxy、DM-Master 与 DM-worker 组件 Service 的 annotation 与 label ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
+- 默认启用 volume resize 支持 ([#5167](https://github.com/pingcap/tidb-operator/pull/5167), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug 修复
 

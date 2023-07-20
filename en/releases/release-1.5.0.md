@@ -21,6 +21,7 @@ TiDB Operator version: 1.5.0
 - Support configuring PD start timeout ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
 - Skip evicting leader for TiKV when changing PVC size ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support updating annotations and labels in services for PD, TiKV, TiFlash, TiProxy, DM-master and DM-worker ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
+- Enable volume resizing by default ([#5167](https://github.com/pingcap/tidb-operator/pull/5167), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug fixes
 
