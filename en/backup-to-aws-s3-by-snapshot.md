@@ -23,6 +23,8 @@ If you have any other requirements, select an appropriate backup method based on
 ### Limitations
 
 - Snapshot backup is applicable to TiDB Operator v1.4.0 or above, and TiDB v6.3.0 or above.
+- For TiKV configuration, do not set [`resolved-ts.enable`](https://docs.pingcap.com/tidb/stable/tikv-configuration-file#enable-2) to `false`, and do not set [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/tidb/stable/tikv-configuration-file#report-min-resolved-ts-interval-new-in-v600) to `"0s"`. Otherwise, it can lead to backup failure.
+- For PD configuration, do not set [`pd-server.min-resolved-ts-persistence-interval`](https://docs.pingcap.com/tidb/stable/pd-configuration-file#min-resolved-ts-persistence-interval-new-in-v600) to `"0s"`. Otherwise, it can lead to backup failure.
 - To use this backup method, the TiDB cluster must be deployed on AWS EKS and uses AWS EBS volumes.
 - This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 

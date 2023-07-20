@@ -23,6 +23,8 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 ### 使用限制
 
 - 要使用此功能，TiDB Operator 应为 v1.4.0 及以上，TiDB 应为 v6.3.0 及以上。
+- TiKV 配置中，**不能**将 [`resolved-ts.enable`](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#enable-2) 设置为 `false`，也**不能**将 [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#report-min-resolved-ts-interval-从-v600-版本开始引入) 设置为 `"0s"`，否则会导致备份失败。
+- PD 配置中，**不能**将 [`pd-server.min-resolved-ts-persistence-interval`](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file#min-resolved-ts-persistence-interval-从-v600-版本开始引入) 设置为 `"0s"`，否则会导致备份失败。
 - TiDB 集群部署在 EKS 上，且使用了 AWS EBS 卷。
 - 暂不支持 TiFlash、TiCDC、DM 和 TiDB Binlog 相关节点的卷快照备份。
 
