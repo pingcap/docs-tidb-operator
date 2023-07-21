@@ -126,6 +126,7 @@
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
   - v1.4
+    - [1.4.7](releases/release-1.4.7.md)
     - [1.4.6](releases/release-1.4.6.md)
     - [1.4.5](releases/release-1.4.5.md)
     - [1.4.4](releases/release-1.4.4.md)

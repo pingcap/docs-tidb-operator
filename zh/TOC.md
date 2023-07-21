@@ -126,6 +126,7 @@
   - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)
 - 版本发布历史
   - v1.4
+    - [1.4.7](releases/release-1.4.7.md)
     - [1.4.6](releases/release-1.4.6.md)
     - [1.4.5](releases/release-1.4.5.md)
     - [1.4.4](releases/release-1.4.4.md)
