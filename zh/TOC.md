@@ -127,6 +127,7 @@
   - v1.5
     - [1.5.0-beta.1](releases/release-1.5.0-beta.1.md)
   - v1.4
+    - [1.4.7](releases/release-1.4.7.md)
     - [1.4.6](releases/release-1.4.6.md)
     - [1.4.5](releases/release-1.4.5.md)
     - [1.4.4](releases/release-1.4.4.md)
