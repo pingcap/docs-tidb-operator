@@ -8,8 +8,6 @@ title: TiDB Operator 1.4. Release Notes
 
 TiDB Operator 版本：1.4.7
 
-## 优化提升
-
 ## 错误修复
 
 - 让 BackupSchedule CR 字段里的 `logBackupTemplate` 字段变成可选值 ([#5190](https://github.com/pingcap/tidb-operator/pull/5190), [@Ehco1996](https://github.com/Ehco1996))

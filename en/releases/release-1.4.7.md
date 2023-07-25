@@ -8,8 +8,6 @@ Release date: July 26, 2023
 
 TiDB Operator version: 1.4.7
 
-## Improvements
-
 ## Bug fixes
 
 - Make `logBackupTemplate` optional in BackupSchedule CR ([#5190](https://github.com/pingcap/tidb-operator/pull/5190), [@Ehco1996](https://github.com/Ehco1996))
