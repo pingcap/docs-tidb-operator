@@ -457,7 +457,7 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 
 ## Perform a scheduled volume backup
 
-Depending on which method you choose to grant permissions to the remote storage, perform a scheduled volume backup by doing one of the following:
+Perform a scheduled volume backup by doing one of the following:
 
 + Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
 
@@ -481,7 +481,7 @@ Depending on which method you choose to grant permissions to the remote storage,
     spec:
       #maxBackups: {number}
       #pause: {bool}
-      maxReservedTime: {number}
+      maxReservedTime: {duration}
       schedule: {cron-expression}
       backupTemplate:
         clusters:
