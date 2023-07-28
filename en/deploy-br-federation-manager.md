@@ -75,27 +75,46 @@ export CURRENT_CONTEXT=$(kubectl config current-context)
 export CURRENT_CLUSTER=$(kubectl config view --raw -o=go-template='{{range .contexts}}{{if eq .name "'''${CURRENT_CONTEXT}'''"}}{{ index .context "cluster" }}{{end}}{{end}}')
 export CLUSTER_CA=$(kubectl config view --raw -o=go-template='{{range .clusters}}{{if eq .name "'''${CURRENT_CLUSTER}'''"}}"{{with index .cluster "certificate-authority-data" }}{{.}}{{end}}"{{ end }}{{ end }}')
 export CLUSTER_SERVER=$(kubectl config view --raw -o=go-template='{{range .clusters}}{{if eq .name "'''${CURRENT_CLUSTER}'''"}}{{ .cluster.server }}{{end}}{{ end }}')
+export DATA_PLANE_SYMBOL="a"
 
 cat << EOF > {k8s-name}-kubeconfig
 apiVersion: v1
 kind: Config
-current-context: ${CURRENT_CONTEXT}
+current-context: ${DATA_PLANE_SYMBOL}
 contexts:
-- name: ${CURRENT_CONTEXT}
+- name: ${DATA_PLANE_SYMBOL}
   context:
-    cluster: ${CURRENT_CONTEXT}
-    user: br-federation-member
+    cluster: ${CURRENT_CLUSTER}
+    user: br-federation-member-${DATA_PLANE_SYMBOL}
     namespace: kube-system
 clusters:
-- name: ${CURRENT_CONTEXT}
+- name: ${CURRENT_CLUSTER}
   cluster:
     certificate-authority-data: ${CLUSTER_CA}
     server: ${CLUSTER_SERVER}
 users:
-- name: br-federation-member
+- name: br-federation-member-${DATA_PLANE_SYMBOL}
   user:
     token: ${USER_TOKEN_VALUE}
 EOF
+```
+
+> **Note:**
+>
+> The environment variable `$DATA_PLANE_SYMBOL` indicates the name of the data plane cluster, and you should provide a brief and unique name.
+> We use it as the context name of kubeconfig in the script above and the context name will be used as `k8sClusterName`
+> in the `VolumeBackup` and `VolumeRestore` CR.
+
+#### Merge multiple kubeconfig files to one
+
+If you follow the step above to generate kubeconfig, you may have multiple kubeconfig files. We should merge them to one kubeconfig file.
+
+Suppose that you have 3 kubeconfig files with file paths: `kubeconfig-path1`, `kubeconfig-path2`, `kubeconfig-path3`, and you want to merge them to one kubeconfing file with file path `data-planes-kubeconfig`.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+KUBECONFIG=kubeconfig-path1:kubeconfig-path2:kubeconfig-path3 kubectl config view --flatten > data-planes-kubeconfig
 ```
 
 ### Control Plane
@@ -112,11 +131,11 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 
 #### Create Secret
 
-You already have kubeconfig files of data planes. Now, you need encode all the kubeconfig files to a secret.
+You already have a kubeconfig file of data planes. Now, you need encode the kubeconfig file to a secret.
 
-Firstly, encode every kubeconfig file by `base64 -i {k8s-name}-kubeconfig`.
+Firstly, encode the kubeconfig file by `base64 -i {kubeconfig-path}`.
 
-Secondly, put all the output of first step to a secret object.
+Secondly, put the output of first step to a secret object.
 
 {{< copyable "shell-regular" >}}
 
@@ -127,9 +146,7 @@ metadata:
   name: br-federation-kubeconfig
 type: Opaque
 data:
-  {k8s-name1}: {encoded-kubeconfig-1}
-  {k8s-name2}: {encoded-kubeconfig-2}
-  ...
+  kubeconfig: {encoded-kubeconfig}
 ```
 
 #### Install BR Federation Manager
@@ -149,12 +166,154 @@ kubectl create ns br-fed-admin
 kubectl create -f {secret}.yaml -n br-fed-admin
 ```
 3. Download tidb-operator repo and switch to release-1.5 branch. Enter the Helm chart directory `./charts/br-federation`
-and install the Helm chart.
+and install the helm chart.
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 helm install --namespace br-fed-admin br-federation-manager . --set image=${br-federation-image}
+```
+
+#### Customize BR Federation Manager Deployment
+
+The first two steps are same as above, and we just describe the third step. There are two ways to finish that.
+
+##### Use Helm
+
+Download tidb-operator repo and switch to release-1.5 branch. Enter the Helm chart directory `./charts/br-federation`
+and find the file `values.yaml`. Then edit this file, replace the value of `image` if you want to set a custom image.
+Then execute the command as followed to install the helm chart
+
+{{< copyable "shell-regular" >}}
+
+```shell
+helm install --namespace br-fed-admin br-federation-manager . --values ./values.yaml
+```
+
+##### Use Deployment Directly
+
+Install resources about RBAC.
+
+{{< copyable "shell-regular" >}}
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: br-federation-manager
+    app.kubernetes.io/instance: br-federation-manager
+    app.kubernetes.io/name: br-federation
+  name: br-federation-manager
+  namespace: br-fed-admin
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: br-federation-manager
+    app.kubernetes.io/instance: br-federation-manager
+    app.kubernetes.io/name: br-federation
+  name: br-federation-manager:br-federation-manager
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+      - events
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - update
+      - delete
+      - patch
+  - apiGroups:
+      - federation.pingcap.com
+    resources:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: br-federation-manager
+    app.kubernetes.io/instance: br-federation-manager
+    app.kubernetes.io/name: br-federation
+  name: br-federation-manager:br-federation-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: br-federation-manager:br-federation-manager
+subjects:
+  - kind: ServiceAccount
+    name: br-federation-manager
+    namespace: br-fed-admin
+```
+{{< copyable "shell-regular" >}}
+
+Install the `Deployment`
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: br-federation-manager
+    app.kubernetes.io/instance: br-federation-manager
+    app.kubernetes.io/name: br-federation
+  name: br-federation-manager
+  namespace: br-fed-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: br-federation-manager
+      app.kubernetes.io/instance: br-federation-manager
+      app.kubernetes.io/name: br-federation
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: br-federation-manager
+        app.kubernetes.io/instance: br-federation-manager
+        app.kubernetes.io/name: br-federation
+    spec:
+      containers:
+      - command:
+        - /usr/local/bin/br-federation-manager
+        - -v=4
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: TZ
+          value: UTC
+        image: wangle1321/br-federation-manager:202307261800-1.5
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 10
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          tcpSocket:
+            port: 6060
+        name: br-federation-manager
+        resources:
+          requests:
+            cpu: 80m
+            memory: 50Mi
+        volumeMounts:
+        - mountPath: /etc/br-federation/federation-kubeconfig
+          name: federation-kubeconfig
+          readOnly: true
+      serviceAccount: br-federation-manager
+      volumes:
+      - name: federation-kubeconfig
+        secret:
+          secretName: br-federation-kubeconfig
 ```
 
 # Backup EBS across Kubernetes Clusters
@@ -174,7 +333,7 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 ## Create Volume Backup in Control Plane
 
 1. Create a volume backup yaml `backup.yaml`. **Note**, the value of `spec.clusters.k8sClusterName` field should be same as
-the key of secret that contains all the encoded kubeconfig files
+the **context name** of the kubeconfig which the br-federation-manager uses.
 
 {{< copyable "shell-regular" >}}
 
@@ -244,8 +403,7 @@ You have a TiDB cluster deployed across all the data planes, and `spec.recoveryM
 ## Create Volume Backup in Control Plane
 
 1. Create a volume restore yaml `restore.yaml`. You can get the value of `spec.clusters.backup.s3` from `status.backups.backupPath` of the VolumeBackup CR.
-**Note**, the value of `spec.clusters.k8sClusterName` field should be same as
-the key of secret that contains all the encoded kubeconfig files
+**Note**, the value of `spec.clusters.k8sClusterName` field should be same as the **context name** of the kubeconfig which the br-federation-manager uses.
 
 {{< copyable "shell-regular" >}}
 
