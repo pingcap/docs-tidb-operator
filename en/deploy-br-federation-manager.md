@@ -31,8 +31,6 @@ the kubeconfig file by yourself if you have the permission to access all the dat
 
 We should create the resources below in every data plane to allow br federation manager to manipulate backup and restore CR.
 
-{{< copyable "shell-regular" >}}
-
 ```yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -69,7 +67,6 @@ subjects:
 
 For Kubernetes with version >= 1.24, you should create service account secret manually for external applications to access the Kubernetes API server.
 
-{{< copyable "shell-regular" >}}
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -159,8 +156,6 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 You already have a kubeconfig file of data planes. Now, you need encode the kubeconfig file to a secret.
 Firstly, encode the kubeconfig file by `base64 -i ${kubeconfig-path}`. Secondly, put the output of first step to a secret object.
 **Note, the name of the secret and the data key of kubeconfig field must be equal to which is in the example below**.
-
-{{< copyable "shell-regular" >}}
 
 ```yaml
 apiVersion: v1
