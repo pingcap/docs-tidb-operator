@@ -186,7 +186,7 @@ Solution:
 
 2. Edit the configuration file of the TiDB cluster and increase the value of TiKV's `keepalive`:
 
-    ```shell
+    ```yaml
     config: |
       [server]
         grpc-keepalive-time = "500s"
