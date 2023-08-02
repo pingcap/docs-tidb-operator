@@ -84,7 +84,7 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
       - k8sClusterName: ${k8s-name2}
         tcName: ${tc-name2}
         tcNamespace: ${tc-namespace2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: true
@@ -124,7 +124,7 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
       - k8sClusterName: ${k8s-name2}
         tcName: ${tc-name2}
         tcNamespace: ${tc-namespace2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: false
@@ -161,7 +161,7 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
       - k8sClusterName: ${k8s-name2}
         tcName: ${tc-name2}
         tcNamespace: ${tc-namespace2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: false
@@ -212,7 +212,7 @@ status:
     k8sClusterName: {k8s-name2}
     tcName: {tc-name2}
     tcNamespace: {tc-namespace2}
-  - ...
+  - ... # other backups
 ```
 
 ## Delete the `VolumeBackup` CR
@@ -245,8 +245,6 @@ Perform a scheduled volume backup by doing one of the following:
 
   The content of `volume-backup-scheduler.yaml` is as follows:
 
-  {{< copyable "" >}}
-
     ```yaml
     ---
     apiVersion: federation.pingcap.com/v1alpha1
@@ -268,7 +266,7 @@ Perform a scheduled volume backup by doing one of the following:
           - k8sClusterName: {k8s-name2}
             tcName: {tc-name2}
             tcNamespace: {tc-namespace2} 
-          - ...
+          - ... # other clusters
         template:
           br:
             sendCredToTikv: false

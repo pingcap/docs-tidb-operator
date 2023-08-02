@@ -74,8 +74,6 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
 
     The `restore-fed.yaml` file has the following content:
 
-    {{< copyable "shell-regular" >}}
-
     ```yaml
     ---
     apiVersion: federation.pingcap.com/v1alpha1
@@ -104,7 +102,7 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
             region: ${region-name}
             bucket: ${bucket-name}
             prefix: ${backup-path2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: true
@@ -120,8 +118,6 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
     ```
 
     The `restore-fed.yaml` file has the following content:
-
-    {{< copyable "shell-regular" >}}
 
     ```yaml
     ---
@@ -151,7 +147,7 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
             region: ${region-name}
             bucket: ${bucket-name}
             prefix: ${backup-path2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: false
@@ -167,8 +163,6 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
     ```
 
     The `restore-fed.yaml` file has the following content:
-
-    {{< copyable "shell-regular" >}}
 
     ```yaml
     ---
@@ -196,7 +190,7 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
             region: ${region-name}
             bucket: ${bucket-name}
             prefix: ${backup-path2}
-      - ...
+      - ... # other clusters
       template:
         br:
           sendCredToTikv: false
