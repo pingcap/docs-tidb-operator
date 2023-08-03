@@ -10,7 +10,11 @@ TiDB Operator 版本：1.5.0
 
 ## 新功能
 
-- TODO
+- 添加 BR Federation Manager，支持跨多个 Kubernetes 集群编排 `Backup` 和 `Restore` CR ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
+- 支持用 `VolumeBackup` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份 ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
+- 支持用 `VolumeRestore` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的恢复 ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
+- 支持用 `VolumeBackupSchedule` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的自动备份 ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
+- 支持对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份时备份与 `TidbCluster` 相关的 CR 数据 ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
 
 ## 优化提升
 

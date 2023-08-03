@@ -59,7 +59,8 @@ If you associate the user's [IAM](https://aws.amazon.com/cn/iam/) role with the 
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
                 "ec2:DetachVolume",
-                "ebs:ListSnapshotBlocks"
+                "ebs:ListSnapshotBlocks",
+                "ebs:ListChangedBlocks"
             ],
             "Resource": "*"
         }

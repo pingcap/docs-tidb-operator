@@ -10,7 +10,11 @@ TiDB Operator version: 1.5.0
 
 ## New Feature
 
-- TODO
+- Add a component of BR Federation Manager to support orchestrate `Backup` and `Restore` CR across multiple Kubernetes ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeBackup` CR ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
+- Support restore TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeRestore` CR ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
+- Support automatically backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeBackupSchedule` CR ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
+- Support backup manifests related to `TidbCluster` when backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
 
 ## Improvements
 
