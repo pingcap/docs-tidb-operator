@@ -10,6 +10,10 @@ TiDB Operator v1.5 引入了以下关键特性，从扩展性、易用性等方�
 
 如需使用在 [#4959](https://github.com/pingcap/tidb-operator/pull/4959) 中引入的 `PreferDualStack` 特性，Kubernetes 版本需要大于等于 v1.20。
 
+## 滚动升级改动
+
+- 由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 v7.1.0+ 版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
+
 ## 扩展性
 
 - 支持通过 `bootstrapSQLConfigMapName` 字段指定 TiDB 首次启动时执行的初始 SQL 文件。

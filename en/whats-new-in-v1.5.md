@@ -10,6 +10,10 @@ TiDB Operator 1.5 introduces the following key features, which helps you manage 
 
 When using the `PreferDualStack` feature introduced in [#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
 
+## Rolling Update Changes
+
+- If TiFlash is deployed in a v7.1.0+ cluster, the TiFlash component will be rolling updated after upgrading TiDB Operator to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
+
 ## Extensibility
 
 - Support specifying an initialization SQL file on TiDB's first bootstrap with the `bootstrapSQLConfigMapName` field.

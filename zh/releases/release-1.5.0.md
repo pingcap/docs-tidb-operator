@@ -8,6 +8,10 @@ title: TiDB Operator 1.5.0 Release Notes
 
 TiDB Operator 版本：1.5.0
 
+## 滚动升级改动
+
+- 由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 v7.1.0+ 版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
+
 ## 新功能
 
 - 添加 BR Federation Manager，支持跨多个 Kubernetes 集群编排 `Backup` 和 `Restore` CR ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
