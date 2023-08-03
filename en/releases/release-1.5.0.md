@@ -8,6 +8,10 @@ Release date: August 4, 2023
 
 TiDB Operator version: 1.5.0
 
+## Rolling Update Changes
+
+- If TiFlash is deployed in a v7.1.0+ cluster, the TiFlash component will be rolling updated after upgrading TiDB Operator to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
+
 ## New Feature
 
 - Add a component of BR Federation Manager to support orchestrate `Backup` and `Restore` CR across multiple Kubernetes ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
