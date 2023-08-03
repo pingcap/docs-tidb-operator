@@ -102,6 +102,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
             "Action": [
                 "ec2:AttachVolume",
                 "ec2:CreateSnapshot",
+                "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
                 "ec2:DeleteSnapshot",
@@ -111,7 +112,9 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
                 "ec2:DescribeSnapshots",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
-                "ec2:DetachVolume"
+                "ec2:DetachVolume",
+                "ebs:ListSnapshotBlocks",
+                "ebs:ListChangedBlocks"
             ],
             "Resource": "*"
         }

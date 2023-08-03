@@ -113,7 +113,9 @@ When you use this method to grant permissions, you can [create the EKS cluster](
                 "ec2:DescribeSnapshots",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
-                "ec2:DetachVolume"
+                "ec2:DetachVolume",
+                "ebs:ListSnapshotBlocks",
+                "ebs:ListChangedBlocks"
             ],
             "Resource": "*"
         }
