@@ -15,6 +15,7 @@ TiDB Operator v1.5 引入了以下关键特性，从扩展性、易用性等方�
 - 支持通过 `bootstrapSQLConfigMapName` 字段指定 TiDB 首次启动时执行的初始 SQL 文件。
 - 支持通过配置 `spec.preferIPv6: true` 为所有组件的 Service 的 `ipFamilyPolicy` 配置 `PreferDualStack`。
 - 支持使用 Advanced StatefulSet 管理 TiCDC 和 TiProxy。
+- 添加 BR Federation Manager 组件，支持对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份恢复。
 
 ## 易用性
 

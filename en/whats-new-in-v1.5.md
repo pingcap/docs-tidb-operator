@@ -15,6 +15,7 @@ When using the `PreferDualStack` feature introduced in [#4959](https://github.co
 - Support specifying an initialization SQL file on TiDB's first bootstrap with the `bootstrapSQLConfigMapName` field.
 - Support setting `PreferDualStack` for all Service's `ipFamilyPolicy` with `spec.preferIPv6: true`.
 - Support managing TiCDC and TiProxy with Advanced StatefulSet.
+- Add a component of BR Federation Manager to support backup/restore TiDB cluster deployed across multiple Kubernetes using EBS snapshot.
 
 ## Usability
 
