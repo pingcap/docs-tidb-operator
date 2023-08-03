@@ -1,10 +1,9 @@
 ---
-title: Restore a TiDB Cluster across multiple Kubernetes from EBS Volume Snapshots
+title: Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots
 summary: Learn how to restore a TiDB cluster across multiple Kubernetes from EBS Volume Snapshots.
-aliases: ['/docs/tidb-in-kubernetes/dev/restore-by-ebs-snapshot-across-multiple-kubernetes/']
 ---
 
-# Restore a TiDB Cluster across multiple Kubernetes from EBS Volume Snapshots
+# Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots
 
 This document describes how to restore backup data in AWS EBS snapshots to a TiDB cluster across multiple Kubernetes.
 
@@ -34,7 +33,7 @@ The restore method described in this document is implemented based on CustomReso
 
 ### Complete the volume backup
 
-To restore a TiDB cluster across multiple Kubernetes from EBS snapshots, you should have a completed `VolumeBackup`. For steps of performing snapshot backup, refer to [Back Up a TiDB Cluster across multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md).
+To restore a TiDB cluster across multiple Kubernetes from EBS snapshots, you should have a completed `VolumeBackup`. For steps of performing snapshot backup, refer to [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md).
 
 ### Prepare the restore clusters
 
@@ -50,8 +49,6 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
 
 2. Supposed that you deploy the TiDB cluster in `${namespace}`, create the RBAC-related resources required for the restore in this namespace by running the following command.
 
-   {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f backup-rbac.yaml -n ${namespace}
     ```
@@ -64,9 +61,9 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
 
 **You must execute the steps below in the control plane**. Based on the authorization method you selected in the previous step to grant remote storage access, you can restore data to TiDB using any of the following methods accordingly:
 
-+ Method 1: If you grant permissions by accessKey and secretKey, you can create the `VolumeRestore` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<SimpleTab>
+<div label="AK/SK">
+If you grant permissions by accessKey and secretKey, you can create the `VolumeRestore` CR as follows:
 
     ```shell
     kubectl apply -f restore-fed.yaml
@@ -108,10 +105,10 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
           sendCredToTikv: true
         toolImage: ${br-image}
     ```
+</div>
 
-+ Method 2: If you grant permissions by associating Pod with IAM, you can create the `VolumeRestore` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<div label="IAM role with Pod">
+If you grant permissions by associating Pod with IAM, you can create the `VolumeRestore` CR as follows:
 
     ```shell
     kubectl apply -f restore-fed.yaml
@@ -153,10 +150,10 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
           sendCredToTikv: false
         toolImage: ${br-image}
     ```
+</div>
 
-+ Method 3: If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeRestore` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<div label="IAM role with ServiceAccount">
+If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeRestore` CR as follows:
 
     ```shell
     kubectl apply -f restore-fed.yaml
@@ -197,10 +194,10 @@ Deploy a TiDB cluster across multiple Kubernetes to which you want to restore da
         toolImage: ${br-image}
         serviceAccount: tidb-backup-manager
     ```
+</div>
+</SimpleTab>
 
 After creating the `VolumeRestore` CR, you can check the restore status using the following command:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get vrt -n ${namespace} -o wide

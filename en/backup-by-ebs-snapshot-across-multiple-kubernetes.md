@@ -1,12 +1,11 @@
 ---
-title: Back Up a TiDB Cluster across multiple Kubernetes Using EBS Volume Snapshots
+title: Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots
 summary: Learn how to back up TiDB cluster data across multiple Kubernetes to S3 based on EBS volume snapshots using BR Federation Manager.
-aliases: ['/docs/tidb-in-kubernetes/dev/backup-by-ebs-snapshot-across-multiple-kubernetes/']
 ---
 
-# Back Up a TiDB Cluster across multiple Kubernetes Using EBS Volume Snapshots
+# Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots
 
-This document describes how to back up the data of a TiDB cluster across multiple AWS Kubernetes to AWS storage based on EBS volume snapshots.
+This document describes how to back up the data of a TiDB cluster deployed across multiple AWS Kubernetes to AWS storage based on EBS volume snapshots.
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in BR Federation Manager and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
@@ -46,8 +45,6 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
 
 2. Supposed that you deploy the TiDB cluster in `${namespace}`, create the RBAC-related resources required for the backup in this namespace by running the following command.
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f backup-rbac.yaml -n ${namespace}
     ```
@@ -60,9 +57,9 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
 
 **You must execute the steps below in the control plane**. Based on the authorization method you selected in the previous step to grant remote storage access, you can back up data to S3 storage using any of the following methods accordingly:
 
-+ Method 1: If you grant permissions by accessKey and secretKey, you can create the `VolumeBackup` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<SimpleTab>
+<div label="AK/SK">
+If you grant permissions by accessKey and secretKey, you can create the `VolumeBackup` CR as follows:
 
     ```shell
     kubectl apply -f backup-fed.yaml
@@ -97,10 +94,10 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
         toolImage: ${br-image}
         cleanPolicy: Delete
     ```
+</div>
 
-+ Method 2: If you grant permissions by associating Pod with IAM, you can create the `VolumeBackup` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<div label="IAM role with Pod">
+If you grant permissions by associating Pod with IAM, you can create the `VolumeBackup` CR as follows:
 
     ```shell
     kubectl apply -f backup-fed.yaml
@@ -136,10 +133,10 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
         toolImage: ${br-image}
         cleanPolicy: Delete
     ```
+</div>
 
-+ Method 3: If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeBackup` CR as follows:
-
-    {{< copyable "shell-regular" >}}
+<div label="IAM role with ServiceAccount">
+If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeBackup` CR as follows:
 
     ```shell
     kubectl apply -f backup-fed.yaml
@@ -174,6 +171,8 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
         serviceAccount: tidb-backup-manager
         cleanPolicy: Delete
     ```
+</div>
+</SimpleTab>
 
 > **Note:**
 > 
@@ -181,15 +180,11 @@ Snapshot backup is defined by a customized `VolumeBackup` custom resource (CR) o
 
 After creating the `VolumeBackup` CR, BR Federation Manager automatically starts the backup process in every data plane. You can check the volume backup status using the following command:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl get vbk -n ${namespace} -o wide
 ```
 
 After the volume backup complete, you can get the information of all the data planes in `status.backups` field, which can be used in volume restore. You can get it using the following command:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get vbk ${backup-name} -n ${namespace} -o yaml
@@ -219,8 +214,6 @@ status:
 
 You can delete the `VolumeBackup` CR by running the following commands:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl delete backup ${backup-name} -n ${namespace}
 ```
@@ -236,8 +229,6 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 Perform a scheduled volume backup by doing one of the following:
 
 + Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
-
-  {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f volume-backup-scheduler.yaml
