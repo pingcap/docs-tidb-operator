@@ -9,24 +9,22 @@ This document describes how to deploy BR Federation Manager across multiple Kube
 
 ## Prerequisites
 
-Before deploy BR Federation Manager on Kubernetes, you should satisfy conditions below:
+Before deploy BR Federation Manager on Kubernetes, make sure you have met the following prerequisites:
 
-* Kubernetes >= v1.12
-* you have multiple Kubernetes clusters
-* All the Kubernetes clusters that serve as data planes have deployed TiDB-Operator
+* Kubernetes version must be >= v1.12.
+* You must have multiple Kubernetes clusters.
+* All the Kubernetes clusters that serve as data planes have deployed TiDB Operator.
 
-## Step 1: Generate Kubeconfig file in all Data Planes
+## Step 1: Generate a kubeconfig file in data planes
 
-BR federation manager manages Kubernetes clusters of data planes by accessing their API servers.
-So it needs kubeconfig to authenticate and authorize in the API servers. The users or service accounts in the kubeconfig file need
-have all the permissions of **backups.pingcap.com, restores.pingcap.com** CRD at least.
+The BR Federation Manager manages Kubernetes clusters of data planes by accessing their API servers. To authenticate and authorize itself in the API servers, it requires a kubeconfig file. The users or service accounts in the kubeconfig file need
+have at least all the permissions of **backups.pingcap.com** and **restores.pingcap.com** CRD.
 
-You can get the kubeconfig file from the Kubernetes cluster administrator. But we also provide a way to generate
-the kubeconfig file by yourself if you have the permission to access all the data planes.
+You can get the kubeconfig file from the Kubernetes cluster administrator. However, if you have permission to access all the data planes, you can generate the kubeconfig file on your own.
 
-### Step 1.1: Create Resources about RBAC in Data Plane
+### Step 1.1: Create RBAC resources in data planes
 
-We should create the resources below in every data plane to allow br federation manager to manipulate backup and restore CR.
+To enable the BR Federation Manager to manipulate Backup and Restore CR, you need to create the following resources in every data plane.
 
 ```yaml
 apiVersion: v1
@@ -62,7 +60,7 @@ subjects:
   namespace: tidb-admin
 ```
 
-For Kubernetes with version >= 1.24, you should create service account secret manually for external applications to access the Kubernetes API server.
+For Kubernetes >= v1.24, to let external applications access the Kubernetes API server, you need to manually create a service account secret as follows:
 
 ```yaml
 apiVersion: v1
@@ -74,9 +72,9 @@ metadata:
    kubernetes.io/service-account.name: "br-federation-member"
 ```
 
-### Step 1.2: Generate Kubeconfig files
+### Step 1.2: Generate kubeconfig files
 
-You should execute the script below for every data plane.
+Execute the following script for every data plane.
 
 ```shell
 # for Kubernetes < 1.24
@@ -112,120 +110,126 @@ users:
 EOF
 ```
 
-> **Note:**
->
-> The environment variable `$DATA_PLANE_SYMBOL` indicates the name of the data plane cluster, and you should provide a brief and unique name.
-> We use it as the context name of kubeconfig in the script above and the context name will be used as `k8sClusterName`
-> in the `VolumeBackup` and `VolumeRestore` CR.
+- The environment variable `$DATA_PLANE_SYMBOL` represents the name of the data plane cluster. Make sure that you provide a brief and unique name. In the preceding script, you use this variable as the context name for kubeconfig. The context name will be used as `k8sClusterName` in both the `VolumeBackup` and `VolumeRestore` CR.
 
-### Step 1.3: Merge multiple kubeconfig files to one
+### Step 1.3: Merge multiple kubeconfig files into one
 
-If you follow the step above to generate kubeconfig, you may have multiple kubeconfig files. We should merge them to one kubeconfig file.
+After following the previous steps to generate kubeconfig, you now have multiple kubeconfig files. You need to merge them into a single kubeconfig file.
 
-Suppose that you have 3 kubeconfig files with file paths: `kubeconfig-path1`, `kubeconfig-path2`, `kubeconfig-path3`,
-and you want to merge them to one kubeconfig file with file path `data-planes-kubeconfig`. You can execute the command below to merge kubeconfig files.
+Assume that you have 3 kubeconfig files with file paths: `kubeconfig-path1`, `kubeconfig-path2`, `kubeconfig-path3`. To merge these files into one kubeconfig file with file path `data-planes-kubeconfig`, execute the following command:
 
 ```shell
 KUBECONFIG=${kubeconfig-path1}:${kubeconfig-path2}:${kubeconfig-path3} kubectl config view --flatten > ${data-planes-kubeconfig}
 ```
 
-## Step 2: Deploy BR Federation Manager in Control Plane
+## Step 2: Deploy BR Federation Manager in the control plane
 
-You should select one Kubernetes cluster as control plane to deploy BR Federation Manager. You need only execute steps below in the control plane.
+To deploy the BR Federation Manager, you need to select one Kubernetes cluster as the control plane. The following steps should **only be executed on the control plane**.
 
 ### Step 2.1: Create CRD
 
-BR Federation Manager uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes.
-Therefore, to use BR Federation Manager, you must first create the CRD, which is a one-time job in your Kubernetes cluster.
+The BR Federation Manager uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Before using the BR Federation Manager, you must create the CRD in your Kubernetes cluster. This operation only needs to be performed once.
 
 ```shell
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/federation-crd.yaml
 ```
 
-### Step 2.2: Prepare Kubeconfig Secret
+### Step 2.2: Prepare kubeconfig secret
 
-You already have a kubeconfig file of data planes. Now, you need encode the kubeconfig file to a secret. Take the following steps:
+Now that you already have a kubeconfig file of data planes, you need to encode the kubeconfig file into a secret. Take the following steps:
 
-1. Encode the kubeconfig file by `base64 -i ${kubeconfig-path}`.
-2. Put the output of first step to a secret object.
+1. Encode the kubeconfig file:
+
+     ```shell
+     base64 -i ${kubeconfig-path}
+     ```
+
+2. Store the output from the previous step in a secret object.
 
 > **Note**
 >
-> the name of the secret and the data key of kubeconfig field must be equal to which is in the example below.
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: br-federation-kubeconfig
-type: Opaque
-data:
-  kubeconfig: ${encoded-kubeconfig}
-```
+> The name of the secret and the data key of the kubeconfig field must match the following example:
+>
+> ```yaml
+> apiVersion: v1
+> kind: Secret
+> metadata:
+>   name: br-federation-kubeconfig
+> type: Opaque
+> data:
+>   kubeconfig: ${encoded-kubeconfig}
+> ```
 
 ### Step 2.3: Install BR Federation Manager
 
-This section describes how to install BR Federation Manager using [Helm 3](https://helm.sh/docs/intro/install/).
-If you just want to use default configuration to install BR Federation Manager, please follow the 'quick deployment'.
-If you want to use custom configuration to install BR Federation Manager, please follow the 'custom deployment'.
+This section describes how to install the BR Federation Manager using [Helm 3](https://helm.sh/docs/intro/install/).
 
-#### Quick Deployment
+- If you prefer to use the default configuration, follow the **Quick deployment** steps.
+- If you want to use a custom configuration, follow the **Custom deployment** steps.
 
-1. Create a namespace to create resources related to br federation manager.
-    
+<SimpleTab>
+<div label="Quick deployment">
+
+1. To create resources related to the BR Federation Manager, create a namespace:
+
     ```shell
     kubectl create ns br-fed-admin
     ```
 
-2. Create the secret that contains all the encoded kubeconfig files in the namespace.
-    
+2. In the specified namespace, create a secret that contains all the encoded kubeconfig files:
+
     ```shell
     kubectl create -f ${secret-path} -n br-fed-admin
     ```
 
-3. Add the PingCAP repository.
-    
+3. Add the PingCAP repository:
+
     ```shell
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-4. Install BR Federation Manager.
-    
+4. Install the BR Federation Manager:
+
     ```shell
     helm install --namespace br-fed-admin br-federation-manager pingcap/br-federation-manager --version v1.5.0-beta.1
     ```
 
-#### Custom Deployment
+</div>
+<div label="Custom deployment">
 
-1. Create a namespace to create resources related to br federation manager.
-    
+1. To create resources related to the BR Federation Manager, create a namespace:
+
     ```shell
     kubectl create ns br-fed-admin
     ```
 
-2. Create the secret that contains all the encoded kubeconfig files in the namespace.
-    
+2. In the specified namespace, create a secret that contains all the encoded kubeconfig files:
+
     ```shell
     kubectl create -f ${secret-path} -n br-fed-admin
     ```
 
-3. Add the PingCAP repository.
-    
+3. Add the PingCAP repository:
+
     ```shell
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
-4. Get the `values.yaml` file of the `br-federation-manager` chart you want to deploy.
-    
+4. Get the `values.yaml` file of the desired `br-federation-manager` chart for deployment.
+
     ```shell
     mkdir -p ${HOME}/br-federation-manager && \
     helm inspect values pingcap/br-federation-manager --version=${chart_version} > ${HOME}/br-federation-manager/values.yaml
     ```
 
-5. Configure BR Federation Manager. For example, you can modify `image` field if you build the image by yourself. Also, you can modify other fields such as `limits`, `requests`, and `replicas` as needed.
-6. Deploy BR Federation Manager.
-    
+5. Configure the BR Federation Manager by modifying fields such as `image`, `limits`, `requests`, and `replicas` according to your needs.
+
+6. Deploy the BR Federation Manager.
+
     ```shell
     helm install --namespace br-fed-admin br-federation-manager pingcap/br-federation-manager --version v1.5.0-beta.1 -f ${HOME}/br-federation-manager/values.yaml && \
     kubectl get po -n br-fed-admin -l app.kubernetes.io/component=br-federation-manager
     ```
+
+</div>
+</SimpleTab>
