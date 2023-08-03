@@ -103,6 +103,7 @@ When you use this method to grant permissions, you can [create the EKS cluster](
             "Effect": "Allow",
             "Action": [
                 "ec2:AttachVolume",
+                "ec2:CreateSnapshot",
                 "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
