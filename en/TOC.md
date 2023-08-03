@@ -76,7 +76,7 @@
     - Persistent Volumes
       - [Back Up Data](backup-to-pv-using-br.md)
       - [Restore Data](restore-from-pv-using-br.md)
-    - Snapshot Backup and Restore across multiple Kubernetes
+    - Snapshot Backup and Restore across Multiple Kubernetes
       - [Deploy BR Federation Manager](deploy-br-federation-manager.md)
       - [Back Up Data Using EBS Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md)
       - [Restore Data from EBS Snapshots](restore-by-ebs-snapshot-across-multiple-kubernetes.md)

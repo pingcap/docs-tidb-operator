@@ -1,7 +1,6 @@
 ---
 title: Deploy BR Federation Manager on Kubernetes
 summary: Learn how to deploy BR Federation Manager on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/deploy-br-federation-manager/']
 ---
 
 # Deploy BR Federation Manager on Kubernetes
@@ -16,9 +15,7 @@ Before deploy BR Federation Manager on Kubernetes, you should satisfy conditions
 * you have multiple Kubernetes clusters
 * All the Kubernetes clusters that serve as data planes have deployed TiDB-Operator
 
-## Deploy BR Federation Manager
-
-### Generate Kubeconfig file in all Data Planes
+## Step 1: Generate Kubeconfig file in all Data Planes
 
 BR federation manager manages Kubernetes clusters of data planes by accessing their API servers.
 So it needs kubeconfig to authenticate and authorize in the API servers. The users or service accounts in the kubeconfig file need
@@ -27,7 +24,7 @@ have all the permissions of **backups.pingcap.com, restores.pingcap.com** CRD at
 You can get the kubeconfig file from the Kubernetes cluster administrator. But we also provide a way to generate
 the kubeconfig file by yourself if you have the permission to access all the data planes.
 
-#### Create Resources about RBAC in Data Plane
+### Step 1.1: Create Resources about RBAC in Data Plane
 
 We should create the resources below in every data plane to allow br federation manager to manipulate backup and restore CR.
 
@@ -77,11 +74,9 @@ metadata:
    kubernetes.io/service-account.name: "br-federation-member"
 ```
 
-#### Generate Kubeconfig files
+### Step 1.2: Generate Kubeconfig files
 
 You should execute the script below for every data plane.
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 # for Kubernetes < 1.24
@@ -123,39 +118,40 @@ EOF
 > We use it as the context name of kubeconfig in the script above and the context name will be used as `k8sClusterName`
 > in the `VolumeBackup` and `VolumeRestore` CR.
 
-#### Merge multiple kubeconfig files to one
+### Step 1.3: Merge multiple kubeconfig files to one
 
 If you follow the step above to generate kubeconfig, you may have multiple kubeconfig files. We should merge them to one kubeconfig file.
 
 Suppose that you have 3 kubeconfig files with file paths: `kubeconfig-path1`, `kubeconfig-path2`, `kubeconfig-path3`,
 and you want to merge them to one kubeconfig file with file path `data-planes-kubeconfig`. You can execute the command below to merge kubeconfig files.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 KUBECONFIG=${kubeconfig-path1}:${kubeconfig-path2}:${kubeconfig-path3} kubectl config view --flatten > ${data-planes-kubeconfig}
 ```
 
-### Deploy BR Federation Manager in Control Plane
+## Step 2: Deploy BR Federation Manager in Control Plane
 
 You should select one Kubernetes cluster as control plane to deploy BR Federation Manager. You need only execute steps below in the control plane.
 
-#### Create CRD
+### Step 2.1: Create CRD
 
 BR Federation Manager uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes.
 Therefore, to use BR Federation Manager, you must first create the CRD, which is a one-time job in your Kubernetes cluster.
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/federation-crd.yaml
 ```
 
-#### Prepare Kubeconfig Secret
+### Step 2.2: Prepare Kubeconfig Secret
 
-You already have a kubeconfig file of data planes. Now, you need encode the kubeconfig file to a secret.
-Firstly, encode the kubeconfig file by `base64 -i ${kubeconfig-path}`. Secondly, put the output of first step to a secret object.
-**Note, the name of the secret and the data key of kubeconfig field must be equal to which is in the example below**.
+You already have a kubeconfig file of data planes. Now, you need encode the kubeconfig file to a secret. Take the following steps:
+
+1. Encode the kubeconfig file by `base64 -i ${kubeconfig-path}`.
+2. Put the output of first step to a secret object.
+
+> **Note**
+>
+> the name of the secret and the data key of kubeconfig field must be equal to which is in the example below.
 
 ```yaml
 apiVersion: v1
@@ -167,73 +163,59 @@ data:
   kubeconfig: ${encoded-kubeconfig}
 ```
 
-#### Install BR Federation Manager
+### Step 2.3: Install BR Federation Manager
 
 This section describes how to install BR Federation Manager using [Helm 3](https://helm.sh/docs/intro/install/).
+If you just want to use default configuration to install BR Federation Manager, please follow the 'quick deployment'.
+If you want to use custom configuration to install BR Federation Manager, please follow the 'custom deployment'.
 
-##### Quick Deployment
+#### Quick Deployment
 
 1. Create a namespace to create resources related to br federation manager.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     kubectl create ns br-fed-admin
     ```
 
 2. Create the secret that contains all the encoded kubeconfig files in the namespace.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     kubectl create -f ${secret-path} -n br-fed-admin
     ```
 
 3. Add the PingCAP repository.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
 4. Install BR Federation Manager.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     helm install --namespace br-fed-admin br-federation-manager pingcap/br-federation-manager --version v1.5.0-beta.1
     ```
 
-##### Custom Deployment
+#### Custom Deployment
 
 1. Create a namespace to create resources related to br federation manager.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     kubectl create ns br-fed-admin
     ```
 
 2. Create the secret that contains all the encoded kubeconfig files in the namespace.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     kubectl create -f ${secret-path} -n br-fed-admin
     ```
 
 3. Add the PingCAP repository.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     helm repo add pingcap https://charts.pingcap.org/
     ```
 
 4. Get the `values.yaml` file of the `br-federation-manager` chart you want to deploy.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     mkdir -p ${HOME}/br-federation-manager && \
@@ -242,8 +224,6 @@ This section describes how to install BR Federation Manager using [Helm 3](https
 
 5. Configure BR Federation Manager. For example, you can modify `image` field if you build the image by yourself. Also, you can modify other fields such as `limits`, `requests`, and `replicas` as needed.
 6. Deploy BR Federation Manager.
-
-    {{< copyable "shell-regular" >}}
     
     ```shell
     helm install --namespace br-fed-admin br-federation-manager pingcap/br-federation-manager --version v1.5.0-beta.1 -f ${HOME}/br-federation-manager/values.yaml && \
