@@ -361,7 +361,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls)。
+如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/v1.5.0/examples/monitor-multiple-cluster-non-tls)。
 
 ### 使用 Grafana 查看多集群监控
 

@@ -367,7 +367,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-For a complete configuration example, refer to [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-multiple-cluster-non-tls) in the TiDB Operator repository.
+For a complete configuration example, refer to [Example](https://github.com/pingcap/tidb-operator/tree/v1.5.0/examples/monitor-multiple-cluster-non-tls) in the TiDB Operator repository.
 
 ### Monitor multiple clusters using Grafana
 
