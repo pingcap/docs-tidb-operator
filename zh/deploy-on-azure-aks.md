@@ -514,7 +514,7 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.0/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
 ## 使用其他 Azure 磁盘类型
 
@@ -538,7 +538,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     - nodelalloc,noatime
     ```
 
-    你可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md)。
+    你可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/v1.5.0/docs/driver-parameters.md)。
 
 2. 然后在 tidb cluster 的 YAML 文件中，通过 `storageClassName` 字段指定 `ultra` 存储类申请 `UltraSSD` 类型的 Azure 磁盘。可以参考以下 TiKV 配置示例使用：
 

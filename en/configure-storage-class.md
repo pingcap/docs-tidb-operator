@@ -64,23 +64,23 @@ Currently, Kubernetes supports statically allocated local storage. To create a l
 
 ### Step 1: Pre-allocate local storage
 
-- For a disk that stores TiKV data, you can [mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) the disk into the `/mnt/ssd` directory.
+- For a disk that stores TiKV data, you can [mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) the disk into the `/mnt/ssd` directory.
 
     To achieve high performance, it is recommended to allocate a dedicated disk for TiDB, with SSD being the recommended disk type.
 
-- For a disk that stores PD data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/sharedssd` directory.
+- For a disk that stores PD data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/sharedssd` directory.
 
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters and the number of PD servers in each cluster. Each directory has a corresponding PV created, and each PD server uses one PV.
 
-- For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/monitoring` directory.
+- For a disk that stores monitoring data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/monitoring` directory.
 
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters. Each directory has a corresponding PV created, and each TiDB cluster's monitoring data uses one PV.
 
-- For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/backup` directory.
+- For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/backup` directory.
 
     >**Note:**
     >
@@ -125,7 +125,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
               mountDir: /mnt/backup
         ```
 
-        For more configuration options for the local-volume-provisioner, refer to the [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/provisioner.md#configuration) document.
+        For more configuration options for the local-volume-provisioner, refer to the [Configuration](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/provisioner.md#configuration) document.
 
     * Modify the `volumes` and `volumeMounts` fields in the DaemonSet spec to ensure that the discovery directory can be mounted to the corresponding directory in the Pod:
 
@@ -206,7 +206,7 @@ The steps for offline deployment are the same as for online deployment, except f
 - To ensure I/O isolation, it is recommended to use a dedicated physical disk per PV for hardware-based isolation.
 - For capacity isolation, it is recommended to use either a partition per PV or a physical disk per PV.
 
-For more information on local PV on Kubernetes, refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) document.
+For more information on local PV on Kubernetes, refer to the [Best Practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/best-practices.md) document.
 
 ## Data safety
 

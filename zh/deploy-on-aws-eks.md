@@ -294,7 +294,7 @@ mountOptions:
 
     1. 为了更方便地发现并管理本地存储，你需要安装 [local-volume-provisioner](https://sigs.k8s.io/sig-storage-local-static-provisioner) 程序。
 
-    2. 通过[普通挂载方式](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)将本地存储挂载到 `/mnt/ssd` 目录。
+    2. 通过[普通挂载方式](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)将本地存储挂载到 `/mnt/ssd` 目录。
 
     3. 根据本地存储的挂载情况，修改 [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.0/manifests/eks/local-volume-provisioner.yaml) 文件。
 
@@ -650,4 +650,4 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.0/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。

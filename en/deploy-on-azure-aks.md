@@ -526,7 +526,7 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
 
 Finally, run the `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` command to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.5.0/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Use other Disk volume types
 
@@ -550,7 +550,7 @@ Azure disks support multiple volume types. Among them, `UltraSSD` delivers low l
     - nodelalloc,noatime
     ```
 
-    You can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) as required.
+    You can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/v1.5.0/docs/driver-parameters.md) as required.
 
 2. In `tidb-cluster.yaml`, specify the `ultra` storage class to apply for the `UltraSSD` volume type through the `storageClassName` field.
 

@@ -304,7 +304,7 @@ The following `c5d.4xlarge` example shows how to configure StorageClass for the 
 
     1. To conveniently discover and manage local storage volumes, install [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner).
 
-    2. [Mount the local storage](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) to the `/mnt/ssd` directory.
+    2. [Mount the local storage](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/v1.5.0/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv) to the `/mnt/ssd` directory.
 
     3. According to the mounting configuration, modify the [local-volume-provisioner.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.0/manifests/eks/local-volume-provisioner.yaml) file.
 
@@ -668,4 +668,4 @@ Depending on the EKS cluster status, use different commands:
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.5.0/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).

@@ -26,7 +26,7 @@ The following table contains all configuration parameters available for the `tid
 | `disableDetect` |  Determines whether to disable casualty detection | `false` |
 | `initialCommitTs` |  Used to initialize a checkpoint if the drainer does not have one. The value is a string type, such as `"424364429251444742"` | `"-1"` |
 | `tlsCluster.enabled` | Whether or not to enable TLS between clusters | `false` |
-| `config` | The configuration file passed to the drainer. Detailed reference: [drainer.toml](https://github.com/pingcap/tidb-binlog/blob/master/cmd/drainer/drainer.toml) | (see below) |
+| `config` | The configuration file passed to the drainer. Detailed reference: [drainer.toml](https://github.com/pingcap/tidb-binlog/blob/v1.5.0/cmd/drainer/drainer.toml) | (see below) |
 | `resources` | The resource limits and requests of the drainer Pod | `{}` |
 | `nodeSelector` | Ensures that the drainer Pod is only scheduled to the node with the specific key-value pair as the label. Detailed reference: [`nodeselector`](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) | `{}` |
 | `tolerations` | Applies to drainer Pods, allowing the Pods to be scheduled to the nodes with specified taints. Detailed reference: [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |

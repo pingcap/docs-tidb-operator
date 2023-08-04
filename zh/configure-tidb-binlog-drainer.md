@@ -26,7 +26,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-tidb-binlog-drainer/']
 | `disableDetect` |  决定是否禁用事故检测 | `false` |
 | `initialCommitTs` |  如果 drainer 没有断点，则用于初始化断点。该参数值为 string 类型，如 `"424364429251444742"` | `"-1"` |
 | `tlsCluster.enabled` |  是否开启集群间 TLS | `false` |
-| `config` | 传递到 drainer 的配置文件。详情可参阅 [drainer.toml](https://github.com/pingcap/tidb-binlog/blob/master/cmd/drainer/drainer.toml) |（见下文）|
+| `config` | 传递到 drainer 的配置文件。详情可参阅 [drainer.toml](https://github.com/pingcap/tidb-binlog/blob/v1.5.0/cmd/drainer/drainer.toml) |（见下文）|
 | `resources` | drainer Pod 的资源限制和请求 | `{}` |
 | `nodeSelector` | 确保 drainer Pod 仅被调度到具有特定键值对作为标签的节点上。详情可参阅 [nodeselector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) | `{}` |
 | `tolerations` | 适用于 drainer Pod，允许将 Pod 调度到有指定 taint 的节点上。详情可参阅 [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
