@@ -19,7 +19,7 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 - Support using the `VolumeBackup` CR to back up a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
 - Support using the `VolumeRestore` CR to restore a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
 - Support using the `VolumeBackupSchedule` CR to automatically back up a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
-- Support backing up manifests related to `TidbCluster` when backing up a TiDB cluster deployed across multiple Kubernetes based on EBS snapshots ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
+- Support backing up CRs related to `TidbCluster` when backing up a TiDB cluster deployed across multiple Kubernetes based on EBS snapshots ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
 
 ## Improvements
 
