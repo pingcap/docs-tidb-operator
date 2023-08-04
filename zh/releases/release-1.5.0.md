@@ -28,9 +28,9 @@ TiDB Operator 版本：1.5.0
 - 支持为 TiKV 驱逐 leader 和 PD 转移 leader 设置过期时间 ([#4997](https://github.com/pingcap/tidb-operator/pull/4997), [@Tema](https://github.com/Tema))
 - 支持为 `TidbInitializer` 设置 tolerations  ([#5047](https://github.com/pingcap/tidb-operator/pull/5047), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持为 PD 设置启动超时时间 ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
-- 当 TiKV 在扩展 PVC 的大小时不再执行驱逐 leader 操作以避免因磁盘容量不足而造成驱逐 leader 卡住 ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
+- 当 TiKV 在扩展 PVC 的大小时，不再执行驱逐 leader 操作，避免因磁盘容量不足而造成驱逐卡住 ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持更新 PD、TiKV、TiFlash、TiProxy、DM-Master 与 DM-worker 组件 Service 的 annotation 与 label ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
-- 默认启用 volume resize 支持对 PV 的扩容 ([#5167](https://github.com/pingcap/tidb-operator/pull/5167), [@liubog2008](https://github.com/liubog2008))
+- 默认启用 volume resize，支持对 PV 的扩容 ([#5167](https://github.com/pingcap/tidb-operator/pull/5167), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug 修复
 

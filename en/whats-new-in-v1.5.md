@@ -20,7 +20,7 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 - Support specifying an initialization SQL file to be executed during the first bootstrap of TiDB with the `bootstrapSQLConfigMapName` field.
 - Support setting `PreferDualStack` for all Service's `ipFamilyPolicy` with `spec.preferIPv6: true`.
 - Support managing TiCDC and TiProxy with [Advanced StatefulSet](advanced-statefulset.md).
-- Add the BR Federation Manager component to support backing up and restoring of a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots.
+- Add the BR Federation Manager component to support the backup and restore of a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots.
 
 ## Usability
 
@@ -28,4 +28,4 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 - Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pods gracefully.
 - Allow users to define a strategy to restart failed backup jobs, enhancing backup stability.
 - Add metrics for the reconciler and worker queue to improve observability.
-- Add metrics for counting errors about the reconciliation to improve observability.
+- Add metrics for counting errors that occur during the reconciliation to improve observability.

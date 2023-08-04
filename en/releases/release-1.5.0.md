@@ -9,7 +9,7 @@ Release date: August 4, 2023
 
 TiDB Operator version: 1.5.0
 
-## Rolling Update Changes
+## Rolling update changes
 
 If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash component will be rolling updated after TiDB Operator is upgraded to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
 
@@ -28,8 +28,8 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 - Support setting expiration time for TiKV leader eviction and PD leader transfer ([#4997](https://github.com/pingcap/tidb-operator/pull/4997), [@Tema](https://github.com/Tema))
 - Support setting a toleration for `TidbInitializer` ([#5047](https://github.com/pingcap/tidb-operator/pull/5047), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support configuring the timeout for PD start ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
-- Skip evicting leaders for TiKV when changing PVC size to avoid evicting leader blocked caused by low space ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support updating annotations and labels in services for PD, TiKV, TiFlash, TiProxy, DM-master and DM-worker ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
+- Skip evicting leaders for TiKV when changing PVC size to avoid leader eviction blocked caused by low disk space ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support updating annotations and labels in services for PD, TiKV, TiFlash, TiProxy, DM-master, and DM-worker ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
 - Enable volume resizing by default for PV expansion ([#5167](https://github.com/pingcap/tidb-operator/pull/5167), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug fixes
