@@ -490,7 +490,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 5.7.25-TiDB-v7.1.1 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -539,12 +539,12 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v7.1.0
+         tidb_version(): Release Version: v7.1.1
                 Edition: Community
-        Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-             Git Branch: heads/refs/tags/v7.1.0
-         UTC Build Time: 2023-05-30 10:58:57
-              GoVersion: go1.20.3
+        Git Commit Hash: cf441574864be63938524e7dfcf7cc659edc3dd8
+             Git Branch: heads/refs/tags/v7.1.1
+         UTC Build Time: 2023-07-19 10:16:40
+              GoVersion: go1.20.6
            Race Enabled: false
        TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
@@ -735,12 +735,12 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v7.1.0
+tidb_version(): Release Version: v7.1.1
 Edition: Community
-Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-Git Branch: heads/refs/tags/v7.1.0
-UTC Build Time: 2023-05-30 10:58:57
-GoVersion: go1.20.3
+Git Commit Hash: cf441574864be63938524e7dfcf7cc659edc3dd8
+Git Branch: heads/refs/tags/v7.1.1
+UTC Build Time: 2023-07-19 10:16:40
+GoVersion: go1.20.6
 Race Enabled: false
 TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
