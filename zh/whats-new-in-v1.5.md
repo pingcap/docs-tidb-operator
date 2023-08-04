@@ -9,7 +9,7 @@ TiDB Operator v1.5 引入了以下关键特性，从扩展性、易用性等方�
 
 ## 兼容性改动
 
-如需使用在 [#4959](https://github.com/pingcap/tidb-operator/pull/4959) 中引入的 `PreferDualStack` 特性，Kubernetes 版本需要大于等于 v1.20。
+如需使用在 [#4959](https://github.com/pingcap/tidb-operator/pull/4959) 中引入的 `PreferDualStack` 特性（通过 `spec.preferIPv6: true` 启用），Kubernetes 版本需要大于等于 v1.20。
 
 ## 滚动升级改动
 
