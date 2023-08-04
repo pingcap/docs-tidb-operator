@@ -26,7 +26,7 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 - Add the `startUpScriptVersion` field for DM master to specify the version of the startup script ([#4971](https://github.com/pingcap/tidb-operator/pull/4971), [@hanlins](https://github.com/hanlins))
 - Support `spec.preferIPv6` for DmCluster, TidbDashboard, TidbMonitor and TidbNGMonitoring ([#4977](https://github.com/pingcap/tidb-operator/pull/4977), [@KanShiori](https://github.com/KanShiori))
 - Support setting expiration time for TiKV leader eviction and PD leader transfer ([#4997](https://github.com/pingcap/tidb-operator/pull/4997), [@Tema](https://github.com/Tema))
-- Support setting a toleration for `TidbInitializer` ([#5047](https://github.com/pingcap/tidb-operator/pull/5047), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support setting toleration for `TidbInitializer` ([#5047](https://github.com/pingcap/tidb-operator/pull/5047), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support configuring the timeout for PD start ([#5071](https://github.com/pingcap/tidb-operator/pull/5071), [@oliviachenairbnb](https://github.com/oliviachenairbnb))
 - Skip evicting leaders for TiKV when changing PVC size to avoid leader eviction blocked caused by low disk space ([#5101](https://github.com/pingcap/tidb-operator/pull/5101), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support updating annotations and labels in services for PD, TiKV, TiFlash, TiProxy, DM-master, and DM-worker ([#4973](https://github.com/pingcap/tidb-operator/pull/4973), [@wxiaomou](https://github.com/wxiaomou))
