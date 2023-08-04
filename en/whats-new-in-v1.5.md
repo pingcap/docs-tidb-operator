@@ -1,5 +1,6 @@
 ---
 title: What's New in TiDB Operator 1.5
+summary: Learn about new features in TiDB Operator 1.5.0.
 ---
 
 # What's New in TiDB Operator 1.5
@@ -18,7 +19,7 @@ If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash co
 
 - Support specifying an initialization SQL file to be executed during the first bootstrap of TiDB with the `bootstrapSQLConfigMapName` field.
 - Support setting `PreferDualStack` for all Service's `ipFamilyPolicy` with `spec.preferIPv6: true`.
-- Support managing TiCDC and TiProxy with Advanced StatefulSet.
+- Support managing TiCDC and TiProxy with [Advanced StatefulSet](advanced-statefulset.md).
 - Add the BR Federation Manager component to support backing up and restoring of a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots.
 
 ## Usability
