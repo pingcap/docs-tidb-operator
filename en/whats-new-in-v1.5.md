@@ -11,7 +11,7 @@ TiDB Operator 1.5 introduces the following key features, which helps you manage 
 
 To use the `PreferDualStack` feature (enabled with `spec.preferIPv6: true`) introduced in [#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
 
-## Rolling Update Changes
+## Rolling update changes
 
 If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash component will be rolling updated after TiDB Operator is upgraded to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
 
