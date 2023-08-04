@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator v1.5 新特性
+Summary: 了解 TiDB Operator 1.5.0 版本引入的新特性。
 ---
 
 # TiDB Operator v1.5 新特性
@@ -12,19 +13,19 @@ TiDB Operator v1.5 引入了以下关键特性，从扩展性、易用性等方�
 
 ## 滚动升级改动
 
-- 由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 v7.1.0+ 版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
+由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 TiDB v7.1.0 或以上版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
 
 ## 扩展性
 
-- 支持通过 `bootstrapSQLConfigMapName` 字段指定 TiDB 首次启动时执行的初始 SQL 文件。
+- 支持通过 `bootstrapSQLConfigMapName` 字段指定 TiDB 首次启动时所执行的初始 SQL 文件。
 - 支持通过配置 `spec.preferIPv6: true` 为所有组件的 Service 的 `ipFamilyPolicy` 配置 `PreferDualStack`。
 - 支持使用 Advanced StatefulSet 管理 TiCDC 和 TiProxy。
-- 添加 BR Federation Manager 组件，支持对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份恢复。
+- 新增 BR Federation Manager 组件，支持对跨多个 Kubernetes 部署的 TiDB 集群进行基于 EBS snapshot 的备份恢复。
 
 ## 易用性
 
-- 支持通过给 PD Pod 加上 `tidb.pingcap.com/pd-transfer-leader` Annotation 来优雅重启 PD Pod。
-- 支持通过给 TiDB Pod 加上 `tidb.pingcap.com/tidb-graceful-shutdown` Annotation 来优雅重启 TiDB Pod。
-- 允许用户定义策略来重启失败的备份任务，以提高备份的稳定性。
-- 添加与 reconciler 和 worker queue 相关的 Metric 以提高可观测性。
-- 添加统计协调流程失败计数的 Metric 以提高可观测性。
+- 支持通过为 PD Pod 加上 `tidb.pingcap.com/pd-transfer-leader` annotation 来优雅重启 PD Pod。
+- 支持通过为 TiDB Pod 加上 `tidb.pingcap.com/tidb-graceful-shutdown` annotation 来优雅重启 TiDB Pod。
+- 允许用户自定义策略来重启失败的备份任务，以提高备份的稳定性。
+- 添加与 reconciler 和 worker queue 相关的监控指标以提高可观测性。
+- 添加统计协调流程失败计数的监控指标以提高可观测性。

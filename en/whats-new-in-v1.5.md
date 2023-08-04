@@ -8,23 +8,23 @@ TiDB Operator 1.5 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-When using the `PreferDualStack` feature introduced in [#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
+To use the `PreferDualStack` feature introduced in [#4959](https://github.com/pingcap/tidb-operator/pull/4959), Kubernetes version >= v1.20 is required.
 
 ## Rolling Update Changes
 
-- If TiFlash is deployed in a v7.1.0+ cluster, the TiFlash component will be rolling updated after upgrading TiDB Operator to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
+If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash component will be rolling updated after TiDB Operator is upgraded to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
 
 ## Extensibility
 
-- Support specifying an initialization SQL file on TiDB's first bootstrap with the `bootstrapSQLConfigMapName` field.
+- Support specifying an initialization SQL file to be executed during the first bootstrap of TiDB with the `bootstrapSQLConfigMapName` field.
 - Support setting `PreferDualStack` for all Service's `ipFamilyPolicy` with `spec.preferIPv6: true`.
 - Support managing TiCDC and TiProxy with Advanced StatefulSet.
-- Add a component of BR Federation Manager to support backup/restore TiDB cluster deployed across multiple Kubernetes using EBS snapshot.
+- Add the BR Federation Manager component to support backing up and restoring of a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots.
 
 ## Usability
 
-- Support using the `tidb.pingcap.com/pd-transfer-leader` annotation to restart PD Pod gracefully.
-- Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pod gracefully.
+- Support using the `tidb.pingcap.com/pd-transfer-leader` annotation to restart PD Pods gracefully.
+- Support using the `tidb.pingcap.com/tidb-graceful-shutdown` annotation to restart TiDB Pods gracefully.
 - Allow users to define a strategy to restart failed backup jobs, enhancing backup stability.
-- Add the metrics for the reconciler and worker queue to improve observability.
-- Add the metrics for counting errors about the reconciliation to improve observability.
+- Add metrics for the reconciler and worker queue to improve observability.
+- Add metrics for counting errors about the reconciliation to improve observability.
