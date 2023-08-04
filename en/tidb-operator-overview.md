@@ -13,7 +13,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB versions | Compatible TiDB Operator versions |
 |:---|:---|
 | dev               | dev                 |
-| TiDB >= 6.5       | 1.4 (Recommended), 1.3 |
+| TiDB >= 7.1       | 1.5 (Recommended), 1.4 |
+| 6.5 <= TiDB < 7.1 | 1.5, 1.4 (Recommended), 1.3 |
 | 5.4 <= TiDB < 6.5 | 1.4, 1.3 (Recommended)   |
 | 5.1 <= TiDB < 5.4 | 1.4, 1.3 (Recommended), 1.2      |
 | 3.0 <= TiDB < 5.1 | 1.4, 1.3 (Recommended), 1.2, 1.1 |
