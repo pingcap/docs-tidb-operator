@@ -11,15 +11,15 @@ TiDB Operator 版本：1.5.0
 
 ## 滚动升级改动
 
-- 由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 v7.1.0+ 版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
+由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 TiDB v7.1.0 或以上版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
 
 ## 新功能
 
-- 添加 BR Federation Manager，支持跨多个 Kubernetes 集群编排 `Backup` 和 `Restore` CR ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
-- 支持用 `VolumeBackup` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份 ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
-- 支持用 `VolumeRestore` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的恢复 ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
-- 支持用 `VolumeBackupSchedule` 对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的自动备份 ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
-- 支持对跨多个 Kubernetes 部署的 TiDB 集群做基于 EBS snapshot 的备份时备份与 `TidbCluster` 相关的 CR 数据 ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
+- 新增 BR Federation Manager 组件，支持跨多个 Kubernetes 集群编排 `Backup` 和 `Restore` custom resources (CR) ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
+- 支持使用 `VolumeBackup` CR 对跨多个 Kubernetes 部署的 TiDB 集群进行基于 EBS 快照的备份 ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
+- 支持使用 `VolumeRestore` CR 对跨多个 Kubernetes 部署的 TiDB 集群进行基于 EBS 快照的恢复 ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
+- 支持使用 `VolumeBackupSchedule` CR 对跨多个 Kubernetes 部署的 TiDB 集群进行基于 EBS 快照的自动备份 ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
+- 当对跨多个 Kubernetes 部署的 TiDB 集群进行基于 EBS 快照的备份时，支持备份与 `TidbCluster` 相关的 CR 数据 ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
 
 ## 优化提升
 

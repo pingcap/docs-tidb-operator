@@ -11,15 +11,15 @@ TiDB Operator version: 1.5.0
 
 ## Rolling Update Changes
 
-- If TiFlash is deployed in a v7.1.0+ cluster, the TiFlash component will be rolling updated after upgrading TiDB Operator to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
+If TiFlash is deployed in a TiDB cluster that is v7.1.0 or later, the TiFlash component will be rolling updated after TiDB Operator is upgraded to v1.5.0 due to [#5075](https://github.com/pingcap/tidb-operator/pull/5075).
 
 ## New features
 
-- Add a component of BR Federation Manager to support orchestrate `Backup` and `Restore` CR across multiple Kubernetes ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeBackup` CR ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
-- Support restore TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeRestore` CR ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
-- Support automatically backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot using `VolumeBackupSchedule` CR ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
-- Support backup manifests related to `TidbCluster` when backup TiDB cluster deployed across multiple Kubernetes base on EBS snapshot ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
+- Add the BR Federation Manager component to orchestrate `Backup` and `Restore` custom resources (CR) across multiple Kubernetes clusters ([#4996](https://github.com/pingcap/tidb-operator/pull/4996), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support using the `VolumeBackup` CR to back up a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5013](https://github.com/pingcap/tidb-operator/pull/5013), [@WangLe1321](https://github.com/WangLe1321))
+- Support using the `VolumeRestore` CR to restore a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5039](https://github.com/pingcap/tidb-operator/pull/5039), [@WangLe1321](https://github.com/WangLe1321))
+- Support using the `VolumeBackupSchedule` CR to automatically back up a TiDB cluster deployed across multiple Kubernetes clusters based on EBS snapshots ([#5036](https://github.com/pingcap/tidb-operator/pull/5036), [@BornChanger](https://github.com/BornChanger))
+- Support backing up manifests related to `TidbCluster` when backing up a TiDB cluster deployed across multiple Kubernetes based on EBS snapshots ([#5207](https://github.com/pingcap/tidb-operator/pull/5207), [@WangLe1321](https://github.com/WangLe1321))
 
 ## Improvements
 
