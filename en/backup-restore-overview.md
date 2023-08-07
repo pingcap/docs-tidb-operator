@@ -50,7 +50,7 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the 
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
-- [Restore Data Using EBS Snapshots across Multiple Kubernetes](restore-by-ebs-snapshot-across-multiple-kubernetes.md)
+- [Restore Data Using EBS Snapshots across Multiple Kubernetes](restore-from-ebs-snapshot-across-multiple-kubernetes.md)
 
 To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 

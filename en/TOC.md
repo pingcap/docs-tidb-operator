@@ -76,9 +76,9 @@
       - [Back Up Data](backup-to-pv-using-br.md)
       - [Restore Data](restore-from-pv-using-br.md)
     - Snapshot Backup and Restore across Multiple Kubernetes
-      - [Deploy BR Federation Manager](deploy-br-federation-manager.md)
+      - [Deploy BR Federation Manager](deploy-br-federation.md)
       - [Back Up Data Using EBS Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md)
-      - [Restore Data from EBS Snapshots](restore-by-ebs-snapshot-across-multiple-kubernetes.md)
+      - [Restore Data from EBS Snapshots](restore-from-ebs-snapshot-across-multiple-kubernetes.md)
   - Maintain
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
