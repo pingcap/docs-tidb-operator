@@ -17,8 +17,7 @@ Before deploy BR Federation on Kubernetes, make sure you have met the following 
 
 ## Step 1: Generate a kubeconfig file in data planes
 
-The BR Federation manages Kubernetes clusters of data planes by accessing their API servers. To authenticate and authorize itself in the API servers, it requires a kubeconfig file. The users or service accounts in the kubeconfig file need
-have at least all the permissions of **backups.pingcap.com** and **restores.pingcap.com** CRD.
+The BR Federation manages Kubernetes clusters of data planes by accessing their API servers. To authenticate and authorize itself in the API servers, BR Federation requires a kubeconfig file. The users or service accounts in the kubeconfig file need to have at least all the permissions of **backups.pingcap.com** and **restores.pingcap.com** CRD.
 
 You can get the kubeconfig file from the Kubernetes cluster administrator. However, if you have permission to access all the data planes, you can generate the kubeconfig file on your own.
 
@@ -111,7 +110,7 @@ users:
 EOF
 ```
 
-- The environment variable `$DATA_PLANE_SYMBOL` represents the name of the data plane cluster. Make sure that you provide a brief and unique name. In the preceding script, you use this variable as the context name for kubeconfig. The context name will be used as `k8sClusterName` in both the `VolumeBackup` and `VolumeRestore` CR.
+The environment variable `$DATA_PLANE_SYMBOL` represents the name of the data plane cluster. Make sure that you provide a brief and unique name. In the preceding script, you use this variable as the context name for kubeconfig. The context name will be used as `k8sClusterName` in both the `VolumeBackup` and `VolumeRestore` CR.
 
 ### Step 1.3: Merge multiple kubeconfig files into one
 
@@ -125,17 +124,17 @@ KUBECONFIG=${kubeconfig-path1}:${kubeconfig-path2}:${kubeconfig-path3} kubectl c
 
 ## Step 2: Deploy BR Federation in the control plane
 
-To deploy the BR Federation, you need to select one Kubernetes cluster as the control plane. The following steps should **only be executed on the control plane**.
+To deploy the BR Federation, you need to select one Kubernetes cluster as the control plane. The following steps **must be executed on the control plane**.
 
 ### Step 2.1: Create CRD
 
-The BR Federation uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Before using the BR Federation, you must create the CRD in your Kubernetes cluster. This operation only needs to be performed once.
+The BR Federation uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Before using the BR Federation, you must create the CRD in your Kubernetes cluster. After using the BR Federation Manager, you only need to perform the operation once.
 
 ```shell
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.0/manifests/federation-crd.yaml
 ```
 
-### Step 2.2: Prepare kubeconfig secret
+### Step 2.2: Prepare the kubeconfig secret
 
 Now that you already have a kubeconfig file of data planes, you need to encode the kubeconfig file into a secret. Take the following steps:
 
@@ -166,7 +165,7 @@ Now that you already have a kubeconfig file of data planes, you need to encode t
 This section describes how to install the BR Federation using [Helm 3](https://helm.sh/docs/intro/install/).
 
 - If you prefer to use the default configuration, follow the **Quick deployment** steps.
-- If you want to use a custom configuration, follow the **Custom deployment** steps.
+- If you prefer to use a custom configuration, follow the **Custom deployment** steps.
 
 <SimpleTab>
 <div label="Quick deployment">
