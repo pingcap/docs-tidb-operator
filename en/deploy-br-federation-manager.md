@@ -13,7 +13,7 @@ Before deploy BR Federation Manager on Kubernetes, make sure you have met the fo
 
 * Kubernetes version must be >= v1.12.
 * You must have multiple Kubernetes clusters.
-* All the Kubernetes clusters that serve as data planes have deployed TiDB Operator.
+* You have deployed TiDB Operator for all the Kubernetes clusters that serve as data planes.
 
 ## Step 1: Generate a kubeconfig file in data planes
 
@@ -140,9 +140,9 @@ Now that you already have a kubeconfig file of data planes, you need to encode t
 
 1. Encode the kubeconfig file:
 
-     ```shell
-     base64 -i ${kubeconfig-path}
-     ```
+    ```shell
+    base64 -i ${kubeconfig-path}
+    ```
 
 2. Store the output from the previous step in a secret object.
 
