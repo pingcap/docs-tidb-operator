@@ -3,6 +3,10 @@ title: Restore a TiDB Cluster from EBS Volume Snapshots
 summary: Learn how to restore backup metadata and EBS volume snapshots from S3 storage to a TiDB cluster.
 ---
 
+> **Warning**
+>
+> This documentation is deprecated, please see [Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots](restore-from-ebs-snapshot-across-multiple-kubernetes.md) instead.
+
 # Restore a TiDB Cluster from EBS Volume Snapshots
 
 This document describes how to restore backup data in AWS EBS snapshots from S3 storage to a TiDB cluster.

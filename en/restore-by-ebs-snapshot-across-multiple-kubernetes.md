@@ -7,27 +7,13 @@ summary: Learn how to restore a TiDB cluster across multiple Kubernetes from EBS
 
 This document describes how to restore backup data in AWS EBS snapshots to a TiDB cluster across multiple Kubernetes.
 
-The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in BR Federation Manager and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
 ## Limitations
 
 - Snapshot restore is applicable to TiDB Operator v1.5.0 or later versions and TiDB v6.5.3 or later versions.
 - You can use snapshot restore only to restore data to a cluster with the same number of TiKV nodes and volumes configuration. That is, the number of TiKV nodes and volume configurations of TiKV nodes are identical between the restore cluster and backup cluster.
 - Snapshot restore is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
-- Snapshot restore creates volumes with the default configuration (3000 IOPS/125 MB) of GP3. To perform restore using other configurations, you can specify the volume type or configuration, such as `--volume-type=gp3`, `--volume-iops=7000`, or `--volume-throughput=400`.
-
-  ```yaml
-  spec:
-    template:
-      br:
-        sendCredToTikv: false
-        options:
-        - --volume-type=gp3
-        - --volume-iops=7000
-        - --volume-throughput=400
-      serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v7.1.0
-   ```
 
 ## Prerequisites
 
@@ -65,6 +51,10 @@ Before restoring a TiDB cluster across multiple Kubernetes from EBS volume snaps
 **You must execute the following steps in the control plane**.
 
 Depending on the authorization method you choose in the previous step for granting remote storage access, you can restore data to TiDB using any of the following methods accordingly:
+
+> **Note:**
+>
+> Snapshot restore creates volumes with the default configuration (3000 IOPS/125 MB/s) of GP3. To perform restore using other configurations, you can specify the volume type or configuration, such as `--volume-type=gp3`, `--volume-iops=7000`, or `--volume-throughput=400`, and they are shown in the following examples.
 
 <SimpleTab>
 <div label="AK/SK">
@@ -109,10 +99,15 @@ spec:
   template:
     br:
       sendCredToTikv: true
+      options:
+      - --volume-type=gp3
+      - --volume-iops=7000
+      - --volume-throughput=400
     toolImage: ${br-image}
 ```
 
 </div>
+
 <div label="IAM role with Pod">
 
 If you grant permissions by associating Pod with IAM, you can create the `VolumeRestore` CR as follows:
@@ -155,10 +150,15 @@ spec:
   template:
     br:
       sendCredToTikv: false
+      options:
+      - --volume-type=gp3
+      - --volume-iops=7000
+      - --volume-throughput=400
     toolImage: ${br-image}
 ```
 
 </div>
+
 <div label="IAM role with ServiceAccount">
 
 If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeRestore` CR as follows:
@@ -199,6 +199,10 @@ spec:
   template:
     br:
       sendCredToTikv: false
+      options:
+      - --volume-type=gp3
+      - --volume-iops=7000
+      - --volume-throughput=400
     toolImage: ${br-image}
     serviceAccount: tidb-backup-manager
 ```

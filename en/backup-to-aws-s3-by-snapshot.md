@@ -3,6 +3,10 @@ title: Back Up a TiDB Cluster Using EBS Volume Snapshots
 summary: Learn how to back up TiDB cluster data to S3 based on EBS volume snapshots using TiDB Operator.
 ---
 
+> **Warning**
+>
+> This documentation is deprecated, please see [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md) instead.
+
 # Back Up a TiDB Cluster Using EBS Volume Snapshots
 
 This document describes how to back up a TiDB cluster deployed on AWS Elastic Kubernetes Service (EKS) to S3.
