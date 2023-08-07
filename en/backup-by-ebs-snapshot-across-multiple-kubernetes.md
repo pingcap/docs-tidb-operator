@@ -225,13 +225,13 @@ status:
 
 ### Delete the `VolumeBackup` CR
 
-You can delete the `VolumeBackup` CR by running the following commands:
+If you set `spec.template.cleanPolicy` to `Delete`, when you delete the `VolumeBackup` CR, the BR Federation Manager will clean up the backup file and the volume snapshots on AWS.
+
+To delete the `VolumeBackup` CR, run the following commands:
 
 ```shell
 kubectl delete backup ${backup-name} -n ${namespace}
 ```
-
-If you set `spec.template.cleanPolicy` to `Delete`, when you delete the CR, the BR Federation Manager will clean up the backup file and the volume snapshots on AWS.
 
 ## Scheduled volume backup
 
