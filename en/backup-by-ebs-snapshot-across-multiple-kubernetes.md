@@ -1,13 +1,13 @@
 ---
 title: Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots
-summary: Learn how to back up TiDB cluster data across multiple Kubernetes to S3 based on EBS volume snapshots using BR Federation Manager.
+summary: Learn how to back up TiDB cluster data across multiple Kubernetes to S3 based on EBS volume snapshots using BR Federation.
 ---
 
 # Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots
 
 This document describes how to back up the data of a TiDB cluster deployed across multiple AWS Kubernetes to AWS storage using EBS volume snapshots.
 
-The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in BR Federation Manager and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
 ## Usage scenarios
 
@@ -36,7 +36,7 @@ If you have any other requirements, refer to [Backup and Restore Overview](backu
 
 You can either fully or incrementally back up snapshots based on AWS EBS volumes. The initial backup of a node is full backup, while subsequent backups are incremental backup.
 
-The process of snapshot backup is defined in a customized `VolumeBackup` custom resource (CR) object. The BR Federation Manager completes the backup task according to the specifications in this object.
+Snapshot backup is defined in a customized `VolumeBackup` custom resource (CR) object. The BR Federation completes the backup task according to the specifications in this object.
 
 ### Step 1. Set up the environment for EBS volume snapshot backup in every data plane
 
@@ -100,6 +100,7 @@ spec:
 ```
 
 </div>
+
 <div label="IAM role with Pod">
 
 If you grant permissions by associating Pod with IAM, you can create the `VolumeBackup` CR as follows:
@@ -140,6 +141,7 @@ spec:
 ```
 
 </div>
+
 <div label="IAM role with ServiceAccount">
 
 If you grant permissions by associating ServiceAccount with IAM, you can create the `VolumeBackup` CR as follows:
@@ -187,7 +189,7 @@ spec:
 
 ### Step 3. View the backup status
 
-After creating the `VolumeBackup` CR, the BR Federation Manager automatically starts the backup process in each data plane.
+After creating the `VolumeBackup` CR, the BR Federation automatically starts the backup process in each data plane.
 
 To check the volume backup status, use the following command:
 
@@ -225,7 +227,7 @@ status:
 
 ### Delete the `VolumeBackup` CR
 
-If you set `spec.template.cleanPolicy` to `Delete`, when you delete the `VolumeBackup` CR, the BR Federation Manager will clean up the backup file and the volume snapshots on AWS.
+If you set `spec.template.cleanPolicy` to `Delete`, when you delete the `VolumeBackup` CR, the BR Federation will clean up the backup file and the volume snapshots on AWS.
 
 To delete the `VolumeBackup` CR, run the following commands:
 
