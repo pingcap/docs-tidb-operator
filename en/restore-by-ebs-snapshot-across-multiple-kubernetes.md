@@ -33,13 +33,14 @@ The restore method described in this document is implemented based on CustomReso
 
 Before restoring a TiDB cluster across multiple Kubernetes from EBS volume snapshots, you need to complete the following preparations.
 
-### Complete the volume backup
+- Complete the volume backup
 
-To restore a TiDB cluster across multiple Kubernetes from EBS snapshots, you should have a completed `VolumeBackup`. For steps of performing snapshot backup, refer to [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md).
+    For detailed steps, refer to [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md).
 
-### Prepare the restore clusters
+- Prepare the restore cluster
 
-Deploy a TiDB cluster across multiple Kubernetes to which you want to restore data. See [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md). **Note, You need add the `recoveryMode: true` field to spec of `TidbCluster`**.
+    - Deploy a TiDB cluster across multiple Kubernetes that you want to restore data to. For detailed steps, refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md).
+    - When deploying the TiDB cluster, add the `recoveryMode: true` field to the spec of `TidbCluster`.
 
 ## Restore process
 
