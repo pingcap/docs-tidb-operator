@@ -3,9 +3,9 @@ title: FAQs on EBS Snapshot Backup and Restore
 summary: Learn about the common questions and solutions for EBS snapshot backup and restore.
 ---
 
-> **Warning**
+> **Warning:**
 >
-> This documentation is deprecated
+> This document is deprecated.
 
 # FAQs on EBS Snapshot Backup and Restore
 
