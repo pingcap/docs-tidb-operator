@@ -20,7 +20,7 @@ If you have any other requirements, refer to [Backup and Restore Overview](backu
 
 ## Limitations
 
-- Snapshot backup is applicable to TiDB Operator v1.5.0 or later versions and TiDB v6.5.3 or later versions.
+- Snapshot backup is applicable to TiDB Operator v1.5.0 or later versions, and TiDB v6.5.3 or later versions.
 - To use this backup method, the TiDB cluster must be deployed on AWS EC2 and use AWS EBS volumes.
 - This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
