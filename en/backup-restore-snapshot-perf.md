@@ -3,9 +3,9 @@ title: Performance of EBS Snapshot Backup and Restore
 summary: Learn about the performance of EBS snapshot backup and restore.
 ---
 
-> **Warning**
+> **Warning:**
 >
-> This documentation is deprecated
+> This document is deprecated.
 
 # Performance of EBS Snapshot Backup and Restore
 

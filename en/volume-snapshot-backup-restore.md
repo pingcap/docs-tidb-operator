@@ -3,9 +3,9 @@ title: Architecture of Backup and Restore Based on EBS Volume Snapshots
 summary: Learn the architecture of backup and restore based on EBS volume snapshots in TiDB.
 ---
 
-> **Warning**
+> **Warning:**
 > 
-> This documentation is deprecated, please see [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md) instead.
+> This document is deprecated. Refer to [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md).
 
 # Architecture of Backup and Restore Based on EBS Volume Snapshots
 

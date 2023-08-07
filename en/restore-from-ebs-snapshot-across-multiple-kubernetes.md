@@ -7,7 +7,7 @@ summary: Learn how to restore a TiDB cluster across multiple Kubernetes from EBS
 
 This document describes how to restore backup data in AWS EBS snapshots to a TiDB cluster across multiple Kubernetes.
 
-The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) and TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to restore the data. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) and TiDB Operator. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) (Backup & Restore) is a command-line tool for distributed backup and recovery of the TiDB cluster data. For the underlying implementation, BR restores the data.
 
 ## Limitations
 
