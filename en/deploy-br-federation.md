@@ -146,19 +146,17 @@ Now that you already have a kubeconfig file of data planes, you need to encode t
 
 2. Store the output from the previous step in a secret object.
 
-> **Note**
->
-> The name of the secret and the data key of the kubeconfig field must match the following example:
->
-> ```yaml
-> apiVersion: v1
-> kind: Secret
-> metadata:
->   name: br-federation-kubeconfig
-> type: Opaque
-> data:
->   kubeconfig: ${encoded-kubeconfig}
-> ```
+    Note that the name of the secret and the data key of the kubeconfig field **must** match the following example:
+
+    ```yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: br-federation-kubeconfig
+    type: Opaque
+    data:
+      kubeconfig: ${encoded-kubeconfig}
+    ```
 
 ### Step 2.3: Install BR Federation
 
