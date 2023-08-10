@@ -53,8 +53,13 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
     pingcap/ticdc:v7.1.0
     pingcap/tiflash:v7.1.0
     pingcap/tidb-monitor-reloader:v1.0.1
+<<<<<<< HEAD
     pingcap/tidb-monitor-initializer:v7.1.0
     grafana/grafana:6.0.1
+=======
+    pingcap/tidb-monitor-initializer:v7.1.1
+    grafana/grafana:7.5.11
+>>>>>>> 084c378d (bump Grafan version to 7.5.11 (#2442))
     prom/prometheus:v2.18.1
     busybox:1.26.2
     ```
@@ -71,8 +76,13 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
     docker pull pingcap/ticdc:v7.1.0
     docker pull pingcap/tiflash:v7.1.0
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
+<<<<<<< HEAD
     docker pull pingcap/tidb-monitor-initializer:v7.1.0
     docker pull grafana/grafana:6.0.1
+=======
+    docker pull pingcap/tidb-monitor-initializer:v7.1.1
+    docker pull grafana/grafana:7.5.11
+>>>>>>> 084c378d (bump Grafan version to 7.5.11 (#2442))
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
@@ -83,8 +93,13 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
     docker save -o ticdc-v7.1.0.tar pingcap/ticdc:v7.1.0
     docker save -o tiflash-v7.1.0.tar pingcap/tiflash:v7.1.0
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
+<<<<<<< HEAD
     docker save -o tidb-monitor-initializer-v7.1.0.tar pingcap/tidb-monitor-initializer:v7.1.0
     docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
+=======
+    docker save -o tidb-monitor-initializer-v7.1.1.tar pingcap/tidb-monitor-initializer:v7.1.1
+    docker save -o grafana-6.0.1.tar grafana/grafana:7.5.11
+>>>>>>> 084c378d (bump Grafan version to 7.5.11 (#2442))
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
     ```
