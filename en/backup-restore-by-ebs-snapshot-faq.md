@@ -9,7 +9,7 @@ summary: Learn about the common questions and solutions for EBS snapshot backup 
 
 Symptom: You get the error that contains `GC safepoint 443455494791364608 exceed TS 0` when backup are initializing.
 
-Solution: Probably you have closed the feature of "resolved ts" in TiKV or PD, so you should check the configuration of TiKV and PD.
+Solution: Probably you have forbidden the feature of "resolved ts" in TiKV or PD, so you should check the configuration of TiKV and PD.
 For TiKV configuration, confirm if you set `resolved-ts.enable = false` or `raftstore.report-min-resolved-ts-interval = "0s"`. If you set, please remove the configuration.
 For PD configuration, confirm if you set `pd-server.min-resolved-ts-persistence-interval = "0s"`. If you set, please remove the configuration.
 

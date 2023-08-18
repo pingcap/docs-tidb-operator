@@ -12,7 +12,9 @@ The backup method described in this document is implemented based on CustomResou
 > **Note:**
 > 
 > > storage blocks on volumes that were created from snapshots must be initialized (pulled down from Amazon S3 and written to the volume) before you can access the block. This preliminary action takes time and can cause a significant increase in the latency of an I/O operation the first time each block is accessed. Volume performance is achieved after all blocks have been downloaded and written to the volume.
-> From AWS documentation, the EBS volume restored from snapshot may have high latency before it's initialized, which can result in big performance hit of restored TiDB cluster. See details in [ebs create volume from snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot)
+>
+> From AWS documentation, the EBS volume restored from snapshot may have high latency before it's initialized, which can result in big performance hit of restored TiDB cluster. See details in [ebs create volume from snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot).
+> 
 > To initialize the restored volume more efficiently, you should **separate WAL and raft log to a dedicated small volume from TiKV data**. So that we can improve write performance of restored TiDB cluster by full initializing the volume of WAL and raft log.
 
 ## Usage scenarios
@@ -27,8 +29,8 @@ If you have any other requirements, refer to [Backup and Restore Overview](backu
 ## Limitations
 
 - Snapshot backup is applicable to TiDB Operator v1.5.0 or later versions, and TiDB v6.5.3 or later versions.
-- For TiKV configuration, do not set `resolved-ts.enable` to `false`, and do not set `raftstore.report-min-resolved-ts-interval` to "0s". Otherwise, it can lead to backup failure.
-- For PD configuration, do not set `pd-server.min-resolved-ts-persistence-interval` to "0s". Otherwise, it can lead to backup failure.
+- For TiKV configuration, do not set `resolved-ts.enable` to `false`, and do not set `raftstore.report-min-resolved-ts-interval` to `"0s"`. Otherwise, it can lead to backup failure.
+- For PD configuration, do not set `pd-server.min-resolved-ts-persistence-interval` to `"0s"`. Otherwise, it can lead to backup failure.
 - To use this backup method, the TiDB cluster must be deployed on AWS EC2 and use AWS EBS volumes.
 - This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
