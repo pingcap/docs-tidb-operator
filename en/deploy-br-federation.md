@@ -5,11 +5,11 @@ summary: Learn how to deploy BR Federation on Kubernetes.
 
 # Deploy BR Federation on Kubernetes
 
-This document describes how to deploy [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) across multiple Kubernetes.
+This document describes how to deploy [BR Federation](br-federation-architecture.md#br-federation-architecture-and-processes) across multiple Kubernetes clusters.
 
 ## Prerequisites
 
-Before deploy BR Federation on Kubernetes, make sure you have met the following prerequisites:
+Before deploy BR Federation on Kubernetes cluster, make sure you have met the following prerequisites:
 
 * Kubernetes version must be >= v1.12.
 * You must have multiple Kubernetes clusters.

@@ -5,7 +5,7 @@ summary: Learn the architecture of backup and restore based on EBS volume snapsh
 
 > **Warning:**
 > 
-> This document is deprecated. Refer to [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md).
+> This document is deprecated. Refer to [BR Federation](br-federation-architecture.md).
 
 # Architecture of Backup and Restore Based on EBS Volume Snapshots
 
