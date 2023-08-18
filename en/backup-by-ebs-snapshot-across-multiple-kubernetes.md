@@ -5,9 +5,15 @@ summary: Learn how to back up TiDB cluster data across multiple Kubernetes to S3
 
 # Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots
 
-This document describes how to back up the data of a TiDB cluster deployed across multiple AWS Kubernetes to AWS storage using EBS volume snapshots.
+This document describes how to back up the data of a TiDB cluster deployed across multiple AWS Kubernetes clusters to AWS storage using EBS volume snapshots.
 
-The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](volume-snapshot-backup-restore-across-multiple-kubernetes.md#architecture-of-br-federation) and TiDB Operator. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) (Backup & Restore) is a command-line tool for distributed backup and recovery of the TiDB cluster data. For the underlying implementation, BR gets the backup data of the TiDB cluster, and then sends the data to the AWS storage.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](br-federation-architecture.md#br-federation-architecture-and-processes) and TiDB Operator. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) (Backup & Restore) is a command-line tool for distributed backup and recovery of the TiDB cluster data. For the underlying implementation, BR gets the backup data of the TiDB cluster, and then sends the data to the AWS storage.
+
+> **Note:**
+> 
+> > storage blocks on volumes that were created from snapshots must be initialized (pulled down from Amazon S3 and written to the volume) before you can access the block. This preliminary action takes time and can cause a significant increase in the latency of an I/O operation the first time each block is accessed. Volume performance is achieved after all blocks have been downloaded and written to the volume.
+> From AWS documentation, the EBS volume restored from snapshot may have high latency before it's initialized, which can result in big performance hit of restored TiDB cluster. See details in [ebs create volume from snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot)
+> To initialize the restored volume more efficiently, you should **separate WAL and raft log to a dedicated small volume from TiKV data**. So that we can improve write performance of restored TiDB cluster by full initializing the volume of WAL and raft log.
 
 ## Usage scenarios
 
@@ -21,12 +27,13 @@ If you have any other requirements, refer to [Backup and Restore Overview](backu
 ## Limitations
 
 - Snapshot backup is applicable to TiDB Operator v1.5.0 or later versions, and TiDB v6.5.3 or later versions.
+- For TiKV configuration, do not set `resolved-ts.enable` to `false`, and do not set `raftstore.report-min-resolved-ts-interval` to "0s". Otherwise, it can lead to backup failure.
+- For PD configuration, do not set `pd-server.min-resolved-ts-persistence-interval` to "0s". Otherwise, it can lead to backup failure.
 - To use this backup method, the TiDB cluster must be deployed on AWS EC2 and use AWS EBS volumes.
 - This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
 > **Note:**
 >
-> - After you upgrade the TiDB cluster from an earlier version to v6.5.0 or later, you might find the volume snapshot backup does not work. To address this issue, see [Backup failed after an upgrade of the TiDB cluster](backup-restore-faq.md#backup-failed-after-an-upgrade-of-the-tidb-cluster).
 > - To perform volume snapshot restore, ensure that the TiKV configuration during restore is consistent with the configuration used during backup.
 >     - To check consistency, download the `backupmeta` file from the backup file stored in Amazon S3, and check the `kubernetes.crd_tidb_cluster.spec` field.
 >     - If this field is inconsistent, you can modify the TiKV configuration by referring to [Configure a TiDB Cluster on Kubernetes](configure-a-tidb-cluster.md).
@@ -58,7 +65,7 @@ Snapshot backup is defined in a customized `VolumeBackup` custom resource (CR) o
 
 **You must execute the following steps in the control plane**.
 
-Depending on the authorization method you choose in the previous step for granting remote storage access, you can back up data to S3 storage using any of the following methods accordingly:
+Depending on the authorization method you choose in the previous step for granting remote storage access, you can back up data by EBS snapshots using any of the following methods accordingly:
 
 <SimpleTab>
 <div label="AK/SK">
@@ -243,7 +250,14 @@ This can be done by creating a `VolumeBackupSchedule` CR object that describes t
 
 ### Perform a scheduled volume backup
 
-Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
+**You must execute the following steps in the control plane**.
+
+Depending on the authorization method you choose in the previous step for granting remote storage access, perform a scheduled volume backup by doing one of the following:
+
+<SimpleTab>
+<div label="AK/SK">
+
+If you grant permissions by accessKey and secretKey, Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
 
 ```shell
 kubectl apply -f volume-backup-scheduler.yaml
@@ -268,7 +282,54 @@ spec:
       - k8sClusterName: {k8s-name1}
         tcName: {tc-name1}
         tcNamespace: {tc-namespace1}
-        backup:
+      - k8sClusterName: {k8s-name2}
+        tcName: {tc-name2}
+        tcNamespace: {tc-namespace2}
+      - ... # other clusters
+    template:
+      br:
+        sendCredToTikv: true
+      s3:
+        provider: aws
+        secretName: s3-secret
+        region: {region-name}
+        bucket: {bucket-name}
+        prefix: {backup-path}
+      toolImage: {br-image}
+      cleanPolicy: Delete
+```
+
+</div>
+
+<div label="IAM role with ServiceAccount">
+
+If you grant permissions by associating Pod with IAM, Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
+
+```shell
+kubectl apply -f volume-backup-scheduler.yaml
+```
+
+The content of `volume-backup-scheduler.yaml` is as follows:
+
+```yaml
+---
+apiVersion: federation.pingcap.com/v1alpha1
+kind: VolumeBackupSchedule
+metadata:
+  name: {scheduler-name}
+  namespace: {namespace-name}
+  annotations:
+     iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-name
+spec:
+  #maxBackups: {number}
+  #pause: {bool}
+  maxReservedTime: {duration}
+  schedule: {cron-expression}
+  backupTemplate:
+    clusters:
+      - k8sClusterName: {k8s-name1}
+        tcName: {tc-name1}
+        tcNamespace: {tc-namespace1}
       - k8sClusterName: {k8s-name2}
         tcName: {tc-name2}
         tcNamespace: {tc-namespace2}
@@ -276,8 +337,51 @@ spec:
     template:
       br:
         sendCredToTikv: false
-        cleanPolicy: Delete
-        resources: {}
+      s3:
+        provider: aws
+        region: {region-name}
+        bucket: {bucket-name}
+        prefix: {backup-path}
+      toolImage: {br-image}
+      cleanPolicy: Delete
+```
+
+</div>
+
+<div label="IAM role with ServiceAccount">
+
+If you grant permissions by associating ServiceAccount with IAM, Create the `VolumeBackupSchedule` CR, and back up cluster data as described below:
+
+```shell
+kubectl apply -f volume-backup-scheduler.yaml
+```
+
+The content of `volume-backup-scheduler.yaml` is as follows:
+
+```yaml
+---
+apiVersion: federation.pingcap.com/v1alpha1
+kind: VolumeBackupSchedule
+metadata:
+  name: {scheduler-name}
+  namespace: {namespace-name}
+spec:
+  #maxBackups: {number}
+  #pause: {bool}
+  maxReservedTime: {duration}
+  schedule: {cron-expression}
+  backupTemplate:
+    clusters:
+      - k8sClusterName: {k8s-name1}
+        tcName: {tc-name1}
+        tcNamespace: {tc-namespace1}
+      - k8sClusterName: {k8s-name2}
+        tcName: {tc-name2}
+        tcNamespace: {tc-namespace2}
+      - ... # other clusters
+    template:
+      br:
+        sendCredToTikv: false
       s3:
         provider: aws
         region: {region-name}
@@ -285,4 +389,8 @@ spec:
         prefix: {backup-path}
       serviceAccount: tidb-backup-manager
       toolImage: {br-image}
+      cleanPolicy: Delete
 ```
+
+</div>
+</SimpleTab>

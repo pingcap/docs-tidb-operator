@@ -7,15 +7,15 @@ summary: Learn the architecture of backup and restore based on EBS volume snapsh
 
 BR Federation is a system designed to [back up and restore TiDB clusters deployed across multiple Kubernetes using EBS snapshots](deploy-tidb-cluster-across-multiple-kubernetes.md). 
 
-Normally, TiDB Operator can only access the Kubernetes where it is deployed. This means a TiDB Operator can only back up TiKV data within its own Kubernetes. However, to perform EBS snapshot backup and restore across multiple Kubernetes clusters, a coordinator role is required. This is where the BR Federation comes in. 
+Normally, TiDB Operator can only access the Kubernetes cluster where it is deployed. This means a TiDB Operator can only back up TiKV volumes' snapshots within its own Kubernetes cluster. However, to perform EBS snapshot backup and restore across multiple Kubernetes clusters, a coordinator role is required. This is where the BR Federation comes in. 
 
 This document outlines the architecture of the BR Federation and the processes involved in backup and restoration.
 
 ## BR Federation architecture
 
-BR Federation operates as the control plane, interacting with the data plane, which includes each Kubernetes where TiDB components are deployed. The interaction is facilitated through the Kubernetes API Server. 
+BR Federation operates as the control plane, interacting with the data plane, which includes each Kubernetes cluster where TiDB components are deployed. The interaction is facilitated through the Kubernetes API Server. 
 
-BR Federation coordinates `Backup` and `Restore` Custom Resources (CRs) in the data plane to accomplish backup and restoration across multiple Kubernetes.
+BR Federation coordinates `Backup` and `Restore` Custom Resources (CRs) in the data plane to accomplish backup and restoration across multiple Kubernetes clusters.
 
 ![BR Federation architecture](/media/br-federation-architecture.png)
 
@@ -25,7 +25,7 @@ BR Federation coordinates `Backup` and `Restore` Custom Resources (CRs) in the d
 
 The backup process in the data plane consists of three phases:
 
-1. **Phase One:** Request PD to pause region scheduling and Garbage Collection (GC). As each TiKV instance might take snapshots at different times, pausing scheduling and GC can avoid data inconsistencies between TiKV instances during snapshot taking. Since the TiDB components are interconnected across multiple Kubernetes clusters, executing this operation in one Kubernetes affects the entire TiDB cluster.
+1. **Phase One:** Request PD to pause region scheduling and Garbage Collection (GC). As each TiKV instance might take snapshots at different times, pausing scheduling and GC can avoid data inconsistencies between TiKV instances during snapshot taking. Since the TiDB components are interconnected across multiple Kubernetes clusters, executing this operation in one Kubernetes cluster affects the entire TiDB cluster.
 
 2. **Phase Two:** Collect meta information such as `TidbCluster` CR and EBS volumes, and then request AWS API to create EBS snapshots. This phase must be executed in each Kubernetes cluster.
 
