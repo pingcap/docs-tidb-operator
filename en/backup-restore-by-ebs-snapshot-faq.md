@@ -5,6 +5,12 @@ summary: Learn about the common questions and solutions for EBS snapshot backup 
 
 # FAQs on EBS Snapshot Backup and Restore across Multiple Kubernetes
 
+## New tags on snapshots and restored volumes
+
+Symptom: Some tags are automatically added to generated snapshots and restored EBS volumes
+
+Explanation: Those new tags are added for traceability. Snapshots will inherit all tags from individual source EBS volumes, and restored EBS volumes inherit tags from source snapshots but prefix keys with `snapshot\`. Besides that, new tags like <TiDBCluster-BR: true>, <snapshot/createdFromSnapshotId, {source-snapshot-id}> are added to restored EBS volumes.
+
 ## Backup Initialize Failed 
 
 Symptom: You get the error that contains `GC safepoint 443455494791364608 exceed TS 0` when backup are initializing.
