@@ -300,6 +300,7 @@ spec:
         prefix: {backup-path}
       toolImage: {br-image}
       cleanPolicy: Delete
+      calcSizeLevel: {snapshot-size-calculation-level}
 ```
 
 </div>
