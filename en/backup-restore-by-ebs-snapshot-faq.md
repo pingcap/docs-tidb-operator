@@ -20,3 +20,9 @@ Issue: [#5143](https://github.com/pingcap/tidb-operator/issues/5143)
 Symptom: You get the error that contains `backup meta file exists`, and you can find the backup pod is scheduled twice.
 
 Solution: Probably the first backup pod is evicted by Kubernetes due to node resource pressure. You can configure `PriorityClass` and `ResourceRequirements` to reduce the possibility of eviction. Please refer to the [comment of issue](https://github.com/pingcap/tidb-operator/issues/5143#issuecomment-1654916830).
+
+## Save the time for backup by controlling snapshot size calculation level
+
+Symptom: Scheduled backup can't be finished in expected window due to the cost of snapshot size calculation.
+
+Solution: By default, both full size and incremental size are calculated by calling AWS service. And the calculation might cost minutes of time. You can set `spec.template.calcSizeLevel` to `full` to skip incremental size calculation, set the value to `incremental` to skip full size calculation, and set the value to `none` to skip both.
