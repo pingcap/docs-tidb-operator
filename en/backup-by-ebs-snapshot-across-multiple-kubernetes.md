@@ -188,6 +188,7 @@ spec:
     toolImage: ${br-image}
     serviceAccount: tidb-backup-manager
     cleanPolicy: Delete
+    calcSizeLevel: {snapshot-size-calculation-level}
 ```
 
 </div>
