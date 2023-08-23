@@ -28,6 +28,11 @@ Before restoring a TiDB cluster across multiple Kubernetes clusters from EBS vol
     - Deploy a TiDB cluster across multiple Kubernetes clusters that you want to restore data to. For detailed steps, refer to [Deploy a TiDB Cluster across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md).
     - When deploying the TiDB cluster, add the `recoveryMode: true` field to the spec of `TidbCluster`.
 
+> **Note:**
+> 
+> The EBS volume restored from snapshot may have high latency before it's initialized, which can result in big performance hit of restored TiDB cluster. See details in [ebs create volume from snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot).
+> So we recommend that you can configure `spec.template.warmup: sync` to initialize TiKV volumes automatically during restoration process.
+
 ## Restore process
 
 ### Step 1. Set up the environment for EBS volume snapshot restore in every data plane
