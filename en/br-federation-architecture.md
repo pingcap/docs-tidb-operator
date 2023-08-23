@@ -25,11 +25,11 @@ BR Federation coordinates `Backup` and `Restore` Custom Resources (CRs) in the d
 
 The backup process in the data plane consists of three phases:
 
-1. **Phase One:** Request PD to pause region scheduling and Garbage Collection (GC). As each TiKV instance might take snapshots at different times, pausing scheduling and GC can avoid data inconsistencies between TiKV instances during snapshot taking. Since the TiDB components are interconnected across multiple Kubernetes clusters, executing this operation in one Kubernetes cluster affects the entire TiDB cluster.
+1. **Phase One:** TiDB Operator schedules a backup pod to request PD to pause region scheduling and Garbage Collection (GC). As each TiKV instance might take snapshots at different times, pausing scheduling and GC can avoid data inconsistencies between TiKV instances during snapshot taking. Since the TiDB components are interconnected across multiple Kubernetes clusters, executing this operation in one Kubernetes cluster affects the entire TiDB cluster.
 
-2. **Phase Two:** Collect meta information such as `TidbCluster` CR and EBS volumes, and then request AWS API to create EBS snapshots. This phase must be executed in each Kubernetes cluster.
+2. **Phase Two:** TiDB Operator collects meta information such as `TidbCluster` CR and EBS volumes, and then schedules another backup pod to request AWS API to create EBS snapshots. This phase must be executed in each Kubernetes cluster.
 
-3. **Phase Three:** After EBS snapshots are completed, resume region scheduling and GC for the TiDB cluster. This operation is required only in the Kubernetes cluster where Phase One was executed.
+3. **Phase Three:** After EBS snapshots are completed, TiDB Operator deletes the first backup pod to resume region scheduling and GC for the TiDB cluster. This operation is required only in the Kubernetes cluster where Phase One was executed.
 
 ![backup process in data plane](/media/volume-backup-process-data-plane.png)
 
@@ -45,11 +45,11 @@ The orchestration process of `Backup` from the control plane to the data plane i
 
 The restore process in the data plane consists of three phases:
 
-1. **Phase One:** Call the AWS API to restore the EBS volumes using EBS snapshots based on the backup information. The volumes are then mounted onto the TiKV nodes, and TiKV instances are started in recovery mode. This phase must be executed in each Kubernetes cluster.
+1. **Phase One:** TiDB Operator schedules a restore pod to request the AWS API to restore the EBS volumes using EBS snapshots based on the backup information. The volumes are then mounted onto the TiKV nodes, and TiKV instances are started in recovery mode. This phase must be executed in each Kubernetes cluster.
 
-2. **Phase Two:** Use BR to restore all raft logs and KV data in TiKV instances to a consistent state, and then instructs TiKV instances to exit recovery mode. As TiKV instances are interconnected across multiple Kubernetes clusters, this operation can restore all TiKV data and only needs to be executed in one Kubernetes cluster.
+2. **Phase Two:** TiDB Operator schedules another restore pod to restore all raft logs and KV data in TiKV instances to a consistent state, and then instructs TiKV instances to exit recovery mode. As TiKV instances are interconnected across multiple Kubernetes clusters, this operation can restore all TiKV data and only needs to be executed in one Kubernetes cluster.
 
-3. **Phase Three:** Restart all TiKV instances to run in normal mode, and start TiDB finally. This phase must be executed in each Kubernetes cluster.
+3. **Phase Three:** TiDB Operator restarts all TiKV instances to run in normal mode, and start TiDB finally. This phase must be executed in each Kubernetes cluster.
 
 ![restore process in data plane](/media/volume-restore-process-data-plane.png)
 
