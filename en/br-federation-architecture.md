@@ -19,9 +19,9 @@ BR Federation coordinates `Backup` and `Restore` Custom Resources (CRs) in the d
 
 ![BR Federation architecture](/media/br-federation-architecture.png)
 
-## Backup Process
+## Backup process
 
-### Backup Process in Data Plane
+### Backup process in data plane
 
 The backup process in the data plane consists of three phases:
 
@@ -39,9 +39,9 @@ The orchestration process of `Backup` from the control plane to the data plane i
 
 ![backup orchestration process](/media/volume-backup-process-across-multiple-kubernetes-overall.png)
 
-## Restore Process
+## Restore process
 
-### Restore Process in Data Plane
+### Restore process in data plane
 
 The restore process in the data plane consists of three phases:
 
@@ -53,7 +53,7 @@ The restore process in the data plane consists of three phases:
 
 ![restore process in data plane](/media/volume-restore-process-data-plane.png)
 
-### Restore Orchestration Process
+### Restore orchestration process
 
 The orchestration process of `Restore` from the control plane to the data plane is as follows:
 
