@@ -30,8 +30,9 @@ Before restoring a TiDB cluster across multiple Kubernetes clusters from EBS vol
 
 > **Note:**
 > 
-> The EBS volume restored from snapshot may have high latency before it's initialized, which can result in big performance hit of restored TiDB cluster. See details in [ebs create volume from snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot).
-> So we recommend that you can configure `spec.template.warmup: sync` to initialize TiKV volumes automatically during restoration process.
+> The EBS volume restored from snapshots might have high latency before it is initialized. This can impact the performance of a restored TiDB cluster. See details in [Create a volume from a snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot).
+> 
+> It is recommended that you configure `spec.template.warmup: sync` to initialize TiKV volumes automatically during the restoration process.
 
 ## Restore process
 
@@ -215,7 +216,7 @@ spec:
     toolImage: ${br-image}
     serviceAccount: tidb-backup-manager
     warmup: sync
-    warmupImage: ${wamrup-image}
+    warmupImage: ${warmup-image}
 ```
 
 </div>
