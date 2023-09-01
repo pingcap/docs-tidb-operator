@@ -232,3 +232,10 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 
 </div>
 </SimpleTab>
+
+## What's next
+
+After deploying BR Federation, you can now perform the following tasks:
+
+- [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](backup-by-ebs-snapshot-across-multiple-kubernetes.md)
+- [Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots](restore-from-ebs-snapshot-across-multiple-kubernetes.md)
