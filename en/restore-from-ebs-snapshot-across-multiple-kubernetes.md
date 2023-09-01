@@ -9,6 +9,10 @@ This document describes how to restore backup data in AWS EBS snapshots to a TiD
 
 The restore method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](br-federation-architecture.md#br-federation-architecture-and-processes) and TiDB Operator. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) (Backup & Restore) is a command-line tool for distributed backup and recovery of the TiDB cluster data. For the underlying implementation, BR restores the data.
 
+> **Note**
+>
+> Before you restore data, make sure that you have [deployed BR Federation](deploy-br-federation.md).
+
 ## Limitations
 
 - Snapshot restore is applicable to TiDB Operator v1.5.1 or later versions and TiDB v6.5.4 or later versions.

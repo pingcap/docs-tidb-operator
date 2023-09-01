@@ -9,6 +9,10 @@ This document describes how to back up the data of a TiDB cluster deployed acros
 
 The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in [BR Federation](br-federation-architecture.md#br-federation-architecture-and-processes) and TiDB Operator. [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) (Backup & Restore) is a command-line tool for distributed backup and recovery of the TiDB cluster data. For the underlying implementation, BR gets the backup data of the TiDB cluster, and then sends the data to the AWS storage.
 
+> **Note**
+>
+> Before you back up data, make sure that you have [deployed BR Federation](deploy-br-federation.md).
+
 ## Usage scenarios
 
 If you have the following requirements when backing up TiDB cluster data, you can use TiDB Operator to back up the data using volume snapshots and metadata to Amazon S3:
