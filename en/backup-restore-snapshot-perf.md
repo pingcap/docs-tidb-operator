@@ -3,6 +3,10 @@ title: Performance of EBS Snapshot Backup and Restore
 summary: Learn about the performance of EBS snapshot backup and restore.
 ---
 
+> **Warning:**
+>
+> This document is deprecated.
+
 # Performance of EBS Snapshot Backup and Restore
 
 This document describes the performance of EBS snapshot backup and restore, the factors that affect performance, and the performance test results. The performance metrics are based on the AWS region `us-west-2`.
