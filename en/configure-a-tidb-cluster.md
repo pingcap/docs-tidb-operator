@@ -782,7 +782,7 @@ By configuring `topologySpreadConstraints`, you can make pods evenly spread in d
 To use `topologySpreadConstraints`, you must meet the following conditions:
 
 - Your Kubernetes cluster uses `default-scheduler` instead of `tidb-scheduler`. For details, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler).
-- Your Kubernetes cluster enables the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
+- Your Kubernetes cluster enables the `EvenPodsSpread` feature gate if your Kubernetes version is between v1.16 and v1.21. If the Kubernetes version is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect. If the Kubernetes version is v1.22 and above, you can ignore this condition.
 
 You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
