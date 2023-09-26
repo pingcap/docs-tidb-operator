@@ -125,7 +125,7 @@ Azure 的客户端支持读取进程环境变量中的 `AZURE_STORAGE_ACCOUNT`�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic azblob-secret-ad --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_CLIENT_ID=yyy --from-    literal=AZURE_TENANT_ID=zzz --from-literal=AZURE_CLIENT_SECRET=aaa --namespace=test1
+    kubectl create secret generic azblob-secret-ad --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_CLIENT_ID=yyy --from-literal=AZURE_TENANT_ID=zzz --from-literal=AZURE_CLIENT_SECRET=aaa --namespace=test1
     ```
 
 2. 绑定 secret 到 TiKV Pod:
