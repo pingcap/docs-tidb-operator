@@ -186,7 +186,7 @@ Solution:
 
 2. Edit the configuration file of the TiDB cluster and increase the value of TiKV's `keepalive`:
 
-    ```shell
+    ```yaml
     config: |
       [server]
         grpc-keepalive-time = "500s"
@@ -208,7 +208,7 @@ Solution:
       backupType: full
       restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v7.1.0
+      toolImage: pingcap/br:v7.1.1
       br:
         cluster: basic
         clusterNamespace: tidb-cluster
