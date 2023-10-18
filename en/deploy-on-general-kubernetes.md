@@ -52,13 +52,8 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     pingcap/ticdc:v7.1.1
     pingcap/tiflash:v7.1.1
     pingcap/tidb-monitor-reloader:v1.0.1
-<<<<<<< HEAD
-    pingcap/tidb-monitor-initializer:v7.1.0
-    grafana/grafana:7.5.11
-=======
     pingcap/tidb-monitor-initializer:v7.1.1
-    grafana/grafana:6.0.1
->>>>>>> cf63ac66 (en,zh: Bump tidb components to v7.1.1 (#2432))
+    grafana/grafana:7.5.11
     prom/prometheus:v2.18.1
     busybox:1.26.2
     ```
@@ -75,13 +70,8 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     docker pull pingcap/ticdc:v7.1.1
     docker pull pingcap/tiflash:v7.1.1
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-<<<<<<< HEAD
-    docker pull pingcap/tidb-monitor-initializer:v7.1.0
-    docker pull grafana/grafana:7.5.11
-=======
     docker pull pingcap/tidb-monitor-initializer:v7.1.1
-    docker pull grafana/grafana:6.0.1
->>>>>>> cf63ac66 (en,zh: Bump tidb components to v7.1.1 (#2432))
+    docker pull grafana/grafana:7.5.11
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
