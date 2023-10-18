@@ -13,7 +13,7 @@ TiDB Operator v1.5 引入了以下关键特性，从扩展性、易用性等方�
 
 ## 滚动升级改动
 
-由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 TiDB v7.1.0 或以上版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.0 之后 TiFlash 组件会滚动升级。
+由于 [#5075](https://github.com/pingcap/tidb-operator/pull/5075) 的改动，如果 TiDB v7.1.0 或以上版本的集群中部署了 TiFlash，升级 TiDB Operator 到 v1.5.1 之后 TiFlash 组件会滚动升级。
 
 ## 扩展性
 
