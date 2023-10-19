@@ -181,7 +181,6 @@ Kubernetes applications are packed as charts in Helm. PingCAP provides the follo
 * `tidb-backup`: used to back up or restore TiDB clusters;
 * `tidb-lightning`: used to import data into a TiDB cluster;
 * `tidb-drainer`: used to deploy TiDB Drainer;
-* `tikv-importer`: used to deploy TiKV Importer.
 
 These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
 
@@ -206,7 +205,6 @@ pingcap/tidb-cluster    v1.5.0                          A Helm chart for TiDB Cl
 pingcap/tidb-drainer    v1.5.0                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.5.0                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.5.0          v1.5.0          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.5.0                          A Helm chart for TiKV Importer
 ```
 
 When a new version of chart has been released, you can use `helm repo update` to update the repository cached locally:
