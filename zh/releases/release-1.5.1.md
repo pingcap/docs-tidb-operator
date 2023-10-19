@@ -18,3 +18,4 @@ TiDB Operator 版本：1.5.1
 
 - 修复手动触发 TiKV eviction 时 PVC Modifier 报错的问题 ([#5302](https://github.com/pingcap/tidb-operator/pull/5302), [@anish-db](https://github.com/anish-db))
 - 修复替换 TiKV volume 过程中再触发 TiKV eviction 时可能造成 TiDB Operator reconcile 死锁的问题 ([#5301](https://github.com/pingcap/tidb-operator/pull/5301), [@anish-db](https://github.com/anish-db))
+- 修复 TidbCluster 在 Upgrade 过程中可能无法回滚的问题 ([#5345](https://github.com/pingcap/tidb-operator/pull/5345), [@anish-db](https://github.com/anish-db))
