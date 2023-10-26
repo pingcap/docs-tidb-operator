@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 TiDB Lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-目前，TiDB Lightning 支持三种后端：`Importer-backend`、`Local-backend` 、`TiDB-backend`。关于这三种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
+目前，TiDB Lightning 支持两种后端：`Local-backend` 和 `TiDB-backend`。关于这两种后端的区别和选择，请参阅 [TiDB Lightning 文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
 
 - 对于 `Local-backend` 后端，只需要部署 tidb-lightning。
 

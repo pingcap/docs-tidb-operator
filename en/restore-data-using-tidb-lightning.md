@@ -10,7 +10,7 @@ This document describes how to import data into a TiDB cluster on Kubernetes usi
 
 In Kubernetes, the tidb-lightning is in a separate Helm chart and deployed as a `Job`.
 
-TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends).
+TiDB Lightning supports two backends: `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends).
 
 - For `Local-backend`, only tidb-lightning needs to be deployed.
 
