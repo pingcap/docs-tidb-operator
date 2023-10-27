@@ -170,6 +170,7 @@ spec:
     toolImage: ${br-image}
     warmup: sync
     warmupImage: ${wamrup-image}
+    warmupStrategy: fsr
 ```
 
 </div>
