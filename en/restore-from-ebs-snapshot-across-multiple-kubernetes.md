@@ -223,6 +223,7 @@ spec:
     serviceAccount: tidb-backup-manager
     warmup: sync
     warmupImage: ${warmup-image}
+    warmupStrategy: hybrid
 ```
 
 </div>
