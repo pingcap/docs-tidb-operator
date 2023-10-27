@@ -116,6 +116,7 @@ spec:
     toolImage: ${br-image}
     warmup: sync
     warmupImage: ${wamrup-image}
+    warmupStrategy: fio
 ```
 
 </div>
