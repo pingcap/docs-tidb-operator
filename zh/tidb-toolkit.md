@@ -180,7 +180,6 @@ Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上�
 * `tidb-backup`：用于 TiDB 集群备份恢复；
 * `tidb-lightning`：用于 TiDB 集群导入数据；
 * `tidb-drainer`：用于部署 TiDB Drainer；
-* `tikv-importer`：用于部署 TiKV Importer；
 
 这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
 
@@ -200,12 +199,20 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+<<<<<<< HEAD
 pingcap/tidb-backup     v1.4.7                          A Helm chart for TiDB Backup or Restore
 pingcap/tidb-cluster    v1.4.7                          A Helm chart for TiDB Cluster
 pingcap/tidb-drainer    v1.4.7                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.4.7                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.4.7          v1.4.7          tidb-operator Helm chart for Kubernetes
 pingcap/tikv-importer   v1.4.7                          A Helm chart for TiKV Importer
+=======
+pingcap/tidb-backup     v1.5.1                          A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.5.1                          A Helm chart for TiDB Cluster
+pingcap/tidb-drainer    v1.5.1                          A Helm chart for TiDB Binlog drainer.
+pingcap/tidb-lightning  v1.5.1                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.5.1          v1.5.1          tidb-operator Helm chart for Kubernetes
+>>>>>>> 0eb7d041 (deprecated-tikv-importer-in-operator (#2461))
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
