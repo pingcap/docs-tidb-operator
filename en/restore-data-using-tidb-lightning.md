@@ -8,15 +8,9 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 
 This document describes how to import data into a TiDB cluster on Kubernetes using [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview).
 
-TiDB Lightning contains two components: tidb-lightning and tikv-importer. In Kubernetes, the tikv-importer is inside the separate Helm chart of the TiDB cluster. And tikv-importer is deployed as a `StatefulSet` with `replicas=1` while tidb-lightning is in a separate Helm chart and deployed as a `Job`.
+In Kubernetes, the tidb-lightning is in a separate Helm chart and deployed as a `Job`.
 
-TiDB Lightning supports three backends: `Importer-backend`, `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends).
-
-- For `Importer-backend`, both tikv-importer and tidb-lightning need to be deployed.
-
-    > **Note:**
-    >
-    > `Importer-backend` is deprecated in TiDB 5.3 version or later versions. If you must use `Importer-backend`, refer to [the documentation of v1.2](https://docs.pingcap.com/tidb-in-kubernetes/v1.2/restore-data-using-tidb-lightning#deploy-tikv-importer).
+TiDB Lightning supports two backends: `Local-backend`, and `TiDB-backend`. For the differences of these backends and how to choose backends, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends).
 
 - For `Local-backend`, only tidb-lightning needs to be deployed.
 
