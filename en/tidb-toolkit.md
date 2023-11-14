@@ -199,20 +199,11 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-<<<<<<< HEAD
 pingcap/tidb-backup     v1.4.7                  A Helm chart for TiDB Backup or Restore
 pingcap/tidb-cluster    v1.4.7                  A Helm chart for TiDB Cluster
 pingcap/tidb-drainer    v1.4.7                  A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.4.7                  A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.4.7  v1.4.7  tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.4.7                  A Helm chart for TiKV Importer
-=======
-pingcap/tidb-backup     v1.5.1                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.5.1                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.5.1                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.5.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.5.1          v1.5.1          tidb-operator Helm chart for Kubernetes
->>>>>>> 0eb7d041 (deprecated-tikv-importer-in-operator (#2461))
 ```
 
 When a new version of chart has been released, you can use `helm repo update` to update the repository cached locally:
