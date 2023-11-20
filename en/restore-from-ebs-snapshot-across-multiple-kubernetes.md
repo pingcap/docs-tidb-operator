@@ -39,7 +39,7 @@ Before restoring a TiDB cluster across multiple Kubernetes clusters from EBS vol
 > It is recommended that you configure `spec.template.warmup: sync` to initialize TiKV volumes automatically during the restoration process.
 > You can specify the warmup strategy for TiKV data volumes. Set `spec.template.warmupStrategy: fio` to use `fio` linux command to warmup data volumes, set to `spec.template.warmupStrategy: fsr` to enable FSR for data volumes before start TiKV, and set to `spec.template.warmupStrategy: hybrid` to use file scanner to warmup data volumes. `hybrid` is the default option.
 
-If you choose `fsr` as the warmup strategy, you need to grant permissions of `ec2: EnableFastSnapshotRestores`, `ec2: DisableFastSnapshotRestores` and `ec2: DescribeFastSnapshotRestores` to the IAM role. And you also need to increase the EBS service quota of `Fast snapshot restore` to at least the number of TiKV nodes.
+If you choose `fsr` as the warmup strategy, you need to grant permissions of `ec2: EnableFastSnapshotRestores`, `ec2: DisableFastSnapshotRestores` and `ec2: DescribeFastSnapshotRestores` and `coudwatch:GetMetricStatistics` to the IAM role. And you also need to increase the EBS service quota of `Fast snapshot restore` to at least the number of TiKV nodes.
 
 ## Restore process
 
