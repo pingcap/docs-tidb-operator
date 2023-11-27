@@ -33,10 +33,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/network-issues/']
     {{< copyable "shell-regular" >}}
 
     ```
-    tkctl debug -n ${namespace} ${pod_name}
+    kubectl -n ${namespace} exec -it ${pod_name} -- sh
     ```
 
-    远端 shell 启动后，使用 `dig` 命令诊断 DNS 解析，假如 DNS 解析异常，请参照[诊断 Kubernetes DNS 解析](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)进行故障排除：
+    使用 `dig` 命令诊断 DNS 解析，假如 DNS 解析异常，请参照[诊断 Kubernetes DNS 解析](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)进行故障排除：
 
     {{< copyable "shell-regular" >}}
 
@@ -54,15 +54,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/network-issues/']
 
     假如 ping 检查失败，请参照[诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/)进行故障排除。
 
-    假如 ping 检查正常，继续使用 `telnet` 检查目标端口是否打开：
+    假如 ping 检查正常，继续使用 `wget` 或 `curl` 检查目标端口是否打开。
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    telnet ${TARGET_IP} ${TARGET_PORT}
-    ```
-
-    假如 `telnet` 检查失败，则需要验证 Pod 的对应端口是否正确暴露以及应用的端口是否配置正确：
+    假如 `wget` 或 `curl` 检查失败，则需要验证 Pod 的对应端口是否正确暴露以及应用的端口是否配置正确：
 
     {{< copyable "shell-regular" >}}
 
