@@ -117,7 +117,6 @@
   - [Cheat Sheet](cheat-sheet.md)
   - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   - 工具
-    - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
   - 配置
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)

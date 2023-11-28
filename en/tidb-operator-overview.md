@@ -61,9 +61,6 @@ When a problem occurs and the cluster needs diagnosis, you can:
 + See [TiDB FAQs on Kubernetes](faq.md) for any available solution;
 + See [Troubleshoot TiDB on Kubernetes](tips.md) to shoot troubles.
 
-TiDB on Kubernetes provides a dedicated command-line tool `tkctl` for cluster management and auxiliary diagnostics. Meanwhile, some of TiDB's tools are used differently on Kubernetes. You can:
-
-+ Use `tkctl` according to [`tkctl` Guide](use-tkctl.md );
-+ See [Tools on Kubernetes](tidb-toolkit.md) to understand how TiDB tools are used on Kubernetes.
+Some of TiDB's tools are used differently on Kubernetes. You can see [Tools on Kubernetes](tidb-toolkit.md) to understand how TiDB tools are used on Kubernetes.
 
 Finally, when a new version of TiDB Operator is released, you can refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md) to upgrade to the latest version.
