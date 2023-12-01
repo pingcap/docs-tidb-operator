@@ -38,7 +38,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
     name: ${cluster_name}
     namespace: ${cluster_namespace}
   spec:
-    version: "v7.1.0"
+    version: "v7.5.0"
     # ...
     helper:
       image: busybox:1.33.0

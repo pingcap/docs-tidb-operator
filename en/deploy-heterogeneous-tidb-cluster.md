@@ -48,7 +48,7 @@ To deploy a heterogeneous cluster, do the following:
       name: ${heterogeneous_cluster_name}
     spec:
       configUpdateStrategy: RollingUpdate
-      version: v7.1.0
+      version: v7.5.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -129,7 +129,7 @@ After creating certificates, take the following steps to deploy a TLS-enabled he
       tlsCluster:
         enabled: true
       configUpdateStrategy: RollingUpdate
-      version: v7.1.0
+      version: v7.5.0
       timezone: UTC
       pvReclaimPolicy: Delete
       discovery: {}
@@ -218,7 +218,7 @@ If you need to deploy a monitoring component for a heterogeneous cluster, take t
         version: 7.5.11
     initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v7.1.0
+        version: v7.5.0
     reloader:
         baseImage: pingcap/tidb-monitor-reloader
         version: v1.0.1
