@@ -462,14 +462,13 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v7.1.1
+         tidb_version(): Release Version: v7.5.0
                 Edition: Community
-        Git Commit Hash: cf441574864be63938524e7dfcf7cc659edc3dd8
-             Git Branch: heads/refs/tags/v7.1.1
-         UTC Build Time: 2023-07-19 10:16:40
-              GoVersion: go1.20.6
+        Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
+             Git Branch: heads/refs/tags/v7.5.0
+         UTC Build Time: 2023-11-10 14:38:24
+              GoVersion: go1.21.3
            Race Enabled: false
-       TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
                   Store: tikv
 1 row in set (0.01 sec)
@@ -652,14 +651,13 @@ Note that `nightly` is not a fixed version and the version might vary depending 
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v7.1.1
+tidb_version(): Release Version: v7.5.0
 Edition: Community
-Git Commit Hash: cf441574864be63938524e7dfcf7cc659edc3dd8
-Git Branch: heads/refs/tags/v7.1.1
-UTC Build Time: 2023-07-19 10:16:40
-GoVersion: go1.20.6
+Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
+Git Branch: heads/refs/tags/v7.5.0
+UTC Build Time: 2023-11-10 14:38:24
+GoVersion: go1.21.3
 Race Enabled: false
-TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
 Store: tikv
 ```
