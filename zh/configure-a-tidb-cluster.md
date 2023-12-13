@@ -253,7 +253,7 @@ spec:
 
 #### 部署 TiProxy
 
-部署方法与PD一致，需要修改 `spec.tiproxy` 来手动指定 TiProxy 组件的数量。
+部署方法与 PD 一致。此外，还需要修改 `spec.tiproxy` 来手动指定 TiProxy 组件的数量。
 
 ```yaml
   tiproxy:
@@ -390,6 +390,8 @@ spec:
       [log]
       level = "info"
 ```
+
+获取所有可以配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](link)。
 
 #### 配置 TiFlash 配置参数
 

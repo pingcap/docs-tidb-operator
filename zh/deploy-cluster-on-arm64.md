@@ -62,7 +62,7 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
       baseImage: pingcap/tiflash-arm64
       # ...
     tiproxy:
-      baseImage: pingcap/tiflash
+      baseImage: pingcap/tiproxy
       # no need for -arm64
       # ...
   ```

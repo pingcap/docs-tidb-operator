@@ -45,4 +45,4 @@ PD 中[支持在线修改的配置项](https://docs.pingcap.com/zh/tidb/stable/d
 
 ## 修改 TiProxy 组件配置
 
-修改 TiProxy 组件的配置永远不会重启 POD 。需要手动杀死 POD，更改 POD 镜像等配置，来手动触发重启。
+修改 TiProxy 组件的配置永远不会重启 Pod。如果你想要重启 Pod，需要手动杀死 Pod，更改 Pod 镜像等配置，来手动触发重启。
