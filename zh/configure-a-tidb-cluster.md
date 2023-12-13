@@ -624,7 +624,6 @@ NodePort 有两种模式：
 
 - `externalTrafficPolicy=Local`：只有运行 TiDB 的机器会分配 NodePort 端口，用于访问本地的 TiDB 实例
 
-
 #### LoadBalancer
 
 若运行在有 LoadBalancer 的环境，比如 Google Cloud、AWS 平台，建议使用云平台的 LoadBalancer 特性。
