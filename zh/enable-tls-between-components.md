@@ -432,11 +432,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         ...
         ```
 
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
 
         最后生成 TiProxy Server 端证书：
-
-        {{< copyable "shell-regular" >}}
 
         ``` shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiproxy-server.json | cfssljson -bare tiproxy-server
@@ -638,8 +636,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     ```
 
     TiProxy 集群证书 Secret：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl create secret generic ${cluster_name}-tiproxy-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiproxy-server.pem --from-file=tls.key=tiproxy-server-key.pem --from-file=ca.crt=ca.pem
