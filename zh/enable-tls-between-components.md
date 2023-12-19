@@ -405,8 +405,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         首先生成默认的 `tiproxy-server.json` 文件：
 
-        {{< copyable "shell-regular" >}}
-
         ``` shell
         cfssl print-defaults csr > tiproxy-server.json
         ```
