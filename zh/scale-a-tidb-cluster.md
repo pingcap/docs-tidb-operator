@@ -156,7 +156,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 垂直扩缩容各组件
 
-本小节介绍如何对 PD、TiKV、TiDB、TiFlash、TiCDC 进行垂直扩缩容。
+本小节介绍如何对 PD、TiKV、TiDB、TiProxy、TiFlash、TiCDC 进行垂直扩缩容。
 
 - 如果要对 PD、TiKV、TiDB、TiProxy 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
 
