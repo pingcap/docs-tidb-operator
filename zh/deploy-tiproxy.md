@@ -51,6 +51,15 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
     要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiproxy/tiproxy-configuration)。
 
+
+TiProxy 启动后可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
+
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
+    kubectl get svc -n ${namespace}
+    ```
+
 ## 移除 TiProxy
 
 如果你的 TiDB 集群不再需要 TiProxy，请进行以下操作移除 TiProxy。
