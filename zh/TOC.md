@@ -22,6 +22,7 @@
     - [阿里云 ACK](deploy-on-alibaba-cloud.md)
   - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
+  - [部署 TiDB 负载均衡 TiProxy](deploy-tiproxy.md)
   - 跨多个 Kubernetes 集群部署 TiDB 集群
     - [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md)
     - [构建多个网络互通的 GKE 集群](build-multi-gcp-gke.md)
