@@ -21,15 +21,11 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
 1. 编辑 TidbCluster Custom Resource (CR)：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
 2. 按照如下示例增加 TiProxy 配置：
-
-    {{< copyable "shell-regular" >}}
 
     ```yaml
     spec:
@@ -52,9 +48,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
     要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiproxy/tiproxy-configuration)。
 
 
-TiProxy 启动后可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
-
-    {{< copyable "shell-regular" >}}
+TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
     ``` shell
     kubectl get svc -n ${namespace}
@@ -64,17 +58,13 @@ TiProxy 启动后可通过以下命令找到对应的 `tiproxy-sql` 负载均衡
 
 如果你的 TiDB 集群不再需要 TiProxy，请进行以下操作移除 TiProxy。
 
-1. 执行以下命令修改 `spec.tiproxy.replicas` 为 0 来移除 TiProxy Pod。
-
-    {{< copyable "shell-regular" >}}
+1. 执行以下命令修改 `spec.tiproxy.replicas` 为 `0` 来移除 TiProxy Pod。
 
     ```shell
     kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"tiproxy":{"replicas": 0}}}'
     ```
 
 2. 检查 TiProxy Pod 状态。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get pod -n ${namespace} -l app.kubernetes.io/component=tiproxy,app.kubernetes.io/instance=${cluster_name}
@@ -94,15 +84,11 @@ TiProxy 启动后可通过以下命令找到对应的 `tiproxy-sql` 负载均衡
 
     2. 使用以下命令删除 TiProxy StatefulSet：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl delete statefulsets -n ${namespace} -l app.kubernetes.io/component=tiproxy,app.kubernetes.io/instance=${cluster_name}
         ```
 
-    3. 执行以下命令检查是否成功删除 TiProxy 集群的 StatefulSet：
-
-        {{< copyable "shell-regular" >}}
+    3. 执行以下命令，检查是否已经成功删除 TiProxy 集群的 StatefulSet：
 
         ```shell
         kubectl get sts -n ${namespace} -l app.kubernetes.io/component=tiproxy,app.kubernetes.io/instance=${cluster_name}
