@@ -56,7 +56,7 @@ TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均
 
 ## 移除 TiProxy
 
-如果你的 TiDB 集群不再需要 TiProxy，请进行以下操作移除 TiProxy。
+如果你的 TiDB 集群不再需要 TiProxy，执行以下操作移除。
 
 1. 执行以下命令修改 `spec.tiproxy.replicas` 为 `0` 来移除 TiProxy Pod。
 
@@ -75,8 +75,6 @@ TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均
 3. 删除 TiProxy StatefulSet。
 
     1. 使用以下命令修改 TiDB Cluster CR，删除 `spec.tiproxy` 字段。
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         kubectl patch tidbcluster ${cluster_name} -n ${namespace} --type json -p '[{"op":"remove", "path":"/spec/tiproxy"}]'
