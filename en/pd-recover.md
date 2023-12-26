@@ -202,7 +202,7 @@ Check configuration. The following command uses placement rules as an example:
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placement-rules show
 ```
 
-Now TiDB cluster is recovered.
+Now the TiDB cluster is recovered.
 
 ## Scenarios 2: All PD nodes are down and cannot be recovered
 
@@ -365,4 +365,4 @@ kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instanc
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```
 
-Now TiDB cluster is recovered.
+Now the TiDB cluster is recovered.
