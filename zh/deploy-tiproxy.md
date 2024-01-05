@@ -5,7 +5,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
 # 为已有 TiDB 集群部署负载均衡 TiProxy
 
-本文介绍在 Kubernetes 上如何为已有的 TiDB 集群部署或删除 TiDB 负载均衡 [TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy/tiproxy-overview)。TiProxy 放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
+本文介绍在 Kubernetes 上如何为已有的 TiDB 集群部署或删除 TiDB 负载均衡 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy/tiproxy-overview)。TiProxy 放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
 > **注意：**
 >
@@ -29,7 +29,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
     ```yaml
     spec:
-    tiproxy:
+      tiproxy:
         baseImage: pingcap/tiproxy
         replicas: 3
     ```
@@ -45,14 +45,12 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
             level = "info"
     ```
 
-    要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiproxy/tiproxy-configuration)。
-
-
+    要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy/tiproxy-configuration)。
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
-    ``` shell
-    kubectl get svc -n ${namespace}
-    ```
+``` shell
+kubectl get svc -n ${namespace}
+```
 
 ## 移除 TiProxy
 
