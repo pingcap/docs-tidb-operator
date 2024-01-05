@@ -22,6 +22,7 @@
     - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
   - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
+  - [Deploy TiProxy Load Balancer](deploy-tiproxy.md)
   - Deploy TiDB Across Multiple Kubernetes Clusters
     - [Build Multiple Interconnected AWS EKS Clusters](build-multi-aws-eks.md)
     - [Build Multiple Interconnected GKE Clusters](build-multi-gcp-gke.md)

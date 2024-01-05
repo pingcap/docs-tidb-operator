@@ -59,6 +59,7 @@ If you need to suspend the TiDB cluster, take the following steps:
     * TiCDC
     * TiKV
     * Pump
+    * TiProxy
     * PD
 
 ## Restore TiDB cluster

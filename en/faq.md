@@ -135,7 +135,7 @@ After you execute the `kubectl get tc` command, if the output shows that the **R
 
 * Upgrading
 * Scaling
-* Any Pod of PD, TiDB, TiKV, or TiFlash is not Ready
+* Any Pod of PD, TiDB, TiKV, TiFlash, or TiProxy is not Ready
 
 To check whether a TiDB cluster is unavailable, you can try connecting to TiDB. If the connection fails, it means that the corresponding TiDBCluster is unavailable.
 
