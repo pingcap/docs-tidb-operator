@@ -46,6 +46,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
     ```
 
     要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy/tiproxy-configuration)。
+
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
 ``` shell
