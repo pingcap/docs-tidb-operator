@@ -409,7 +409,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl print-defaults csr > tiproxy-server.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
 
         ``` json
         ...

@@ -522,7 +522,7 @@ EOF
 
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
-以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy、Pump 等其他组件，也请一并将其副本数设为 0：
+以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy、Pump 等其他组件，也请一并将其副本数设为 `0`：
 
 {{< copyable "shell-regular" >}}
 
