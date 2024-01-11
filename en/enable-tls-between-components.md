@@ -414,7 +414,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             cfssl print-defaults csr > tiproxy-server.json
             ```
 
-        2. Edit this file to change the `CN`, `hosts` attributes:
+        2. Edit this file to change the `CN` and `hosts` attributes:
 
             ```json
             ...

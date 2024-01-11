@@ -17,7 +17,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
 
 > **Note:**
 >
-> If your server does not have access to the Internet, refer to [Deploy a TiDB Cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the `pingcap/tiproxy` Docker image to a machine with access to the Internet and then upload the Docker image to your server. Then, use `docker load` to install the Docker image on your server.
+> If your server does not have access to the internet, refer to [Deploy a TiDB Cluster](deploy-on-general-kubernetes.md#deploy-the-tidb-cluster) to download the `pingcap/tiproxy` Docker image to a machine with access to the internet and then upload the Docker image to your server. Then, use `docker load` to install the Docker image on your server.
 
 1. Edit the TidbCluster Custom Resource (CR):
 
