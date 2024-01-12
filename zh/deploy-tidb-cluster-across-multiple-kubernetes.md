@@ -644,4 +644,4 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
 
 ## 跨多个 Kubernetes 集群部署的 TiDB 集群监控
 
-请参阅[跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
+请参阅[跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)。
