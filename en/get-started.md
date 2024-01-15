@@ -234,7 +234,7 @@ To install TiDB Operator, you can use [Helm 3](https://helm.sh/docs/intro/instal
 3. Install TiDB Operator:
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.2
     ```
 
     <details>
