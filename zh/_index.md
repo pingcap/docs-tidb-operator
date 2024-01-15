@@ -70,7 +70,7 @@ hide_commit: true
 
 <LearningPath label="参考" icon="cloud-dev">
 
-[API 参考文档](https://github.com/pingcap/tidb-operator/blob/v1.5.1/docs/api-references/docs.md)
+[API 参考文档](https://github.com/pingcap/tidb-operator/blob/v1.5.2/docs/api-references/docs.md)
 
 [工具](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/tidb-toolkit)
 
