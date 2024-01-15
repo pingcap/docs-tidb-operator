@@ -303,6 +303,9 @@ mountOptions:
               dedicated: tikv
             taints:
               dedicated: tikv:NoSchedule
+            iam:
+              withAddonPolicies:
+                ebs: true
             ...
         ```
 
@@ -581,6 +584,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -589,6 +595,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -597,7 +606,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -606,6 +617,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -614,6 +628,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -622,6 +639,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
 ```
 
 具体命令根据 EKS 集群创建情况而定：

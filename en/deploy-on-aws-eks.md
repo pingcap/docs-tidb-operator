@@ -310,6 +310,9 @@ The following `c5d.4xlarge` example shows how to configure StorageClass for the 
               dedicated: tikv
             taints:
               dedicated: tikv:NoSchedule
+            iam:
+              withAddonPolicies:
+                ebs: true
             ...
         ```
 
@@ -599,6 +602,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -607,6 +613,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -615,7 +624,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -624,6 +635,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -632,6 +646,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -640,6 +657,9 @@ In the configuration file of eksctl (`cluster.yaml`), add the following two item
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
 ```
 
 Depending on the EKS cluster status, use different commands:
