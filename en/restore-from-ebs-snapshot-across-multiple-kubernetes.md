@@ -15,7 +15,7 @@ The restore method described in this document is implemented based on CustomReso
 
 ## Limitations
 
-- Snapshot restore is applicable to TiDB Operator v1.5.1 or later versions and TiDB v6.5.4 or later versions.
+- Snapshot restore is applicable to TiDB Operator v1.5.2 or later versions and TiDB v6.5.8 or later versions.
 - You can use snapshot restore only to restore data to a cluster with the same number of TiKV nodes and volumes configuration. That is, the number of TiKV nodes and volume configurations of TiKV nodes are identical between the restore cluster and backup cluster.
 - Snapshot restore is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
 
