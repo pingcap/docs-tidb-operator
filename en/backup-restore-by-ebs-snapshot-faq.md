@@ -35,3 +35,11 @@ This document addresses common questions and solutions related to EBS snapshot b
 **Symptom:** Scheduled backup can't be completed in the expected window due to the cost of snapshot size calculation.
 
 **Solution:** By default, both full size and incremental size are calculated by calling the AWS service, which might take several minutes. You can set `spec.template.calcSizeLevel` to `full` to skip incremental size calculation, set it to `incremental` to skip full size calculation, and set it to `none` to skip both calculations.
+
+## How to configure the TTL for the backup init job
+
+Backup init job will do backup preparation work including pause GC, some PD schedulers and also suspend lightning.  Default TTL of 10 minutes is associated with the init job in case it could stuck.  You can change the TTL by setting `spec.template.volumeBackupInitJobMaxActiveSeconds` attribute of spec of volumebackup.
+
+## How to flow control to snapshots deletion
+
+EBS snapshot backup GC is done one volumebackup each time. For larger clusters EBS snapshot backup, number of snapshots for a single volumebackup could still be very large, so, flow control to the snapshot deletion is still needed.  You can control expected ration in a single data plane by setting the paramter `spec.template.snapshotsDeleteRatio` of the backup schedule CRD. Its default value is 1.0, which means no more than 1 snapshot deletion in a second.
