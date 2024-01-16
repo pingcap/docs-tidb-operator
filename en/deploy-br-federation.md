@@ -226,7 +226,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 6. Deploy the BR Federation.
 
     ```shell
-    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.5.1 -f ${HOME}/br-federation/values.yaml && \
+    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.5.2 -f ${HOME}/br-federation/values.yaml && \
     kubectl get po -n br-fed-admin -l app.kubernetes.io/instance=br-federation
     ```
 
