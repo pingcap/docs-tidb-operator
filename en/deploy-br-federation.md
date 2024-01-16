@@ -190,7 +190,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 4. Install the BR Federation:
 
     ```shell
-    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.5.1
+    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.5.2
     ```
 
 </div>
