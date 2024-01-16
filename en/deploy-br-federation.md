@@ -132,7 +132,7 @@ To deploy the BR Federation, you need to select one Kubernetes cluster as the co
 The BR Federation uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Before using the BR Federation, you must create the CRD in your Kubernetes cluster. After using the BR Federation Manager, you only need to perform the operation once.
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.1/manifests/federation-crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.2/manifests/federation-crd.yaml
 ```
 
 ### Step 2.2: Prepare the kubeconfig secret
