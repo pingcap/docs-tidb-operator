@@ -218,7 +218,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 
     ```shell
     mkdir -p ${HOME}/br-federation && \
-    helm inspect values pingcap/br-federation --version=v1.5.1 > ${HOME}/br-federation/values.yaml
+    helm inspect values pingcap/br-federation --version=v1.5.2 > ${HOME}/br-federation/values.yaml
     ```
 
 5. Configure the BR Federation by modifying fields such as `image`, `limits`, `requests`, and `replicas` according to your needs.
