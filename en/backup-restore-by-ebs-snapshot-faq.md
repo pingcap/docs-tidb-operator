@@ -38,7 +38,7 @@ This document addresses common questions and solutions related to EBS snapshot b
 
 ## How to configure the TTL for the backup init job
 
-Backup init job will do backup preparation work including pause GC, some PD schedulers and also suspend lightning.  Default TTL of 10 minutes is associated with the init job in case it could stuck.  You can change the TTL by setting `spec.template.volumeBackupInitJobMaxActiveSeconds` attribute of spec of volumebackup.
+The backup init job will handle backup preparations, including pausing GC, certain PD schedulers, and suspending Lightning. By default, a TTL of 10 minutes is associated with the init job in case it gets stuck. You can change the TTL by setting the `spec.template.volumeBackupInitJobMaxActiveSeconds` attribute of spec of volumebackup.
 
 ## How to flow control to snapshots deletion
 
