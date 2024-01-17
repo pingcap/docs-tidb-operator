@@ -42,4 +42,4 @@ The backup init job will handle backup preparations, including pausing GC, certa
 
 ## How to flow control to snapshots deletion
 
-EBS snapshot backup GC is done one volumebackup each time. For larger clusters EBS snapshot backup, number of snapshots for a single volumebackup could still be very large, so, flow control to the snapshot deletion is still needed.  You can control expected ration in a single data plane by setting the paramter `spec.template.snapshotsDeleteRatio` of the backup schedule CRD. Its default value is 1.0, which means no more than 1 snapshot deletion in a second.
+EBS snapshot backup GC is performed on one volumebackup at a time. For larger clusters with EBS snapshot backups, there might still be a significant number of snapshots for a single volume backup. Therefore, flow control is necessary for snapshot deletion. You can manage the expected ration in a single data plane by setting the `spec.template.snapshotsDeleteRatio` parameter of the backup schedule CRD. The default value is 1.0, which ensures no more than one snapshot deletion per second.
