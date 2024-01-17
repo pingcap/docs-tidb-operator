@@ -223,7 +223,7 @@ To mount multiple PVs for TiCDC:
 
 ### HostNetwork
 
-For PD, TiKV, TiDB, TiFlash, TiCDC, and Pump, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
+For PD, TiKV, TiDB, TiFlash, TiProxy, TiCDC, and Pump, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
 
 To enable `HostNetwork` for all supported components, configure `spec.hostNetwork: true`.
 
@@ -254,6 +254,17 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 > **Note:**
 >
 > If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce the number of PD Pods in the default deployment to `1`.
+
+#### Enable TiProxy
+
+The deployment method is the same as that of PD. In addition, you need to modify `spec.tiproxy` to manually specify the number of TiProxy components.
+
+```yaml
+  tiproxy:
+    baseImage: pingcap/tiproxy
+    replicas: 3
+    config:
+```
 
 #### Enable TiFlash
 
@@ -313,7 +324,7 @@ If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBC
 
 ### Configure TiDB components
 
-This section introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash/TiCDC.
+This section introduces how to configure the parameters of TiDB/TiKV/PD/TiProxy/TiFlash/TiCDC.
 
 #### Configure TiDB parameters
 
@@ -376,6 +387,22 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 >
 > - If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 > - After the cluster is started for the first time, some PD configuration items are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD. Therefore, after the first start, you cannot modify some PD configuration using parameters. You need to dynamically modify the configuration using SQL statements, pd-ctl, or PD server API. Currently, among all the configuration items listed in [Modify PD configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-pd-configuration-online), except `log.level`, all the other configuration items cannot be modified using parameters after the first start.
+
+#### Configure TiProxy parameters
+
+TiProxy parameters can be configured by `spec.tiproxy.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+spec:
+  tiproxy:
+    config: |
+      [log]
+      level = "info"
+```
+
+For all the configurable parameters of TiProxy, refer to [TiProxy Configuration File](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
 
 #### Configure TiFlash parameters
 
@@ -641,6 +668,8 @@ spec:
 ```
 
 See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/) to know more about the features of Service and what LoadBalancer in the cloud platform supports.
+
+If TiProxy is specified, `tiproxy-api` and `tiproxy-sql` services are also automatically created for use.
 
 ### IPv6 Support
 

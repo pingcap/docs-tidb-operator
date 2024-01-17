@@ -13,7 +13,7 @@ This document describes how to modify the configuration of TiDB clusters deploye
 
 For TiDB and TiKV, if you [modify their configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config/) using SQL statements, after you upgrade or restart the cluster, the configurations will be overwritten by those in the `TidbCluster` CR. This leads to the online configuration update being invalid. Therefore, to persist the configuration, you must directly modify their configurations in the `TidbCluster` CR.
 
-For TiFlash, TiCDC, and Pump, you can only modify their configurations in the `TidbCluster` CR.
+For TiFlash, TiProxy, TiCDC, and Pump, you can only modify their configurations in the `TidbCluster` CR.
 
 To modify the configuration in the `TidbCluster` CR, take the following steps:
 
@@ -42,3 +42,7 @@ After PD is started for the first time, some PD configuration items are persiste
 Among all the PD configuration items listed in [Modify PD configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), after the first start, only `log.level` can be modified by using the `TidbCluster` CR. Other configurations cannot be modified by using CR.
 
 For TiDB clusters deployed on Kubernetes, if you need to modify the PD configuration, you can modify the configuration online using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), [pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules), or PD server API.
+
+## Modify TiProxy configuration
+
+Modifying the configuration of the TiProxy component never restarts the Pod. If you want to restart the Pod, you need to manually kill the Pod or change the Pod image to manually trigger the restart.
