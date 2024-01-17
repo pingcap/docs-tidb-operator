@@ -13,7 +13,7 @@ TiDB 集群自身支持通过 SQL 对 TiDB、TiKV、PD 等组件进行[在线配
 
 对于 TiDB 和 TiKV，如果通过 SQL 进行[在线配置变更](https://docs.pingcap.com/zh/tidb/stable/dynamic-config)，在升级或者重启后，配置项会被 TidbCluster CR 中的配置项覆盖，导致在线变更的配置失效。因此，如果需要持久化修改配置，你需要在 TidbCluster CR 中直接修改配置项。
 
-对于 TiFlash、TiCDC 和 Pump，目前只能通过在 TidbCluster CR 中修改配置项。
+对于 TiFlash、TiProxy、TiCDC 和 Pump，目前只能通过在 TidbCluster CR 中修改配置项。
 
 在 TidbCluster CR 中修改配置项的步骤如下：
 
@@ -42,3 +42,7 @@ TiDB 集群自身支持通过 SQL 对 TiDB、TiKV、PD 等组件进行[在线配
 PD 中[支持在线修改的配置项](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)里，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过 TidbCluster CR 进行修改。
 
 对于部署在 Kubernetes 中的 TiDB 集群，如需修改 PD 配置参数，需要使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config/#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules) 或 PD server API 来动态进行修改。
+
+## 修改 TiProxy 组件配置
+
+修改 TiProxy 组件的配置永远不会重启 Pod。如果你想要重启 Pod，需要手动杀死 Pod，或更改 Pod 镜像等配置，来手动触发重启。

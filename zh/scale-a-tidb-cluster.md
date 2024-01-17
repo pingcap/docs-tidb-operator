@@ -15,9 +15,9 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
-### 水平扩缩容 PD、TiKV、TiDB
+### 水平扩缩容 PD、TiKV、TiDB、TiProxy
 
-如果要对 PD、TiKV、TiDB 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tikv.replicas`、`spec.tidb.replicas` 至期望值。
+如果要对 PD、TiKV、TiDB、TiProxy 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tikv.replicas`、`spec.tidb.replicas`、`spec.tiproxy.replicas` 至期望值。
 
 1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 PD 的 `replicas` 值设置为 3：
 
@@ -156,9 +156,9 @@ watch kubectl -n ${namespace} get pod -o wide
 
 ### 垂直扩缩容各组件
 
-本小节介绍如何对 PD、TiKV、TiDB、TiFlash、TiCDC 进行垂直扩缩容。
+本小节介绍如何对 PD、TiKV、TiDB、TiProxy、TiFlash、TiCDC 进行垂直扩缩容。
 
-- 如果要对 PD、TiKV、TiDB 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+- 如果要对 PD、TiKV、TiDB、TiProxy 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
 
 - 如果要对 TiFlash 进行垂直扩缩容，修改 `spec.tiflash.resources` 至期望值。
 

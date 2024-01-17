@@ -9,7 +9,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
-    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
 
     > **注意：**
@@ -401,6 +401,43 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
         ```
 
+    - TiProxy Server 端证书
+
+        首先生成默认的 `tiproxy-server.json` 文件：
+
+        ``` shell
+        cfssl print-defaults csr > tiproxy-server.json
+        ```
+
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
+
+        ``` json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-tiproxy",
+              "${cluster_name}-tiproxy.${namespace}",
+              "${cluster_name}-tiproxy.${namespace}.svc",
+              "${cluster_name}-tiproxy-peer",
+              "${cluster_name}-tiproxy-peer.${namespace}",
+              "${cluster_name}-tiproxy-peer.${namespace}.svc",
+              "*.${cluster_name}-tiproxy-peer",
+              "*.${cluster_name}-tiproxy-peer.${namespace}",
+              "*.${cluster_name}-tiproxy-peer.${namespace}.svc"
+            ],
+        ...
+        ```
+
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
+
+        最后生成 TiProxy Server 端证书：
+
+        ``` shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiproxy-server.json | cfssljson -bare tiproxy-server
+        ```
+
     - TiFlash Server 端证书
 
         首先生成默认的 `tiflash-server.json` 文件：
@@ -594,6 +631,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     ``` shell
     kubectl create secret generic ${cluster_name}-ticdc-cluster-secret --namespace=${namespace} --from-file=tls.crt=ticdc-server.pem --from-file=tls.key=ticdc-server-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    TiProxy 集群证书 Secret：
+
+    ``` shell
+    kubectl create secret generic ${cluster_name}-tiproxy-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiproxy-server.pem --from-file=tls.key=tiproxy-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
     TiFlash 集群证书 Secret：

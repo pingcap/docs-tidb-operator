@@ -135,7 +135,7 @@ PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的�
 
 * 升级中
 * 缩扩容中
-* PD、TiDB、TiKV、TiFlash 任一 Pod 状态不是 Ready
+* PD、TiDB、TiKV、TiFlash、TiProxy 任一 Pod 状态不是 Ready
 
 要判断 TiDB 集群是否真正不可用，你可以尝试连接 TiDB。如果无法连接成功，说明 TiDB 集群真正不可用。
 
