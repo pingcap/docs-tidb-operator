@@ -41,6 +41,7 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 * 使用持久化存储的 PD、TiKV、TiFlash、Pump、Monitor、Backup、Restore Pod 使用的 PVC 的 StorageClass 不存在或 PV 不足
 * Kubernetes 集群中没有节点能满足 Pod 申请的 CPU 或内存
 * PD 或者 TiKV Replicas 数量和集群内节点数量不满足 tidb-scheduler 高可用调度策略
+* TiDB、TiProxy 等组件使用的证书没有配置
 
 此时，可以通过 `kubectl describe pod` 命令查看 Pending 的具体原因：
 

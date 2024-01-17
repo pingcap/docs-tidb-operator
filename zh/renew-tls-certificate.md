@@ -67,7 +67,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
     > **注意：**
     >
-    > 上述示例命令中仅更新了 PD、TiKV、TiDB 的组件间 Server 端 CA 证书与 Client 端 CA 证书，如需更新其他如 TiCDC、TiFlash 等的 Server 端 CA 证书，可使用类似命令进行更新。
+    > 上述示例命令中仅更新了 PD、TiKV、TiDB 的组件间 Server 端 CA 证书与 Client 端 CA 证书，如需更新其他如 TiCDC、TiFlash、TiProxy 等的 Server 端 CA 证书，可使用类似命令进行更新。
 
 5. 参考[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)对需要加载组合 CA 证书的组件进行滚动重启。
 
@@ -110,7 +110,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
     > **注意：**
     >
-    > 上述示例命令中仅更新了 PD、TiKV、TiDB 的组件间 Server 端证书与 Client 端证书，如需更新其他如 TiCDC、TiFlash 等的 Server 端证书，可使用类似命令进行更新。
+    > 上述示例命令中仅更新了 PD、TiKV、TiDB 的组件间 Server 端证书与 Client 端证书，如需更新其他如 TiCDC、TiFlash、TiProxy 等的 Server 端证书，可使用类似命令进行更新。
 
 3. 参考[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)对需要加载新证书的组件进行滚动重启。
 
