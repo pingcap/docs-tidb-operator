@@ -51,6 +51,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     pingcap/tidb-binlog:v7.5.0
     pingcap/ticdc:v7.5.0
     pingcap/tiflash:v7.5.0
+    pingcap/tiproxy:latest
     pingcap/tidb-monitor-reloader:v1.0.1
     pingcap/tidb-monitor-initializer:v7.5.0
     grafana/grafana:7.5.11
@@ -69,6 +70,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     docker pull pingcap/tidb-binlog:v7.5.0
     docker pull pingcap/ticdc:v7.5.0
     docker pull pingcap/tiflash:v7.5.0
+    docker pull pingcap/tiproxy:latest
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
     docker pull pingcap/tidb-monitor-initializer:v7.5.0
     docker pull grafana/grafana:7.5.11
@@ -80,6 +82,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     docker save -o tidb-v7.5.0.tar pingcap/tidb:v7.5.0
     docker save -o tidb-binlog-v7.5.0.tar pingcap/tidb-binlog:v7.5.0
     docker save -o ticdc-v7.5.0.tar pingcap/ticdc:v7.5.0
+    docker save -o tiproxy-latest.tar pingcap/tiproxy:latest
     docker save -o tiflash-v7.5.0.tar pingcap/tiflash:v7.5.0
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
     docker save -o tidb-monitor-initializer-v7.5.0.tar pingcap/tidb-monitor-initializer:v7.5.0
@@ -98,6 +101,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     docker load -i tidb-v7.5.0.tar
     docker load -i tidb-binlog-v7.5.0.tar
     docker load -i ticdc-v7.5.0.tar
+    docker load -i tiproxy-latest.tar
     docker load -i tiflash-v7.5.0.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
     docker load -i tidb-monitor-initializer-v7.5.0.tar

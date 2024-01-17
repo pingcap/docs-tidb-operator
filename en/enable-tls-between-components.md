@@ -12,7 +12,7 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
     > **Note:**
@@ -402,8 +402,45 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
             {{< copyable "shell-regular" >}}
 
-            ``` shell
+            ```shell
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
+            ```
+
+    - TiProxy
+
+        1. Generate the default `tiproxy-server.json` file:
+
+            ```shell
+            cfssl print-defaults csr > tiproxy-server.json
+            ```
+
+        2. Edit this file to change the `CN` and `hosts` attributes:
+
+            ```json
+            ...
+                "CN": "TiDB",
+                "hosts": [
+                  "127.0.0.1",
+                  "::1",
+                  "${cluster_name}-tiproxy",
+                  "${cluster_name}-tiproxy.${namespace}",
+                  "${cluster_name}-tiproxy.${namespace}.svc",
+                  "${cluster_name}-tiproxy-peer",
+                  "${cluster_name}-tiproxy-peer.${namespace}",
+                  "${cluster_name}-tiproxy-peer.${namespace}.svc",
+                  "*.${cluster_name}-tiproxy-peer",
+                  "*.${cluster_name}-tiproxy-peer.${namespace}",
+                  "*.${cluster_name}-tiproxy-peer.${namespace}.svc"
+                ],
+            ...
+            ```
+
+            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+
+        3. Generate the TiProxy server-side certificate:
+
+            ```shell
+            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiproxy-server.json | cfssljson -bare tiproxy-server
             ```
 
     - TiFlash
@@ -588,31 +625,29 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - The Drainer cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl create secret generic ${cluster_name}-drainer-cluster-secret --namespace=${namespace} --from-file=tls.crt=drainer-server.pem --from-file=tls.key=drainer-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiCDC cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl create secret generic ${cluster_name}-ticdc-cluster-secret --namespace=${namespace} --from-file=tls.crt=ticdc-server.pem --from-file=tls.key=ticdc-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    - The TiFlash cluster certificate Secret:
+    - The TiProxy cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
+        ``` shell
+        kubectl create secret generic ${cluster_name}-tiproxy-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiproxy-server.pem --from-file=tls.key=tiproxy-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
+    - The TiFlash cluster certificate Secret:
 
         ``` shell
         kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiKV Importer cluster certificate Secret:
-
-        {{< copyable "shell-regular" >}}
 
         ``` shell
         kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem

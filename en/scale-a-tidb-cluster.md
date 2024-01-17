@@ -16,9 +16,9 @@ Horizontally scaling TiDB means that you scale TiDB out or in by adding or remov
 
 - To scale in a TiDB cluster, **decrease** the value of `replicas` of a certain component. The scaling in operations remove Pods based on the Pod ID in descending order, until the number of Pods equals the value of `replicas`.
 
-### Horizontally scale PD, TiKV, and TiDB
+### Horizontally scale PD, TiKV, TiDB, and TiProxy
 
-To scale PD, TiKV, or TiDB horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, and `spec.tidb.replicas` in the `TidbCluster` object of the cluster to a desired value.
+To scale PD, TiKV, TiDB, or TiProxy horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, `spec.tidb.replicas`, and `spec.tiproxy.replicas` in the `TidbCluster` object of the cluster to desired values.
 
 1. Modify the `replicas` value of a component as needed. For example, configure the `replicas` value of PD to 3:
 
@@ -165,9 +165,9 @@ Vertically scaling TiDB means that you scale TiDB up or down by increasing or de
 
 ### Vertically scale components
 
-This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiFlash, and TiCDC.
+This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiProxy, TiFlash, and TiCDC.
 
-- To scale up or scale down PD, TiKV, TiDB, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to a desired value.
+- To scale up or scale down PD, TiKV, TiDB, and TiProxy, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to desired values.
 
 - To scale up or scale down TiFlash, modify the value of `spec.tiflash.resources`.
 
