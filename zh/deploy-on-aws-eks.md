@@ -160,6 +160,9 @@ nodeGroups:
       dedicated: tikv
     taints:
       dedicated: tikv:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tikv-1c
     desiredCapacity: 1
     privateNetworking: true
