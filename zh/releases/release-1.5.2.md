@@ -10,6 +10,8 @@ TiDB Operator 版本：1.5.2
 
 ## 新功能
 
+从 v1.5.2 起, TiDB operator 支持基于 AWS EBS 快照的备份能力的跨多个 K8S 集群的备份恢复。更多详情，请查看文档 [Back up Data Using EBS Snapshots across Multiple Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-by-ebs-snapshot-across-multiple-kubernetes) 和 [Restore Data Using EBS Snapshots across Multiple Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-ebs-snapshot-across-multiple-kubernetes)。([#5003](https://github.com/pingcap/tidb-operator/pull/5003), [@BornChanger](https://github.com/BornChanger), [@WangLe1321](https://github.com/WangLe1321), [@YuJuncen](https://github.com/YuJuncen), [@csuzhangxc](https://github.com/csuzhangxc))
+
 ## 优化提升
 
 - `startScriptVersion: v2` 支持在重启 PD、TiKV 时等待 Pod IP 与 DNS 解析一致后再进行启动以更好地支持 Stale Read 等场景 ([#5381](https://github.com/pingcap/tidb-operator/pull/5381), [@smineyev81](https://github.com/smineyev81))
