@@ -184,7 +184,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 # ...
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 ### gp3 存储类型（推荐）或其他 EBS 存储类型
@@ -225,7 +226,8 @@ mountOptions:
       iops: "4000"
       throughput: "400"
     mountOptions:
-    - nodelalloc,noatime
+      - nodelalloc
+      - noatime
     ```
 
 4. 在 TidbCluster 的 YAML 文件中，通过 `storageClassName` 字段指定 gp3 存储类来申请 `gp3` 类型的 EBS 存储。可以参考以下 TiKV 配置示例：
@@ -244,7 +246,8 @@ mountOptions:
     apiVersion: storage.k8s.io/v1
     # ...
     mountOptions:
-    - nodelalloc,noatime
+      - nodelalloc
+      - noatime
     ```
 
 如果想了解更多 EBS 存储类型选择和配置信息，请查看 [AWS 官方文档](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html) 和 [Storage Class 官方文档](https://kubernetes.io/docs/concepts/storage/storage-classes/)。

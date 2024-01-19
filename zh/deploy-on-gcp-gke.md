@@ -96,7 +96,8 @@ allowVolumeExpansion: true
 parameters:
   type: pd-ssd
 mountOptions:
-  - nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 > **注意：**
