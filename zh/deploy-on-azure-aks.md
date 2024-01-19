@@ -201,7 +201,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 # ...
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 ## 部署 TiDB Operator
@@ -535,7 +536,8 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
     allowVolumeExpansion: true
     volumeBindingMode: WaitForFirstConsumer
     mountOptions:
-    - nodelalloc,noatime
+      - nodelalloc
+      - noatime
     ```
 
     你可以根据实际需要额外配置[驱动参数](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md)。
