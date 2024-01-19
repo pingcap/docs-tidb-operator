@@ -3,6 +3,10 @@ title: Architecture of Backup and Restore Based on EBS Volume Snapshots
 summary: Learn the architecture of backup and restore based on EBS volume snapshots in TiDB.
 ---
 
+> **Warning:**
+> 
+> This document is deprecated. Refer to [BR Federation](br-federation-architecture.md).
+
 # Architecture of Backup and Restore Based on EBS Volume Snapshots
 
 Backup and restore based on EBS volume snapshots is provided in TiDB Operator. This document describes the architecture and process of this feature by exemplifying backup and restore using TiDB Operator.
