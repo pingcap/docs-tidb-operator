@@ -55,6 +55,8 @@ kind: ClusterConfig
 metadata:
   name: ${clusterName}
   region: ap-northeast-1
+addons:
+  - name: aws-ebs-csi-driver
 
 nodeGroups:
   - name: admin
@@ -62,7 +64,9 @@ nodeGroups:
     privateNetworking: true
     labels:
       dedicated: admin
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tidb-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -72,6 +76,9 @@ nodeGroups:
       dedicated: tidb
     taints:
       dedicated: tidb:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tidb-1d
     desiredCapacity: 0
     privateNetworking: true
@@ -81,6 +88,9 @@ nodeGroups:
       dedicated: tidb
     taints:
       dedicated: tidb:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tidb-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -90,7 +100,9 @@ nodeGroups:
       dedicated: tidb
     taints:
       dedicated: tidb:NoSchedule
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: pd-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -100,6 +112,9 @@ nodeGroups:
       dedicated: pd
     taints:
       dedicated: pd:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: pd-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -109,6 +124,9 @@ nodeGroups:
       dedicated: pd
     taints:
       dedicated: pd:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: pd-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -118,7 +136,9 @@ nodeGroups:
       dedicated: pd
     taints:
       dedicated: pd:NoSchedule
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tikv-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -128,6 +148,9 @@ nodeGroups:
       dedicated: tikv
     taints:
       dedicated: tikv:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tikv-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -137,6 +160,9 @@ nodeGroups:
       dedicated: tikv
     taints:
       dedicated: tikv:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tikv-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -146,6 +172,9 @@ nodeGroups:
       dedicated: tikv
     taints:
       dedicated: tikv:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
 ```
 
 默认只需要两个 TiDB 节点，因此可以设置 `tidb-1d` 节点组的 `desiredCapacity` 为 `0`，后面如果需要可以随时扩容这个节点组。
@@ -280,6 +309,9 @@ mountOptions:
               dedicated: tikv
             taints:
               dedicated: tikv:NoSchedule
+            iam:
+              withAddonPolicies:
+                ebs: true
             ...
         ```
 
@@ -558,6 +590,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -566,6 +601,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: tiflash-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -574,7 +612,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: tiflash
     taints:
       dedicated: tiflash:NoSchedule
-
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1a
     desiredCapacity: 1
     privateNetworking: true
@@ -583,6 +623,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1d
     desiredCapacity: 1
     privateNetworking: true
@@ -591,6 +634,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
   - name: ticdc-1c
     desiredCapacity: 1
     privateNetworking: true
@@ -599,6 +645,9 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes
       dedicated: ticdc
     taints:
       dedicated: ticdc:NoSchedule
+    iam:
+      withAddonPolicies:
+        ebs: true
 ```
 
 具体命令根据 EKS 集群创建情况而定：
