@@ -45,7 +45,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
             level = "info"
     ```
 
-    For more information about TiProxy configuration, see [TiProxy Configuration](https://docs.pingcap.com/tidb/v7.6/tiproxy/tiproxy-configuration).
+    For more information about TiProxy configuration, see [TiProxy Configuration](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
 
 After TiProxy is started, you can find the corresponding `tiproxy-sql` load balancer service by running the following command.
 
