@@ -42,10 +42,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 - [docker](https://docs.docker.com/install/)：版本 >= 18.09
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.12
-- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.8.0
+- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.11.0
 - 若使用 Linux, [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
 
-以下以 0.8.1 版本为例：
+以下以 0.11.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -101,7 +101,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 部署前，请确保满足以下要求：
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0 及以上，推荐使用较新版本。minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.20
 
 你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库启动 Kubernetes 集群。以下分别对这几种方法进行介绍。
 
