@@ -39,13 +39,33 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
     ```yaml
     spec:
       tiproxy:
-        config:
-          config: |
-            [log]
-            level = "info"
+        config: |
+          [log]
+          level = "info"
+          [proxy]
+          graceful-wait-before-shutdown = 120
     ```
 
-    要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
+    推荐把 `graceful-wait-before-shutdown` 设置为 120 秒。 要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
+
+4. 如果没有开启集群 TLS ，还需要手动配置 TiDB　的 `signing-cert` 参数：
+
+    ```yaml
+    spec:
+      tidb:
+        additionalVolumes:
+          - name: sessioncert
+            secret:
+              secretName: sessioncert
+        additionalVolumeMounts:
+          - name: sessioncert
+            mountPath: /var/session
+        config: |
+          session-token-signing-cert = "/var/session/tls.crt"
+          session-token-signing-key = "/var/session/tls.key"
+    ```
+
+    详见 [TiDB 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)
 
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
