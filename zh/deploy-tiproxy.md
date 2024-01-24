@@ -42,11 +42,9 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
         config: |
           [log]
           level = "info"
-          [proxy]
-          graceful-wait-before-shutdown = 120
     ```
 
-    推荐把 `graceful-wait-before-shutdown` 设置为 120 秒。 要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
+    要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
 
 4. 如果开启了[集群 TLS](enable-tls-between-components.md)，则跳过这一步；如果没有开启集群 TLS，还需要生成自签名证书，并手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5):
 
