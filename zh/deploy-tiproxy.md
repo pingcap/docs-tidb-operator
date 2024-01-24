@@ -42,31 +42,39 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
         config: |
           [log]
           level = "info"
-      tidb:
-        config: |
-          graceful-wait-before-shutdown = 120
     ```
 
-    推荐把 TiDB 的 `graceful-wait-before-shutdown` 设置为 120 秒。要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
+    要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
 
-4. 如果开启了[集群 TLS](enable-tls-between-components.md)，则跳过这一步；如果没有开启集群 TLS，还需要生成自签名证书，并手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5):
+4. 配置 TidbCluster CR 中 `spec.tidb.config` 的相关参数：
 
-    ```yaml
-    spec:
-      tidb:
-        additionalVolumes:
-          - name: sessioncert
-            secret:
-              secretName: sessioncert
-        additionalVolumeMounts:
-          - name: sessioncert
-            mountPath: /var/session
-        config: |
-          session-token-signing-cert = "/var/session/tls.crt"
-          session-token-signing-key = "/var/session/tls.key"
-    ```
+    + 推荐设置 TiDB 的 `graceful-wait-before-shutdown` 大于应用程序最长的事务的持续时间，配合 TiProxy 的链接迁移，详见 [TiProxy 使用限制](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview#使用限制)。
 
-    详见 TiDB 配置文档 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入)。
+       ```yaml
+       spec:
+         tidb:
+           config: |
+             graceful-wait-before-shutdown = 30
+       ```
+
+    + 如果开启了[集群 TLS](enable-tls-between-components.md)，则跳过这一步；如果没有开启集群 TLS，还需要生成自签名证书，并手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-从-v640-版本开始引入):
+
+       ```yaml
+       spec:
+         tidb:
+           additionalVolumes:
+             - name: sessioncert
+               secret:
+                 secretName: sessioncert-secret
+           additionalVolumeMounts:
+             - name: sessioncert
+               mountPath: /var/session
+           config: |
+             session-token-signing-cert = "/var/session/tls.crt"
+             session-token-signing-key = "/var/session/tls.key"
+       ```
+
+       详见 TiDB 配置文档 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入)。
 
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
