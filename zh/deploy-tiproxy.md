@@ -48,7 +48,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
     推荐把 `graceful-wait-before-shutdown` 设置为 120 秒。 要获取更多可配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
 
-4. 如果没有开启集群 TLS ，还需要手动配置 TiDB　的 `signing-cert` 参数：
+4. 如果没有开启集群 TLS ，还需要手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5):
 
     ```yaml
     spec:
@@ -65,7 +65,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
           session-token-signing-key = "/var/session/tls.key"
     ```
 
-    详见 [TiDB 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-%E4%BB%8E-v640-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)
+    详见 TiDB 配置文档 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入)。
 
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 
