@@ -48,7 +48,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
 4. 配置 TidbCluster CR 中 `spec.tidb` 的相关参数：
 
-    + 推荐设置 TiDB 的 `graceful-wait-before-shutdown` 大于应用程序最长的事务的持续时间，配合 TiProxy 的链接迁移，详见 [TiProxy 使用限制](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview#使用限制)。
+    + 推荐设置 TiDB 的 `graceful-wait-before-shutdown` 大于应用程序最长的事务的持续时间，配合 TiProxy 的连接迁移，详见 [TiProxy 使用限制](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview#使用限制)。
 
        ```yaml
        spec:
@@ -57,7 +57,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
              graceful-wait-before-shutdown = 30
        ```
 
-    + 如果开启了[集群 TLS](enable-tls-between-components.md)，则跳过这一步；如果没有开启集群 TLS，还需要生成自签名证书，并手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-从-v640-版本开始引入):
+    + 如果开启了[集群 TLS](enable-tls-between-components.md)，则跳过这一步；如果没有开启集群 TLS，还需要生成自签名证书，并手动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#session-token-signing-key-从-v640-版本开始引入)：
 
        ```yaml
        spec:
