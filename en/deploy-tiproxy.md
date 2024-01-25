@@ -39,13 +39,42 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
     ```yaml
     spec:
       tiproxy:
-        config:
-          config: |
-            [log]
-            level = "info"
+        config: |
+          [log]
+          level = "info"
     ```
 
     For more information about TiProxy configuration, see [TiProxy Configuration](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
+
+4. Configure the related parameters in `spec.tidb` of the TidbCluster CR. For example:
+
+    + It is recommended to configure `graceful-wait-before-shutdown` to a value greater than the maximum duration of the transactions in your application. This is used together with TiProxy's connection migration feature. For more information, see [TiProxy Limitations](https://docs.pingcap.com/tidb/v7.6/tiproxy-overview#limitations).
+
+        ```yaml
+          spec:
+            tidb:
+              config: |
+                graceful-wait-before-shutdown = 30
+       ```
+
+    + If [TLS is enabled for the cluster](enable-tls-between-components.md), skip this step. If TLS is not enabled for the cluster, you need to generate a self-signed certificate and manually configure [`session-token-signing-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#session-token-signing-cert-new-in-v640) and [`session-token-signing-key`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#session-token-signing-key-new-in-v640) for TiDB:
+
+        ```yaml
+        spec:
+          tidb:
+            additionalVolumes:
+              - name: sessioncert
+                secret:
+                  secretName: sessioncert-secret
+            additionalVolumeMounts:
+              - name: sessioncert
+                mountPath: /var/session
+            config: |
+              session-token-signing-cert = "/var/session/tls.crt"
+              session-token-signing-key = "/var/session/tls.key"
+        ```
+
+        For more information, see [`session-token-signing-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#session-token-signing-cert-new-in-v640).
 
 After TiProxy is started, you can find the corresponding `tiproxy-sql` load balancer service by running the following command.
 

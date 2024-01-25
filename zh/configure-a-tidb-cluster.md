@@ -262,6 +262,8 @@ spec:
     config:
 ```
 
+部署 TiProxy 时，还需要给 TiDB 配置额外参数，详细的配置步骤见[为已有 TiDB 集群部署负载均衡 TiProxy](deploy-tiproxy.md)。
+
 #### 部署 TiFlash
 
 如果要在集群中开启 TiFlash，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config.replication.enable-placement-rules: true`，并配置 `spec.tiflash`：
