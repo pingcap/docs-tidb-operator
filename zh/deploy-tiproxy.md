@@ -48,7 +48,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
 
 4. 配置 TidbCluster CR 中 `spec.tidb` 的相关参数：
 
-    + 推荐设置 TiDB 的 `graceful-wait-before-shutdown` 大于应用程序最长的事务的持续时间，配合 TiProxy 的连接迁移，详见 [TiProxy 使用限制](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview#使用限制)。
+    + 推荐设置 TiDB `graceful-wait-before-shutdown` 的值大于应用程序中事务的最长的持续时间，配合 TiProxy 的连接迁移。详见 [TiProxy 使用限制](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview#使用限制)。
 
        ```yaml
        spec:
@@ -74,7 +74,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
               session-token-signing-key = "/var/session/tls.key"
         ```
 
-       详见 TiDB 配置文档 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入)。
+       详见 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/v7.6/tidb-configuration-file#session-token-signing-cert-从-v640-版本开始引入)。
 
 TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均衡服务。
 

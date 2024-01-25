@@ -48,7 +48,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
 
 4. Configure the related parameters in `spec.tidb` of the TidbCluster CR. For example:
 
-    + It is recommended to configure `graceful-wait-before-shutdown` to a value longer than the maximum duration of the transactions in your application. This is used together with TiProxy's connection migration feature. For more information, see [TiProxy Limitations](https://docs.pingcap.com/tidb/v7.6/tiproxy-overview#limitations).
+    + It is recommended to configure `graceful-wait-before-shutdown` to a value greater than the maximum duration of the transactions in your application. This is used together with TiProxy's connection migration feature. For more information, see [TiProxy Limitations](https://docs.pingcap.com/tidb/v7.6/tiproxy-overview#limitations).
 
         ```yaml
           spec:
@@ -74,7 +74,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
               session-token-signing-key = "/var/session/tls.key"
         ```
 
-        For more information, refer to TiDB configuration file [`session-token-signing-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#session-token-signing-cert-new-in-v640).
+        For more information, see [`session-token-signing-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#session-token-signing-cert-new-in-v640).
 
 After TiProxy is started, you can find the corresponding `tiproxy-sql` load balancer service by running the following command.
 
