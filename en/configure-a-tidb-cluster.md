@@ -266,6 +266,8 @@ The deployment method is the same as that of PD. In addition, you need to modify
     config:
 ```
 
+When deploying TiProxy, you also need to configure additional parameters for TiDB. For detailed configuration steps, refer to [Deploy TiProxy Load Balancer for an Existing TiDB Cluster](deploy-tiproxy.md).
+
 #### Enable TiFlash
 
 If you want to enable TiFlash in the cluster, configure `spec.pd.config.replication.enable-placement-rules: true` and configure `spec.tiflash` in the `${cluster_name}/tidb-cluster.yaml` file as follows:
