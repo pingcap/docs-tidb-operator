@@ -157,6 +157,33 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         ...
         ```
 
+        > **注意：**
+        >
+        > PD 8.0.0 版本后开始支持微服务架构，如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要更新 `pd-server.json` 文件中的 `hosts` 属性，新增微服务相关 hosts 即可。以 `scheduling` 服务为例：
+
+        ``` json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-pd",
+              ...
+              "*.${cluster_name}-pd-peer.${namespace}.svc",
+              // 以下为新增的 scheduling 微服务 hosts
+              "basic-pdms-scheduling",
+              "basic-pdms-scheduling.pingcap",
+              "basic-pdms-scheduling.pingcap.svc",
+              "basic-pdms-scheduling-peer",
+              "basic-pdms-scheduling-peer.pingcap",
+              "basic-pdms-scheduling-peer.pingcap.svc",
+              "*.basic-pdms-scheduling-peer",
+              "*.basic-pdms-scheduling-peer.pingcap",
+              "*.basic-pdms-scheduling-peer.pingcap.svc",
+            ],
+        ...
+        ```
+
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
         最后生成 PD Server 端证书：
@@ -1427,6 +1454,34 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     ```
 
     然后使用 `kubectl apply -f tidb-cluster.yaml` 来创建 TiDB 集群。
+
+    > **注意：**
+    >
+    > PD 8.0.0 版本后开始支持微服务架构，如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 `scheduling` 服务为例，需要：
+    >
+    > 更新 PD config 中 的 mode 为 `ms`
+    > 为 `scheduling` 服务配置 `security`
+
+    ```yaml
+      pd:
+       baseImage: pingcap/pd
+       maxFailoverCount: 0
+       replicas: 1
+       requests:
+        storage: "10Gi"
+       config:
+        security:
+          cert-allowed-cn:
+            - TiDB
+        mode: "ms"
+      pdms:
+      - name: "scheduling"
+        replicas: 1
+        config:
+          security:
+            cert-allowed-cn:
+              - TiDB
+    ```
 
 2. 创建 Drainer 组件并开启 TLS 以及 CN 验证。
 

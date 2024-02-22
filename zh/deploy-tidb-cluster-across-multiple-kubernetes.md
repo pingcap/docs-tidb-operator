@@ -516,6 +516,28 @@ EOF
     5. 升级所有 Kubernetes 集群的 TiDB 版本。
     6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
+### 升级 PD 微服务
+
+若希望部署 PD 微服务，需要修改初始 TidbCluster 定义中的 `spec.pd.mode` 字段为 `ms`，并加入指定的 PD 微服务，目前支持 "tso"，"scheduling"。
+
+```yaml
+        apiVersion: pingcap.com/v1alpha1
+        kind: TidbCluster
+        # ...
+        spec:
+          pd:
+            mode: ms
+          pdms:
+            - name: "tso"
+            baseImage: pingcap/pd
+            version: ${version}
+            replicas: 2
+            - name: "scheduling"
+            baseImage: pingcap/pd
+            version: ${version}
+            replicas: 1
+```
+
 ## 退出和回收已加入的 TidbCluster
 
 当你需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
@@ -523,6 +545,10 @@ EOF
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
 以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy、Pump 等其他组件，也请一并将其副本数设为 `0`：
+
+> **注意：**
+>
+> PD 8.0.0 版本后开始支持微服务架构。如果配置了 PD 微服务，也请将 PD 微服务（pdms 下字段）具体组件的副本数设置为 0。
 
 {{< copyable "shell-regular" >}}
 

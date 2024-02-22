@@ -131,6 +131,42 @@ kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{
 kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"ticdc":{"replicas":3}}}'
 ```
 
+### 水平扩缩容 PD 微服务组件
+
+> **注意：**
+>
+> PD 8.0.0 版本后开始支持微服务架构。
+
+如果要对 PD 微服务各个组件进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pdms.replicas` 至期望值，目前支持 "tso"，"scheduling" 组件，现以 "tso" 为例：
+
+1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 "tso" 的 `replicas` 值设置为 3：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"tso", "replicas":3}}}'
+    ```
+
+2. 查看 Kubernetes 集群中对应的 TiDB 集群是否更新到了你期望的配置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
+    ```
+
+    上述命令输出的 `TidbCluster` 中，`spec.pdms` 的 `tso.replicas` 值预期应与你之前配置的值一致。
+
+3. 观察 `TidbCluster` Pod 是否新增或者减少。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+    PD 微服务组件通常需要 10 到 30 秒左右的时间进行扩容或者缩容。
+
 ### 查看集群水平扩缩容状态
 
 {{< copyable "shell-regular" >}}

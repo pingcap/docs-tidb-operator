@@ -251,6 +251,32 @@ spec:
 >
 > 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD Pod 个数减小到 1 个。
 
+#### 部署 PD 微服务
+
+> **注意：**
+>
+> PD 8.0.0 版本后开始支持微服务架构。
+
+如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config` 与 `spec.pdms`.
+
+```yaml
+spec:
+  pd:
+    config: 
+      mode: "ms"
+  pdms:
+  - name: "tso"
+    replicas: 2
+    config: {}
+  - name: "scheduling"
+    config: {}
+    replicas: 1
+```
+
+`spec.pd.config.mode` 用于配置 PD 微服务模式，目前支持 "ms"、"" 两种模式，"ms" 表示开启微服务模式，"" 为空表示关闭微服务模式。
+
+`spec.pdms.config` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同，获取所有可以配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+
 #### 部署 TiProxy
 
 部署方法与 PD 一致。此外，还需要修改 `spec.tiproxy` 来手动指定 TiProxy 组件的数量。
@@ -380,6 +406,33 @@ spec:
 >
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
 > - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
+
+##### 配置 PD 微服务配置参数
+
+> **注意：**
+>
+> PD 8.0.0 版本后开始支持微服务架构。
+
+你可以通过 TidbCluster CR 的 `spec.pd.config` 与 `spec.pdms` 来配置 PD 配置参数。目前支持 "tso"、"scheduling" 两个微服务，配置示例如下：
+
+```yaml
+spec:
+  pd:
+    config: 
+      mode: "ms"
+  pdms:
+  - name: "tso"
+    replicas: 2
+  - name: "scheduling"
+    replicas: 1
+```
+
+其中 `spec.pdms` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同，获取所有可以配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+
+> **注意：**
+>
+> - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 微服务组件无法正常启动。
+> - PD 微服务部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 微服务在首次启动后，这些配置项目前将无法再通过配置参数来进行修改。
 
 #### 配置 TiProxy 配置参数
 
