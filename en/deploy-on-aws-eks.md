@@ -581,7 +581,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1c --nodes 2 --nodes
 eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes-min 2 --nodes-max 2
 ```
 
-For more information on managing node groups, refer to [`eksctl` documentation](https://eksctl.io/usage/managing-nodegroups/).
+For more information on managing node groups, refer to [`eksctl` documentation](https://eksctl.io/usage/nodegroups/).
 
 ### Scale out TiDB components
 

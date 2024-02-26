@@ -563,7 +563,7 @@ eksctl scale nodegroup --cluster ${clusterName} --name tikv-1c --nodes 2 --nodes
 eksctl scale nodegroup --cluster ${clusterName} --name tikv-1d --nodes 2 --nodes-min 2 --nodes-max 2
 ```
 
-更多节点组管理可参考 [eksctl 文档](https://eksctl.io/usage/managing-nodegroups/)。
+更多节点组管理可参考 [eksctl 文档](https://eksctl.io/usage/nodegroups/)。
 
 ### 扩容 TiDB 组件
 
