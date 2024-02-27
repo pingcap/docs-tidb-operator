@@ -171,15 +171,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
               ...
               "*.${cluster_name}-pd-peer.${namespace}.svc",
               // 以下为新增的 scheduling 微服务 hosts
-              "basic-pdms-scheduling",
-              "basic-pdms-scheduling.pingcap",
-              "basic-pdms-scheduling.pingcap.svc",
-              "basic-pdms-scheduling-peer",
-              "basic-pdms-scheduling-peer.pingcap",
-              "basic-pdms-scheduling-peer.pingcap.svc",
-              "*.basic-pdms-scheduling-peer",
-              "*.basic-pdms-scheduling-peer.pingcap",
-              "*.basic-pdms-scheduling-peer.pingcap.svc",
+              "${cluster_name}-pdms-scheduling",
+              "${cluster_name}-pdms-scheduling.${cluster_name}",
+              "${cluster_name}-pdms-scheduling.${cluster_name}.svc",
+              "${cluster_name}-pdms-scheduling-peer",
+              "${cluster_name}-pdms-scheduling-peer.${cluster_name}",
+              "${cluster_name}-pdms-scheduling-peer.${cluster_name}.svc",
+              "*.${cluster_name}-pdms-scheduling-peer",
+              "*.${cluster_name}-pdms-scheduling-peer.${cluster_name}",
+              "*.${cluster_name}-pdms-scheduling-peer.${cluster_name}.svc",
             ],
         ...
         ```
@@ -1473,7 +1473,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         security:
           cert-allowed-cn:
             - TiDB
-        mode: "ms"
+       mode: "ms"
       pdms:
       - name: "scheduling"
         replicas: 1

@@ -526,16 +526,16 @@ EOF
         # ...
         spec:
           pd:
-            mode: ms
+            mode: "ms"
           pdms:
             - name: "tso"
-            baseImage: pingcap/pd
-            version: ${version}
-            replicas: 2
+              baseImage: pingcap/pd
+              version: ${version}
+              replicas: 2
             - name: "scheduling"
-            baseImage: pingcap/pd
-            version: ${version}
-            replicas: 1
+              baseImage: pingcap/pd
+              version: ${version}
+              replicas: 1
 ```
 
 ## 退出和回收已加入的 TidbCluster

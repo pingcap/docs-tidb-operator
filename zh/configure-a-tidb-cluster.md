@@ -255,7 +255,7 @@ spec:
 
 > **注意：**
 >
-> PD 8.0.0 版本后开始支持微服务架构。
+> PD 8.0.0 版本后开始支持微服务架构。详情参见 [TiDB 文档 - PD 微服务使用文档](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
 
 如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config` 与 `spec.pdms`.
 
@@ -263,7 +263,7 @@ spec:
 spec:
   pd:
     config: 
-      mode: "ms"
+    mode: "ms"
   pdms:
   - name: "tso"
     replicas: 2
@@ -273,7 +273,7 @@ spec:
     replicas: 1
 ```
 
-`spec.pd.config.mode` 用于配置 PD 微服务模式，目前支持 "ms"、"" 两种模式，"ms" 表示开启微服务模式，"" 为空表示关闭微服务模式。
+`spec.pd.mode` 用于配置 PD 微服务模式，目前支持 "ms"、"" 两种模式，"ms" 表示开启微服务模式，"" 为空表示关闭微服务模式。
 
 `spec.pdms.config` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同，获取所有可以配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
@@ -419,7 +419,7 @@ spec:
 spec:
   pd:
     config: 
-      mode: "ms"
+    mode: "ms"
   pdms:
   - name: "tso"
     replicas: 2
