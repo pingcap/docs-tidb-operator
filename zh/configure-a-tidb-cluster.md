@@ -215,6 +215,32 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 </div>
 
+<div label="PDMS">
+
+为 PD 微服务挂载 PV，以微服务组件 "tso" 为例：
+
+> **注意：**
+>
+> PD 8.0.0 版本后开始支持微服务架构。
+
+{{< copyable "" >}}
+
+```yaml
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+    storageVolumes:
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pdms/log"
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
@@ -262,14 +288,13 @@ spec:
 ```yaml
 spec:
   pd:
-    config: 
     mode: "ms"
   pdms:
   - name: "tso"
+    baseImage: pingcap/pd
     replicas: 2
-    config: {}
   - name: "scheduling"
-    config: {}
+    baseImage: pingcap/pd
     replicas: 1
 ```
 
@@ -418,12 +443,13 @@ spec:
 ```yaml
 spec:
   pd:
-    config: 
     mode: "ms"
   pdms:
   - name: "tso"
+    baseImage: pingcap/pd
     replicas: 2
   - name: "scheduling"
+    baseImage: pingcap/pd
     replicas: 1
 ```
 

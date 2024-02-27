@@ -1476,6 +1476,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
        mode: "ms"
       pdms:
       - name: "scheduling"
+        baseImage: pingcap/pd
         replicas: 1
         config:
           security:
