@@ -350,8 +350,8 @@ tidbcluster.pingcap.com/basic created
 
 > **注意：**
 >
-> PD 8.0.0 版本后开始支持微服务架构，如需部署 PD 微服务，可以按照如下方式进行部署：
-> {{< copyable "shell-regular" >}}
+.0.0 版本后开始支持微服务架构，如需部署 PD 微服务，可以按照如下方式进行部署：.0.0 版本后开始支持微服务架构，如需部署 PD 微服务，可以按照如下方式进行部署：
+>
 
 > ``` shell
 > kubectl create namespace tidb-cluster && \

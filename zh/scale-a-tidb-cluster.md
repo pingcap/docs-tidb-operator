@@ -185,7 +185,7 @@ watch kubectl -n ${namespace} get pod -o wide
 >
 > PD 8.0.0 版本后开始支持微服务架构。
 
-PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [TiDB 文档 - PD 微服务常见问题](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md#常见问题) 判断是否需要进行 PD 微服务扩缩容操作。
+PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [TiDB 文档 - PD 微服务常见问题](https://docs.pingcap.com/zh/tidb/dev/pd-microservices.md#常见问题) 判断是否需要进行 PD 微服务扩缩容操作。
 
 - 目前支持 "tso"，"scheduling" 组件。
     - "tso" 为主备架构，如遇到瓶颈建议采用垂直扩缩容。

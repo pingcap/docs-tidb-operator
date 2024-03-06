@@ -215,15 +215,13 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 </div>
 
-<div label="PDMS">
+<div label="PD 微服务">
 
-为 PD 微服务挂载 PV，以微服务组件 "tso" 为例：
+为 PD 微服务挂载 PV，以 TSO 微服务为例：
 
 > **注意：**
 >
 > PD 8.0.0 版本后开始支持微服务架构。
-
-{{< copyable "" >}}
 
 ```yaml
   pd:
@@ -281,9 +279,9 @@ spec:
 
 > **注意：**
 >
-> PD 8.0.0 版本后开始支持微服务架构。详情参见 [TiDB 文档 - PD 微服务使用文档](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
+> PD 8.0.0 版本开始支持微服务架构。详情参见 [TiDB 文档 - PD 微服务使用文档](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
 
-如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.config` 与 `spec.pdms`.
+如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.mode` 与 `spec.pdms`：
 
 ```yaml
 spec:
@@ -438,7 +436,7 @@ spec:
 >
 > PD 8.0.0 版本后开始支持微服务架构。
 
-你可以通过 TidbCluster CR 的 `spec.pd.config` 与 `spec.pdms` 来配置 PD 配置参数。目前支持 "tso"、"scheduling" 两个微服务，配置示例如下：
+你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 配置参数。目前支持 "tso"、"scheduling" 两个微服务，配置示例如下：
 
 ```yaml
 spec:
