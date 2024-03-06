@@ -171,15 +171,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
               ...
               "*.${cluster_name}-pd-peer.${namespace}.svc",
               // 以下为新增的 scheduling 微服务 hosts
-              "${cluster_name}-pdms-scheduling",
-              "${cluster_name}-pdms-scheduling.${cluster_name}",
-              "${cluster_name}-pdms-scheduling.${cluster_name}.svc",
-              "${cluster_name}-pdms-scheduling-peer",
-              "${cluster_name}-pdms-scheduling-peer.${cluster_name}",
-              "${cluster_name}-pdms-scheduling-peer.${cluster_name}.svc",
-              "*.${cluster_name}-pdms-scheduling-peer",
-              "*.${cluster_name}-pdms-scheduling-peer.${cluster_name}",
-              "*.${cluster_name}-pdms-scheduling-peer.${cluster_name}.svc",
+              "${cluster_name}-scheduling",
+              "${cluster_name}-scheduling.${cluster_name}",
+              "${cluster_name}-scheduling.${cluster_name}.svc",
+              "${cluster_name}-scheduling-peer",
+              "${cluster_name}-scheduling-peer.${cluster_name}",
+              "${cluster_name}-scheduling-peer.${cluster_name}.svc",
+              "*.${cluster_name}-scheduling-peer",
+              "*.${cluster_name}-scheduling-peer.${cluster_name}",
+              "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
             ],
         ...
         ```
