@@ -509,12 +509,16 @@ EOF
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
 
-    1. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
-    2. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
-    3. 升级所有 Kubernetes 集群的 TiKV 版本。
-    4. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
-    5. 升级所有 Kubernetes 集群的 TiDB 版本。
-    6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持微服务架构。如果配置了 PD 微服务，请在升级 PD 版本后，为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
+
+   1. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
+   2. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
+   3. 升级所有 Kubernetes 集群的 TiKV 版本。
+   4. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
+   5. 升级所有 Kubernetes 集群的 TiDB 版本。
+   6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
 ### 升级 PD 微服务
 

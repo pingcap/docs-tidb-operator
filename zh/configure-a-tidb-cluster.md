@@ -446,9 +446,15 @@ spec:
   - name: "tso"
     baseImage: pingcap/pd
     replicas: 2
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
   - name: "scheduling"
     baseImage: pingcap/pd
     replicas: 1
+    config: |
+      [log.file]
+        filename = "/pdms/log/scheduling.log"
 ```
 
 其中，`spec.pdms` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同。要获取所有可配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
