@@ -520,28 +520,6 @@ EOF
    5. 升级所有 Kubernetes 集群的 TiDB 版本。
    6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
-### 升级 PD 微服务
-
-若希望部署 PD 微服务，需要修改初始 TidbCluster 定义中的 `spec.pd.mode` 字段为 `ms`，并加入指定的 PD 微服务，目前支持 "tso"，"scheduling"。
-
-```yaml
-        apiVersion: pingcap.com/v1alpha1
-        kind: TidbCluster
-        # ...
-        spec:
-          pd:
-            mode: "ms"
-          pdms:
-            - name: "tso"
-              baseImage: pingcap/pd
-              version: ${version}
-              replicas: 2
-            - name: "scheduling"
-              baseImage: pingcap/pd
-              version: ${version}
-              replicas: 1
-```
-
 ## 退出和回收已加入的 TidbCluster
 
 当你需要让一个集群从所加入的跨 Kubernetes 部署的 TiDB 集群退出并回收资源时，可以通过缩容流程来实现上述需求。在此场景下，需要满足缩容的一些限制，限制如下：
