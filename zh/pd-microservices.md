@@ -61,5 +61,5 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 - [部署 PD 微服务](configure-a-tidb-cluster.md#部署-pd-微服务)
 - [配置 PD 微服务](configure-a-tidb-cluster.md#配置-pd-微服务)
-- [修改 PD 微服务](modify-tidb-configuration.md#配置-pd-微服务)
+- [修改 PD 微服务](modify-tidb-configuration.md#修改-pd-微服务配置)
 - [扩缩容 PD 微服务组件](scale-a-tidb-cluster.md#扩缩容-pd-微服务组件)
