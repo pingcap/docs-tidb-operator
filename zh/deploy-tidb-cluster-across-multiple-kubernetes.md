@@ -509,9 +509,9 @@ EOF
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
 
-> **注意：**
->
-> PD 从 v8.0.0 版本开始支持微服务架构。如果配置了 PD 微服务，请在升级 PD 版本后，为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
+    > **注意：**
+    >
+    > PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。如果配置了 PD 微服务，请在升级 PD 版本后，为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
 
    1. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
    2. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。

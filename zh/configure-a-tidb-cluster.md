@@ -279,7 +279,7 @@ spec:
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持微服务架构。详情参见 [TiDB 文档 - PD 微服务使用文档](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
+> PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。
 
 如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.mode` 与 `spec.pdms`：
 
@@ -296,9 +296,9 @@ spec:
     replicas: 1
 ```
 
-`spec.pd.mode` 用于配置 PD 微服务模式，目前支持 "ms"、"" 两种模式。"ms" 表示开启微服务模式，"" 为空表示关闭微服务模式。
+- `spec.pd.mode` 用于开启或关闭 PD 微服务。`"ms"` 表示开启 PD 微服务，`""` 表示关闭 PD 微服务。
 
-`spec.pdms.config` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同。要获取所有可配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+- `spec.pdms.config` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
 #### 部署 TiProxy
 
@@ -457,12 +457,12 @@ spec:
         filename = "/pdms/log/scheduling.log"
 ```
 
-其中，`spec.pdms` 用于配置 PD 微服务，配置参数与 `spec.pd.config` 相同。要获取所有可配置的 PD 微服务配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+其中，`spec.pdms` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
 > **注意：**
 >
-> - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 config 配置，也需要保证 `config: {}` 的设置，从而避免 PD 微服务组件无法正常启动。
-> - PD 微服务部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此，PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改。
+> - 为了兼容 `helm` 部署，如果你的 TiDB 集群是通过 CR 文件部署的，即使你不设置 `config` 配置，也需要保证 `config: {}` 的设置，避免 PD 微服务组件无法正常启动。
+> - PD 微服务的部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此，PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改。
 
 #### 配置 TiProxy 配置参数
 

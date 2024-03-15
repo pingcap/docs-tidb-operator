@@ -113,7 +113,7 @@
     - [TiDB Scheduler 扩展调度器](tidb-scheduler.md)
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
-    - [PD 微服务使用文档](pd-microservices.md)
+    - [PD 微服务](pd-microservices.md)
   - [Sysbench 性能测试](benchmark-sysbench.md)
   - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)

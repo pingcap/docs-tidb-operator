@@ -183,7 +183,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持微服务架构。
+> PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。
 
 PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [PD 微服务常见问题](pd-microservices.md#常见问题) 判断是否需要进行 PD 微服务扩缩容操作。
 
@@ -191,7 +191,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     - TSO 微服务为主备架构，如遇到瓶颈建议采用垂直扩缩容。
     - Scheduling 微服务为调度组件，如遇到瓶颈建议采用水平扩缩容。
 
-- 如果要对 PD 微服务各个组件进行垂直扩缩容，通过 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.resources` 至期望值。
+- 如果要对 PD 微服务各个组件进行垂直扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.resources` 至期望值。
 
 - 如果要对 PD 微服务各个组件进行水平扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象中的 `spec.pdms.replicas` 至期望值。
 
@@ -199,13 +199,11 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 `scheduling` 的 `replicas` 值设置为 `3`：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
     ```
 
-2. 查看 Kubernetes 集群中对应的 TiDB 集群配置是否已对应更新。
+2. 查看 Kubernetes 集群中对应的 TiDB 集群配置是否已对应更新：
 
     ```shell
     kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
@@ -213,7 +211,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     上述命令输出的 `TidbCluster` 中，`spec.pdms` 的 `scheduling.replicas` 值预期应与你之前配置的值一致。
 
-3. 观察 `TidbCluster` Pod 是否新增或者减少。
+3. 观察 `TidbCluster` Pod 是否新增或者减少：
 
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
