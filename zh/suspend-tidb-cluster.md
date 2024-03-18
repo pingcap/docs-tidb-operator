@@ -64,8 +64,7 @@ summary: 了解如何通过配置挂起 Kubernetes 上的 TiDB 集群。
 
 > **注意：**
 >
-> - PD 从 v8.0.0 版本开始支持微服务架构。
-> - 若你的 TiDB 集群中部署了 PD 微服务组件，PD 微服务组件的 Pod 会在删除 PD 之后被删除。
+> 如果集群中部署了 [PD 微服务](pd-microservices.md)（从 TiDB v8.0.0 版本开始支持），PD 微服务组件的 Pod 会在删除 PD 之后被删除。
 
 ## 恢复 TiDB 集群
 

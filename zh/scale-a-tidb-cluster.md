@@ -183,7 +183,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。
+> PD 从 v8.0.0 版本开始支持[微服务模式](pd-microservices.md)。
 
 PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [PD 微服务常见问题](pd-microservices.md#常见问题) 判断是否需要进行 PD 微服务扩缩容操作。
 

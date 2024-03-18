@@ -509,16 +509,13 @@ EOF
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
 
-    > **注意：**
-    >
-    > PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。如果配置了 PD 微服务，请在升级 PD 版本后，为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
-
-   1. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
-   2. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
-   3. 升级所有 Kubernetes 集群的 TiKV 版本。
-   4. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
-   5. 升级所有 Kubernetes 集群的 TiDB 版本。
-   6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
+   1. 如果集群中部署了 [PD 微服务](pd-microservices.md)（从 TiDB v8.0.0 版本开始支持），为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
+   2. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
+   3. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
+   4. 升级所有 Kubernetes 集群的 TiKV 版本。
+   5. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
+   6. 升级所有 Kubernetes 集群的 TiDB 版本。
+   7. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
 ## 退出和回收已加入的 TidbCluster
 
@@ -530,7 +527,7 @@ EOF
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持微服务架构。如果配置了 PD 微服务，也需要将 PD 微服务 `pdms` 配置中对应组件的 `replicas` 值设置为 `0`。
+> PD 从 v8.0.0 版本开始支持微服务模式。如果配置了 PD 微服务，也需要将 PD 微服务 `pdms` 配置中对应组件的 `replicas` 值设置为 `0`。
 
 {{< copyable "shell-regular" >}}
 

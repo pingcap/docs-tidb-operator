@@ -159,30 +159,30 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **注意：**
         >
-        > PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 Scheduling 微服务为例，你需要进行以下配置：
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "${cluster_name}-pd",
-              ...
-              "*.${cluster_name}-pd-peer.${namespace}.svc",
-              // 以下是为 Scheduling 微服务添加的 hosts 配置
-              "${cluster_name}-scheduling",
-              "${cluster_name}-scheduling.${cluster_name}",
-              "${cluster_name}-scheduling.${cluster_name}.svc",
-              "${cluster_name}-scheduling-peer",
-              "${cluster_name}-scheduling-peer.${cluster_name}",
-              "${cluster_name}-scheduling-peer.${cluster_name}.svc",
-              "*.${cluster_name}-scheduling-peer",
-              "*.${cluster_name}-scheduling-peer.${cluster_name}",
-              "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
-            ],
-        ...
-        ```
+        > PD 从 v8.0.0 版本开始支持[微服务模式](pd-microservices.md)。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 Scheduling 微服务为例，你需要进行以下配置：
+        >
+        > ``` json
+        > ...
+        >     "CN": "TiDB",
+        >     "hosts": [
+        >       "127.0.0.1",
+        >       "::1",
+        >       "${cluster_name}-pd",
+        >       ...
+        >       "*.${cluster_name}-pd-peer.${namespace}.svc",
+        >       // 以下是为 Scheduling 微服务添加的 hosts 配置
+        >       "${cluster_name}-scheduling",
+        >       "${cluster_name}-scheduling.${cluster_name}",
+        >       "${cluster_name}-scheduling.${cluster_name}.svc",
+        >       "${cluster_name}-scheduling-peer",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >       "*.${cluster_name}-scheduling-peer",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >     ],
+        > ...
+        > ```
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
@@ -1457,32 +1457,32 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     > **注意：**
     >
-    > PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)，如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
+    > PD 从 v8.0.0 版本开始支持[微服务模式](pd-microservices.md)，如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
     >
-    > - 更新 PD `config` 中 的 `mode` 为 `ms`
+    > - 更新 `pd.mode` 为 `ms`
     > - 为 `scheduling` 服务配置 `security` 字段
-
-    ```yaml
-      pd:
-       baseImage: pingcap/pd
-       maxFailoverCount: 0
-       replicas: 1
-       requests:
-        storage: "10Gi"
-       config:
-        security:
-          cert-allowed-cn:
-            - TiDB
-       mode: "ms"
-      pdms:
-      - name: "scheduling"
-        baseImage: pingcap/pd
-        replicas: 1
-        config:
-          security:
-            cert-allowed-cn:
-              - TiDB
-    ```
+    >
+    > ```yaml
+    >   pd:
+    >    baseImage: pingcap/pd
+    >    maxFailoverCount: 0
+    >    replicas: 1
+    >    requests:
+    >     storage: "10Gi"
+    >    config:
+    >     security:
+    >       cert-allowed-cn:
+    >         - TiDB
+    >    mode: "ms"
+    >   pdms:
+    >   - name: "scheduling"
+    >     baseImage: pingcap/pd
+    >     replicas: 1
+    >     config:
+    >       security:
+    >         cert-allowed-cn:
+    >           - TiDB
+    > ```
 
 2. 创建 Drainer 组件并开启 TLS 以及 CN 验证。
 

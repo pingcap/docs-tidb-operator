@@ -350,7 +350,7 @@ tidbcluster.pingcap.com/basic created
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持[微服务架构](pd-microservices.md)，如需部署 PD 微服务，可以按照如下方式进行部署：
+> PD 从 v8.0.0 版本开始支持[微服务模式](pd-microservices.md)，如需部署 PD 微服务，可以按照如下方式进行部署：
 >
 >
 > ``` shell
