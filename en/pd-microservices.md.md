@@ -24,7 +24,7 @@ In addition, when the scheduling module is changed, you can update the schedulin
 
 > **Note:**
 >
-> If the performance bottleneck of a cluster is not cause by PD, there is no need to enable microservices, because using microservices increases the number of components and raises operational costs.
+> If the performance bottleneck of a cluster is not caused by PD, there is no need to enable microservices, because using microservices increases the number of components and raises operational costs.
 
 ## Restrictions
 
@@ -32,7 +32,7 @@ In addition, when the scheduling module is changed, you can update the schedulin
 - Only the TiDB component supports a direct connection to the TSO microservice through service discovery, while other components need to forward requests to the TSO microservice through PD to obtain timestamps.
 - Microservices are not compatible with the [Data Replication Auto Synchronous](https://docs.pingcap.com/tidb/stable/two-data-centers-in-one-city-deployment) feature.
 - Microservices are not compatible with the TiDB system variable [`tidb_enable_tso_follower_proxy`](https://docs.pingcap.com/tidb/stable/system-variables#tidb_enable_tso_follower_proxy-new-in-v530).
-- Due to the potential presence of hibernate Regions in a cluster, during a primary and secondary switchover of the Scheduling microservice, the cluster scheduling function might be unavailable for up to five minutes to avoid redundant scheduling.
+- Due to the potential presence of hibernate Regions in a cluster, during a primary and secondary switchover of the scheduling microservice, the cluster scheduling function of the cluster might be unavailable for up to five minutes to avoid redundant scheduling.
 
 ## Usage
 
@@ -46,10 +46,10 @@ Currently, PD microservices can only be deployed using TiDB Operator. For detail
 When deploying and using PD microservices, pay attention to the following:
 
 - After you enable microservices and restart PD for a cluster, PD stops allocating TSO for the cluster. Therefore, you need to deploy the TSO microservice in the cluster when you enable microservices.
-- If the Scheduling microservice is deployed in a cluster, the scheduling function of the cluster is provided by the Scheduling microservice. If the Scheduling microservice is not deployed, the scheduling function of the cluster is still provided by PD.
-- The Scheduling microservice supports dynamic switching, which is enabled by default (`enable-scheduling-fallback` defaults to `true`). If the process of the Scheduling microservice is terminated, PD continues to provide scheduling services for the cluster by default.
+- If the scheduling microservice is deployed in a cluster, the scheduling function of the cluster is provided by the scheduling microservice. If the scheduling microservice is not deployed, the scheduling function of the cluster is still provided by PD.
+- The scheduling microservice supports dynamic switching, which is enabled by default (`enable-scheduling-fallback` defaults to `true`). If the process of the scheduling microservice is terminated, PD continues to provide scheduling services for the cluster by default.
 
-    If the binary versions of the scheduling microservice and PD are different, to prevent changes in the scheduling logic, you can disable the dynamic switching function of the Scheduling microservice by executing `pd-ctl config set enable-scheduling-fallback false`. After this function is disabled, PD will not take over the scheduling service when the process of the Scheduling microservice is terminated. This means that the scheduling service of the cluster will be unavailable until the scheduling microservice is restarted.
+    If the binary versions of the scheduling microservice and PD are different, to prevent changes in the scheduling logic, you can disable the dynamic switching function of the scheduling microservice by executing `pd-ctl config set enable-scheduling-fallback false`. After this function is disabled, PD will not take over the scheduling service when the process of the scheduling microservice is terminated. This means that the scheduling service of the cluster will be unavailable until the scheduling microservice is restarted.
 
 ## Tool compatibility
 
