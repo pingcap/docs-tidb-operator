@@ -162,6 +162,33 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         ...
         ```
 
+        > **Notes:**
+        >
+        > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the hosts configurations for microservices in the `hosts` field of the `pd-server.json` file. Taking the Scheduling microservice as an example, you need to configure the following items:
+        >
+        > ``` json
+        > ...
+        >     "CN": "TiDB",
+        >     "hosts": [
+        >       "127.0.0.1",
+        >       "::1",
+        >       "${cluster_name}-pd",
+        >       ...
+        >       "*.${cluster_name}-pd-peer.${namespace}.svc",
+        >       // The following are hosts configurations for the scheduling microservice
+        >       "${cluster_name}-scheduling",
+        >       "${cluster_name}-scheduling.${cluster_name}",
+        >       "${cluster_name}-scheduling.${cluster_name}.svc",
+        >       "${cluster_name}-scheduling-peer",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >       "*.${cluster_name}-scheduling-peer",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >     ],
+        > ...
+        > ```
+
         `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
 
         Finally, generate the PD server-side certificate:
@@ -1357,7 +1384,7 @@ In this step, you need to perform the following operations:
 - Deploy a monitoring system
 - Deploy the Pump component, and enable CN verification
 
-1. Create a TiDB cluster:
+1. Create a TiDB cluster with a monitoring system and the Pump component:
 
     Create the `tidb-cluster.yaml` file:
 
@@ -1443,7 +1470,34 @@ In this step, you need to perform the following operations:
 
     Execute `kubectl apply -f tidb-cluster.yaml` to create a TiDB cluster.
 
-    This operation also includes deploying a monitoring system and the Pump component.
+    > **Notes:**
+    >
+    > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Take the Scheduling service as an example, you need to make the following configurations:
+    >
+    > - Update `pd.mode` to `ms`.
+    > - Configure the `security` field for the `scheduling` service.
+    >
+    > ```yaml
+    >   pd:
+    >    baseImage: pingcap/pd
+    >    maxFailoverCount: 0
+    >    replicas: 1
+    >    requests:
+    >     storage: "10Gi"
+    >    config:
+    >     security:
+    >       cert-allowed-cn:
+    >         - TiDB
+    >    mode: "ms"
+    >   pdms:
+    >   - name: "scheduling"
+    >     baseImage: pingcap/pd
+    >     replicas: 1
+    >     config:
+    >       security:
+    >         cert-allowed-cn:
+    >           - TiDB
+    > ```
 
 2. Create a Drainer component and enable TLS and CN verification:
 

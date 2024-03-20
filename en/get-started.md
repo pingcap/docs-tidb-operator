@@ -297,6 +297,33 @@ tidbcluster.pingcap.com/basic created
 
 If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
+> **Notes:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices, use the following command:
+>
+>
+> ``` shell
+> kubectl create namespace tidb-cluster && \
+>     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/pd-micro-service-cluster.yaml
+> ```
+>
+> View the Pod status:
+>
+> ``` shell
+> watch kubectl get po -n tidb-cluster
+> ```
+>
+> ```
+> NAME                              READY   STATUS    RESTARTS   AGE
+> basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m
+> basic-pd-0                        1/1     Running   0          9m
+> basic-scheduling-0                1/1     Running   0          9m
+> basic-tidb-0                      2/2     Running   0          7m
+> basic-tikv-0                      1/1     Running   0          8m
+> basic-tso-0                       1/1     Running   0          9m
+> basic-tso-1                       1/1     Running   0          9m
+> ```
+
 ### Deploy TiDB Dashboard independently
 
 ```shell
