@@ -301,7 +301,6 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a 
 >
 > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices, use the following command:
 >
->
 > ``` shell
 > kubectl create namespace tidb-cluster && \
 >     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/pd-micro-service-cluster.yaml

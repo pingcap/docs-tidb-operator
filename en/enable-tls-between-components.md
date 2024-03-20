@@ -164,7 +164,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         > **Notes:**
         >
-        > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the hosts configurations for microservices in the `hosts` field of the `pd-server.json` file. Taking the Scheduling microservice as an example, you need to configure the following items:
+        > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the host configurations for microservices to the `hosts` field of the `pd-server.json` file. Taking the Scheduling microservice as an example, you need to configure the following items:
         >
         > ``` json
         > ...
@@ -175,7 +175,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         >       "${cluster_name}-pd",
         >       ...
         >       "*.${cluster_name}-pd-peer.${namespace}.svc",
-        >       // The following are hosts configurations for the scheduling microservice
+        >       // The following are host configurations for the scheduling microservice
         >       "${cluster_name}-scheduling",
         >       "${cluster_name}-scheduling.${cluster_name}",
         >       "${cluster_name}-scheduling.${cluster_name}.svc",
@@ -1472,10 +1472,10 @@ In this step, you need to perform the following operations:
 
     > **Notes:**
     >
-    > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Take the Scheduling service as an example, you need to make the following configurations:
+    > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Taking the Scheduling service as an example, you need to make the following configurations:
     >
     > - Update `pd.mode` to `ms`.
-    > - Configure the `security` field for the `scheduling` service.
+    > - Configure the `security` field for the `scheduling` microservice.
     >
     > ```yaml
     >   pd:

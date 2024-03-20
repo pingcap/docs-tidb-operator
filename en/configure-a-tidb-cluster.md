@@ -223,21 +223,6 @@ To mount multiple PVs for PD microservices (taking the TSO microservice as an ex
 >
 > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md).
 
-{{< copyable "" >}}
-
-```yaml
-  pd:
-    mode: "ms"
-  pdms:
-  - name: "tso"
-    config: |
-      [log.file]
-        filename = "/pdms/log/tso.log"
-    storageVolumes:
-    - name: log
-      storageSize: "10Gi"
-      mountPath: "/pdms/log"
-
 ```yaml
   pd:
     mode: "ms"
@@ -299,7 +284,7 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 >
 > Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md).
 
-To enable PD microservices in your cluster, you need to configure `spec.pd.mode` and `spec.pdms` in the `${cluster_name}/tidb-cluster.yaml` file:
+To enable PD microservices in your cluster, configure `spec.pd.mode` and `spec.pdms` in the `${cluster_name}/tidb-cluster.yaml` file:
 
 ```yaml
 spec:
@@ -314,8 +299,8 @@ spec:
     replicas: 1
 ```
 
-- `spec.pd.mode` is used to enable or disable PD microservices. `"ms"` indicates enabling the PD microservice, while `""` indicates disabling PD microservices.
-- `spec.pdms.config` is used to configure the PD microservice, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
+- `spec.pd.mode` is used to enable or disable PD microservices. `"ms"` indicates enabling PD microservices, while `""` indicates disabling PD microservices.
+- `spec.pdms.config` is used to configure PD microservices, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
 
 #### Enable TiProxy
 
@@ -479,7 +464,7 @@ spec:
         filename = "/pdms/log/scheduling.log"
 ```
 
-In the preceding configuration, `spec.pdms` is used to configure the PD microservice, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
+In the preceding configuration, `spec.pdms` is used to configure PD microservices, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
 
 > **Note:**
 >

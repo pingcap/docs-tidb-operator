@@ -14,7 +14,7 @@ Each microservice is deployed as an independent process. If you configure more t
 
 ## Usage scenarios
 
-PD microservices are commonly used to address performance bottlenecks in PD and improve PD service quality. With this feature, you can avoid the following issues:
+PD microservices are typically used to address performance bottlenecks in PD and improve PD service quality. With this feature, you can avoid the following issues:
 
 - Long-tail latency or jitter in TSO allocations due to excessive pressure in PD clusters
 - Service unavailability of the entire cluster due to failures in the scheduling module
@@ -30,9 +30,9 @@ In addition, when the scheduling module is changed, you can update the schedulin
 
 - Currently, the TSO microservice does not support dynamic start and stop. After enabling or disabling the TSO microservice, you need to restart the PD cluster for the changes to take effect.
 - Only the TiDB component supports a direct connection to the TSO microservice through service discovery, while other components need to forward requests to the TSO microservice through PD to obtain timestamps.
-- Microservices are not compatible with the [Data Replication Auto Synchronous](https://docs.pingcap.com/tidb/stable/two-data-centers-in-one-city-deployment) feature.
+- Microservices are not compatible with the [Data Replication Auto Synchronous (DR Auto-Sync)](https://docs.pingcap.com/tidb/stable/two-data-centers-in-one-city-deployment) feature.
 - Microservices are not compatible with the TiDB system variable [`tidb_enable_tso_follower_proxy`](https://docs.pingcap.com/tidb/stable/system-variables#tidb_enable_tso_follower_proxy-new-in-v530).
-- Due to the potential presence of hibernate Regions in a cluster, during a primary and secondary switchover of the scheduling microservice, the cluster scheduling function of the cluster might be unavailable for up to five minutes to avoid redundant scheduling.
+- Due to the potential presence of hibernate Regions in a cluster, during a primary and secondary switchover of the scheduling microservice, the scheduling function of the cluster might be unavailable for up to five minutes to avoid redundant scheduling.
 
 ## Usage
 
@@ -57,6 +57,6 @@ Microservices do not affect the normal use of data import, export, and other rep
 
 ## FAQs
 
-- How can I determine if PD has encountered a performance bottleneck?
+- How can I determine if PD becomes a performance bottleneck?
 
-  When your cluster is in a normal state, you can check monitoring metrics in the Grafana PD panel. If the `TiDB - PD server TSO handle time` metric shows a notable increase in latency or the `Heartbeat - TiKV side heartbeat statistics` metric shows a significant number of pending items, it indicates that PD has encountered a performance bottleneck.
+  When your cluster is in a normal state, you can check monitoring metrics in the Grafana PD panel. If the `TiDB - PD server TSO handle time` metric shows a notable increase in latency or the `Heartbeat - TiKV side heartbeat statistics` metric shows a significant number of pending items, it indicates that PD becomes a performance bottleneck.
