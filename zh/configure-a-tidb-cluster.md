@@ -296,7 +296,7 @@ spec:
     replicas: 1
 ```
 
-- `spec.pd.mode` 用于开启或关闭 PD 微服务。`"ms"` 表示开启 PD 微服务，`""` 表示关闭 PD 微服务。
+- `spec.pd.mode` 用于开启或关闭 PD 微服务。`"ms"` 表示开启 PD 微服务，当为 `""` 或删除 `mode` 字段时，表示关闭 PD 微服务。
 
 - `spec.pdms.config` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
@@ -462,7 +462,9 @@ spec:
 > **注意：**
 >
 > - 为了兼容 `helm` 部署，如果你的 TiDB 集群是通过 CR 文件部署的，即使你不设置 `config` 配置，也需要保证 `config: {}` 的设置，避免 PD 微服务组件无法正常启动。
-> - PD 微服务的部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此，PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改。
+> - 如果是直接启用 PD 微服务模式，PD 微服务的部分配置项会持久化到 etcd 中且后续将以 etcd 中的配置为准。
+> - 如果是切换到 PD 微服务模式，PD 微服务的部分配置会沿用 PD 的配置并持久化到 etcd 中，后续将以 etcd 中的配置为准。
+> - 因此 PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改,PD 微服务会同步修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
 
 #### 配置 TiProxy 配置参数
 

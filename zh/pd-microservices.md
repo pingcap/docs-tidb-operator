@@ -16,7 +16,7 @@ summary: 介绍如何开启 PD 微服务模式提高服务质量。
 
 PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。利用该特性，你可以避免以下问题：
 
-- PD 集群压力过大而导致 TSO 分配的长尾或者抖动现象
+- PD 集群压力过大而导致 TSO 分配的长尾延迟或者抖动现象
 - 调度模块故障导致整个集群服务不可用的问题
 - PD 自身单点瓶颈的问题
 
@@ -24,11 +24,11 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 > **注意：**
 >
-> 如果性能瓶颈本身不在 PD，则无需开启微服务。微服务本身会增加组件数量，提高运维成本。
+> 如果集群的性能瓶颈不是 PD 引起的，则无需开启微服务。微服务本身会增加组件数量，提高运维成本。
 
 ## 使用限制
 
-- TSO 微服务目前不支持动态启停，开启或关闭 TSO 微服务需要重启 PD 集群。
+- TSO 微服务目前不支持动态启停，开启或关闭 TSO 微服务后你需要重启 PD 集群才会生效。
 - 只有 TiDB 组件支持通过服务发现直接连接 TSO 微服务，其他的组件是通过请求转发的方式，将请求通过 PD 转发到 TSO 微服务以获取时间戳。
 - 当前微服务与[同步部署模式 (DR Auto-Sync)](https://docs.pingcap.com/zh/tidb/stable/two-data-centers-in-one-city-deployment) 特性不兼容。
 - 与 TiDB 系统变量 [`tidb_enable_tso_follower_proxy`](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 不兼容。
