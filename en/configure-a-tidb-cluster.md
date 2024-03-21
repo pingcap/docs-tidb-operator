@@ -443,7 +443,7 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 >
 > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices).
 
-You can configure PD microservice using the `spec.pd.mode` and `spec.pdms` parameters of the TidbCluster CR. Currently, PD supports two microservices: the `tso` microservice and the `scheduling` microservice (configured as `tso` and `scheduling`). The configuration example is as follows:
+You can configure PD microservice using the `spec.pd.mode` and `spec.pdms` parameters of the TidbCluster CR. Currently, PD supports two microservices: the `tso` microservice and the `scheduling` microservice. The configuration example is as follows:
 
 ```yaml
 spec:
