@@ -299,7 +299,7 @@ spec:
     replicas: 1
 ```
 
-- `spec.pd.mode` is used to enable or disable PD microservices. `"ms"` indicates enabling PD microservices, while `""` indicates disabling PD microservices.
+- `spec.pd.mode` is used to enable or disable PD microservices. Setting it to `"ms"` enables PD microservices, while setting it to `""` or removing this field disables PD microservices.
 - `spec.pdms.config` is used to configure PD microservices, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
 
 #### Enable TiProxy
@@ -469,7 +469,9 @@ In the preceding configuration, `spec.pdms` is used to configure PD microservice
 > **Note:**
 >
 > - If you deploy your TiDB cluster using CR, make sure that `config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD microservice components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
-> - After the cluster is started for the first time, some configuration items of the PD microservice are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD. Therefore, after the first start, you cannot modify these configuration items using parameters.
+> - If you enable the PD microservice mode when you deploy a TiDB cluster, some configuration items of PD microservices are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD.
+> - If you enable the PD microservice mode for an existing TiDB cluster, some configuration items of PD microservices adopt the same values in PD configuration and are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD.
+> - Hence, after the first startup of PD microservices, you cannot modify these configuration items using parameters. Instead, you can modify them dynamically using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-dynamically), [pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules), or PD server API. Currently, among all the configuration items listed in [Modify PD configuration dynamically](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-pd-configuration-dynamically), except `log.level`, all the other configuration items cannot be modified using parameters after the first startup of PD microservices.
 
 #### Configure TiProxy parameters
 

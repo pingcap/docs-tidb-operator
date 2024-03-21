@@ -53,7 +53,8 @@ After each component of the PD microservices is started for the first time, some
 
 Among all the configuration items of PD microservices listed in [Modify PD configuration dynamically](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-online), after the first start of each PD microservice component, only `log.level` can be modified by using the `TidbCluster` CR. Other configurations cannot be modified by using CR.
 
-For TiDB clusters deployed on Kubernetes, if you need to modify the PD microservice configuration, you can modify the configuration dynamically using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-dynamically), [pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules), or PD server API.
+For TiDB clusters deployed on Kubernetes, if you need to modify configuration items of PD microservices, you can modify them dynamically using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config/#modify-pd-configuration-dynamically), [pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules), or PD server API.
+
 ## Modify TiProxy configuration
 
 Modifying the configuration of the TiProxy component never restarts the Pod. If you want to restart the Pod, you need to manually kill the Pod or change the Pod image to manually trigger the restart.
