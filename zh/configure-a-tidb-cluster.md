@@ -217,7 +217,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 <div label="PD 微服务">
 
-为 PD 微服务挂载 PV，以 TSO 微服务为例：
+为 PD 微服务挂载 PV，以 `tso` 微服务为例：
 
 > **注意：**
 >

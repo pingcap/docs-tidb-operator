@@ -159,7 +159,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **注意：**
         >
-        > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 Scheduling 微服务为例，你需要进行以下配置：
+        > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 `scheduling` 微服务为例，你需要进行以下配置：
         >
         > ``` json
         > ...
@@ -170,7 +170,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         >       "${cluster_name}-pd",
         >       ...
         >       "*.${cluster_name}-pd-peer.${namespace}.svc",
-        >       // 以下是为 Scheduling 微服务添加的 hosts 配置
+        >       // 以下是为 `scheduling` 微服务添加的 hosts 配置
         >       "${cluster_name}-scheduling",
         >       "${cluster_name}-scheduling.${cluster_name}",
         >       "${cluster_name}-scheduling.${cluster_name}.svc",
