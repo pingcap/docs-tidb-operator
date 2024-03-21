@@ -51,11 +51,11 @@ export PORT=10261 && \
 export HTTP_PATH=/dashboard
 ```
 
-### 访问独立部署的 TiDB Dashboard
+### 访问独立部署的 TiDB Dashboard (可选)
 
 你需要使用 v1.4.0 版本及以上的 TiDB Operator 以及 v4.0.1 版本及以上的 TiDB 集群。
 
-访问前，确保你已经[部署独立的 TiDB Dashboard](get-started.md#部署独立的-tidb-dashboard)。
+访问前，确保你已经[部署独立的 TiDB Dashboard](get-started.md#部署独立的-tidb-dashboard-可选)。
 
 这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下（默认值）：
 

@@ -348,7 +348,7 @@ tidbcluster.pingcap.com/basic created
 
 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
-### 部署独立的 TiDB Dashboard
+### 部署独立的 TiDB Dashboard (可选)
 
 {{< copyable "shell-regular" >}}
 
