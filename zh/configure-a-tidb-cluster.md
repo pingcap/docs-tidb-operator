@@ -221,7 +221,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)。
 
 ```yaml
   pd:
@@ -279,7 +279,7 @@ spec:
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md)。
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)。
 
 如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.mode` 与 `spec.pdms`：
 
