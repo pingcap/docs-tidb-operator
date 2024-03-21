@@ -193,7 +193,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 - 如果要对 PD 微服务各个组件进行垂直扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.resources` 至期望值。
 
-- 如果要对 PD 微服务各个组件进行水平扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象中的 `spec.pdms.replicas` 至期望值。
+- 如果要对 PD 微服务各个组件进行水平扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.replicas` 至期望值。
 
 以下步骤以 Scheduling 微服务为例说明如何进行水平扩缩容：
 

@@ -297,7 +297,6 @@ spec:
 ```
 
 - `spec.pd.mode` 用于开启或关闭 PD 微服务。`"ms"` 表示开启 PD 微服务，当为 `""` 或删除 `mode` 字段时，表示关闭 PD 微服务。
-
 - `spec.pdms.config` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
 #### 部署 TiProxy

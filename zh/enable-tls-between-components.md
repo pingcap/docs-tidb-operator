@@ -1460,7 +1460,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     > PD 从 v8.0.0 版本开始支持[微服务模式](pd-microservices.md)，如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
     >
     > - 更新 `pd.mode` 为 `ms`
-    > - 为 `scheduling` 服务配置 `security` 字段
+    > - 为 `scheduling` 微服务配置 `security` 字段
     >
     > ```yaml
     >   pd:
