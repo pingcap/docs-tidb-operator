@@ -513,7 +513,7 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
 
 2. Take step 1 as an example, perform the following upgrade operations in sequence:
 
-    1. If [PD microservices](pd-microservices.md) (introduced in TiDB v8.0.0) are deployed in clusters, upgrade the version of PD microservices for all Kubernetes clusters that have PD microservices deployed.
+    1. If [PD microservices](https://docs.pingcap.com/tidb/dev/pd-microservices) (introduced in TiDB v8.0.0) are deployed in clusters, upgrade the version of PD microservices for all Kubernetes clusters that have PD microservices deployed.
     2. If TiProxy is deployed in clusters, upgrade the TiProxy versions for all the Kubernetes clusters that have TiProxy deployed.
     3. If TiFlash is deployed in clusters, upgrade the TiFlash versions for all the Kubernetes clusters that have TiFlash deployed.
     4. Upgrade TiKV versions for all Kubernetes clusters.

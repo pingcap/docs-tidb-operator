@@ -217,11 +217,11 @@ To mount multiple PVs for TiCDC:
 
 <div label="PD microservices">
 
-To mount multiple PVs for PD microservices (taking the TSO microservice as an example):
+To mount multiple PVs for PD microservices (taking the `tso` microservice as an example):
 
 > **Note:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md).
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices).
 
 ```yaml
   pd:
@@ -282,7 +282,7 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 
 > **Notes:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md).
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices).
 
 To enable PD microservices in your cluster, configure `spec.pd.mode` and `spec.pdms` in the `${cluster_name}/tidb-cluster.yaml` file:
 
@@ -441,9 +441,9 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 
 > **Notes:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](pd-microservices.md).
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices).
 
-You can configure PD microservice using the `spec.pd.mode` and `spec.pdms` parameters of the TidbCluster CR. Currently, PD supports two microservices: the TSO microservice and the scheduling microservice (configured as `tso` and `scheduling`). The configuration example is as follows:
+You can configure PD microservice using the `spec.pd.mode` and `spec.pdms` parameters of the TidbCluster CR. Currently, PD supports two microservices: the `tso` microservice and the `scheduling` microservice (configured as `tso` and `scheduling`). The configuration example is as follows:
 
 ```yaml
 spec:
