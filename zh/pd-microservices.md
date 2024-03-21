@@ -45,7 +45,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 当部署和使用 PD 微服务时，请注意以下事项：
 
-- 开启微服务并重启 PD 后，PD 不再提供 TSO 分配功能，因此需要在集群中部署 TSO 微服务。
+- 开启微服务并重启 PD 后，PD 不再提供 TSO 分配功能。因此，开启微服务时，你需要在集群中部署 TSO 微服务。
 - 如果集群中部署了 Scheduling 微服务，调度功能将由 Scheduling 微服务提供。如果没有部署 Scheduling 微服务，调度功能仍然由 PD 提供。
 - Scheduling 微服务支持动态切换。该功能默认开启（`enable-scheduling-fallback` 默认为 `true`)。如果 Scheduling 微服务进程关闭，PD 默认会继续为集群提供调度服务。
 

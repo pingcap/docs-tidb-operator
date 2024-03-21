@@ -197,7 +197,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 以下步骤以 Scheduling 微服务为例说明如何进行水平扩缩容：
 
-1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 `scheduling` 的 `replicas` 值设置为 `3`：
+1. 按需修改 `TidbCluster` 对象的 `replicas` 值。例如，执行以下命令可将 `scheduling` 的 `replicas` 值设置为 `3`：
 
     ```shell
     kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
