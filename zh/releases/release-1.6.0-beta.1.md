@@ -5,7 +5,7 @@ summary: 了解 TiDB Operator 1.6.0-beta.1 版本的新功能、优化提升，�
 
 # TiDB Operator 1.6.0-beta.1 Release Notes
 
-发布日期: 2024 年 3 月 27 日
+发布日期：2024 年 3 月 27 日
 
 TiDB Operator 版本：1.6.0-beta.1
 
