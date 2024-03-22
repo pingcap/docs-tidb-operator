@@ -10,7 +10,7 @@ TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https
 
 > **Note:**
 >
-> TiDB Operator v1.6 and later versions no longer recommend deploying TiDB Scheduler.
+> Starting from TiDB Operator v1.6, it is not recommended to deploy TiDB Scheduler.
 
 ## tidb-scheduler and default-scheduler
 

@@ -10,7 +10,7 @@ TiDB Scheduler 是 [Kubernetes 调度器扩展](https://github.com/kubernetes/de
 
 > **注意：**
 >
-> TiDB Operator v1.6 及以上版本不再推荐部署 TiDB Scheduler。
+> 从 TiDB Operator v1.6 开始，不推荐部署 TiDB Scheduler。
 
 ## tidb-scheduler 与 default-scheduler
 
