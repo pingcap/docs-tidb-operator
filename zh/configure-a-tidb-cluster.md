@@ -433,7 +433,7 @@ spec:
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持微服务模式。
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
 
 你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 微服务参数。目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，配置示例如下：
 
