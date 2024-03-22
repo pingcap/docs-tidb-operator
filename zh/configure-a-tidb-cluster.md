@@ -435,7 +435,7 @@ spec:
 >
 > PD 从 v8.0.0 版本开始支持微服务模式。
 
-你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 微服务参数。目前 PD 支持 TSO 和 Scheduling 两个微服务（配置名为 `tso` 和 `scheduling`），配置示例如下：
+你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 微服务参数。目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，配置示例如下：
 
 ```yaml
 spec:
