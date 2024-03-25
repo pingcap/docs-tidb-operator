@@ -280,7 +280,7 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 
 #### Enable PD microservices
 
-> **Notes:**
+> **Note:**
 >
 > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
 
@@ -439,7 +439,7 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 
 ##### Configure PD microservices
 
-> **Notes:**
+> **Note:**
 >
 > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
 

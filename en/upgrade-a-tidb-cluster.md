@@ -16,7 +16,7 @@ Kubernetes provides the [rolling update](https://kubernetes.io/docs/tutorials/ku
 
 When you perform a rolling update, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of PD, TiProxy, TiFlash, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
 
-> **Notes:**
+> **Note:**
 >
 > If [PD microservices](https://docs.pingcap.com/tidb/dev/pd-microservices) (introduced in TiDB v8.0.0) are deployed in a cluster, when you perform a rolling update to upgrade the cluster, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of each PD microservice component, PD, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
 

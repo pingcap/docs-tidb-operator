@@ -62,7 +62,7 @@ If you need to suspend the TiDB cluster, take the following steps:
     * TiProxy
     * PD
 
-> **Notes:**
+> **Note:**
 >
 > If [PD microservices](https://docs.pingcap.com/tidb/dev/pd-microservices) (introduced in TiDB v8.0.0) are deployed in a cluster, the Pods of PD microservices are deleted after the PD Pods are deleted.
 

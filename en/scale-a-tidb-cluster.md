@@ -192,7 +192,7 @@ When all Pods are rebuilt and in the `Running` state, the vertical scaling is co
 
 ### Scale PD microservice components
 
-> **Notes:**
+> **Note:**
 >
 > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
 

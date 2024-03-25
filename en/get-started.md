@@ -297,7 +297,7 @@ tidbcluster.pingcap.com/basic created
 
 If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
-> **Notes:**
+> **Note:**
 >
 > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, use the following command:
 >

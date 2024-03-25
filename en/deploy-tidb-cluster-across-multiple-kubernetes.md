@@ -529,7 +529,7 @@ When you need to make a cluster exit from the joined TiDB cluster deployed acros
 
 Take the second TidbCluster created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you have enabled other components such as TiFlash, TiCDC, TiProxy, and Pump, set the number of these replicas to `0`:
 
-> **Notes:**
+> **Note:**
 >
 > Starting from v8.0.0, PD supports the microservice mode. If PD microservices are configured, you also need to set the `replicas` of the corresponding PD microservice component to `0` in the `pdms` configuration.
 
