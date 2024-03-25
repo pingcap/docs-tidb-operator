@@ -189,7 +189,7 @@ When all Pods are rebuilt and in the `Running` state, the vertical scaling is co
 > - If the resource's `requests` field is modified during the vertical scaling process, and if PD, TiKV, and TiFlash use `Local PV`, they will be scheduled back to the original node after the upgrade. At this time, if the original node does not have enough resources, the Pod ends up staying in the `Pending` status and thus impacts the service.
 > - TiDB is a horizontally scalable database, so it is recommended to take advantage of it simply by adding more nodes rather than upgrading hardware resources like you do with a traditional database.
 
-### Scale PD microservice components
+## Scale PD microservice components
 
 > **Note:**
 >
