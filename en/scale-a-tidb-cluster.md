@@ -223,6 +223,7 @@ Taking the `scheduling` microservice as an example, the steps for horizontal sca
     In the output of this command, the `scheduling.replicas` value of `spec.pdms` in `TidbCluster` is expected to be the same as the value you configured.
 
 3. Observe whether the number of `TidbCluster` Pods is increased or decreased:
+
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
