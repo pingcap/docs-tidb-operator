@@ -161,13 +161,13 @@ When the number of Pods for all components reaches the preset value and all comp
 
 ## Vertical scaling
 
-Vertically scaling TiDB means that you scale TiDB up or down by increasing or decreasing the limit of resources on the Pod. Vertically scaling is essentially the rolling update of the Pods.
+Vertically scaling TiDB means that you scale TiDB up or down by increasing or decreasing the limit of resources on the Pod. Vertical scaling is essentially the rolling update of the Pods.
 
 ### Vertically scale components
 
 This section describes how to vertically scale up or scale down components including PD, TiKV, TiDB, TiProxy, TiFlash, and TiCDC.
 
-- To scale up or scale down PD, TiKV, TiDB, and TiProxy, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, and `spec.tidb.resources` in the `TidbCluster` object that corresponds to the cluster to desired values.
+- To scale up or scale down PD, TiKV, TiDB, and TiProxy, use kubectl to modify `spec.pd.resources`, `spec.tikv.resources`, `spec.tidb.resources`, and `spec.tiproxy.replicas` in the `TidbCluster` object that corresponds to the cluster to desired values.
 
 - To scale up or scale down TiFlash, modify the value of `spec.tiflash.resources`.
 
@@ -189,6 +189,46 @@ When all Pods are rebuilt and in the `Running` state, the vertical scaling is co
 >
 > - If the resource's `requests` field is modified during the vertical scaling process, and if PD, TiKV, and TiFlash use `Local PV`, they will be scheduled back to the original node after the upgrade. At this time, if the original node does not have enough resources, the Pod ends up staying in the `Pending` status and thus impacts the service.
 > - TiDB is a horizontally scalable database, so it is recommended to take advantage of it simply by adding more nodes rather than upgrading hardware resources like you do with a traditional database.
+
+### Scale PD microservice components
+
+> **Note:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+
+PD microservices are typically used to address performance bottlenecks in PD and improve the quality of PD services. To determine whether it is necessary to scale PD microservices, see [PD microservice FAQs](https://docs.pingcap.com/tidb/dev/pd-microservices#FAQ).
+
+- Currently, the PD microservices mode splits the timestamp allocation and cluster scheduling functions of PD into two independently deployed components: the `tso` microservice and the `scheduling` microservice.
+    - The `tso` microservice implements a primary-secondary architecture. If the `tso` microservice becomes the bottleneck, it is recommended to scale it vertically.
+    - The `scheduling` microservice serves as a scheduling component. If the `scheduling` microservice becomes the bottleneck, it is recommended to scale it horizontally.
+
+- To vertically scale each component of PD microservices, use the `kubectl` command to modify the `spec.pdms.resources` of the `TidbCluster` object corresponding to the cluster to your desired value.
+
+- To horizontally scale each component of PD microservices, use the `kubectl` command to modify `spec.pdms.replicas` of the `TidbCluster` object corresponding to the cluster to your desired value.
+
+Taking the `scheduling` microservice as an example, the steps for horizontal scaling are as follows:
+
+1. Modify the `replicas` value of the corresponding `TidbCluster` object to your desired value. For example, run the following command to set the `replicas` value of `scheduling` to `3`:
+
+    ```shell
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
+    ```
+
+2. Check whether the corresponding TiDB cluster configuration for the Kubernetes cluster is updated:
+
+    ```shell
+    kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
+    ```
+
+    In the output of this command, the `scheduling.replicas` value of `spec.pdms` in `TidbCluster` is expected to be the same as the value you configured.
+
+3. Observe whether the number of `TidbCluster` Pods is increased or decreased:
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+    It usually takes about 10 to 30 seconds for PD microservice components to scale in or out.
 
 ## Scaling troubleshooting
 
