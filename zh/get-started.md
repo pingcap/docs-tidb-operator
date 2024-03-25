@@ -357,7 +357,7 @@ tidbcluster.pingcap.com/basic created
 >     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/pd-micro-service-cluster.yaml
 > ```
 >
-> 查看 Pod 状态
+> 查看 Pod 状态：
 >
 > ``` shell
 > watch kubectl get po -n tidb-cluster
