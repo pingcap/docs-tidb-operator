@@ -198,7 +198,7 @@ When all Pods are rebuilt and in the `Running` state, the vertical scaling is co
 
 PD microservices are typically used to address performance bottlenecks in PD and improve the quality of PD services. To determine whether it is necessary to scale PD microservices, see [PD microservice FAQs](https://docs.pingcap.com/tidb/dev/pd-microservices#FAQ).
 
-- Currently, the PD microservices mode disaggregates the timestamp allocation and cluster scheduling functions of PD into two independently deployed components: the `tso` microservice and the `scheduling` microservice.
+- Currently, the PD microservices mode splits the timestamp allocation and cluster scheduling functions of PD into two independently deployed components: the `tso` microservice and the `scheduling` microservice.
     - The `tso` microservice implements a primary-secondary architecture. If the `tso` microservice becomes the bottleneck, it is recommended to scale it vertically.
     - The `scheduling` microservice serves as a scheduling component. If the `scheduling` microservice becomes the bottleneck, it is recommended to scale it horizontally.
 
@@ -223,8 +223,6 @@ Taking the `scheduling` microservice as an example, the steps for horizontal sca
     In the output of this command, the `scheduling.replicas` value of `spec.pdms` in `TidbCluster` is expected to be the same as the value you configured.
 
 3. Observe whether the number of `TidbCluster` Pods is increased or decreased:
-
-
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
