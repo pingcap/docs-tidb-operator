@@ -1,7 +1,6 @@
 ---
 title: 导入集群数据
 summary: 使用 TiDB Lightning 导入集群数据。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # 导入集群数据

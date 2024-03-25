@@ -1,7 +1,6 @@
 ---
 title: TiDB Operator Architecture
 summary: Learn the architecture of TiDB Operator and how it works.
-aliases: ['/docs/tidb-in-kubernetes/dev/architecture/']
 ---
 
 # TiDB Operator Architecture

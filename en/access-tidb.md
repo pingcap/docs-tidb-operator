@@ -1,7 +1,6 @@
 ---
 title: Access the TiDB Cluster on Kubernetes
 summary: Learn how to access the TiDB cluster on Kubernetes.
-aliases: ['/docs/tidb-in-kubernetes/dev/access-tidb/']
 ---
 
 # Access the TiDB Cluster

@@ -1,7 +1,6 @@
 ---
 title: TiDB on Kubernetes Documentation
 summary: Learn about TiDB on Kubernetes documentation.
-aliases: ['/docs/tidb-in-kubernetes/dev/']
 hide_sidebar: true
 hide_commit: true
 ---

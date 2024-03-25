@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群的监控与告警
 summary: 介绍如何监控 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/monitor-a-tidb-cluster/', '/docs-cn/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/', '/zh/tidb-in-kubernetes/dev/monitor-using-tidbmonitor/']
 ---
 
 # TiDB 集群的监控与告警
