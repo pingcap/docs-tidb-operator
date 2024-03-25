@@ -43,6 +43,18 @@ PD 中[支持在线修改的配置项](https://docs.pingcap.com/zh/tidb/stable/d
 
 对于部署在 Kubernetes 中的 TiDB 集群，如需修改 PD 配置参数，需要使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config/#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules) 或 PD server API 来动态进行修改。
 
+### 修改 PD 微服务配置
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+在 PD 微服务各个组件首次启动成功后，PD 的部分配置项会持久化到 etcd 中，且后续将以 etcd 中的配置为准。因此，在 PD 微服务各个组件首次启动后，这些配置项将无法再通过 TidbCluster CR 来进行修改。
+
+PD 微服务各个组件中[支持在线修改的配置项](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)里，除 `log.level` 外，其他配置项在 PD 微服务各个组件首次启动之后均不再支持通过 TidbCluster CR 进行修改。
+
+对于部署在 Kubernetes 中的 TiDB 集群，如需修改 PD 微服务配置参数，你可以使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules) 或 PD server API 来进行动态修改。
+
 ## 修改 TiProxy 组件配置
 
 修改 TiProxy 组件的配置永远不会重启 Pod。如果你想要重启 Pod，需要手动杀死 Pod，或更改 Pod 镜像等配置，来手动触发重启。

@@ -158,7 +158,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 本小节介绍如何对 PD、TiKV、TiDB、TiProxy、TiFlash、TiCDC 进行垂直扩缩容。
 
-- 如果要对 PD、TiKV、TiDB、TiProxy 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources` 至期望值。
+- 如果要对 PD、TiKV、TiDB、TiProxy 进行垂直扩缩容，通过 kubectl 修改集群所对应的 `TidbCluster` 对象的 `spec.pd.resources`、`spec.tikv.resources`、`spec.tidb.resources`、`spec.tiproxy.replicas` 至期望值。
 
 - 如果要对 TiFlash 进行垂直扩缩容，修改 `spec.tiflash.resources` 至期望值。
 
@@ -178,6 +178,46 @@ watch kubectl -n ${namespace} get pod -o wide
 >
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
 > - TiDB 是一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
+
+### 扩缩容 PD 微服务组件
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [PD 微服务常见问题](https://docs.pingcap.com/zh/tidb/dev/pd-microservices#常见问题)判断是否需要进行 PD 微服务扩缩容操作。
+
+- 目前，PD 微服务模式可将 PD 的时间戳分配和集群调度功能拆分为 `tso` 微服务和 `scheduling` 微服务单独部署。
+    - `tso` 微服务为主备架构，如遇到瓶颈建议采用垂直扩缩容。
+    - `scheduling` 微服务为调度组件，如遇到瓶颈建议采用水平扩缩容。
+
+- 如果要对 PD 微服务各个组件进行垂直扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.resources` 至期望值。
+
+- 如果要对 PD 微服务各个组件进行水平扩缩容，可以使用 `kubectl` 命令修改集群所对应的 `TidbCluster` 对象的 `spec.pdms.replicas` 至期望值。
+
+以下步骤以 `scheduling` 微服务为例说明如何进行水平扩缩容：
+
+1. 按需修改 `TidbCluster` 对象的 `replicas` 值。例如，执行以下命令可将 `scheduling` 的 `replicas` 值设置为 `3`：
+
+    ```shell
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
+    ```
+
+2. 查看 Kubernetes 集群中对应的 TiDB 集群配置是否已对应更新：
+
+    ```shell
+    kubectl get tidbcluster ${cluster_name} -n ${namespace} -oyaml
+    ```
+
+    上述命令输出的 `TidbCluster` 中，`spec.pdms` 的 `scheduling.replicas` 值预期应与你之前配置的值一致。
+
+3. 观察 `TidbCluster` Pod 是否新增或者减少：
+
+    ```shell
+    watch kubectl -n ${namespace} get pod -o wide
+    ```
+
+    PD 微服务组件通常需要 10 到 30 秒左右的时间完成扩容或者缩容。
 
 ## 扩缩容故障诊断
 

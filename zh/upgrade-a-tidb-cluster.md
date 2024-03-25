@@ -14,6 +14,10 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
 
 使用滚动更新时，TiDB Operator 会按 PD、TiProxy、TiFlash、TiKV、TiDB 的顺序，串行地删除旧版本的 Pod，并创建新版本的 Pod。当新版本的 Pod 正常运行后，再处理下一个 Pod。
 
+> **注意：**
+>
+> 当集群中部署了 [PD 微服务](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（从 TiDB v8.0.0 版本开始支持）时，如果采用滚动更新来升级 TiDB 集群，TiDB Operator 会按照 PD 各个微服务组件、PD、TiKV、TiDB 的顺序，串行地删除旧版本的 Pod 并创建新版本的 Pod。当新版本的 Pod 正常运行后，再处理下一个 Pod。
+
 滚动更新中，TiDB Operator 会自动处理 PD 和 TiKV 的 Leader 迁移。因此，在多节点的部署拓扑下（最小环境：PD \* 3、TiKV \* 3、TiDB \* 2），滚动更新 TiKV、PD 不会影响业务正常运行。对于有连接重试功能的客户端，滚动更新 TiDB 同样不会影响业务。
 
 > **警告：**

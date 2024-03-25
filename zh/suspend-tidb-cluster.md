@@ -62,6 +62,10 @@ summary: 了解如何通过配置挂起 Kubernetes 上的 TiDB 集群。
     * TiProxy
     * PD
 
+> **注意：**
+>
+> 如果集群中部署了 [PD 微服务](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（从 TiDB v8.0.0 版本开始支持），PD 微服务组件的 Pod 会在删除 PD 之后被删除。
+
 ## 恢复 TiDB 集群
 
 在 TiDB 集群或组件被挂起后，如果你需要恢复 TiDB 集群，执行以下步骤：

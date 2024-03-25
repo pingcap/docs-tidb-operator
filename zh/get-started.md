@@ -348,6 +348,32 @@ tidbcluster.pingcap.com/basic created
 
 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。如需部署 PD 微服务，可以按照如下方式进行部署：
+>
+> ``` shell
+> kubectl create namespace tidb-cluster && \
+>     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/pd-micro-service-cluster.yaml
+> ```
+>
+> 查看 Pod 状态：
+>
+> ``` shell
+> watch kubectl get po -n tidb-cluster
+> ```
+> 
+> ```
+> NAME                              READY   STATUS    RESTARTS   AGE
+> basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m
+> basic-pd-0                        1/1     Running   0          9m
+> basic-scheduling-0                1/1     Running   0          9m
+> basic-tidb-0                      2/2     Running   0          7m
+> basic-tikv-0                      1/1     Running   0          8m
+> basic-tso-0                       1/1     Running   0          9m
+> basic-tso-1                       1/1     Running   0          9m
+> ``` 
+
 ### 部署独立的 TiDB Dashboard
 
 {{< copyable "shell-regular" >}}
