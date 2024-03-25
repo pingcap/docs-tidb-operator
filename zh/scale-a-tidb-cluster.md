@@ -178,7 +178,7 @@ watch kubectl -n ${namespace} get pod -o wide
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
 > - TiDB 是一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
 
-### 扩缩容 PD 微服务组件
+## 扩缩容 PD 微服务组件
 
 > **注意：**
 >
