@@ -1,7 +1,6 @@
 ---
 title: 手动扩缩容 Kubernetes 上的 TiDB 集群
 summary: 了解如何在 Kubernetes 上对 TiDB 集群手动扩缩容。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/scale-a-tidb-cluster/']
 ---
 
 # 手动扩缩容 Kubernetes 上的 TiDB 集群

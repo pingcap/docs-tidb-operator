@@ -1,7 +1,6 @@
 ---
 title: TiDB on Kubernetes 用户文档
 summary: 了解 TiDB on Kubernetes 的用户文档。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/']
 hide_sidebar: true
 hide_commit: true
 ---

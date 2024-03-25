@@ -1,7 +1,6 @@
 ---
 title: Back up Data to S3-Compatible Storage Using Dumpling
 summary: Learn how to back up the TiDB cluster to the S3-compatible storage using Dumpling.
-aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-s3/']
 ---
 
 # Back up Data to S3-Compatible Storage Using Dumpling
