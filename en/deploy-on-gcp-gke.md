@@ -468,4 +468,4 @@ The two components are *not required* in the deployment. This section shows a qu
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
