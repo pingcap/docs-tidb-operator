@@ -30,7 +30,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、�
 
 Diag 部署前，请确认以下软件需求：
 
-* Kubernetes v1.12 或者更高版本
+* Kubernetes v1.24 或者更高版本
 * [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)

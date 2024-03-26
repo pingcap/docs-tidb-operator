@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-operator/']
 
 TiDB Operator 部署前，请确认以下软件需求：
 
-* Kubernetes v1.12 或者更高版本
+* Kubernetes v1.24 或者更高版本
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) 启用（可选）
@@ -20,7 +20,7 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 ## 部署 Kubernetes 集群
 
-TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。若想创建一个简单集群测试，可以参考[快速上手教程](get-started.md)。
+TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.24。若想创建一个简单集群测试，可以参考[快速上手教程](get-started.md)。
 
 对于部分公有云环境，可以参考如下文档部署 TiDB Operator 及 TiDB 集群：
 
@@ -56,10 +56,6 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
 kubectl create -f ./crd.yaml
 ```
-
-> **注意：**
->
-> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 如果显示如下信息表示 CRD 安装成功：
 
@@ -173,10 +169,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     pingcap/tidb-backup-manager:v1.5.2
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
-    k8s.gcr.io/kube-scheduler:v1.16.9
     ```
-
-    其中 `k8s.gcr.io/kube-scheduler:v1.16.9` 请跟你的 Kubernetes 集群的版本保持一致即可，不用单独下载。
 
     接下来通过下面的命令将所有这些镜像下载下来：
 
@@ -207,28 +200,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
 
 3. 配置 TiDB Operator
 
-    如果需要部署 `tidb-scheduler`，请修改 `./tidb-operator/values.yaml` 文件来配置内置 `kube-scheduler` 组件的 Docker 镜像名字和版本，例如你的 Kubernetes 集群中的 `kube-scheduler` 使用的镜像为 `k8s.gcr.io/kube-scheduler:v1.16.9`，请这样设置 `./tidb-operator/values.yaml`：
-
-    ```shell
-    ...
-    scheduler:
-      serviceAccount: tidb-scheduler
-      logLevel: 2
-      replicas: 1
-      schedulerName: tidb-scheduler
-      resources:
-        limits:
-          cpu: 250m
-          memory: 150Mi
-        requests:
-          cpu: 80m
-          memory: 50Mi
-      kubeSchedulerImageName: k8s.gcr.io/kube-scheduler
-      kubeSchedulerImageTag: v1.16.9
-    ...
-    ```
-
-    其他项目例如：`limits`、`requests` 和 `replicas`，请根据需要进行修改。
+    通过修改 `./tidb-operator/values.yaml` 文件来配置 TiDB Operator。
 
 4. 安装 TiDB Operator
 
