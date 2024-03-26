@@ -17,7 +17,7 @@ summary: 介绍如何在阿里云上部署 TiDB 集群。
     >
     > Access Key 需要具有操作相应资源的权限。
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.24
 - [Helm 3](https://helm.sh)
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*

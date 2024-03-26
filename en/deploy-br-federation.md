@@ -11,7 +11,7 @@ This document describes how to deploy [BR Federation](br-federation-architecture
 
 Before deploy BR Federation on Kubernetes cluster, make sure you have met the following prerequisites:
 
-* Kubernetes version must be >= v1.12.
+* Kubernetes version must be >= v1.24.
 * You must have multiple Kubernetes clusters.
 * You have deployed TiDB Operator for all the Kubernetes clusters that serve as data planes.
 

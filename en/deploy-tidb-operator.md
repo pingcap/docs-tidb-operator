@@ -11,7 +11,7 @@ This document describes how to deploy TiDB Operator on Kubernetes.
 
 Before deploying TiDB Operator, make sure the following items are installed on your machine:
 
-* Kubernetes >= v1.12
+* Kubernetes >= v1.24
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) enabled (optional)
@@ -19,7 +19,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 
 ### Deploy the Kubernetes cluster
 
-TiDB Operator runs in the Kubernetes cluster. You can refer to [the document of how to set up Kubernetes](https://kubernetes.io/docs/setup/) to set up a Kubernetes cluster. Make sure that the Kubernetes version is v1.12 or higher. If you want to deploy a very simple Kubernetes cluster for testing purposes, consult the [Get Started](get-started.md) document.
+TiDB Operator runs in the Kubernetes cluster. You can refer to [the document of how to set up Kubernetes](https://kubernetes.io/docs/setup/) to set up a Kubernetes cluster. Make sure that the Kubernetes version is v1.24 or higher. If you want to deploy a very simple Kubernetes cluster for testing purposes, consult the [Get Started](get-started.md) document.
 
 For some public cloud environments, refer to the following documents:
 

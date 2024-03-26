@@ -33,7 +33,7 @@ When deploying TiDB clusters or `tidb-backup` with TiDB Operator, you can config
 
 ## Network PV configuration
 
-Starting from Kubernetes 1.11, volume expansion of network PV is supported. However, you need to run the following command to enable volume expansion for the corresponding `StorageClass`:
+Running the following command to enable volume expansion for the corresponding `StorageClass`:
 
 ```shell
 kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
