@@ -34,7 +34,7 @@ When deploying TiDB clusters or `tidb-backup` with TiDB Operator, you can config
 
 ## Network PV configuration
 
-Running the following command to enable volume expansion for the corresponding `StorageClass`:
+To enable volume expansion for the corresponding `StorageClass`, run the following command:
 
 ```shell
 kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
