@@ -26,22 +26,6 @@ With a default installation, TiDB Operator disables the admission controller. Ta
       create: true
     ```
 
-    * If your Kubernetes cluster version >= v1.13.0, enable the Webhook feature by using the configuration above.
-
-    * If your Kubernetes cluster version < v1.13.0, run the following command and configure the `admissionWebhook.cabundle` in `values.yaml` as the return value:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n'
-        ```
-
-        ```yaml
-        admissionWebhook:
-          # Configure the value of `admissionWebhook.cabundle` as the return value of the command above
-          cabundle: <cabundle>
-        ```
-
 2. Configure the failure policy.
 
     It is recommended to set the [`failurePolicy`](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) of TiDB Operator to `Failure`. The exception occurs in `admission webhook` does not affect the whole cluster, because the dynamic admission control supports the label-based filtering mechanism.

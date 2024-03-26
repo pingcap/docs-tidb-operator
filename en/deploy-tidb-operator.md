@@ -56,10 +56,6 @@ wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/cr
 kubectl create -f ./crd.yaml
 ```
 
-> **Note:**
->
-> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
-
 If the following message is displayed, the CRD installation is successful:
 
 {{< copyable "shell-regular" >}}
@@ -172,10 +168,7 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     pingcap/tidb-backup-manager:v1.5.2
     bitnami/kubectl:latest
     pingcap/advanced-statefulset:v0.3.3
-    k8s.gcr.io/kube-scheduler:v1.16.9
     ```
-
-    Among them, `k8s.gcr.io/kube-scheduler:v1.16.9` should be consistent with the version of your Kubernetes cluster. You do not need to download it separately.
 
     Next, download all these images using the following command:
 
@@ -206,28 +199,7 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
 
 3. Configure TiDB Operator
 
-    TiDB Operator embeds a `kube-scheduler` to implement a custom scheduler. If you need to deploy `tidb-scheduler`, modify the `./tidb-operator/values.yaml` file to configure the Docker image's name and version of this built-in `kube-scheduler` component. For example, if `kube-scheduler` in your Kubernetes cluster uses the image `k8s.gcr.io/kube-scheduler:v1.16.9`, set `./tidb-operator/values.yaml` as follows:
-
-    ```shell
-    ...
-    scheduler:
-      serviceAccount: tidb-scheduler
-      logLevel: 2
-      replicas: 1
-      schedulerName: tidb-scheduler
-      resources:
-        limits:
-          cpu: 250m
-          memory: 150Mi
-        requests:
-          cpu: 80m
-          memory: 50Mi
-      kubeSchedulerImageName: k8s.gcr.io/kube-scheduler
-      kubeSchedulerImageTag: v1.16.9
-    ...
-    ```
-
-    You can modify other items such as `limits`, `requests`, and `replicas` as needed.
+    Modify the `./tidb-operator/values.yaml` file to configure TiDB Operator.
 
 4. Install TiDB Operator
 

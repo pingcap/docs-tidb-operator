@@ -41,7 +41,7 @@ az aks create \
     --vm-set-type VirtualMachineScaleSets \
     --load-balancer-sku standard \
     --node-count 3 \
-    --zones 1 2 3 \
+    --zones 1 2 3
 ```
 
 ### Create component node pools

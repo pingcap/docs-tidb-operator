@@ -100,10 +100,6 @@ kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-> **Note:**
->
-> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
-
 After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
 ```shell
