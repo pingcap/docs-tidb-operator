@@ -49,4 +49,4 @@ spec:
 > - TidbMonitor 对应的 Pod 实例数量取决于 `replicas` 和 `shards` 的乘积。例如，当 `replicas` 为 1 个副本，`shards` 为 2 个分片时，TiDB Operator 将产生 2 个 TidbMonitor Pod 实例。
 > - `shards` 变更后，`Targets` 会重新分配，但是原本在节点上的监控数据不会重新分配。
 
-可以参考 [分片示例](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-shards)。
+可以参考 [分片示例](https://github.com/pingcap/tidb-operator/tree/v1.6.0-beta.1/examples/monitor-shards)。

@@ -89,7 +89,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.5.2"
+    operator_version = "v1.6.0-beta.1"
     ```
 
     * To deploy TiFlash in the cluster, set `create_tiflash_node_pool = true` in `terraform.tfvars`. You can also configure the node count and instance type of the TiFlash node pool by modifying `tiflash_count` and `tiflash_instance_type`. By default, the value of `tiflash_count` is `2`, and the value of `tiflash_instance_type` is `ecs.i2.2xlarge`.
@@ -173,7 +173,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     cp manifests/dashboard.yaml.example tidb-dashboard.yaml
     ```
 
-    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+    To complete the CR file configuration, refer to [TiDB Operator API documentation](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
     * To deploy TiFlash, configure `spec.tiflash` in `db.yaml` as follows:
 
@@ -347,7 +347,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+See [TiDB Operator API Documentation](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Manage multiple TiDB clusters
 
