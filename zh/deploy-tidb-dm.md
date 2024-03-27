@@ -29,9 +29,9 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v7.5.0`
+- `spec.version`，格式为 `imageTag`，例如 `v8.0.0`
 - `spec.<master/worker>.baseImage`，格式为 `imageName`，例如 `pingcap/dm`
-- `spec.<master/worker>.version`，格式为 `imageTag`，例如 `v7.5.0`
+- `spec.<master/worker>.version`，格式为 `imageTag`，例如 `v8.0.0`
 
 TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
@@ -50,7 +50,7 @@ metadata:
   name: ${dm_cluster_name}
   namespace: ${namespace}
 spec:
-  version: v7.5.0
+  version: v8.0.0
   configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
@@ -97,11 +97,6 @@ spec:
 
 配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
 
-如需使用 `topologySpreadConstraints`，需要满足以下条件：
-
-* Kubernetes 集群使用 `default-scheduler`，而不是 `tidb-scheduler`。详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
-* Kubernetes 集群开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或集群未开启 `EvenPodsSpread` feature gate，`topologySpreadConstraints` 的配置将不会生效。
-
 `topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
 
 以下是一个配置示例：
@@ -140,10 +135,10 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 如果服务器没有外网，需要按下述步骤在有外网的机器上将 DM 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上：
 
-1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v7.5.0）：
+1. 部署一套 DM 集群会用到下面这些 Docker 镜像（假设 DM 集群的版本是 v8.0.0）：
 
     ```shell
-    pingcap/dm:v7.5.0
+    pingcap/dm:v8.0.0
     ```
 
 2. 通过下面的命令将所有这些镜像下载下来：
@@ -151,9 +146,9 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/dm:v7.5.0
+    docker pull pingcap/dm:v8.0.0
 
-    docker save -o dm-v7.5.0.tar pingcap/dm:v7.5.0
+    docker save -o dm-v8.0.0.tar pingcap/dm:v8.0.0
     ```
 
 3. 将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
@@ -161,7 +156,7 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i dm-v7.5.0.tar
+    docker load -i dm-v8.0.0.tar
     ```
 
 部署 DM 集群完成后，通过下面命令查看 Pod 状态：

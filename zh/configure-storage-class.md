@@ -34,7 +34,7 @@ PD 同样借助 Raft 实现了数据复制，但作为存储集群元信息的�
 
 ## 网络 PV 配置
 
-Kubernetes 1.11 及以上的版本支持[网络 PV 的动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)，但用户需要为相应的 `StorageClass` 开启动态扩容支持。
+为相应的 `StorageClass` 开启动态扩容支持。
 
 {{< copyable "shell-regular" >}}
 

@@ -21,33 +21,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-azure-aks/']
 
 - 已根据[使用 Azure Kubernetes 服务上的 Azure 超级磁盘（预览）](https://docs.microsoft.com/zh-cn/azure/aks/use-ultra-disks) 创建可以使用超级磁盘的新集群或启用现有集群上的超级磁盘。
 - 已获取 [AKS 服务权限](https://docs.microsoft.com/zh-cn/azure/aks/concepts-identity#aks-service-permissions)。
-- 在 Kubernetes 版本 < 1.21 的集群中已安装 **aks-preview CLI 扩展**以使用超级磁盘，并在您的订阅中注册过 **EnableAzureDiskFileCSIDriver** 功能。
-
-    执行以下命令，安装 [aks-preview CLI 扩展](https://docs.microsoft.com/zh-cn/azure/aks/custom-node-configuration#install-aks-preview-cli-extension)：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    az extension add --name aks-preview
-    ```
-
-    执行以下命令，在[您的 Azure 订阅](https://docs.microsoft.com/zh-cn/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters)中注册 [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) 功能：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
-    ```
 
 ## 创建 AKS 集群和节点池
 
 TiDB 集群大部分组件使用 Azure 磁盘作为存储，根据 AKS 中的[最佳做法](https://docs.microsoft.com/zh-cn/azure/aks/operator-best-practices-cluster-isolation) ，推荐在创建 AKS 集群的时候确保每个节点池使用一个可用区（至少 3 个可用区）。
 
 ### 创建 [启用容器存储接口 (CSI) 驱动程序](https://docs.microsoft.com/zh-cn/azure/aks/csi-storage-drivers) 的 AKS 集群
-
-> **注意：**
->
-> 在 Kubernetes 版本 < 1.21 的集群中，需要额外使用 `--aks-custom-headers` 标志来启用 **EnableAzureDiskFileCSIDriver** 特性
 
 {{< copyable "shell-regular" >}}
 
@@ -60,8 +39,7 @@ az aks create \
     --vm-set-type VirtualMachineScaleSets \
     --load-balancer-sku standard \
     --node-count 3 \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+    --zones 1 2 3
 ```
 
 ### 创建组件节点池
@@ -77,7 +55,6 @@ az aks create \
         --cluster-name ${clusterName} \
         --resource-group ${resourceGroup} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=admin
     ```
@@ -92,7 +69,6 @@ az aks create \
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=pd \
         --node-taints dedicated=pd:NoSchedule
@@ -108,7 +84,6 @@ az aks create \
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 2 \
         --labels dedicated=tidb \
         --node-taints dedicated=tidb:NoSchedule
@@ -124,7 +99,6 @@ az aks create \
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -145,7 +119,6 @@ Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -162,7 +135,6 @@ Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 2 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -179,7 +151,6 @@ Azure AKS 集群使用 "尽量实现区域均衡" 在多个可用区间部署节
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -446,7 +417,6 @@ az aks nodepool scale \
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=tiflash \
         --node-taints dedicated=tiflash:NoSchedule
@@ -462,7 +432,6 @@ az aks nodepool scale \
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=ticdc \
         --node-taints dedicated=ticdc:NoSchedule
@@ -579,7 +548,6 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
         --resource-group ${resourceGroup} \
         --node-vm-size Standard_L8s_v2 \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --enable-ultra-ssd \
         --labels dedicated=tikv \
