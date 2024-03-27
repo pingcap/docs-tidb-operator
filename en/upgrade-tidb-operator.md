@@ -21,43 +21,22 @@ If your server has access to the internet, you can perform online upgrade by tak
 
 2. Update [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) (CRD) for Kubernetes:
 
-    * If your Kubernetes version >= v1.16:
+    1. If you upgrade TiDB Operator from v1.3.x to v1.4.0 or later versions, you need to execute the following command to create the new TidbDashboard CRD. If you upgrade TiDB Operator from v1.4.0 or later versions, you can skip this step.
 
-        1. If you upgrade TiDB Operator from v1.3.x to v1.4.0 or later versions, you need to execute the following command to create the new TidbDashboard CRD. If you upgrade TiDB Operator from v1.4.0 or later versions, you can skip this step.
+        {{< copyable "shell-regular" >}}
 
-            {{< copyable "shell-regular" >}}
+        ```shell
+        kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbdashboards.yaml
+        ```
 
-            ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1/pingcap.com_tidbdashboards.yaml
-            ```
+    2. Update CRD.
 
-        2. Update CRD.
+        {{< copyable "shell-regular" >}}
 
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
-            kubectl get crd tidbclusters.pingcap.com
-            ```
-
-    * If your Kubernetes version < v1.16:
-
-        1. If you upgrade TiDB Operator from v1.3.x to v1.4.0 or later versions, you need to execute the following command to create the new TidbDashboard CRD. If you upgrade TiDB Operator from v1.4.0 or later versions, you can skip this step.
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd/v1beta1/pingcap.com_tidbdashboards.yaml
-            ```
-
-        2. Update CRD.
-
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml && \
-            kubectl get crd tidbclusters.pingcap.com
-            ```
+        ```bash
+        kubectl replace -f https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml && \
+        kubectl get crd tidbclusters.pingcap.com
+        ```
 
     This document takes TiDB v1.5.2 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 
@@ -107,21 +86,11 @@ If your server cannot access the Internet, you can offline upgrade by taking the
 
     1. Download the `crd.yaml` file for the new TiDB Operator version. For more information about CRD, see [CustomResourceDefinition](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/).
 
-        * If your Kubernetes version >= v1.16:
+        {{< copyable "shell-regular" >}}
 
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
-            ```
-
-        * If your Kubernetes version < v1.16:
-
-            {{< copyable "shell-regular" >}}
-
-            ```bash
-            wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd_v1beta1.yaml
-            ```
+        ```bash
+        wget -O crd.yaml https://raw.githubusercontent.com/pingcap/tidb-operator/${operator_version}/manifests/crd.yaml
+        ```
 
         This document takes TiDB v1.5.2 as an example. You can replace `${operator_version}` with the specific version you want to upgrade to.
 

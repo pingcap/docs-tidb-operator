@@ -30,7 +30,7 @@ The following sections describe how to install Diag.
 
 Before deploying Diag, make sure the following items are installed on the cluster:
 
-* Kubernetes >= v1.12
+* Kubernetes >= v1.24
 * [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)

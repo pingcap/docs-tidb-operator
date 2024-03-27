@@ -40,7 +40,7 @@ summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB
 部署前，请确保满足以下要求：
 
 - [docker](https://docs.docker.com/install/)：版本 >= 18.09
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.24
 - [kind](https://kind.sigs.k8s.io/)：版本 >= 0.8.0
 - 若使用 Linux, [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
 
@@ -100,7 +100,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 部署前，请确保满足以下要求：
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0 及以上，推荐使用较新版本。minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.24
 
 你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库启动 Kubernetes 集群。以下分别对这几种方法进行介绍。
 
@@ -113,31 +113,6 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 ```shell
 minikube start
 ```
-
-<details>
-<summary>点击查看期望输出</summary>
-如果一切运行正常，会看到类似下面的输出，根据操作系统和使用的 hypervisor 会有些许差异。
-
-```
-😄  minikube v1.24.0 on Darwin 12.1
-✨  Automatically selected the docker driver. Other choices: hyperkit, virtualbox, ssh
-👍  Starting control plane node minikube in cluster minikube
-🚜  Pulling base image ...
-💾  Downloading Kubernetes v1.22.3 preload ...
-    > gcr.io/k8s-minikube/kicbase: 355.78 MiB / 355.78 MiB  100.00% 4.46 MiB p/
-    > preloaded-images-k8s-v13-v1...: 501.73 MiB / 501.73 MiB  100.00% 5.18 MiB
-🔥  Creating docker container (CPUs=2, Memory=1985MB) ...
-🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
-    ▪ Generating certificates and keys ...
-    ▪ Booting up control plane ...
-    ▪ Configuring RBAC rules ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-```
-
-</details>
 
 #### 使用 gcr.io mirror 仓库启动 Kubernetes 集群
 
@@ -212,10 +187,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 ```
 
 </details>
-
-> **注意：**
->
-> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 ### 安装 TiDB Operator
 
