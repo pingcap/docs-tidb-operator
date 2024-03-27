@@ -25,36 +25,9 @@ TiDB Operator 在默认安装情况下不会开启准入控制器，你需要手
       create: true
     ```
 
-    默认情况下，如果你的 Kubernetes 集群版本大于等于 v1.13.0，你可以通过上述配置直接开启 Webhook 功能。
-
-    如果你的 Kubernetes 集群版本小于 v1.13.0，你需要执行以下命令，将得到的返回值配置在 `values.yaml` 中的 `admissionWebhook.cabundle`：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n'
-    ```
-
-    ```yaml
-    admissionWebhook:
-      # 将上述命令的返回值填写到 admissionWebhook.cabundle 中
-      cabundle: ${cabundle}
-    ```
-
 2. 配置失败策略
 
-    在 Kubernetes 1.15 版本之前，动态准入机制的管理机制的粒度较粗并且并不方便去使用。所以为了防止 TiDB Operator 的动态准入机制影响全局集群，我们需要配置[失败策略](https://kubernetes.io/zh/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy)。
-
-    对于 Kubernetes 1.15 以下的版本，我们推荐将 TiDB Operator 失败策略配置为 `Ignore`，从而防止 TiDB Operator 的 admission webhook 出现异常时影响整个集群。
-
-    ```yaml
-    ......
-    failurePolicy:
-        validation: Ignore
-        mutation: Ignore
-    ```
-
-    对于 Kubernetes 1.15 及以上的版本，我们推荐给 TiDB Operator 失败策略配置为 `Failure`，由于 Kubernetes 1.15 及以上的版本中，动态准入机制已经有了基于 Label 的筛选机制，所以不会由于 TiDB Operator 的 admission webhook 出现异常而影响整个集群。
+    建议将 TiDB Operator [失败策略](https://kubernetes.io/zh/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy)配置为 `Failure`，由于 Kubernetes 1.15 及以上的版本中，动态准入机制已经有了基于 Label 的筛选机制，所以不会由于 TiDB Operator 的 admission webhook 出现异常而影响整个集群。
 
     ```yaml
     ......

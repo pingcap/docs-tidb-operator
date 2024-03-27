@@ -27,43 +27,16 @@ With a default installation, TiDB Operator disables the admission controller. Ta
       create: true
     ```
 
-    * If your Kubernetes cluster version >= v1.13.0, enable the Webhook feature by using the configuration above.
-
-    * If your Kubernetes cluster version < v1.13.0, run the following command and configure the `admissionWebhook.cabundle` in `values.yaml` as the return value:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl get configmap -n kube-system extension-apiserver-authentication -o=jsonpath='{.data.client-ca-file}' | base64 | tr -d '\n'
-        ```
-
-        ```yaml
-        admissionWebhook:
-          # Configure the value of `admissionWebhook.cabundle` as the return value of the command above
-          cabundle: <cabundle>
-        ```
-
 2. Configure the failure policy.
 
-    Prior to Kubernetes v1.15, the management mechanism of the dynamic admission control is coarser-grained and is inconvenient to use. To prevent the impact of the dynamic admission control on the global cluster, you need to configure the [Failure Policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy).
+    It is recommended to set the [`failurePolicy`](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) of TiDB Operator to `Failure`. The exception occurs in `admission webhook` does not affect the whole cluster, because the dynamic admission control supports the label-based filtering mechanism.
 
-    * For Kubernetes versions earlier than v1.15, it is recommended to set the `failurePolicy` of TiDB Operator to `Ignore`. This avoids the influence on the global cluster in case of `admission webhook` exception in TiDB Operator.
-
-        ```yaml
-        ......
-        failurePolicy:
-            validation: Ignore
-            mutation: Ignore
-        ```
-
-    * For Kubernetes v1.15 and later versions, it is recommended to set the `failurePolicy` of TiDB Operator to `Failure`. The exception occurs in `admission webhook` does not affect the whole cluster, because the dynamic admission control supports the label-based filtering mechanism.
-
-        ```yaml
-        ......
-        failurePolicy:
-            validation: Fail
-            mutation: Fail
-        ```
+    ```yaml
+    ......
+    failurePolicy:
+        validation: Fail
+        mutation: Fail
+    ```
 
 3. Install or update TiDB Operator.
 
