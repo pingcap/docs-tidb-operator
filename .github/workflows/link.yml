@@ -30,7 +30,6 @@ jobs:
         with:
           title: Broken Link Detected
           content-filepath: out.md
-          assignees: ran-huang
 
       - name: Fail if there were link errors
         run: exit ${{ steps.lychee.outputs.exit_code }}

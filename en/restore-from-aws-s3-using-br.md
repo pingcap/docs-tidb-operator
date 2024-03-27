@@ -39,7 +39,7 @@ Before restoring backup data on a S3-compatible storage to TiDB using BR, take t
     kubectl create namespace restore-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
 
     {{< copyable "shell-regular" >}}
 
@@ -248,7 +248,7 @@ Before restoring backup data on S3-compatible storages to TiDB using BR, take th
     kubectl create namespace restore-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test
