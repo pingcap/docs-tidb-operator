@@ -8,6 +8,10 @@ aliases: ['/docs/tidb-in-kubernetes/dev/tidb-scheduler/']
 
 TiDB Scheduler is a TiDB implementation of [Kubernetes scheduler extender](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md). TiDB Scheduler is used to add new scheduling rules to Kubernetes. This document introduces these new scheduling rules and how TiDB Scheduler works.
 
+> **Note:**
+>
+> Starting from TiDB Operator v1.6, it is not recommended to deploy TiDB Scheduler.
+
 ## tidb-scheduler and default-scheduler
 
 A [kube-scheduler](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/kube-scheduler/) is deployed by default in the Kubernetes cluster for Pod scheduling. The default scheduler name is `default-scheduler`.
