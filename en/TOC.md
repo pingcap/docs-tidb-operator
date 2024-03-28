@@ -18,7 +18,6 @@
     - [Amazon EKS](deploy-on-aws-eks.md)
     - [Google Cloud GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
-    - [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
   - [Deploy TiDB on ARM64 Machines](deploy-cluster-on-arm64.md)
   - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
   - [Deploy TiProxy Load Balancer](deploy-tiproxy.md)

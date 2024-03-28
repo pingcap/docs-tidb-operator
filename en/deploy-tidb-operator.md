@@ -1,6 +1,10 @@
 ---
 title: Deploy TiDB Operator on Kubernetes
 summary: Learn how to deploy TiDB Operator on Kubernetes.
+<<<<<<< HEAD
+=======
+aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-operator/','/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud','/docs/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
+>>>>>>> df689e8d (zh, en: remove docs about deploy on ACK (#2535))
 ---
 
 # Deploy TiDB Operator on Kubernetes
@@ -25,7 +29,6 @@ For some public cloud environments, refer to the following documents:
 
 - [Deploy on AWS EKS](deploy-on-aws-eks.md)
 - [Deploy on Google Cloud GKE](deploy-on-gcp-gke.md)
-- [Deploy on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
 TiDB Operator uses [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, and backup data), so the Kubernetes cluster must provide at least one kind of persistent volumes.
 

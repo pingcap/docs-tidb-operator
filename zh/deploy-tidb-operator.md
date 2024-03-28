@@ -1,6 +1,10 @@
 ---
 title: 在 Kubernetes 上部署 TiDB Operator
 summary: 了解如何在 Kubernetes 上部署 TiDB Operator。
+<<<<<<< HEAD
+=======
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-operator/','/zh/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud','/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
+>>>>>>> df689e8d (zh, en: remove docs about deploy on ACK (#2535))
 ---
 
 # 在 Kubernetes 上部署 TiDB Operator
@@ -25,7 +29,6 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页
 
 - [部署到 AWS EKS](deploy-on-aws-eks.md)
 - [部署到 Google Cloud GKE](deploy-on-gcp-gke.md)
-- [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
 
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化存储 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。
 
