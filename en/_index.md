@@ -39,12 +39,16 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 <NavColumn>
 <ColumnTitle>Deploy TiDB</ColumnTitle>
 
+<<<<<<< HEAD
 - [On Amazon EKS](deploy-on-aws-eks.md)
 - [On GCP GKE](deploy-on-gcp-gke.md)
 - [On Azure AKS](deploy-on-azure-aks.md)
 - [On Alibaba ACK](deploy-on-alibaba-cloud.md)
 - [On Self-managed Kubernetes](deploy-on-general-kubernetes.md)
 - [Deploy TiFlash to Explore TiDB HTAP](deploy-tiflash.md)
+=======
+[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud)
+>>>>>>> a65ae5e0 (_index: update links for deploy-on-azure-aks (#2536))
 
 </NavColumn>
 

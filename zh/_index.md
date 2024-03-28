@@ -38,8 +38,12 @@ TiDB 与 TiDB Operator 版本的对应关系如下：
 
 </NavColumn>
 
+<<<<<<< HEAD
 <NavColumn>
 <ColumnTitle>部署集群</ColumnTitle>
+=======
+[部署到阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud)
+>>>>>>> a65ae5e0 (_index: update links for deploy-on-azure-aks (#2536))
 
 - [部署到 Amazon EKS](deploy-on-aws-eks.md)
 - [部署到 GCP GKE](deploy-on-gcp-gke.md)
