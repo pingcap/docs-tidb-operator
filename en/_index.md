@@ -29,7 +29,11 @@ hide_commit: true
 
 [On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/v1.3/deploy-on-azure-aks)
 
+<<<<<<< HEAD
 [On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/v1.3/deploy-on-alibaba-cloud)
+=======
+[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud)
+>>>>>>> a65ae5e0 (_index: update links for deploy-on-azure-aks (#2536))
 
 [On Self-managed Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.3/deploy-on-general-kubernetes)
 
