@@ -35,7 +35,6 @@ TiDB Operator provides several ways to deploy TiDB clusters on Kubernetes:
         - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
         - [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
         - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
-        - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
     - In an existing Kubernetes cluster:
 

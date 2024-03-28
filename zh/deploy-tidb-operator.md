@@ -26,7 +26,6 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页
 
 - [部署到 AWS EKS](deploy-on-aws-eks.md)
 - [部署到 Google Cloud GKE](deploy-on-gcp-gke.md)
-- [部署到阿里云 ACK](deploy-on-alibaba-cloud.md)
 
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化存储 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。
 
