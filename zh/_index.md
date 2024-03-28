@@ -28,7 +28,7 @@ hide_commit: true
 
 [部署到 Azure AKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-on-azure-aks)
 
-[部署到阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud)
+[部署到阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud)
 
 [部署到自托管的 Kubernetes](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/prerequisites)
 
