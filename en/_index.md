@@ -28,7 +28,7 @@ hide_commit: true
 
 [On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-azure-aks)
 
-[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud)
+[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud)
 
 [On Self-managed Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-general-kubernetes)
 
