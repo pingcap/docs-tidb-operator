@@ -115,13 +115,13 @@ Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认�
     <SimpleTab>
     <div label="Clinic Server 中国区">
 
-    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Continue with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
     </div>
 
     <div label="Clinic Server 美国区">
 
-    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Continue with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
 
     > **注意：**
     >
