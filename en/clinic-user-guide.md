@@ -116,7 +116,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
     <div label="Clinic Server for international users">
 
-    Go to the [Clinic Server for international users](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have a TiDB Cloud account, you can create one on that page.
+    Go to the [Clinic Server for international users](https://clinic.pingcap.com) and select **Continue with TiDB Account** to enter the TiDB Cloud login page. If you do not have a TiDB Cloud account, you can create one on that page.
 
     > **Note:**
     >
@@ -126,7 +126,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
     <div label="Clinic Server for users in the Chinese mainland">
 
-    Go to the [Clinic Server for users in the Chinese mainland](https://clinic.pingcap.com.cn) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    Go to the [Clinic Server for users in the Chinese mainland](https://clinic.pingcap.com.cn) and select **Continue with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
 
     </div>
 
