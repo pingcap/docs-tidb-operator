@@ -5,7 +5,7 @@ summary: Learn how to deploy a TiDB cluster on ARM64 machines.
 
 # Deploy a TiDB Cluster on ARM64 Machines
 
-This document describes how to deploy a TiDB cluster on ARM64 machines.
+This document describes how to deploy a TiDB cluster on ARM64 machines (including AWS Graviton instances).
 
 ## Prerequisites
 
