@@ -126,6 +126,7 @@
   - v1.6
     - [1.6.0-beta.1](releases/release-1.6.0-beta.1.md)
   - v1.5
+    - [1.5.3](releases/release-1.5.3.md)
     - [1.5.2](releases/release-1.5.2.md)
     - [1.5.1](releases/release-1.5.1.md)
     - [1.5 GA](releases/release-1.5.0.md)
