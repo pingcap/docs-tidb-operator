@@ -89,7 +89,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
     tikv_count = 3
     tidb_count = 2
     pd_count = 3
-    operator_version = "v1.5.2"
+    operator_version = "v1.5.3"
     ```
 
     如果需要在集群中部署 TiFlash，需要在 `terraform.tfvars` 中设置 `create_tiflash_node_pool = true`，也可以设置 `tiflash_count` 和 `tiflash_instance_type` 来配置 TiFlash 节点池的节点数量和实例类型，`tiflash_count` 默认为 `2`，`tiflash_instance_type` 默认为 `ecs.i2.2xlarge`。
@@ -168,7 +168,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
     cp manifests/dashboard.yaml.example tidb-dashboard.yaml
     ```
 
-    参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.2/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+    参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.3/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
 
     如果要部署 TiFlash，可以在 db.yaml 中配置 `spec.tiflash`，例如：
 
@@ -374,7 +374,7 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 ### 配置 TiDB 集群
 
-参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.2/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)修改 TiDB 集群配置。
+参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.5.3/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)修改 TiDB 集群配置。
 
 ## 管理多个 TiDB 集群
 
