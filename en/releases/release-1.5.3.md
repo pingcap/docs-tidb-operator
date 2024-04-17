@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.5.3 Release Notes
+summary: Learn about new features and bug fixes in TiDB Operator 1.5.3.
 ---
 
 # TiDB Operator 1.5.3 Release Notes
