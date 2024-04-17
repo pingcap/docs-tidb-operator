@@ -32,7 +32,7 @@ To initialize the restored volume more efficiently, it is recommended to **separ
 
 ## Limitations
 
-- Snapshot backup is applicable to TiDB Operator v1.5.3 or later versions, and TiDB v6.5.8 or later versions.
+- Snapshot backup is applicable to TiDB Operator v1.5.2 or later versions, and TiDB v6.5.8 or later versions.
 - For TiKV configuration, do not set `resolved-ts.enable` to `false`, and do not set `raftstore.report-min-resolved-ts-interval` to `"0s"`. Otherwise, it can lead to backup failure.
 - For PD configuration, do not set `pd-server.min-resolved-ts-persistence-interval` to `"0s"`. Otherwise, it can lead to backup failure.
 - To use this backup method, the TiDB cluster must be deployed on AWS EC2 and use AWS EBS volumes.
