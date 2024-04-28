@@ -160,7 +160,7 @@ linux-amd64/LICENSE
 
 请自行将 `linux-amd64/helm` 文件拷贝到服务器上，并将其放到 `/usr/local/bin/` 目录下即可。
 
-然后执行 `helm verison`，如果正常输出则表示 Helm 安装成功：
+然后执行 `helm version`，如果正常输出则表示 Helm 安装成功：
 
 {{< copyable "shell-regular" >}}
 

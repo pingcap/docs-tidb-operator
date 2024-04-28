@@ -22,7 +22,7 @@ TiDB Operator version: 1.0.0-rc.1
 - Scheduler image is updated to use "k8s.gcr.io/kube-scheduler" which is much smaller than "gcr.io/google-containers/hyperkube". You must pre-pull the new scheduler image into your airgap environment before upgrading.
 - Full backup data can be uploaded to or downloaded from Amazon S3
 - The terraform scripts support manage multiple TiDB clusters in one EKS cluster.
-- Add `tikv.storeLables` setting
+- Add `tikv.storeLabels` setting
 - On GKE one can use COS for TiKV nodes with small data for faster startup
 - Support force upgrade when PD cluster is unavailable.
 
