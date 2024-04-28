@@ -318,7 +318,7 @@ EOF
 
 #### Use the `cert-manager` system to issue certificates for TiDB components
 
-The following example shows how to use `cert-manager` to create a certificate used by PD for the initial TidbCluster. `Certifcates` is shown below.
+The following example shows how to use `cert-manager` to create a certificate used by PD for the initial TidbCluster. `Certificates` is shown below.
 
 {{< copyable "shell-regular" >}}
 

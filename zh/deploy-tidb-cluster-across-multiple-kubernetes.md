@@ -314,7 +314,7 @@ EOF
 
 #### 使用 cert-manager 系统为 TiDB 组件签发证书
 
-如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certifcates` 如下所示。
+如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certificates` 如下所示。
 
 {{< copyable "shell-regular" >}}
 
