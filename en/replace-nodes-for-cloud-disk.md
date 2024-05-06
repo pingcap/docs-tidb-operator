@@ -9,7 +9,7 @@ This document describes a method for replacing and upgrading nodes without downt
 
 This document uses Amazon EKS as an example and describes how to create a new node group and migrate a TiDB cluster to the new node group using a rolling restart. You can use this method to replace a node group with more compute resources for TiKV or TiDB and upgrade EKS.
 
-For other cloud platforms, refer to [Google Cloud GKE](deploy-on-gcp-gke.md), [Azure AKS](deploy-on-azure-aks.md), or [Alibaba Cloud ACK](deploy-on-alibaba-cloud.md) and operate on the node group.
+For other cloud platforms, refer to [Google Cloud GKE](deploy-on-gcp-gke.md) or [Azure AKS](deploy-on-azure-aks.md) and operate on the node group.
 
 ## Prerequisites
 

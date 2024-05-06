@@ -746,7 +746,6 @@ On public clouds:
 - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
 - [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
 - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
-- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
 In a self-managed Kubernetes cluster:
 
