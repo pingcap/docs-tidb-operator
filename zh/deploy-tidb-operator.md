@@ -1,10 +1,7 @@
 ---
 title: 在 Kubernetes 上部署 TiDB Operator
 summary: 了解如何在 Kubernetes 上部署 TiDB Operator。
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-operator/','/zh/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud','/docs-cn/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud/']
->>>>>>> df689e8d (zh, en: remove docs about deploy on ACK (#2535))
+aliases: ['/zh/tidb-in-kubernetes/v1.6/deploy-on-alibaba-cloud','/docs-cn/tidb-in-kubernetes/v1.6/deploy-on-alibaba-cloud/']
 ---
 
 # 在 Kubernetes 上部署 TiDB Operator
