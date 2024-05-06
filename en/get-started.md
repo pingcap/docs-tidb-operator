@@ -43,10 +43,10 @@ Before deployment, ensure that the following requirements are met:
 
 - [Docker](https://docs.docker.com/install/): version >= 18.09
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.24
-- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.8.0
+- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.19.0
 - For Linux, the value of the sysctl parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`.
 
-Here is an example using `kind` v0.8.1:
+Here is an example using `kind` v0.19.0:
 
 ```shell
 kind create cluster
@@ -57,7 +57,7 @@ kind create cluster
 
 ```
 Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+ ✓ Ensuring node image (kindest/node:v1.27.1) 🖼
  ✓ Preparing nodes 📦
  ✓ Writing configuration 📜
  ✓ Starting control-plane 🕹️
