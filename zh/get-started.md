@@ -42,10 +42,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 
 - [docker](https://docs.docker.com/install/)：版本 >= 18.09
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.24
-- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.8.0
+- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.19.0
 - 若使用 Linux, [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
 
-以下以 0.8.1 版本为例：
+以下以 0.19.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -58,7 +58,7 @@ kind create cluster
 
 ```
 Creating cluster "kind" ...
-✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+✓ Ensuring node image (kindest/node:v1.27.1) 🖼
 ✓ Preparing nodes 📦
 ✓ Writing configuration 📜
 ✓ Starting control-plane 🕹️
