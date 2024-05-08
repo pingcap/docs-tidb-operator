@@ -193,7 +193,7 @@ When all Pods are rebuilt and in the `Running` state, the vertical scaling is co
 
 > **Note:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+> Starting from v8.1.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
 
 PD microservices are typically used to address performance bottlenecks in PD and improve the quality of PD services. To determine whether it is necessary to scale PD microservices, see [PD microservice FAQs](https://docs.pingcap.com/tidb/dev/pd-microservices#FAQ).
 

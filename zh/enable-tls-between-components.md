@@ -158,7 +158,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         > **注意：**
         >
-        > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 `scheduling` 微服务为例，你需要进行以下配置：
+        > PD 从 v8.1.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 `scheduling` 微服务为例，你需要进行以下配置：
         >
         > ``` json
         > ...
@@ -1383,7 +1383,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     spec:
      tlsCluster:
        enabled: true
-     version: v8.0.0
+     version: v8.1.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1442,7 +1442,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v8.0.0
+       version: v8.1.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1456,7 +1456,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     > **注意：**
     >
-    > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性），如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
+    > PD 从 v8.1.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性），如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
     >
     > - 更新 `pd.mode` 为 `ms`
     > - 为 `scheduling` 微服务配置 `security` 字段

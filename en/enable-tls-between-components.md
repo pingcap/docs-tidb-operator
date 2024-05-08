@@ -163,7 +163,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         > **Note:**
         >
-        > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the host configurations for microservices to the `hosts` field of the `pd-server.json` file. Taking the `scheduling` microservice as an example, you need to configure the following items:
+        > Starting from v8.1.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the host configurations for microservices to the `hosts` field of the `pd-server.json` file. Taking the `scheduling` microservice as an example, you need to configure the following items:
         >
         > ``` json
         > ...
@@ -1398,7 +1398,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v8.0.0
+     version: v8.1.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1457,7 +1457,7 @@ In this step, you need to perform the following operations:
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v8.0.0
+       version: v8.1.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1471,7 +1471,7 @@ In this step, you need to perform the following operations:
 
     > **Note:**
     >
-    > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Taking the Scheduling service as an example, you need to make the following configurations:
+    > Starting from v8.1.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Taking the Scheduling service as an example, you need to make the following configurations:
     >
     > - Update `pd.mode` to `ms`.
     > - Configure the `security` field for the `scheduling` microservice.
