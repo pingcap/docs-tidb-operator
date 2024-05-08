@@ -270,7 +270,7 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a 
 
 > **Note:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, use the following command:
+> Starting from v8.1.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, use the following command:
 >
 > ``` shell
 > kubectl create namespace tidb-cluster && \
@@ -459,10 +459,10 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v8.0.0
+         tidb_version(): Release Version: v8.1.0
                 Edition: Community
         Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
-             Git Branch: heads/refs/tags/v8.0.0
+             Git Branch: heads/refs/tags/v8.1.0
          UTC Build Time: 2023-11-10 14:38:24
               GoVersion: go1.21.3
            Race Enabled: false
@@ -648,10 +648,10 @@ Note that `nightly` is not a fixed version and the version might vary depending 
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v8.0.0
+tidb_version(): Release Version: v8.1.0
 Edition: Community
 Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
-Git Branch: heads/refs/tags/v8.0.0
+Git Branch: heads/refs/tags/v8.1.0
 UTC Build Time: 2023-11-10 14:38:24
 GoVersion: go1.21.3
 Race Enabled: false

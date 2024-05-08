@@ -47,7 +47,7 @@ For TiDB clusters deployed on Kubernetes, if you need to modify the PD configura
 
 > **Note:**
 >
-> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+> Starting from v8.1.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
 
 After each component of the PD microservices is started for the first time, some PD configuration items are persisted in etcd. The persisted configuration in etcd takes precedence over the configuration file in PD. Therefore, after the first start of each PD microservice component, you cannot modify some PD configuration items by using the `TidbCluster` CR.
 

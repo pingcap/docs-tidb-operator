@@ -183,7 +183,7 @@ watch kubectl -n ${namespace} get pod -o wide
 
 > **注意：**
 >
-> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+> PD 从 v8.1.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
 
 PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。可通过 [PD 微服务常见问题](https://docs.pingcap.com/zh/tidb/dev/pd-microservices#常见问题)判断是否需要进行 PD 微服务扩缩容操作。
 
