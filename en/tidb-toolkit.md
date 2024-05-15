@@ -159,7 +159,7 @@ linux-amd64/LICENSE
 
 Copy the `linux-amd64/helm` file to the server and place it under the `/usr/local/bin/` directory.
 
-Then execute `helm verison`. If the command outputs normally, the Helm installation is successful:
+Then execute `helm version`. If the command outputs normally, the Helm installation is successful:
 
 {{< copyable "shell-regular" >}}
 
