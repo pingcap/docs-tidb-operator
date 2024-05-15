@@ -10,7 +10,7 @@ TiDB Operator version: 1.3.8
 
 ## New Feature
 
-- Add some special annotaions for TidbCluster to configure the minimum ready duration for TiDB, TiKV, and TiFlash. The minimum ready duration specifies the minimum number of seconds that a newly created Pod takes to be ready during a rolling upgrade ([#4675](https://github.com/pingcap/tidb-operator/pull/4675), [@liubog2008](https://github.com/liubog2008))
+- Add some special annotations for TidbCluster to configure the minimum ready duration for TiDB, TiKV, and TiFlash. The minimum ready duration specifies the minimum number of seconds that a newly created Pod takes to be ready during a rolling upgrade ([#4675](https://github.com/pingcap/tidb-operator/pull/4675), [@liubog2008](https://github.com/liubog2008))
 
 ## Improvement
 

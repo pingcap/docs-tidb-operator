@@ -100,7 +100,7 @@ TiDB Operator 版本：1.1.0-beta.1
 - 为聚合的 apiserver 添加基本的 e2e 测试 ([#1109](https://github.com/pingcap/tidb-operator/pull/1109), [@aylei](https://github.com/aylei))
 - 添加 `enablePVReclaim` 选项，在 tidb-operator 缩容 TiKV 或 PD 时回收 PV ([#1037](https://github.com/pingcap/tidb-operator/pull/1037), [@onlymellb](https://github.com/onlymellb))
 - 统一所有兼容 S3 的存储以支持备份和还原 ([#1088](https://github.com/pingcap/tidb-operator/pull/1088), [@onlymellb](https://github.com/onlymellb))
-- 将 `podSecuriyContext` 的默认值设置为 nil ([#1079](https://github.com/pingcap/tidb-operator/pull/1079), [@aylei](https://github.com/aylei))
+- 将 `podSecurityContext` 的默认值设置为 nil ([#1079](https://github.com/pingcap/tidb-operator/pull/1079), [@aylei](https://github.com/aylei))
 - 在 `tidb-operator` chart 中添加 `tidb-apiserver` ([#1083](https://github.com/pingcap/tidb-operator/pull/1083), [@aylei](https://github.com/aylei))
 - 添加新组件 TiDB aggregated apiserver ([#1048](https://github.com/pingcap/tidb-operator/pull/1048), [@aylei](https://github.com/aylei))
 - 修复了当发行版名称是 `un-wanted` 时 `tkctl version` 不起作用的问题 ([#1065](https://github.com/pingcap/tidb-operator/pull/1065), [@aylei](https://github.com/aylei))
