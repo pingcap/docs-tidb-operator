@@ -19,6 +19,7 @@ TiDB Operator v1.6 引入了以下关键特性，从扩展性、易用性等方�
 
 ## 易用性
 
+- 支持自动为 TiProxy 设置 location labels。
 - 支持为 TiDB 集群各组件的 `topologySpreadConstraints` 设置 `maxSkew`、`minDomains` 与 `nodeAffinityPolicy`。
 - 支持为 TiDB 组件设置 `startupProbe`。
 - 支持为 TiDB 组件设置额外的命令行参数。

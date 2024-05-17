@@ -17,6 +17,7 @@ TiDB Operator version: 1.6.0
 
 ## Improvements
 
+- Support automatically set location labels for TiProxy ([#5649](https://github.com/pingcap/tidb-operator/pull/5649), [@djshow832](https://github.com/djshow832))
 - Support retrying to evict leader when rolling upgrade TiKV ([#5613](https://github.com/pingcap/tidb-operator/pull/5613), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support setting `advertise-addr` command line argument for TiProxy component ([#5608](https://github.com/pingcap/tidb-operator/pull/5608), [@djshow832](https://github.com/djshow832))
 
