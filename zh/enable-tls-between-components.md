@@ -1383,7 +1383,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     spec:
      tlsCluster:
        enabled: true
-     version: v8.0.0
+     version: v8.1.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1442,7 +1442,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v8.0.0
+       version: v8.1.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
