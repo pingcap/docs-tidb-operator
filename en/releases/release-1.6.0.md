@@ -5,7 +5,7 @@ summary: Learn about new features, improvements, and bug fixes in TiDB Operator 
 
 # TiDB Operator 1.6.0 Release Notes
 
-Release date: May TBD, 2024
+Release date: May 28, 2024
 
 TiDB Operator version: 1.6.0
 
