@@ -11,15 +11,15 @@ TiDB Operator version: 1.6.0
 
 ## New features
 
-- Support setting `maxSkew`, `minDomains` and `nodeAffinityPolicy` in `topologySpreadConstraints` for components of a TidbCluster ([#5617](https://github.com/pingcap/tidb-operator/pull/5617), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support set extra command line arguments for TiDB component ([#5624](https://github.com/pingcap/tidb-operator/pull/5624), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support setting `maxSkew`, `minDomains`, and `nodeAffinityPolicy` in `topologySpreadConstraints` for components of a TiDB cluster ([#5617](https://github.com/pingcap/tidb-operator/pull/5617), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support setting additional command-line arguments for TiDB components ([#5624](https://github.com/pingcap/tidb-operator/pull/5624), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support setting `nodeSelector` for the TidbInitializer component ([#5594](https://github.com/pingcap/tidb-operator/pull/5594), [@csuzhangxc](https://github.com/csuzhangxc))
 
 ## Improvements
 
-- Support automatically set location labels for TiProxy ([#5649](https://github.com/pingcap/tidb-operator/pull/5649), [@djshow832](https://github.com/djshow832))
-- Support retrying to evict leader when rolling upgrade TiKV ([#5613](https://github.com/pingcap/tidb-operator/pull/5613), [@csuzhangxc](https://github.com/csuzhangxc))
-- Support setting `advertise-addr` command line argument for TiProxy component ([#5608](https://github.com/pingcap/tidb-operator/pull/5608), [@djshow832](https://github.com/djshow832))
+- Support automatically setting location labels for TiProxy ([#5649](https://github.com/pingcap/tidb-operator/pull/5649), [@djshow832](https://github.com/djshow832))
+- Support retrying leader eviction during TiKV rolling restart ([#5613](https://github.com/pingcap/tidb-operator/pull/5613), [@csuzhangxc](https://github.com/csuzhangxc))
+- Support setting the `advertise-addr` command-line argument for the TiProxy component ([#5608](https://github.com/pingcap/tidb-operator/pull/5608), [@djshow832](https://github.com/djshow832))
 
 ## Bug fixes
 

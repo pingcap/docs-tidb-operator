@@ -19,7 +19,7 @@ TiDB Operator 版本：1.6.0
 
 - 支持自动为 TiProxy 设置 location labels ([#5649](https://github.com/pingcap/tidb-operator/pull/5649), [@djshow832](https://github.com/djshow832))
 - 支持在滚动重启 TiKV 时，对 evict leader 执行重试 ([#5613](https://github.com/pingcap/tidb-operator/pull/5613), [@csuzhangxc](https://github.com/csuzhangxc))
-- 为 TiProxy 组件设置 `advertise-addr` 参数 ([#5608](https://github.com/pingcap/tidb-operator/pull/5608), [@djshow832](https://github.com/djshow832))
+- 支持为 TiProxy 组件设置 `advertise-addr` 参数 ([#5608](https://github.com/pingcap/tidb-operator/pull/5608), [@djshow832](https://github.com/djshow832))
 
 ## Bug 修复
 

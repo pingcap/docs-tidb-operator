@@ -19,10 +19,10 @@ TiDB Operator 1.6 introduces the following key features, which helps you manage 
 
 ## Usability
 
-- Support automatically set location labels for TiProxy.
-- Support setting `maxSkew`, `minDomains` and `nodeAffinityPolicy` in `topologySpreadConstraints` for components of a TidbCluster.
+- Support automatically setting location labels for TiProxy.
+- Support setting `maxSkew`, `minDomains`, and `nodeAffinityPolicy` in `topologySpreadConstraints` for components of a TiDB cluster.
 - Support setting `startupProbe` for TiDB components.
-- Support set extra command line arguments for TiDB component.
+- Support setting additional command-line arguments for TiDB components.
 - Support setting `livenessProbe` and `readinessProbe` for the Discovery component.
 - Support setting `nodeSelector` for the TidbInitializer component.
 - Support for TiFlash to directly mount ConfigMap without relying on an InitContainer to process configuration files.
