@@ -9,8 +9,8 @@ TiDB Operator v1.6 引入了以下关键特性，从扩展性、易用性等方�
 
 ## 兼容性改动
 
-- 升级 Kubernetes 依赖库至 v1.28 版本，建议不再部署 tidb-scheduler 组件。
-- 通过 Helm Chart 部署时支持设置 tidb-controller-manager 用于 leader 选举的 lock resource，默认值为 `.Values.controllerManager.leaderResourceLock: leases`。当从 v1.6 之前的版本升级到 v1.6.0-beta.1 及之后的版本时，推荐先设置 `.Values.controllerManager.leaderResourceLock: endpointsleases` 并待新的 tidb-controller-manager 正常运行后再设置为 `.Values.controllerManager.leaderResourceLock: leases` 以更新部署。
+- 升级 Kubernetes 依赖库至 v1.28 版本，建议不再部署 `tidb-scheduler` 组件。
+- 当通过 Helm Chart 部署时，支持设置 `tidb-controller-manager` 用于 leader 选举的 lock resource，默认值为 `.Values.controllerManager.leaderResourceLock: leases`。当从之前的版本升级到 v1.6.0-beta.1 或之后的版本时，推荐先设置 `.Values.controllerManager.leaderResourceLock: endpointsleases`，等待新的 `tidb-controller-manager` 正常运行后再设置 `.Values.controllerManager.leaderResourceLock: leases` 以更新部署。
 
 ## 扩展性
 

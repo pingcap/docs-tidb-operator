@@ -9,8 +9,8 @@ TiDB Operator 1.6 introduces the following key features, which helps you manage 
 
 ## Compatibility changes
 
-- Upgrade Kubernetes dependency to v1.28, and it is not recommended to deploy tidb-scheduler.
-- When deploying using Helm chart, support setting lock resource used by tidb-controller-manager for leader election, with the default value of `.Values.controllerManager.leaderResourceLock: leases`. When upgrading from versions before v1.6 to v1.6.0-beta.1 and later versions, it is recommended to first set `.Values.controllerManager.leaderResourceLock: endpointsleases` and wait for the new tidb-controller-manager to run normally before setting it to `.Values.controllerManager.leaderResourceLock: leases` to update the deployment.
+- Upgrade Kubernetes dependency to v1.28, and it is not recommended to deploy `tidb-scheduler`.
+- When deploying using Helm chart, support setting lock resource used by `tidb-controller-manager` for leader election, with the default value of `.Values.controllerManager.leaderResourceLock: leases`. When upgrading TiDB Operator to v1.6.0-beta.1 or a later version, it is recommended to first set `.Values.controllerManager.leaderResourceLock: endpointsleases` and wait for the new `tidb-controller-manager` to run normally before setting it to `.Values.controllerManager.leaderResourceLock: leases` to update the deployment.
 
 ## Extensibility
 
@@ -25,4 +25,4 @@ TiDB Operator 1.6 introduces the following key features, which helps you manage 
 - Support setting additional command-line arguments for TiDB components.
 - Support setting `livenessProbe` and `readinessProbe` for the Discovery component.
 - Support setting `nodeSelector` for the TidbInitializer component.
-- Support for TiFlash to directly mount ConfigMap without relying on an InitContainer to process configuration files.
+- Enable TiFlash to directly mount ConfigMap without relying on an InitContainer to process configuration files.
