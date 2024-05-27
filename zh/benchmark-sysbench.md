@@ -320,7 +320,7 @@ Latency 对比：
 
 #### n1-standard-16 vs c2-standard-16
 
-在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB 的不同表现。其中 n1-stadnard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
+在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB 的不同表现。其中 n1-standard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
 
 此次测试中操作系统为 Ubuntu，Pod 为 Host 网络，使用 Service 访问 TiDB。
 

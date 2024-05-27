@@ -52,7 +52,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -106,7 +106,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -314,7 +314,7 @@ EOF
 
 #### 使用 cert-manager 系统为 TiDB 组件签发证书
 
-如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certifcates` 如下所示。
+如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certificates` 如下所示。
 
 {{< copyable "shell-regular" >}}
 
@@ -379,7 +379,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -437,7 +437,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   tlsCluster:
    enabled: true

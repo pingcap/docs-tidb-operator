@@ -52,7 +52,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -106,7 +106,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -318,7 +318,7 @@ EOF
 
 #### Use the `cert-manager` system to issue certificates for TiDB components
 
-The following example shows how to use `cert-manager` to create a certificate used by PD for the initial TidbCluster. `Certifcates` is shown below.
+The following example shows how to use `cert-manager` to create a certificate used by PD for the initial TidbCluster. `Certificates` is shown below.
 
 {{< copyable "shell-regular" >}}
 
@@ -383,7 +383,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -441,7 +441,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.0.0
+  version: v8.1.0
   timezone: UTC
   tlsCluster:
    enabled: true

@@ -429,7 +429,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 ### 转发 TiDB 服务 4000 端口
 
-本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。
+本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Service**。
 
 首先，获取 tidb-cluster 命名空间中的服务列表：
 
@@ -487,7 +487,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 8.0.11-TiDB-v8.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Server version: 8.0.11-TiDB-v8.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -536,10 +536,10 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v8.0.0
+         tidb_version(): Release Version: v8.1.0
                 Edition: Community
         Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
-             Git Branch: heads/refs/tags/v8.0.0
+             Git Branch: heads/refs/tags/v8.1.0
          UTC Build Time: 2023-11-10 14:38:24
               GoVersion: go1.21.3
            Race Enabled: false
@@ -731,10 +731,10 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v8.0.0
+tidb_version(): Release Version: v8.1.0
 Edition: Community
 Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
-Git Branch: heads/refs/tags/v8.0.0
+Git Branch: heads/refs/tags/v8.1.0
 UTC Build Time: 2023-11-10 14:38:24
 GoVersion: go1.21.3
 Race Enabled: false

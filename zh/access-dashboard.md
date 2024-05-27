@@ -123,7 +123,7 @@ spec:
 
 ### 使用 Ingress 并开启 TLS
 
-Ingress 提供了 TLS 支持，你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 了解更多。以下是一个使用 Ingress TLS 的例子，其中 `testsecret-tls` 包含了 `exmaple.com` 所需要的 `tls.crt` 与 `tls.key`：
+Ingress 提供了 TLS 支持，你可以通过 [Ingress TLS](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#tls) 了解更多。以下是一个使用 Ingress TLS 的例子，其中 `testsecret-tls` 包含了 `example.com` 所需要的 `tls.crt` 与 `tls.key`：
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -235,7 +235,7 @@ spec:
       ngMonitoring:
         requests:
           storage: 10Gi
-        version: v8.0.0
+        version: v8.1.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
     EOF

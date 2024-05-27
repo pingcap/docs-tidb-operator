@@ -69,7 +69,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Restore` CR，用于恢复快照备份产生的数据：
 
 ```shell
-kubectl apply -f resotre-full-azblob.yaml
+kubectl apply -f restore-full-azblob.yaml
 ```
 
 `restore-full-azblob.yaml` 文件内容如下：
