@@ -240,7 +240,7 @@ spec:
     EOF
     ```
 
-    关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.0-beta.1/examples/advanced/tidb-ng-monitoring.yaml)。
+    关于 TidbNGMonitoring CR 的更多配置项，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.0/examples/advanced/tidb-ng-monitoring.yaml)。
 
 3. 启用持续性能分析。
 
