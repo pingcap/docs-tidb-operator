@@ -24,4 +24,4 @@ TiDB Operator 版本：1.6.0
 ## Bug 修复
 
 - 修复 `configUpdateStrategy` 设置为 `InPlace` 时，调整组件 Storage Size 可能导致组件重启的问题 ([#5602](https://github.com/pingcap/tidb-operator/pull/5602), [@ideascf](https://github.com/ideascf))
-- 修复重建 TiKV StatefulSet 时可能导致 TiKV 错误进入 `Upgrading` 状态的问题 ([#5551](https://github.com/pingcap/tidb-operator/pull/5551), [@ideascf](https://github.com/ideascf))
+- 修复重建 TiKV StatefulSet 时 TiDB Operator 可能误将 TiKV 状态识别为 `Upgrading` 从而导致非预期的升级的问题 ([#5551](https://github.com/pingcap/tidb-operator/pull/5551), [@ideascf](https://github.com/ideascf))
