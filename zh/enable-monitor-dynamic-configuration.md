@@ -39,7 +39,7 @@ spec:
 
 `prometheusReloader` 配置变更后，TidbMonitor 会自动重启。重启后，所有针对 Prometheus 的配置变更都会动态更新。
 
-可以参考 [monitor-dynamic-configmap 配置示例](https://github.com/pingcap/tidb-operator/tree/v1.6.0-beta.1/examples/monitor-dynamic-configmap)。
+可以参考 [monitor-dynamic-configmap 配置示例](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-dynamic-configmap)。
 
 ## 关闭动态配置功能
 
