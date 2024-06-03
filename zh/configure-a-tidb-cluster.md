@@ -932,7 +932,7 @@ topologySpreadConstraints:
 
 * 为 TiProxy 节点设置所在的 Node 节点的拓扑信息
 
-    从 TiDB Operator v1.6.0 开始，如果部署的 TiProxy 版本 >= v1.1.0，TiDB Operator 会自动为 TiProxy 获取其所在 Node 节点的拓扑信息，并调用 TiProxy 的对应接口将这些信息设置为 TiProxy 的 Labels。这样 TiProxy 可以根据这些 Labels 将请求优先转发给本地的 TiDB server。
+    从 TiDB Operator v1.6.0 开始，如果部署的 TiProxy 版本 >= v1.1.0，TiDB Operator 会自动为 TiProxy 获取其所在 Node 节点的拓扑信息，并调用 TiProxy 的对应接口将这些信息设置为 TiProxy 的 Labels。这样 TiProxy 可以根据这些 Labels 优先将请求转发到本地的 TiDB server。
 
     目前，TiDB Operator 会自动为 TiProxy 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiProxy 依赖 `zone` Label 将请求转发到本地的 TiDB server。TiDB Operator 会依次获取 Label `zone`、`failure-domain.beta.kubernetes.io/zone` 和 `topology.kubernetes.io/zone` 的值作为 `zone` 的值。TiDB Operator 仅设置 TiProxy 所在的节点上包含的 Labels 并忽略其他 Labels。
 
