@@ -200,8 +200,6 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.6.0                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.6.0                          A Helm chart for TiDB Cluster
 pingcap/tidb-drainer    v1.6.0                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.6.0                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.6.0          v1.6.0          tidb-operator Helm chart for Kubernetes
