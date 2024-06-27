@@ -956,7 +956,13 @@ To add the data high availability feature on Kubernetes:
 
     Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
 
-Since v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+* Set the topological information of the Node where the TiProxy node is located.
+
+    Starting from TiDB Operator v1.6.0, if the deployed TiProxy version >= v1.1.0, TiDB Operator automatically obtains the topological information of the Node for TiProxy and calls the corresponding interface of the TiProxy to set this information as TiProxy's labels. Based on these labels, TiProxy prioritizes forwarding requests to a local TiDB server.
+
+    Currently, TiDB Operator automatically sets the labels for the TiProxy node corresponding to the `location-labels` in `pd.config`. TiProxy depends on the `zone` label to forward requests to a local TiDB server. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiProxy is located and ignores other labels.
+
+Starting from v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a Kubernetes node, then TiDB Operator uses the original labels automatically.
 
 Currently, TiDB Operator supports the following label aliases:
 
