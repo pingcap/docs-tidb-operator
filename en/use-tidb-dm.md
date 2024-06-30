@@ -35,7 +35,7 @@ Attach to the DM-master Pod by executing the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} - /bin/sh
+kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh
 ```
 
 ### Create data source
