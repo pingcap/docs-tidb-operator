@@ -1,5 +1,5 @@
 ---
-title: h Ku回退bernetes 上的 TiDB 集群
+title: 回退 Kubernetes 上的 TiDB 集群
 summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 ---
 
