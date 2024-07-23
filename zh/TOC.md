@@ -53,9 +53,9 @@
   - [扩缩容](scale-a-tidb-cluster.md)
   - 升级与回退
     - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
+    - [回退 TiDB 集群](roll-back-a-tidb-cluster.md)
     - 升级 TiDB Operator
       - [常规升级](upgrade-tidb-operator.md)
-      - [回退 TiDB 集群](roll-back-a-tidb-cluster.md)
       - [灰度升级](canary-upgrade-tidb-operator.md)
   - 备份与恢复
     - [备份与恢复简介](backup-restore-overview.md)
