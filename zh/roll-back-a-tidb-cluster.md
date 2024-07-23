@@ -17,7 +17,7 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 本文档适用于以下回退路径：
 
-- 使用 TiDB 从 v7.5.Y 版本回退至 v7.5.X，其中 Y 和 X 是大于 0 的整数，且 Y>X。
+- 使用 TiDB 从 v7.5.Y 版本回退至 v7.5.X，其中 Y > 0, X ≥ 0, 且 Y > X。
 
 > **警告：**
 >
@@ -55,7 +55,7 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 ## 执行回退操作
 
-1. 通过 TiDB Operator，严格按如下顺序执行回退操作：
+1. 以 v7.5.1 通过 TiDB Operator 回退到 v7.5.0 版本为例，请严格按如下顺序执行回退操作：
 
     ```shell
     pd-ctl pd config set cluster-version "v7.5.0" -u \"pd-1-peer:2379\"
