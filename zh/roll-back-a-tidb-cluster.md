@@ -5,9 +5,11 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 # 回退 Kubernetes 上的 TiDB 集群
 
-如果你使用 TiDB Operator 部署管理 Kubernetes 上的 TiDB 集群，可以通过回退 TiDB 集群到指定补丁版本，减少新版本对业务的影响。本文介绍如何回退 Kubernetes 上的 TiDB 集群。
+本文介绍如何回退 Kubernetes 上的 TiDB 集群。
 
-在回退 Kubernetes 上的 TiDB 集群的时候，TiDB Operator 会串行地删除各个组件当前版本的 Pod，并创建指定版本的 Pod。当指定版本的 Pod 正常运行后，再处理下一个 Pod。
+如果你使用 TiDB Operator 部署管理 Kubernetes 上的 TiDB 集群，可以通过回退 TiDB 集群到指定补丁版本，减少新版本对业务的影响。
+
+在回退 Kubernetes 上的 TiDB 集群时，TiDB Operator 会串行地删除各个组件当前版本的 Pod，并创建指定版本的 Pod。当指定版本的 Pod 正常运行后，再处理下一个 Pod。
 
 滚动回退时，TiDB Operator 会自动处理 PD 和 TiKV 的 Leader 迁移。因此，在多节点的部署拓扑下（最小环境要求：3 个 PD、3 个 TiKV、3 个 TiDB），滚动回退 TiKV、PD 不会影响业务正常运行。对于有连接重试功能的客户端，滚动回退 TiDB 同样不会影响业务。
 
@@ -17,7 +19,9 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 - 使用 TiDB 从 v7.5.Y 版本回退至 v7.5.X，其中 Y 和 X 是大于 0 的整数，且 Y>X。
 
-其他补丁版本的回退未经验证，如直接回退，可能会产生非预期的问题。
+> **警告：**
+>
+> 其他补丁版本的回退未经验证，如直接回退，可能会产生非预期的问题。
 
 ## 注意事项
 
