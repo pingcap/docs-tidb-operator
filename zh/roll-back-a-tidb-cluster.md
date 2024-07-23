@@ -53,19 +53,6 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 2. 如需回退，请等待 DDL 执行完成，或使用 [`ADMIN CANCEL DDL`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-admin-cancel-ddl) 命令取消该 DDL Job。
 
-### 检查当前集群的健康状况
-
-为避免回退过程中出现未定义行为或其他故障，建议在回退前对使用 `check` 子命令检查集群的 Region 健康状态。
-
-```shell
-tiup cluster check <cluster-name> --cluster
-```
-
-执行结束后，会输出 `region status` 检查结果。
-
-- 如果结果为 `All regions are healthy`，则说明当前集群中所有 Region 均为健康状态，可以继续执行回退。
-- 如果结果为 `Regions are not fully healthy: m miss-peer, n pending-peer`，并提示 `Please fix unhealthy regions before other operations.`，则说明当前集群中有 Region 处在异常状态。此时应先排除相应异常状态，并再次检查结果为 `All regions are healthy` 后再继续回退。
-
 ## 执行回退操作
 
 1. 通过 TiDB Operator，严格按如下顺序执行回退操作：
