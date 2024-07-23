@@ -34,20 +34,20 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 - TiDB 目前仅支持有限的补丁版本回退。请参见[支持回退的版本](#支持回退的版本)。
 
-- 查看对应版本的 [Release Notes](releases/release-notes.md) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。例如，从 TiDB v7.5.2 回退至 v7.5.1 时，需查阅以下各版本的兼容性变更：
+- 查看对应版本的 [Release Notes](https://docs.pingcap.com/zh/tidb/stable/release-notes) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。例如，从 TiDB v7.5.2 回退至 v7.5.1 时，需查阅以下各版本的兼容性变更：
 
-    - [TiDB v7.5.1 Release Notes](https://docs.pingcap.com/zh/tidb/dev/release-7.5.1#兼容性变更) 中的兼容性变更
-    - [TiDB v7.5.2 Release Notes](https://docs.pingcap.com/zh/tidb/dev/release-7.5.2#兼容性变更) 中的兼容性变更
+    - [TiDB v7.5.1 Release Notes](https://docs.pingcap.com/zh/tidb/stable/release-7.5.1#兼容性变更) 中的兼容性变更
+    - [TiDB v7.5.2 Release Notes](https://docs.pingcap.com/zh/tidb/stable/release-7.5.2#兼容性变更) 中的兼容性变更
 
 ### 检查当前集群的 DDL
 
-集群中有 DDL 语句正在被执行时，请勿进行版本回退操作。被执行的 DDL 语句通常为 [`ADD INDEX`](sql-statements/sql-statement-add-index.md) 和列类型变更等耗时较久的 DDL 语句。
+集群中有 DDL 语句正在被执行时，请勿进行版本回退操作。被执行的 DDL 语句通常为 [`ADD INDEX`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-index) 和列类型变更等耗时较久的 DDL 语句。
 
 在回退前，为避免回退过程中出现未定义行为或其他故障，建议执行下列操作：
 
-1. 使用 [`ADMIN SHOW DDL`](sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。
+1. 使用 [`ADMIN SHOW DDL`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-admin-show-ddl) 命令查看集群中是否有正在进行的 DDL Job。
 
-2. 如需回退，请等待 DDL 执行完成，或使用 [`ADMIN CANCEL DDL`](sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job。
+2. 如需回退，请等待 DDL 执行完成，或使用 [`ADMIN CANCEL DDL`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-admin-cancel-ddl) 命令取消该 DDL Job。
 
 ### 检查当前集群的健康状况
 
