@@ -9,7 +9,7 @@ summary: 介绍如何回退 Kubernetes 上的 TiDB 集群。
 
 在回退 Kubernetes 上的 TiDB 集群的时候，TiDB Operator 会串行地删除各个组件当前版本的 Pod，并创建指定版本的 Pod。当指定版本的 Pod 正常运行后，再处理下一个 Pod。
 
-滚动回退时，TiDB Operator 会自动处理 PD 和 TiKV 的 Leader 迁移。因此，在多节点的部署拓扑下（最小环境：PD * 3、TiKV * 3、TiDB * 2），滚动回退 TiKV、PD 不会影响业务正常运行。对于有连接重试功能的客户端，滚动回退 TiDB 同样不会影响业务。
+滚动回退时，TiDB Operator 会自动处理 PD 和 TiKV 的 Leader 迁移。因此，在多节点的部署拓扑下（最小环境要求：3 个 PD、3 个 TiKV、3 个 TiDB），滚动回退 TiKV、PD 不会影响业务正常运行。对于有连接重试功能的客户端，滚动回退 TiDB 同样不会影响业务。
 
 ## 支持回退的版本
 
@@ -75,7 +75,7 @@ tiup cluster check <cluster-name> --cluster
     use kubectl edit tc/tc pd version to v7.5.0
     ```
 
-2 查看回退进度：
+2. 查看回退进度：
 
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
