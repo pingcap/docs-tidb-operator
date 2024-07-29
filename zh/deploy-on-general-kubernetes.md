@@ -145,4 +145,4 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 
 ## 日志收集
 
-请参阅[日志收集](logs-collection.md)。
+系统与程序的运行日志对排查问题以及实现一些自动化操作可能非常有用，建议[收集 TiDB 及相关组件日志](logs-collection.md)。
