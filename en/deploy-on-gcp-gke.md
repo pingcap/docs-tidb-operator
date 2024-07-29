@@ -469,3 +469,15 @@ The two components are *not required* in the deployment. This section shows a qu
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
 For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.6.0/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+
+## Configure TiDB monitor
+
+Please see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
+
+> **Note：**
+>
+> TiDB monitor don't persist data by default，it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitor don't have POD's CPU, memory, disk metrics, also don't have alert manager, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Log Collection
+
+The system and application logs can be useful for troubleshooting issues and automating operations, The TiDB components output the logs in the stdout and stderr of the container by default, and be auto rotated accord to container runtime, when POD restarted log will lost, it is recommended to [Collect logs of TiDB and related components](logs-collection.md).
