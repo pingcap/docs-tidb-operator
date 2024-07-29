@@ -144,4 +144,4 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 
 ## 日志收集
 
-系统与程序的运行日志对排查问题以及实现一些自动化操作可能非常有用，TiDB 各组件默认将日志输出在容器的 `stdout` 和 `stderr` 中，并依据容器运行时环境自动进行日志的滚动清理，当 POD 发生重启时会容器日志会丢失，建议[收集 TiDB 及相关组件日志](logs-collection.md)。
+系统与程序的运行日志对排查问题以及实现一些自动化操作可能非常有用，TiDB 各组件默认将日志输出在容器的 `stdout` 和 `stderr` 中，并依据容器运行时环境自动进行日志的滚动清理，当 POD 发生重启时容器日志会丢失，建议[收集 TiDB 及相关组件日志](logs-collection.md)。
