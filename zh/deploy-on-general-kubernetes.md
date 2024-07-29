@@ -140,8 +140,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 
 > **注意：**
 >
-> 建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-AlertManager)。
+> 默认 TiDB 监控数据不会持久化，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。
+> 默认 TiDB 监控不包含 POD 的 CPU、内存、磁盘监控，也没有报警系统，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-AlertManager)。
 
 ## 日志收集
 
-请参阅[日志收集](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/logs-collection)。
+请参阅[日志收集](logs-collection.md)。
