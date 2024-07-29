@@ -575,8 +575,8 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
 > **注意：**
 >
-> 建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster.md#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
+> TiDB 监控默认不会持久化数据，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。 TiDB 监控不包含 POD 的 CPU、内存、磁盘监控，也没有报警系统，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-AlertManager)。
 
 ## 日志收集
 
-请参阅[日志收集](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/logs-collection)。
+系统与程序的运行日志对排查问题以及实现一些自动化操作可能非常有用，TiDB 各组件默认将日志输出在容器的 `stdout` 和 `stderr` 中，并依据容器运行时环境自动进行日志的滚动清理，当 POD 发生重启时容器日志会丢失，建议[收集 TiDB 及相关组件日志](logs-collection.md)。
