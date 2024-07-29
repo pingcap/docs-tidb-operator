@@ -132,3 +132,15 @@ If you want to initialize your cluster after deployment, refer to [Initialize a 
 > **Note:**
 >
 > By default, TiDB (versions starting from v4.0.2 and released before February 20, 2023) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry). Starting from February 20, 2023, the telemetry feature is disabled by default in newly released TiDB versions. See [TiDB Release Timeline](https://docs.pingcap.com/tidb/stable/release-timeline) for details.
+
+## Configure TiDB monitor
+
+Please see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
+
+> **Note：**
+>
+> TiDB monitor don't persist data by default，it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitor don't have POD's CPU, memory, disk metrics, also don't have alert manager, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Log Collection
+
+The system and application logs can be useful for troubleshooting issues and automating operations, The TiDB components output the logs in the stdout and stderr of the container by default, and be auto rotated accord to container runtime, when POD restarted log will lost, it is recommended to [Collect logs of TiDB and related components](logs-collection.md).
