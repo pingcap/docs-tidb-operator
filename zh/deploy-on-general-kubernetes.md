@@ -133,3 +133,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 > **注意：**
 >
 > TiDB（v4.0.2 起且发布于 2023 年 2 月 20 日前的版本）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见 [TiDB 遥测功能使用文档](https://docs.pingcap.com/zh/tidb/stable/telemetry)。自 2023 年 2 月 20 日起，新发布的 TiDB 版本默认不再收集使用情况信息分享给 PingCAP，参见 [TiDB 版本发布时间线](https://docs.pingcap.com/zh/tidb/stable/release-timeline)。
+
+## 配置 TiDB 监控
+
+请参阅[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+> **注意：**
+>
+> 建议[持久化监控数据](monitor-a-tidb-cluster#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
+
+## 日志收集
+
+请参阅[日志收集](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/logs-collection)。
