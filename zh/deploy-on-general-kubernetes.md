@@ -139,7 +139,7 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
 
 > **注意：**
 >
-> 建议[持久化监控数据](monitor-a-tidb-cluster#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
+> 建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster.md#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
 
 ## 日志收集
 
