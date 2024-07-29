@@ -568,3 +568,15 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 3. 使用本地存储。
 
     完成前面步骤后，local-volume-provisioner 即可发现集群内所有本地 NVMe SSD 盘。在 tidb-cluster.yaml 中添加 `tikv.storageClassName` 字段并设置为 `local-storage` 即可，可以参考前文[部署 TiDB 集群和监控](#部署-tidb-集群和监控)部分。
+
+## 配置 TiDB 监控
+
+请参阅[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+> **注意：**
+>
+> 建议[持久化监控数据](monitor-a-tidb-cluster#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
+
+## 日志收集
+
+请参阅[日志收集](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/logs-collection)。

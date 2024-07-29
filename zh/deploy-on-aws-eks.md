@@ -702,3 +702,15 @@ spec:
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
 更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.6.0/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+
+## 配置 TiDB 监控
+
+请参阅[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+> **注意：**
+>
+> 建议[持久化监控数据](monitor-a-tidb-cluster#持久化监控数据)，并[设置 kube-prometheus 与 AlertManager](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/monitor-a-tidb-cluster#%E8%AE%BE%E7%BD%AE-kube-prometheus-%E4%B8%8E-alertmanager)。
+
+## 日志收集
+
+请参阅[日志收集](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/logs-collection)。
