@@ -584,3 +584,15 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
     Add the `tikv.storageClassName` field to the `tidb-cluster.yaml` file and set the value of the field to `local-storage`.
 
     For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy)
+
+## Configure TiDB monitoring
+
+For more information, see [Deploy monitoring and alerts for a TiDB cluster](monitor-a-tidb-cluster.md).
+
+> **Note:**
+>
+> TiDB monitoring does not persist data by default. To ensure long-term data availability, it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitoring does not include Pod CPU, memory, or disk monitoring, nor does it have an alerting system. For more comprehensive monitoring and alerting, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Collect logs
+
+System and application logs can be useful for troubleshooting issues and automating operations. By default, TiDB components output logs to the container's `stdout` and `stderr`, and log rotation is automatically performed based on the container runtime environment. When a Pod restarts, container logs will be lost. To prevent log loss, it is recommended to [Collect logs of TiDB and its related components](logs-collection.md).
