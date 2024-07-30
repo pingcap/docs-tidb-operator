@@ -575,7 +575,7 @@ Azure Disk 支持多种磁盘类型。若需要低延迟、高吞吐，可以选
 
 > **注意：**
 >
-> TiDB 监控默认不会持久化数据，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。 TiDB 监控不包含 POD 的 CPU、内存、磁盘监控，也没有报警系统，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-alertmanager)。
+> TiDB 监控默认不会持久化数据，为确保数据长期可用，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。TiDB 监控不包含 Pod 的 CPU、内存、磁盘监控，也没有报警系统。为实现更全面的监控和告警，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-alertmanager)。
 
 ## 日志收集
 
