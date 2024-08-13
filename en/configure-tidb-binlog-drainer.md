@@ -5,7 +5,7 @@ summary: Learn the configurations of a TiDB Binlog Drainer on Kubernetes.
 
 # TiDB Binlog Drainer Configurations on Kubernetes
 
-This document introduces the configuration parameters for a TiDB Binlog drainer on Kubernetes.
+This document introduces the configuration parameters for a [TiDB Binlog](deploy-tidb-binlog.md) drainer on Kubernetes. Note that TiDB Binlog is deprecated starting from TiDB v8.3.0.
 
 ## Configuration parameters
 
