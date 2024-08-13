@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-tidb-binlog-drainer/']
 
 # Kubernetes 上的 TiDB Binlog Drainer 配置
 
-本文档介绍 Kubernetes 上 TiDB Binlog drainer 的配置参数。
+本文档介绍 Kubernetes 上 [TiDB Binlog](deploy-tidb-binlog.md) drainer 的配置参数。注意 TiDB Binlog 从 TiDB v8.3.0 开始被废弃。
 
 ## 配置参数
 
