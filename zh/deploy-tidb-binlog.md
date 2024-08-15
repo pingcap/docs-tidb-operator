@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 
 > **警告：**
 >
-> 从 TiDB v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](deploy-ticdc.md) 作为增量数据同步的替代方案。
+> 从 TiDB v7.5.0 开始，TiDB Binlog 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。请使用 [TiCDC](deploy-ticdc.md) 作为增量数据同步的替代方案。
 
 ## 部署准备
 
