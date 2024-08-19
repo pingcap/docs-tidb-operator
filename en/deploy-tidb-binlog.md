@@ -9,7 +9,7 @@ This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/t
 
 > **Warning:**
 >
-> Starting from v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, with removal planned for a future release. Use [TiCDC](deploy-ticdc.md) instead for incremental data replication as an alternative.
+> Starting from v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, with removal planned for a future release. For incremental data replication, use [TiCDC](deploy-ticdc.md) instead. For point-in-time recovery (PITR), use PITR.
 
 ## Prerequisites
 
