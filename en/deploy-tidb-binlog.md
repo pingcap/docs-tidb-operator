@@ -8,6 +8,10 @@ aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 
 This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) of a TiDB cluster on Kubernetes.
 
+> **Warning:**
+>
+> Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, with removal planned for a future release. For incremental data replication, use [TiCDC](deploy-ticdc.md) instead. For point-in-time recovery (PITR), use PITR.
+
 ## Prerequisites
 
 - [Deploy TiDB Operator](deploy-tidb-operator.md);

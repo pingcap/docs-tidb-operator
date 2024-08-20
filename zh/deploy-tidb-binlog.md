@@ -8,6 +8,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 
 本文档介绍如何在 Kubernetes 上部署 TiDB 集群的 [TiDB Binlog](https://docs.pingcap.com/zh/tidb/stable/tidb-binlog-overview)。
 
+> **警告：**
+>
+> 从 TiDB v7.5.0 开始，TiDB Binlog 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](deploy-ticdc.md)。如需按时间点恢复，请使用 Point-in-Time Recovery (PITR)。
+
 ## 部署准备
 
 - [部署 TiDB Operator](deploy-tidb-operator.md)；
