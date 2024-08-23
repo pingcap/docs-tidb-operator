@@ -21,6 +21,29 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     > **注意：**
     >
     > 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
+    > 集群创建后再开启 tls，在无法重建的情况下，可尝试以下方式（**请谨慎操作**）：
+    > 
+    > 1. 在存在多个 PD 节点的情况下，缩容 PD 至 1 个。（否则可以跳过此步骤）
+    > 2. 下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于文件夹目录下。
+    > 3. 设置 `.spec.tlsCluster.enabled` 属性为 `true`；
+    > 4. 查看 etcd member，可见 peerURLs 此时为 http：
+        ```sh
+        etcdctl --endpoints https://127.0.0.1:2379 --cert-file ./pd-tls/tls.crt --key-file ./pd-tls/tls.key --ca-file ./pd-tls/ca.crt member list
+        ```
+        输出示例：
+        ```
+        8e9e05c52164694d: name=tidb-test-v75-pd-0 peerURLs=http://localhost:2380 clientURLs=https://localhost:2379 isLeader=true
+        ```
+    > 5. 修改 etcd member 的 peerURLs 为 https：
+        ```sh
+        etcdctl --endpoints https://127.0.0.1:2379 --cert-file ./pd-tls/tls.crt --key-file ./pd-tls/tls.key --ca-file ./pd-tls/ca.crt member update 8e9e05c52164694d --peer-urls="https://localhost:2380"
+        ```
+        输出示例：
+        ```
+        Updated member with ID 8e9e05c52164694d in cluster
+        ```
+    > 6. 查看此时 etcd member 的 peerURLs 已经修改为 https。
+    > 7. 若缩容过 PD 节点，需先扩容至原有数量。（否则可以跳过此步骤）
 
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
