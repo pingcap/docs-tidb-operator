@@ -92,7 +92,7 @@ Ad-hoc 备份支持快照备份与增量备份。Ad-hoc 备份通过创建一个
       name: demo1-backup-nfs
       namespace: test1
     spec:
-      # # backupType: full
+      # backupType: full
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -148,7 +148,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -179,7 +179,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.*"
   br:
@@ -212,7 +212,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.table1"
   br:
@@ -245,7 +245,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.table1"
   - "db1.table2"

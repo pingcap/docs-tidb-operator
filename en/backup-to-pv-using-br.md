@@ -96,7 +96,7 @@ This document provides an example about how to back up the data of the `demo1` T
       name: demo1-backup-nfs
       namespace: test1
     spec:
-      # # backupType: full
+      # backupType: full
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -152,7 +152,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -183,7 +183,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.*"
   br:
@@ -216,7 +216,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.table1"
   br:
@@ -249,7 +249,7 @@ metadata:
   name: demo1-backup-nfs
   namespace: test1
 spec:
-  # # backupType: full
+  # backupType: full
   tableFilter:
   - "db1.table1"
   - "db1.table2"
