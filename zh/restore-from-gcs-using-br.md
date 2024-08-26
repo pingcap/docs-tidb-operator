@@ -93,12 +93,6 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-      # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      # to:
-      #   host: ${tidb_host}
-      #   port: ${tidb_port}
-      #   user: ${tidb_user}
-      #   secretName: restore-demo2-tidb-secret
       gcs:
         projectId: ${project_id}
         secretName: gcs-secret

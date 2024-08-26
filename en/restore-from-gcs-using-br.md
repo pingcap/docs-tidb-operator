@@ -92,12 +92,6 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      # to:
-      #   host: ${tidb_host}
-      #   port: ${tidb_port}
-      #   user: ${tidb_user}
-      #   secretName: restore-demo2-tidb-secret
       gcs:
         projectId: ${project_id}
         secretName: gcs-secret

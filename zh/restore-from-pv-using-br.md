@@ -75,12 +75,6 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
         # concurrency: 4
         # rateLimit: 0
         # checksum: true
-      # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      # to:
-      #   host: ${tidb_host}
-      #   port: ${tidb_port}
-      #   user: ${tidb_user}
-      #   secretName: restore-demo2-tidb-secret
       local:
         prefix: backup-nfs
         volume:
