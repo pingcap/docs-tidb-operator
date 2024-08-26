@@ -1606,91 +1606,79 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
 3. 参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群) ，可使用以下命令来更新 TiDB 集群，等待 PD pod 完成重启后继续下一步操作。
 
-    ```bash
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
     kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
       "spec": {
         "tlsCluster": {
           "enabled": true
-        },
-        "pd": {
-          "config": {
-            "security": {
-              "cert-allowed-cn": ["TiDB"]
-            }
-          }
-        },
-        "tikv": {
-          "config": {
-            "security": {
-              "cert-allowed-cn": ["TiDB"]
-            }
-          }
-        },
-        "tidb": {
-          "config": {
-            "security": {
-              "cert-allowed-cn": ["TiDB"]
-            }
-          }
         }
-        # 其他组件配置...(复制时需要删除此行注释)
       }
     }'
     ```
 
     输出示例：
 
-    ```bash
+    ``` shell
     tidbcluster.pingcap.com/basic patched
     ```
 
+    也可以参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群)，选择设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用来验证集群间各组件证书的 CN (Common Name)。
+
 4. 登录 PD pod，下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于解压后的文件夹目录下。
 
-5. 查看 etcd member，可见 peerURLs 此时为 http：
+5. 查看 etcd member，可见 peerURLs 此时为 `http`：
 
-    ```bash
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
     ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
     ```
 
     输出示例：
 
-    ```bash
+    ``` shell
     e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
     ```
 
     **示例解释：**
 
-    memberID 和 peerURLs 需要在下个步骤更新 member 时填入：
+    memberID 和 peerURLs 需要在下个步骤更新 etcd member 时填入：
     
     1. 包含 memberID，示例中为 `e94cfb12fa384e23`。
     
     2. 包含 peerURLs，示例中为 `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`。
 
-6. 修改 etcd member 的 peerURLs 为 https：
+6. 修改 etcd member 的 peerURLs 为 `https`：
 
     **注意：**
 
     peerURLS 需要修改 `http` 为 `https`。
 
-    ```bash
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
     ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
     ```
 
     输出示例：
 
-    ```bash
+    ``` shell
     Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
     ```
 
-7. 查看此时 etcd member 的 peerURLs，确认已经修改为 https：
+7. 查看此时 etcd member 的 peerURLs，确认已经修改为 `https`：
 
-    ```bash
+    {{< copyable "shell-regular" >}}
+
+    ``` shell
     ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
     ```
 
     输出示例：
 
-    ```bash
+    ``` shell
     e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
     ```
 
