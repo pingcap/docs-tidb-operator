@@ -1445,11 +1445,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1480,11 +1475,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}

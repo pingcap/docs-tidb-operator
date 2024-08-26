@@ -395,8 +395,8 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     - TidbInitializer
     - PD Dashboard
-    - Backup
-    - Restore
+    - Backup (when using Dumpling)
+    - Restore (when using Lightning)
 
     If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
 
@@ -607,15 +607,9 @@ In this step, you create a TiDB cluster and perform the following operations:
         spec:
           backupType: full
           br:
-          cluster: ${cluster_name}
-          clusterNamespace: ${namespace}
-          sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
-            tlsClientSecretName: ${cluster_name}-backup-client-secret
+            cluster: ${cluster_name}
+            clusterNamespace: ${namespace}
+            sendCredToTikv: true
           s3:
             provider: aws
             region: ${my_region}
@@ -638,12 +632,6 @@ In this step, you create a TiDB cluster and perform the following operations:
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
-            tlsClientSecretName: ${cluster_name}-restore-client-secret
           s3:
             provider: aws
             region: ${my_region}
