@@ -1626,7 +1626,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     也可以参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群)，选择设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用来验证集群间各组件证书的 CN (Common Name)。
 
-4. 登录 PD pod，下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于解压后的文件夹目录下。
+4. 使用 `kubectl exec` 进入 PD pod，下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于解压后的文件夹目录下。
 
 5. 查看 etcd member，可见 peerURLs 此时为 `http`：
 
