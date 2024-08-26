@@ -392,8 +392,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     - TidbInitializer
     - PD Dashboard
-    - Backup (使用 Dumpling 时)
-    - Restore (使用 Lightning 时)
+    - Backup（使用 Dumpling 时）
+    - Restore（使用 TiDB Lightning 时）
 
     如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则也可以为其中的 TiDB Lightning 组件生成 Client 端证书。
 
