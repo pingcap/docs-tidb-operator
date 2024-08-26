@@ -396,7 +396,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
     - TidbInitializer
     - PD Dashboard
     - Backup (when using Dumpling)
-    - Restore (when using Lightning)
+    - Restore (when using TiDB Lightning)
 
     If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
 

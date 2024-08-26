@@ -391,8 +391,8 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     - TidbInitializer
     - PD Dashboard
-    - Backup
-    - Restore
+    - Backup（使用 Dumpling 时）
+    - Restore（使用 TiDB Lightning 时）
 
     如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则也可以为其中的 TiDB Lightning 组件生成 Client 端证书。
 
