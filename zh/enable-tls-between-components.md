@@ -1659,7 +1659,45 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 2. 参考 [第一步：为 TiDB 集群各个组件生成证书](#第一步为-tidb-集群各个组件生成证书) ，准备证书及创建 Kubernetes Secret 对象。
 
-3. 参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群) ，修改 `tidb-cluster.yaml` 文件，使用 `kubectl apply -f tidb-cluster.yaml` 来更新 TiDB 集群。
+3. 参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群) ，可使用以下命令来更新 TiDB 集群，等待 PD pod 完成重启后继续下一步操作。
+
+    ```bash
+    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
+      "spec": {
+        "tlsCluster": {
+          "enabled": true
+        },
+        "pd": {
+          "config": {
+            "security": {
+              "cert-allowed-cn": ["TiDB"]
+            }
+          }
+        },
+        "tikv": {
+          "config": {
+            "security": {
+              "cert-allowed-cn": ["TiDB"]
+            }
+          }
+        },
+        "tidb": {
+          "config": {
+            "security": {
+              "cert-allowed-cn": ["TiDB"]
+            }
+          }
+        }
+        # 其他组件配置...(复制时需要删除此行注释)
+      }
+    }'
+    ```
+
+    输出示例：
+
+    ```bash
+    tidbcluster.pingcap.com/basic patched
+    ```
 
 4. 登录 PD pod，下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于解压后的文件夹目录下。
 
