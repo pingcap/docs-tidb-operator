@@ -392,8 +392,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     - TidbInitializer
     - PD Dashboard
-    - Backup
-    - Restore
+    - Backup（使用 Dumpling 时）
+    - Restore（使用 TiDB Lightning 时）
 
     如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则也可以为其中的 TiDB Lightning 组件生成 Client 端证书。
 
@@ -607,12 +607,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
-            tlsClientSecretName: ${cluster_name}-backup-client-secret
           s3:
             provider: aws
             region: ${my_region}
@@ -635,12 +629,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
-            tlsClientSecretName: ${cluster_name}-restore-client-secret
           s3:
             provider: aws
             region: ${my_region}
