@@ -140,11 +140,11 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         # timeAgo: ${time}
         # checksum: true
       # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
+      # to:
+        # host: ${tidb_host}
+        # port: ${tidb_port}
+        # user: ${tidb_user}
+        # secretName: restore-demo2-tidb-secret
       s3:
         provider: aws
         region: us-west-1
@@ -182,11 +182,11 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         # timeAgo: ${time}
         # checksum: true
       # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      to:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: restore-demo2-tidb-secret
+      # to:
+        # host: ${tidb_host}
+        # port: ${tidb_port}
+        # user: ${tidb_user}
+        # secretName: restore-demo2-tidb-secret
       s3:
         provider: aws
         region: us-west-1
