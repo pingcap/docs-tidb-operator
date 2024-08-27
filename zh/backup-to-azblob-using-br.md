@@ -105,12 +105,6 @@ spec:
     # sendCredToTikv: true
     # options:
     # - --lastbackupts=420134118382108673
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  from:
-    host: ${tidb_host}
-    port: ${tidb_port}
-    user: ${tidb_user}
-    secretName: backup-demo1-tidb-secret
   azblob:
     secretName: azblob-secret
     container: my-container
@@ -356,12 +350,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   azblob:
     secretName: azblob-secret-ad
     container: my-container
@@ -391,12 +379,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   azblob:
     secretName: azblob-secret-ad
     container: my-container
@@ -426,12 +408,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   azblob:
     secretName: azblob-secret-ad
     container: my-container
@@ -463,12 +439,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   azblob:
     secretName: azblob-secret-ad
     container: my-container
@@ -523,12 +493,6 @@ spec:
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
        azblob:
           secretName: azblob-secret-ad
           container: my-container
@@ -569,12 +533,6 @@ spec:
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
         azblob:
           secretName: azblob-secret-ad
           container: my-container

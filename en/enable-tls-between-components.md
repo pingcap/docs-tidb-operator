@@ -1559,11 +1559,6 @@ In this step, you need to perform the following operations:
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1594,11 +1589,6 @@ In this step, you need to perform the following operations:
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
