@@ -9,7 +9,7 @@ For TiDB clusters deployed on Kubernetes using TiDB Operator, you can use PingCA
 
 > **Note:**
 >
-> This document **only** applies to clusters deployed using TiDB Operator on Kubernetes. For clusters deployed using TiUP in a self-hosted environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
+> This document **only** applies to clusters deployed using TiDB Operator on Kubernetes. For clusters deployed using TiUP in a self-managed environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
 >
 > PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible.
 
