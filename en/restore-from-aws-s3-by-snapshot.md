@@ -40,7 +40,7 @@ The restore method described in this document is implemented based on CustomReso
 
 Before using TiDB Operator to restore backup metadata and EBS snapshots from S3 storage to TiDB, prepare the restore environment by following the steps below:
 
-1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.3/manifests/backup/backup-rbac.yaml).
+1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.4/manifests/backup/backup-rbac.yaml).
 
 2. Create the RBAC-related resources required for the restore in the `test2` namespace by running the following command:
 

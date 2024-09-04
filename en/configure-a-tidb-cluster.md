@@ -24,7 +24,7 @@ If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management 
 
 ## Configure TiDB deployment
 
-To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/v1.5.3/examples/advanced/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/v1.5.3/docs/api-references/docs.md).
+To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/v1.5.4/examples/advanced/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/v1.5.4/docs/api-references/docs.md).
 
 > **Note:**
 >
