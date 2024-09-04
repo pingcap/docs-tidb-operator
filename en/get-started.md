@@ -554,26 +554,6 @@ To confirm the TiDB cluster's version, execute the following command:
 mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 ```
 
-<details>
-<summary>Expected output</summary>
-
-Note that `nightly` is not a fixed version and the version might vary depending on the time the command is run.
-
-```
-*************************** 1. row ***************************
-tidb_version(): Release Version: v7.5.3
-Edition: Community
-Git Commit Hash: 7d16cc79e81bbf573124df3fd9351c26963f3e70
-Git Branch: heads/refs/tags/v7.5.3
-UTC Build Time: 2024-02-27 14:30:59
-GoVersion: go1.21.6
-Race Enabled: false
-Check Table Before Drop: false
-Store: tikv
-```
-
-</details>
-
 ## Step 6: Destroy the TiDB cluster and the Kubernetes cluster
 
 After you finish testing, you can destroy the TiDB cluster and the Kubernetes cluster.

@@ -637,26 +637,6 @@ kubectl port-forward -n tidb-cluster svc/basic-tidb 24000:4000 > pf24000.out &
 mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 ```
 
-<details>
-<summary>点击查看期望输出</summary>
-
-注意， `nightly` 不是固定版本，不同时间会有不同结果。下面示例仅供参考。
-
-```
-*************************** 1. row ***************************
-tidb_version(): Release Version: v7.5.3
-Edition: Community
-Git Commit Hash: 7d16cc79e81bbf573124df3fd9351c26963f3e70
-Git Branch: heads/refs/tags/v7.5.3
-UTC Build Time: 2024-02-27 14:30:59
-GoVersion: go1.21.6
-Race Enabled: false
-Check Table Before Drop: false
-Store: tikv
-```
-
-</details>
-
 ## 第 6 步：销毁 TiDB 集群和 Kubernetes 集群
 
 完成测试后，你可能希望销毁 TiDB 集群和 Kubernetes 集群。
