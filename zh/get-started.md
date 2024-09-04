@@ -503,121 +503,31 @@ MySQL [(none)]>
 
 以下是一些可以用来验证集群功能的命令。
 
-<details>
-<summary>创建 <code>hello_world</code> 表</summary>
+- 创建 <code>hello_world</code> 表
 
 ```sql
 mysql> use test;
 mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-Query OK, 0 rows affected (0.17 sec)
-
 mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-*************************** 1. row ***************************
-        REGION_ID: 2
-        START_KEY: 7480000000000000FF3700000000000000F8
-          END_KEY:
-         TABLE_ID: 55
-          DB_NAME: test
-       TABLE_NAME: hello_world
-         IS_INDEX: 0
-         INDEX_ID: NULL
-       INDEX_NAME: NULL
-   EPOCH_CONF_VER: 5
-    EPOCH_VERSION: 23
-    WRITTEN_BYTES: 0
-       READ_BYTES: 0
- APPROXIMATE_SIZE: 1
- APPROXIMATE_KEYS: 0
-1 row in set (0.03 sec)
 ```
 
-</details>
-
-<details>
-<summary>查询 TiDB 版本号</summary>
+- 查询 TiDB 版本号
 
 ```sql
 mysql> select tidb_version()\G
-*************************** 1. row ***************************
-         tidb_version(): Release Version: v7.5.3
-                Edition: Community
-        Git Commit Hash: 7d16cc79e81bbf573124df3fd9351c26963f3e70
-             Git Branch: heads/refs/tags/v7.5.3
-         UTC Build Time: 2024-02-27 14:30:59
-              GoVersion: go1.21.6
-           Race Enabled: false
-Check Table Before Drop: false
-                  Store: tikv
-1 row in set (0.01 sec)
 ```
 
-</details>
-
-<details>
-<summary>查询 TiKV 存储状态</summary>
+- 查询 TiKV 存储状态
 
 ```sql
 mysql> select * from information_schema.tikv_store_status\G
-*************************** 1. row ***************************
-           STORE_ID: 4
-            ADDRESS: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-        STORE_STATE: 0
-   STORE_STATE_NAME: Up
-              LABEL: null
-            VERSION: 5.2.1
-           CAPACITY: 58.42GiB
-          AVAILABLE: 36.18GiB
-       LEADER_COUNT: 3
-      LEADER_WEIGHT: 1
-       LEADER_SCORE: 3
-        LEADER_SIZE: 3
-       REGION_COUNT: 21
-      REGION_WEIGHT: 1
-       REGION_SCORE: 21
-        REGION_SIZE: 21
-           START_TS: 2020-05-28 22:48:21
-  LAST_HEARTBEAT_TS: 2020-05-28 22:52:01
-             UPTIME: 3m40.598302151s
-1 rows in set (0.01 sec)
 ```
 
-</details>
-
-<details>
-<summary>查询 TiDB 集群基本信息</summary>
-
-该命令需要 TiDB 4.0 或以上版本，如果你部署的 TiDB 版本不支持该命令，请先[升级 TiDB 集群](#第-5-步升级-tidb-集群)。
+- 查询 TiDB 集群基本信息
 
 ```sql
 mysql> select * from information_schema.cluster_info\G
-*************************** 1. row ***************************
-            TYPE: tidb
-        INSTANCE: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:4000
-  STATUS_ADDRESS: basic-tidb-0.basic-tidb-peer.tidb-cluster.svc:10080
-         VERSION: 5.2.1
-        GIT_HASH: 689a6b6439ae7835947fcaccf329a3fc303986cb
-      START_TIME: 2020-05-28T22:50:11Z
-          UPTIME: 3m21.459090928s
-*************************** 2. row ***************************
-            TYPE: pd
-        INSTANCE: basic-pd:2379
-  STATUS_ADDRESS: basic-pd:2379
-         VERSION: 5.2.1
-        GIT_HASH: 56d4c3d2237f5bf6fb11a794731ed1d95c8020c2
-      START_TIME: 2020-05-28T22:45:04Z
-          UPTIME: 8m28.459091915s
-*************************** 3. row ***************************
-            TYPE: tikv
-        INSTANCE: basic-tikv-0.basic-tikv-peer.tidb-cluster.svc:20160
-  STATUS_ADDRESS: 0.0.0.0:20180
-         VERSION: 5.2.1
-        GIT_HASH: 198a2cea01734ce8f46d55a29708f123f9133944
-      START_TIME: 2020-05-28T22:48:21Z
-          UPTIME: 5m11.459102648s
-3 rows in set (0.01 sec)
 ```
-
-</details>
 
 ### 访问 Grafana 面板
 
