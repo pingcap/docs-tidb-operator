@@ -54,7 +54,7 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 
     The `version` field has following formats:
 
-    - `spec.version`: the format is `imageTag`, such as `v7.5.1`
+    - `spec.version`: the format is `imageTag`, such as `v7.5.3`
     - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v3.1.0`
 
 2. Check the upgrade progress:
