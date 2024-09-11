@@ -13,7 +13,7 @@ TiDB Operator version: 1.5.4
 
 - VolumeReplace feature supports customizing the number of spare replicas used during TiKV or PD disk replacements ([#5666](https://github.com/pingcap/tidb-operator/pull/5666), [@anish-db](https://github.com/anish-db))
 - VolumeReplace feature supports only enabling for specified TiDB clusters ([#5670](https://github.com/pingcap/tidb-operator/pull/5670), [@rajsuvariya](https://github.com/rajsuvariya))
-- EBS Snapshot restore supports to configure if warmup failure on individual volume fails the restore instantly ([#5635](https://github.com/pingcap/tidb-operator/pull/5635), [@michaelmdeng](https://github.com/michaelmdeng))
+- EBS Snapshot restore supports to configure if warmup failure on individual volume fails the restore instantly ([#5622](https://github.com/pingcap/tidb-operator/pull/5622), [@michaelmdeng](https://github.com/michaelmdeng))
 - Gate EBS Snapshot restore failure on warmup failure only for `check-wal-only` warmup strategy ([#5621](https://github.com/pingcap/tidb-operator/pull/5621), [@michaelmdeng](https://github.com/michaelmdeng))
 
 ## Bug fixes
