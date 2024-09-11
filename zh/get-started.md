@@ -503,31 +503,31 @@ MySQL [(none)]>
 
 以下是一些可以用来验证集群功能的命令。
 
-- 创建 <code>hello_world</code> 表
+- 创建 `hello_world` 表
 
-```sql
-mysql> use test;
-mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-```
+    ```sql
+    mysql> use test;
+    mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
+    mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
+    ```
 
 - 查询 TiDB 版本号
 
-```sql
-mysql> select tidb_version()\G
-```
+    ```sql
+    mysql> select tidb_version()\G
+    ```
 
 - 查询 TiKV 存储状态
 
-```sql
-mysql> select * from information_schema.tikv_store_status\G
-```
+    ```sql
+    mysql> select * from information_schema.tikv_store_status\G
+    ```
 
 - 查询 TiDB 集群基本信息
 
-```sql
-mysql> select * from information_schema.cluster_info\G
-```
+    ```sql
+    mysql> select * from information_schema.cluster_info\G
+    ```
 
 ### 访问 Grafana 面板
 

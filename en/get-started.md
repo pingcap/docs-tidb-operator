@@ -409,7 +409,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 76
-Server version: 5.7.25-TiDB-v4.0.0 MySQL Community Server (Apache License 2.0)
+Server version: 8.0.11-TiDB-v7.5.3 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
@@ -426,31 +426,31 @@ mysql>
 
 After connecting to the cluster, you can run the following commands to verify that some features are available in TiDB. Note that some commands require TiDB 4.0 or higher versions. If you have deployed an earlier version, you need to [upgrade the TiDB cluster](#step-5-upgrade-a-tidb-cluster).
 
-- Create a<code>hello_world</code>table
+- Create a `hello_world` table:
 
-```sql
-mysql> use test;
-mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
-mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
-```
+    ```sql
+    mysql> use test;
+    mysql> create table hello_world (id int unsigned not null auto_increment primary key, v varchar(32));
+    mysql> select * from information_schema.tikv_region_status where db_name=database() and table_name='hello_world'\G
+    ```
 
-- Query the TiDB version
+- Query the TiDB version:
 
-```sql
-mysql> select tidb_version()\G
-```
+    ```sql
+    mysql> select tidb_version()\G
+    ```
 
-- Query the TiKV store status
+- Query the TiKV store status:
 
-```sql
-mysql> select * from information_schema.tikv_store_status\G
-```
+    ```sql
+    mysql> select * from information_schema.tikv_store_status\G
+    ```
 
-- Query the TiDB cluster information
+- Query the TiDB cluster information:
 
-```sql
-mysql> select * from information_schema.cluster_info\G
-```
+    ```sql
+    mysql> select * from information_schema.cluster_info\G
+    ```
 
 ### Access the Grafana dashboard
 
