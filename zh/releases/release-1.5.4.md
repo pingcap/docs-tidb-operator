@@ -13,8 +13,8 @@ TiDB Operator 版本：1.5.4
 
 - VolumeReplace 功能支持为 PD 和 TiKV 自定义备用副本数量 ([#5666](https://github.com/pingcap/tidb-operator/pull/5666), [@anish-db](https://github.com/anish-db))
 - VolumeReplace 功能支持仅为特定 TiDB 集群开启 ([#5670](https://github.com/pingcap/tidb-operator/pull/5670), [@rajsuvariya](https://github.com/rajsuvariya))
-- EBS 快照恢复支持设定某个卷 warmup 失败是否立刻让整个恢复作业失败 ([#5622](https://github.com/pingcap/tidb-operator/pull/5622), [@michaelmdeng](https://github.com/michaelmdeng))
-- EBS 快照恢复在使用 `check-wal-only` 策略时，warmup 失败会将整个 restore 设置为失败 ([#5621](https://github.com/pingcap/tidb-operator/pull/5621), [@michaelmdeng](https://github.com/michaelmdeng))
+- EBS 快照恢复支持设定某个卷 warmup 失败时是否立即终止整个恢复任务 ([#5622](https://github.com/pingcap/tidb-operator/pull/5622), [@michaelmdeng](https://github.com/michaelmdeng))
+- EBS 快照恢复在使用 `check-wal-only` 策略时，如果 warmup 失败，整个恢复任务将被设置为失败 ([#5621](https://github.com/pingcap/tidb-operator/pull/5621), [@michaelmdeng](https://github.com/michaelmdeng))
 
 ## Bug 修复
 
