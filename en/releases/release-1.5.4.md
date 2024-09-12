@@ -21,4 +21,4 @@ TiDB Operator version: 1.5.4
 - Fix the issue that tidb-backup-manager cannot parse backup file storage size in BR backupmeta v2 ([#5411](https://github.com/pingcap/tidb-operator/pull/5411), [@Leavrth](https://github.com/Leavrth))
 - Fix a potential EBS volume leak issue when EBS snapshot restore fails ([#5634](https://github.com/pingcap/tidb-operator/pull/5634), [@WangLe1321](https://github.com/WangLe1321))
 - Fix the issue that metrics are not properly initialized after federated manager restarts ([#5637](https://github.com/pingcap/tidb-operator/pull/5637), [@wxiaomou](https://github.com/wxiaomou))
-- Fix the issue that EBS snapshot restore does not fail when no TiKV instances are configured or TiKV replica is set to 0 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
+- Fix the issue that EBS snapshot restore incorrectly succeeds when no TiKV instances are configured or TiKV replica is set to 0 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
