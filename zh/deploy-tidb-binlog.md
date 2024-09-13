@@ -30,7 +30,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v7.5.1
+    version: v7.5.3
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -49,7 +49,7 @@ spec
   ...
   pump:
     baseImage: pingcap/tidb-binlog
-    version: v7.5.1
+    version: v7.5.3
     replicas: 1
     storageClassName: local-storage
     requests:
@@ -186,7 +186,7 @@ spec
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v7.5.1
+    clusterVersion: v7.5.3
     baseImage: pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi

@@ -302,7 +302,7 @@ After collecting data using Prometheus, you can visualize multi-cluster monitori
 
     ```shell
     # set tidb version here
-    version=v7.5.1
+    version=v7.5.3
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```

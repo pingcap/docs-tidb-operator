@@ -486,7 +486,7 @@ mysql --comments -h ${tidb-nlb-dnsname} -P 4000 -u root
 $ mysql --comments -h abfc623004ccb4cc3b363f3f37475af1-9774d22c27310bc1.elb.us-west-2.amazonaws.com -P 4000 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1189
-Server version: 5.7.25-TiDB-v4.0.2 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 8.0.11-TiDB-v7.5.3 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
