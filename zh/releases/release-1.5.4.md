@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator 1.5.4 Release Notes
-summary: 了解 TiDB Operator 1.5.4 版本的新功能和 Bug 修复。
+summary: 了解 TiDB Operator 1.5.4 版本的优化提升和 Bug 修复。
 ---
 
 # TiDB Operator 1.5.4 Release Notes
@@ -18,7 +18,7 @@ TiDB Operator 版本：1.5.4
 
 ## Bug 修复
 
-- 修复 tidb-backup-manager 无法解析 BR backupmeta v2 中备份文件存储大小的问题 ([#5411](https://github.com/pingcap/tidb-operator/pull/5411), [@Leavrth](https://github.com/Leavrth))
+- 修复 `tidb-backup-manager` 无法解析 BR backupmeta v2 中备份文件大小的问题 ([#5411](https://github.com/pingcap/tidb-operator/pull/5411), [@Leavrth](https://github.com/Leavrth))
 - 修复 EBS 快照恢复失败时，EBS 卷可能泄露的问题 ([#5634](https://github.com/pingcap/tidb-operator/pull/5634), [@WangLe1321](https://github.com/WangLe1321))
 - 修复 Federated manager 重启后未正确初始化相关指标的问题 ([#5637](https://github.com/pingcap/tidb-operator/pull/5637), [@wxiaomou](https://github.com/wxiaomou))
-- 修复在没有配置 TiKV 节点或者 TiKV 副本数为 0 时，EBS 快照恢复错误地成功的问题 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
+- 修复在没有配置 TiKV 节点或者 TiKV 副本数为 0 时，EBS 快照恢复错误地显示为成功的问题 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
