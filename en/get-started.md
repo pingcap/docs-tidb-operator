@@ -175,7 +175,7 @@ First, you need to install the Custom Resource Definitions (CRDs) that are requi
 To install the CRDs, run the following command:
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.3/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/manifests/crd.yaml
 ```
 
 <details>
@@ -234,7 +234,7 @@ To install TiDB Operator, you can use [Helm 3](https://helm.sh/docs/intro/instal
 3. Install TiDB Operator:
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.3
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.4
     ```
 
     <details>
@@ -282,7 +282,7 @@ This section describes how to deploy a TiDB cluster and its monitoring services.
 
 ```shell
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.3/examples/basic/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/examples/basic/tidb-cluster.yaml
 ```
 
 <details>
@@ -300,7 +300,7 @@ If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a 
 ### Deploy TiDB Dashboard independently
 
 ```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.3/examples/basic/tidb-dashboard.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/examples/basic/tidb-dashboard.yaml
 ```
 
 <details>
@@ -315,7 +315,7 @@ tidbdashboard.pingcap.com/basic created
 ### Deploy TiDB monitoring services
 
 ```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.3/examples/basic/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/examples/basic/tidb-monitor.yaml
 ```
 
 <details>
