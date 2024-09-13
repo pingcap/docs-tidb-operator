@@ -38,7 +38,7 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
     name: ${cluster_name}
     namespace: ${cluster_namespace}
   spec:
-    version: "v5.4.1"
+    version: "v7.5.3"
     # ...
     helper:
       image: busybox:1.33.0

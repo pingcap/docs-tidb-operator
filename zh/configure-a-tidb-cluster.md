@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v7.5.1`
+- `spec.version`，格式为 `imageTag`，例如 `v7.5.3`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v7.5.1`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v7.5.3`
 
 ### 推荐配置
 
