@@ -50,7 +50,6 @@
     - [Run Containers as a Non-root User](containers-run-as-non-root-user.md)
   - Scale
     - [Manually Scale](scale-a-tidb-cluster.md)
-    - [Automatically Scale](enable-tidb-cluster-auto-scaling.md)
   - Upgrade
     - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
     - Upgrade TiDB Operator
