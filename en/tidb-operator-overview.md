@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator Overview
 summary: Learn the overview of TiDB Operator.
+aliases: ['/tidb-in-kubernetes/v1.2/enable-tidb-cluster-auto-scaling']
 ---
 
 # TiDB Operator Overview
