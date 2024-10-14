@@ -226,8 +226,8 @@ tidb-tikv-2                       1/1     Running   0          47h
 ```shell
 gcloud compute instances create bastion \
     --machine-type=n1-standard-4 \
-    --image-project=centos-cloud \
-    --image-family=centos-7 \
+    --image-project=TODO \
+    --image-family=TODO \
     --zone=${your-region}-a
 ```
 
