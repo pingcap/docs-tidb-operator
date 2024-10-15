@@ -200,7 +200,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 1. 按需修改 `TidbCluster` 对象的 `replicas` 值。例如，执行以下命令可将 `scheduling` 的 `replicas` 值设置为 `3`：
 
     ```shell
-    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":[{"name":"scheduling", "replicas":3}]}}'
     ```
 
 2. 查看 Kubernetes 集群中对应的 TiDB 集群配置是否已对应更新：

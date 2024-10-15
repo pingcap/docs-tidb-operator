@@ -211,7 +211,7 @@ Taking the `scheduling` microservice as an example, the steps for horizontal sca
 1. Modify the `replicas` value of the corresponding `TidbCluster` object to your desired value. For example, run the following command to set the `replicas` value of `scheduling` to `3`:
 
     ```shell
-    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":{"name":"scheduling", "replicas":3}}}'
+    kubectl patch -n ${namespace} tc ${cluster_name} --type merge --patch '{"spec":{"pdms":[{"name":"scheduling", "replicas":3}]}}'
     ```
 
 2. Check whether the corresponding TiDB cluster configuration for the Kubernetes cluster is updated:
