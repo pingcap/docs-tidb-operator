@@ -199,21 +199,21 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 * 先在有外网的服务器下载 local-volume-provisioner 部署文件，上传到服务器上后再进行安装。
 
-* local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
+* local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.5.0`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
 
      {{< copyable "shell-regular" >}}
 
      ``` shell
-     docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-     docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
+     docker pull quay.io/external_storage/local-volume-provisioner:v2.5.0
+     docker save -o local-volume-provisioner-v2.5.0.tar quay.io/external_storage/local-volume-provisioner:v2.5.0
      ```
 
-     将 `local-volume-provisioner-v2.3.4.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
+     将 `local-volume-provisioner-v2.5.0.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
 
      {{< copyable "shell-regular" >}}
 
      ``` shell
-     docker load -i local-volume-provisioner-v2.3.4.tar
+     docker load -i local-volume-provisioner-v2.5.0.tar
      ```
 
 ### 最佳实践
