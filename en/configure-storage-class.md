@@ -187,17 +187,17 @@ The steps for offline deployment are the same as for online deployment, except f
 
 * Download the `local-volume-provisioner.yaml` file on a machine with Internet access, then upload it to the server and install it.
 
-* The `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.3.4` image. If the server does not have access to the Internet, download this Docker image on a machine with Internet access:
+* The `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.5.0` image. If the server does not have access to the Internet, download this Docker image on a machine with Internet access:
 
     ``` shell
-    docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-    docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
+    docker pull quay.io/external_storage/local-volume-provisioner:v2.5.0
+    docker save -o local-volume-provisioner-v2.5.0.tar quay.io/external_storage/local-volume-provisioner:v2.5.0
     ```
 
-    Copy the `local-volume-provisioner-v2.3.4.tar` file to the server, and execute the `docker load` command to load the file on the server:
+    Copy the `local-volume-provisioner-v2.5.0.tar` file to the server, and execute the `docker load` command to load the file on the server:
 
     ```shell
-    docker load -i local-volume-provisioner-v2.3.4.tar
+    docker load -i local-volume-provisioner-v2.5.0.tar
     ```
 
 ### Best practices
