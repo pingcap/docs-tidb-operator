@@ -34,6 +34,11 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `volume-snapshot`：基于卷快照的备份。
     * `log`：从 KV 层备份实时数据变更日志数据。
 
+* `.spec.logSubcommand`：指定日志备份任务的子命令，用于控制日志备份任务的状态。该字段提供以下三种选项：
+	* `log-start`：启动一个新的日志备份任务，或恢复一个已暂停的任务。可以用于开始日志备份流程或从暂停状态恢复。
+	* `log-pause`：暂时暂停正在运行的日志备份任务，可以稍后使用 log-start 命令恢复任务。
+	* `log-stop`：永久停止日志备份任务。当此命令发出后，Backup CR 进入停止状态，无法再次启动。
+
 * `.spec.restoreMode`：指定 Restore 的模式，默认为 `snapshot`，即基于 KV 层的快照恢复。该字段仅在恢复时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照恢复。
     * `volume-snapshot`：基于卷快照的 TiDB 集群恢复。
