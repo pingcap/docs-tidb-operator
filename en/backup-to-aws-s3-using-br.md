@@ -237,6 +237,11 @@ The logSubcommand field in the Backup CR allows you to control the status of a l
 
 These commands allow fine-grained control over the lifecycle of log backup tasks, enabling start, pause, resume, and stop operations to manage log data retention in a Kubernetes environment.
 
+<Tip>
+In the v1.5 or earily TiDB Operator versions. You could use `logStop: true/false` to stop/start the task.
+You are not recommanded to do so in the later versions.
+</Tip>
+
 #### Start log backup
 
 1. In the `backup-test` namespace, create a `Backup` CR named `demo1-log-backup-s3`.
