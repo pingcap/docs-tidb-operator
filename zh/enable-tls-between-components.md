@@ -20,9 +20,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     > **注意：**
     >
-    > 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
-    > 
-    > 在无法重建的情况下，如果希望集群创建后再开启 TLS，可尝试[以下方式](#从非-tls-集群升级到-tls-集群)（**请谨慎操作**）：
+    > - 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
+    > - 若集群无法重建且需要启用 TLS，请参阅[从非 TLS 集群升级到 TLS 集群](#从非-tls-集群升级到-tls-集群)。
 
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
@@ -1593,96 +1592,87 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     /tikv-ctl --ca-path=ca.crt --cert-path=tls.crt --key-path=tls.key --host 127.0.0.1:20160 cluster
     ```
 
-## 从非 TLS 集群升级到 TLS 集群
+## 将非 TLS 集群升级为 TLS 集群
 
-> **注意：请谨慎操作**
-> 
-> 在集群无法重建的情况下，适用于集群创建后再开启 TLS。
-> 
+本节介绍如何为现有的非 TLS TiDB 集群启用 TLS 加密通信。
 
-1. 如果存在多个 PD 节点，缩容 PD 至 1 个节点。
+> **注意：**
+>
+> 该操作仅适用于无法重建的现有集群。在开始操作前，请确保已充分理解每个步骤及其潜在风险。
 
-2. 参考 [第一步：为 TiDB 集群各个组件生成证书](#第一步为-tidb-集群各个组件生成证书) ，准备证书及创建 Kubernetes Secret 对象。
+1. 如果集群包含多个 PD 节点，需要先将 PD 节点数量缩减为 1 个。
 
-3. 参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群) ，可使用以下命令来更新 TiDB 集群，等待 PD pod 完成重启后继续下一步操作。
+2. 参考[第一步：为 TiDB 集群各个组件生成证书](#第一步为-tidb-集群各个组件生成证书)生成 TLS 证书，并创建 Kubernetes Secret 对象。
 
-    {{< copyable "shell-regular" >}}
+3. 启用 TLS：
 
-    ``` shell
-    kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
-      "spec": {
-        "tlsCluster": {
-          "enabled": true
-        }
-      }
-    }'
-    ```
+    你可以选择以下两种方法之一启用 TLS：
 
-    输出示例：
+    - 方法 1：执行以下命令更新 TiDB 集群配置，等待 PD Pod 完成重启后继续下一步。
 
-    ``` shell
-    tidbcluster.pingcap.com/basic patched
-    ```
+        ``` shell
+        kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
+          "spec": {
+            "tlsCluster": {
+              "enabled": true
+            }
+          }
+        }'
+        ```
 
-    也可以参考 [第二步：部署 TiDB 集群](#第二步部署-tidb-集群)，选择设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用来验证集群间各组件证书的 CN (Common Name)。
+        输出示例：
 
-4. 使用 `kubectl exec` 进入 PD pod，下载 etcdctl。参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)，etcdctl 位于解压后的文件夹目录下。
+        ``` shell
+        tidbcluster.pingcap.com/basic patched
+        ```
 
-5. 查看 etcd member，可见 peerURLs 此时为 `http`：
+    - 方法 2：参考[第二步：部署 TiDB 集群](#第二步部署-tidb-集群)启用 TLS，同时设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用于验证集群间各组件证书的 CN (Common Name)。
 
-    {{< copyable "shell-regular" >}}
+4. 配置 PD 节点：
 
-    ``` shell
-    ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
-    ```
+    1. 使用 `kubectl exec` 进入 PD Pod 并安装 etcdctl。详细安装步骤可参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)。安装完成后，etcdctl 位于解压后的文件夹目录下。
 
-    输出示例：
+    2. 查看 etcd 成员信息，此时 `peerURLs` 使用 HTTP 协议：
 
-    ``` shell
-    e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
-    ```
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
 
-    **示例解释：**
+        输出示例：
 
-    memberID 和 peerURLs 需要在下个步骤更新 etcd member 时填入：
+        ``` shell
+        # memberID        status   name        peerURLs                                          clientURL                                          isLearner
+        e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+        记录以下信息用于下一步操作：
     
-    1. 包含 memberID，示例中为 `e94cfb12fa384e23`。
-    
-    2. 包含 peerURLs，示例中为 `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`。
+        - `memberID`：示例中为 `e94cfb12fa384e23`。
+        - `peerURLs`：示例中为 `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`。
 
-6. 修改 etcd member 的 peerURLs 为 `https`：
+    3. 将 etcd member 的 `peerURLs` 从 HTTP 更新为 HTTPS 协议：
 
-    **注意：**
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
+        ```
 
-    peerURLS 需要修改 `http` 为 `https`。
+        输出示例：
 
-    {{< copyable "shell-regular" >}}
+        ``` shell
+        Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
+        ```
 
-    ``` shell
-    ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
-    ```
+    4. 查看更新后的 `peerURLs`，确保已更新为 HTTPS 协议：
 
-    输出示例：
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
 
-    ``` shell
-    Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
-    ```
+        输出示例：
 
-7. 查看此时 etcd member 的 peerURLs，确认已经修改为 `https`：
+        ``` shell
+        e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
 
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
-    ```
-
-    输出示例：
-
-    ``` shell
-    e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
-    ```
-
-    此时 peerURLs 已更新为 `https://basic-pd-0.basic-pd-peer.pingcap.svc:2380`。
-
-8. 若缩容过 PD 节点，需扩容 PD 至原有数量。
-9. 等待其他 pod 重启更新。
+5. 如果之前进行了 PD 节点缩容，请将其扩容为原有数量。
+6. 等待 TiDB 集群中的所有 Pod 完成重启。
