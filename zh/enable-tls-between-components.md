@@ -21,7 +21,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     > **注意：**
     >
     > - 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
-    > - 若集群无法重建且需要启用 TLS，请参阅[从非 TLS 集群升级到 TLS 集群](#从非-tls-集群升级到-tls-集群)。
+    > - 若集群无法重建且需要启用 TLS，请参阅[将非 TLS 集群升级为 TLS 集群](#将非-tls-集群升级为-tls-集群)。
 
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
