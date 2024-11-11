@@ -417,7 +417,7 @@ Because you already created a `Backup` CR named `demo1-log-backup-s3` when you s
 kubectl edit backup demo1-log-backup-s3 -n backup-test
 ```
 
-In the last line of the CR, change the change the `logSubcommand` to `log-pause`. Then save and quit the editor. The modified content is as follows:
+In the last line of the CR, change the `logSubcommand` to `log-pause`. Then save and quit the editor. The modified content is as follows:
 
 ```yaml
 ---
