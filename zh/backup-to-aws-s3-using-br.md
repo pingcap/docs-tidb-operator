@@ -236,8 +236,8 @@ Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志�
 这些命令使日志备份任务的生命周期控制更加精细，支持启动、暂停、恢复和停止操作，以管理 Kubernetes 环境中的日志数据保留。
 
 <Tip>
-在 TiDB Operator v1.5 或更早的版本中，你可以使用 logStop: true/false 来停止或启动任务。
-然而，不建议在后续版本中继续使用该方式。
+在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+但请勿在同一个 YAML 文件中混用 logStop 和 logSubcommand，这属于不支持的用法。在较新版本中，不推荐使用 logStop，建议使用 logSubcommand 以确保配置清晰且一致。
 </Tip>
 
 #### 启动日志备份
