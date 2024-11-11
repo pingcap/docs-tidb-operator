@@ -325,7 +325,7 @@ Log Checkpoint Ts:       436569119308644661
 
 #### Pause log backup
 
-Because you already created a `Backup` CR named `demo1-log-backup-s3` when you started log backup, you can stop the log backup by modifying the same `Backup` CR.
+Because you already created a `Backup` CR named `demo1-log-backup-s3` when you started log backup, you can pause the log backup by modifying the same `Backup` CR.
 
 ```shell
 kubectl edit backup demo1-log-backup-s3 -n backup-test
