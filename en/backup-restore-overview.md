@@ -78,7 +78,7 @@ kubectl delete backupschedule ${name} -n ${namespace}
 
 If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
 
-If you are using version 1.5 or later, when you delete a CR, TiDB Operator will attempt to automatically stop the running log backup task. The auto-stop feature will only stop log backup tasks that are running on track; it does not handle tasks that are in an error or failed state.
+If you are using version 1.5.5+ or 1.6.1+, when you delete a CR, TiDB Operator will attempt to automatically stop the running log backup task. The auto-stop feature will only stop log backup tasks that are running on track; it does not handle tasks that are in an error or failed state.
 
 If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the CR, and cleans up the backup file and the volume snapshots on AWS.
 
