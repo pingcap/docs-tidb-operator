@@ -239,6 +239,7 @@ Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志�
 
 <Tip>
 在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+
 但请勿在同一个 YAML 文件中混用 logStop 和 logSubcommand，这属于不支持的用法。在较新版本中，不推荐使用 logStop，建议使用 logSubcommand 以确保配置清晰且一致。
 </Tip>
 
