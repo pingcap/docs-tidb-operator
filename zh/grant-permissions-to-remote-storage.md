@@ -148,6 +148,8 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
 
     将 `spec.tikv.serviceAccount` 修改为 tidb-backup-manager，等到 TiKV Pod 重启后，查看 Pod 的 `serviceAccountName` 是否有变化。
 
+    如果存在TiFlash节点，也需要给予TiFlash对应的授权，步骤同上。
+
 > **注意：**
 >
 > `arn:aws:iam::123456789012:role/user` 为步骤 2 中创建的 IAM 角色。
