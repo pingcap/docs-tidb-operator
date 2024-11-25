@@ -384,7 +384,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
-  logSubcommand: log-pause
+  logSubcommand: log-start
   br:
     cluster: demo1
     clusterNamespace: test1
