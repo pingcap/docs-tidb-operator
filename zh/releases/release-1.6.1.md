@@ -25,4 +25,4 @@ TiDB Operator 版本：1.6.1
 ## Bug 修复
 
 - 修复在没有配置 TiKV 节点或者 TiKV 副本数为 0 时，EBS 快照恢复错误地显示为成功的问题 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
-- 修复跨 namespace 监控多套 TiDB 集群的 TidbMonitor 在删除后对应的 ClusterRole/ClusterRolebinding 未被正常清理的问题 ([#5956](https://github.com/pingcap/tidb-operator/pull/5956), [@csuzhangxc](https://github.com/csuzhangxc))
+- 修复跨 namespace 监控多套 TiDB 集群的 TidbMonitor 在删除后对应的 ClusterRole/ClusterRolebinding 未被正确清理的问题 ([#5956](https://github.com/pingcap/tidb-operator/pull/5956), [@csuzhangxc](https://github.com/csuzhangxc))
