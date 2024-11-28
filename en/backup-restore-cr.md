@@ -41,6 +41,8 @@ This section introduces the fields in the `Backup` CR.
     * `log-pause`: Temporarily pauses an active log backup task, allowing it to be resumed later using the log-start command.
     * `log-stop`: Permanently stops the log backup task. When this command is issued, the Backup CR enters a stopped state and cannot be restarted.
 
+    Note that in versions earlier than v1.5.5, this field does not exist. you could use the `logStop`: true/false field to stop or start a task. In the v1.5.5+ and v1.6.1+ verson, the `logStop` is still aviliable but not recommanded.
+
 * `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots in the KV layer. This field is valid only for restore and has three value options currently:
     * `snapshot`: restore data from snapshots in the KV layer.
     * `volume-snapshot`: restore data from volume snapshots.
