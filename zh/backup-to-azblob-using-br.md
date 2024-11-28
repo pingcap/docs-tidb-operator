@@ -140,6 +140,24 @@ demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。本节示例创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR。具体操作如下所示。
 
+#### 日志备份的`logSubcommand`
+
+Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志备份任务的状态。logSubcommand 有三个有效输入：
+
+ • log-start：该命令用于启动新的日志备份任务，或恢复已暂停的任务。它可用于启动日志备份进程或从暂停状态恢复任务。
+
+ • log-pause：该命令用于暂时暂停活动中的日志备份任务。稍后可以通过 log-start 命令恢复任务。
+
+ • log-stop：该命令永久停止日志备份任务。当执行此命令时，Backup CR 将进入停止状态且无法重启。
+ 
+这些命令使日志备份任务的生命周期控制更加精细，支持启动、暂停、恢复和停止操作，以管理 Kubernetes 环境中的日志数据保留。
+
+<Tip>
+在 v1.5.4/v1.6.0 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+
+但请勿在同一个 Backup CR 中混用 logStop 和 logSubcommand，这属于不支持的用法。在较新版本中，不推荐使用 logStop，建议使用 logSubcommand 以确保配置清晰且一致。
+</Tip>
+
 #### 启动日志备份
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `demo1-log-backup-azblob` 的 `Backup` CR。
@@ -356,7 +374,7 @@ demo1-log-backup-azblob    log    Stopped   ....
 <Tip>
 Stopped 是日志备份的终止状态，此状态下无法再次更改状态，但你仍然可以清理日志备份的数据。
 
-在 v1.5.5/v1.6.0 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+在 v1.5.4/v1.6.0 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
 </Tip>
 
 #### 清理日志备份数据
