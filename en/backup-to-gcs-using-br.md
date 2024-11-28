@@ -157,7 +157,7 @@ The logSubcommand field in the Backup CR allows you to control the status of a l
 These commands allow fine-grained control over the lifecycle of log backup tasks, enabling start, pause, resume, and stop operations to manage log data retention in a Kubernetes environment.
 
 <Tip>
-In v1.5.5 and earlier TiDB Operator versions, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
+In TiDB Operator versions earlier than v1.5.4/v1.6.0, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
 
 However, you must not mix logStop with logSubcommand in the same YAML file. Doing so is unsupported, and using logStop is not recommended in later versions. Stick to logSubcommand for better clarity and consistency.
 </Tip>
@@ -314,7 +314,7 @@ spec:
     prefix: my-log-backup-folder
 ```
 
-You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-gcs` change from `Running` to `Pause`:
+You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-gcs` change from `Pause` to `Running`:
 
 ```shell
 kubectl get backup -n backup-test
@@ -370,7 +370,7 @@ demo1-log-backup-gcs       log      Stopped   ....
 <Tip>
 Stopped is the terminated state of a log backup CR, you couldn't change the state again, but you still could clean log backup data.
 
-In v1.5.5 and earlier TiDB Operator versions, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
+In TiDB Operator versions earlier than v1.5.4/v1.6.0, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
 </Tip>
 
 #### Clean log backup data
