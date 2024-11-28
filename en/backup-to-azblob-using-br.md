@@ -247,32 +247,33 @@ kubectl edit backup log-backup-azblob -n backup-test
 
 To pause the log backup task, you only need to change the `logSubcommand` from `log-start` to `log-pause`. Then save and quit the editor. The modified content is as follows:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-log-backup-azblob
-      namespace: backup-test
-    spec:
-      backupMode: log
-      logSubcommand: log-pause
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-log-backup-folder
-        #accessTier: Hot
-    ```
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: Backup
+  metadata:
+    name: demo1-log-backup-azblob
+    namespace: backup-test
+  spec:
+    backupMode: log
+    logSubcommand: log-pause
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    azblob:
+      secretName: azblob-secret
+      container: my-container
+      prefix: my-log-backup-folder
+      #accessTier: Hot
+  ```
 
 You can view the log backup status by checking the information of the `Backup` CR:
 
 ```shell
 kubectl get backup -n backup-test
 ```
+
 ```
 NAME                       MODE     STATUS    ....
 log-backup-azblob        log      Pause     ....
@@ -288,26 +289,26 @@ kubectl edit backup log-backup-azblob.yaml -n backup-test
 
 To resume the log backup task, you only need to change the `logSubcommand` from `log-pause` to `log-start`. Then save and quit the editor. The modified content is as follows:
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-log-backup-azblob
-      namespace: backup-test
-    spec:
-      backupMode: log
-      logSubcommand: log-start
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-log-backup-folder
-        #accessTier: Hot
-    ```
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: Backup
+  metadata:
+    name: demo1-log-backup-azblob
+    namespace: backup-test
+  spec:
+    backupMode: log
+    logSubcommand: log-start
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    azblob:
+      secretName: azblob-secret
+      container: my-container
+      prefix: my-log-backup-folder
+      #accessTier: Hot
+  ```
 
 #### Stop log backup
 

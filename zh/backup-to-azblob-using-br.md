@@ -229,33 +229,33 @@ kubectl edit backup demo1-log-backup-azblob -n backup-test
 
 要暂停日志备份任务，只需将 logSubcommand 从 log-start 更改为 log-pause。然后保存并退出编辑器。修改后的内容如下：
 
-    ```shell
-    kubectl apply -f log-backup-azblob.yaml
-    ```
+  ```shell
+  kubectl apply -f log-backup-azblob.yaml
+  ```
 
-    `log-backup-azblob.yaml` 文件内容如下：
+  `log-backup-azblob.yaml` 文件内容如下：
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-log-backup-azblob
-      namespace: backup-test
-    spec:
-      backupMode: log
-      logSubcommand: log-pause
-      br:
-        cluster: demo1
-        clusterNamespace: test1
-        sendCredToTikv: true
-      s3:
-        provider: aws
-        secretName: s3-secret
-        region: us-west-1
-        bucket: my-bucket
-        prefix: my-log-backup-folder
-    ```
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: Backup
+  metadata:
+    name: demo1-log-backup-azblob
+    namespace: backup-test
+  spec:
+    backupMode: log
+    logSubcommand: log-pause
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    s3:
+      provider: aws
+      secretName: s3-secret
+      region: us-west-1
+      bucket: my-bucket
+      prefix: my-log-backup-folder
+  ```
 
 可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Pause`：
 
