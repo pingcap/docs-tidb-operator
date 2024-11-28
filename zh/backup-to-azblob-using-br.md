@@ -219,15 +219,64 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
-#### 停止日志备份
+#### 暂停日志备份
 
-由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。
+由于在启动日志备份时已经创建了名为 `demo1-log-backup-azblob` 的 Backup 自定义资源（CR），可以通过修改相同的 Backup CR 来暂停日志备份。
 
 ```shell
 kubectl edit backup demo1-log-backup-azblob -n backup-test
 ```
 
-在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
+要暂停日志备份任务，只需将 logSubcommand 从 log-start 更改为 log-pause。然后保存并退出编辑器。修改后的内容如下：
+
+    ```shell
+    kubectl apply -f log-backup-azblob.yaml
+    ```
+
+    `log-backup-azblob.yaml` 文件内容如下：
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-log-backup-azblob
+      namespace: backup-test
+    spec:
+      backupMode: log
+      logSubcommand: log-pause
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      s3:
+        provider: aws
+        secretName: s3-secret
+        region: us-west-1
+        bucket: my-bucket
+        prefix: my-log-backup-folder
+    ```
+
+可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Pause`：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-azblob       log      Pause     ....
+```
+
+#### 恢复日志备份
+
+如果日志备份任务已暂停，可以将 logSubcommand 设置为 log-start 来恢复它。请注意，你无法从 Fail 或 Stopped 状态恢复任务。
+
+```shell
+kubectl edit backup demo1-log-backup-azblob -n backup-test
+```
+
+要恢复日志备份任务，只需将 logSubcommand 从 log-pause 更改为 log-start。然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
@@ -238,6 +287,50 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-start
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  s3:
+    provider: aws
+    secretName: s3-secret
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+可以看到名为 demo1-log-backup-azblob 的 Backup CR 的 STATUS 从 Paused 状态变为 Running：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-azblob        log      Running   ....
+```
+
+#### 停止日志备份
+
+由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，停止日志备份。
+
+```shell
+kubectl edit backup demo1-log-backup-azblob -n backup-test
+```
+
+将 logSubcommand 更改为 log-stop。然后保存并退出编辑器。修改后的内容如下：
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-azblob
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-stop
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -247,7 +340,6 @@ spec:
     container: my-container
     prefix: my-log-backup-folder
     #accessTier: Hot
-  logStop: true
 ```
 
 可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
@@ -262,12 +354,14 @@ demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
-你也可以采用和启动日志备份时相同的方法来停止日志备份，已经被创建过的 `Backup` CR 会因此被更新。
+Stopped 是日志备份的终止状态，此状态下无法再次更改状态，但你仍然可以清理日志备份的数据。
+
+在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
 </Tip>
 
 #### 清理日志备份数据
 
-1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
+1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
 
     ```shell
     kubectl edit backup demo1-log-backup-azblob -n backup-test
@@ -284,6 +378,7 @@ demo1-log-backup-azblob    log    Stopped   ....
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1

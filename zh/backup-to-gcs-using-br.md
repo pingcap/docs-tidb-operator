@@ -144,6 +144,24 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。日志备份对远程存储访问授权方式与快照备份一致。本节示例创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，具体操作如下所示。
 
+#### 日志备份的`logSubcommand`
+
+Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志备份任务的状态。logSubcommand 有三个有效输入：
+
+ • log-start：该命令用于启动新的日志备份任务，或恢复已暂停的任务。它可用于启动日志备份进程或从暂停状态恢复任务。
+
+ • log-pause：该命令用于暂时暂停活动中的日志备份任务。稍后可以通过 log-start 命令恢复任务。
+
+ • log-stop：该命令永久停止日志备份任务。当执行此命令时，Backup CR 将进入停止状态且无法重启。
+ 
+这些命令使日志备份任务的生命周期控制更加精细，支持启动、暂停、恢复和停止操作，以管理 Kubernetes 环境中的日志数据保留。
+
+<Tip>
+在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+
+但请勿在同一个 YAML 文件中混用 logStop 和 logSubcommand，这属于不支持的用法。在较新版本中，不推荐使用 logStop，建议使用 logSubcommand 以确保配置清晰且一致。
+</Tip>
+
 #### 启动日志备份
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `demo1-log-backup-gcs` 的 `Backup` CR。
@@ -223,15 +241,15 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
-#### 停止日志备份
+#### 暂停日志备份
 
-由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。
+由于在启动日志备份时已经创建了名为 `demo1-log-backup-gcs` 的 Backup 自定义资源（CR），可以通过修改相同的 Backup CR 来暂停日志备份。
 
 ```shell
 kubectl edit backup demo1-log-backup-gcs -n backup-test
 ```
 
-在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
+要暂停日志备份任务，只需将 logSubcommand 从 log-start 更改为 log-pause。然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
@@ -242,6 +260,91 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-pause
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+可以看到名为 `demo1-log-backup-gcs` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Pause`：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-gcs        log      Pause     ....
+```
+
+#### 恢复日志备份
+
+如果日志备份任务已暂停，可以将 logSubcommand 设置为 log-start 来恢复它。请注意，你无法从 Fail 或 Stopped 状态恢复任务。
+
+```shell
+kubectl edit backup demo1-log-backup-gcs -n backup-test
+```
+
+要恢复日志备份任务，只需将 logSubcommand 从 log-pause 更改为 log-start。然后保存并退出编辑器。修改后的内容如下：
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-gcs
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-start
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+可以看到名为 demo1-log-backup-gcs 的 Backup CR 的 STATUS 从 Paused 状态变为 Running：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-gcs        log      Running   ....
+```
+
+#### 停止日志备份
+
+由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。
+
+```shell
+kubectl edit backup demo1-log-backup-gcs -n backup-test
+```
+
+将 logSubcommand 更改为 log-stop。然后保存并退出编辑器。修改后的内容如下：
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-gcs
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-stop
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -266,12 +369,14 @@ demo1-log-backup-gcs       log      Stopped   ....
 ```
 
 <Tip>
-你也可以采用和启动日志备份时相同的方法来停止日志备份，已经被创建过的 `Backup` CR 会因此被更新。
+Stopped 是日志备份的终止状态，此状态下无法再次更改状态，但你仍然可以清理日志备份的数据。
+
+在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
 </Tip>
 
 #### 清理日志备份数据
 
-1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
+1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
 
     ```shell
     kubectl edit backup demo1-log-backup-gcs -n backup-test
@@ -288,6 +393,7 @@ demo1-log-backup-gcs       log      Stopped   ....
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1
