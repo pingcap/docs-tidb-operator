@@ -324,7 +324,7 @@ Log Checkpoint Ts:       436569119308644661
 
 #### 暂停日志备份
 
-由于在启动日志备份时已经创建了名为 demo1-log-backup-s3 的 Backup 自定义资源（CR），可以通过修改相同的 Backup CR 来暂停日志备份。
+由于在启动日志备份时已经创建了名为 `demo1-log-backup-s3` 的 Backup 自定义资源（CR），可以通过修改相同的 Backup CR 来暂停日志备份。
 
 ```shell
 kubectl edit backup demo1-log-backup-s3 -n backup-test
