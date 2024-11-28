@@ -417,7 +417,7 @@ demo1-log-backup-s3        log      Running   ....
 kubectl edit backup demo1-log-backup-s3 -n backup-test
 ```
 
-在 CR 的最后一行，将 logSubcommand 更改为 log-pause。然后保存并退出编辑器。修改后的内容如下：
+将 logSubcommand 更改为 log-stop。然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
@@ -428,6 +428,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-stop
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -438,7 +439,6 @@ spec:
     region: us-west-1
     bucket: my-bucket
     prefix: my-log-backup-folder
-  logStop: true
 ```
 
 可以看到名为 `demo1-log-backup-s3` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
@@ -454,11 +454,13 @@ demo1-log-backup-s3        log      Stopped   ....
 
 <Tip>
 Stopped 是日志备份的终止状态，此状态下无法再次更改状态，但你仍然可以清理日志备份的数据。
+
+在 v1.5.5 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
 </Tip>
 
 #### 清理日志备份数据
 
-1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
+1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
 
     ```shell
     kubectl edit backup demo1-log-backup-s3 -n backup-test
@@ -475,6 +477,7 @@ Stopped 是日志备份的终止状态，此状态下无法再次更改状态，
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1
