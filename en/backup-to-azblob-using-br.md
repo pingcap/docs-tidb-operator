@@ -139,6 +139,24 @@ demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-
 
 You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-azblob`. See the following detailed steps.
 
+#### Log backup subcommands
+
+The logSubcommand field in the Backup CR allows you to control the status of a log backup task. There are three valid inputs for logSubcommand:
+
+ • log-start: This command initiates a new log backup task or resumes an existing task that has been paused. It can be used to start the log backup process or resume from the paused state.
+
+ • log-pause: This command temporarily pauses an active log backup task. The task can be resumed later using the log-start command.
+
+ • log-stop: This command permanently stops the log backup task. When this command is issued, the Backup CR enters a stopped state and cannot be restarted.
+
+These commands allow fine-grained control over the lifecycle of log backup tasks, enabling start, pause, resume, and stop operations to manage log data retention in a Kubernetes environment.
+
+<Tip>
+In v1.5.5 and earlier TiDB Operator versions, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
+
+However, you must not mix logStop with logSubcommand in the same YAML file. Doing so is unsupported, and using logStop is not recommended in later versions. Stick to logSubcommand for better clarity and consistency.
+</Tip>
+
 #### Start log backup
 
 1. In the `backup-test` namespace, create a `Backup` CR named `demo1-log-backup-azblob`.
@@ -158,6 +176,7 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -218,15 +237,87 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
+#### Pause log backup
+
+Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can pause the log backup by modifying the same `Backup` CR.
+
+```shell
+kubectl edit backup log-backup-azblob -n backup-test
+```
+
+To pause the log backup task, you only need to change the `logSubcommand` from `log-start` to `log-pause`. Then save and quit the editor. The modified content is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-log-backup-azblob
+      namespace: backup-test
+    spec:
+      backupMode: log
+      logSubcommand: log-pause
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+        #accessTier: Hot
+    ```
+
+You can view the log backup status by checking the information of the `Backup` CR:
+
+```shell
+kubectl get backup -n backup-test
+```
+```
+NAME                       MODE     STATUS    ....
+log-backup-azblob        log      Pause     ....
+```
+
+#### Resume log backup
+
+If a log backup task is paused, you could set `logSubcommand: log-start` to resume it. Be aware that, you couldn't resume a task from `Fail` or `Stopped` state.
+
+```shell
+kubectl edit backup log-backup-azblob.yaml -n backup-test
+```
+
+To resume the log backup task, you only need to change the `logSubcommand` from `log-pause` to `log-start`. Then save and quit the editor. The modified content is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: Backup
+    metadata:
+      name: demo1-log-backup-azblob
+      namespace: backup-test
+    spec:
+      backupMode: log
+      logSubcommand: log-start
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+        #accessTier: Hot
+    ```
+
 #### Stop log backup
 
-Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup.
+Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. 
 
 ```shell
 kubectl edit backup demo1-log-backup-azblob -n backup-test
 ```
 
-In the last line of the CR, append `spec.logStop: true`. Then save and quit the editor. The modified content is as follows:
+Change the `logSubcommand` to `log-stop`. Then save and quit the editor. The modified content is as follows:
 
 ```yaml
 ---
@@ -237,6 +328,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-stop
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -246,7 +338,6 @@ spec:
     container: my-container
     prefix: my-log-backup-folder
     #accessTier: Hot
-  logStop: true
 ```
 
 You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-azblob` change from `Running` to `Stopped`:
@@ -261,12 +352,14 @@ demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
-You can stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
+Stopped is the terminated state of a log backup CR, you couldn't change the state again, but you still could clean log backup data.
+
+In v1.5.5 and earlier TiDB Operator versions, you could use the logStop: true/false field to stop or start a task. This field is retained for backward compatibility.
 </Tip>
 
 #### Clean log backup data
 
-1. Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
+1. Because you already created a `Backup` CR named `demo1-log-backup-azblob` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
 
     ```shell
     kubectl edit backup demo1-log-backup-azblob -n backup-test
@@ -283,6 +376,7 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1
