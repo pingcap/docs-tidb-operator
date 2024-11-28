@@ -148,11 +148,11 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
 
 The logSubcommand field in the Backup CR allows you to control the status of a log backup task. There are three valid inputs for logSubcommand:
 
- - log-start: This command initiates a new log backup task or resumes an existing task that has been paused. It can be used to start the log backup process or resume from the paused state.
+- log-start: This command initiates a new log backup task or resumes an existing task that has been paused. It can be used to start the log backup process or resume from the paused state.
 
- - log-pause: This command temporarily pauses an active log backup task. The task can be resumed later using the log-start command.
+- log-pause: This command temporarily pauses an active log backup task. The task can be resumed later using the log-start command.
 
- - log-stop: This command permanently stops the log backup task. When this command is issued, the Backup CR enters a stopped state and cannot be restarted.
+- log-stop: This command permanently stops the log backup task. When this command is issued, the Backup CR enters a stopped state and cannot be restarted.
 
 These commands allow fine-grained control over the lifecycle of log backup tasks, enabling start, pause, resume, and stop operations to manage log data retention in a Kubernetes environment.
 
