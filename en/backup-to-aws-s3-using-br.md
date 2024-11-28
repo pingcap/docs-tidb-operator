@@ -402,7 +402,7 @@ spec:
     prefix: my-log-backup-folder
 ```
 
-You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-s3` change from `Running` to `Pause`:
+You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-s3` change from `Pause` to `Running`:
 
 ```shell
 kubectl get backup -n backup-test
