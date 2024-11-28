@@ -268,7 +268,7 @@ To pause the log backup task, you only need to change the `logSubcommand` from `
       #accessTier: Hot
   ```
 
-You can view the log backup status by checking the information of the `Backup` CR:
+You can see the `STATUS` of the `Backup` CR named `log-backup-azblob` change from `Running` to `Pause`:
 
 ```shell
 kubectl get backup -n backup-test
@@ -276,7 +276,7 @@ kubectl get backup -n backup-test
 
 ```
 NAME                       MODE     STATUS    ....
-log-backup-azblob        log      Pause     ....
+log-backup-azblob          log      Pause     ....
 ```
 
 #### Resume log backup
