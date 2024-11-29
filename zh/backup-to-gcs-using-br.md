@@ -148,11 +148,11 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志备份任务的状态。logSubcommand 有三个有效输入：
 
- • log-start：该命令用于启动新的日志备份任务，或恢复已暂停的任务。它可用于启动日志备份进程或从暂停状态恢复任务。
+ - log-start：该命令用于启动新的日志备份任务，或恢复已暂停的任务。它可用于启动日志备份进程或从暂停状态恢复任务。
 
- • log-pause：该命令用于暂时暂停活动中的日志备份任务。稍后可以通过 log-start 命令恢复任务。
+ - log-pause：该命令用于暂时暂停活动中的日志备份任务。稍后可以通过 log-start 命令恢复任务。
 
- • log-stop：该命令永久停止日志备份任务。当执行此命令时，Backup CR 将进入停止状态且无法重启。
+ - log-stop：该命令永久停止日志备份任务。当执行此命令时，Backup CR 将进入停止状态且无法重启。
  
 这些命令使日志备份任务的生命周期控制更加精细，支持启动、暂停、恢复和停止操作，以管理 Kubernetes 环境中的日志数据保留。
 
