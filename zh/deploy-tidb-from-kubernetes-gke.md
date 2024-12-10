@@ -8,7 +8,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 
 本文介绍如何使用 [TiDB Operator](https://github.com/pingcap/tidb-operator) 在 Google Cloud 上部署 TiDB 集群。本教程需要在 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs-tidb-operator&tutorial=zh/deploy-tidb-from-kubernetes-gke.md) 上运行。
 
-<a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=zh/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
+<a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md">
+  <img src="https://gstatic.com/cloudssh/images/open-btn.png" alt="Google Cloud Shell" />
+</a>
 
 所包含的步骤如下：
 
