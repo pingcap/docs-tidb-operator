@@ -13,6 +13,9 @@ TiDB Operator version: 1.6.1
 
 - Support Backup & Restore using Azure blob storage SAS token authentication ([#5720](https://github.com/pingcap/tidb-operator/pull/5720), [@tennix](https://github.com/tennix))
 - VolumeReplace feature supports TiFlash ([#5685](https://github.com/pingcap/tidb-operator/pull/5685), [@rajsuvariya](https://github.com/rajsuvariya))
+- Add a more straight forward interface for Log Backup, support pause and resume ([#5710](https://github.com/pingcap/tidb-operator/pull/5710), [@RidRisR](https://github.com/RidRisR))
+- Support delete the Log Backup task by deleting the Backup CR ([#5754](https://github.com/pingcap/tidb-operator/pull/5754), [@RidRisR](https://github.com/RidRisR))
+- VolumeModify supports modifying Azure Premium SSD v2 disks. When using this feature, you need to grant the tidb-controller-manager permission to operate Azure Disk through node or pod. ([#5958](https://github.com/pingcap/tidb-operator/pull/5958), [@handlerww](https://github.com/handlerww))
 
 ## Improvements
 
@@ -21,8 +24,10 @@ TiDB Operator version: 1.6.1
 - The VolumeReplace feature supports customizing the number of spare replicas for PD and TiKV ([#5666](https://github.com/pingcap/tidb-operator/pull/5666), [@anish-db](https://github.com/anish-db))
 - The VolumeReplace feature can be enabled for specific TiDB clusters ([#5670](https://github.com/pingcap/tidb-operator/pull/5670), [@rajsuvariya](https://github.com/rajsuvariya))
 - Optimized the PD microservice transfer primary logic to reduce the number of transfer primary operations during component updates ([#5643](https://github.com/pingcap/tidb-operator/pull/5643), [@HuSharp](https://github.com/HuSharp))
+- Support setting `LoadBalancerClass` for the TiDB service ([#5964](https://github.com/pingcap/tidb-operator/pull/5964), [@csuzhangxc](https://github.com/csuzhangxc))
 
 ## Bug fixes
 
 - Fix the issue that EBS snapshot restore incorrectly succeeds when no TiKV instances are configured or TiKV replica is set to 0 ([#5659](https://github.com/pingcap/tidb-operator/pull/5659), [@BornChanger](https://github.com/BornChanger))
 - Fix the issue that the ClusterRole/ClusterRoleBinding corresponding to TidbMonitor monitoring multiple TiDB clusters across namespaces was not properly cleaned up after deletion ([#5956](https://github.com/pingcap/tidb-operator/pull/5956), [@csuzhangxc](https://github.com/csuzhangxc))
+- Fix type mismatch of `TidbMonitor` field `.spec.prometheus.remoteWrite.remoteTimeout` ([#5734](https://github.com/pingcap/tidb-operator/pull/5734), [@IMMORTALxJO](https://github.com/IMMORTALxJO))
