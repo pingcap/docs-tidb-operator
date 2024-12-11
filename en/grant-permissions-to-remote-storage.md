@@ -150,6 +150,12 @@ When you use this method to grant permissions, you can [create the EKS cluster](
 
     Modify the value of `spec.tikv.serviceAccount` to `tidb-backup-manager`. After the TiKV Pod is restarted, check whether the Pod's `serviceAccountName` is changed.
 
+5. (Optional) If your cluster includes TiFlash Pods, repeat step 4 to associate the `ServiceAccount` with the TiFlash Pod.
+
+    ```shell
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tiflash":{"serviceAccount": "tidb-backup-manager"}}}'
+    ```
+
 > **Note:**
 >
 > `arn:aws:iam::123456789012:role/user` is the IAM role created in Step 2.
