@@ -15,7 +15,7 @@ TiDB Operator 版本：1.6.1
 - VolumeReplace 功能支持 TiFlash 组件 ([#5685](https://github.com/pingcap/tidb-operator/pull/5685), [@rajsuvariya](https://github.com/rajsuvariya))
 - 日志备份功能新增一个更直观的接口，支持暂停和恢复日志备份任务 ([#5710](https://github.com/pingcap/tidb-operator/pull/5710), [@RidRisR](https://github.com/RidRisR))
 - 日志备份功能支持通过直接删除 CR 停止备份任务 ([#5754](https://github.com/pingcap/tidb-operator/pull/5754), [@RidRisR](https://github.com/RidRisR))
-- VolumeModify 功能支持修改 Premium SSD v2 磁盘。使用该功能时需要通过 node 或 Pod 授予 tidb-controller-manager 操作 Azure Disk 的权限 ([#5958](https://github.com/pingcap/tidb-operator/pull/5958), [@handlerww](https://github.com/handlerww))
+- VolumeModify 功能支持修改 Azure Premium SSD v2 磁盘。使用该功能时需要通过 node 或 Pod 授予 tidb-controller-manager 操作 Azure Disk 的权限 ([#5958](https://github.com/pingcap/tidb-operator/pull/5958), [@handlerww](https://github.com/handlerww))
 
 ## 优化提升
 
