@@ -132,7 +132,7 @@ To deploy the BR Federation, you need to select one Kubernetes cluster as the co
 The BR Federation uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Before using the BR Federation, you must create the CRD in your Kubernetes cluster. After using the BR Federation Manager, you only need to perform the operation once.
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/manifests/federation-crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/federation-crd.yaml
 ```
 
 ### Step 2.2: Prepare the kubeconfig secret
@@ -190,7 +190,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 4. Install the BR Federation:
 
     ```shell
-    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.6.0
+    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.6.1
     ```
 
 </div>
@@ -218,7 +218,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 
     ```shell
     mkdir -p ${HOME}/br-federation && \
-    helm inspect values pingcap/br-federation --version=v1.6.0 > ${HOME}/br-federation/values.yaml
+    helm inspect values pingcap/br-federation --version=v1.6.1 > ${HOME}/br-federation/values.yaml
     ```
 
 5. Configure the BR Federation by modifying fields such as `image`, `limits`, `requests`, and `replicas` according to your needs.
@@ -226,7 +226,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 6. Deploy the BR Federation.
 
     ```shell
-    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.6.0 -f ${HOME}/br-federation/values.yaml && \
+    helm install --namespace br-fed-admin br-federation pingcap/br-federation --version v1.6.1 -f ${HOME}/br-federation/values.yaml && \
     kubectl get po -n br-fed-admin -l app.kubernetes.io/instance=br-federation
     ```
 
