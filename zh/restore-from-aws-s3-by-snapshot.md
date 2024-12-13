@@ -21,7 +21,7 @@ summary: 介绍如何将存储在 S3 上的备份元数据以及 EBS 卷快照�
     backupType: full
     restoreMode: volume-snapshot
     serviceAccount: tidb-backup-manager
-    toolImage: pingcap/br:v8.1.0
+    toolImage: pingcap/br:v8.5.0
     br:
       cluster: basic
       clusterNamespace: tidb-cluster

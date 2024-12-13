@@ -1385,7 +1385,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     spec:
      tlsCluster:
        enabled: true
-     version: v8.1.0
+     version: v8.5.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1444,7 +1444,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v8.1.0
+       version: v8.5.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1

@@ -32,7 +32,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v8.1.0
+        version: v8.5.0
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -51,7 +51,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v8.1.0
+        version: v8.5.0
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -192,7 +192,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v8.1.0
+    clusterVersion: v8.5.0
     baseImage:pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi
