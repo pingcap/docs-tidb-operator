@@ -37,7 +37,7 @@ spec:
 
 After you modify the `prometheusReloader` configuration, TidbMonitor restarts automatically. After the restart, the dynamic configuration feature is enabled. All configuration changes related to Prometheus are dynamically updated.
 
-For more examples, refer to [monitor-dynamic-configmap](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-dynamic-configmap).
+For more examples, refer to [monitor-dynamic-configmap](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-dynamic-configmap).
 
 ## Disable the dynamic configuration feature
 

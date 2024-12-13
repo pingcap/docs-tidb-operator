@@ -10,7 +10,7 @@ TiDB Operator 1.6 introduces the following key features, which helps you manage 
 ## Compatibility changes
 
 - Upgrade Kubernetes dependency to v1.28, and it is not recommended to deploy `tidb-scheduler`.
-- When deploying using Helm chart, support setting lock resource used by `tidb-controller-manager` for leader election, with the default value of `.Values.controllerManager.leaderResourceLock: leases`. When upgrading TiDB Operator to v1.6.0-beta.1 or a later version, it is recommended to first set `.Values.controllerManager.leaderResourceLock: endpointsleases` and wait for the new `tidb-controller-manager` to run normally before setting it to `.Values.controllerManager.leaderResourceLock: leases` to update the deployment.
+- When deploying using Helm chart, support setting lock resource used by `tidb-controller-manager` for leader election, with the default value of `.Values.controllerManager.leaderResourceLock: leases`. When upgrading TiDB Operator to v1.6.1-beta.1 or a later version, it is recommended to first set `.Values.controllerManager.leaderResourceLock: endpointsleases` and wait for the new `tidb-controller-manager` to run normally before setting it to `.Values.controllerManager.leaderResourceLock: leases` to update the deployment.
 
 ## Extensibility
 
