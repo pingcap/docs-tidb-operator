@@ -44,7 +44,7 @@ Before restoring a TiDB cluster across multiple Kubernetes clusters from EBS vol
 
 **You must execute the following steps in every data plane**.
 
-1. Download the [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.0/manifests/backup/backup-rbac.yaml) file to the restore server.
+1. Download the [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml) file to the restore server.
 
 2. Create the RBAC-related resources required for the restore by running the following command. Note that the RBAC-related resources must be put in the same `${namespace}` as the TiDB cluster. 
 
