@@ -14,8 +14,8 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 |:---|:---|
 | dev               | dev                 |
 | TiDB >= 5.4       | 1.3                 |
-| 5.1 <= TiDB < 5.4 | 1.3 (Recommended), 1.2      |
-| 3.0 <= TiDB < 5.1 | 1.3 (Recommended), 1.2, 1.1 |
+| 5.1 <= TiDB < 5.4 | 1.3 (Recommended), 1.2 (End of support)      |
+| 3.0 <= TiDB < 5.1 | 1.3 (Recommended), 1.2 (End of support), 1.1 (End of support) |
 | 2.1 <= TiDB < v3.0| 1.0 (End of support)       |
 
 ## Manage TiDB clusters using TiDB Operator
