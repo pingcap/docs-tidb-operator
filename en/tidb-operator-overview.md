@@ -13,9 +13,18 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 | TiDB versions | Compatible TiDB Operator versions |
 |:---|:---|
 | dev               | dev                 |
+<<<<<<< HEAD
 | TiDB >= 5.4       | 1.3                 |
 | 5.1 <= TiDB < 5.4 | 1.3 (Recommended), 1.2      |
 | 3.0 <= TiDB < 5.1 | 1.3 (Recommended), 1.2, 1.1 |
+=======
+| TiDB >= 8.0       | 1.6 (Recommended), 1.5 |
+| 7.1 <= TiDB < 8.0 | 1.5 (Recommended), 1.4 |
+| 6.5 <= TiDB < 7.1 | 1.5, 1.4 (Recommended), 1.3 |
+| 5.4 <= TiDB < 6.5 | 1.4, 1.3 (Recommended)   |
+| 5.1 <= TiDB < 5.4 | 1.4, 1.3 (Recommended), 1.2 (End of support)      |
+| 3.0 <= TiDB < 5.1 | 1.4, 1.3 (Recommended), 1.2 (End of support), 1.1 (End of support) |
+>>>>>>> b54c2b04 (zh, en: update EOS for 1.2 (#2652))
 | 2.1 <= TiDB < v3.0| 1.0 (End of support)       |
 
 ## Manage TiDB clusters using TiDB Operator
