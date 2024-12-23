@@ -50,7 +50,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     pingcap/pd:v8.5.0
     pingcap/tikv:v8.5.0
     pingcap/tidb:v8.5.0
-    pingcap/tidb-binlog:v8.5.0
     pingcap/ticdc:v8.5.0
     pingcap/tiflash:v8.5.0
     pingcap/tiproxy:latest
@@ -69,7 +68,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     docker pull pingcap/pd:v8.5.0
     docker pull pingcap/tikv:v8.5.0
     docker pull pingcap/tidb:v8.5.0
-    docker pull pingcap/tidb-binlog:v8.5.0
     docker pull pingcap/ticdc:v8.5.0
     docker pull pingcap/tiflash:v8.5.0
     docker pull pingcap/tiproxy:latest
@@ -82,7 +80,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     docker save -o pd-v8.5.0.tar pingcap/pd:v8.5.0
     docker save -o tikv-v8.5.0.tar pingcap/tikv:v8.5.0
     docker save -o tidb-v8.5.0.tar pingcap/tidb:v8.5.0
-    docker save -o tidb-binlog-v8.5.0.tar pingcap/tidb-binlog:v8.5.0
     docker save -o ticdc-v8.5.0.tar pingcap/ticdc:v8.5.0
     docker save -o tiproxy-latest.tar pingcap/tiproxy:latest
     docker save -o tiflash-v8.5.0.tar pingcap/tiflash:v8.5.0

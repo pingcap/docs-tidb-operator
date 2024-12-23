@@ -538,10 +538,10 @@ mysql> select tidb_version()\G
 *************************** 1. row ***************************
          tidb_version(): Release Version: v8.5.0
                 Edition: Community
-        Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
+        Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
              Git Branch: heads/refs/tags/v8.5.0
-         UTC Build Time: 2023-11-10 14:38:24
-              GoVersion: go1.21.3
+         UTC Build Time: 2024-12-19 14:38:24
+              GoVersion: go1.23.2
            Race Enabled: false
 Check Table Before Drop: false
                   Store: tikv
@@ -733,10 +733,10 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 *************************** 1. row ***************************
 tidb_version(): Release Version: v8.5.0
 Edition: Community
-Git Commit Hash: 700beafa79844b7b48dcba1c452ea3ff49d8f271
+Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
 Git Branch: heads/refs/tags/v8.5.0
-UTC Build Time: 2023-11-10 14:38:24
-GoVersion: go1.21.3
+UTC Build Time: 2024-12-19 14:38:24
+GoVersion: go1.23.2
 Race Enabled: false
 Check Table Before Drop: false
 Store: tikv
