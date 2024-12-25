@@ -14,9 +14,6 @@
 
 - [ ] master (the latest development version)
 - [ ] v1.3 (TiDB Operator 1.3 versions)
-- [ ] v1.2 (TiDB Operator 1.2 versions)
-- [ ] v1.1 (TiDB Operator 1.1 versions)
-- [ ] v1.0 (TiDB Operator 1.0 versions)
 
 ### What is the related PR or file link(s)?
 
