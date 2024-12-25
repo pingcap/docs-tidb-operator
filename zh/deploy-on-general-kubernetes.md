@@ -98,7 +98,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     docker load -i pd-v8.5.0.tar
     docker load -i tikv-v8.5.0.tar
     docker load -i tidb-v8.5.0.tar
-    docker load -i tidb-binlog-v8.5.0.tar
     docker load -i ticdc-v8.5.0.tar
     docker load -i tiproxy-latest.tar
     docker load -i tiflash-v8.5.0.tar
