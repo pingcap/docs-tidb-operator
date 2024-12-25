@@ -49,4 +49,4 @@ spec:
 > - The number of Pods corresponding to TidbMonitor is the product of `replicas` and `shards`. For example, when `replicas` is `1` and `shards` is `2`, TiDB Operator creates 2 TidbMonitor Pods.
 > - After `shards` is changed, `Targets` are reallocated. However, the monitoring data already stored on the Pods is not reallocated.
 
-For details on the configuration, refer to [shards example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-shards).
+For details on the configuration, refer to [shards example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-shards).
