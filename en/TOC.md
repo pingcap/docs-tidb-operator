@@ -113,7 +113,7 @@
     - [Advanced StatefulSet Controller](advanced-statefulset.md)
     - [Admission Controller](enable-admission-webhook.md)
   - [Sysbench Performance Test](benchmark-sysbench.md)
-  - [API References](https://github.com/pingcap/tidb-operator/blob/v1.6.0/docs/api-references/docs.md)
+  - [API References](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
   - [Required RBAC Rules](tidb-operator-rbac.md)
   - Tools
@@ -125,6 +125,7 @@
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
 - Release Notes
   - v1.6
+    - [1.6.1](releases/release-1.6.1.md)
     - [1.6 GA](releases/release-1.6.0.md)
     - [1.6.0-beta.1](releases/release-1.6.0-beta.1.md)
   - v1.5
