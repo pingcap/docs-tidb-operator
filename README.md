@@ -30,10 +30,3 @@ Currently, we maintain the following versions for TiDB on Kubernetes documentati
 >
 > - Previously, we maintain the TiDB on Kubernetes documentation in the [docs](https://github.com/pingcap/docs) and [docs-cn](https://github.com/pingcap/docs-cn) repository.
 > - Since March 31, 2020, all the TiDB on Kubernetes documentation has been moved to this repository, and maintained based on versions in the branches above.
-<<<<<<< HEAD
-=======
-
-## License
-
-All documentation starting from TiDB Operator v1.5 is available under the terms of [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
->>>>>>> 6da2b818 (archive v1.2 (#2665))
