@@ -13,15 +13,6 @@
 <!--Tick the checkbox(es) below to choose the TiDB Operator version(s) that your changes apply to.-->
 
 - [ ] master (the latest development version)
-<<<<<<< HEAD
-- [ ] v1.1 (TiDB Operator 1.1 versions)
-- [ ] v1.0 (TiDB Operator 1.0 versions)
-=======
-- [ ] v1.6 (TiDB Operator 1.6 versions)
-- [ ] v1.5 (TiDB Operator 1.5 versions)
-- [ ] v1.4 (TiDB Operator 1.4 versions)
-- [ ] v1.3 (TiDB Operator 1.3 versions)
->>>>>>> 6da2b818 (archive v1.2 (#2665))
 
 ### What is the related PR or file link(s)?
 
