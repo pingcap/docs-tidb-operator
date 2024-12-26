@@ -333,7 +333,7 @@ demo1-log-backup-gcs        log      Running   ....
 kubectl edit backup demo1-log-backup-gcs -n backup-test
 ```
 
-将 logSubcommand 更改为 log-stop。然后保存并退出编辑器。修改后的内容如下：
+将 `logSubcommand` 的值修改为 `log-stop`，然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
