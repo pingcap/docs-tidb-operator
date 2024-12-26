@@ -372,9 +372,11 @@ demo1-log-backup-azblob    log    Stopped   ....
 ```
 
 <Tip>
-Stopped 是日志备份的终止状态，此状态下无法再次更改状态，但你仍然可以清理日志备份的数据。
 
-在 v1.5.4/v1.6.0 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
+`Stopped` 是日志备份的终止状态。在此状态下，无法再次更改备份状态，但你仍然可以清理日志备份数据。
+
+在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
+
 </Tip>
 
 #### 清理日志备份数据
