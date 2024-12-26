@@ -142,15 +142,15 @@ demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-
 
 #### 日志备份的`logSubcommand`
 
-Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志备份任务的状态。logSubcommand 有三个有效输入：
+在 Backup 自定义资源 (CR) 中，你可以使用 `logSubcommand` 字段控制日志备份任务的状态。`logSubcommand` 支持以下三个命令：
 
-- log-start：该命令用于启动新的日志备份任务，或恢复已暂停的任务。它可用于启动日志备份进程或从暂停状态恢复任务。
+- `log-start`：该命令用于启动新的日志备份任务，或恢复已暂停的任务。使用此命令可以开始日志备份流程，或从暂停状态恢复任务。
 
-- log-pause：该命令用于暂时暂停活动中的日志备份任务。稍后可以通过 log-start 命令恢复任务。
+- `log-pause`：该命令用于暂停当前正在进行的日志备份任务。暂停任务后，你可以使用 `log-start` 命令恢复任务。
 
-- log-stop：该命令永久停止日志备份任务。当执行此命令时，Backup CR 将进入停止状态且无法重启。
- 
-这些命令使日志备份任务的生命周期控制更加精细，支持启动、暂停、恢复和停止操作，以管理 Kubernetes 环境中的日志数据保留。
+- `log-stop`：该命令用于永久停止日志备份任务。执行此命令后，Backup CR 会进入停止状态，且无法再次启动。
+
+这些命令提供了对日志备份任务生命周期的精细控制，支持启动、暂停、恢复和停止操作，帮助有效管理 Kubernetes 环境中的日志数据保留。
 
 <Tip>
 
