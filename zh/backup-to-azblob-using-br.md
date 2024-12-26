@@ -140,7 +140,7 @@ demo1-full-backup-azblob   full   snapshot   Complete   azure://my-container/my-
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。本节示例创建了名为 `demo1-log-backup-azblob` 的 `Backup` CR。具体操作如下所示。
 
-#### 日志备份的`logSubcommand`
+#### `logSubcommand` 字段说明
 
 在 Backup 自定义资源 (CR) 中，你可以使用 `logSubcommand` 字段控制日志备份任务的状态。`logSubcommand` 支持以下三个命令：
 
