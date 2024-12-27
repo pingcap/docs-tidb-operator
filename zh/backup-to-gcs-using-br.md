@@ -251,7 +251,7 @@ Log Checkpoint Ts:       436569119308644661
 kubectl edit backup demo1-log-backup-gcs -n backup-test
 ```
 
-要暂停日志备份任务，只需将 logSubcommand 从 log-start 更改为 log-pause。然后保存并退出编辑器。修改后的内容如下：
+要暂停日志备份任务，只需将 `logSubcommand` 的值从 `log-start` 修改为 `log-pause`，然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
