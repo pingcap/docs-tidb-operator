@@ -404,7 +404,7 @@ spec:
     prefix: my-log-backup-folder
 ```
 
-可以看到名为 demo1-log-backup-s3 的 Backup CR 的 STATUS 从 Paused 状态变为 Running：
+可以看到名为 `demo1-log-backup-s3` 的 Backup CR 的 `STATUS` 从 `Paused` 状态变为 `Running`：
 
 ```shell
 kubectl get backup -n backup-test
