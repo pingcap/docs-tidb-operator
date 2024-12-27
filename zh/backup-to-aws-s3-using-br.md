@@ -380,7 +380,7 @@ demo1-log-backup-s3        log      Pause     ....
 kubectl edit backup demo1-log-backup-s3 -n backup-test
 ```
 
-要恢复日志备份任务，只需将 logSubcommand 从 log-pause 更改为 log-start。然后保存并退出编辑器。修改后的内容如下：
+要恢复日志备份任务，只需将 `logSubcommand` 的值从 `log-pause` 更改为 `log-start`，然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
