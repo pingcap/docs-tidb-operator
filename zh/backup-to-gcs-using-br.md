@@ -144,7 +144,7 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。日志备份对远程存储访问授权方式与快照备份一致。本节示例创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，具体操作如下所示。
 
-#### 日志备份的`logSubcommand`
+#### `logSubcommand` 字段说明
 
 Backup 自定义资源（CR）中的 logSubcommand 字段允许你控制日志备份任务的状态。logSubcommand 有三个有效输入：
 
