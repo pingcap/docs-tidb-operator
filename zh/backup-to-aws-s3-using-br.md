@@ -237,9 +237,11 @@ demo1-full-backup-s3   full   snapshot   Complete   s3://my-bucket/my-full-backu
 这些命令提供了对日志备份任务生命周期的精细控制，支持启动、暂停、恢复和停止操作，帮助有效管理 Kubernetes 环境中的日志数据保留。
 
 <Tip>
-在 v1.5.4/v1.6.0 及更早版本的 TiDB Operator 中，可以使用 logStop: true/false 字段来停止或启动任务。此字段为了向后兼容而保留。
 
-但请勿在同一个 Backup CR 中混用 logStop 和 logSubcommand，这属于不支持的用法。在较新版本中，不推荐使用 logStop，建议使用 logSubcommand 以确保配置清晰且一致。
+在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
+
+但是，请勿在同一个 Backup CR 中同时使用 `logStop` 和 `logSubcommand` 字段，这属于不支持的用法。对于 TiDB Operator v1.5.5、v1.6.1 及之后版本，推荐使用 `logSubcommand` 以确保配置清晰且一致。
+
 </Tip>
 
 #### 启动日志备份
