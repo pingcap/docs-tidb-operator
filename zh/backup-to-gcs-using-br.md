@@ -326,7 +326,7 @@ demo1-log-backup-gcs        log      Running   ....
 
 #### 停止日志备份
 
-由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-gcs` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。
+你可以通过将 Backup 自定义资源 (CR) 的 `logSubcommand` 字段设置为 `log-stop` 来停止日志备份。下面以停止[启动日志备份](#启动日志备份)中创建的名为 `demo1-log-backup-gcs` 的 CR 为例。
 
 ```shell
 kubectl edit backup demo1-log-backup-gcs -n backup-test
