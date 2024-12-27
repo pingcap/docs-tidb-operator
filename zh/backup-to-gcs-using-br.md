@@ -286,7 +286,11 @@ demo1-log-backup-gcs        log      Pause     ....
 
 #### 恢复日志备份
 
-如果日志备份任务已暂停，可以将 logSubcommand 设置为 log-start 来恢复它。请注意，你无法从 Fail 或 Stopped 状态恢复任务。
+如果日志备份任务已暂停，你可以通过将 `logSubcommand` 字段设置为 `log-start` 来恢复该任务。下面以恢复[暂停日志备份](#暂停日志备份)中已暂停的 `demo1-log-backup-gcs` CR 为例。
+
+> **Note:**
+> 
+> 此操作仅适用于处于暂停状态 (`Pause`) 的任务，无法恢复状态为 `Fail` 或 `Stopped` 的任务。
 
 ```shell
 kubectl edit backup demo1-log-backup-gcs -n backup-test
