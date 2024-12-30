@@ -38,7 +38,9 @@ metadata:
   name: basic
 spec:
   pd:
-    enableDashboardInternalProxy: true
+    config: |
+      [dashboard]
+        internal-proxy = true
 ```
 
 这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下：
