@@ -52,12 +52,12 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    正常情况下，集群内的各组件应该使用相同版本，所以一般修改 `spec.version` 即可。如果要为集群内不同组件设置不同的版本，可以修改 `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`。
+    正常情况下，集群内的各组件应该使用相同版本，所以一般修改 `spec.version` 即可。如果要为集群内不同组件设置不同的版本，可以修改 `spec.<pd/tidb/tikv/tiflash/ticdc>.version`。
 
     `version` 字段格式如下：
 
     - `spec.version`，格式为 `imageTag`，例如 `v5.3`。
-    - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v3.1.0`。
+    - `spec.<pd/tidb/tikv/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v3.1.0`。
 
 2. 查看升级进度：
 

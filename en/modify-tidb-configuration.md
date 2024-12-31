@@ -13,7 +13,7 @@ This document describes how to modify the configuration of TiDB clusters deploye
 
 For TiDB and TiKV, if you [modify their configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config/) using SQL statements, after you upgrade or restart the cluster, the configurations will be overwritten by those in the `TidbCluster` CR. This leads to the online configuration update being invalid. Therefore, to persist the configuration, you must directly modify their configurations in the `TidbCluster` CR.
 
-For TiFlash, TiProxy, TiCDC, and Pump, you can only modify their configurations in the `TidbCluster` CR.
+For TiFlash, TiProxy and TiCDC, you can only modify their configurations in the `TidbCluster` CR.
 
 To modify the configuration in the `TidbCluster` CR, take the following steps:
 

@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/configure-storage-class/','/docs/dev/tid
 
 # Persistent Storage Class Configuration on Kubernetes
 
-TiDB cluster components such as PD, TiKV, TiDB monitoring, TiDB Binlog, and `tidb-backup` require persistent storage for data. To achieve this on Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports different types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which can be categorized into two main types:
+TiDB cluster components such as PD, TiKV, TiDB monitoring, and `tidb-backup` require persistent storage for data. To achieve this on Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports different types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which can be categorized into two main types:
 
 - Network storage
 
@@ -28,7 +28,7 @@ TiKV uses the Raft protocol to replicate data. When a node fails, PD automatical
 
 PD also uses Raft to replicate data. PD is not an I/O-intensive application, but rather a database for storing cluster meta information. Therefore, a local SAS disk or network SSD storage such as EBS General Purpose SSD (gp2) volumes on AWS or SSD persistent disks on Google Cloud can meet the requirements.
 
-To ensure availability, it is recommended to use network storage for components such as TiDB monitoring, TiDB Binlog, and `tidb-backup` because they do not have redundant replicas. TiDB Binlog's Pump and Drainer components are I/O-intensive applications that require low read and write latency, so it is recommended to use high-performance network storage such as EBS Provisioned IOPS SSD (io1) volumes on AWS or SSD persistent disks on Google Cloud.
+To ensure availability, it is recommended to use network storage for components such as TiDB monitoring, and `tidb-backup` because they do not have redundant replicas.
 
 When deploying TiDB clusters or `tidb-backup` with TiDB Operator, you can configure the `StorageClass` for the components that require persistent storage via the corresponding `storageClassName` field in the `values.yaml` configuration file. The `StorageClassName` is set to `local-storage` by default.
 
@@ -79,12 +79,6 @@ Currently, Kubernetes supports statically allocated local storage. To create a l
     >**Note:**
     >
     > The number of directories you create depends on the planned number of TiDB clusters. Each directory has a corresponding PV created, and each TiDB cluster's monitoring data uses one PV.
-
-- For a disk that stores TiDB Binlog and backup data, follow the [steps](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) to mount the disk. First, create multiple directories on the disk and bind mount the directories into the `/mnt/backup` directory.
-
-    >**Note:**
-    >
-    > The number of directories you create depends on the planned number of TiDB clusters, the number of Pumps in each cluster, and your backup method. Each directory has a corresponding PV created, and each Pump and Drainer use one PV. All [Ad-hoc full backup](backup-to-s3.md#ad-hoc-full-backup-to-s3-compatible-storage) tasks and [scheduled full backup](backup-to-s3.md#scheduled-full-backup-to-s3-compatible-storage) tasks share one PV.
 
 The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directories mentioned above are discovery directories used by local-volume-provisioner. For each subdirectory in the discovery directory, local-volume-provisioner creates a corresponding PV.
 

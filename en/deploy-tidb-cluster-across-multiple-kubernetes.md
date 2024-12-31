@@ -517,9 +517,8 @@ For a TiDB cluster deployed across Kubernetes clusters, to perform a rolling upg
     2. If TiProxy is deployed in clusters, upgrade the TiProxy versions for all the Kubernetes clusters that have TiProxy deployed.
     3. If TiFlash is deployed in clusters, upgrade the TiFlash versions for all the Kubernetes clusters that have TiFlash deployed.
     4. Upgrade TiKV versions for all Kubernetes clusters.
-    5. If Pump is deployed in clusters, upgrade the Pump versions for all the Kubernetes clusters that have Pump deployed.
-    6. Upgrade TiDB versions for all Kubernetes clusters.
-    7. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
+    5. Upgrade TiDB versions for all Kubernetes clusters.
+    6. If TiCDC is deployed in clusters, upgrade the TiCDC versions for all the Kubernetes clusters that have TiCDC deployed.
 
 ## Exit and reclaim TidbCluster that already join a cross-Kubernetes cluster
 
@@ -527,7 +526,7 @@ When you need to make a cluster exit from the joined TiDB cluster deployed acros
 
 - After scaling in the cluster, the number of TiKV replicas in the cluster should be greater than the number of `max-replicas` set in PD. By default, the number of TiKV replicas needs to be greater than three.
 
-Take the second TidbCluster created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you have enabled other components such as TiFlash, TiCDC, TiProxy, and Pump, set the number of these replicas to `0`:
+Take the second TidbCluster created in [the last section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) as an example. First, set the number of replicas of PD, TiKV, and TiDB to `0`. If you have enabled other components such as TiFlash, TiCDC and TiProxy, set the number of these replicas to `0`:
 
 > **Note:**
 >

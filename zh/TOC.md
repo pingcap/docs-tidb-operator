@@ -28,7 +28,6 @@
     - [跨多个 Kubernetes 集群部署 TiDB 集群](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [部署 TiDB 异构集群](deploy-heterogeneous-tidb-cluster.md)
   - [部署增量数据同步工具 TiCDC](deploy-ticdc.md)
-  - [部署 Binlog 收集工具](deploy-tidb-binlog.md)
 - 监控与告警
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
   - [使用 TiDB Dashboard 监控诊断 TiDB 集群](access-dashboard.md)
@@ -118,8 +117,6 @@
   - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   - 工具
     - [TiDB Toolkit](tidb-toolkit.md)
-  - 配置
-    - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
   - [日志收集](logs-collection.md)
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
   - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)

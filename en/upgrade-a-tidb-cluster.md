@@ -54,12 +54,12 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
     kubectl edit tc ${cluster_name} -n ${namespace}
     ```
 
-    Usually, all components in a cluster are in the same version. You can upgrade the TiDB cluster simply by modifying `spec.version`. If you need to use different versions for different components, modify `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
+    Usually, all components in a cluster are in the same version. You can upgrade the TiDB cluster simply by modifying `spec.version`. If you need to use different versions for different components, modify `spec.<pd/tidb/tikv/tiflash/ticdc>.version`.
 
     The `version` field has following formats:
 
     - `spec.version`: the format is `imageTag`, such as `v8.5.0`
-    - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v3.1.0`
+    - `spec.<pd/tidb/tikv/tiflash/ticdc>.version`: the format is `imageTag`, such as `v3.1.0`
 
 2. Check the upgrade progress:
 
