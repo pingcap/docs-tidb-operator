@@ -12,7 +12,7 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/TiFlash/TiProxy/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/TiFlash/TiProxy/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
     > **Note:**
@@ -400,47 +400,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
             ```
 
-    - TiKV Importer
-
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
-
-        1. Generate the default `importer-server.json` file:
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            cfssl print-defaults csr > importer-server.json
-            ```
-
-        2. Edit this file to change the `CN` and `hosts` attributes:
-
-            ```json
-            ...
-                "CN": "TiDB",
-                "hosts": [
-                  "127.0.0.1",
-                  "::1",
-                  "${cluster_name}-importer",
-                  "${cluster_name}-importer.${namespace}",
-                  "${cluster_name}-importer.${namespace}.svc"
-                  "${cluster_name}-importer.${namespace}.svc",
-                  "*.${cluster_name}-importer",
-                  "*.${cluster_name}-importer.${namespace}",
-                  "*.${cluster_name}-importer.${namespace}.svc"
-                ],
-            ...
-            ```
-
-            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
-
-        3. Generate the TiKV Importer server-side certificate:
-
-            {{< copyable "shell-regular" >}}
-
-            ``` shell
-            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
-            ```
-
     - TiDB Lightning
 
         If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
@@ -547,12 +506,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         ``` shell
         kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
-        ```
-
-    - The TiKV Importer cluster certificate Secret:
-
-        ``` shell
-        kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiDB Lightning cluster certificate Secret:
@@ -962,61 +915,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tiflash-cluster-secret` Secret object to be used by the TiFlash component of the TiDB server.
-
-    - TiKV Importer
-
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
-
-        ```yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-importer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-importer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "${cluster_name}-importer"
-          - "${cluster_name}-importer.${namespace}"
-          - "${cluster_name}-importer.${namespace}.svc"
-          - "*.${cluster_name}-importer"
-          - "*.${cluster_name}-importer.${namespace}"
-          - "*.${cluster_name}-importer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        In the file, `${cluster_name}` is the name of the cluster:
-
-        - Set `spec.secretName` to `${cluster_name}-importer-cluster-secret`.
-        - Add `server auth` and `client auth` in `usages`.
-        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
-
-            - `${cluster_name}-importer`
-            - `${cluster_name}-importer.${namespace}`
-            - `${cluster_name}-importer.${namespace}.svc`
-
-        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
-            - `127.0.0.1`
-            - `::1`
-        - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
-
-        After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
 
     - TiDB Lightning
 

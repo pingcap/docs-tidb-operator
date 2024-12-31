@@ -9,7 +9,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
-    - 为 PD/TiKV/TiDB/TiFlash/TiProxy/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 PD/TiKV/TiDB/TiFlash/TiProxy/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
 
     > **注意：**
@@ -396,46 +396,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
-    - TiKV Importer Server 端证书
-
-        如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
-
-        首先生成默认的 `importer-server.json` 文件：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl print-defaults csr > importer-server.json
-        ```
-
-        然后编辑这个文件，修改 `CN`、`hosts` 属性：
-
-        ```json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "${cluster_name}-importer",
-              "${cluster_name}-importer.${namespace}",
-              "${cluster_name}-importer.${namespace}.svc",
-              "*.${cluster_name}-importer",
-              "*.${cluster_name}-importer.${namespace}",
-              "*.${cluster_name}-importer.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
-
-        最后生成 TiKV Importer Server 端证书：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
-        ```
-
     - TiDB Lightning Server 端证书
 
         如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
@@ -546,14 +506,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     ``` shell
     kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
-    ```
-
-    TiKV Importer 集群证书 Secret：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
     TiDB Lightning 集群证书 Secret：
@@ -950,59 +902,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiflash-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiFlash 组件使用。
-
-    - TiKV Importer 组件的 Server 端证书。
-
-      如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
-
-        ```yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-importer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-importer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "${cluster_name}-importer"
-          - "${cluster_name}-importer.${namespace}"
-          - "${cluster_name}-importer.${namespace}.svc"
-          - "*.${cluster_name}-importer"
-          - "*.${cluster_name}-importer.${namespace}"
-          - "*.${cluster_name}-importer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        其中 `${cluster_name}` 为集群的名字：
-
-        - `spec.secretName` 请设置为 `${cluster_name}-importer-cluster-secret`；
-        - `usages` 请添加上 `server auth` 和 `client auth`；
-        - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
-            - `${cluster_name}-importer`
-            - `${cluster_name}-importer.${namespace}`
-            - `${cluster_name}-importer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-            - `127.0.0.1`
-            - `::1`
-        - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
-
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV Importer 组件使用。
 
     - TiDB Lightning 组件的 Server 端证书。
 
