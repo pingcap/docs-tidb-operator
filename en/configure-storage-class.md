@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/configure-storage-class/','/docs/dev/tid
 
 # Persistent Storage Class Configuration on Kubernetes
 
-TiDB cluster components such as PD, TiKV, TiDB monitoring, and `tidb-backup` require persistent storage for data. To achieve this on Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports different types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which can be categorized into two main types:
+TiDB cluster components such as PD, TiKV, TiDB monitoring, and BR require persistent storage for data. To achieve this on Kubernetes, you need to use [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). Kubernetes supports different types of [storage classes](https://kubernetes.io/docs/concepts/storage/volumes/), which can be categorized into two main types:
 
 - Network storage
 
@@ -28,9 +28,9 @@ TiKV uses the Raft protocol to replicate data. When a node fails, PD automatical
 
 PD also uses Raft to replicate data. PD is not an I/O-intensive application, but rather a database for storing cluster meta information. Therefore, a local SAS disk or network SSD storage such as EBS General Purpose SSD (gp2) volumes on AWS or SSD persistent disks on Google Cloud can meet the requirements.
 
-To ensure availability, it is recommended to use network storage for components such as TiDB monitoring, and `tidb-backup` because they do not have redundant replicas.
+To ensure availability, it is recommended to use network storage for components such as TiDB monitoring, and BR because they do not have redundant replicas.
 
-When deploying TiDB clusters or `tidb-backup` with TiDB Operator, you can configure the `StorageClass` for the components that require persistent storage via the corresponding `storageClassName` field in the `values.yaml` configuration file. The `StorageClassName` is set to `local-storage` by default.
+When deploying TiDB clusters or BR with TiDB Operator, you can configure the `StorageClass` for the components that require persistent storage via the corresponding `storageClassName` field in the `values.yaml` configuration file. The `StorageClassName` is set to `local-storage` by default.
 
 ## Network PV configuration
 
