@@ -31,7 +31,7 @@ There is no action required if you are upgrading from [v1.0.3](release-1.0.3.md)
 
 New Helm chart `tidb-lightning` brings [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) support for TiDB on Kubernetes. Check out the [document](../restore-data-using-tidb-lightning.md) for detailed user guide.
 
-Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog on Kubernetes. Check out the [document](../deploy-tidb-binlog.md) for detailed user guide.
+Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB Binlog on Kubernetes.
 
 ### Improvements
 
