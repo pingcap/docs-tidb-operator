@@ -212,7 +212,7 @@ Solution:
       backupType: full
       restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v7.5.3
+      toolImage: pingcap/br:v7.5.5
       br:
         cluster: basic
         clusterNamespace: tidb-cluster

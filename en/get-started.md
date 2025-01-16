@@ -409,7 +409,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 76
-Server version: 8.0.11-TiDB-v7.5.3 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Server version: 8.0.11-TiDB-v7.5.5 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
