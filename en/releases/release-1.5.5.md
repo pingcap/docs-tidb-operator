@@ -5,7 +5,7 @@ summary: Learn about new features and improvements in TiDB Operator 1.5.5.
 
 # TiDB Operator 1.5.5 Release Notes
 
-Release date: September 13, 2024
+Release date: January TBD, 2025
 
 TiDB Operator version: 1.5.5
 
