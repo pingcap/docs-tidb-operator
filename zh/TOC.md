@@ -114,7 +114,7 @@
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
   - [Sysbench 性能测试](benchmark-sysbench.md)
-  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/v1.5.4/docs/api-references/docs.md)
+  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/v1.5.5/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
   - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   - 工具

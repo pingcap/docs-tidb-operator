@@ -95,7 +95,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
 1. Download the deployment file for the local-volume-provisioner.
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/examples/local-pv/local-volume-provisioner.yaml
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.5/examples/local-pv/local-volume-provisioner.yaml
     ```
 
 2. If you are using the same discovery directory as described in [Step 1: Pre-allocate local storage](#step-1-pre-allocate-local-storage), you can skip this step. If you are using a different path for the discovery directory than in the previous step, you need to modify the ConfigMap and DaemonSet spec.
@@ -163,7 +163,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
 3. Deploy the `local-volume-provisioner`.
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.4/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.5/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
 4. Check the status of the Pod and PV.
