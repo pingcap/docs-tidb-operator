@@ -255,27 +255,25 @@ kubectl apply -f log-backup-azblob.yaml
 
 修改后 `log-backup-azblob.yaml` 文件内容如下：
 
-```yaml
----
-apiVersion: pingcap.com/v1alpha1
-kind: Backup
-metadata:
-  name: demo1-log-backup-azblob
-  namespace: backup-test
-spec:
-  backupMode: log
-  logSubcommand: log-pause
-  br:
-    cluster: demo1
-    clusterNamespace: test1
-    sendCredToTikv: true
-  s3:
-    provider: aws
-    secretName: s3-secret
-    region: us-west-1
-    bucket: my-bucket
-    prefix: my-log-backup-folder
-```
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: Backup
+  metadata:
+    name: demo1-log-backup-azblob
+    namespace: backup-test
+  spec:
+    backupMode: log
+    logSubcommand: log-pause
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    azblob:
+      secretName: azblob-secret
+      container: my-container
+      prefix: my-log-backup-folder
+  ```
 
 可以看到名为 `demo1-log-backup-azblob` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Pause`：
 
@@ -316,11 +314,9 @@ spec:
     cluster: demo1
     clusterNamespace: test1
     sendCredToTikv: true
-  s3:
-    provider: aws
-    secretName: s3-secret
-    region: us-west-1
-    bucket: my-bucket
+  azblob:
+    secretName: azblob-secret
+    container: my-container
     prefix: my-log-backup-folder
 ```
 
