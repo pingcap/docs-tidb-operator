@@ -251,7 +251,7 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.local.volume`: the persistent volume configuration.
 * `.spec.local.volumeMount`: the persistent volume mount configuration.
 
-## Backup CR fields
+## CompactBackup CR fields
 
 To compress log backup data into structured SST files, users can create a custom CompactBackup CR object to describe a backup task. Below is a detailed explanation of the fields in the CompactBackup CR:
 
@@ -276,8 +276,6 @@ To compress log backup data into structured SST files, users can create a custom
 * `.spec.s3`: S3-related configuration. Refer to [S3 storage fields](#s3-storage-fields).
 * `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
 * `.spec.azblob`：Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
-
-
 
 ## Restore CR fields
 

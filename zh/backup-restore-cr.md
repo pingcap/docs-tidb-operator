@@ -244,7 +244,6 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 为了将日志备份数据压缩成结构化SST，用户可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份，以下介绍 `CompactBackup` CR 各个字段的具体含义。
 
-
 * `.spec.startTs`: 用于指定日志压缩备份的的范围起始时间戳。
 * `.spec.endTs`: 用于指定日志压缩备份的范围结束时间戳。
 * `.spec.concurrency`: 最大同时进行的压缩日志任务的数量。默认为4
