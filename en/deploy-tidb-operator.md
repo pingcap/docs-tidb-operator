@@ -167,7 +167,7 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     pingcap/tidb-operator:v1.6.1
     pingcap/tidb-backup-manager:v1.6.1
     bitnami/kubectl:latest
-    pingcap/advanced-statefulset:v0.3.3
+    pingcap/advanced-statefulset:v0.7.0
     ```
 
     Next, download all these images using the following command:
@@ -178,12 +178,12 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     docker pull pingcap/tidb-operator:v1.6.1
     docker pull pingcap/tidb-backup-manager:v1.6.1
     docker pull bitnami/kubectl:latest
-    docker pull pingcap/advanced-statefulset:v0.3.3
+    docker pull pingcap/advanced-statefulset:v0.7.0
 
     docker save -o tidb-operator-v1.6.1.tar pingcap/tidb-operator:v1.6.1
     docker save -o tidb-backup-manager-v1.6.1.tar pingcap/tidb-backup-manager:v1.6.1
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
-    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
+    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.7.0
     ```
 
     Next, upload these Docker images to the server, and execute `docker load` to install these Docker images on the server:
