@@ -172,8 +172,12 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     pingcap/tidb-operator:v1.5.4
     pingcap/tidb-backup-manager:v1.5.4
     bitnami/kubectl:latest
+<<<<<<< HEAD
     pingcap/advanced-statefulset:v0.3.3
     k8s.gcr.io/kube-scheduler:v1.16.9
+=======
+    pingcap/advanced-statefulset:v0.7.0
+>>>>>>> 93aad3a1 (en, zh: update the version number of advanced-statefulset (#2677))
     ```
 
     Among them, `k8s.gcr.io/kube-scheduler:v1.16.9` should be consistent with the version of your Kubernetes cluster. You do not need to download it separately.
@@ -186,12 +190,12 @@ If your server cannot access the Internet, install TiDB Operator offline by the 
     docker pull pingcap/tidb-operator:v1.5.4
     docker pull pingcap/tidb-backup-manager:v1.5.4
     docker pull bitnami/kubectl:latest
-    docker pull pingcap/advanced-statefulset:v0.3.3
+    docker pull pingcap/advanced-statefulset:v0.7.0
 
     docker save -o tidb-operator-v1.5.4.tar pingcap/tidb-operator:v1.5.4
     docker save -o tidb-backup-manager-v1.5.4.tar pingcap/tidb-backup-manager:v1.5.4
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
-    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
+    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.7.0
     ```
 
     Next, upload these Docker images to the server, and execute `docker load` to install these Docker images on the server:
