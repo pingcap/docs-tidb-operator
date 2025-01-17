@@ -240,6 +240,34 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.local.volume`：持久卷配置。
 * `.spec.local.volumeMount`：持久卷挂载配置。
 
+## CompactBackup CR 字段介绍
+
+为了将日志备份数据压缩成结构化SST，用户可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份，以下介绍 `CompactBackup` CR 各个字段的具体含义。
+
+
+* `.spec.startTs`: 用于指定日志压缩备份的的范围起始时间戳。
+* `.spec.endTs`: 用于指定日志压缩备份的范围结束时间戳。
+* `.spec.concurrency`: 最大同时进行的压缩日志任务的数量。默认为4
+* `.spec.maxRetryTimes`: 压缩任务失败的最大重试次数。默认为6
+* `.spec.toolImage`：用于指定 `Backup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR
+
+    - 使用 BR 备份时，可以用该字段指定 BR 的版本:
+        - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
+        - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.3.0`，那么使用指定的版本镜像进行备份。
+        - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
+* `.spec.env`：指定运行备份任务的 Pod 的环境变量信息。
+* `.spec.affinity`：指定运行备份任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+* `.spec.tolerations`：指定运行恢复任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.podSecurityContext`：指定运行恢复任务的 Pod 的安全上下文配置，允许 Pod 以非 root 用户的方式运行，关于 podSecurityContext 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
+* `.spec.priorityClassName`：指定运行恢复任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
+* `.spec.imagePullSecrets`：指定运行恢复任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
+* `.spec.serviceAccount`：指定恢复时所使用的 ServiceAccount 名称。
+* `.spec.useKMS`：指定恢复时是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
+* `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
+* `.spec.s3`：S3 兼容存储相关配置，具体介绍参考 [S3 字段介绍](#s3-存储字段介绍)。
+* `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
+* `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
+
 ## Restore CR 字段介绍
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#数据恢复)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。

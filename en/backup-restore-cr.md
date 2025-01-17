@@ -251,6 +251,34 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.local.volume`: the persistent volume configuration.
 * `.spec.local.volumeMount`: the persistent volume mount configuration.
 
+## Backup CR fields
+
+To compress log backup data into structured SST files, users can create a custom CompactBackup CR object to describe a backup task. Below is a detailed explanation of the fields in the CompactBackup CR:
+
+* `.spec.startTs`: Specifies the starting timestamp for the log compression backup range.
+* `.spec.endTs`: Specifies the ending timestamp for the log compression backup range.
+* `.spec.concurrency`: Maximum number of log compression tasks that can run simultaneously. Defaults to `4`
+* `.spec.maxRetryTimes`: Maximum number of retries for failed compression tasks.  Defaults to `6`
+* `.spec.toolImage`：the tools image used by `Restore`. The only tool image used in `CompactBackup` is BR.
+    - When using BR for backup, you can specify the BR version in this field.
+        - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
+        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v8.1.0`, the image of the specified version is used for backup.
+        - If an image is specified without the version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
+* `.spec.env`: the environment variables for the Pod that runs the restore job.
+* `.spec.affinity`: the affinity configuration for the Pod that runs the restore job. For details on affinity, refer to [Affinity and anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+* `.spec.tolerations`: specifies that the Pod that runs the restore job can schedule onto nodes with matching [taints](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint). For details on taints and tolerations, refer to [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
+* `.spec.podSecurityContext`: the security context configuration for the Pod that runs the restore job, which allows the Pod to run as a non-root user. For details on `podSecurityContext`, refer to [Run Containers as a Non-root User](containers-run-as-non-root-user.md).
+* `.spec.priorityClassName`: the name of the priority class for the Pod that runs the restore job, which sets priority for the Pod. For details on priority classes, refer to [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/).
+* `.spec.imagePullSecrets`: the [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod) for the Pod that runs the restore job.
+* `.spec.serviceAccount`: the name of the ServiceAccount used for restore.
+* `.spec.useKMS`: whether to use AWS-KMS to decrypt the S3 storage key used for the backup.
+* `.spec.br`: BR-related configuration. Refer to [BR fields](#br-fields).
+* `.spec.s3`: S3-related configuration. Refer to [S3 storage fields](#s3-storage-fields).
+* `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
+* `.spec.azblob`：Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
+
+
+
 ## Restore CR fields
 
 To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR object. For detailed restore process, refer to documents listed in [Restore data](backup-restore-overview.md#restore-data).
