@@ -37,11 +37,11 @@ This section introduces the fields in the `Backup` CR.
     * `log`: back up log data in real time in the KV layer.
 
 * `.spec.logSubcommand`: the subcommand for controlling the log backup status in the Backup CR. This field provides three options for managing a log backup task:
-    * `log-start`: Initiates a new log backup task or resumes an existing task that has been paused. Use this option to start the log backup process or to continue it from a paused state.
-    * `log-pause`: Temporarily pauses an active log backup task, allowing it to be resumed later using the log-start command.
-    * `log-stop`: Permanently stops the log backup task. When this command is issued, the Backup CR enters a stopped state and cannot be restarted.
+    * `log-start`: initiates a new log backup task or resumes a paused task. Use this command to start the log backup process or resume a task from a paused state.
+    * `log-pause`: temporarily pauses the currently running log backup task. After pausing, you can use the `log-start` command to resume the task.
+    * `log-stop`: permanently stops the log backup task. After executing this command, the Backup CR enters a stopped state and cannot be restarted.
 
-    Note that in versions earlier than v1.5.5, this field does not exist. you could use the `logStop`: true/false field to stop or start a task. In the v1.5.5+ and v1.6.1+ verson, the `logStop` is still aviliable but not recommanded.
+  For versions before v1.5.5, use the `logStop` field with boolean values (`true`/`false`) to control log backup operations. While `logStop` is still supported in v1.5.5 and v1.6.1, it is recommended to use `logSubcommand` instead.
 
 * `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots in the KV layer. This field is valid only for restore and has three value options currently:
     * `snapshot`: restore data from snapshots in the KV layer.
