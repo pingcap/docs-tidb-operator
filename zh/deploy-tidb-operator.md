@@ -172,7 +172,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     pingcap/tidb-operator:v1.5.4
     pingcap/tidb-backup-manager:v1.5.4
     bitnami/kubectl:latest
-    pingcap/advanced-statefulset:v0.3.3
+    pingcap/advanced-statefulset:v0.7.0
     k8s.gcr.io/kube-scheduler:v1.16.9
     ```
 
@@ -186,12 +186,12 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     docker pull pingcap/tidb-operator:v1.5.4
     docker pull pingcap/tidb-backup-manager:v1.5.4
     docker pull bitnami/kubectl:latest
-    docker pull pingcap/advanced-statefulset:v0.3.3
+    docker pull pingcap/advanced-statefulset:v0.7.0
 
     docker save -o tidb-operator-v1.5.4.tar pingcap/tidb-operator:v1.5.4
     docker save -o tidb-backup-manager-v1.5.4.tar pingcap/tidb-backup-manager:v1.5.4
     docker save -o bitnami-kubectl.tar bitnami/kubectl:latest
-    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.3.3
+    docker save -o advanced-statefulset-v0.3.3.tar pingcap/advanced-statefulset:v0.7.0
     ```
 
     接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
