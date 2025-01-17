@@ -422,6 +422,10 @@ You can also stop log backup by taking the same steps as in [Start log backup](#
     demo1-log-backup-s3    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
+### Compact Backup
+
+
+
 ### Backup CR examples
 
 <details>

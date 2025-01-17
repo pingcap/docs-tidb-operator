@@ -372,8 +372,7 @@ demo1-log-backup-s3        log      Stopped   ....
     spec:
       backupMode: log
       br:
-        cluster: demo1
-        clusterNamespace: test1
+        mespace: test1
         sendCredToTikv: true
       s3:
         provider: aws
@@ -418,6 +417,55 @@ demo1-log-backup-s3        log      Stopped   ....
     NAME                   MODE       STATUS     ...   LOGTRUNCATEUNTIL
     demo1-log-backup-s3    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
+
+### 压缩日志备份
+
+`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的时间点恢复（Point in Time Restore, PiTR）。 
+
+本节接续上文的日志备份的案例，介绍压缩日志备份的使用。
+
+1. 在 backup-test 这个 namespace 中创建一个名为 demo1-compact-backup 的 CompactBackup CR。
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+  `compact-backup-demo1.yaml` 的内容如下：
+
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: CompactBackup
+  metadata:
+    name: demo1-compact-backup
+    namespace: backup-test
+  spec:
+    startTs: "***"
+    endTs: "***"
+    concurrency: 8
+    maxRetryTimes: 2
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    s3:
+      provider: aws
+      secretName: s3-secret
+      region: us-west-1
+      bucket: my-bucket
+      prefix: my-log-backup-folder
+  ```
+
+  其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
+
+#### 查看压缩日志备份状态
+
+创建好 `CompactBackup` CR之后，TiDB operator将会自动开始压缩日志备份。你可以通过如下命令查看备份状态：
+
+
+
+
+
 
 ### 备份示例
 
