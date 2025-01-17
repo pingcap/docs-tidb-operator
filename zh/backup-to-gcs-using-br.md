@@ -183,6 +183,7 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -360,7 +361,6 @@ spec:
     secretName: gcs-secret
     bucket: my-bucket
     prefix: my-log-backup-folder
-  logStop: true
 ```
 
 可以看到名为 `demo1-log-backup-gcs` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
@@ -375,9 +375,11 @@ demo1-log-backup-gcs       log      Stopped   ....
 ```
 
 <Tip>
+
 `Stopped` 是日志备份的终止状态。在此状态下，无法再次更改备份状态，但你仍然可以清理日志备份数据。
 
 在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
+
 </Tip>
 
 #### 清理日志备份数据
