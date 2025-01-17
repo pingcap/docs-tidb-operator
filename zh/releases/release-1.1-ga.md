@@ -29,7 +29,7 @@ TiDB Operator 版本：1.1.0
 
 ## 其他重要更新
 
-* 修复了同时启用 `PodWebhook` 和 增强型 StatefulSet 时 `TidbCluster` 升级的错误 ([#2507](https://github.com/pingcap/tidb-operator/pull/2507), [@Yisaer](https://github.com/Yisaer))
+* 修复了同时启用 `PodWebhook` 和增强型 StatefulSet 时 `TidbCluster` 升级的错误 ([#2507](https://github.com/pingcap/tidb-operator/pull/2507), [@Yisaer](https://github.com/Yisaer))
 * `tidb-scheduler` 中支持 preemption ([#2510](https://github.com/pingcap/tidb-operator/pull/2510), [@cofyc](https://github.com/cofyc))
 * 将 BR 更新为 v4.0.0-rc.2，包含 `auto_random` 的修复 ([#2508](https://github.com/pingcap/tidb-operator/pull/2508), [@DanielZhangQD](https://github.com/DanielZhangQD))
 * 增强型 StatefulSet 支持 TiFlash ([#2469](https://github.com/pingcap/tidb-operator/pull/2469), [@DanielZhangQD](https://github.com/DanielZhangQD))
