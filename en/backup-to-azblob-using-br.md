@@ -330,6 +330,61 @@ You can stop log backup by taking the same steps as in [Start log backup](#start
     demo1-log-backup    log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
+### Compact Backup
+
+You can use a `CompactBackup` CR to compress log backup data into SST format, which accelerates Point in Time Restore (PiTR).
+
+This section builds on the previous example of log backup and introduces how to use compact log backup.
+
+1. In the `backup-test` namespace, create a `CompactBackup` CR named `demo1-compact-backup`.
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+    The content of `compact-backup-demo1.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+    ```
+
+    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compression process. As a result, the compacted data may include writes outside this time range.
+
+#### View the compact log backup status
+
+After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
+
+  ```shell
+  kubectl get cpbk -n backup-test
+  ```
+
+From the output, you can find the status of the CompactBackup CR named demo1-compact-backup, similar to the following:
+
+  ```
+  NAME                   STATUS                   PROGRESS                                     MESSAGE
+  demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+  ```
+
+If the STATUS field displays Complete, the compact log backup process has finished successfully.
+
 ### Backup CR examples
 
 <details>

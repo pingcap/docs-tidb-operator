@@ -335,6 +335,62 @@ demo1-log-backup-gcs       log      Stopped   ....
     demo1-log-backup-gcs    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
+### 压缩日志备份
+
+`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的时间点恢复（Point in Time Restore, PiTR）。 
+
+本节接续上文的日志备份的案例，介绍压缩日志备份的使用。
+
+1. 在 backup-test 这个 namespace 中创建一个名为 demo1-compact-backup 的 CompactBackup CR。
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+  `compact-backup-demo1.yaml` 的内容如下：
+
+  ```yaml
+  ---
+  apiVersion: pingcap.com/v1alpha1
+  kind: CompactBackup
+  metadata:
+    name: demo1-compact-backup
+    namespace: backup-test
+  spec:
+    startTs: "***"
+    endTs: "***"
+    concurrency: 8
+    maxRetryTimes: 2
+    br:
+      cluster: demo1
+      clusterNamespace: test1
+      sendCredToTikv: true
+    gcs:
+      projectId: ${project_id}
+      secretName: gcs-secret
+      bucket: my-bucket
+      prefix: my-log-backup-folder
+  ```
+
+  其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
+
+#### 查看压缩日志备份状态
+
+创建好 `CompactBackup` CR之后，TiDB operator将会自动开始压缩日志备份。你可以通过如下命令查看备份状态：
+
+  ```shell
+  kubectl get cpbk -n backup-test
+  ```
+
+从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息, 形式大致如下：
+
+  ```
+  NAME                   STATUS                   PROGRESS                                     MESSAGE
+  demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+  ```
+
+如果 `STATUS` 字段显示为 `Complete` 则代表压缩日志备份已经完成。
+
 ### 备份示例
 
 <details>
