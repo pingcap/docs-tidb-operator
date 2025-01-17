@@ -63,7 +63,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
         ```
 
-## 第 2 步：将指定备份数据恢复到 TiDB 集群
+### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
 1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
