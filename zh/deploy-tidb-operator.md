@@ -172,12 +172,8 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     pingcap/tidb-operator:v1.5.4
     pingcap/tidb-backup-manager:v1.5.4
     bitnami/kubectl:latest
-<<<<<<< HEAD
-    pingcap/advanced-statefulset:v0.3.3
-    k8s.gcr.io/kube-scheduler:v1.16.9
-=======
     pingcap/advanced-statefulset:v0.7.0
->>>>>>> 93aad3a1 (en, zh: update the version number of advanced-statefulset (#2677))
+    k8s.gcr.io/kube-scheduler:v1.16.9
     ```
 
     其中 `k8s.gcr.io/kube-scheduler:v1.16.9` 请跟你的 Kubernetes 集群的版本保持一致即可，不用单独下载。
