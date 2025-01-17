@@ -110,7 +110,7 @@ If the original TLS certificates are issued by [the `cfssl` system](enable-tls-b
 
     > **Note:**
     >
-    >  The above command only renews the server-side and the client-side certificate between PD, TiKV, and TiDB components. If you need to renew the server-side certificates for other components, such as TiCDC, TiFlash and TiProxy, you can execute the similar command.
+    > The above command only renews the server-side and the client-side certificate between PD, TiKV, and TiDB components. If you need to renew the server-side certificates for other components, such as TiCDC, TiFlash and TiProxy, you can execute the similar command.
 
 3. [Perform the rolling restart](restart-a-tidb-cluster.md) to components that need to load the new certificates.
 
