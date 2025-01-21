@@ -36,6 +36,13 @@ This section introduces the fields in the `Backup` CR.
     * `volume-snapshot`: back up data by volume snapshots.
     * `log`: back up log data in real time in the KV layer.
 
+* `.spec.logSubcommand`: the subcommand for controlling the log backup status in the Backup CR. This field provides three options for managing a log backup task:
+    * `log-start`: initiates a new log backup task or resumes a paused task. Use this command to start the log backup process or resume a task from a paused state.
+    * `log-pause`: temporarily pauses the currently running log backup task. After pausing, you can use the `log-start` command to resume the task.
+    * `log-stop`: permanently stops the log backup task. After executing this command, the Backup CR enters a stopped state and cannot be restarted.
+
+  For versions before v1.5.5, use the `logStop` field with boolean values (`true`/`false`) to control log backup operations. While `logStop` is still supported in v1.5.5 and v1.6.1, it is recommended to use `logSubcommand` instead.
+
 * `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots in the KV layer. This field is valid only for restore and has three value options currently:
     * `snapshot`: restore data from snapshots in the KV layer.
     * `volume-snapshot`: restore data from volume snapshots.
