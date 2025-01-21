@@ -51,7 +51,7 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl create namespace backup-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.4/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `backup-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.5/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `backup-test` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n backup-test
@@ -228,6 +228,26 @@ demo1-full-backup-s3   full   snapshot   Complete   s3://my-bucket/my-full-backu
 
 You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. Log backup grants permissions to remote storages in the same way as snapshot backup. In this section, the example shows log backup operations by taking a `Backup` CR named `demo1-log-backup-s3` as an example. Note that these operations assume that permissions to remote storages are granted using accessKey and secretKey. See the following detailed steps.
 
+#### Description of the `logSubcommand` field
+
+In the Backup Custom Resource (CR), you can use the `logSubcommand` field to control the state of a log backup task. The `logSubcommand` field supports the following commands:
+
+- `log-start`: initiates a new log backup task or resumes a paused task. Use this command to start the log backup process or resume a task from a paused state.
+
+- `log-pause`: temporarily pauses the currently running log backup task. After pausing, you can use the `log-start` command to resume the task.
+
+- `log-stop`: permanently stops the log backup task. After executing this command, the Backup CR enters a stopped state and cannot be restarted.
+
+These commands provide fine-grained control over the lifecycle of log backup tasks, enabling you to start, pause, resume, and stop tasks effectively to manage log data retention in Kubernetes environments.
+
+<Tip>
+
+In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.  
+
+However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.1, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
+
+</Tip>
+
 #### Start log backup
 
 1. In the `backup-test` namespace, create a `Backup` CR named `demo1-log-backup-s3`.
@@ -247,6 +267,7 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -308,15 +329,15 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
-#### Stop log backup
+#### Pause log backup
 
-Because you already created a `Backup` CR named `demo1-log-backup-s3` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup.
+You can pause a log backup task by setting the `logSubcommand` field of the Backup Custom Resource (CR) to `log-pause`. The following example shows how to pause the `demo1-log-backup-s3` CR created in [Start log backup](#start-log-backup).
 
 ```shell
 kubectl edit backup demo1-log-backup-s3 -n backup-test
 ```
 
-In the last line of the CR, append `spec.logStop: true`. Then save and quit the editor. The modified content is as follows:
+To pause the log backup task, change the value of `logSubcommand` from `log-start` to `log-pause`, then save and exit the editor. The modified content is as follows:
 
 ```yaml
 ---
@@ -327,6 +348,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-pause
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -337,10 +359,99 @@ spec:
     region: us-west-1
     bucket: my-bucket
     prefix: my-log-backup-folder
-  logStop: true
 ```
 
-You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-s3` change from `Running` to `Stopped`:
+You can verify that the `STATUS` of the `demo1-log-backup-s3` Backup CR changes from `Running` to `Pause`:
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-s3        log      Pause     ....
+```
+
+#### Resume log backup
+
+If a log backup task is paused, you can resume it by setting the `logSubcommand` field to `log-start`. The following example shows how to resume the `demo1-log-backup-s3` CR that was paused in [Pause Log Backup](#pause-log-backup).
+
+> **Note:**
+> 
+> This operation applies only to tasks in the `Pause` state. You cannot resume tasks in the `Fail` or `Stopped` state.
+
+```shell
+kubectl edit backup demo1-log-backup-s3 -n backup-test
+```
+
+To resume the log backup task, change the value of `logSubcommand` from `log-pause` to `log-start`, then save and exit the editor. The modified content is as follows:
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-s3
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-start
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  s3:
+    provider: aws
+    secretName: s3-secret
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+You can verify that the `STATUS` of the `demo1-log-backup-s3` Backup CR changes from `Pause` to `Running`:
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-s3        log      Running   ....
+```
+
+#### Stop log backup
+
+You can stop a log backup task by setting the `logSubcommand` field of the Backup Custom Resource (CR) to `log-stop`. The following example shows how to stop the `demo1-log-backup-s3` CR created in [Start log backup](#start-log-backup).
+
+```shell
+kubectl edit backup demo1-log-backup-s3 -n backup-test
+```
+
+Change the value of `logSubcommand` to `log-stop`, then save and exit the editor. The modified content is as follows:
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-s3
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-stop
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  s3:
+    provider: aws
+    secretName: s3-secret
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+You can verify that the `STATUS` of the `Backup` CR named `demo1-log-backup-s3` changes from `Running` to `Stopped`:
 
 ```shell
 kubectl get backup -n backup-test
@@ -352,12 +463,16 @@ demo1-log-backup-s3        log      Stopped   ....
 ```
 
 <Tip>
-You can also stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
+
+`Stopped` is the terminal state for log backup. In this state, you cannot change the backup state again, but you can still clean up the log backup data.
+
+In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.
+
 </Tip>
 
 #### Clean log backup data
 
-1. Because you already created a `Backup` CR named `demo1-log-backup-s3` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
+1. Because you already created a `Backup` CR named `demo1-log-backup-s3` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
 
     ```shell
     kubectl edit backup demo1-log-backup-s3 -n backup-test
@@ -374,6 +489,7 @@ You can also stop log backup by taking the same steps as in [Start log backup](#
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1
