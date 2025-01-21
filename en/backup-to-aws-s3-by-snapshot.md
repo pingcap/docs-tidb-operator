@@ -46,7 +46,7 @@ The following sections exemplify how to back up data of the TiDB cluster `demo1`
 
 ### Step 1. Set up the environment for EBS volume snapshot backup
 
-1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.4/manifests/backup/backup-rbac.yaml) to the backup server.
+1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.5.5/manifests/backup/backup-rbac.yaml) to the backup server.
 
 2. Create the RBAC-related resources required for the backup in the `test1` namespace by running the following command:
 
