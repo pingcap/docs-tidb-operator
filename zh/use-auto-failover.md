@@ -39,7 +39,7 @@ controllerManager:
 
 ## 实现原理
 
-TiDB 集群包括 PD、TiKV、TiDB、TiFlash、TiCDC 和 Pump 六个组件。目前 TiCDC 和 Pump 并不支持故障自动转移，PD、TiKV、TiDB 和 TiFlash 的故障转移策略有所不同，本节将详细介绍这几种策略。
+TiDB 集群包括 PD、TiKV、TiDB、TiFlash 和 TiCDC 五个组件。目前 TiCDC 并不支持故障自动转移，PD、TiKV、TiDB 和 TiFlash 的故障转移策略有所不同，本节将详细介绍这几种策略。
 
 ### PD 故障转移策略
 

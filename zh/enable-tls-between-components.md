@@ -9,7 +9,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
-    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 PD/TiKV/TiDB/TiFlash/TiProxy/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
 
     > **注意：**
@@ -277,117 +277,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tidb-server.json | cfssljson -bare tidb-server
         ```
 
-    - Pump Server 端证书
-
-        首先生成默认的 `pump-server.json` 文件：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl print-defaults csr > pump-server.json
-        ```
-
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${cluster_name}-pump",
-              "*.${cluster_name}-pump.${namespace}",
-              "*.${cluster_name}-pump.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
-
-        最后生成 Pump Server 端证书：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal pump-server.json | cfssljson -bare pump-server
-        ```
-
-    - Drainer Server 端证书
-
-        首先生成默认的 `drainer-server.json` 文件：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl print-defaults csr > drainer-server.json
-        ```
-
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "<hosts 列表请参考下面描述>"
-            ],
-        ...
-        ```
-
-        现在 Drainer 组件是通过 Helm 来部署的，根据 `values.yaml` 文件配置方式不同，所需要填写的 `hosts` 字段也不相同。
-
-        如果部署的时候设置 `drainerName` 属性，像下面这样：
-
-        ``` yaml
-        ...
-        # Change the name of the statefulset and pod
-        # The default is clusterName-ReleaseName-drainer
-        # Do not change the name of an existing running drainer: this is unsupported.
-        drainerName: my-drainer
-        ...
-        ```
-
-        那么就这样配置 `hosts` 属性：
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${drainer_name}",
-              "*.${drainer_name}.${namespace}",
-              "*.${drainer_name}.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        如果部署的时候没有设置 `drainerName` 属性，需要这样配置 `hosts` 属性：
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${cluster_name}-${release_name}-drainer",
-              "*.${cluster_name}-${release_name}-drainer.${namespace}",
-              "*.${cluster_name}-${release_name}-drainer.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，`${release_name}` 是 `helm install` 时候填写的 `release name`，`${drainer_name}` 为 `values.yaml` 文件里的 `drainerName`，用户也可以添加自定义 `hosts`。
-
-        最后生成 Drainer Server 端证书：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal drainer-server.json | cfssljson -bare drainer-server
-        ```
-
     - TiCDC Server 端证书
 
         首先生成默认的 `ticdc-server.json` 文件：
@@ -507,46 +396,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
-    - TiKV Importer Server 端证书
-
-        如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
-
-        首先生成默认的 `importer-server.json` 文件：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl print-defaults csr > importer-server.json
-        ```
-
-        然后编辑这个文件，修改 `CN`、`hosts` 属性：
-
-        ```json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "${cluster_name}-importer",
-              "${cluster_name}-importer.${namespace}",
-              "${cluster_name}-importer.${namespace}.svc",
-              "*.${cluster_name}-importer",
-              "*.${cluster_name}-importer.${namespace}",
-              "*.${cluster_name}-importer.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
-
-        最后生成 TiKV Importer Server 端证书：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
-        ```
-
     - TiDB Lightning Server 端证书
 
         如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
@@ -637,22 +486,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     kubectl create secret generic ${cluster_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb-server.pem --from-file=tls.key=tidb-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    Pump 集群证书 Secret：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl create secret generic ${cluster_name}-pump-cluster-secret --namespace=${namespace} --from-file=tls.crt=pump-server.pem --from-file=tls.key=pump-server-key.pem --from-file=ca.crt=ca.pem
-    ```
-
-    Drainer 集群证书 Secret：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl create secret generic ${cluster_name}-drainer-cluster-secret --namespace=${namespace} --from-file=tls.crt=drainer-server.pem --from-file=tls.key=drainer-server-key.pem --from-file=ca.crt=ca.pem
-    ```
-
     TiCDC 集群证书 Secret：
 
     {{< copyable "shell-regular" >}}
@@ -675,14 +508,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    TiKV Importer 集群证书 Secret：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
-    ```
-
     TiDB Lightning 集群证书 Secret：
 
     {{< copyable "shell-regular" >}}
@@ -699,7 +524,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     kubectl create secret generic ${cluster_name}-cluster-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    这里给 PD/TiKV/TiDB/Pump/Drainer 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
+    这里给 PD/TiKV/TiDB 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
 ### 使用 `cert-manager` 系统颁发证书
 
@@ -956,146 +781,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tidb-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiDB 组件使用。
 
-    - Pump 组件的 Server 端证书。
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-pump-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-pump-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${cluster_name}-pump"
-          - "*.${cluster_name}-pump.${namespace}"
-          - "*.${cluster_name}-pump.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        其中 `${cluster_name}` 为集群的名字：
-
-        - `spec.secretName` 请设置为 `${cluster_name}-pump-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
-        - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
-          - `*.${cluster_name}-pump`
-          - `*.${cluster_name}-pump.${namespace}`
-          - `*.${cluster_name}-pump.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-          - `127.0.0.1`
-          - `::1`
-        - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
-
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-pump-cluster-secret` 的 Secret 对象供 TiDB 集群的 Pump 组件使用。
-
-    - Drainer 组件的 Server 端证书。
-
-        现在 Drainer 组件是通过 Helm 来部署的，根据 `values.yaml` 文件配置方式不同，所需要填写的 `dnsNames` 字段也不相同。
-
-        如果部署的时候设置 `drainerName` 属性，像下面这样：
-
-        ``` yaml
-        ...
-        # Change the name of the statefulset and pod
-        # The default is clusterName-ReleaseName-drainer
-        # Do not change the name of an existing running drainer: this is unsupported.
-        drainerName: my-drainer
-        ...
-        ```
-
-        那么就需要这样配置证书：
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-drainer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-drainer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${drainer_name}"
-          - "*.${drainer_name}.${namespace}"
-          - "*.${drainer_name}.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        如果部署的时候没有设置 `drainerName` 属性，需要这样配置 `dnsNames` 属性：
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-drainer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-drainer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${cluster_name}-${release_name}-drainer"
-          - "*.${cluster_name}-${release_name}-drainer.${namespace}"
-          - "*.${cluster_name}-${release_name}-drainer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，`${release_name}` 是 `helm install` 时候填写的 `release name`，`${drainer_name}` 为 `values.yaml` 文件里的 `drainerName`，用户也可以添加自定义 `dnsNames`。
-
-        - `spec.secretName` 请设置为 `${cluster_name}-drainer-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
-        - `dnsNames` 请参考上面的描述；
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-          - `127.0.0.1`
-          - `::1`
-        - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
-
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-drainer-cluster-secret` 的 Secret 对象供 TiDB 集群的 Drainer 组件使用。
-
     - TiCDC 组件的 Server 端证书。
 
       TiCDC 从 v4.0.3 版本开始支持 TLS，TiDB Operator v1.1.3 版本同步支持 TiCDC 开启 TLS 功能。
@@ -1218,59 +903,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiflash-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiFlash 组件使用。
 
-    - TiKV Importer 组件的 Server 端证书。
-
-      如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
-
-        ```yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-importer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-importer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "${cluster_name}-importer"
-          - "${cluster_name}-importer.${namespace}"
-          - "${cluster_name}-importer.${namespace}.svc"
-          - "*.${cluster_name}-importer"
-          - "*.${cluster_name}-importer.${namespace}"
-          - "*.${cluster_name}-importer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        其中 `${cluster_name}` 为集群的名字：
-
-        - `spec.secretName` 请设置为 `${cluster_name}-importer-cluster-secret`；
-        - `usages` 请添加上 `server auth` 和 `client auth`；
-        - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
-            - `${cluster_name}-importer`
-            - `${cluster_name}-importer.${namespace}`
-            - `${cluster_name}-importer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
-            - `127.0.0.1`
-            - `::1`
-        - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
-
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV Importer 组件使用。
-
     - TiDB Lightning 组件的 Server 端证书。
 
       如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiDB Lightning 组件生成如下的 Server 端证书。
@@ -1368,9 +1000,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 - 创建一套 TiDB 集群
 - 为 TiDB 组件间开启 TLS，并开启 CN 验证
 - 部署一套监控系统
-- 部署 Pump 组件，并开启 CN 验证
 
-1. 创建一套 TiDB 集群（监控系统和 Pump 组件已包含在内）：
+1. 创建一套 TiDB 集群（监控系统组件已包含在内）：
 
     创建 `tidb-cluster.yaml` 文件：
 
@@ -1417,15 +1048,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
        config:
          security:
            cluster-verify-cn:
-             - TiDB
-     pump:
-       baseImage: pingcap/tidb-binlog
-       replicas: 1
-       requests:
-         storage: "100Gi"
-       config:
-         security:
-           cert-allowed-cn:
              - TiDB
     ---
     apiVersion: pingcap.com/v1alpha1
@@ -1485,52 +1107,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     >           - TiDB
     > ```
 
-2. 创建 Drainer 组件并开启 TLS 以及 CN 验证。
-
-    - 第一种方式：创建 Drainer 的时候设置 `drainerName`：
-
-        编辑 values.yaml 文件，设置好 drainer-name，并将 TLS 功能打开：
-
-        ``` yaml
-        ...
-        drainerName: ${drainer_name}
-        tlsCluster:
-          enabled: true
-          certAllowedCN:
-            - TiDB
-        ...
-        ```
-
-        然后部署 Drainer 集群：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
-        ```
-
-    - 第二种方式：创建 Drainer 的时候不设置 `drainerName`：
-
-        编辑 values.yaml 文件，将 TLS 功能打开：
-
-        ``` yaml
-        ...
-        tlsCluster:
-          enabled: true
-          certAllowedCN:
-            - TiDB
-        ...
-        ```
-
-        然后部署 Drainer 集群：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
-        ```
-
-3. 创建 Backup/Restore 资源对象。
+2. 创建 Backup/Restore 资源对象。
 
     - 创建 `backup.yaml` 文件：
 
