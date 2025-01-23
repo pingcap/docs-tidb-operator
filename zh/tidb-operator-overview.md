@@ -8,6 +8,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/tidb-operator-overview/']
 
 [TiDB Operator](https://github.com/pingcap/tidb-operator) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或自托管的 Kubernetes 集群上。
 
+安全风险说明:
+
+由于受 Kubernetes 兼容性的限制，Patch 版本无法进行跨大版本的三方依赖升级，这可能带来因使用过时组件而引发的潜在安全风险。我们建议所有用户优先选择部署最新版本的 TiDB Operator，以确保您的系统能够运行在更安全和稳定的环境中，同时避免因组件老化而可能引发的风险。
+
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 | TiDB 版本 | 适用的 TiDB Operator 版本 |
