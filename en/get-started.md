@@ -237,7 +237,6 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
 tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
-tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
 
 </details>
