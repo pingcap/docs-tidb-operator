@@ -23,7 +23,8 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - If you cannot rebuild the cluster but need to enable TLS, see [Upgrade a non-TLS cluster to a TLS cluster](#upgrade-a-non-tls-cluster-to-a-tls-cluster).
 
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
@@ -39,7 +40,7 @@ Certificates can be issued in multiple methods. This document describes two meth
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
-## Generate certificates for components of the TiDB cluster
+## Step 1. Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
@@ -1369,7 +1370,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     After the object is created, `cert-manager` generates a `${cluster_name}-cluster-client-secret` Secret object to be used by the clients of the TiDB components.
 
-## Deploy the TiDB cluster
+## Step 2. Deploy the TiDB cluster
 
 When you deploy a TiDB cluster, you can enable TLS between TiDB components, and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component's certificate.
 
@@ -1606,7 +1607,7 @@ In this step, you need to perform the following operations:
         kubectl apply -f restore.yaml
         ```
 
-## Configure `pd-ctl`, `tikv-ctl` and connect to the cluster
+## Step 3. Configure `pd-ctl`, `tikv-ctl` and connect to the cluster
 
 1. Mount the certificates.
 
@@ -1660,3 +1661,89 @@ In this step, you need to perform the following operations:
     cd /var/lib/cluster-client-tls
     /tikv-ctl --ca-path=ca.crt --cert-path=tls.crt --key-path=tls.key --host 127.0.0.1:20160 cluster
     ```
+
+## Upgrade a non-TLS cluster to a TLS cluster
+
+This section describes how to enable TLS encrypted communication for an existing non-TLS TiDB cluster.
+
+> **Note:**
+>
+> This operation is only applicable to existing clusters that cannot be rebuilt. Before starting, make sure that you fully understand each step and its potential risks.
+
+1. If the cluster contains multiple PD nodes, first reduce the number of PD nodes to 1.
+
+2. Refer to [Step 1. Generate certificates for components of the TiDB Cluster](#step-1-generate-certificates-for-components-of-the-tidb-cluster) to generate TLS certificates and create Kubernetes Secret objects.
+
+3. Enable TLS:
+
+    You can choose one of the following methods to enable TLS:
+
+    - Method 1: Execute the following command to update the TiDB cluster configuration. Wait for the PD Pod to restart before proceeding to the next step.
+
+        ```shell
+        kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
+          "spec": {
+            "tlsCluster": {
+              "enabled": true
+            }
+          }
+        }'
+        ```
+
+        Example output:
+
+        ```shell
+        tidbcluster.pingcap.com/basic patched
+        ```
+
+    - Method 2: Refer to [Step 2. Deploy the TiDB cluster](#step-2-deploy-the-tidb-cluster) to enable TLS and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component's certificate.
+
+4. Configure PD nodes:
+
+    1. Use `kubectl exec` to enter the PD Pod and install `etcdctl`. For detailed installation steps, see the [etcdctl installation guide](https://etcd.io/docs/v3.4/install/). After installation, `etcdctl` is located in the extracted folder directory.
+
+    2. View the etcd member information. At this point, `peerURLs` use the HTTP protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        Example output:
+
+        ```shell
+        # memberID        status   name        peerURLs                                          clientURL                                          isLearner
+        e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+        Record the following information for the next step:
+    
+        - `memberID`: In the example, it is `e94cfb12fa384e23`.
+        - `peerURLs`: In the example, it is `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`.
+
+    3. Update the etcd member's `peerURLs` from HTTP to the HTTPS protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
+        ```
+
+        Example output:
+
+        ```shell
+        Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
+        ```
+
+    4. View the updated `peerURLs` to ensure they have been updated to the HTTPS protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        Example output:
+
+        ```shell
+        e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+5. If you previously scaled down the PD nodes, scale them back up to the original number.
+
+6. Wait for all Pods in the TiDB cluster to restart.

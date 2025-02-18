@@ -1731,4 +1731,5 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         ```
 
 5. 如果之前进行了 PD 节点缩容，请将其扩容为原有数量。
+
 6. 等待 TiDB 集群中的所有 Pod 完成重启。
