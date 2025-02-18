@@ -69,7 +69,7 @@ It is recommended that you configure `spec.pvReclaimPolicy: Retain` to ensure th
 
 #### mountClusterClientSecret
 
-PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled between cluster components](enable-tls-between-components.md), it is recommended to configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`. Under such configuration, TiDB Operator automatically mounts the `${cluster_name}-cluster-client-secret` certificate to the PD and TiKV container, so you can conveniently [use `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster).
+PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled between cluster components](enable-tls-between-components.md), it is recommended to configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`. Under such configuration, TiDB Operator automatically mounts the `${cluster_name}-cluster-client-secret` certificate to the PD and TiKV container, so you can conveniently [use `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#step-3-configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster).
 
 #### startScriptVersion
 
