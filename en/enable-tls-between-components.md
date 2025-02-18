@@ -40,7 +40,7 @@ Certificates can be issued in multiple methods. This document describes two meth
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
-## Generate certificates for components of the TiDB cluster
+## Step 1. Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
