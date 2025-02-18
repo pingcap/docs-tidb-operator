@@ -17,14 +17,14 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > - The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB components will fail.
-    > - If the cluster cannot be rebuilt and you need to enable TLS, see [Upgrade a non-TLS cluster to a TLS cluster](#upgrade-a-non-tls-cluster-to-a-tls-cluster).
+    > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB components will fail.
 
 2. Deploy the cluster, and set `.spec.tlsCluster.enabled` to `true`.
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - If you cannot rebuild the cluster but need to enable TLS, see [Upgrade a non-TLS cluster to a TLS cluster](#upgrade-a-non-tls-cluster-to-a-tls-cluster).
 
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
@@ -1664,7 +1664,7 @@ In this step, you need to perform the following operations:
 
 ## Upgrade a non-TLS cluster to a TLS cluster
 
-This section describes how to enable TLS encryption for an existing non-TLS TiDB cluster.
+This section describes how to enable TLS encrypted communication for an existing non-TLS TiDB cluster.
 
 > **Note:**
 >
