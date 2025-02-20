@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.12 Release Notes
+summary: TiDB Operator 1.1.12 版本发布日期为 2021 年 4 月 15 日。新功能包括支持为备份和恢复 Job 设置自定义环境变量，支持备份恢复 CR 设置 affinity 和 tolerations，以及支持 tidb-operator chart 使用新的 service account。优化提升包括 TiDBInitializer 中增加重试机制，增加多 PVC 支持，以及优化 `PodsAreChanged` 函数。Bug 修复包括修复挂载多 PVC 时容量设置错误的问题，修复创建 `.spec.tidb` 为空并开启 TLS 的 TidbCluster 导致 tidb-controller-manager panic 的问题，以及修复 `UnjoinedMembers` 中 PVC 状态异常的问题。
 ---
 
 # TiDB Operator 1.1.12 Release Notes

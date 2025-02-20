@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.3 Release Notes
+summary: TiDB Operator 1.1.3 版本发布，需要采取的行动包括在 `BackupSpec` 中添加 `cleanPolicy` 字段，将 `mydumper` 替换为 `dumpling` 进行备份。其他变更包括更新 backup manager 工具、为 TiCDC 添加 TLS 支持、在 Drainer 和下游数据库服务器之间添加 TLS 支持等。
 ---
 
 # TiDB Operator 1.1.3 Release Notes

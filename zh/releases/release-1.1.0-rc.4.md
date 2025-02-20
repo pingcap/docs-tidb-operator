@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 RC.4 Release Notes
+summary: TiDB Operator 1.1 RC.4 发布于 2020 年 5 月 15 日。每个组件可以使用单独的 TiDB 客户端证书。用户应该将 `Backup` 和 `Restore` CR 中的旧的 TLS 配置迁移到新的配置。
 ---
 
 # TiDB Operator 1.1 RC.4 Release Notes

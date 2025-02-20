@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.0-beta.1 Release Notes
+summary: TiDB Operator 1.3.0-beta.1 was released on January 12, 2022. The release includes compatibility changes, rolling update changes, new features, and improvements. Some changes may impact TiDB cluster management, such as the deletion of ValidatingWebhook and MutatingWebhook, and the need to upgrade TiDB Operator before deploying TiFlash. New features include support for configuring resource usage for the init container of TiFlash and enabling continuous profiling for the TiDB cluster. Improvements include optimizing the user experience of heterogeneous clusters and updating Grafana images for enhanced security.
 ---
 # TiDB Operator 1.3.0-beta.1 Release Notes
 

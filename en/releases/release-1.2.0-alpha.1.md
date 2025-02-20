@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0-alpha.1 Release Notes
+summary: TiDB Operator 1.2.0-alpha.1 was released on January 15, 2021. The update includes the ability to deploy one TiDB cluster across multiple Kubernetes clusters, support for DM 2.0, auto-scaling with PD API, and canary upgrade of TiDB Operator. Improvements include local backend support for the TiDB Lightning chart, TLS support for the TiDB Lightning chart and TiKV Importer chart, persisting checkpoint for TiDB Lightning helm chart, support for Thanos sidecar for monitoring multiple clusters, and migration from Deployment to StatefulSet for TidbMonitor. Other notable changes include optimized rate limiter intervals and changes in the directory to save customized alert rules in TidbMonitor.
 ---
 
 # TiDB Operator 1.2.0-alpha.1 Release Notes

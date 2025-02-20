@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.1 Release Notes
+summary: TiDB Operator 1.1.1 版本发布，重大变化包括添加 `additionalContainers` 和 `additionalVolumes` 字段，修复了多个问题，并更新了配置版本到 v4.0.1。
 ---
 
 # TiDB Operator 1.1.1 Release Notes

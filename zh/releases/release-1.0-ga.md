@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 GA Release Notes
+summary: TiDB Operator 1.0.0 has been released on July 30, 2019. The new version requires action to be taken for configuration changes in `values.yaml`. Stability test cases have been added, along with improvements such as GKE SSD setup simplification and AWS Terraform script modularization. Bug fixes include sysbench installation and TiKV metrics monitoring. Detailed bug fixes and changes include upgrading TiDB monitor, specifying TiKV status address, and enabling nlb cross zone load balancing by default. Multiple TiDB clusters management is now supported in Alibaba Cloud. The default TiDB version has been upgraded to v3.0.1. The release also includes various other bug fixes and improvements.
 ---
 
 # TiDB Operator 1.0 GA Release Notes

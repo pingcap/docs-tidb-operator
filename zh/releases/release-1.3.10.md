@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.10 Release Notes
+summary: TiDB Operator 1.3.10 发布，优化提升包括升级 Golang 版本到 1.19 以修复安全漏洞。
 ---
 
 # TiDB Operator 1.3.10 Release Notes

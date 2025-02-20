@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.5.2 Release Notes
+summary: TiDB Operator 1.5.2 版本新增了对 AWS EBS 快照的备份能力的跨多个 K8S 集群的支持。优化了重启 PD、TiKV 时的启动流程，修复了替换 volume 时可能出现的问题。
 ---
 
 # TiDB Operator 1.5.2 Release Notes

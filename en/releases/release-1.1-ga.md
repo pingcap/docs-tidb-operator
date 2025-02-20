@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 GA Release Notes
+summary: Upgrade from v1.0.x, breaking changes, and other notable changes. Notable changes include support for preemption in tidb-scheduler, update BR to v4.0.0-rc.2, and support TiCDC in TidbCluster. The release also includes improvements in performance and updates to TiDB/TiKV/PD configuration to 4.0.0 GA version.
 ---
 
 # TiDB Operator 1.1 GA Release Notes

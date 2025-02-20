@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.0 Release Notes
+summary: TiDB Operator 1.3.0 has compatibility changes, new features, improvements, and bug fixes. Upgrading to v1.3.0 directly may cause failed rolling upgrade if a TiDB cluster is deployed across multiple Kubernetes clusters. It is recommended to upgrade TiDB Operator to v1.3.1 before upgrading TiFlash. New features include configuring DNS for Pods, setting random passwords for TiDB, and supporting one-time recover for TiKV/TiFlash/DM Worker. Improvements include pre-checking VolumeMount existence and enhancing the feature of deploying a TiDB cluster across Kubernetes clusters. Bug fixes include fixing the issue that tidb scheduler cannot be deployed on Kubernetes v1.23 or later versions.
 ---
 
 # TiDB Operator 1.3.0 Release Notes

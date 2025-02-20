@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.1 Release Notes
+summary: TiDB Operator 1.2.1 was released on August 18, 2021. The update includes changes to the rolling update process, which may cause the recreation of the TiCDC Pod if `hostNetwork` is enabled. Additionally, improvements have been made to support configuring `hostNetwork` for all components in TidbCluster, allowing all components to use the host network.
 ---
 
 # TiDB Operator 1.2.1 Release Notes

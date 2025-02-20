@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.6 Release Notes
+summary: TiDB Operator 1.2.6 was released on January 4, 2022. The improvements include refining the retry logic when updating the status of the Backup and Restore CR.
 ---
 # TiDB Operator 1.2.6 Release Notes
 

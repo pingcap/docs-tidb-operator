@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.2 Release Notes
+summary: TiDB Operator version 1.1.2 has been released on July 1, 2020. An issue with PD 4.0.2 has been fixed, requiring an upgrade before deploying TiDB 4.0.2 and later versions. Other changes include collecting metrics for TiCDC, TiDB Lightning, and TiKV Importer, updating PD/TiDB/TiKV config to v4.0.2, fixing a bug with `PD` Member, supporting Auto-Scaler Reference in `TidbCluster` Status, and configuring container lifecycle hooks and `terminationGracePeriodSeconds` in TiDB spec.
 ---
 
 # TiDB Operator 1.1.2 Release Notes

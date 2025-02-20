@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 RC.4 Release Notes
+summary: TiDB Operator 1.1 RC.4 was released on May 15, 2020. The new version supports separate TiDB client certificates for each component and allows customization of backup path prefix for remote storage. It also fixes bugs related to service annotations and reconciling TiDB service. Other notable changes include support for TiCDC in TidbCluster CR, creating node pools for TiFlash and CDC on ACK and EKS, and backup and restore with GCS using BR. Additionally, it updates TiDBConfig and TiKVConfig to support the 4.0.0-rc version and adds external strategy ability for TidbClusterAutoScaler. PVReclaimPolicy for TidbMonitor when storage is enabled is also exposed.
 ---
 
 # TiDB Operator 1.1 RC.4 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.5 Release Notes
+summary: TiDB Operator 1.4.5 was released on June 26, 2023. The improvements include adding metrics for TidbCluster reconcile errors, reconciler and worker queue observability, introducing `startUpScriptVersion` field for DM master, and support for rolling restart and scaling-in of TiCDC clusters. Bug fixes include suppressing GC for newly created scheduled backups, making `backupTemplate` optional in backup CR, and fixing issues related to Kubernetes cluster-level permission and `AdditionalVolumeMounts` for TidbCluster.
 ---
 
 # TiDB Operator 1.4.5 Release Notes

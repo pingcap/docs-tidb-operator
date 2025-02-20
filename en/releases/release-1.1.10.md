@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.10 Release Notes
+summary: TiDB Operator 1.1.10 was released on January 28, 2021. The new version includes compatibility changes, rolling update changes, new features, improvements, and bug fixes. Some notable changes include the support for canary upgrade, `remotewrite` configuration for TidbMonitor, and customizing storage config for TiDB slow log. The update also fixes issues related to TLS-enabled backup and restore jobs, advanced StatefulSet, and recovery of TiKV component.
 ---
 
 # TiDB Operator 1.1.10 Release Notes
