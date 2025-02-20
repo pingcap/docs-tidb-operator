@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.7 Release Notes
+summary: TiDB Operator 1.3.7 was released on August 1, 2022. The new features include the addition of the `suspendAction` field to suspend any component. Improvements include recreating the `StatefulSet` of a component after PVCs are scaled up and continuing scale-up if a leader eviction times out. Bug fixes address issues with TiKV upgrades when using local storage and potential backup file leaks after cleanup.
 ---
 
 # TiDB Operator 1.3.7 Release Notes

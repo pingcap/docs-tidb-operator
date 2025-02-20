@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.3 Release Notes
+summary: TiDB Operator 1.3.3 发布，新增了 `spec.tidb.service.port` 字段，修复了集群升级过程中可能泄漏的问题，更新了 `tidb-backup-manager` 镜像的基础镜像，修复了不兼容 ARM 架构的问题，修复了当 tidb Service 没有 Endpoint 时可能会 panic 的问题，修复了 Kubernetes 集群访问失败并重试后组件 Pod 的 Labels 和 Annotations 可能丢失的问题。
 ---
 
 # TiDB Operator 1.3.3 Release Notes

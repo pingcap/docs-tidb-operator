@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.4 Release Notes
+summary: TiDB Operator 1.1.4 was released on August 21, 2020. Notable changes include the addition of TableFilter to BackupSpec and RestoreSpec, support for customizing environment variables for the initializer container, patching PVCs when storage request is increased, TLS support for Backup & Restore with Dumpling & TiDB Lightning, and support for max-index-length TiDB config option. Other changes include fixes for goroutine and memory leaks, support for TLS for TiFlash, and configuration of TZ environment for admission webhook and advanced statefulset controller.
 ---
 
 # TiDB Operator 1.1.4 Release Notes
@@ -11,8 +12,11 @@ TiDB Operator version: 1.1.4
 ## Notable changes
 
 - `TableFilter` is added to the `BackupSpec` and `RestoreSpec`. `TableFilter` supports backing up specific databases or tables with Dumpling or BR and supports restoring specific databases or tables with BR.
-  `BackupSpec.Dumpling.TableFilter` is deprecated since v1.1.4. Please configure `BackupSpec.TableFilter` instead.
-  Since TiDB v4.0.3, you can configure `BackupSpec.TableFilter` to replace the `BackupSpec.BR.DB` and `BackupSpec.BR.Table` fields and configure `RestoreSpec.TableFilter` to replace the `RestoreSpec.BR.DB` and `RestoreSpec.BR.Table` fields ([#3134](https://github.com/pingcap/tidb-operator/pull/3134), [@sstubbs](https://github.com/sstubbs))
+
+    `BackupSpec.Dumpling.TableFilter` is deprecated since v1.1.4. Please configure `BackupSpec.TableFilter` instead.
+
+    Since TiDB v4.0.3, you can configure `BackupSpec.TableFilter` to replace the `BackupSpec.BR.DB` and `BackupSpec.BR.Table` fields and configure `RestoreSpec.TableFilter` to replace the `RestoreSpec.BR.DB` and `RestoreSpec.BR.Table` fields ([#3134](https://github.com/pingcap/tidb-operator/pull/3134), [@sstubbs](https://github.com/sstubbs))
+
 - Update the version of TiDB and tools to v4.0.4 ([#3135](https://github.com/pingcap/tidb-operator/pull/3135), [@lichunzhu](https://github.com/lichunzhu))
 - Support customizing environment variables for the initializer container in the TidbMonitor CR ([#3109](https://github.com/pingcap/tidb-operator/pull/3109), [@kolbe](https://github.com/kolbe))
 - Support patching PVCs when the storage request is increased ([#3096](https://github.com/pingcap/tidb-operator/pull/3096), [@cofyc](https://github.com/cofyc))

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.2 Release Notes
+summary: TiDB Operator 1.3.2 was released on March 18, 2022. The improvements include support for TiDB to run on Istio-enabled Kubernetes clusters and support for multi-arch docker image.
 ---
 
 # TiDB Operator 1.3.2 Release Notes

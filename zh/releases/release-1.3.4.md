@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.4 Release Notes
+summary: TiDB Operator 1.3.4 发布，优化提升包括在各个组件的状态信息中添加了 `volumes` 字段，以展示存储卷状态。
 ---
 
 # TiDB Operator 1.3.4 Release Notes

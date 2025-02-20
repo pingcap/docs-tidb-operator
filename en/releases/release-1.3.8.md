@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.8 Release Notes
+summary: TiDB Operator 1.3.8 was released on September 13, 2022. The new feature includes special annotations for TidbCluster to configure the minimum ready duration for TiDB, TiKV, and TiFlash. The minimum ready duration specifies the minimum number of seconds that a newly created Pod takes to be ready during a rolling upgrade. An improvement is the support for graceful upgrade of a TiCDC Pod if the Pod version is v6.3.0 or later versions.
 ---
 
 # TiDB Operator 1.3.8 Release Notes

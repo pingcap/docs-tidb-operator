@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.5 Release Notes
+summary: TiDB Operator 1.1.5 was released on September 18, 2020. The new version includes compatibility changes, new features, improvements, and bug fixes. Some notable changes include support for configuring serviceAccount for TiDB/Pump/PD, labels configuration for TiDB, and recovery from failover for TiFlash and TiKV. Additionally, there are improvements in adapting configurations to v4.0.6, scaling taking precedence over upgrading, and bug fixes for the Grafana container in the TidbMonitor CR.
 ---
 
 # TiDB Operator 1.1.5 Release Notes

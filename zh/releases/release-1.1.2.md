@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.2 Release Notes
+summary: TiDB Operator 1.1.2 版本修复了与 PD 4.0.2 不兼容的问题。需要将 TiDB Operator 升级到 v1.1.2 后再部署 TiDB 4.0.2 及更高版本。其他变更包括抓取监控指标和更新配置为 v4.0.2，修复缩容后 PD 成员可能仍然存在的错误，同步信息到 `TidbCluster` `Status` 字段，以及支持在 TiDB 参数中配置容器生命周期 hook 和 `terminationGracePeriodSeconds`。
 ---
 
 # TiDB Operator 1.1.2 Release Notes

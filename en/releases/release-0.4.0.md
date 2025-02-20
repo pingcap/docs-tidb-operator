@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 0.4 Release Notes
+summary: TiDB Operator 0.4.0 was released on November 9, 2018. Notable changes include extending Kubernetes scheduler for TiDB data awareness, restoring backup data from GCS bucket, and setting password for TiDB when first deployed. Minor changes and bug fixes include updating roadmap, adding unit tests, E2E tests, adding TiDB failover limit, synchronizing PV reclaim policy early, using helm release name as instance label, and fixing local PV setup script.
 ---
 
 # TiDB Operator 0.4 Release Notes

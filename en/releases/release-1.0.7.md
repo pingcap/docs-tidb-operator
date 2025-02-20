@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.7 Release Notes
+summary: TiDB Operator 1.0.7 was released on June 16, 2020. Notable changes include fixing alert rules lost after rolling upgrade, upgrading local volume provisioner to 2.3.4, fixing operator failover config invalid, removing unnecessary duplicated docs, updating doc links and image in readme, emitting events when PD failover, fixing some broken urls, and removing some not very useful update events.
 ---
 
 # TiDB Operator 1.0.7 Release Notes

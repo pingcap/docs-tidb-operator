@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.1 Release Notes
+summary: TiDB Operator 1.3.1 版本发布日期为 2022 年 2 月 24 日。此版本修复了 TiFlash 丢失元数据的问题，并添加了新的 `spec.dnsPolicy` 字段以支持配置 Pod 的 DNSPolicy。另外，`tidb-lightning` Helm chart 默认后端改为使用 `local`。还修复了 TiFlash 配置中缺少 `tmp_path` 字段时无法使用 TiFlash v5.4.0 及以后版本的问题，以及 Discovery 服务错误导致 TiDB 集群 PD 组件启动失败的问题。
 ---
 
 # TiDB Operator 1.3.1 Release Notes

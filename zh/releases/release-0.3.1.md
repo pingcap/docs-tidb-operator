@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 0.3.1 Release Notes
+summary: TiDB Operator 0.3.1 was released on October 31, 2018. The release includes minor changes such as parameterizing the serviceAccount, bumping TiDB to v2.0.7, and allowing user-specified config files. Bug fixes include addressing issues with parallel upgrades, wrong parameters, and recovery after a failed upgrade.
 ---
 
 # TiDB Operator 0.3.1 Release Notes

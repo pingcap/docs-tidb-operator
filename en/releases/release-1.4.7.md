@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.7 Release Notes
+summary: TiDB Operator 1.4.7 was released on July 26, 2023. This version includes bug fixes, such as making `logBackupTemplate` optional in BackupSchedule CR.
 ---
 
 # TiDB Operator 1.4.7 Release Notes

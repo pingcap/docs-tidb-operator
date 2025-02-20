@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.1 Release Notes
+summary: TiDB Operator version 1.3.1 was released on February 24, 2022. The release includes compatibility changes, new features, improvements, and bug fixes. Users must upgrade TiDB Operator to avoid TiFlash losing metadata. A new field `spec.dnsPolicy` was added to support configuring `DNSPolicy` for Pods. The `tidb-lightning` Helm chart now uses `local` backend as the default backend. Bug fixes include issues with TiFlash losing metadata and not working if certain fields are not set in TiFlash's config, as well as TiDB cluster's PD components failing to start due to discovery service errors.
 ---
 
 # TiDB Operator 1.3.1 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.5 Release Notes
+summary: TiDB Operator version 1.0.5 was released on December 11, 2019. The new features include fixing backup failure issue, recommending deployment of TiDB and Pump on the same node, fixing RBAC permission, and resolving e2e nil point dereference. No action is required for upgrading from v1.0.4.
 ---
 
 # TiDB Operator 1.0.5 Release Notes

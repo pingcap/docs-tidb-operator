@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.2 Release Notes
+summary: TiDB Operator version 1.0.2 has made several improvements and bug fixes. The AWS Terraform script now suspends the replacing behavior for TiKV auto-scaling-group to prevent data loss. It also adds a new VM manager, sets default externalTrafficPolicy to be Local for TiDB service, and fixes various compatibility issues. The release also includes bug fixes for tkctl version, Terraform script, statefulsets apiVersion, TiDB Loadbalancer, and more. Overall, the release aims to enhance stability and compatibility for TiDB Operator on AWS, GCP, and Aliyun.
 ---
 
 # TiDB Operator 1.0.2 Release Notes

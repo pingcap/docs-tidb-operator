@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.7 Release Notes
+summary: TiDB Operator 1.3.7 版本发布，新增了暂停组件功能，优化了扩容完成后重建 StatefulSet 的流程，修复了本地存储升级 TiKV 和清理备份文件后残留的问题。
 ---
 
 # TiDB Operator 1.3.7 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.5 Release Notes
+summary: TiDB Operator 1.1.5 版本发布日期为 2020 年 9 月 18 日。此版本兼容性变化需要注意 TiFlash 版本低于 `v4.0.5` 的设置。新功能包括支持为 TiDB/Pump/PD 配置 `serviceAccount`，以及配置 `spec.tikv.config.log-format` 和 `spec.tikv.config.server.max-grpc-send-msg-len`。优化提升方面支持 TiDB/PD/TiKV 的 v4.0.6 配置，挂载集群客户端证书到 PD Pod，以及对于 TiFlash/PD/TiDB 的伸缩实例优先于升级。同时修复了 TidbMonitor CR 中的 Grafana container 忽略 `Env` 配置的问题。
 ---
 
 # TiDB Operator 1.1.5 Release Notes
