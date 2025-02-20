@@ -22,6 +22,7 @@ TiDB Operator 版本：1.1.8
 - 支持 Prometheus 从多个 TiDB cluster 抓取 metrics 数据。([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
     需要手动操作：如果已经部署了 `TidbMonitor` CR，在升级到 TiDB Operator v1.1.8 之后，需要升级 `spec.initializer.version` 字段到 `v4.0.9`，否则有的 metric 在 Grafana 面板上将不会正确显示。Prometheus 抓取 job 名字从 `${component}` 改成了 `${namespace}-${TidbCluster Name}-${component}`。
+
 - `TidbMonitor` 中的 Prometheus job 新增了 `component` label。([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug 修复
