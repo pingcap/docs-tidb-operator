@@ -12,8 +12,11 @@ TiDB Operator 版本：1.1.4
 ## 重大变化
 
 - 将 `TableFilter` 添加到 `BackupSpec` 和 `RestoreSpec`。`TableFilter` 支持使用 Dumpling 或 BR 备份特定的数据库或表，并支持使用 BR 恢复特定的数据库或表。
-- 从 v1.1.4 开始，已弃用 `BackupSpec.Dumpling.TableFilter`，请改为配置 `BackupSpec.TableFilter`。
-- 从 TiDB v4.0.3 开始，可以通过配置 `BackupSpec.TableFilter` 来替换 `BackupSpec.BR.DB` 和 `BackupSpec.BR.Table` 字段，并且通过配置 `RestoreSpec.TableFilter` 来替换 `RestoreSpec.BR.DB` 和 `RestoreSpec.BR.Table` 字段 ([#3134](https://github.com/pingcap/tidb-operator/pull/3134)，[@sstubbs](https://github.com/sstubbs))
+
+    从 v1.1.4 开始，已弃用 `BackupSpec.Dumpling.TableFilter`，请改为配置 `BackupSpec.TableFilter`。
+
+    从 TiDB v4.0.3 开始，可以通过配置 `BackupSpec.TableFilter` 来替换 `BackupSpec.BR.DB` 和 `BackupSpec.BR.Table` 字段，并且通过配置 `RestoreSpec.TableFilter` 来替换 `RestoreSpec.BR.DB` 和 `RestoreSpec.BR.Table` 字段 ([#3134](https://github.com/pingcap/tidb-operator/pull/3134)，[@sstubbs](https://github.com/sstubbs))
+
 - 更新 TiDB 和配套工具的版本为 v4.0.4 ([#3135](https://github.com/pingcap/tidb-operator/pull/3135)，[@lichunzhu](https://github.com/lichunzhu))
 - 支持在 TidbMonitor CR 中为初始化容器自定义环境变量 ([#3109](https://github.com/pingcap/tidb-operator/pull/3109)，[@kolbe](https://github.com/kolbe))
 - 支持增加存储请求 ([#3096](https://github.com/pingcap/tidb-operator/pull/3096)，[@cofyc](https://github.com/cofyc))
