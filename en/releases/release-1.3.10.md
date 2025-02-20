@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.10 Release Notes
+summary: TiDB Operator 1.3.10 was released on February 24, 2023. The new version includes an improvement to bump the Go version to 1.19 in order to fix security vulnerabilities.
 ---
 
 # TiDB Operator 1.3.10 Release Notes

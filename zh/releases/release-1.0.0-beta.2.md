@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 Beta.2 Release Notes
+summary: TiDB Operator 1.0 Beta.2 has been released on May 10, 2019. The new version includes enhanced stability, improved ease of use, bug fixes, and other improvements. Some of the key changes include refactored e2e test, one-command deployment for AWS and Aliyun, and support for slow log of TiDB. Numerous bug fixes and detailed changes have also been made to improve the overall performance and user experience.
 ---
 
 # TiDB Operator 1.0 Beta.2 Release Notes

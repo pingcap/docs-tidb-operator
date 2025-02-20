@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.6 Release Notes
+summary: TiDB Operator 1.2.6 发布日期 2022 年 1 月 4 日。优化更新 Restore 和 Backup 状态时的重试逻辑。
 ---
 # TiDB Operator 1.2.6 Release Notes
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.15 Release Notes
+summary: TiDB Operator 1.1.15 was released on February 17, 2022. This version includes a bug fix for a potential goroutine leak when TiDB Operator checks the Region leader count of TiKV.
 ---
 
 # TiDB Operator 1.1.15 Release Notes

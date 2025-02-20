@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.5.1 Release Notes
+summary: TiDB Operator 1.5.1 发布，新增支持替换 PD、TiKV 和 TiDB 所使用的 volume。修复了多个 Bug，包括手动触发 TiKV eviction 时 PVC Modifier 报错的问题，替换 TiKV volume 过程中再触发 TiKV eviction 时可能造成 TiDB Operator reconcile 死锁的问题，TidbCluster 在 Upgrade 过程中可能无法回滚的问题，以及 MaxReservedTime 选项没有被 backup schedule gc 使用的问题。
 ---
 
 # TiDB Operator 1.5.1 Release Notes

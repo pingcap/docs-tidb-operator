@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.2 Release Notes
+summary: TiDB Operator 1.4.2 was released on February 3, 2023. This version fixed the issue where TiFlash does not listen on IPv6 addresses when the `preferIPv6` configuration is enabled.
 ---
 
 # TiDB Operator 1.4.2 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.1 Release Notes
+summary: TiDB Operator version 1.0.1 was released on September 17, 2019. The release includes important bug fixes and improvements. Users of version 1.0.0 or prior must upgrade to avoid serious bugs that could cause service outage. The release also includes modularization of GCP Terraform, support for expanding cloud storage PV dynamically, and improvements to backup tool image. Additionally, several bug fixes were made to address issues such as TiKV scale-in failure and orphaned pods cleaner bugs.
 ---
 
 # TiDB Operator 1.0.1 Release Notes

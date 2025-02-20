@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.0-alpha.1 Release Notes
+summary: TiDB Operator 1.4.0-alpha.1 发布，包含兼容性改动、滚动升级改动、新功能、优化提升和错误修复。新增自动设置 TiDB 的 location labels、新字段 `spec.tikv.scalePolicy` 与 `spec.tiflash.scalePolicy`、`startScriptVersion` 字段、BR 恢复集群到备份时间点、feature gate `VolumeModifying`、修改存储参数、配置 BR 的 `--check-requirements` 参数、使用字段 `additionalContainers` 自定义 Pod 容器配置。优化了 `TidbMonitor` 使用的 Prometheus 的 remoteWrite 配置和 TiFlash `Service` 添加 metric 端口。修复了集群扩缩容时的问题和 PD spec 为空导致 TiDB Operator 崩溃的问题。
 ---
 
 # TiDB Operator 1.4.0-alpha.1 Release Notes

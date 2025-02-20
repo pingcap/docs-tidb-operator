@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 Beta.2 Release Notes
+summary: 默认存储类和备份存储类已废弃，现在使用 Kubernetes 默认存储类。用户可设置备份和恢复的亲和性和容忍度。解决了 AdvancedStatefulSet 和 Admission Webhook 一起使用的问题。支持基于 CPU 平均负载的集群自动扩容。支持用户自定义证书。修复了一些问题并优化了日志。
 ---
 
 # TiDB Operator 1.1 Beta.2 Release Notes

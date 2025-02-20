@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 Beta.3 Release Notes
+summary: TiDB Operator 1.0 Beta.3 was released on June 6, 2019. The new version includes the removal of `nodeSelectorRequired` from values.yaml and the addition of stability cases, new features, documentation improvements, and bug fixes. Some notable new features include ConfigMap rollout management, stable scheduling for pods, and support for adding additional pod annotations. The default TiDB version has been upgraded to v3.0.0-rc.1, and various bug fixes and changes have been implemented. Overall, the release focuses on stability, new features, and documentation improvements.
 ---
 
 # TiDB Operator 1.0 Beta.3 Release Notes

@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator v1.6 新特性
-Summary: 了解 TiDB Operator 1.6.0 版本引入的新特性。
+summary: 了解 TiDB Operator 1.6.0 版本引入的新特性。
 ---
 
 # TiDB Operator v1.6 新特性

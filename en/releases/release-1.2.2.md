@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.2 Release Notes
+summary: TiDB Operator 1.2.2 was released on September 3, 2021. Upgrading the operator will recreate the TiDBMonitor and TiFlash Pods. The new feature includes support for dynamically reloading configurations in TiDBMonitor. Bug fixes address upgrade failures of TiCDC from an earlier version to v5.2.0.
 ---
 
 # TiDB Operator 1.2.2 Release Notes

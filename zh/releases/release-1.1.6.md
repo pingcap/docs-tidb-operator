@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.6 Release Notes
+summary: TiDB Operator 1.1.6 版本发布日期为 2020 年 10 月 16 日。此版本包含兼容性变化、滚动升级改动、新功能、优化提升和 Bug 修复。兼容性变化包括 `spec.pd.config` 参数的自动转换和需要手动编辑 TidbCluster CR 的配置。滚动升级改动包括 TiDB 或 TiKV 集群的滚动升级以及 TiFlash 集群的滚动升级。新功能包括支持 Backup 和 Restore CR 自定义 BR 命令行参数、配置 TiKV evict leader 超时时间等。优化提升包括透传 TiFlash/TiKV/PD/Pump 的 TOML 格式配置、定时备份到 GCS 时目录名称添加备份时间等。Bug 修复包括修复 Discovery 可能导致启动多个 PD 集群的错误。
 ---
 
 # TiDB Operator 1.1.6 Release Notes

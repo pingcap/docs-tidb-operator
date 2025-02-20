@@ -1,5 +1,6 @@
 ---
 title: TiDB on Kubernetes Sysbench 性能测试
+summary: TiDB Operator GA 发布后，我们在 GKE 平台进行了全面的性能测试。测试结果显示，在 Host 网络模式下，TiDB 性能略优于 Pod 网络模式（约 7%）。此外，使用 Ubuntu 系统的 Host 网络模式下，TiDB 性能也略优于 COS 系统（约 9%）。在集群外访问时，使用 Load Balancer 会略损失性能（约 5%）。多可用区下节点之间的延迟增加，会对 TiDB 性能产生一定影响（30% ~ 6%）。计算型机型相对普通型机器带来了很大 QPS 提升（50% ~ 60%）。
 ---
 
 # TiDB on Kubernetes Sysbench 性能测试

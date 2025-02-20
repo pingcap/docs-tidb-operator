@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.4 Release Notes
+summary: TiDB Operator 1.4.4 发布，新增支持在已部署 TiFlash 的集群上使用卷快照备份和恢复，准确显示备份大小，支持重试快照备份，集成管理日志备份和快照备份。修复了使用非语义版本格式的 TiDB 镜像同步失败的问题，使用卷快照备份一个已缩容的集群后无法恢复数据的问题，卷快照备份可能崩溃的问题，卷快照恢复可能在最后阶段失败的问题。
 ---
 
 # TiDB Operator 1.4.4 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 GA Release Notes
+summary: TiDB Operator 1.1 GA 发布日期 2020 年 5 月 28 日。将 TiDB Pod 的 readiness 探针从 HTTPGet 更改为 TCPSocket 4000 端口。这将触发 tidb-server 组件滚动升级。你可以在升级 TiDB Operator 之前将 spec.paused 设置为 true 以避免滚动升级，并在准备升级 tidb-server 时将其重新设置为 false。
 ---
 
 # TiDB Operator 1.1 GA Release Notes

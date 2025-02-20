@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.3 Release Notes
+summary: TiDB Operator 1.1.3 was released on July 27, 2020. Action required includes adding a field `cleanPolicy` in `BackupSpec` and replacing `mydumper` with `dumpling` for backup. Other notable changes include updating tools in backup manager, adding TLS support for TiCDC, and support for auto-scaling by storage for TiKV in `TidbClusterAutoScaler`. Various bug fixes and updates were also made.
 ---
 
 # TiDB Operator 1.1.3 Release Notes

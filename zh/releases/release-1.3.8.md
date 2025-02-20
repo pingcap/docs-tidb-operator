@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.8 Release Notes
+summary: TiDB Operator 1.3.8 版本发布，新增了为 `TidbCluster` 添加特殊 Annotation 的功能，支持配置 TiDB、TiKV 和 TiFlash 的 Pod 的最小等待时间。此外，还优化了支持优雅升级版本大于或等于 6.3.0 的 TiCDC pod。
 ---
 
 # TiDB Operator 1.3.8 Release Notes

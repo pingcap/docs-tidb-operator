@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.8 Release Notes
+summary: TiDB Operator 1.1.8 版本新增了对备份和恢复任务的支持，用户可以利用该功能实现基于 NFS 或者任意 Kubernetes 支持的 Volume 类型的任务。此外，还优化了 TiDB 组件和客户端开启 TLS 的功能，支持为 TiDB service 指定额外的端口，以及在连接 TiDB server 时不使用 TLS。修复了一系列 Bug，包括部署 TiDB 集群问题、编码错误问题、Pods 误认为问题等。
 ---
 
 # TiDB Operator 1.1.8 Release Notes
@@ -21,6 +22,7 @@ TiDB Operator 版本：1.1.8
 - 支持 Prometheus 从多个 TiDB cluster 抓取 metrics 数据。([#3622](https://github.com/pingcap/tidb-operator/pull/3622), [@mikechengwei](https://github.com/mikechengwei))
 
     需要手动操作：如果已经部署了 `TidbMonitor` CR，在升级到 TiDB Operator v1.1.8 之后，需要升级 `spec.initializer.version` 字段到 `v4.0.9`，否则有的 metric 在 Grafana 面板上将不会正确显示。Prometheus 抓取 job 名字从 `${component}` 改成了 `${namespace}-${TidbCluster Name}-${component}`。
+
 - `TidbMonitor` 中的 Prometheus job 新增了 `component` label。([#3609](https://github.com/pingcap/tidb-operator/pull/3609), [@mikechengwei](https://github.com/mikechengwei))
 
 ## Bug 修复

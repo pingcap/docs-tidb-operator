@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.0-alpha.1 Release Notes
+summary: TiDB Operator 1.4.0-alpha.1 was released on September 26, 2022. Changes include disabling volume modification by default, rolling update changes for TiCDC, and new features such as setting location labels for tidb-server and scaling multiple TiFlash and TiKV Pods simultaneously. Improvements include optimizing prometheus remoteWrite configuration for TidbMonitor and adding metrics port for TiFlash Service. Bug fixes address issues with cluster sync getting stuck and TiDB Operator panicking if PD spec is nil.
 ---
 
 # TiDB Operator 1.4.0-alpha.1 Release Notes
