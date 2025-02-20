@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 RC.2 Release Notes
+summary: TiDB Operator 1.1 RC.2 was released on April 15, 2020. Action required includes changing TiDB pod readiness probe and setting spec.paused to true before upgrading. Notable changes include adding status field for TidbAutoScaler CR, emitting more events for TidbCluster and TidbClusterAutoScaler, and adding TLS support for TiKV metrics API. Other changes involve adding a switch to skip PD Dashboard TLS configuration, supporting TiFlash in TidbCluster CR, and fixing errors related to alertmanager in TidbMonitor.
 ---
 
 # TiDB Operator 1.1 RC.2 Release Notes

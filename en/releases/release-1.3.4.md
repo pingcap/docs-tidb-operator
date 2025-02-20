@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.4 Release Notes
+summary: TiDB Operator 1.3.4 was released on June 22, 2022. The improvement in this version includes adding the 'volumes' field in the status information of each component to display the volume status.
 ---
 
 # TiDB Operator 1.3.4 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.1 Release Notes
+summary: TiDB Operator version 1.1.1 was released on June 19, 2020. Notable changes include support for adding sidecars to TiDB, TiKV, PD, etc. A cross check was added to ensure TiKV is not scaled or upgraded at the same time. Bugs related to TidbMonitor, alert rules, and pod scaling were fixed. Updates were made to TiDB Operator examples and configurations. Additional features include enabling direct visit to PD Dashboard, specifying subdirectory within the data volume, and support for LoadBalancerSourceRanges in ServiceSpec. The DM version was bumped to v2.0.0-beta.1, and support for scraping Pump and Drainer metrics in TidbMonitor was added.
 ---
 
 # TiDB Operator 1.1.1 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.13 Release Notes
+summary: TiDB Operator 1.1.13 版本发布，优化了 TiCDC 配置 TLS 证书、BR 工具镜像 tag、扩缩容 TiDB 过程中协调 PVC、备份日志中隐藏数据库密码。修复了部署异构集群时可能 panic 的问题和 TiDB 实例缩容后在 TiDB Dashboard 中仍然存在的问题。
 ---
 
 # TiDB Operator 1.1.13 Release Notes

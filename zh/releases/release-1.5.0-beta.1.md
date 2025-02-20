@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.5.0-beta.1 Release Notes
+summary: TiDB Operator 1.5.0-beta.1 发布，新增支持优雅重启 PD 和 TiDB Pod，使用 Advanced StatefulSet 管理 TiCDC 和 TiProxy，新增 TiDB Spec 字段，允许用户定义策略重启失败备份任务，升级 Kubernetes 依赖库至 v1.20 版本，添加与 reconciler 和 worker queue 相关的 Metric，优化滚动升级 TiKV 节点性能，允许用户自定义 Prometheus Scraping 相关配置，TiProxy 支持共享部分 TiDB 证书，配置 `spec.preferIPv6` 为 `true` 时，Service 的 `ipFamilyPolicy` 将配置为 `PreferDualStack`，添加统计协调流程失败计数的 Metric，修复了因为 metric 接口冲突而导致 pprof 接口无法访问的问题。
 ---
 
 # TiDB Operator 1.5.0-beta.1 Release Notes

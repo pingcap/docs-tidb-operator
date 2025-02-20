@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.4 Release Notes
+summary: TiDB Operator version 1.0.4 was released on November 23, 2019. The new version introduces HostNetwork support for better performance, podSecurityContext support, and new Helm charts for TiDB Lightning and TiDB Binlog. It also includes bug fixes and changes. Users of the v1.1.0.alpha branch are advised to upgrade to v1.0.4, as it includes all fixes from the alpha branch and introduces additional improvements.
 ---
 
 # TiDB Operator 1.0.4 Release Notes

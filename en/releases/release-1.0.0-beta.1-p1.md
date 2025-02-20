@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 Beta.1 P1 Release Notes
+summary: TiDB Operator 1.0 Beta.1 P1 was released on January 7, 2019. The bug fixes include resolving scheduler policy issues for Kubernetes v1.10, v1.11, and v1.12. The documentation updates propose adding multiple statefulsets support to TiDB Operator and updating the roadmap.
 ---
 
 # TiDB Operator 1.0 Beta.1 P1 Release Notes

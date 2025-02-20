@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.4 Release Notes
+summary: TiDB Operator 1.1.4 版本发布，重大变化包括添加 TableFilter 到 BackupSpec 和 RestoreSpec，更新 TiDB 和配套工具版本为 v4.0.4，支持自定义环境变量，增加存储请求，为备份恢复添加 TLS 支持，支持 TiFlash 中的 cert-allowed-cn 配置项，修复了启用 TLS 时的内存泄漏问题，为 TiFlash 添加 TLS 支持，配置 TZ 环境。
 ---
 
 # TiDB Operator 1.1.4 Release Notes

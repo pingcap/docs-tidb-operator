@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.8 Release Notes
+summary: TiDB Operator 1.1.8 版本新增了对备份和恢复任务的支持，用户可以利用该功能实现基于 NFS 或者任意 Kubernetes 支持的 Volume 类型的任务。此外，还优化了 TiDB 组件和客户端开启 TLS 的功能，支持为 TiDB service 指定额外的端口，以及在连接 TiDB server 时不使用 TLS。修复了一系列 Bug，包括部署 TiDB 集群问题、编码错误问题、Pods 误认为问题等。
 ---
 
 # TiDB Operator 1.1.8 Release Notes

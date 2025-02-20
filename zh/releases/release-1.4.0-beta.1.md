@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.0-beta.1 Release Notes
+summary: TiDB Operator 1.4.0-beta.1 发布，新增支持基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复（实验特性），修复了日志备份的 checkpoint ts 无法更新的问题。
 ---
 
 # TiDB Operator 1.4.0-beta.1 Release Notes

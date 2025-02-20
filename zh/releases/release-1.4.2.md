@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.2 Release Notes
+summary: TiDB Operator 1.4.2 发布，修复了开启 `preferIPv6` 时 TiFlash 没有监听 IPv6 地址的问题。
 ---
 
 # TiDB Operator 1.4.2 Release Notes

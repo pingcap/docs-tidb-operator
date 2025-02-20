@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0-beta.2 Release Notes
+summary: TiDB Operator 1.2.0-beta.2 was released on April 29, 2021. Upgrading the operator will recreate TidbMonitor and DM-master Pods. New features include support for monitoring multiple TidbClusters with TLS enabled, configuring podSecurityContext and topologySpreadConstraints for all TiDB components, deploying a DmCluster in a different namespace, and installing TiDB Operator with only namespace-scoped permissions. Improvements include adding a readiness probe for the TidbMonitor Pod, optimizing TidbMonitor for DmCluster with TLS enabled, and supporting not generating Prometheus alert rules. Bug fixes address issues with TiDB instances in TiDB Dashboard after scaling in and useless sync of TidbCluster CR caused by the update of `lastHeartbeatTime` in `status.tikv.stores`.
 ---
 
 # TiDB Operator 1.2.0-beta.2 Release Notes

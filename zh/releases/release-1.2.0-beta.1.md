@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0-beta.1 Release Notes
+summary: TiDB Operator 1.2.0-beta.1 发布日期为 2021 年 4 月 7 日。此版本包含兼容性改动和滚动升级改动。新增功能包括为备份和恢复 Job 设置自定义环境变量，支持配置额外的 volume 和 volumeMount，以及支持设置自定义 Store 标签。优化提升方面包括增加重试机制解决 DNS 查询异常处理问题，优化 Thanos 的 example yaml，以及在 PD 的扩缩容和容灾过程中增加多 PVC 支持。Bug 修复方面包括修复挂载多 PVC 时容量设置错误的问题，修复 TidbMonitor 外部标签包含无法识别的环境变量的问题，以及修复备份或恢复 Pod 状态没有正常更新为 Failed 的问题。
 ---
 
 # TiDB Operator 1.2.0-beta.1 Release Notes

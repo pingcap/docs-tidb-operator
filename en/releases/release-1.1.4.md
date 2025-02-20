@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.4 Release Notes
+summary: TiDB Operator 1.1.4 was released on August 21, 2020. Notable changes include the addition of TableFilter to BackupSpec and RestoreSpec, support for customizing environment variables for the initializer container, patching PVCs when storage request is increased, TLS support for Backup & Restore with Dumpling & TiDB Lightning, and support for max-index-length TiDB config option. Other changes include fixes for goroutine and memory leaks, support for TLS for TiFlash, and configuration of TZ environment for admission webhook and advanced statefulset controller.
 ---
 
 # TiDB Operator 1.1.4 Release Notes
