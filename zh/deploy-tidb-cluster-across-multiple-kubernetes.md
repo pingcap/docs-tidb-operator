@@ -513,9 +513,8 @@ EOF
    2. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
    3. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
    4. 升级所有 Kubernetes 集群的 TiKV 版本。
-   5. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
-   6. 升级所有 Kubernetes 集群的 TiDB 版本。
-   7. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
+   5. 升级所有 Kubernetes 集群的 TiDB 版本。
+   6. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
 ## 退出和回收已加入的 TidbCluster
 
@@ -523,7 +522,7 @@ EOF
 
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
-以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy、Pump 等其他组件，也请一并将其副本数设为 `0`：
+以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy 等其他组件，也请一并将其副本数设为 `0`：
 
 > **注意：**
 >
