@@ -57,3 +57,5 @@ kubectl -n ${namespace} annotate pod ${tikv_pod_name} tidb.pingcap.com/evict-lea
     1. 调用 PD API，为对应 TiKV store 添加 evict-leader-scheduler。
     2. 当 TiKV region leader 数掉到 0 时，删除 Pod 并重建 Pod。
     3. 当新的 Pod Ready 后，调用 PD API 删除对应 TiKV store 的 evict-leader-scheduler。
+
+如果有日志备份任务正在运行，TiDB Operator 会在删除 Pod 之前尝试对任务进行 flush。你可以通过在 `TiDBCluster` CR 中添加 annotation `tidb.pingcap.com/tikv-restart-without-flush-log-backup` 并设置任意值来禁用此功能。
