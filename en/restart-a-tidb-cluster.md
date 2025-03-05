@@ -69,3 +69,5 @@ When the number of TiKV region leaders drops to zero, according to the value of 
     1. TiDB Operator calls the PD API and adds evict-leader-scheduler for the TiKV store.
     2. When the number of TiKV region leaders drops to zero, TiDB Operator deletes the Pod and recreates it.
     3. When the new Pod becomes ready, remove the evict-leader-scheduler for the TiKV store by calling the PD API.
+
+Before deleting a Pod, if a log backup task is running, TiDB Operator attempts to flush the backup logs to the external storage. To disable this feature, add the annotation `tidb.pingcap.com/tikv-restart-without-flush-log-backup` to the TidbCluster CR and set it to any value.
