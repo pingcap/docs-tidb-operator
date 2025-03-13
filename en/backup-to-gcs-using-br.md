@@ -851,10 +851,10 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
     ```
 
     In the above example of `integrated-backup-schedule-gcs.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
-    1. Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compression backups. It is generally recommended to:
+    * Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compression backups. It is generally recommended to:
       - Not exceed the scheduled snapshot backup interval
       - Set between one-half to one-third of the scheduled snapshot backup interval
-    2. Added `BackupSchedule.spec.compactBackupTemplate` field: 
+    * Added `BackupSchedule.spec.compactBackupTemplate` field: 
       - The `BackupSchedule.spec.compactBackupTemplate.gcs` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.gcs`
 
 2. After creating `backupSchedule`, use the following command to check the backup status:
