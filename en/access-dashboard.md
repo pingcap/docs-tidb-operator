@@ -238,13 +238,13 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
       ngMonitoring:
         requests:
           storage: 10Gi
-        version: v8.1.0
+        version: v8.5.0
         # storageClassName: default
         baseImage: pingcap/ng-monitoring
     EOF
     ```
 
-    For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/v1.6.0/examples/advanced/tidb-ng-monitoring.yaml).
+    For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/v1.6.1/examples/advanced/tidb-ng-monitoring.yaml).
 
 3. Enable Continuous Profiling.
 

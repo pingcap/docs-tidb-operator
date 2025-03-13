@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.6 Release Notes
+summary: TiDB Operator 1.4.6 发布，优化默认启用 volume resize 支持，修复备份恢复时报错问题，修复 TiCDC image tag 不符合语义化版本时无法 Graceful Drain TiCDC 的问题。
 ---
 
 # TiDB Operator 1.4.6 Release Notes

@@ -24,7 +24,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
     {{< copyable "shell-regular" >}}
 
     ```
-    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/examples/monitor-with-thanos/tidb-monitor.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
 2. 部署 Thanos Query 组件。
@@ -34,7 +34,7 @@ Thanos 提供了跨 Prometheus 的统一查询方案 [Thanos Query](https://than
         {{< copyable "shell-regular" >}}
 
         ```
-        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/examples/monitor-with-thanos/thanos-query.yaml
+        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
     2. 手动修改 `thanos-query.yaml` 文件中的 `--store` 参数，将 `basic-prometheus:10901` 改为 `basic-prometheus.${namespace}:10901`。
@@ -170,7 +170,7 @@ spec:
     version: 7.5.11
   initializer:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-reloader
     version: v1.0.1
@@ -182,4 +182,4 @@ spec:
 
 Prometheus 将会把数据推送到 [Thanos Receiver](https://thanos.io/tip/components/receive.md/) 服务，详情可以参考 [Receiver 架构设计](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/)。
 
-部署方案可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-prom-remotewrite)。
+部署方案可以参考 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-prom-remotewrite)。

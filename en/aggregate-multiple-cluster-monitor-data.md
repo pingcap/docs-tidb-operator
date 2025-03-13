@@ -24,7 +24,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/examples/monitor-with-thanos/tidb-monitor.yaml
+    kubectl -n ${namespace} apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/monitor-with-thanos/tidb-monitor.yaml
     ```
 
 2. Deploy the Thanos Query component.
@@ -34,7 +34,7 @@ Thanos provides [Thanos Query](https://thanos.io/tip/components/query.md/) compo
         {{< copyable "shell-regular" >}}
 
         ```
-        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/examples/monitor-with-thanos/thanos-query.yaml
+        curl -sl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/monitor-with-thanos/thanos-query.yaml
         ```
 
     2. Manually modify the `--store` parameter in the `thanos-query.yaml` file by updating `basic-prometheus:10901` to `basic-prometheus.${namespace}:10901`.
@@ -170,7 +170,7 @@ spec:
     version: 7.5.11
   initializer:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: registry.cn-beijing.aliyuncs.com/tidb/tidb-monitor-reloader
     version: v1.0.1
@@ -182,4 +182,4 @@ spec:
 
 After RemoteWrite is enabled, Prometheus pushes the monitoring data to [Thanos Receiver](https://thanos.io/tip/components/receive.md/). For more information, refer to [the design of Thanos Receiver](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/).
 
-For details on the deployment, refer to [this example of integrating TidbMonitor with Thanos Receiver](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-prom-remotewrite).
+For details on the deployment, refer to [this example of integrating TidbMonitor with Thanos Receiver](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-prom-remotewrite).

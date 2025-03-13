@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.0-beta.1 Release Notes
+summary: TiDB Operator 1.3.0-beta.1 发布日期为 2022 年 1 月 12 日。此版本的兼容性改动包括删除 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级后不会影响 TiDB 集群管理。升级到 1.3.0-beta.1 版本后，需要按照操作来升级 TiDB Operator。此版本还支持新功能和优化提升，包括支持 TiFlash 的 init container 配置资源使用量，支持持续性能分析，以及优化 TidbMonitor 部署示例等。
 ---
 
 # TiDB Operator 1.3.0-beta.1 Release Notes

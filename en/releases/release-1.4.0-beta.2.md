@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.0-beta.2 Release Notes
+summary: TiDB Operator 1.4.0-beta.2 was released on November 11, 2022. Bug fixes include an issue with `BackupSchedule` not setting a prefix when using Azure Blob Storage and an upgrade of AWS SDK to v1.44.72 to support the Asia Pacific (Jakarta) region.
 ---
 
 # TiDB Operator 1.4.0-beta.2 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0 Release Notes
+summary: TiDB Operator 1.2.0 版本发布，包括滚动升级改动、新功能、优化提升和 Bug 修复。滚动升级改动包括升级 TiDB Operator 会导致 TidbMonitor Pod 删除重建。新功能包括支持为 `TiDBMonitor` 的 `Prometheus` 设置更细粒度的 `retentionTime` 和通过 `priorityClassName` 设置备份 Job 优先级。优化提升包括调整升级过程中驱逐 TiKV 的 Region Leader 超时的默认值。Bug 修复包括修复解析 `TiDBMonitor` 定义中 `Prometheus.RemoteWrite` 的 URL 可能失败的问题。
 ---
 
 # TiDB Operator 1.2.0 Release Notes

@@ -52,7 +52,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -106,7 +106,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -379,7 +379,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -437,7 +437,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -645,7 +645,7 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
 
 完成上述步骤后，该 TidbCluster 可以作为跨 Kubernetes 集群部署 TiDB 集群的初始 TidbCluster。可以参考[部署新的 TidbCluster 加入 TiDB 集群](#第-2-步部署新的-tidbcluster-加入-tidb-集群)一节部署其他的 TidbCluster。
 
-更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/multi-cluster)。
+更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/multi-cluster)。
 
 ## 跨多个 Kubernetes 集群部署的 TiDB 集群监控
 

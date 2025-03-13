@@ -78,6 +78,8 @@ kubectl delete backupschedule ${name} -n ${namespace}
 
 如果你使用 v1.1.2 及以前版本，或使用 v1.1.3 及以后版本并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时清理备份文件。
 
+如果你使用 v1.5.5、v1.6.1 及之后的版本，当你删除 CR 时，TiDB Operator 会尝试自动停止正在运行的日志备份任务。此自动停止功能仅适用于正常运行的日志备份任务，不会处理出现错误或失败状态的任务。
+
 如果你使用基于 AWS EBS 卷快照的备份，并将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 以及清理备份文件的同时删除 AWS 上相关的所有卷快照。
 
 在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。

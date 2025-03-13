@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1 GA Release Notes
+summary: TiDB Operator 1.1 GA 发布日期 2020 年 5 月 28 日。将 TiDB Pod 的 readiness 探针从 HTTPGet 更改为 TCPSocket 4000 端口。这将触发 tidb-server 组件滚动升级。你可以在升级 TiDB Operator 之前将 spec.paused 设置为 true 以避免滚动升级，并在准备升级 tidb-server 时将其重新设置为 false。
 ---
 
 # TiDB Operator 1.1 GA Release Notes
@@ -29,7 +30,7 @@ TiDB Operator 版本：1.1.0
 
 ## 其他重要更新
 
-* 修复了同时启用 `PodWebhook` 和 增强型 StatefulSet 时 `TidbCluster` 升级的错误 ([#2507](https://github.com/pingcap/tidb-operator/pull/2507), [@Yisaer](https://github.com/Yisaer))
+* 修复了同时启用 `PodWebhook` 和增强型 StatefulSet 时 `TidbCluster` 升级的错误 ([#2507](https://github.com/pingcap/tidb-operator/pull/2507), [@Yisaer](https://github.com/Yisaer))
 * `tidb-scheduler` 中支持 preemption ([#2510](https://github.com/pingcap/tidb-operator/pull/2510), [@cofyc](https://github.com/cofyc))
 * 将 BR 更新为 v4.0.0-rc.2，包含 `auto_random` 的修复 ([#2508](https://github.com/pingcap/tidb-operator/pull/2508), [@DanielZhangQD](https://github.com/DanielZhangQD))
 * 增强型 StatefulSet 支持 TiFlash ([#2469](https://github.com/pingcap/tidb-operator/pull/2469), [@DanielZhangQD](https://github.com/DanielZhangQD))

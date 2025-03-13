@@ -24,7 +24,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 
 - 各 Kubernetes 集群上的 Prometheus（即 TidbMonitor）组件有能力访问 Thanos Receiver 组件。
 
-关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-prom-remotewrite)。
+关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-prom-remotewrite)。
 
 ### 部署架构图
 
@@ -75,7 +75,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
         #region: us-east-1
       initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v8.1.0
+        version: v8.5.0
       persistent: true
       storage: 100Gi
       storageClassName: ${storageclass_name}
@@ -108,7 +108,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
 
-关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-with-thanos)。
+关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-with-thanos)。
 
 #### 部署架构图
 
@@ -159,7 +159,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         #region: us-east-1
       initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v8.1.0
+        version: v8.5.0
       persistent: true
       storage: 20Gi
       storageClassName: ${storageclass_name}
@@ -245,7 +245,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
         #region: us-east-1
       initializer:
         baseImage: pingcap/tidb-monitor-initializer
-        version: v8.1.0
+        version: v8.5.0
       persistent: true
       storage: 20Gi
       storageClassName: ${storageclass_name}
@@ -293,7 +293,7 @@ scrape_configs:
 
     ```shell
     # set tidb version here
-    version=v8.1.0
+    version=v8.5.0
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```

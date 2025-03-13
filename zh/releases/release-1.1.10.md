@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.10 Release Notes
+summary: TiDB Operator 1.1.10 版本发布，包含兼容性改动、滚动升级改动、新功能、优化提升和 Bug 修复。兼容性改动包括 `apiVersion` 更改，滚动升级改动导致 TidbMonitor Pod 删除重建。新功能包括灰度升级、TidbMonitor 支持 `remotewrite`、配置 init containers 等。优化提升包括自定义存储、增加 label 支持多集群监控等。Bug 修复包括备份或者恢复失败、Pod 在升级过程中不会进行迁移 leader 等问题。
 ---
 
 # TiDB Operator 1.1.10 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 0.1.0 Release Notes
+summary: TiDB Operator 0.1.0 was released on August 22, 2018. Notable changes include the ability to bootstrap multiple TiDB clusters, support for monitoring deployment and Helm charts, basic Network PV/Local PV support, safe scaling of the TiDB cluster, orderly cluster upgrades, and stopping the TiDB process without terminating the Pod. Additionally, cluster meta info can be synchronized to POD/PV/PVC labels, and basic unit tests & E2E tests are available. Tutorials for GKE and local DinD are also provided.
 ---
 
 # TiDB Operator 0.1.0 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.14 Release Notes
+summary: TiDB Operator 1.1.14 was released on October 21, 2021. This version includes bug fixes for security vulnerabilities in the `tidb-backup-manager` and `tidb-operator` images.
 ---
 
 # TiDB Operator 1.1.14 Release Notes

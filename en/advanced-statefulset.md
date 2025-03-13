@@ -19,7 +19,7 @@ The [advanced StatefulSet controller](https://github.com/pingcap/advanced-statef
     {{< copyable "shell-regular" >}}
 
     ```
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0/manifests/advanced-statefulset-crd.v1.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/advanced-statefulset-crd.v1.yaml
     ```
 
 2. Enable the `AdvancedStatefulSet` feature in `values.yaml` of the TiDB Operator chart:
@@ -85,7 +85,7 @@ kind: TidbCluster
 metadata:
   name: asts
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -137,7 +137,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[1]'
   name: asts
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:
@@ -191,7 +191,7 @@ metadata:
     tikv.tidb.pingcap.com/delete-slots: '[]'
   name: asts
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   pd:

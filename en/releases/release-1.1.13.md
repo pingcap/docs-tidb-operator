@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.1.13 Release Notes
+summary: TiDB Operator 1.1.13 was released on July 2, 2021. The release includes improvements such as support for configuring TLS certificates for TiCDC sinks, using TiKV version as the tag for BR `toolImage` if no tag is specified, handling PVC during scaling of TiDB, and masking the backup password in logging. Bug fixes include resolving issues with TiDB Operator panicking during the deployment of heterogeneous clusters and instances being kept in TiDB Dashboard after being scaled in.
 ---
 
 # TiDB Operator 1.1.13 Release Notes

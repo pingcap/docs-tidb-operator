@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 RC.1 Release Notes
+summary: TiDB Operator 1.0 RC.1 was released on July 12, 2019. The new version includes stability test cases, improvements such as increasing TiKV GC life time, and bug fixes like fixing unbound variables in the backup script and scheduled backup bugs. It also supports force upgrade when PD cluster is unavailable and adds Amazon S3 support for backup/restore features. Multiple clusters management in EKS and local SSD provision for COS on GKE are also included. The release notes contain detailed bug fixes and changes, including various pull requests for bug fixes and improvements.
 ---
 
 # TiDB Operator 1.0 RC.1 Release Notes

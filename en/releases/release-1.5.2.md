@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.5.2 Release Notes
+summary: TiDB Operator 1.5.2 released on January 19, 2024. New features include support for backing up and restoring data of a TiDB cluster across multiple AWS Kubernetes clusters to AWS storage using EBS volume snapshots. Improvements include better support for scenarios such as Stale Read and explicitly specifying PD addresses. Bug fixes address issues with changing meta information and PD member labels.
 ---
 
 # TiDB Operator 1.5.2 Release Notes

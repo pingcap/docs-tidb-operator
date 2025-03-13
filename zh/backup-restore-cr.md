@@ -22,7 +22,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
     - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本：
         - 如果指定了 Dumpling 的版本，例如 `spec.toolImage: pingcap/dumpling:v5.3.0`，那么使用指定的版本镜像进行备份。
-        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.0/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
+        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
 
 * `.spec.backupType`：指定 Backup 类型，该字段仅在使用 BR 备份时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
@@ -33,6 +33,13 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `snapshot`：基于 KV 层的快照备份。
     * `volume-snapshot`：基于卷快照的备份。
     * `log`：从 KV 层备份实时数据变更日志数据。
+
+* `.spec.logSubcommand`：指定日志备份任务的子命令，用于控制日志备份任务的状态。该字段支持以下三个选项：
+    * `log-start`：启动一个新的日志备份任务，或恢复一个已暂停的任务。使用此命令可以开始日志备份流程，或从暂停状态恢复任务。
+    * `log-pause`：暂停当前正在进行的日志备份任务。暂停任务后，你可以使用 `log-start` 命令恢复任务。
+    * `log-stop`：永久停止日志备份任务。执行此命令后，Backup CR 会进入停止状态，且无法再次启动。
+
+  对于 v1.5.5 之前的版本，请使用 `logStop` 字段（布尔值 `true`/`false`）控制日志备份操作。虽然 v1.5.5 和 v1.6.1 版本仍支持 `logStop`，但建议使用 `logSubcommand`。
 
 * `.spec.restoreMode`：指定 Restore 的模式，默认为 `snapshot`，即基于 KV 层的快照恢复。该字段仅在恢复时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照恢复。
@@ -274,7 +281,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。
     - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
-    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.0/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
+    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
 
 * `.spec.backupType`：指定 Restore 类型，该字段仅在使用 BR 恢复时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。

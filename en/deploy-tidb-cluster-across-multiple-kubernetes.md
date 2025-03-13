@@ -52,7 +52,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -106,7 +106,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -383,7 +383,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -441,7 +441,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v8.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -648,7 +648,7 @@ If each Kubernetes have different Cluster Domain, you need to update the `spec.c
 
 After completing the above steps, this TidbCluster can be used as the initial TidbCluster for TiDB cluster deployment across Kubernetes clusters. You can refer the [section](#step-2-deploy-the-new-tidbcluster-to-join-the-tidb-cluster) to deploy other TidbCluster.
 
-For more examples and development information, refer to [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/multi-cluster).
+For more examples and development information, refer to [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/multi-cluster).
 
 ## Deploy TiDB monitoring components
 

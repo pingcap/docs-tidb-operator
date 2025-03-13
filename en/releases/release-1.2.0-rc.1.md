@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0-rc.1 Release Notes
+summary: TiDB Operator 1.2.0-rc.1 was released on May 28, 2021. The update includes changes to the Pump Pod, support for customized labels for TidbCluster Pods and services, full lifecycle management for Pump, and various improvements and bug fixes. Notable improvements include masking the backup password in logging, additional volumeMounts field for Grafana, and additional printout columns for TidbMonitor. Bug fixes address issues with TidbMonitor, PD member count, DM-master restart, rolling update, and backup using Dumpling.
 ---
 
 # TiDB Operator 1.2.0-rc.1 Release Notes

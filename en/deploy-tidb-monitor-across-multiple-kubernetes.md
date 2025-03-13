@@ -24,7 +24,7 @@ The multiple Kubernetes clusters must meet the following condition:
 
 - The Prometheus (`TidbMonitor`) component in each Kubernetes cluster has access to the Thanos Receiver component.
 
-For the deployment instructions of Thanos Receiver, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-prom-remotewrite).
+For the deployment instructions of Thanos Receiver, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-prom-remotewrite).
 
 ### Architecture
 
@@ -111,7 +111,7 @@ You need to configure the network and DNS of the Kubernetes clusters so that the
 - The Thanos Query component has access to the Pod IP of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 - The Thanos Query component has access to the Pod FQDN of the Prometheus (`TidbMonitor`) component in each Kubernetes cluster.
 
-For the deployment instructions of Thanos Query, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-with-thanos).
+For the deployment instructions of Thanos Query, refer to [kube-thanos](https://github.com/thanos-io/kube-thanos) and [the example](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-with-thanos).
 
 #### Architecture
 
@@ -302,7 +302,7 @@ After collecting data using Prometheus, you can visualize multi-cluster monitori
 
     ```shell
     # set tidb version here
-    version=v8.1.0
+    version=v8.5.0
     docker run --rm -i -v ${PWD}/dashboards:/dashboards/ pingcap/tidb-monitor-initializer:${version} && \
     cd dashboards
     ```

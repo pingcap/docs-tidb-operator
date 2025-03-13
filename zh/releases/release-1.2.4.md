@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.4 Release Notes
+summary: TiDB Operator 1.2.4 版本发布，包括滚动升级改动、新功能、优化提升和 Bug 修复。滚动升级会导致 TidbMonitor Pod 删除重建。新增 TidbMonitor 支持用户自定义 Prometheus 告警规则和动态重新加载告警规则，以及支持批量删除备份数据。优化了 TiFlash 滚动升级流程，修复了镜像中的安全漏洞和备份数据残留的问题。
 ---
 
 # TiDB Operator 1.2.4 Release Notes

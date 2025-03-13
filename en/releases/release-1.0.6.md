@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.6 Release Notes
+summary: TiDB Operator 1.0.6 was released on December 27, 2019. Users need to migrate configs from the old `values.yaml` to the new one to avoid monitor pod failures. The new release includes improvements in monitor, TiDB Scheduler, compatibility, TiKV Importer, E2E, and CI. Notable changes include enabling alert rule persistence, adding node & pod info in TiDB Grafana, refining scheduler error messages, fixing compatibility issues in Kubernetes v1.17, and adjusting the release CI script.
 ---
 
 # TiDB Operator 1.0.6 Release Notes

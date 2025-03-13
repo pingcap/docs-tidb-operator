@@ -39,7 +39,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     kubectl create namespace restore-test
     ```
 
-2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
+2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建恢复需要的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
@@ -64,7 +64,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=password=${password} --namespace=test2
         ```
 
-## 第 2 步：将指定备份数据恢复到 TiDB 集群
+### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
@@ -229,7 +229,7 @@ demo2-restore-s3   Complete   ...
     kubectl create namespace restore-test
     ```
 
-2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.0/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
+2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test

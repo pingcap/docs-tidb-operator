@@ -14,7 +14,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 在 [TiDB 集群监控](https://docs.pingcap.com/zh/tidb/stable/deploy-monitoring-services)中有一些监控系统配置的细节可供参考。
 
-在 v1.1 及更高版本的 TiDB Operator 中，可以通过简单的 CR 文件（即 TidbMonitor，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.0/manifests/monitor/tidb-monitor.yaml)）来快速建立对 Kubernetes 集群上的 TiDB 集群的监控。
+在 v1.1 及更高版本的 TiDB Operator 中，可以通过简单的 CR 文件（即 TidbMonitor，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/monitor/tidb-monitor.yaml)）来快速建立对 Kubernetes 集群上的 TiDB 集群的监控。
 
 > **注意：**
 >
@@ -49,7 +49,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -82,13 +82,13 @@ basic-monitor   Bound    pvc-6db79253-cc9e-4730-bbba-ba987c29db6f   5G         R
 2. 设置 `spec.prometheus.config.configMapRef.name` 与 `spec.prometheus.config.configMapRef.namespace` 为自定义 ConfigMap 的名称与所属的 namespace。
 3. 确认 TidbMonitor 是否已开启[动态配置功能](enable-monitor-dynamic-configuration.md)，如果未开启该功能，需要重启 TidbMonitor 的 pod 重新加载配置。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.0/examples/monitor-with-externalConfigMap/prometheus/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.1/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 #### 增加额外的命令行参数
 
 设置 `spec.prometheus.config.commandOptions` 为用于启动 Prometheus 的额外的命令行参数。
 
-如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.0/examples/monitor-with-externalConfigMap/prometheus/README.md)。
+如需了解完整的配置示例，可参考 [tidb-operator 中的示例](https://github.com/pingcap/tidb-operator/blob/v1.6.1/examples/monitor-with-externalConfigMap/prometheus/README.md)。
 
 > **注意：**
 >
@@ -171,7 +171,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -228,7 +228,7 @@ spec:
         foo: "bar"
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -270,7 +270,7 @@ spec:
       type: ClusterIP
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -351,7 +351,7 @@ spec:
       type: NodePort
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.1.0
+    version: v8.5.0
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
@@ -361,7 +361,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/v1.6.0/examples/monitor-multiple-cluster-non-tls)。
+如需了解完整的配置示例，可参考 TiDB Operator 仓库中的[示例](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/monitor-multiple-cluster-non-tls)。
 
 ### 使用 Grafana 查看多集群监控
 
