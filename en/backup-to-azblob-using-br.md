@@ -715,25 +715,24 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
 
 ### Create `BackupSchedule`
 
-1. Create a `BackupSchedule` CR named `integrated-backup-schedule-s3` in the `backup-test` namespace.
+1. Create a `BackupSchedule` CR named `integrated-backup-schedule-azblob` in the `backup-test` namespace.
 
     ```shell
-    kubectl apply -f integrated-backup-schedule-s3.yaml
+    kubectl apply -f integrated-backup-schedule-azblob.yaml
     ```
 
-    The content of `integrated-backup-schedule-s3.yaml` is as follows:
+    The content of `integrated-backup-schedule-azblob.yaml` is as follows:
 
     ```yaml
     ---
     apiVersion: pingcap.com/v1alpha1
     kind: BackupSchedule
     metadata:
-      name: integrated-backup-schedule-s3
+      name: integrated-backup-schedule-azblob
       namespace: backup-test
     spec:
       maxReservedTime: "3h"
       schedule: "* */2 * * *"
-      compactInterval: "1h"
       backupTemplate:
         backupType: full
         cleanPolicy: Delete
@@ -741,43 +740,40 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
           cluster: demo1
           clusterNamespace: test1
           sendCredToTikv: true
-        s3:
-          provider: aws
-          secretName: s3-secret
-          region: us-west-1
-          bucket: my-bucket
-          prefix: my-folder-snapshot
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-snapshot
+          #accessTier: Hot
       logBackupTemplate:
         backupMode: log
         br:
           cluster: demo1
           clusterNamespace: test1
           sendCredToTikv: true
-        s3:
-          provider: aws
-          secretName: s3-secret
-          region: us-west-1
-          bucket: my-bucket
-          prefix: my-folder-log
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-log
+          #accessTier: Hot
       compactBackupTemplate:
         br:
           cluster: demo1
           clusterNamespace: test1
           sendCredToTikv: true
-        s3:
-          provider: aws
-          secretName: s3-secret
-          region: us-west-1
-          bucket: my-bucket
-          prefix: my-folder-log
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-log
+          #accessTier: Hot
     ```
 
-    In the above example of `integrated-backup-schedule-s3.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
+    In the above example of `integrated-backup-schedule-azblob.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
     1. Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compression backups. It is generally recommended to:
       - Not exceed the scheduled snapshot backup interval
       - Set between one-half to one-third of the scheduled snapshot backup interval
     2. Added `BackupSchedule.spec.compactBackupTemplate` field: 
-      - The `BackupSchedule.spec.compactBackupTemplate.S3` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.S3`
+      - The `BackupSchedule.spec.compactBackupTemplate.azblob` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.azblob`
 
 2. After creating `backupSchedule`, use the following command to check the backup status:
 
