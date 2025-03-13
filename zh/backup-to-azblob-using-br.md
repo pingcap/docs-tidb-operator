@@ -368,6 +368,7 @@ demo1-log-backup-azblob    log    Stopped   ....
   ```
 
   其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
+  `azblob` 设置应当与需要的压缩的日志备份设置相同，`CompactBackup` 会读取对应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
 
@@ -702,6 +703,84 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     NAME                                                       MODE       STATUS    ....
     integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....  
     log-integrated-backup-schedule-azblob                      log        Running   ....
+    ```
+
+## 集成定时快照备份，日志备份和压缩日志备份
+
+为了加快下游恢复速度，可以在`BackupSchedule` CR 加入压缩日志备份。压缩日志备份可以定期压缩远端地址中的日志备份文件。你必须在开启日志备份的前提下使用压缩日志备份。本节内容将在上一节的基础上进行。
+
+### 前置条件：准备定时快照备份环境
+
+同[准备 Ad-hoc 备份环境](#前置条件准备-ad-hoc-备份环境)。
+
+### 创建 `BackupSchedule`
+
+1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f integrated-backup-scheduler-azblob.yaml
+    ```
+
+    `integrated-backup-scheduler-azblob` 文件内容如下：
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-azblob
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      compactInterval: "1h"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-snapshot
+          #accessTier: Hot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        azblob:
+          secretName: azblob-secret
+          container: my-container
+          prefix: schedule-backup-folder-log
+          #accessTier: Hot
+    ```
+
+    以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置在上一节的基础上加入了 `compactBackup` 的部分。主要改动如下：
+    1. 加入 `BackupSchedule.spec.compactInterval` 字段，你可以在这里填入一个自定义日志压缩备份时间间隔。一般建议不要超过定时快照备份的时间间隔，建议在定时快照备份间隔的二分之一到三分之一之间。
+    2. 加入 `BackupSchedule.spec.compactBackupTemplate` 字段。请注意，`BackupSchedule.spec.compactBackupTemplate.azblob` 的配置应当保持与 `BackupSchedule.spec.logBackupTemplate.azblob` 保持一致。
+
+    关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
+
+2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get cpbk -n backup-test
     ```
 
 ## 删除备份的 Backup CR

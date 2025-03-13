@@ -354,12 +354,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 + `backupTemplate`：快照备份相关配置。指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
 + `logBackupTemplate`：日志备份相关配置。指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除，且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
-+ `compactBackupTemplate`: 压缩备份的配置模板。包含以下设置：
-    * 定义压缩备份的集群配置和远端存储配置，配置字段与 [Backup CR 的 `spec` 配置](#backup-cr-fields) 完全一致
-    * 压缩备份的生命周期与所属的 `backupSchedule` 绑定： 
-        - 随调度任务自动创建/删除
-        - 根据 `.spec.maxReservedTime` 策略进行回收
-    * 注意：压缩备份的存储配置必须与同个 `backupSchedule` 下的 `logBackupTemplate` 存储设置保持完全一致
++ `compactBackupTemplate`: 压缩日志备份的配置模板，字段和 CompactBackup CR 中的 `spec` 一样，详细介绍可参考 [ComapctBackup CR 字段介绍](##compact-backup-cr-字段介绍)，压缩日志备份随 `backupSchedule` 创建、删除，日志备份名称在 `status.logBackup` 中保存。压缩日志备份的存储设置应与同一 `backupSchedule` 中的 `logBackupTemplate` 相同
 
     > **注意：**
     >
@@ -370,7 +365,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
     + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
     + `.spec.compactInterval`: 用于触发新压缩任务的时间间隔。此字段在以下两种场景生效：
-    * 1. 若距离上一次压缩执行时间（`compactExecutionTs`）已超过 `compactInterval` 设定的时长。
-    * 2. 若日志备份检查点(`logBackupCheckpoint`)的推进导致压缩进度（`compactProgress`）滞后超过 `compactInterval` 设定的时长。
+    * 若距离上一次压缩执行时间（`compactExecutionTs`）已超过 `compactInterval` 设定的时长。
+    * 若日志备份检查点(`logBackupCheckpoint`)的推进导致压缩进度（`compactProgress`）滞后超过 `compactInterval` 设定的时长。
     当满足任一条件时，系统将自动调度新的压缩任务。
     + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为 `false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。

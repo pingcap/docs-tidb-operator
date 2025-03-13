@@ -367,6 +367,7 @@ This section builds on the previous example of log backup and introduces how to 
     ```
 
     The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compression process. As a result, the compacted data may include writes outside this time range.
+    The `azblob` settings should be the same as the to be compressed log backup settings, `CompactBackup` will read the log files at the corresponding address and compress them.
 
 #### View the compact log backup status
 
