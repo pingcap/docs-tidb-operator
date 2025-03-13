@@ -759,7 +759,7 @@ spec:
     kubectl get bks -n backup-test -o wide
     ```
 
-    日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
+    压缩日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
 
     {{< copyable "shell-regular" >}}
 

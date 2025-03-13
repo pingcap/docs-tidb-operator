@@ -922,11 +922,10 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
           region: us-west-1
           bucket: my-bucket
           prefix: my-folder-log
-        
     ```
 
     以上 `integrated-backup-schedule-s3.yaml` 文件配置示例中，`backupSchedule` 的配置在上一节的基础上加入了 `compactBackup` 的部分。主要改动如下：
-    1. 加入 `BackupSchedule.spec.compactInterval` 字段，你可以在这里填入一个自定义日志压缩备份时间间隔。一般建议不要超过定时快照备份的时间间隔，建议在定时快照备份间隔的二分之一到三分之一之间。
+    1. 加入 `BackupSchedule.spec.compactInterval` 字段，你可以在这里填入一个自定义日志压缩备份时间间隔。建议不要超过定时快照备份的时间间隔，建议在定时快照备份间隔的二分之一到三分之一之间。
     2. 加入 `BackupSchedule.spec.compactBackupTemplate` 字段。请注意，`BackupSchedule.spec.compactBackupTemplate.S3` 的配置应当保持与 `BackupSchedule.spec.logBackupTemplate.S3` 保持一致。
 
     关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
@@ -939,7 +938,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     kubectl get bks -n backup-test -o wide
     ```
 
-    日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
+    压缩日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
 
     {{< copyable "shell-regular" >}}
 
