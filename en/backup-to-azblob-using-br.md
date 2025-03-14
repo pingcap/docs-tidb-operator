@@ -830,7 +830,7 @@ To accelerate downstream recovery, you can enable `CompactBackup` CR in the `Bac
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
 
-The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
+The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-an-ad-hoc-backup-environment).
 
 ### Create `BackupSchedule`
 

@@ -378,7 +378,7 @@ The `backupSchedule` configuration consists of three parts: the configuration of
 
 * `backupTemplate`: the configuration of the snapshot backup. Specifies the configuration related to the cluster and remote storage of the snapshot backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
 * `logBackupTemplate`: the configuration of the log backup. Specifies the configuration related to the cluster and remote storage of the log backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields). The log backup is created and deleted along with `backupSchedule` and recycled according to `.spec.maxReservedTime`. The log backup name is saved in `status.logBackup`.
-* `compactBackupTemplate`: the configuration of the compact backup. Specifies the configuration related to the cluster and remote storage of the compact backup, which is the same as the `spec` configuration of [the `CompactBackup` CR](#compact-backup-cr-fields). The compact backup is created and deleted along with `backupSchedule`. The storage setting of the compact backup should be as same as the `logBackupTemplate` in the same `backupSchedule`
+* `compactBackupTemplate`: the configuration of the compact backup. Specifies the configuration related to the cluster and remote storage of the compact backup, which is the same as the `spec` configuration of [the `CompactBackup` CR](#compactbackup-cr-fields ). The compact backup is created and deleted along with `backupSchedule`. The storage setting of the compact backup should be as same as the `logBackupTemplate` in the same `backupSchedule`
 
     > **Note:**
     >
@@ -391,6 +391,5 @@ The `backupSchedule` configuration consists of three parts: the configuration of
     * `.spec.schedule`: the time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
     * `.spec.compactInterval`: The interval duration that determines when a new compaction should be triggered. This field works in two scenarios:
     * If more than `compactInterval` time has passed since the last `compactExecutionTs`.
-    * If the log backup checkpoint advanced the `compactProgress` more than `compactInterval` time.
-    When either condition is met, a new compaction attempt will be scheduled.
+    * If the log backup checkpoint advanced the `compactProgress` more than `compactInterval` time.When either condition is met, a new compaction attempt will be scheduled.
     * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time point is reached. During this pause, the backup garbage collection runs normally. If you change `true` to `false`, the scheduled snapshot backup process is restarted. Because currently, log backup does not support pause, this configuration does not take effect for log backup.
