@@ -572,6 +572,7 @@ demo1-log-backup-s3        log      Stopped   ....
   ```
 
   其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
+  
   `S3` 设置应当与需要的压缩的日志备份设置相同，`CompactBackup` 会读取对应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
@@ -1040,7 +1041,9 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     ```
 
     以上 `integrated-backup-schedule-s3.yaml` 文件配置示例中，`backupSchedule` 的配置在上一节的基础上加入了 `compactBackup` 的部分。主要改动如下：
+    
     1. 加入 `BackupSchedule.spec.compactInterval` 字段，你可以在这里填入一个自定义日志压缩备份时间间隔。建议不要超过定时快照备份的时间间隔，建议在定时快照备份间隔的二分之一到三分之一之间。
+    
     2. 加入 `BackupSchedule.spec.compactBackupTemplate` 字段。请注意，`BackupSchedule.spec.compactBackupTemplate.S3` 的配置应当保持与 `BackupSchedule.spec.logBackupTemplate.S3` 保持一致。
 
     关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。

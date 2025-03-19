@@ -485,7 +485,8 @@ This section builds on the previous example of log backup and introduces how to 
         prefix: my-log-backup-folder
     ```
 
-    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compression process. As a result, the compacted data may include writes outside this time range.
+    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compression process. As a result, the compacted data may include writes outside this time range. 
+    
     The `azblob` settings should be the same as the to be compressed log backup settings, `CompactBackup` will read the log files at the corresponding address and compress them.
 
 #### View the compact log backup status
@@ -888,9 +889,11 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
     ```
 
     In the above example of `integrated-backup-schedule-azblob.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
+    
     * Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compression backups. It is generally recommended to:
       - Not exceed the scheduled snapshot backup interval
       - Set between one-half to one-third of the scheduled snapshot backup interval
+    
     * Added `BackupSchedule.spec.compactBackupTemplate` field: 
       - The `BackupSchedule.spec.compactBackupTemplate.azblob` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.azblob`
 

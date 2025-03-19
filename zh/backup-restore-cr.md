@@ -374,5 +374,5 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     + `.spec.compactInterval`: 用于触发新压缩任务的时间间隔。此字段在以下两种场景生效：
     * 若距离上一次压缩执行时间（`compactExecutionTs`）已超过 `compactInterval` 设定的时长。
     * 若日志备份检查点(`logBackupCheckpoint`)的推进导致压缩进度（`compactProgress`）滞后超过 `compactInterval` 设定的时长。
-    当满足任一条件时，系统将自动调度新的压缩任务。
-    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为 `false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
+    + 当满足任一条件时，系统将自动调度新的压缩任务。
+    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为`false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
