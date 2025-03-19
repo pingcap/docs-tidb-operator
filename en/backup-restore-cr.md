@@ -265,7 +265,7 @@ To compress log backup data into structured SST files, users can create a custom
 * `.spec.startTs`: Specifies the starting timestamp for the log compression backup range.
 * `.spec.endTs`: Specifies the ending timestamp for the log compression backup range.
 * `.spec.concurrency`: Maximum number of log compression tasks that can run simultaneously. Defaults to `4`
-* `.spec.maxRetryTimes`: Maximum number of retries for failed compression tasks.  Defaults to `6`
+* `.spec.maxRetryTimes`: Maximum number of retries for failed compression tasks. Defaults to `6`
 * `.spec.toolImage`：the tools image used by `Restore`. The only tool image used in `CompactBackup` is BR.
     - When using BR for backup, you can specify the BR version in this field.
         - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
@@ -391,5 +391,5 @@ The `backupSchedule` configuration consists of three parts: the configuration of
     * `.spec.schedule`: the time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
     * `.spec.compactInterval`: The interval duration that determines when a new compaction should be triggered. This field works in two scenarios:
     * If more than `compactInterval` time has passed since the last `compactExecutionTs`.
-    * If the log backup checkpoint advanced the `compactProgress` more than `compactInterval` time.When either condition is met, a new compaction attempt will be scheduled.
+    * If the log backup checkpoint advanced the `compactProgress` more than `compactInterval` time. When either condition is met, a new compaction attempt will be scheduled.
     * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time point is reached. During this pause, the backup garbage collection runs normally. If you change `true` to `false`, the scheduled snapshot backup process is restarted. Because currently, log backup does not support pause, this configuration does not take effect for log backup.
