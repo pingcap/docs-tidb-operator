@@ -535,7 +535,7 @@ demo1-log-backup-s3        log      Stopped   ....
 
 ### 压缩日志备份
 
-`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的时间点恢复（Point in Time Restore, PiTR）。 
+对于 ***v9.0.0*** 以上的TiDB集群，`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的日志恢复（Point in Time Restore, PiTR）。 
 
 本节接续上文的日志备份的案例，介绍压缩日志备份的使用。
 
