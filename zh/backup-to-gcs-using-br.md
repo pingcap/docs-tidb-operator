@@ -486,9 +486,9 @@ demo1-log-backup-gcs       log      Stopped   ....
       prefix: my-log-backup-folder
   ```
 
-  其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
-  
-  `gcs` 设置应当与需要的压缩的日志备份设置相同，`CompactBackup` 会读取对应地址的日志文件并进行压缩。
+    其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
+
+    `gcs` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
 
