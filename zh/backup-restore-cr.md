@@ -255,7 +255,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.endTs`：指定日志压缩备份的结束时间戳。
 * `.spec.concurrency`：指定同时进行的压缩日志任务的最大数量，默认值为 `4`。
 * `.spec.maxRetryTimes`：指定压缩任务失败的最大重试次数，默认值为 `6`。
-* `.spec.toolImage`：用于指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR
+* `.spec.toolImage`：指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR。使用 BR 备份时，你可以使用该字段指定 BR 的版本：
 
     - 使用 BR 备份时，可以用该字段指定 BR 的版本:
         - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
