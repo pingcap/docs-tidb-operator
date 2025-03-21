@@ -251,10 +251,10 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
 
-* `.spec.startTs`: 用于指定日志压缩备份的的范围起始时间戳。
-* `.spec.endTs`: 用于指定日志压缩备份的范围结束时间戳。
-* `.spec.concurrency`: 最大同时进行的压缩日志任务的数量。默认为4
-* `.spec.maxRetryTimes`: 压缩任务失败的最大重试次数。默认为6
+* `.spec.startTs`：指定日志压缩备份的起始时间戳。
+* `.spec.endTs`：指定日志压缩备份的结束时间戳。
+* `.spec.concurrency`：指定同时进行的压缩日志任务的最大数量，默认值为 `4`。
+* `.spec.maxRetryTimes`：指定压缩任务失败的最大重试次数，默认值为 `6`。
 * `.spec.toolImage`：用于指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR
 
     - 使用 BR 备份时，可以用该字段指定 BR 的版本:
