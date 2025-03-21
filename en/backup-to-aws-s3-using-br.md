@@ -540,7 +540,7 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
 
 ### Compact Backup
 
-You can use a `CompactBackup` CR to compress log backup data into SST format, which accelerates Point in Time Restore (PiTR).
+You can use a `CompactBackup` CR to compact log backup data into SST format, which accelerates Point in Time Restore (PiTR).
 
 This section builds on the previous example of log backup and introduces how to use compact log backup.
 
@@ -576,9 +576,9 @@ This section builds on the previous example of log backup and introduces how to 
         prefix: my-log-backup-folder
     ```
 
-    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compression process. As a result, the compacted data may include writes outside this time range.
+    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the compacted data may include writes outside this time range.
     
-    The `S3` settings should be the same as the to be compressed log backup settings, `CompactBackup` will read the log files at the corresponding address and compress them.
+    The `S3` settings should be the same as the to be compacted log backup settings, `CompactBackup` will read the log files at the corresponding address and compact them.
 
 #### View the compact log backup status
 
@@ -978,7 +978,7 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
 
 ## Integrated management of scheduled snapshot backup, log backup and compact log backup
 
-To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compresses log backup files in remote storage. Note that log backup compression requires log backup to be enabled first as a prerequisite. This section extends the configuration from the previous section.
+To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. Note that log backup compaction requires log backup to be enabled first as a prerequisite. This section extends the configuration from the previous section.
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
 
@@ -1045,9 +1045,9 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
 
     In the above example of `integrated-backup-schedule-s3.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
     
-    * Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compression backups. It is generally recommended to:
+    * Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compaction backups. It is generally recommended to:
       - Not exceed the scheduled snapshot backup interval
-      - Set between one-half to one-third of the scheduled snapshot backup interval
+      - Set about one-half or one-third of the scheduled snapshot backup interval
     
     * Added `BackupSchedule.spec.compactBackupTemplate` field: 
       - The `BackupSchedule.spec.compactBackupTemplate.S3` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.S3`

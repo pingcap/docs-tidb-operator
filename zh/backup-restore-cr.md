@@ -255,18 +255,18 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.endTs`: 用于指定日志压缩备份的范围结束时间戳。
 * `.spec.concurrency`: 最大同时进行的压缩日志任务的数量。默认为4
 * `.spec.maxRetryTimes`: 压缩任务失败的最大重试次数。默认为6
-* `.spec.toolImage`：用于指定 `Backup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR
+* `.spec.toolImage`：用于指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR
 
     - 使用 BR 备份时，可以用该字段指定 BR 的版本:
         - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
         - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.3.0`，那么使用指定的版本镜像进行备份。
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
-* `.spec.env`：指定运行备份任务的 Pod 的环境变量信息。
+* `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
 * `.spec.affinity`：指定运行备份任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-* `.spec.tolerations`：指定运行恢复任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
-* `.spec.podSecurityContext`：指定运行恢复任务的 Pod 的安全上下文配置，允许 Pod 以非 root 用户的方式运行，关于 podSecurityContext 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
-* `.spec.priorityClassName`：指定运行恢复任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
-* `.spec.imagePullSecrets`：指定运行恢复任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
+* `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.podSecurityContext`：指定运行压缩备份任务的 Pod 的安全上下文配置，允许 Pod 以非 root 用户的方式运行，关于 podSecurityContext 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
+* `.spec.priorityClassName`：指定运行压缩备份任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
+* `.spec.imagePullSecrets`：指定运行压缩备份任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
 * `.spec.serviceAccount`：指定恢复时所使用的 ServiceAccount 名称。
 * `.spec.useKMS`：指定恢复时是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
 * `.spec.br`：BR 相关配置，具体介绍参考 [BR 字段介绍](#br-字段介绍)。
@@ -371,8 +371,5 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
     + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
     + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-    + `.spec.compactInterval`: 用于触发新压缩任务的时间间隔。此字段在以下两种场景生效：
-    * 若距离上一次压缩执行时间（`compactExecutionTs`）已超过 `compactInterval` 设定的时长。
-    * 若日志备份检查点(`logBackupCheckpoint`)的推进导致压缩进度（`compactProgress`）滞后超过 `compactInterval` 设定的时长。
-    + 当满足任一条件时，系统将自动调度新的压缩任务。
+    + `.spec.compactInterval`: 用于触发新压缩任务的时间间隔。
     + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为`false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
