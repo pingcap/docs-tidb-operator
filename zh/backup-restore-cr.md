@@ -249,7 +249,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## CompactBackup CR 字段介绍
 
-对于 ***v9.0.0*** 以上的TiDB集群，你可以使用 `CompactBackup` 加速日志恢复。为了将日志备份数据压缩成结构化SST，用户可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份，以下介绍 `CompactBackup` CR 各个字段的具体含义。
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
 
 * `.spec.startTs`: 用于指定日志压缩备份的的范围起始时间戳。
 * `.spec.endTs`: 用于指定日志压缩备份的范围结束时间戳。
