@@ -451,58 +451,58 @@ demo1-log-backup-azblob    log    Stopped   ....
 
 ### 压缩日志备份
 
-对于 ***v9.0.0*** 以上的TiDB集群，`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的日志恢复（Point in Time Restore, PiTR）。 
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。 
 
-本节接续上文的日志备份的案例，介绍压缩日志备份的使用。
+本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
-1. 在 backup-test 这个 namespace 中创建一个名为 demo1-compact-backup 的 CompactBackup CR。
+1. 在 `backup-test` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
 
     ```shell
     kubectl apply -f compact-backup-demo1.yaml
     ```
 
-  `compact-backup-demo1.yaml` 的内容如下：
+    `compact-backup-demo1.yaml` 的内容如下：
 
-  ```yaml
-  ---
-  apiVersion: pingcap.com/v1alpha1
-  kind: CompactBackup
-  metadata:
-    name: demo1-compact-backup
-    namespace: backup-test
-  spec:
-    startTs: "***"
-    endTs: "***"
-    concurrency: 8
-    maxRetryTimes: 2
-    br:
-      cluster: demo1
-      clusterNamespace: test1
-      sendCredToTikv: true
-    azblob:
-      secretName: azblob-secret
-      container: my-container
-      prefix: my-log-backup-folder
-  ```
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      azblob:
+        secretName: azblob-secret
+        container: my-container
+        prefix: my-log-backup-folder
+    ```
 
-  其中， `startTs` 和 `endTs` 所选定的区间即为 `demo1-compact-backup` 即将压缩的日志备份区间。任何包含了至少一个在该时间区间内的写入的 Log 将会被整个送去压缩。 因此最终 Compact 的结果中可能包含该时间范围以外的写入。
-  
-  `azblob` 设置应当与需要的压缩的日志备份设置相同，`CompactBackup` 会读取对应地址的日志文件并进行压缩。
+    其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
+
+    `azblob` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
 
-创建好 `CompactBackup` CR之后，TiDB operator将会自动开始压缩日志备份。你可以通过如下命令查看备份状态：
+创建 `CompactBackup` CR 后，TiDB Operator 会自动开始压缩日志备份。你可以运行以下命令查看备份状态：
 
-  ```shell
-  kubectl get cpbk -n backup-test
-  ```
+```shell
+kubectl get cpbk -n backup-test
+```
 
-从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息, 形式大致如下：
+从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息，输出示例如下：
 
-  ```
-  NAME                   STATUS                   PROGRESS                                     MESSAGE
-  demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
-  ```
+```
+NAME                   STATUS                   PROGRESS                                     MESSAGE
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+```
 
 如果 `STATUS` 字段显示为 `Complete` 则代表压缩日志备份已经完成。
 
@@ -824,9 +824,9 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     log-integrated-backup-schedule-azblob                      log        Running   ....
     ```
 
-## 集成定时快照备份，日志备份和压缩日志备份
+## 集成定时快照备份、日志备份和压缩日志备份
 
-为了加快下游恢复速度，可以在`BackupSchedule` CR 加入压缩日志备份。压缩日志备份可以定期压缩远端地址中的日志备份文件。你必须在开启日志备份的前提下使用压缩日志备份。本节内容将在上一节的基础上进行。
+为了加快下游恢复速度，可以在 `BackupSchedule` CR 中添加压缩日志备份。压缩日志备份可以定期压缩远程存储中的日志备份文件。你必须先启用日志备份，才能使用压缩日志备份。本节基于上一节内容进行扩展。
 
 ### 前置条件：准备定时快照备份环境
 
@@ -880,11 +880,11 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
           #accessTier: Hot
     ```
 
-    以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 的配置在上一节的基础上加入了 `compactBackup` 的部分。主要改动如下：
+    以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 配置基于上一节内容，新增了 `compactBackup` 相关设置，主要改动如下：
     
-    1. 加入 `BackupSchedule.spec.compactInterval` 字段，你可以在这里填入一个自定义日志压缩备份时间间隔。一般建议不要超过定时快照备份的时间间隔，建议在定时快照备份间隔的二分之一到三分之一之间。
+    - 新增 `BackupSchedule.spec.compactInterval` 字段，用于指定日志压缩备份的时间间隔。建议不要超过定时快照备份的间隔，并控制在定时快照备份间隔的二分之一至三分之一之间。
     
-    2. 加入 `BackupSchedule.spec.compactBackupTemplate` 字段。请注意，`BackupSchedule.spec.compactBackupTemplate.azblob` 的配置应当保持与 `BackupSchedule.spec.logBackupTemplate.azblob` 保持一致。
+    - 新增 `BackupSchedule.spec.compactBackupTemplate` 字段。请确保 `BackupSchedule.spec.compactBackupTemplate.azblob` 配置与 `BackupSchedule.spec.logBackupTemplate.azblob` 保持一致。
 
     关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
 

@@ -451,40 +451,40 @@ demo1-log-backup-gcs       log      Stopped   ....
 
 ### 压缩日志备份
 
-对于 ***v9.0.0*** 以上的TiDB集群，`Compact Backup` CR 可以将日志备份数据压缩成SST格式来加速下游的日志恢复（Point in Time Restore, PiTR）。 
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。 
 
-本节接续上文的日志备份的案例，介绍压缩日志备份的使用。
+本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
-1. 在 backup-test 这个 namespace 中创建一个名为 demo1-compact-backup 的 CompactBackup CR。
+1. 在 `backup-test` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
 
     ```shell
     kubectl apply -f compact-backup-demo1.yaml
     ```
 
-  `compact-backup-demo1.yaml` 的内容如下：
-
-  ```yaml
-  ---
-  apiVersion: pingcap.com/v1alpha1
-  kind: CompactBackup
-  metadata:
-    name: demo1-compact-backup
-    namespace: backup-test
-  spec:
-    startTs: "***"
-    endTs: "***"
-    concurrency: 8
-    maxRetryTimes: 2
-    br:
-      cluster: demo1
-      clusterNamespace: test1
-      sendCredToTikv: true
-    gcs:
-      projectId: ${project_id}
-      secretName: gcs-secret
-      bucket: my-bucket
-      prefix: my-log-backup-folder
-  ```
+    `compact-backup-demo1.yaml` 的内容如下：
+  
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: my-bucket
+        prefix: my-log-backup-folder
+    ```
 
     其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
 
