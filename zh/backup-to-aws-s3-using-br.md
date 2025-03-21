@@ -971,7 +971,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     log-integrated-backup-schedule-s3                      log        Running   ....
     ```
 
-## 集成定时快照备份，日志备份和压缩日志备份
+## 集成定时快照备份、日志备份和压缩日志备份
 
 为了加快下游恢复速度，可以在`BackupSchedule` CR 加入压缩日志备份。压缩日志备份可以定期压缩远端地址中的日志备份文件。你必须在开启日志备份的前提下使用压缩日志备份。本节内容将在上一节的基础上进行。
 
