@@ -498,7 +498,7 @@ demo1-log-backup-gcs       log      Stopped   ....
   kubectl get cpbk -n backup-test
   ```
 
-从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息, 形式大致如下：
+从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息，输出示例如下：
 
 ```
 NAME                   STATUS                   PROGRESS                                     MESSAGE
