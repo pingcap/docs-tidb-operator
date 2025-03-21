@@ -260,7 +260,7 @@ This section introduces the fields in the `Backup` CR.
 
 ## CompactBackup CR fields
 
-For ***TiDB version 9.0.0*** and above, you can compact log backup to accelerate PITR restore. To compact log backup data into structured SST files, users can create a custom CompactBackup CR object to describe a backup task. Below is a detailed explanation of the fields in the CompactBackup CR:
+For TiDB version 9.0.0 and above, you can compact log backup to accelerate PITR restore. To compact log backup data into structured SST files, users can create a custom CompactBackup CR object to describe a backup task. Below is a detailed explanation of the fields in the CompactBackup CR:
 
 * `.spec.startTs`: The start timestamp for the compaction operation.
 * `.spec.endTs`: The ending timestamp for the log compaction backup range.
