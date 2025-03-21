@@ -494,9 +494,9 @@ demo1-log-backup-gcs       log      Stopped   ....
 
 创建好 `CompactBackup` CR之后，TiDB operator将会自动开始压缩日志备份。你可以通过如下命令查看备份状态：
 
-  ```shell
-  kubectl get cpbk -n backup-test
-  ```
+```shell
+kubectl get cpbk -n backup-test
+```
 
 从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息，输出示例如下：
 
