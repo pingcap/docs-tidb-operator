@@ -1048,7 +1048,7 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
     
     * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.s3` configuration matches the `BackupSchedule.spec.logBackupTemplate.s3` configuration.
 
-  For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
+    For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 
 2. After creating `backupSchedule`, use the following command to check the backup status:
 
