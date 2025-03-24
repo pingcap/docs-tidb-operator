@@ -449,6 +449,64 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
     demo1-log-backup-gcs    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
+### Compact log backup
+
+For TiDB v9.0.0 and later versions, you can use a `CompactBackup` CR to compact log backup data into SST format, accelerating downstream PITR (Point-in-time recovery).
+
+This section explains how to compact log backup based on the log backup example from previous sections.
+
+1. In the `backup-test` namespace, create a `CompactBackup` CR named `demo1-compact-backup`.
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+    The content of `compact-backup-demo1.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: my-bucket
+        prefix: my-log-backup-folder
+    ```
+
+    The `startTs` and `endTs` fields specify the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the final compacted data might include data written outside this range.
+    
+    The `gcs` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
+
+#### View the status of log backup compaction
+
+After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
+
+```shell
+kubectl get cpbk -n backup-test
+```
+
+From the output, you can find the status of the `CompactBackup` CR named `demo1-compact-backup`. An example output is as follows:
+
+```
+NAME                   STATUS                   PROGRESS                                     MESSAGE
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+```
+
+If the `STATUS` field displays `Complete`, the compact log backup process has finished successfully.
+
 ### Backup CR examples
 
 <details>
@@ -728,6 +786,89 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     NAME                                                       MODE       STATUS    ....
     integrated-backup-schedule-gcs-2023-03-08t02-50-00         snapshot   Complete  ....
     log-integrated-backup-schedule-gcs                         log        Running   ....
+    ```
+
+## Integrated management of scheduled snapshot backup, log backup, and compact log backup
+
+To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. You must enable log backup before using log backup compaction. This section extends the configuration from the previous section.
+
+### Prerequisites: Prepare for a scheduled snapshot backup
+
+The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
+
+### Create `BackupSchedule`
+
+1. Create a `BackupSchedule` CR named `integrated-backup-schedule-gcs` in the `backup-test` namespace.
+
+    ```shell
+    kubectl apply -f integrated-backup-schedule-s3.yaml
+    ```
+
+    The content of `integrated-backup-schedule-gcs.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-gcs
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-snapshot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-log
+      compactBackupTemplate:
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-log
+    ```
+
+    In the preceding example of `integrated-backup-schedule-gcs.yaml`,  the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
+    
+    * Added the `BackupSchedule.spec.compactInterval` field to specify the time interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
+    
+    * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.gcs` configuration matches the `BackupSchedule.spec.logBackupTemplate.gcs` configuration.
+
+    For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
+
+2. After creating `backupSchedule`, use the following command to check the backup status:
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    A compact log backup task is created together with `backupSchedule`. You can check the `CompactBackup` CR using the following command:
+
+    ```shell
+    kubectl get cpbk -n backup-test
     ```
 
 ## Delete the backup CR
