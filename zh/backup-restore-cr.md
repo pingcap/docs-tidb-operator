@@ -258,7 +258,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.toolImage`：指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR。使用 BR 备份时，你可以使用该字段指定 BR 的版本：
 
     - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
-    - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.3.0`，那么使用指定的版本镜像进行备份。
+    - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v9.0.0`，那么使用指定的版本镜像进行备份。
     - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
 
 * `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
