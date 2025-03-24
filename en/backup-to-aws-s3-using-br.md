@@ -491,8 +491,7 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
       backupMode: log
       logSubcommand: log-start/log-pause/log-stop
       br:
-        cluster: demo1
-        clusterNamespace: test1
+        mespace: test1
         sendCredToTikv: true
       s3:
         provider: aws
@@ -538,11 +537,11 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
     demo1-log-backup-s3    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
-### Compact Backup
+### Compact log backup
 
-For TiDB version 9.0.0 and above, you can use a `CompactBackup` CR to compact log backup data into SST format, which accelerates Point in Time Restore (PiTR).
+For TiDB v9.0.0 and later versions, you can use a `CompactBackup` CR to compact log backup data into SST format, accelerating downstream PITR (Point-in-time recovery).
 
-This section builds on the previous example of log backup and introduces how to use compact log backup.
+This section explains how to compact log backup based on the log backup example from previous sections.
 
 1. In the `backup-test` namespace, create a `CompactBackup` CR named `demo1-compact-backup`.
 
@@ -576,26 +575,26 @@ This section builds on the previous example of log backup and introduces how to 
         prefix: my-log-backup-folder
     ```
 
-    The `startTs` and `endTs` fields define the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the compacted data may include writes outside this time range.
+    The `startTs` and `endTs` fields specify the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the final compacted data might include data written outside this range.
     
-    The `S3` settings should be the same as the to be compacted log backup settings, `CompactBackup` will read the log files at the corresponding address and compact them.
+    The `s3` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
 
 #### View the compact log backup status
 
 After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
 
-  ```shell
-  kubectl get cpbk -n backup-test
-  ```
+```shell
+kubectl get cpbk -n backup-test
+```
 
-From the output, you can find the status of the CompactBackup CR named demo1-compact-backup, similar to the following:
+From the output, you can find the status of the `CompactBackup` CR named `demo1-compact-backup`. An example output is as follows:
 
-  ```
-  NAME                   STATUS                   PROGRESS                                     MESSAGE
-  demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
-  ```
+```
+NAME                   STATUS                   PROGRESS                                     MESSAGE
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+```
 
-If the STATUS field displays Complete, the compact log backup process has finished successfully.
+If the `STATUS` field displays `Complete`, the compact log backup process has finished successfully.
 
 ### Backup CR examples
 
@@ -976,9 +975,9 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     log-integrated-backup-schedule-s3                      log        Running   ....
     ```
 
-## Integrated management of scheduled snapshot backup, log backup and compact log backup
+## Integrated management of scheduled snapshot backup, log backup, and compact log backup
 
-To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. Note that log backup compaction requires log backup to be enabled first as a prerequisite. This section extends the configuration from the previous section.
+To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. You must enable log backup before using log backup compaction. This section extends the configuration from the previous section.
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
 
@@ -1043,14 +1042,13 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
           prefix: my-folder-log
     ```
 
-    In the above example of `integrated-backup-schedule-s3.yaml`,  the `backupSchedule` configuration adds the `compactBackup` section based on the previous section. The key modifications are:
+    In the preceding example of `integrated-backup-schedule-s3.yaml`, the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
     
-    * Added `BackupSchedule.spec.compactInterval` field: This allows specifying a custom interval for log compaction backups. It is generally recommended to:
-      - Not exceed the scheduled snapshot backup interval
-      - Set about one-half or one-third of the scheduled snapshot backup interval
+    * Added the `BackupSchedule.spec.compactInterval` field to specify the time interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
     
-    * Added `BackupSchedule.spec.compactBackupTemplate` field: 
-      - The `BackupSchedule.spec.compactBackupTemplate.S3` configuration must remain consistent with `BackupSchedule.spec.logBackupTemplate.S3`
+    * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.s3` configuration matches the `BackupSchedule.spec.logBackupTemplate.s3` configuration.
+
+  For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
 
 2. After creating `backupSchedule`, use the following command to check the backup status:
 
