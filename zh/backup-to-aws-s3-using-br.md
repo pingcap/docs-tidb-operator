@@ -1048,8 +1048,6 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl get bks -n backup-test -o wide
     ```

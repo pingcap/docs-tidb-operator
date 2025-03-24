@@ -836,8 +836,6 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f integrated-backup-scheduler-azblob.yaml
     ```
