@@ -379,7 +379,7 @@ The `backupSchedule` configuration consists of three parts: the configuration of
 
 * `backupTemplate`: the configuration of the snapshot backup. Specifies the configuration related to the cluster and remote storage of the snapshot backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
 * `logBackupTemplate`: the configuration of the log backup. Specifies the configuration related to the cluster and remote storage of the log backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields). The log backup is created and deleted along with `backupSchedule` and recycled according to `.spec.maxReservedTime`. The log backup name is saved in `status.logBackup`.
-* `compactBackupTemplate`: the configuration template of the log compaction backup. The fields are the same as those in the `spec` configuration of [the `CompactBackup` CR](#compactbackup-cr-fields). The compaction backup is created and deleted along with `backupSchedule`. The storage settings of the compaction backup should be the same as that of `logBackupTemplate` in the same `backupSchedule`.
+* `compactBackupTemplate`: the configuration template of the log compaction backup. The fields are the same as those in the `spec` configuration of [the `CompactBackup` CR](#compactbackup-cr-fields). The compaction backup is created and deleted along with `backupSchedule`. The log backup names are stored in `status.logBackup`. The storage settings of the compaction backup should be the same as that of `logBackupTemplate` in the same `backupSchedule`.
 
     > **Note:**
     >
