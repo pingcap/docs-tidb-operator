@@ -490,7 +490,7 @@ This section explains how to compact log backup based on the log backup example 
     
     The `gcs` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
 
-#### View the compact log backup status
+#### View the status of log backup compaction
 
 After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
 

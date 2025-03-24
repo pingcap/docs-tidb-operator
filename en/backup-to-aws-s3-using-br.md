@@ -579,7 +579,7 @@ This section explains how to compact log backup based on the log backup example 
     
     The `s3` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
 
-#### View the compact log backup status
+#### View the status of log backup compaction
 
 After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
 
@@ -1044,7 +1044,7 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
 
     In the preceding example of `integrated-backup-schedule-s3.yaml`, the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
     
-    * Added the `BackupSchedule.spec.compactInterval` field to specify the time interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
+    * Added the `BackupSchedule.spec.compactInterval` field to specify the interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
     
     * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.s3` configuration matches the `BackupSchedule.spec.logBackupTemplate.s3` configuration.
 

@@ -260,6 +260,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
     - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.3.0`，那么使用指定的版本镜像进行备份。
     - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
+
 * `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
 * `.spec.affinity`：指定运行备份任务的 Pod 亲和性 (affinity) 配置。关于亲和性的详细说明，请参阅[亲和性与反亲和性](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
 * `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够被调度到带有与之匹配的[污点 (Taint)](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) 的节点上。关于污点与容忍度的更多说明，请参阅[污点和容忍度](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。

@@ -890,15 +890,11 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl get bks -n backup-test -o wide
     ```
 
     压缩日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get cpbk -n backup-test

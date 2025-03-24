@@ -983,8 +983,6 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f integrated-backup-schedule-s3.yaml
     ```
@@ -1057,8 +1055,6 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     ```
 
     压缩日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get cpbk -n backup-test

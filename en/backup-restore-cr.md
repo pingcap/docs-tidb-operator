@@ -271,6 +271,7 @@ For TiDB v9.0.0 and later versions, you can use `CompactBackup` to accelerate PI
     - If not specified or left empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
     - If a BR version is specified, such as `.spec.toolImage: pingcap/br:v8.1.0`, the image of the specified version is used for backup.
     - If an image is specified without a version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
+
 * `.spec.env`: the environment variables for the Pod that runs the compaction task.
 * `.spec.affinity`: the affinity configuration for the Pod that runs the compaction task. For details on affinity, refer to [Affinity and anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
 * `.spec.tolerations`: specifies that the Pod that runs the compaction task can schedule onto nodes with matching [taints](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint). For details on taints and tolerations, refer to [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
