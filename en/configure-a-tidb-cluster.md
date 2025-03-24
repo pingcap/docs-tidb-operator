@@ -37,15 +37,15 @@ The cluster name can be configured by changing `metadata.name` in the `TiDBCuste
 
 ### Version
 
-Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`.
+Usually, components in a cluster are in the same version. It is recommended to configure `spec.<pd/tidb/tikv/tiflash/ticdc>.baseImage` and `spec.version`, if you need to configure different versions for different components, you can configure `spec.<pd/tidb/tikv/tiflash/ticdc>.version`.
 
 Here are the formats of the parameters:
 
 - `spec.version`: the format is `imageTag`, such as `v8.5.0`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
+- `spec.<pd/tidb/tikv/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v8.5.0`
+- `spec.<pd/tidb/tikv/tiflash/ticdc>.version`: the format is `imageTag`, such as `v8.5.0`
 
 ### Recommended configuration
 
@@ -246,7 +246,7 @@ To mount multiple PVs for PD microservices (taking the `tso` microservice as an 
 
 ### HostNetwork
 
-For PD, TiKV, TiDB, TiFlash, TiProxy, TiCDC, and Pump, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
+For PD, TiKV, TiDB, TiFlash, TiProxy and TiCDC, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
 
 To enable `HostNetwork` for all supported components, configure `spec.hostNetwork: true`.
 
