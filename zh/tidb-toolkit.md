@@ -197,16 +197,8 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-<<<<<<< HEAD
-pingcap/tidb-backup     v1.5.5                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.5.5                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.5.5                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.5.5                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.5.5          v1.5.5          tidb-operator Helm chart for Kubernetes
-=======
-pingcap/tidb-lightning  v1.6.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.6.1          v1.6.1          tidb-operator Helm chart for Kubernetes
->>>>>>> f37991a4 (zh,en: remove deprecated Helm charts (#2728))
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -266,14 +258,8 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
 wget http://charts.pingcap.org/tidb-operator-v1.5.5.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.5.5.tgz
 wget http://charts.pingcap.org/tidb-lightning-v1.5.5.tgz
-=======
-wget http://charts.pingcap.org/tidb-operator-v1.6.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
->>>>>>> f37991a4 (zh,en: remove deprecated Helm charts (#2728))
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
