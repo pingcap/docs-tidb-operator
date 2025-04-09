@@ -177,10 +177,7 @@ version.BuildInfo{Version:"v3.4.1", GitCommit:"c4e74854886b2efe3321e185578e6db9b
 Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
 
 * `tidb-operator`：用于部署 TiDB Operator；
-* `tidb-cluster`：用于部署 TiDB 集群；
-* `tidb-backup`：用于 TiDB 集群备份恢复；
 * `tidb-lightning`：用于 TiDB 集群导入数据；
-* `tidb-drainer`：用于部署 TiDB Drainer；
 
 这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
 
@@ -200,9 +197,6 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.6.1                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.6.1                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.6.1                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.6.1                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.6.1          v1.6.1          tidb-operator Helm chart for Kubernetes
 ```
@@ -265,7 +259,6 @@ helm uninstall ${release_name} -n ${namespace}
 
 ```shell
 wget http://charts.pingcap.org/tidb-operator-v1.6.1.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.6.1.tgz
 wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
 ```
 
