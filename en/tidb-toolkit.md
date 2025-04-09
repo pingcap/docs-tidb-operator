@@ -197,16 +197,8 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-<<<<<<< HEAD
-pingcap/tidb-backup     v1.5.5                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.5.5                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.5.5                          A Helm chart for TiDB Binlog drainer.
 pingcap/tidb-lightning  v1.5.5                          A Helm chart for TiDB Lightning
 pingcap/tidb-operator   v1.5.5          v1.5.5          tidb-operator Helm chart for Kubernetes
-=======
-pingcap/tidb-lightning  v1.6.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.6.1          v1.6.1          tidb-operator Helm chart for Kubernetes
->>>>>>> f37991a4 (zh,en: remove deprecated Helm charts (#2728))
 ```
 
 When a new version of chart has been released, you can use `helm repo update` to update the repository cached locally:
@@ -268,14 +260,8 @@ Use the following command to download the chart file required for cluster instal
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
 wget http://charts.pingcap.org/tidb-operator-v1.5.5.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.5.5.tgz
 wget http://charts.pingcap.org/tidb-lightning-v1.5.5.tgz
-=======
-wget http://charts.pingcap.org/tidb-operator-v1.6.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
->>>>>>> f37991a4 (zh,en: remove deprecated Helm charts (#2728))
 ```
 
 Copy these chart files to the server and decompress them. You can use these charts to install the corresponding components by running the `helm install` command. Take `tidb-operator` as an example:
