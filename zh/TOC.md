@@ -78,7 +78,7 @@
       - [使用 BR 备份 TiDB 集群数据到 Azblob](backup-to-azblob-using-br.md)
       - [使用 BR 恢复 Azblob 上的备份数据](restore-from-azblob-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储](backup-to-blob-using-job.md)
-      - [使用 TiDB Lightning 恢复 Blob 存储上的备份数据](restore-from-blob-using-job)
+      - [使用 TiDB Lightning 恢复 Blob 存储上的备份数据](restore-from-blob-using-job.md)
     - 使用持久卷
       - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
       - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
