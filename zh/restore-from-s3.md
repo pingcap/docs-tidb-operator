@@ -1,8 +1,12 @@
 ---
-title: 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
+title: 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据 (helm)
 summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据恢复到 TiDB 集群。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-s3/']
 ---
+
+> **警告：**
+>
+> helm 方式已弃用，建议使用 [job 方式](https://docs.pingcap.com/zh/tidb/stable/restore-from-s3-using-job)。
 
 # 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
 
