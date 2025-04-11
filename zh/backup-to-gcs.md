@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs/']
 
 > **警告：**
 >
-> helm 方式已弃用，建议使用 [job 方式](https://docs.pingcap.com/zh/tidb/stable/backup-to-gcs-using-job)。
+> helm 方式已弃用，建议使用 [job 方式](backup-to-gcs-using-job.md)。
 
 # 使用 Dumpling 备份 TiDB 集群数据到 GCS
 
