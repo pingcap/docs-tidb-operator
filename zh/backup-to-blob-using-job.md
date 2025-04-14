@@ -5,7 +5,7 @@ summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储�
 
 # 使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储
 
-本文档介绍如何将 Azure AKS 上 TiDB 集群的数据备份到 Blob 的存储上。[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 是一款数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将 Azure AKS 上 TiDB 集群的数据备份到 Blob 的存储上。Dumpling 是一款数据导出工具，可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于完成逻辑上的全量数据备份或者导出。
 
 ## 准备运行 Dumpling 的节点池
 
