@@ -1,8 +1,6 @@
 ---
 title: 使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储
 summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储。
-category: how-to
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-blob-using-job/']
 ---
 
 # 使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储
