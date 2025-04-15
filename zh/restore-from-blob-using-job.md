@@ -26,8 +26,6 @@ az aks nodepool add --name lightning \
 
 在节点池部署 TiDB Lightning job 任务，以下为配置示例，根据实际情况替换对应字段
 
-{{< copyable "" >}}
-
 ```yaml
 # lightning_job.yaml
 ---
