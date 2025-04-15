@@ -13,8 +13,6 @@ summary: 了解如何使用 TiDB Lightning 将 Blob 存储上的备份数据恢�
 
 你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池命令示例，替换 ${clusterName} 为 AKS 集群名字，替换 ${resourceGroup} 为资源组名字，并根据实际情况替换对应字段。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 az aks nodepool add --name lightning \
     --cluster-name ${clusterName} \
