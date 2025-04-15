@@ -25,9 +25,7 @@ gcloud container node-pools create dumpling --cluster ${clusterName} --machine-t
 kubectl -n ${namespace) create configmap google-credentials --from-file=google-credentials.json
 ```
 
-在节点池部署 Dumpling job 任务，以下为配置示例，根据实际情况替换对应字段：
-
-{{< copyable "" >}}
+在节点池部署 Dumpling job 任务，以下为配置示例，请根据实际情况替换对应字段：
 
 ```yaml
 # dumpling_job.yaml
