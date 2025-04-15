@@ -13,8 +13,6 @@ summary: 介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份数据�
 
 你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池命令示例，替换 ${clusterName} 为 GKE 集群名字，并根据实际情况替换对应字段。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 gcloud container node-pools create lightning --cluster ${clusterName} --machine-type n2-standard-4 --num-nodes=1 --node-labels=dedicated=lightning
 ```
