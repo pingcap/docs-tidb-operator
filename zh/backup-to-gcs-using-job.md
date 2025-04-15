@@ -11,9 +11,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-job/']
 
 ## 准备运行 Dumpling 的节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池命令示例，替换 ${clusterName} 为 GKE 集群名字，并根据实际情况替换对应字段。
-
-{{< copyable "shell-regular" >}}
+你可以在已有节点池运行 Dumpling，以下为创建新节点池命令示例。请替换 ${clusterName} 为 GKE 集群名字，并根据实际情况替换对应字段。
 
 ```shell
 gcloud container node-pools create dumpling --cluster ${clusterName} --machine-type n2-standard-4 --num-nodes=1 --node-labels=dedicated=dumpling
