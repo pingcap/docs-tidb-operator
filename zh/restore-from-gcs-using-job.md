@@ -21,8 +21,6 @@ gcloud container node-pools create lightning --cluster ${clusterName} --machine-
 
 为凭证创建 configmap，google-credentials.json 文件存放用户从 Google Cloud console 上下载的 service account key。具体操作参考 [Google Cloud 官方文档](https://cloud.google.com/docs/authentication/client-libraries)。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl -n ${namespace) create configmap google-credentials --from-file=google-credentials.json
 ```
