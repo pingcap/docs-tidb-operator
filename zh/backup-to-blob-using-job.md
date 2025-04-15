@@ -74,8 +74,6 @@ spec:
 
 执行以下命令创建 Dumpling job 任务：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 export name=dumpling
 export version=v8.5.1
