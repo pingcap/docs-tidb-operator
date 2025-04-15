@@ -92,8 +92,6 @@ kubectl -n $(namespace) get pod $(name)
 
 查看 Dumpling job 任务日志
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl -n $(namespace) logs pod $(name)
 ```
