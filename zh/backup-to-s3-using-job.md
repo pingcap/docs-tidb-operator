@@ -119,9 +119,7 @@ envsubst < dumpling_job.yaml | kubectl apply -f -
 kubectl -n $(namespace) get pod $(name)
 ```
 
-查看 Dumpling job 任务日志
-
-{{< copyable "shell-regular" >}}
+查看 Dumpling job 任务日志：
 
 ```shell
 kubectl -n $(namespace) logs pod $(name)
