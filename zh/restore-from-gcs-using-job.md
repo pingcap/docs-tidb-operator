@@ -136,9 +136,7 @@ export storage=250G
 envsubst < lightning_job.yaml | kubectl apply -f -
 ```
 
-查看 TiDB Lightning job 任务
-
-{{< copyable "shell-regular" >}}
+查看 TiDB Lightning job 任务：
 
 ```shell
 kubectl -n $(namespace) get pod $(name)
