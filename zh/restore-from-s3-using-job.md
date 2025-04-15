@@ -5,7 +5,7 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
 
 # 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
 
-本文档介绍如何将 S3 兼容存储上的备份数据恢复到 TiDB 集群。 TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用物理导入方式，具体 TiDB Lightning 使用方式和配置参数请参阅[TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何将 S3 兼容存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
 以下示例将兼容 S3 的存储上的备份数据恢复到 TiDB 集群。
 
