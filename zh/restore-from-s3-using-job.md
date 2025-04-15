@@ -13,8 +13,6 @@ summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据
 
 你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池配置示例，替换 ${clusterName} 为 EKS 集群名字，并根据实际情况替换对应字段。
 
-{{< copyable "" >}}
-
 ```yaml
 # eks_lightning.yaml
 apiVersion: eksctl.io/v1alpha5
