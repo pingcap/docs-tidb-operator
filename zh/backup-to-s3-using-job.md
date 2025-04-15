@@ -40,9 +40,7 @@ eksctl create nodegroup -f eks_dumpling.yaml
 
 ## 部署 Dumpling job 任务
 
-在节点池部署 Dumpling job 任务，以下为配置示例，根据实际情况替换对应字段
-
-{{< copyable "" >}}
+在节点池部署 Dumpling job 任务，以下为配置示例，根据实际情况替换对应字段。
 
 ```yaml
 # dumpling_job.yaml
