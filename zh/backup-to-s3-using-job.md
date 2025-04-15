@@ -34,8 +34,6 @@ nodeGroups:
 
 执行以下命令创建节点池：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 eksctl create nodegroup -f eks_dumpling.yaml
 ```
