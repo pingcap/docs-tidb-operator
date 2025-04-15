@@ -120,8 +120,6 @@ spec:
 
 执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整 storage 磁盘大小：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 export name=lightning
 export version=v8.5.1
