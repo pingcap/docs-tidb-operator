@@ -9,9 +9,7 @@ summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存
 
 ## 准备运行 Dumpling 的节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池配置示例，替换 ${clusterName} 为 EKS 集群名字，并根据实际情况替换对应字段。
-
-{{< copyable "" >}}
+你可以在已有节点池运行 Dumpling，以下为创建新节点池配置示例，请替换 ${clusterName} 为 EKS 集群名字，并根据实际情况替换对应字段。
 
 ```yaml
 # eks_dumpling.yaml
