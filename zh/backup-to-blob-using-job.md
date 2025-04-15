@@ -11,8 +11,6 @@ summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储�
 
 你可以在已有节点池运行 Dumpling，以下为创建新节点池命令示例，替换 ${clusterName} 为 AKS 集群名字，替换 ${resourceGroup} 为资源组名字，并根据实际情况替换对应字段。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 az aks nodepool add --name dumpling \
     --cluster-name ${clusterName} \
