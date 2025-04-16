@@ -42,6 +42,7 @@ kubectl -n ${namespace} create configmap google-credentials --from-file=google-c
 - `${version}`：TiDB Lightning 镜像版本
 - `${storageClassName}`：存储类名称
 - `${storage}`：存储大小
+- TiDB Lightning 的相关参数，请参考 [TiDB Lightning 配置参数](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-configuration/)。
 
 ```yaml
 # lightning_job.yaml

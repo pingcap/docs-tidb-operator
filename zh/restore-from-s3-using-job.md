@@ -49,10 +49,7 @@ eksctl create nodegroup -f eks_lightning.yaml
 - `${version}`：TiDB Lightning 镜像版本
 - `${storageClassName}`：存储类名称
 - `${storage}`：存储大小
-- `${AWS_REGION}`：AWS 区域
-- `${AWS_ACCESS_KEY_ID}`：AWS Access Key ID
-- `${AWS_SECRET_ACCESS_KEY}`：AWS Secret Access Key
-- `${AWS_SESSION_TOKEN}`：AWS 会话令牌（可选）
+- TiDB Lightning 的相关参数，请参考 [TiDB Lightning 配置参数](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-configuration/)。
 
 ### TiDB Lightning Job 配置文件
 

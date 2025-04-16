@@ -32,8 +32,7 @@ az aks nodepool add --name lightning \
 - `${version}`：TiDB Lightning 镜像版本
 - `${storageClassName}`：存储类名称
 - `${storage}`：存储大小
-- `${accountname}`：Azure 存储账户名称
-- `${accountkey}`：Azure 存储账户密钥
+- TiDB Lightning 的相关参数，请参考 [TiDB Lightning 配置参数](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-configuration/)。
 
 ### TiDB Lightning Job 配置文件
 

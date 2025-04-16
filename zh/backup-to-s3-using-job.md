@@ -45,10 +45,7 @@ eksctl create nodegroup -f eks_dumpling.yaml
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
 - `${version}`：Dumpling 镜像版本
-- `${AWS_REGION}`：AWS 区域
-- `${AWS_ACCESS_KEY_ID}`：AWS Access Key ID
-- `${AWS_SECRET_ACCESS_KEY}`：AWS Secret Access Key
-- `${AWS_SESSION_TOKEN}`：AWS 会话令牌（可选）
+- Dumpling 的相关参数，请参考 [Dumpling 主要选项表](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/#dumpling-主要选项表)。
 
 ### Dumpling Job 配置文件
 
