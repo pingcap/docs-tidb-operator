@@ -1,15 +1,18 @@
 ---
-title: 使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储
-summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到 Blob 的存储。
+title: 使用 Dumpling 备份 TiDB 数据到 Azure Blob Storage
+summary: 本文介绍如何使用 Dumpling 将 TiDB 集群数据备份到 Azure Blob Storage。
 ---
 
-# 使用 Dumpling 备份 TiDB 集群数据到 Azure Blob Storage
+# 使用 Dumpling 备份 TiDB 数据到 Azure Blob Storage
 
-本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将 Azure AKS 上 TiDB 集群的数据备份到 Azure Blob Storage。Dumpling 是一款数据导出工具，可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于完成逻辑上的全量数据备份或者导出。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将部署在 Azure AKS 上的 TiDB 集群数据备份到 Azure Blob Storage。Dumpling 是一款数据导出工具，可将 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于全量数据备份或导出。
 
-## 准备运行 Dumpling 的节点池
+## 准备 Dumpling 节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池命令示例。请将 ${clusterName} 替换为 AKS 集群名字，将 ${resourceGroup} 替换为资源组名字，并根据实际情况替换对应字段。
+你可以在现有节点池中运行 Dumpling，也可以创建一个专用节点池。以下命令示例展示了如何创建一个新的节点池。请根据实际情况替换以下变量：
+
+- `${clusterName}`：AKS 集群名称
+- `${resourceGroup}`：资源组名称
 
 ```shell
 az aks nodepool add --name dumpling \
@@ -20,9 +23,17 @@ az aks nodepool add --name dumpling \
     --labels dedicated=dumpling
 ```
 
-## 部署 Dumpling job 任务
+## 部署 Dumpling Job
 
-在节点池部署 Dumpling job 任务，以下为配置示例，请根据实际情况替换对应字段。
+以下是 Dumpling Job 的配置示例，请根据实际情况替换以下变量：
+
+- `${name}`：Job 名称
+- `${namespace}`：Kubernetes 命名空间
+- `${version}`：Dumpling 镜像版本
+- `${accountname}`：Azure 存储账户名称
+- `${accountkey}`：Azure 存储账户密钥
+
+### Dumpling Job 配置文件
 
 ```yaml
 # dumpling_job.yaml
@@ -50,7 +61,7 @@ spec:
                 - dumpling
             topologyKey: kubernetes.io/hostname
       containers:
-        - name: $(name)
+        - name: ${name}
           image: pingcap/dumpling:${version}
           command:
             - /bin/sh
@@ -72,26 +83,32 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 Dumpling job 任务：
+### 创建 Dumpling Job
+
+执行以下命令创建 Dumpling Job：
 
 ```shell
 export name=dumpling
 export version=v8.5.1
 export namespace=tidb-cluster
-export accountname=
-export accountkey=
+export accountname=<your-account-name>
+export accountkey=<your-account-key>
 
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-查看 Dumpling job 任务：
+### 查看 Dumpling Job 状态
+
+运行以下命令查看 Dumpling Job 的 Pod 状态：
 
 ```shell
-kubectl -n $(namespace) get pod $(name)
+kubectl -n ${namespace} get pod ${name}
 ```
 
-查看 Dumpling job 任务日志
+### 查看 Dumpling Job 日志
+
+运行以下命令查看 Dumpling Job 的日志输出：
 
 ```shell
-kubectl -n $(namespace) logs pod $(name)
+kubectl -n ${namespace} logs pod ${name}
 ```

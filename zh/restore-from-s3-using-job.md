@@ -1,17 +1,19 @@
 ---
 title: 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
-summary: 了解如何使用 TiDB Lightning 将兼容 Amazon S3 存储上的备份数据恢复到 TiDB 集群。
+summary: 本文介绍如何使用 TiDB Lightning 将兼容 Amazon S3 存储上的备份数据恢复到 TiDB 集群。
 ---
 
 # 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
 
-本文档介绍如何将 Amazon S3 兼容存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何将 Amazon S3 兼容存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。有关 TiDB Lightning 的详细使用方式和配置参数，请参阅 [TiDB Lightning 官方文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
-以下示例将兼容 Amazon S3 的存储上的备份数据恢复到 TiDB 集群。
+以下示例展示了如何将兼容 Amazon S3 的存储上的备份数据恢复到 TiDB 集群。
 
 ## 准备运行 TiDB Lightning 的节点池
 
-你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池配置示例，请将 ${clusterName} 替换为 EKS 集群名字，并根据实际情况替换对应字段。
+你可以在现有节点池中运行 TiDB Lightning，也可以创建一个专用节点池。以下是创建新节点池的配置示例，请根据实际情况替换以下变量：
+
+- `${clusterName}`：EKS 集群名称
 
 ```yaml
 # eks_lightning.yaml
@@ -38,9 +40,21 @@ nodeGroups:
 eksctl create nodegroup -f eks_lightning.yaml
 ```
 
-## 部署 TiDB Lightning job 任务
+## 部署 TiDB Lightning Job
 
-在节点池部署 TiDB Lightning job 任务，以下为配置示例，根据实际情况替换对应字段：
+以下是 TiDB Lightning Job 的配置示例，请根据实际情况替换以下变量：
+
+- `${name}`：Job 名称
+- `${namespace}`：Kubernetes 命名空间
+- `${version}`：TiDB Lightning 镜像版本
+- `${storageClassName}`：存储类名称
+- `${storage}`：存储大小
+- `${AWS_REGION}`：AWS 区域
+- `${AWS_ACCESS_KEY_ID}`：AWS Access Key ID
+- `${AWS_SECRET_ACCESS_KEY}`：AWS Secret Access Key
+- `${AWS_SESSION_TOKEN}`：AWS 会话令牌（可选）
+
+### TiDB Lightning Job 配置文件
 
 ```yaml
 # lightning_job.yaml
@@ -143,30 +157,36 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整存储磁盘大小：
+### 创建 TiDB Lightning Job
+
+执行以下命令创建 TiDB Lightning Job：
 
 ```shell
 export name=lightning
 export version=v8.5.1
 export namespace=tidb-cluster
-export storageClassName=
+export storageClassName=<your-storage-class>
 export storage=250G
 export AWS_REGION=us-west-2
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_SESSION_TOKEN=
+export AWS_ACCESS_KEY_ID=<your-access-key-id>
+export AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+export AWS_SESSION_TOKEN=<your-session-token> # 可选
 
 envsubst < lightning_job.yaml | kubectl apply -f -
 ```
 
-查看 TiDB Lightning job 任务：
+### 查看 TiDB Lightning Job 状态
+
+运行以下命令查看 TiDB Lightning Job 的 Pod 状态：
 
 ```shell
-kubectl -n $(namespace) get pod $(name)
+kubectl -n ${namespace} get pod ${name}
 ```
 
-查看 TiDB Lightning job 任务日志：
+### 查看 TiDB Lightning Job 日志
+
+运行以下命令查看 TiDB Lightning Job 的日志输出：
 
 ```shell
-kubectl -n $(namespace) logs pod $(name)
+kubectl -n ${namespace} logs pod ${name}
 ```

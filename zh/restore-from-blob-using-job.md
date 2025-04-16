@@ -1,17 +1,18 @@
 ---
-title: 使用 TiDB Lightning 恢复 Azure Blob Storage 存储上的备份数据
-summary: 了解如何使用 TiDB Lightning 将 Azure Blob Storage 存储上的备份数据恢复到 TiDB 集群。
+title: 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
+summary: 本文介绍如何使用 TiDB Lightning 将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
 ---
 
 # 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
 
-本文档介绍如何将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
-
-以下示例将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
+本文档介绍如何使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/) 将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。以下示例展示了如何完成恢复操作。
 
 ## 准备运行 TiDB Lightning 的节点池
 
-你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池命令示例，请将 ${clusterName} 替换为 AKS 集群名字，将 ${resourceGroup} 替换为资源组名字，并根据实际情况替换对应字段。
+你可以在现有节点池中运行 TiDB Lightning，也可以创建一个专用节点池。以下命令示例展示了如何创建一个新的节点池，请根据实际情况替换以下变量：
+
+- `${clusterName}`：AKS 集群名称
+- `${resourceGroup}`：资源组名称
 
 ```shell
 az aks nodepool add --name lightning \
@@ -22,9 +23,19 @@ az aks nodepool add --name lightning \
     --labels dedicated=lightning
 ```
 
-## 部署 TiDB Lightning job 任务
+## 部署 TiDB Lightning Job
 
-在节点池部署 TiDB Lightning job 任务，以下为配置示例，根据实际情况替换对应字段
+以下是 TiDB Lightning Job 的配置示例，请根据实际情况替换以下变量：
+
+- `${name}`：Job 名称
+- `${namespace}`：Kubernetes 命名空间
+- `${version}`：TiDB Lightning 镜像版本
+- `${storageClassName}`：存储类名称
+- `${storage}`：存储大小
+- `${accountname}`：Azure 存储账户名称
+- `${accountkey}`：Azure 存储账户密钥
+
+### TiDB Lightning Job 配置文件
 
 ```yaml
 # lightning_job.yaml
@@ -118,28 +129,34 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整存储磁盘大小：
+### 创建 TiDB Lightning Job
+
+执行以下命令创建 TiDB Lightning Job：
 
 ```shell
 export name=lightning
 export version=v8.5.1
 export namespace=tidb-cluster
-export storageClassName=
+export storageClassName=<your-storage-class>
 export storage=250G
-export accountname=
-export accountkey=
+export accountname=<your-account-name>
+export accountkey=<your-account-key>
 
 envsubst < lightning_job.yaml | kubectl apply -f -
 ```
 
-查看 TiDB Lightning job 任务：
+### 查看 TiDB Lightning Job 状态
+
+运行以下命令查看 TiDB Lightning Job 的 Pod 状态：
 
 ```shell
-kubectl -n $(namespace) get pod $(name)
+kubectl -n ${namespace} get pod ${name}
 ```
 
-查看 TiDB Lightning job 任务日志：
+### 查看 TiDB Lightning Job 日志
+
+运行以下命令查看 TiDB Lightning Job 的日志输出：
 
 ```shell
-kubectl -n $(namespace) logs pod $(name)
+kubectl -n ${namespace} logs pod ${name}
 ```

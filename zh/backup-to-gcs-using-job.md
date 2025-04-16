@@ -1,31 +1,45 @@
 ---
-title: 使用 Dumpling 备份 TiDB 集群数据到 GCS
-summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到 Google Cloud Storage (GCS)。
+title: 使用 Dumpling 备份 TiDB 数据到 Google Cloud Storage (GCS)
+summary: 本文介绍如何使用 Dumpling 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
 category: how-to
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-job/']
 ---
 
-# 使用 Dumpling 备份 TiDB 集群数据到 GCS
+# 使用 Dumpling 备份 TiDB 数据到 Google Cloud Storage (GCS)
 
-本文档介绍如何将 Google GKE 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs)  上。[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 是一款数据导出工具，该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将部署在 Google GKE 上的 TiDB 集群数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs)。Dumpling 是一款数据导出工具，可将 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于全量数据备份或导出。
 
-## 准备运行 Dumpling 的节点池
+## 准备 Dumpling 节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池命令示例。请将 ${clusterName} 替换为 GKE 集群名字，并根据实际情况替换对应字段。
+你可以在现有节点池中运行 Dumpling，也可以创建一个专用节点池。以下命令示例展示了如何创建一个新的节点池。请根据实际情况替换以下变量：
 
-```shell
-gcloud container node-pools create dumpling --cluster ${clusterName} --machine-type n2-standard-4 --num-nodes=1 --node-labels=dedicated=dumpling
-```
-
-## 部署 Dumpling job 任务
-
-为凭证创建 configmap、google-credentials.json 文件，存放从 Google Cloud console 上下载的 service account key。具体操作参考 [Google Cloud 官方文档](https://cloud.google.com/docs/authentication/client-libraries)。
+- `${clusterName}`：GKE 集群名称
 
 ```shell
-kubectl -n ${namespace) create configmap google-credentials --from-file=google-credentials.json
+gcloud container node-pools create dumpling \
+    --cluster ${clusterName} \
+    --machine-type n2-standard-4 \
+    --num-nodes=1 \
+    --node-labels=dedicated=dumpling
 ```
 
-在节点池部署 Dumpling job 任务，以下为配置示例，请根据实际情况替换对应字段：
+## 部署 Dumpling Job
+
+### 创建凭证 ConfigMap
+
+将从 Google Cloud Console 下载的 `service account key` 文件保存为 `google-credentials.json`，并创建 ConfigMap：
+
+```shell
+kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json
+```
+
+### Dumpling Job 配置文件
+
+以下是 Dumpling Job 的配置示例，请根据实际情况替换以下变量：
+
+- `${name}`：Job 名称
+- `${namespace}`：Kubernetes 命名空间
+- `${version}`：Dumpling 镜像版本
 
 ```yaml
 # dumpling_job.yaml
@@ -53,7 +67,7 @@ spec:
                 - dumpling
             topologyKey: kubernetes.io/hostname
       containers:
-        - name: $(name)
+        - name: ${name}
           image: pingcap/dumpling:${version}
           command:
             - /bin/sh
@@ -77,11 +91,13 @@ spec:
         - name: google-credentials
           configMap:
             name: google-credentials
-          restartPolicy: Never
+      restartPolicy: Never
   backoffLimit: 0
 ```
 
-执行以下命令创建 Dumpling job 任务：
+### 创建 Dumpling Job
+
+执行以下命令创建 Dumpling Job：
 
 ```shell
 export name=dumpling
@@ -91,14 +107,18 @@ export namespace=tidb-cluster
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-查看 Dumpling job 任务：
+### 查看 Dumpling Job 状态
+
+运行以下命令查看 Dumpling Job 的 Pod 状态：
 
 ```shell
-kubectl -n $(namespace) get pod $(name)
+kubectl -n ${namespace} get pod ${name}
 ```
 
-查看 Dumpling job 任务日志：
+### 查看 Dumpling Job 日志
+
+运行以下命令查看 Dumpling Job 的日志输出：
 
 ```shell
-kubectl -n $(namespace) logs pod $(name)
+kubectl -n ${namespace} logs pod ${name}
 ```
