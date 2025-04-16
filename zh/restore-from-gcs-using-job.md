@@ -5,13 +5,13 @@ summary: 介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份数据�
 
 # 使用 TiDB Lightning 恢复 GCS 上的备份数据
 
-本文档介绍如何将 Google Cloud Storage (GCS) 存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何将 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
 以下示例将 GCS 的存储上的备份数据恢复到 TiDB 集群。
 
 ## 准备运行 TiDB Lightning 的节点池
 
-你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池命令示例，替换 ${clusterName} 为 GKE 集群名字，并根据实际情况替换对应字段。
+你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池命令示例，请将 ${clusterName} 替换为 GKE 集群名字，并根据实际情况替换对应字段。
 
 ```shell
 gcloud container node-pools create lightning --cluster ${clusterName} --machine-type n2-standard-4 --num-nodes=1 --node-labels=dedicated=lightning
@@ -19,7 +19,7 @@ gcloud container node-pools create lightning --cluster ${clusterName} --machine-
 
 ## 部署 TiDB Lightning job 任务
 
-为凭证创建 configmap，google-credentials.json 文件存放用户从 Google Cloud console 上下载的 service account key。具体操作参考 [Google Cloud 官方文档](https://cloud.google.com/docs/authentication/client-libraries)。
+为凭证创建 configmap、google-credentials.json 文件，存放从 Google Cloud console 上下载的 service account key。具体操作请参考 [Google Cloud 官方文档](https://cloud.google.com/docs/authentication/client-libraries)。
 
 ```shell
 kubectl -n ${namespace) create configmap google-credentials --from-file=google-credentials.json
@@ -124,7 +124,7 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整 storage 磁盘大小：
+执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整存储磁盘大小：
 
 ```shell
 export name=lightning
