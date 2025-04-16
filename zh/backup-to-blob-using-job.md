@@ -30,8 +30,7 @@ az aks nodepool add --name dumpling \
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
 - `${version}`：Dumpling 镜像版本
-- `${accountname}`：Azure 存储账户名称
-- `${accountkey}`：Azure 存储账户密钥
+- Dumpling 的相关参数，请参考 [Dumpling 主要选项表](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/#dumpling-主要选项表)。
 
 ### Dumpling Job 配置文件
 

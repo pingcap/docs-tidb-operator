@@ -1,8 +1,6 @@
 ---
 title: 使用 Dumpling 备份 TiDB 数据到 Google Cloud Storage (GCS)
 summary: 本文介绍如何使用 Dumpling 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
-category: how-to
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs-using-job/']
 ---
 
 # 使用 Dumpling 备份 TiDB 数据到 Google Cloud Storage (GCS)
@@ -40,6 +38,7 @@ kubectl -n ${namespace} create configmap google-credentials --from-file=google-c
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
 - `${version}`：Dumpling 镜像版本
+- Dumpling 的相关参数，请参考 [Dumpling 主要选项表](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/#dumpling-主要选项表)。
 
 ```yaml
 # dumpling_job.yaml
