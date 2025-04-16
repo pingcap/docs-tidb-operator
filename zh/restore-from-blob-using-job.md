@@ -1,13 +1,13 @@
 ---
-title: 使用 TiDB Lightning 恢复 Blob 存储上的备份数据
-summary: 了解如何使用 TiDB Lightning 将 Blob 存储上的备份数据恢复到 TiDB 集群。
+title: 使用 TiDB Lightning 恢复 Azure Blob Storage 存储上的备份数据
+summary: 了解如何使用 TiDB Lightning 将 Azure Blob Storage 存储上的备份数据恢复到 TiDB 集群。
 ---
 
-# 使用 TiDB Lightning 恢复 Blob 存储上的备份数据
+# 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
 
-本文档介绍如何将 Blob 存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
-以下示例将 Blob 的存储上的备份数据恢复到 TiDB 集群。
+以下示例将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
 
 ## 准备运行 TiDB Lightning 的节点池
 
@@ -118,7 +118,7 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整 storage 磁盘大小：
+执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整存储磁盘大小：
 
 ```shell
 export name=lightning

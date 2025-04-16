@@ -1,15 +1,15 @@
 ---
-title: 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
-summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储。
+title: 使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储
+summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储。
 ---
 
-# 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
+# 使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储
 
-本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将 AWS EKS 上 TiDB 集群的数据备份到兼容 S3 的存储上。Dumpling 是一款数据导出工具，可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，可以用于完成逻辑上的全量数据备份或者导出。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将 AWS EKS 上 TiDB 集群的数据备份到兼容 Amazon S3 的存储上。Dumpling 是一款数据导出工具，可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，可以用于完成逻辑上的全量数据备份或者导出。
 
 ## 准备运行 Dumpling 的节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池配置示例，请替换 ${clusterName} 为 EKS 集群名字，并根据实际情况替换对应字段。
+你可以在已有节点池运行 Dumpling，以下为创建新节点池配置示例，请将 ${clusterName} 替换为 EKS 集群名字，并根据实际情况替换对应字段。
 
 ```yaml
 # eks_dumpling.yaml

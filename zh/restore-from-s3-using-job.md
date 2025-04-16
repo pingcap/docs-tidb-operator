@@ -1,17 +1,17 @@
 ---
-title: 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
-summary: 了解如何使用 TiDB Lightning 将兼容 S3 存储上的备份数据恢复到 TiDB 集群。
+title: 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
+summary: 了解如何使用 TiDB Lightning 将兼容 Amazon S3 存储上的备份数据恢复到 TiDB 集群。
 ---
 
-# 使用 TiDB Lightning 恢复 S3 兼容存储上的备份数据
+# 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
 
-本文档介绍如何将 S3 兼容存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何将 Amazon S3 兼容存储上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。具体 TiDB Lightning 使用方式和配置参数，请参阅 [TiDB Lightning 相关文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
-以下示例将兼容 S3 的存储上的备份数据恢复到 TiDB 集群。
+以下示例将兼容 Amazon S3 的存储上的备份数据恢复到 TiDB 集群。
 
 ## 准备运行 TiDB Lightning 的节点池
 
-你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池配置示例，替换 ${clusterName} 为 EKS 集群名字，并根据实际情况替换对应字段。
+你可以在已有节点池运行 TiDB Lightning，以下为创建新节点池配置示例，请将 ${clusterName} 替换为 EKS 集群名字，并根据实际情况替换对应字段。
 
 ```yaml
 # eks_lightning.yaml
@@ -143,7 +143,7 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整 storage 磁盘大小：
+执行以下命令创建 TiDB Lightning job 任务，请根据实际情况调整存储磁盘大小：
 
 ```shell
 export name=lightning
