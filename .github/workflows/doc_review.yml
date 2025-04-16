@@ -144,7 +144,7 @@ jobs:
           API_PROVIDER: "deepseek"
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_API_MODEL: "deepseek-chat"
-          exclude: "**/*.json,en/**"  # Exclude JSON files and English docs
+          exclude: "**/*.json,!(zh)/**"  # Exclude JSON files and non-Chinese docs
           REVIEW_MODE: ${{ needs.prepare.outputs.review_mode || 'default' }}
           COMMIT_SHA: ${{ needs.prepare.outputs.commit_sha || '' }}
           BASE_SHA: ${{ needs.prepare.outputs.base_sha || '' }}
