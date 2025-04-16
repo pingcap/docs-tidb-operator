@@ -1,15 +1,17 @@
 ---
-title: 使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储
-summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储。
+title: 使用 Dumpling 备份 TiDB 数据到兼容 Amazon S3 的存储
+summary: 本文介绍如何使用 Dumpling 将 TiDB 集群数据备份到兼容 Amazon S3 的存储。
 ---
 
-# 使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储
+# 使用 Dumpling 备份 TiDB 数据到兼容 Amazon S3 的存储
 
-本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将 AWS EKS 上 TiDB 集群的数据备份到兼容 Amazon S3 的存储上。Dumpling 是一款数据导出工具，可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，可以用于完成逻辑上的全量数据备份或者导出。
+本文档介绍如何使用 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/) 将部署在 AWS EKS 上的 TiDB 集群数据备份到兼容 Amazon S3 的存储。Dumpling 是一款数据导出工具，可将 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于全量数据备份或导出。
 
-## 准备运行 Dumpling 的节点池
+## 准备 Dumpling 节点池
 
-你可以在已有节点池运行 Dumpling，以下为创建新节点池配置示例，请将 ${clusterName} 替换为 EKS 集群名字，并根据实际情况替换对应字段。
+你可以在现有节点池中运行 Dumpling，也可以创建一个专用节点池。以下是创建新节点池的配置示例，请根据实际情况替换以下变量：
+
+- `${clusterName}`：EKS 集群名称
 
 ```yaml
 # eks_dumpling.yaml
@@ -36,9 +38,19 @@ nodeGroups:
 eksctl create nodegroup -f eks_dumpling.yaml
 ```
 
-## 部署 Dumpling job 任务
+## 部署 Dumpling Job
 
-在节点池部署 Dumpling job 任务，以下为配置示例，根据实际情况替换对应字段。
+以下是 Dumpling Job 的配置示例，请根据实际情况替换以下变量：
+
+- `${name}`：Job 名称
+- `${namespace}`：Kubernetes 命名空间
+- `${version}`：Dumpling 镜像版本
+- `${AWS_REGION}`：AWS 区域
+- `${AWS_ACCESS_KEY_ID}`：AWS Access Key ID
+- `${AWS_SECRET_ACCESS_KEY}`：AWS Secret Access Key
+- `${AWS_SESSION_TOKEN}`：AWS 会话令牌（可选）
+
+### Dumpling Job 配置文件
 
 ```yaml
 # dumpling_job.yaml
@@ -66,7 +78,7 @@ spec:
                 - dumpling
             topologyKey: kubernetes.io/hostname
       containers:
-        - name: $(name)
+        - name: ${name}
           image: pingcap/dumpling:${version}
           command:
             - /bin/sh
@@ -77,7 +89,7 @@ spec:
                   --port=4000 \
                   --user=root \
                   --password='' \
-                  --s3.region=us-west-2 \
+                  --s3.region=${AWS_REGION} \
                   --threads=16 \
                   --rows=20000 \
                   --filesize=256MiB \
@@ -97,28 +109,34 @@ spec:
   backoffLimit: 0
 ```
 
-执行以下命令创建 Dumpling job 任务：
+### 创建 Dumpling Job
+
+执行以下命令创建 Dumpling Job：
 
 ```shell
 export name=dumpling
 export version=v8.5.1
 export namespace=tidb-cluster
 export AWS_REGION=us-west-2
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_SESSION_TOKEN=
+export AWS_ACCESS_KEY_ID=<your-access-key-id>
+export AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+export AWS_SESSION_TOKEN=<your-session-token> # 可选
 
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-查看 Dumpling job 任务：
+### 查看 Dumpling Job 状态
+
+运行以下命令查看 Dumpling Job 的 Pod 状态：
 
 ```shell
-kubectl -n $(namespace) get pod $(name)
+kubectl -n ${namespace} get pod ${name}
 ```
 
-查看 Dumpling job 任务日志：
+### 查看 Dumpling Job 日志
+
+运行以下命令查看 Dumpling Job 的日志输出：
 
 ```shell
-kubectl -n $(namespace) logs pod $(name)
+kubectl -n ${namespace} logs pod ${name}
 ```
