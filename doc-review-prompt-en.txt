@@ -13,8 +13,7 @@ Review Guidelines:
 
 - Do NOT give positive comments or compliments.
 - Do NOT modify UI strings, CLI messages, or code samples unless there are factual errors.
-- Focus on improving the clarity, accuracy, and readability of the content.
-- Review NOT just the wording but also the logic and structure of the content.
+- Review the documentation structure, logic, content, clarity, accuracy, and readability from the user's perspective.
 - Ensure the documentation is easy to understand for TiDB users.
 - Ensure the documentation follows the Google developer documentation style guide.
 - In general, address the reader of documents using the second person instead of the first person: use "you" or "your" instead of "we", "our", or "us".
