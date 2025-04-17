@@ -12,7 +12,7 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/TiFlash/TiProxy/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
     > **Note:**
@@ -282,117 +282,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tidb-server.json | cfssljson -bare tidb-server
         ```
 
-    - Pump
-
-        First, create the default `pump-server.json` file:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl print-defaults csr > pump-server.json
-        ```
-
-        Then, edit this file to change the `CN`, `hosts` attributes:
-
-        ``` json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${cluster_name}-pump",
-              "*.${cluster_name}-pump.${namespace}",
-              "*.${cluster_name}-pump.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
-
-        Finally, generate the Pump server-side certificate:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal pump-server.json | cfssljson -bare pump-server
-        ```
-
-    - Drainer
-
-        First, generate the default `drainer-server.json` file:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl print-defaults csr > drainer-server.json
-        ```
-
-        Then, edit this file to change the `CN`, `hosts` attributes:
-
-        ```json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "<for hosts list, see the following instructions>"
-            ],
-        ...
-        ```
-
-        Drainer is deployed using Helm. The `hosts` field varies with different configuration of the `values.yaml` file.
-
-        If you have set the `drainerName` attribute when deploying Drainer as follows:
-
-        ```yaml
-        ...
-        # Changes the names of the statefulset and Pod.
-        # The default value is clusterName-ReleaseName-drainer.
-        # Does not change the name of an existing running Drainer, which is unsupported.
-        drainerName: my-drainer
-        ...
-        ```
-
-        Then you can set the `hosts` attribute as described below:
-
-        ```json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${drainer_name}",
-              "*.${drainer_name}.${namespace}",
-              "*.${drainer_name}.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        If you have not set the `drainerName` attribute when deploying Drainer, configure the `hosts` attribute as follows:
-
-        ```json
-        ...
-            "CN": "TiDB",
-            "hosts": [
-              "127.0.0.1",
-              "::1",
-              "*.${cluster_name}-${release_name}-drainer",
-              "*.${cluster_name}-${release_name}-drainer.${namespace}",
-              "*.${cluster_name}-${release_name}-drainer.${namespace}.svc"
-            ],
-        ...
-        ```
-
-        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. `${release_name}` is the `release name` you set when `helm install` is executed. `${drainer_name}` is `drainerName` in the `values.yaml` file. You can also add your customized `hosts`.
-
-        Finally, generate the Drainer server-side certificate:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal drainer-server.json | cfssljson -bare drainer-server
-        ```
-
     - TiCDC
 
         1. Generate the default `ticdc-server.json` file:
@@ -512,47 +401,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
             ```
 
-    - TiKV Importer
-
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
-
-        1. Generate the default `importer-server.json` file:
-
-            {{< copyable "shell-regular" >}}
-
-            ```shell
-            cfssl print-defaults csr > importer-server.json
-            ```
-
-        2. Edit this file to change the `CN` and `hosts` attributes:
-
-            ```json
-            ...
-                "CN": "TiDB",
-                "hosts": [
-                  "127.0.0.1",
-                  "::1",
-                  "${cluster_name}-importer",
-                  "${cluster_name}-importer.${namespace}",
-                  "${cluster_name}-importer.${namespace}.svc"
-                  "${cluster_name}-importer.${namespace}.svc",
-                  "*.${cluster_name}-importer",
-                  "*.${cluster_name}-importer.${namespace}",
-                  "*.${cluster_name}-importer.${namespace}.svc"
-                ],
-            ...
-            ```
-
-            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
-
-        3. Generate the TiKV Importer server-side certificate:
-
-            {{< copyable "shell-regular" >}}
-
-            ``` shell
-            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal importer-server.json | cfssljson -bare importer-server
-            ```
-
     - TiDB Lightning
 
         If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
@@ -643,20 +491,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         kubectl create secret generic ${cluster_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb-server.pem --from-file=tls.key=tidb-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    - The Pump cluster certificate Secret:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        kubectl create secret generic ${cluster_name}-pump-cluster-secret --namespace=${namespace} --from-file=tls.crt=pump-server.pem --from-file=tls.key=pump-server-key.pem --from-file=ca.crt=ca.pem
-        ```
-
-    - The Drainer cluster certificate Secret:
-
-        ```shell
-        kubectl create secret generic ${cluster_name}-drainer-cluster-secret --namespace=${namespace} --from-file=tls.crt=drainer-server.pem --from-file=tls.key=drainer-server-key.pem --from-file=ca.crt=ca.pem
-        ```
-
     - The TiCDC cluster certificate Secret:
 
         ```shell
@@ -673,12 +507,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         ``` shell
         kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
-        ```
-
-    - The TiKV Importer cluster certificate Secret:
-
-        ``` shell
-        kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiDB Lightning cluster certificate Secret:
@@ -699,7 +527,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     You have created two Secret objects:
 
-    - One Secret object for each PD/TiKV/TiDB/Pump/Drainer server-side certificate to load when the server is started;
+    - One Secret object for each PD/TiKV/TiDB server-side certificate to load when the server is started;
     - One Secret object for their clients to connect.
 
 ### Using `cert-manager`
@@ -961,147 +789,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tidb-cluster-secret` Secret object to be used by the TiDB component of the TiDB server.
 
-    - Pump
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-pump-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-pump-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${cluster_name}-pump"
-          - "*.${cluster_name}-pump.${namespace}"
-          - "*.${cluster_name}-pump.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        `${cluster_name}` is the name of the cluster. Configure the items as follows:
-
-        - Set `spec.secretName` to `${cluster_name}-pump-cluster-secret`
-        - Add `server auth` and `client auth` in `usages`
-        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
-
-            - `*.${cluster_name}-pump`
-            - `*.${cluster_name}-pump.${namespace}`
-            - `*.${cluster_name}-pump.${namespace}.svc`
-
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
-            - `127.0.0.1`
-            - `::1`
-        - Add the Issuer created above in the `issuerRef`
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
-
-        After the object is created, `cert-manager` generates a `${cluster_name}-pump-cluster-secret` Secret object to be used by the Pump component of the TiDB server.
-
-    - Drainer
-
-        Drainer is deployed using Helm. The `dnsNames` field varies with different configuration of the `values.yaml` file.
-
-        If you set the `drainerName` attributes when deploying Drainer as follows:
-
-        ```yaml
-        ...
-        # Changes the name of the statefulset and Pod.
-        # The default value is clusterName-ReleaseName-drainer
-        # Does not change the name of an existing running Drainer, which is unsupported.
-        drainerName: my-drainer
-        ...
-        ```
-
-        Then you need to configure the certificate as described below:
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-drainer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-drainer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${drainer_name}"
-          - "*.${drainer_name}.${namespace}"
-          - "*.${drainer_name}.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        If you didn't set the `drainerName` attribute when deploying Drainer, configure the `dnsNames` attributes as follows:
-
-        ``` yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-drainer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-drainer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "*.${cluster_name}-${release_name}-drainer"
-          - "*.${cluster_name}-${release_name}-drainer.${namespace}"
-          - "*.${cluster_name}-${release_name}-drainer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. `${release_name}` is the `release name` you set when `helm install` is executed. `${drainer_name}` is `drainerName` in the `values.yaml` file. You can also add your customized `dnsNames`.
-
-        - Set `spec.secretName` to `${cluster_name}-drainer-cluster-secret`.
-        - Add `server auth` and `client auth` in `usages`.
-        - See the above descriptions for `dnsNames`.
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
-            - `127.0.0.1`
-            - `::1`
-        - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
-
-        After the object is created, `cert-manager` generates a `${cluster_name}-drainer-cluster-secret` Secret object to be used by the Drainer component of the TiDB server.
+        `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. `${release_name}` is the `release name` you set when `helm install` is executed. You can also add your customized `dnsNames`.
 
     - TiCDC
 
@@ -1229,61 +917,6 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tiflash-cluster-secret` Secret object to be used by the TiFlash component of the TiDB server.
 
-    - TiKV Importer
-
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
-
-        ```yaml
-        apiVersion: cert-manager.io/v1
-        kind: Certificate
-        metadata:
-          name: ${cluster_name}-importer-cluster-secret
-          namespace: ${namespace}
-        spec:
-          secretName: ${cluster_name}-importer-cluster-secret
-          duration: 8760h # 365d
-          renewBefore: 360h # 15d
-          subject:
-            organizations:
-            - PingCAP
-          commonName: "TiDB"
-          usages:
-            - server auth
-            - client auth
-          dnsNames:
-          - "${cluster_name}-importer"
-          - "${cluster_name}-importer.${namespace}"
-          - "${cluster_name}-importer.${namespace}.svc"
-          - "*.${cluster_name}-importer"
-          - "*.${cluster_name}-importer.${namespace}"
-          - "*.${cluster_name}-importer.${namespace}.svc"
-          ipAddresses:
-          - 127.0.0.1
-          - ::1
-          issuerRef:
-            name: ${cluster_name}-tidb-issuer
-            kind: Issuer
-            group: cert-manager.io
-        ```
-
-        In the file, `${cluster_name}` is the name of the cluster:
-
-        - Set `spec.secretName` to `${cluster_name}-importer-cluster-secret`.
-        - Add `server auth` and `client auth` in `usages`.
-        - Add the following DNSs in `dnsNames`. You can also add other DNSs according to your needs:
-
-            - `${cluster_name}-importer`
-            - `${cluster_name}-importer.${namespace}`
-            - `${cluster_name}-importer.${namespace}.svc`
-
-        - Add the following 2 IP addresses in `ipAddresses`. You can also add other IP addresses according to your needs:
-            - `127.0.0.1`
-            - `::1`
-        - Add the Issuer created above in `issuerRef`.
-        - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
-
-        After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
-
     - TiDB Lightning
 
         If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiDB Lightning component.
@@ -1383,9 +1016,8 @@ In this step, you need to perform the following operations:
 - Create a TiDB cluster
 - Enable TLS between the TiDB components, and enable CN verification
 - Deploy a monitoring system
-- Deploy the Pump component, and enable CN verification
 
-1. Create a TiDB cluster with a monitoring system and the Pump component:
+1. Create a TiDB cluster with a monitoring system:
 
     Create the `tidb-cluster.yaml` file:
 
@@ -1432,15 +1064,6 @@ In this step, you need to perform the following operations:
        config:
          security:
            cluster-verify-cn:
-             - TiDB
-     pump:
-       baseImage: pingcap/tidb-binlog
-       replicas: 1
-       requests:
-         storage: "100Gi"
-       config:
-         security:
-           cert-allowed-cn:
              - TiDB
     ---
     apiVersion: pingcap.com/v1alpha1
@@ -1500,52 +1123,7 @@ In this step, you need to perform the following operations:
     >           - TiDB
     > ```
 
-2. Create a Drainer component and enable TLS and CN verification:
-
-    - Method 1: Set `drainerName` when you create Drainer.
-
-        Edit the `values.yaml` file, set `drainer-name`, and enable the TLS feature:
-
-        ``` yaml
-        ...
-        drainerName: ${drainer_name}
-        tlsCluster:
-          enabled: true
-          certAllowedCN:
-            - TiDB
-        ...
-        ```
-
-        Deploy the Drainer cluster:
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
-        ```
-
-    - Method 2: Do not set `drainerName` when you create Drainer.
-
-        Edit the `values.yaml` file, and enable the TLS feature:
-
-        ``` yaml
-        ...
-        tlsCluster:
-          enabled: true
-          certAllowedCN:
-            - TiDB
-        ...
-        ```
-
-        Deploy the Drainer cluster:
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        helm install ${release_name} pingcap/tidb-drainer --namespace=${namespace} --version=${helm_version} -f values.yaml
-        ```
-
-3. Create the Backup/Restore resource object:
+2. Create the Backup/Restore resource object:
 
     - Create the `backup.yaml` file:
 

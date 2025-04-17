@@ -58,7 +58,6 @@ summary: 了解如何通过配置挂起 Kubernetes 上的 TiDB 集群。
     * TiFlash
     * TiCDC
     * TiKV
-    * Pump
     * TiProxy
     * PD
 

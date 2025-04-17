@@ -36,7 +36,7 @@ To initialize the restored volume more efficiently, it is recommended to **separ
 - For TiKV configuration, do not set `resolved-ts.enable` to `false`, and do not set `raftstore.report-min-resolved-ts-interval` to `"0s"`. Otherwise, it can lead to backup failure.
 - For PD configuration, do not set `pd-server.min-resolved-ts-persistence-interval` to `"0s"`. Otherwise, it can lead to backup failure.
 - To use this backup method, the TiDB cluster must be deployed on AWS EC2 and use AWS EBS volumes.
-- This backup method is currently not supported for TiFlash, TiCDC, DM, and TiDB Binlog nodes.
+- This backup method is currently not supported for TiFlash, TiCDC and DM nodes.
 
 > **Note:**
 >
