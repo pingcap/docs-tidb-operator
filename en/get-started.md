@@ -43,11 +43,11 @@ kind is a popular tool for running local Kubernetes clusters using Docker contai
 Before deployment, ensure that the following requirements are met:
 
 - [Docker](https://docs.docker.com/install/): version >= 18.09
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
-- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.8.0
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.24
+- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.19.0
 - For Linux, the value of the sysctl parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`.
 
-Here is an example using `kind` v0.8.1:
+Here is an example using `kind` v0.19.0:
 
 ```shell
 kind create cluster
@@ -58,7 +58,7 @@ kind create cluster
 
 ```
 Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+ ✓ Ensuring node image (kindest/node:v1.27.1) 🖼
  ✓ Preparing nodes 📦
  ✓ Writing configuration 📜
  ✓ Starting control-plane 🕹️
@@ -101,7 +101,7 @@ You can create a Kubernetes cluster in a VM using [minikube](https://minikube.si
 Before deployment, ensure that the following requirements are met:
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/): version 1.0.0 or later versions. Newer versions like v1.24 are recommended. minikube requires a compatible hypervisor. For details, refer to minikube installation instructions.
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): version >= 1.24
 
 #### Start a minikube Kubernetes cluster
 
@@ -110,31 +110,6 @@ After installing minikube, run the following command to start a minikube Kuberne
 ```shell
 minikube start
 ```
-
-<details>
-<summary>Expected output</summary>
-You should see output like this, with some differences depending on your OS and hypervisor:
-
-```
-😄  minikube v1.24.0 on Darwin 12.1
-✨  Automatically selected the docker driver. Other choices: hyperkit, virtualbox, ssh
-👍  Starting control plane node minikube in cluster minikube
-🚜  Pulling base image ...
-💾  Downloading Kubernetes v1.22.3 preload ...
-    > gcr.io/k8s-minikube/kicbase: 355.78 MiB / 355.78 MiB  100.00% 4.46 MiB p/
-    > preloaded-images-k8s-v13-v1...: 501.73 MiB / 501.73 MiB  100.00% 5.18 MiB
-🔥  Creating docker container (CPUs=2, Memory=1985MB) ...
-🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
-    ▪ Generating certificates and keys ...
-    ▪ Booting up control plane ...
-    ▪ Configuring RBAC rules ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-```
-
-</details>
 
 #### Use `kubectl` to interact with the cluster
 
@@ -175,7 +150,7 @@ First, you need to install the Custom Resource Definitions (CRDs) that are requi
 To install the CRDs, run the following command:
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/crd.yaml
 ```
 
 <details>
@@ -192,10 +167,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 ```
 
 </details>
-
-> **Note:**
->
-> If you are using a Kubernetes version earlier than 1.16, only the v1beta1 CRD is supported. In that case, you need to change `crd.yaml` in the preceding command to `crd_v1beta1.yaml`.
 
 ### Install TiDB Operator
 
@@ -234,7 +205,7 @@ To install TiDB Operator, you can use [Helm 3](https://helm.sh/docs/intro/instal
 3. Install TiDB Operator:
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.1
     ```
 
     <details>
@@ -267,7 +238,6 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
 tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
-tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
 
 </details>
@@ -282,7 +252,7 @@ This section describes how to deploy a TiDB cluster and its monitoring services.
 
 ```shell
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-cluster.yaml
 ```
 
 <details>
@@ -297,10 +267,36 @@ tidbcluster.pingcap.com/basic created
 
 If you need to deploy a TiDB cluster on an ARM64 machine, refer to [Deploying a TiDB Cluster on ARM64 Machines](deploy-cluster-on-arm64.md).
 
+> **Note:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, use the following command:
+>
+> ``` shell
+> kubectl create namespace tidb-cluster && \
+>     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/pd-micro-service-cluster.yaml
+> ```
+>
+> View the Pod status:
+>
+> ``` shell
+> watch kubectl get po -n tidb-cluster
+> ```
+>
+> ```
+> NAME                              READY   STATUS    RESTARTS   AGE
+> basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m
+> basic-pd-0                        1/1     Running   0          9m
+> basic-scheduling-0                1/1     Running   0          9m
+> basic-tidb-0                      2/2     Running   0          7m
+> basic-tikv-0                      1/1     Running   0          8m
+> basic-tso-0                       1/1     Running   0          9m
+> basic-tso-1                       1/1     Running   0          9m
+> ```
+
 ### Deploy TiDB Dashboard independently
 
 ```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-dashboard.yaml
 ```
 
 <details>
@@ -315,7 +311,7 @@ tidbdashboard.pingcap.com/basic created
 ### Deploy TiDB monitoring services
 
 ```shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-monitor.yaml
 ```
 
 <details>
@@ -462,14 +458,13 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v7.1.0
+         tidb_version(): Release Version: v8.5.0
                 Edition: Community
-        Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-             Git Branch: heads/refs/tags/v7.1.0
-         UTC Build Time: 2023-05-30 10:58:57
-              GoVersion: go1.20.3
+        Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
+             Git Branch: heads/refs/tags/v8.5.0
+         UTC Build Time: 2024-12-19 14:38:24
+              GoVersion: go1.23.2
            Race Enabled: false
-       TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
                   Store: tikv
 1 row in set (0.01 sec)
@@ -652,14 +647,13 @@ Note that `nightly` is not a fixed version and the version might vary depending 
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v7.1.0
+tidb_version(): Release Version: v8.5.0
 Edition: Community
-Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-Git Branch: heads/refs/tags/v7.1.0
-UTC Build Time: 2023-05-30 10:58:57
-GoVersion: go1.20.3
+Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
+Git Branch: heads/refs/tags/v8.5.0
+UTC Build Time: 2024-12-19 14:38:24
+GoVersion: go1.23.2
 Race Enabled: false
-TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
 Store: tikv
 ```
@@ -752,7 +746,6 @@ On public clouds:
 - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
 - [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
 - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
-- [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
 In a self-managed Kubernetes cluster:
 

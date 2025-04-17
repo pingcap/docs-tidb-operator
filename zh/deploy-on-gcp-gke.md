@@ -96,7 +96,8 @@ allowVolumeExpansion: true
 parameters:
   type: pd-ssd
 mountOptions:
-  - nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 > **注意：**
@@ -130,7 +131,7 @@ mountOptions:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. 使用本地存储。
@@ -166,9 +167,9 @@ kubectl create namespace tidb-cluster
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-dashboard.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-dashboard.yaml
 ```
 
 如需了解更详细的配置信息或者进行自定义配置，请参考[配置 TiDB 集群](configure-a-tidb-cluster.md)
@@ -225,8 +226,6 @@ tidb-tikv-2                       1/1     Running   0          47h
 ```shell
 gcloud compute instances create bastion \
     --machine-type=n1-standard-4 \
-    --image-project=centos-cloud \
-    --image-family=centos-7 \
     --zone=${your-region}-a
 ```
 
@@ -270,7 +269,7 @@ gcloud compute instances create bastion \
     $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
     Copyright (c) 2000, 2022, Oracle and/or its affiliates.
 
@@ -446,4 +445,16 @@ spec:
 
 最后使用 `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` 更新 TiDB 集群配置。
 
-更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+更多可参考 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md)和[集群配置文档](configure-a-tidb-cluster.md)完成 CR 文件配置。
+
+## 配置 TiDB 监控
+
+请参阅[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+> **注意：**
+>
+> TiDB 监控默认不会持久化数据，为确保数据长期可用，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。TiDB 监控不包含 Pod 的 CPU、内存、磁盘监控，也没有报警系统。为实现更全面的监控和告警，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-alertmanager)。
+
+## 收集日志
+
+系统与程序的运行日志对排查问题和实现自动化操作可能非常有用。TiDB 各组件默认将日志输出到容器的 `stdout` 和 `stderr` 中，并依据容器运行时环境自动进行日志的滚动清理。当 Pod 重启时，容器日志会丢失。为防止日志丢失，建议[收集 TiDB 及相关组件日志](logs-collection.md)。

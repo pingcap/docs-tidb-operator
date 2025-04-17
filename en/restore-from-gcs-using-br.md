@@ -40,7 +40,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
     kubectl create namespace restore-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test
@@ -62,7 +62,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
         kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
         ```
 
-## Step 2: Restore the backup data to a TiDB cluster
+### Step 2: Restore the backup data to a TiDB cluster
 
 1. Create the `Restore` custom resource (CR) to restore the specified data to your cluster:
 
@@ -92,12 +92,6 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
         # rateLimit: 0
         # checksum: true
         # sendCredToTikv: true
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      # to:
-      #   host: ${tidb_host}
-      #   port: ${tidb_port}
-      #   user: ${tidb_user}
-      #   secretName: restore-demo2-tidb-secret
       gcs:
         projectId: ${project_id}
         secretName: gcs-secret
@@ -160,7 +154,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
     kubectl create namespace restore-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `restore-test` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test

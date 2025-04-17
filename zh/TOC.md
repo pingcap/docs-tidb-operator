@@ -4,6 +4,7 @@
 - [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
 - 关于 TiDB Operator
   - [简介](tidb-operator-overview.md)
+  - [v1.6 新特性](whats-new-in-v1.6.md)
 - [快速上手](get-started.md)
 - 部署
   - 自托管的 Kubernetes
@@ -18,9 +19,9 @@
     - [Amazon EKS](deploy-on-aws-eks.md)
     - [Google Cloud GKE](deploy-on-gcp-gke.md)
     - [Azure AKS](deploy-on-azure-aks.md)
-    - [阿里云 ACK](deploy-on-alibaba-cloud.md)
   - [在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)
   - [部署 TiDB HTAP 存储引擎 TiFlash](deploy-tiflash.md)
+  - [部署 TiDB 负载均衡 TiProxy](deploy-tiproxy.md)
   - 跨多个 Kubernetes 集群部署 TiDB 集群
     - [构建多个网络互通的 AWS EKS 集群](build-multi-aws-eks.md)
     - [构建多个网络互通的 GKE 集群](build-multi-gcp-gke.md)
@@ -112,11 +113,10 @@
     - [增强型 StatefulSet 控制器](advanced-statefulset.md)
     - [准入控制器](enable-admission-webhook.md)
   - [Sysbench 性能测试](benchmark-sysbench.md)
-  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
+  - [API 参考文档](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md)
   - [Cheat Sheet](cheat-sheet.md)
   - [TiDB Operator RBAC 规则](tidb-operator-rbac.md)
   - 工具
-    - [tkctl](use-tkctl.md)
     - [TiDB Toolkit](tidb-toolkit.md)
   - 配置
     - [tidb-drainer chart 配置](configure-tidb-binlog-drainer.md)
@@ -124,7 +124,17 @@
   - [Kubernetes 监控与告警](monitor-kubernetes.md)
   - [PingCAP Clinic 数据采集范围说明](clinic-data-collection.md)
 - 版本发布历史
+  - v1.6
+    - [1.6.1](releases/release-1.6.1.md)
+    - [1.6 GA](releases/release-1.6.0.md)
+    - [1.6.0-beta.1](releases/release-1.6.0-beta.1.md)
   - v1.5
+    - [1.5.5](releases/release-1.5.5.md)
+    - [1.5.4](releases/release-1.5.4.md)
+    - [1.5.3](releases/release-1.5.3.md)
+    - [1.5.2](releases/release-1.5.2.md)
+    - [1.5.1](releases/release-1.5.1.md)
+    - [1.5 GA](releases/release-1.5.0.md)
     - [1.5.0-beta.1](releases/release-1.5.0-beta.1.md)
   - v1.4
     - [1.4.7](releases/release-1.4.7.md)

@@ -25,7 +25,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 ## 部署配置
 
-通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)。
+通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/v1.6.1/examples/advanced/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)。
 
 > **注意：**
 >
@@ -41,9 +41,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/configure-a-tidb-cluster/','/zh/tidb-
 
 相关参数的格式如下：
 
-- `spec.version`，格式为 `imageTag`，例如 `v7.1.0`
+- `spec.version`，格式为 `imageTag`，例如 `v8.5.0`
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`，格式为 `imageName`，例如 `pingcap/tidb`
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v7.1.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`，格式为 `imageTag`，例如 `v8.5.0`
 
 ### 推荐配置
 
@@ -215,6 +215,30 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 </div>
 
+<div label="PD 微服务">
+
+为 PD 微服务挂载 PV，以 `tso` 微服务为例：
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+```yaml
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+    storageVolumes:
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pdms/log"
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
@@ -223,7 +247,7 @@ TiDB Operator 支持为 PD、TiDB、TiKV、TiCDC 挂载多块 PV，可以用于�
 
 ### HostNetwork
 
-PD、TiKV、TiDB、TiFlash、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
+PD、TiKV、TiDB、TiFlash、TiProxy、TiCDC 及 Pump 支持配置 Pod 使用宿主机上的网络命名空间 [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy)。可通过配置 `spec.hostNetwork: true` 为所有受支持的组件开启，或通过为特定组件配置 `hostNetwork: true` 为单个或多个组件开启。
 
 ### Discovery
 
@@ -250,6 +274,43 @@ spec:
 > **注意：**
 >
 > 如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会被创建。Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起来，可以将默认部署的 PD Pod 个数减小到 1 个。
+
+#### 部署 PD 微服务
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+如果要在集群中开启 PD 微服务，需要在 `${cluster_name}/tidb-cluster.yaml` 文件中配置 `spec.pd.mode` 与 `spec.pdms`：
+
+```yaml
+spec:
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    baseImage: pingcap/pd
+    replicas: 2
+  - name: "scheduling"
+    baseImage: pingcap/pd
+    replicas: 1
+```
+
+- `spec.pd.mode` 用于开启或关闭 PD 微服务。设置为 `"ms"` 时表示开启 PD 微服务，设置为 `""` 或删除该字段时，表示关闭 PD 微服务。
+- `spec.pdms.config` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+
+#### 部署 TiProxy
+
+部署方法与 PD 一致。此外，还需要修改 `spec.tiproxy` 来手动指定 TiProxy 组件的数量。
+
+```yaml
+  tiproxy:
+    baseImage: pingcap/tiproxy
+    replicas: 3
+    config:
+```
+
+部署 TiProxy 时，还需要给 TiDB 配置额外参数，详细的配置步骤见[为已有 TiDB 集群部署负载均衡 TiProxy](deploy-tiproxy.md)。
 
 #### 部署 TiFlash
 
@@ -310,7 +371,7 @@ TiFlash 支持挂载多个 PV，如果要为 TiFlash 配置多个 PV，可以在
 
 ### 配置 TiDB 组件
 
-本节介绍如何配置 TiDB/TiKV/PD/TiFlash/TiCDC 的配置选项。
+本节介绍如何配置 TiDB/TiKV/PD/TiProxy/TiFlash/TiCDC 的配置选项。
 
 #### 配置 TiDB 配置参数
 
@@ -367,6 +428,56 @@ spec:
 >
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
 > - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
+
+##### 配置 PD 微服务
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 微服务参数。目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，配置示例如下：
+
+```yaml
+spec:
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    baseImage: pingcap/pd
+    replicas: 2
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+  - name: "scheduling"
+    baseImage: pingcap/pd
+    replicas: 1
+    config: |
+      [log.file]
+        filename = "/pdms/log/scheduling.log"
+```
+
+其中，`spec.pdms` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+
+> **注意：**
+>
+> - 为了兼容 `helm` 部署，如果你的 TiDB 集群是通过 CR 文件部署的，即使你不设置 `config` 配置，也需要保证 `config: {}` 的设置，避免 PD 微服务组件无法正常启动。
+> - 如果在部署 TiDB 集群时就启用了 PD 微服务模式，PD 微服务的部分配置项会持久化到 etcd 中且后续将以 etcd 中的配置为准。
+> - 如果在现有 TiDB 集群中启用 PD 微服务模式，PD 微服务的部分配置会沿用 PD 的配置并持久化到 etcd 中，后续将以 etcd 中的配置为准。
+> - 因此，PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules) 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 微服务首次启动之后均不再支持通过配置参数进行修改。
+
+#### 配置 TiProxy 配置参数
+
+你可以通过 TidbCluster CR 的 `spec.tiproxy.config` 来配置 TiProxy 配置参数。
+
+```yaml
+spec:
+  tiproxy:
+    config: |
+      [log]
+      level = "info"
+```
+
+获取所有可以配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
 
 #### 配置 TiFlash 配置参数
 
@@ -617,9 +728,11 @@ spec:
 
 访问 [Kubernetes Service 文档](https://kubernetes.io/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。
 
+若指定了 TiProxy，也会自动创建 `tiproxy-api` 和 `tiproxy-sql` 服务供使用。
+
 ### IPv6 支持
 
-TiDB 自 v6.5.1 起支持使用 IPv6 地址进行所有网络连接。如果你使用 v1.4.3 或以上版本的 TiDB Operator 部署 TiDB，你可以通过配置 `spec.preferIPv6` 为 `ture` 来部署监听 IPv6 地址的 TiDB 集群。
+TiDB 自 v6.5.1 起支持使用 IPv6 地址进行所有网络连接。如果你使用 v1.4.3 或以上版本的 TiDB Operator 部署 TiDB，你可以通过配置 `spec.preferIPv6` 为 `true` 来部署监听 IPv6 地址的 TiDB 集群。
 
 ```yaml
 spec:
@@ -754,11 +867,6 @@ affinity:
 
 配置 `topologySpreadConstraints` 可以实现同一组件的不同实例在拓扑上的均匀分布。具体配置方法请参阅 [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)。
 
-如需使用 `topologySpreadConstraints`，需要满足以下条件：
-
-* Kubernetes 集群使用 `default-scheduler`，而不是 `tidb-scheduler`。详情可以参考 [tidb-scheduler 与 default-scheduler](tidb-scheduler.md#tidb-scheduler-与-default-scheduler)。
-* Kubernetes 集群开启 `EvenPodsSpread` feature gate。如果 Kubernetes 版本低于 v1.16 或集群未开启 `EvenPodsSpread` feature gate，`topologySpreadConstraints` 的配置将不会生效。
-
 `topologySpreadConstraints` 可以设置在整个集群级别 (`spec.topologySpreadConstraints`) 来配置所有组件或者设置在组件级别 (例如 `spec.tidb.topologySpreadConstraints`) 来配置特定的组件。
 
 以下是一个配置示例：
@@ -822,7 +930,13 @@ topologySpreadConstraints:
 
     目前，TiDB Operator 会自动为 TiDB server 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiDB 依赖 `zone` Label 支持 Follower Read 的部分功能。TiDB Operator 会依次获取 Label `zone`、`failure-domain.beta.kubernetes.io/zone` 和 `topology.kubernetes.io/zone` 的值作为 `zone` 的值。TiDB Operator 仅设置 TiDB server 所在的节点上包含的 Labels 并忽略其他 Labels。
 
-从 TiDB Operator v1.4.0 开始，在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名。使用较短的 Labels 别名在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 把 PD 的 `location-labels` 设置为这些别名时，如果对应的节点不包含对应的 Labels，TiDB Operator 自动使用原始 Labels 的值。
+* 为 TiProxy 节点设置所在的 Node 节点的拓扑信息
+
+    从 TiDB Operator v1.6.0 开始，如果部署的 TiProxy 版本 >= v1.1.0，TiDB Operator 会自动为 TiProxy 获取其所在 Node 节点的拓扑信息，并调用 TiProxy 的对应接口将这些信息设置为 TiProxy 的 Labels。这样 TiProxy 可以根据这些 Labels 优先将请求转发到本地的 TiDB server。
+
+    目前，TiDB Operator 会自动为 TiProxy 设置 `pd.config` 的配置中 `location-labels` 对应的 Labels 信息。同时，TiProxy 依赖 `zone` Label 将请求转发到本地的 TiDB server。TiDB Operator 会依次获取 Label `zone`、`failure-domain.beta.kubernetes.io/zone` 和 `topology.kubernetes.io/zone` 的值作为 `zone` 的值。TiDB Operator 仅设置 TiProxy 所在的节点上包含的 Labels 并忽略其他 Labels。
+
+从 TiDB Operator v1.4.0 开始，在为 TiKV 和 TiDB 节点设置 Labels 时，TiDB Operator 支持为部分 Kubernetes 默认提供的 Labels 设置较短的别名。使用较短的 Labels 别名在部分场景下有助于优化 PD 的调度性能。当使用 TiDB Operator 把 PD 的 `location-labels` 设置为这些别名时，如果对应的 Kubernetes 节点不包含对应的 Labels，TiDB Operator 自动使用原始 Labels 的值。
 
 目前 TiDB Operator 支持如下短 Label 和原始 Label 的映射：
 

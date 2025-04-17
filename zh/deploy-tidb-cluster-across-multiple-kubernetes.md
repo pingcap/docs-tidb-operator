@@ -52,7 +52,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v7.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -106,7 +106,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v7.1.0
+  version: v8.5.0
   timezone: UTC
   pvReclaimPolicy: Delete
   enableDynamicConfiguration: true
@@ -314,7 +314,7 @@ EOF
 
 #### 使用 cert-manager 系统为 TiDB 组件签发证书
 
-如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certifcates` 如下所示。
+如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certificates` 如下所示。
 
 {{< copyable "shell-regular" >}}
 
@@ -379,7 +379,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_1}"
 spec:
-  version: v7.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -437,7 +437,7 @@ kind: TidbCluster
 metadata:
   name: "${tc_name_2}"
 spec:
-  version: v7.1.0
+  version: v8.5.0
   timezone: UTC
   tlsCluster:
    enabled: true
@@ -509,11 +509,13 @@ EOF
 
 2. 以步骤 1 为例，按顺序进行如下升级操作：
 
-   1. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
-   2. 升级所有 Kubernetes 集群的 TiKV 版本。
-   3. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
-   4. 升级所有 Kubernetes 集群的 TiDB 版本。
-   5. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
+   1. 如果集群中部署了 [PD 微服务](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（从 TiDB v8.0.0 版本开始支持），为所有部署了 PD 微服务的 Kubernetes 集群升级 PD 微服务版本。
+   2. 如果集群中部署了 TiProxy，为所有部署了 TiProxy 的 Kubernetes 集群升级 TiProxy 版本。
+   3. 如果集群中部署了 TiFlash，为所有部署了 TiFlash 的 Kubernetes 集群升级 TiFlash 版本。
+   4. 升级所有 Kubernetes 集群的 TiKV 版本。
+   5. 如果集群中部署了 Pump，为所有部署了 Pump 的 Kubernetes 集群升级 Pump 版本。
+   6. 升级所有 Kubernetes 集群的 TiDB 版本。
+   7. 如果集群中部署了 TiCDC，为所有部署了 TiCDC 的 Kubernetes 集群升级 TiCDC 版本。
 
 ## 退出和回收已加入的 TidbCluster
 
@@ -521,7 +523,11 @@ EOF
 
 - 缩容后，集群中 TiKV 副本数应大于 PD 中设置的 `max-replicas` 数量，默认情况下 TiKV 副本数量需要大于 3。
 
-以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、Pump 等其他组件，也请一并将其副本数设为 0：
+以上面文档创建的第二个 TidbCluster 为例，先将 PD、TiKV、TiDB 的副本数设置为 0，如果开启了 TiFlash、TiCDC、TiProxy、Pump 等其他组件，也请一并将其副本数设为 `0`：
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持微服务模式。如果配置了 PD 微服务，也需要将 PD 微服务 `pdms` 配置中对应组件的 `replicas` 值设置为 `0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -639,8 +645,8 @@ kubectl patch tidbcluster cluster1 --type merge -p '{"spec":{"acrossK8s": true}}
 
 完成上述步骤后，该 TidbCluster 可以作为跨 Kubernetes 集群部署 TiDB 集群的初始 TidbCluster。可以参考[部署新的 TidbCluster 加入 TiDB 集群](#第-2-步部署新的-tidbcluster-加入-tidb-集群)一节部署其他的 TidbCluster。
 
-更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/master/examples/multi-cluster)。
+更多示例信息以及开发信息，请参阅 [`multi-cluster`](https://github.com/pingcap/tidb-operator/tree/v1.6.1/examples/multi-cluster)。
 
 ## 跨多个 Kubernetes 集群部署的 TiDB 集群监控
 
-请参阅[跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)
+请参阅[跨多个 Kubernetes 集群监控 TiDB 集群](deploy-tidb-monitor-across-multiple-kubernetes.md)。

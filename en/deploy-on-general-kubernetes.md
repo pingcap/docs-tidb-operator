@@ -42,18 +42,18 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
 
     If the server does not have an external network, you need to download the Docker image used by the TiDB cluster on a machine with Internet access and upload it to the server, and then use `docker load` to install the Docker image on the server.
 
-    To deploy a TiDB cluster, you need the following Docker images (assuming the version of the TiDB cluster is v7.1.0):
+    To deploy a TiDB cluster, you need the following Docker images (assuming the version of the TiDB cluster is v8.5.0):
 
     ```shell
-    pingcap/pd:v7.1.0
-    pingcap/tikv:v7.1.0
-    pingcap/tidb:v7.1.0
-    pingcap/tidb-binlog:v7.1.0
-    pingcap/ticdc:v7.1.0
-    pingcap/tiflash:v7.1.0
+    pingcap/pd:v8.5.0
+    pingcap/tikv:v8.5.0
+    pingcap/tidb:v8.5.0
+    pingcap/ticdc:v8.5.0
+    pingcap/tiflash:v8.5.0
+    pingcap/tiproxy:latest
     pingcap/tidb-monitor-reloader:v1.0.1
-    pingcap/tidb-monitor-initializer:v7.1.0
-    grafana/grafana:6.0.1
+    pingcap/tidb-monitor-initializer:v8.5.0
+    grafana/grafana:7.5.11
     prom/prometheus:v2.18.1
     busybox:1.26.2
     ```
@@ -63,27 +63,27 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/pd:v7.1.0
-    docker pull pingcap/tikv:v7.1.0
-    docker pull pingcap/tidb:v7.1.0
-    docker pull pingcap/tidb-binlog:v7.1.0
-    docker pull pingcap/ticdc:v7.1.0
-    docker pull pingcap/tiflash:v7.1.0
+    docker pull pingcap/pd:v8.5.0
+    docker pull pingcap/tikv:v8.5.0
+    docker pull pingcap/tidb:v8.5.0
+    docker pull pingcap/ticdc:v8.5.0
+    docker pull pingcap/tiflash:v8.5.0
+    docker pull pingcap/tiproxy:latest
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-    docker pull pingcap/tidb-monitor-initializer:v7.1.0
-    docker pull grafana/grafana:6.0.1
+    docker pull pingcap/tidb-monitor-initializer:v8.5.0
+    docker pull grafana/grafana:7.5.11
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
-    docker save -o pd-v7.1.0.tar pingcap/pd:v7.1.0
-    docker save -o tikv-v7.1.0.tar pingcap/tikv:v7.1.0
-    docker save -o tidb-v7.1.0.tar pingcap/tidb:v7.1.0
-    docker save -o tidb-binlog-v7.1.0.tar pingcap/tidb-binlog:v7.1.0
-    docker save -o ticdc-v7.1.0.tar pingcap/ticdc:v7.1.0
-    docker save -o tiflash-v7.1.0.tar pingcap/tiflash:v7.1.0
+    docker save -o pd-v8.5.0.tar pingcap/pd:v8.5.0
+    docker save -o tikv-v8.5.0.tar pingcap/tikv:v8.5.0
+    docker save -o tidb-v8.5.0.tar pingcap/tidb:v8.5.0
+    docker save -o ticdc-v8.5.0.tar pingcap/ticdc:v8.5.0
+    docker save -o tiproxy-latest.tar pingcap/tiproxy:latest
+    docker save -o tiflash-v8.5.0.tar pingcap/tiflash:v8.5.0
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-    docker save -o tidb-monitor-initializer-v7.1.0.tar pingcap/tidb-monitor-initializer:v7.1.0
-    docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
+    docker save -o tidb-monitor-initializer-v8.5.0.tar pingcap/tidb-monitor-initializer:v8.5.0
+    docker save -o grafana-6.0.1.tar grafana/grafana:7.5.11
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
     ```
@@ -93,14 +93,14 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i pd-v7.1.0.tar
-    docker load -i tikv-v7.1.0.tar
-    docker load -i tidb-v7.1.0.tar
-    docker load -i tidb-binlog-v7.1.0.tar
-    docker load -i ticdc-v7.1.0.tar
-    docker load -i tiflash-v7.1.0.tar
+    docker load -i pd-v8.5.0.tar
+    docker load -i tikv-v8.5.0.tar
+    docker load -i tidb-v8.5.0.tar
+    docker load -i ticdc-v8.5.0.tar
+    docker load -i tiproxy-latest.tar
+    docker load -i tiflash-v8.5.0.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
-    docker load -i tidb-monitor-initializer-v7.1.0.tar
+    docker load -i tidb-monitor-initializer-v8.5.0.tar
     docker load -i grafana-6.0.1.tar
     docker load -i prometheus-v2.18.1.tar
     docker load -i busybox-1.26.2.tar
@@ -129,3 +129,15 @@ If you want to initialize your cluster after deployment, refer to [Initialize a 
 > **Note:**
 >
 > By default, TiDB (versions starting from v4.0.2 and released before February 20, 2023) periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](https://docs.pingcap.com/tidb/stable/telemetry). Starting from February 20, 2023, the telemetry feature is disabled by default in newly released TiDB versions. See [TiDB Release Timeline](https://docs.pingcap.com/tidb/stable/release-timeline) for details.
+
+## Configure TiDB monitoring
+
+For more information, see [Deploy monitoring and alerts for a TiDB cluster](monitor-a-tidb-cluster.md).
+
+> **Note:**
+>
+> TiDB monitoring does not persist data by default. To ensure long-term data availability, it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitoring does not include Pod CPU, memory, or disk monitoring, nor does it have an alerting system. For more comprehensive monitoring and alerting, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Collect logs
+
+System and application logs can be useful for troubleshooting issues and automating operations. By default, TiDB components output logs to the container's `stdout` and `stderr`, and log rotation is automatically performed based on the container runtime environment. When a Pod restarts, container logs will be lost. To prevent log loss, it is recommended to [Collect logs of TiDB and its related components](logs-collection.md).

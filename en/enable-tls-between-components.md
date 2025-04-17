@@ -12,7 +12,7 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
     > **Note:**
@@ -23,7 +23,8 @@ To enable TLS between TiDB components, perform the following steps:
 
     > **Note:**
     >
-    > After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - After the cluster is created, do not modify this field; otherwise, the cluster will fail to upgrade. If you need to modify this field, delete the cluster and create a new one.
+    > - If you cannot rebuild the cluster but need to enable TLS, see [Upgrade a non-TLS cluster to a TLS cluster](#upgrade-a-non-tls-cluster-to-a-tls-cluster).
 
 3. Configure `pd-ctl` and `tikv-ctl` to connect to the cluster.
 
@@ -39,7 +40,7 @@ Certificates can be issued in multiple methods. This document describes two meth
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
-## Generate certificates for components of the TiDB cluster
+## Step 1. Generate certificates for components of the TiDB cluster
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
@@ -161,6 +162,33 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             ],
         ...
         ```
+
+        > **Note:**
+        >
+        > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices in your cluster, it is unnecessary to generate certificates for each component of PD microservices. Instead, you only need to add the host configurations for microservices to the `hosts` field of the `pd-server.json` file. Taking the `scheduling` microservice as an example, you need to configure the following items:
+        >
+        > ``` json
+        > ...
+        >     "CN": "TiDB",
+        >     "hosts": [
+        >       "127.0.0.1",
+        >       "::1",
+        >       "${cluster_name}-pd",
+        >       ...
+        >       "*.${cluster_name}-pd-peer.${namespace}.svc",
+        >       // The following are host configurations for the `scheduling` microservice
+        >       "${cluster_name}-scheduling",
+        >       "${cluster_name}-scheduling.${cluster_name}",
+        >       "${cluster_name}-scheduling.${cluster_name}.svc",
+        >       "${cluster_name}-scheduling-peer",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >       "*.${cluster_name}-scheduling-peer",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >     ],
+        > ...
+        > ```
 
         `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
 
@@ -402,8 +430,45 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
             {{< copyable "shell-regular" >}}
 
-            ``` shell
+            ```shell
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
+            ```
+
+    - TiProxy
+
+        1. Generate the default `tiproxy-server.json` file:
+
+            ```shell
+            cfssl print-defaults csr > tiproxy-server.json
+            ```
+
+        2. Edit this file to change the `CN` and `hosts` attributes:
+
+            ```json
+            ...
+                "CN": "TiDB",
+                "hosts": [
+                  "127.0.0.1",
+                  "::1",
+                  "${cluster_name}-tiproxy",
+                  "${cluster_name}-tiproxy.${namespace}",
+                  "${cluster_name}-tiproxy.${namespace}.svc",
+                  "${cluster_name}-tiproxy-peer",
+                  "${cluster_name}-tiproxy-peer.${namespace}",
+                  "${cluster_name}-tiproxy-peer.${namespace}.svc",
+                  "*.${cluster_name}-tiproxy-peer",
+                  "*.${cluster_name}-tiproxy-peer.${namespace}",
+                  "*.${cluster_name}-tiproxy-peer.${namespace}.svc"
+                ],
+            ...
+            ```
+
+            `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
+
+        3. Generate the TiProxy server-side certificate:
+
+            ```shell
+            cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiproxy-server.json | cfssljson -bare tiproxy-server
             ```
 
     - TiFlash
@@ -588,31 +653,29 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - The Drainer cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl create secret generic ${cluster_name}-drainer-cluster-secret --namespace=${namespace} --from-file=tls.crt=drainer-server.pem --from-file=tls.key=drainer-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiCDC cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         kubectl create secret generic ${cluster_name}-ticdc-cluster-secret --namespace=${namespace} --from-file=tls.crt=ticdc-server.pem --from-file=tls.key=ticdc-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    - The TiFlash cluster certificate Secret:
+    - The TiProxy cluster certificate Secret:
 
-        {{< copyable "shell-regular" >}}
+        ``` shell
+        kubectl create secret generic ${cluster_name}-tiproxy-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiproxy-server.pem --from-file=tls.key=tiproxy-server-key.pem --from-file=ca.crt=ca.pem
+        ```
+
+    - The TiFlash cluster certificate Secret:
 
         ``` shell
         kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
     - The TiKV Importer cluster certificate Secret:
-
-        {{< copyable "shell-regular" >}}
 
         ``` shell
         kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
@@ -1307,7 +1370,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     After the object is created, `cert-manager` generates a `${cluster_name}-cluster-client-secret` Secret object to be used by the clients of the TiDB components.
 
-## Deploy the TiDB cluster
+## Step 2. Deploy the TiDB cluster
 
 When you deploy a TiDB cluster, you can enable TLS between TiDB components, and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component's certificate.
 
@@ -1322,7 +1385,7 @@ In this step, you need to perform the following operations:
 - Deploy a monitoring system
 - Deploy the Pump component, and enable CN verification
 
-1. Create a TiDB cluster:
+1. Create a TiDB cluster with a monitoring system and the Pump component:
 
     Create the `tidb-cluster.yaml` file:
 
@@ -1337,7 +1400,7 @@ In this step, you need to perform the following operations:
     spec:
      tlsCluster:
        enabled: true
-     version: v7.1.0
+     version: v8.5.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1396,7 +1459,7 @@ In this step, you need to perform the following operations:
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v7.1.0
+       version: v8.5.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1408,7 +1471,34 @@ In this step, you need to perform the following operations:
 
     Execute `kubectl apply -f tidb-cluster.yaml` to create a TiDB cluster.
 
-    This operation also includes deploying a monitoring system and the Pump component.
+    > **Note:**
+    >
+    > Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental). To deploy PD microservices, you need to configure `cert-allowed-cn` for each microservice. Taking the Scheduling service as an example, you need to make the following configurations:
+    >
+    > - Update `pd.mode` to `ms`.
+    > - Configure the `security` field for the `scheduling` microservice.
+    >
+    > ```yaml
+    >   pd:
+    >    baseImage: pingcap/pd
+    >    maxFailoverCount: 0
+    >    replicas: 1
+    >    requests:
+    >     storage: "10Gi"
+    >    config:
+    >     security:
+    >       cert-allowed-cn:
+    >         - TiDB
+    >    mode: "ms"
+    >   pdms:
+    >   - name: "scheduling"
+    >     baseImage: pingcap/pd
+    >     replicas: 1
+    >     config:
+    >       security:
+    >         cert-allowed-cn:
+    >           - TiDB
+    > ```
 
 2. Create a Drainer component and enable TLS and CN verification:
 
@@ -1471,11 +1561,6 @@ In this step, you need to perform the following operations:
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1506,11 +1591,6 @@ In this step, you need to perform the following operations:
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1527,7 +1607,7 @@ In this step, you need to perform the following operations:
         kubectl apply -f restore.yaml
         ```
 
-## Configure `pd-ctl`, `tikv-ctl` and connect to the cluster
+## Step 3. Configure `pd-ctl`, `tikv-ctl` and connect to the cluster
 
 1. Mount the certificates.
 
@@ -1581,3 +1661,89 @@ In this step, you need to perform the following operations:
     cd /var/lib/cluster-client-tls
     /tikv-ctl --ca-path=ca.crt --cert-path=tls.crt --key-path=tls.key --host 127.0.0.1:20160 cluster
     ```
+
+## Upgrade a non-TLS cluster to a TLS cluster
+
+This section describes how to enable TLS encrypted communication for an existing non-TLS TiDB cluster.
+
+> **Note:**
+>
+> This operation is only applicable to existing clusters that cannot be rebuilt. Before starting, make sure that you fully understand each step and its potential risks.
+
+1. If the cluster contains multiple PD nodes, first reduce the number of PD nodes to 1.
+
+2. Refer to [Step 1. Generate certificates for components of the TiDB Cluster](#step-1-generate-certificates-for-components-of-the-tidb-cluster) to generate TLS certificates and create Kubernetes Secret objects.
+
+3. Enable TLS:
+
+    You can choose one of the following methods to enable TLS:
+
+    - Method 1: Execute the following command to update the TiDB cluster configuration. Wait for the PD Pod to restart before proceeding to the next step.
+
+        ```shell
+        kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
+          "spec": {
+            "tlsCluster": {
+              "enabled": true
+            }
+          }
+        }'
+        ```
+
+        Example output:
+
+        ```shell
+        tidbcluster.pingcap.com/basic patched
+        ```
+
+    - Method 2: Refer to [Step 2. Deploy the TiDB cluster](#step-2-deploy-the-tidb-cluster) to enable TLS and set the `cert-allowed-cn` configuration item (for TiDB, the configuration item is `cluster-verify-cn`) to verify the CN (Common Name) of each component's certificate.
+
+4. Configure PD nodes:
+
+    1. Use `kubectl exec` to enter the PD Pod and install `etcdctl`. For detailed installation steps, see the [etcdctl installation guide](https://etcd.io/docs/v3.4/install/). After installation, `etcdctl` is located in the extracted folder directory.
+
+    2. View the etcd member information. At this point, `peerURLs` use the HTTP protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        Example output:
+
+        ```shell
+        # memberID        status   name        peerURLs                                          clientURL                                          isLearner
+        e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+        Record the following information for the next step:
+    
+        - `memberID`: In the example, it is `e94cfb12fa384e23`.
+        - `peerURLs`: In the example, it is `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`.
+
+    3. Update the etcd member's `peerURLs` from HTTP to the HTTPS protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
+        ```
+
+        Example output:
+
+        ```shell
+        Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
+        ```
+
+    4. View the updated `peerURLs` to ensure they have been updated to the HTTPS protocol:
+
+        ```shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        Example output:
+
+        ```shell
+        e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+5. If you previously scaled down the PD nodes, scale them back up to the original number.
+
+6. Wait for all Pods in the TiDB cluster to restart.

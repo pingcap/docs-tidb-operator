@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.0-beta.3 Release Notes
+summary: TiDB Operator 1.4.0-beta.3 发布，新增 TiProxy 实验性支持和基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复 GA。修复了拼写错误和清理卷快照备份失败的问题，以及大规模 TiKV 节点下备份 TiDB 集群失败的问题。
 ---
 
 # TiDB Operator 1.4.0-beta.3 Release Notes

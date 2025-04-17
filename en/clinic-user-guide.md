@@ -9,7 +9,7 @@ For TiDB clusters deployed on Kubernetes using TiDB Operator, you can use PingCA
 
 > **Note:**
 >
-> This document **only** applies to clusters deployed using TiDB Operator on Kubernetes. For clusters deployed using TiUP in a self-hosted environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
+> This document **only** applies to clusters deployed using TiDB Operator on Kubernetes. For clusters deployed using TiUP in a self-managed environment, see [PingCAP Clinic for TiUP environments](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup).
 >
 > PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible.
 
@@ -30,7 +30,7 @@ The following sections describe how to install Diag.
 
 Before deploying Diag, make sure the following items are installed on the cluster:
 
-* Kubernetes >= v1.12
+* Kubernetes >= v1.24
 * [TiDB Operator](tidb-operator-overview.md)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
@@ -116,7 +116,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
     <div label="Clinic Server for international users">
 
-    Go to the [Clinic Server for international users](https://clinic.pingcap.com) and select **Sign in with TiDB Account** to enter the TiDB Cloud login page. If you do not have a TiDB Cloud account, you can create one on that page.
+    Go to the [Clinic Server for international users](https://clinic.pingcap.com) and select **Continue with TiDB Account** to enter the TiDB Cloud login page. If you do not have a TiDB Cloud account, you can create one on that page.
 
     > **Note:**
     >
@@ -126,7 +126,7 @@ When Diag uploads data, the access token is used to identify the user and ensure
 
     <div label="Clinic Server for users in the Chinese mainland">
 
-    Go to the [Clinic Server for users in the Chinese mainland](https://clinic.pingcap.com.cn) and select **Sign in with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
+    Go to the [Clinic Server for users in the Chinese mainland](https://clinic.pingcap.com.cn) and select **Continue with AskTUG** to enter the AskTUG community login page. If you do not have an AskTUG account, you can create one on that page.
 
     </div>
 

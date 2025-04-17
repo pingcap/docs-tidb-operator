@@ -10,7 +10,7 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download Exclude Path
         run: |
@@ -30,7 +30,6 @@ jobs:
         with:
           title: Broken Link Detected
           content-filepath: out.md
-          assignees: ran-huang
 
       - name: Fail if there were link errors
         run: exit ${{ steps.lychee.outputs.exit_code }}

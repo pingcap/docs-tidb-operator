@@ -34,7 +34,7 @@ When deploying TiDB clusters or `tidb-backup` with TiDB Operator, you can config
 
 ## Network PV configuration
 
-Starting from Kubernetes 1.11, volume expansion of network PV is supported. However, you need to run the following command to enable volume expansion for the corresponding `StorageClass`:
+To enable volume expansion for the corresponding `StorageClass`, run the following command:
 
 ```shell
 kubectl patch storageclass ${storage_class} -p '{"allowVolumeExpansion": true}'
@@ -95,7 +95,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
 1. Download the deployment file for the local-volume-provisioner.
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/local-pv/local-volume-provisioner.yaml
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/local-pv/local-volume-provisioner.yaml
     ```
 
 2. If you are using the same discovery directory as described in [Step 1: Pre-allocate local storage](#step-1-pre-allocate-local-storage), you can skip this step. If you are using a different path for the discovery directory than in the previous step, you need to modify the ConfigMap and DaemonSet spec.
@@ -163,7 +163,7 @@ The `/mnt/ssd`, `/mnt/sharedssd`, `/mnt/monitoring`, and `/mnt/backup` directori
 3. Deploy the `local-volume-provisioner`.
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/local-dind/local-volume-provisioner.yaml
     ```
 
 4. Check the status of the Pod and PV.
@@ -187,17 +187,17 @@ The steps for offline deployment are the same as for online deployment, except f
 
 * Download the `local-volume-provisioner.yaml` file on a machine with Internet access, then upload it to the server and install it.
 
-* The `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.3.4` image. If the server does not have access to the Internet, download this Docker image on a machine with Internet access:
+* The `local-volume-provisioner` is a DaemonSet that starts a Pod on every Kubernetes worker node. The Pod uses the `quay.io/external_storage/local-volume-provisioner:v2.5.0` image. If the server does not have access to the Internet, download this Docker image on a machine with Internet access:
 
     ``` shell
-    docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-    docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
+    docker pull quay.io/external_storage/local-volume-provisioner:v2.5.0
+    docker save -o local-volume-provisioner-v2.5.0.tar quay.io/external_storage/local-volume-provisioner:v2.5.0
     ```
 
-    Copy the `local-volume-provisioner-v2.3.4.tar` file to the server, and execute the `docker load` command to load the file on the server:
+    Copy the `local-volume-provisioner-v2.5.0.tar` file to the server, and execute the `docker load` command to load the file on the server:
 
     ```shell
-    docker load -i local-volume-provisioner-v2.3.4.tar
+    docker load -i local-volume-provisioner-v2.5.0.tar
     ```
 
 ### Best practices

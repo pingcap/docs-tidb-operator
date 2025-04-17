@@ -3,6 +3,10 @@ title: Restore a TiDB Cluster from EBS Volume Snapshots
 summary: Learn how to restore backup metadata and EBS volume snapshots from S3 storage to a TiDB cluster.
 ---
 
+> **Warning:**
+>
+> This document is deprecated. If you need to restore your cluster data from EBS snapshots, refer to [Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots](restore-from-ebs-snapshot-across-multiple-kubernetes.md).
+
 # Restore a TiDB Cluster from EBS Volume Snapshots
 
 This document describes how to restore backup data in AWS EBS snapshots from S3 storage to a TiDB cluster.
@@ -21,7 +25,7 @@ The restore method described in this document is implemented based on CustomReso
     backupType: full
     restoreMode: volume-snapshot
     serviceAccount: tidb-backup-manager
-    toolImage: pingcap/br:v7.1.0
+    toolImage: pingcap/br:v8.5.0
     br:
       cluster: basic
       clusterNamespace: tidb-cluster
@@ -36,7 +40,7 @@ The restore method described in this document is implemented based on CustomReso
 
 Before using TiDB Operator to restore backup metadata and EBS snapshots from S3 storage to TiDB, prepare the restore environment by following the steps below:
 
-1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml).
+1. Download the file [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml).
 
 2. Create the RBAC-related resources required for the restore in the `test2` namespace by running the following command:
 

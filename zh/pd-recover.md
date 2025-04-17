@@ -18,7 +18,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     wget https://download.pingcap.org/tidb-community-toolkit-${version}-linux-amd64.tar.gz
     ```
 
-    `${version}` 是 TiDB 集群版本，例如，`v7.1.0`。
+    `${version}` 是 TiDB 集群版本，例如，`v8.5.0`。
 
 2. 解压安装包：
 
@@ -202,14 +202,7 @@ kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl health
 kubectl -n ${namespace} exec -it ${cluster_name}-pd-0 -- ./pd-ctl config placement-rules show
 ```
 
-### 第 6 步：重启 TiDB 和 TiKV
-
-使用以下命令重启 TiDB 和 TiKV 实例：
-
-```shell
-kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} &&
-kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
-```
+至此服务恢复。
 
 ## 场景 2：所有 PD 节点都故障且无法恢复
 
@@ -373,3 +366,5 @@ kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"pd":
 kubectl delete pod -l app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${cluster_name} -n ${namespace} &&
 kubectl delete pod -l app.kubernetes.io/component=tikv,app.kubernetes.io/instance=${cluster_name} -n ${namespace}
 ```
+
+至此服务恢复。

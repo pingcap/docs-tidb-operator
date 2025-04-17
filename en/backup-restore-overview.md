@@ -29,7 +29,7 @@ Refer to the following documents for more information:
 - [Back up Data to GCS Using BR](backup-to-gcs-using-br.md)
 - [Back up Data to Azure Blob Storage Using BR](backup-to-azblob-using-br.md)
 - [Back up Data to PV Using BR](backup-to-pv-using-br.md)
-- [Back up Data Using EBS Snapshots](backup-to-aws-s3-by-snapshot.md)
+- [Back up Data Using EBS Snapshots across Multiple Kubernetes](backup-by-ebs-snapshot-across-multiple-kubernetes.md)
 
 If you have the following backup needs, you can use Dumpling to make a backup of the TiDB cluster data:
 
@@ -50,7 +50,7 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. Refer to the 
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
 - [Restore Data from PV Using BR](restore-from-pv-using-br.md)
-- [Restore Data Using EBS Snapshots](restore-from-aws-s3-by-snapshot.md)
+- [Restore Data Using EBS Snapshots across Multiple Kubernetes](restore-from-ebs-snapshot-across-multiple-kubernetes.md)
 
 To restore data from SQL or CSV files exported by Dumpling or other compatible data sources to a TiDB cluster, use TiDB Lightning. Refer to the following documents for more information:
 
@@ -77,6 +77,8 @@ kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
 If you use TiDB Operator v1.1.2 or an earlier version, or if you use TiDB Operator v1.1.3 or a later version and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
+
+If you use v1.5.5, v1.6.1, or a later version, TiDB Operator automatically attempts to stop running log backup tasks when you delete the Custom Resource (CR). This automatic stop feature only applies to log backup tasks that are running normally and does not handle tasks in an error or failed state.
 
 If you back up cluster data using AWS EBS volume snapshots and set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator deletes the CR, and cleans up the backup file and the volume snapshots on AWS.
 

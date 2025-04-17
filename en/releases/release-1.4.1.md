@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.1 Release Notes
+summary: TiDB Operator 1.4.1 was released on January 13, 2023. New features include support for cleaning up failed instances of PD, TiKV, and TiFlash components. Improvements include support for configuring QPS and Burst for the Kubernetes client. Bug fixes address the issue of TiDB Controller Manager panicking without PV permission.
 ---
 
 # TiDB Operator 1.4.1 Release Notes

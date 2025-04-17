@@ -5,7 +5,7 @@ summary: Learn how to deploy a TiDB cluster on ARM64 machines.
 
 # Deploy a TiDB Cluster on ARM64 Machines
 
-This document describes how to deploy a TiDB cluster on ARM64 machines.
+This document describes how to deploy a TiDB cluster on ARM64 machines (including AWS Graviton instances).
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
     name: ${cluster_name}
     namespace: ${cluster_namespace}
   spec:
-    version: "v7.1.0"
+    version: "v8.5.0"
     # ...
     helper:
       image: busybox:1.33.0

@@ -160,7 +160,7 @@ linux-amd64/LICENSE
 
 请自行将 `linux-amd64/helm` 文件拷贝到服务器上，并将其放到 `/usr/local/bin/` 目录下即可。
 
-然后执行 `helm verison`，如果正常输出则表示 Helm 安装成功：
+然后执行 `helm version`，如果正常输出则表示 Helm 安装成功：
 
 {{< copyable "shell-regular" >}}
 
@@ -177,11 +177,7 @@ version.BuildInfo{Version:"v3.4.1", GitCommit:"c4e74854886b2efe3321e185578e6db9b
 Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了多个 Helm chart：
 
 * `tidb-operator`：用于部署 TiDB Operator；
-* `tidb-cluster`：用于部署 TiDB 集群；
-* `tidb-backup`：用于 TiDB 集群备份恢复；
 * `tidb-lightning`：用于 TiDB 集群导入数据；
-* `tidb-drainer`：用于部署 TiDB Drainer；
-* `tikv-importer`：用于部署 TiKV Importer；
 
 这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
 
@@ -201,12 +197,8 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-backup     v1.5.0-beta.1                          A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.5.0-beta.1                          A Helm chart for TiDB Cluster
-pingcap/tidb-drainer    v1.5.0-beta.1                          A Helm chart for TiDB Binlog drainer.
-pingcap/tidb-lightning  v1.5.0-beta.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.5.0-beta.1          v1.5.0-beta.1          tidb-operator Helm chart for Kubernetes
-pingcap/tikv-importer   v1.5.0-beta.1                          A Helm chart for TiKV Importer
+pingcap/tidb-lightning  v1.6.1                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   v1.6.1          v1.6.1          tidb-operator Helm chart for Kubernetes
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -266,9 +258,8 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.5.0-beta.1.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.5.0-beta.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.5.0-beta.1.tgz
+wget http://charts.pingcap.org/tidb-operator-v1.6.1.tgz
+wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
@@ -276,7 +267,7 @@ wget http://charts.pingcap.org/tidb-lightning-v1.5.0-beta.1.tgz
 {{< copyable "shell-regular" >}}
 
 ```shell
-tar zxvf tidb-operator.v1.5.0-beta.1.tgz
+tar zxvf tidb-operator.v1.6.1.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.9 Release Notes
+summary: TiDB Operator 1.3.9 发布，修复了在已设置 `acrossK8s` 字段但未设置 `clusterDomain` 的情况下，PD 升级流程会卡住的问题。
 ---
 
 # TiDB Operator 1.3.9 Release Notes

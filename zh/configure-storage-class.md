@@ -34,7 +34,7 @@ PD 同样借助 Raft 实现了数据复制，但作为存储集群元信息的�
 
 ## 网络 PV 配置
 
-Kubernetes 1.11 及以上的版本支持[网络 PV 的动态扩容](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)，但用户需要为相应的 `StorageClass` 开启动态扩容支持。
+为相应的 `StorageClass` 开启动态扩容支持。
 
 {{< copyable "shell-regular" >}}
 
@@ -103,7 +103,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/local-pv/local-volume-provisioner.yaml
+    wget https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/local-pv/local-volume-provisioner.yaml
     ```
 
 2. 如果你使用的发现路径与[第 1 步：准备本地存储](#第-1-步准备本地存储)中的示例一致，可跳过这一步。如果你使用与上一步中不同路径的发现目录，需要修改 ConfigMap 和 DaemonSet 定义。
@@ -199,21 +199,21 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 * 先在有外网的服务器下载 local-volume-provisioner 部署文件，上传到服务器上后再进行安装。
 
-* local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.3.4`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
+* local-volume-provisioner 程序是一个 DaemonSet，会在每个 Kubernetes 工作节点上启动一个 Pod，这个 Pod 使用的镜像是 `quay.io/external_storage/local-volume-provisioner:v2.5.0`，如果服务器没有外网，需要先将此 Docker 镜像在有外网的机器下载下来：
 
      {{< copyable "shell-regular" >}}
 
      ``` shell
-     docker pull quay.io/external_storage/local-volume-provisioner:v2.3.4
-     docker save -o local-volume-provisioner-v2.3.4.tar quay.io/external_storage/local-volume-provisioner:v2.3.4
+     docker pull quay.io/external_storage/local-volume-provisioner:v2.5.0
+     docker save -o local-volume-provisioner-v2.5.0.tar quay.io/external_storage/local-volume-provisioner:v2.5.0
      ```
 
-     将 `local-volume-provisioner-v2.3.4.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
+     将 `local-volume-provisioner-v2.5.0.tar` 文件拷贝到服务器上，执行 `docker load` 命令将其 load 到服务器上：
 
      {{< copyable "shell-regular" >}}
 
      ``` shell
-     docker load -i local-volume-provisioner-v2.3.4.tar
+     docker load -i local-volume-provisioner-v2.5.0.tar
      ```
 
 ### 最佳实践

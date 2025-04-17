@@ -51,7 +51,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
     kubectl create namespace backup-test
     ```
 
-2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `backup-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
+2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `backup-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
@@ -111,12 +111,6 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
         # sendCredToTikv: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      from:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
         secretName: s3-secret
@@ -158,12 +152,6 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      from:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
         region: us-west-1
@@ -203,12 +191,6 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
         # checksum: true
         # options:
         # - --lastbackupts=420134118382108673
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      from:
-        host: ${tidb_host}
-        port: ${tidb_port}
-        user: ${tidb_user}
-        secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
         region: us-west-1
@@ -242,6 +224,26 @@ demo1-full-backup-s3   full   snapshot   Complete   s3://my-bucket/my-full-backu
 ### 日志备份
 
 你可以使用一个 `Backup` CR 来描述日志备份任务的启动、停止以及清理日志备份数据等操作。日志备份对远程存储访问授权方式与快照备份一致。本节示例创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，对远程存储访问授权方式仅以通过 accessKey 和 secretKey 的方式为例，具体操作如下所示。
+
+#### `logSubcommand` 字段说明
+
+在 Backup 自定义资源 (CR) 中，你可以使用 `logSubcommand` 字段控制日志备份任务的状态。`logSubcommand` 支持以下三个命令：
+
+- `log-start`：该命令用于启动新的日志备份任务，或恢复已暂停的任务。使用此命令可以开始日志备份流程，或从暂停状态恢复任务。
+
+- `log-pause`：该命令用于暂停当前正在进行的日志备份任务。暂停任务后，你可以使用 `log-start` 命令恢复任务。
+
+- `log-stop`：该命令用于永久停止日志备份任务。执行此命令后，Backup CR 会进入停止状态，且无法再次启动。
+
+这些命令提供了对日志备份任务生命周期的精细控制，支持启动、暂停、恢复和停止操作，帮助有效管理 Kubernetes 环境中的日志数据保留。
+
+<Tip>
+
+在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
+
+但是，请勿在同一个 Backup CR 中同时使用 `logStop` 和 `logSubcommand` 字段，这属于不支持的用法。对于 TiDB Operator v1.5.5、v1.6.1 及之后版本，推荐使用 `logSubcommand` 以确保配置清晰且一致。
+
+</Tip>
 
 #### 启动日志备份
 
@@ -323,15 +325,15 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
-#### 停止日志备份
+#### 暂停日志备份
 
-由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活停止日志备份的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。
+你可以通过将 Backup 自定义资源 (CR) 的 `logSubcommand` 字段设置为 `log-pause` 来暂停日志备份任务。下面以暂停[启动日志备份](#启动日志备份)中创建的名为 `demo1-log-backup-s3` 的 CR 为例。
 
 ```shell
 kubectl edit backup demo1-log-backup-s3 -n backup-test
 ```
 
-在最后新增一行字段 `spec.logStop: true`，保存并退出。更新后的内容如下：
+要暂停日志备份任务，只需将 `logSubcommand` 的值从 `log-start` 修改为 `log-pause`，然后保存并退出编辑器。修改后的内容如下：
 
 ```yaml
 ---
@@ -342,6 +344,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-pause
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -352,7 +355,96 @@ spec:
     region: us-west-1
     bucket: my-bucket
     prefix: my-log-backup-folder
-  logStop: true
+```
+
+可以看到名为 `demo1-log-backup-s3` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Pause`：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-s3        log      Pause     ....
+```
+
+#### 恢复日志备份
+
+如果日志备份任务已暂停，你可以通过将 `logSubcommand` 字段设置为 `log-start` 来恢复该任务。下面以恢复[暂停日志备份](#暂停日志备份)中已暂停的 `demo1-log-backup-s3` CR 为例。
+
+> **Note:**
+> 
+> 此操作仅适用于处于暂停状态 (`Pause`) 的任务，无法恢复状态为 `Fail` 或 `Stopped` 的任务。
+
+```shell
+kubectl edit backup demo1-log-backup-s3 -n backup-test
+```
+
+要恢复日志备份任务，只需将 `logSubcommand` 的值从 `log-pause` 更改为 `log-start`，然后保存并退出编辑器。修改后的内容如下：
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-s3
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-start
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  s3:
+    provider: aws
+    secretName: s3-secret
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+可以看到名为 `demo1-log-backup-s3` 的 Backup CR 的 `STATUS` 从 `Paused` 状态变为 `Running`：
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-s3        log      Running   ....
+```
+
+#### 停止日志备份
+
+你可以通过将 Backup 自定义资源 (CR) 的 `logSubcommand` 字段设置为 `log-stop` 来停止日志备份。下面以停止[启动日志备份](#启动日志备份)中创建的名为 `demo1-log-backup-s3` 的 CR 为例。
+
+```shell
+kubectl edit backup demo1-log-backup-s3 -n backup-test
+```
+
+将 `logSubcommand` 的值修改为 `log-stop`，然后保存并退出编辑器。修改后的内容如下：
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-s3
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-stop
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  s3:
+    provider: aws
+    secretName: s3-secret
+    region: us-west-1
+    bucket: my-bucket
+    prefix: my-log-backup-folder
 ```
 
 可以看到名为 `demo1-log-backup-s3` 的 `Backup` CR 的 `STATUS` 从 `Running` 变成了 `Stopped`：
@@ -367,12 +459,16 @@ demo1-log-backup-s3        log      Stopped   ....
 ```
 
 <Tip>
-你也可以采用和启动日志备份时相同的方法来停止日志备份，已经被创建过的 `Backup` CR 会因此被更新。
+
+`Stopped` 是日志备份的终止状态。在此状态下，无法再次更改备份状态，但你仍然可以清理日志备份数据。
+
+在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
+
 </Tip>
 
 #### 清理日志备份数据
 
-1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。操作激活优先级从高到低分别是停止日志备份任务、删除日志备份数据和开启日志备份任务。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
+1. 由于你在开启日志备份的时候已经创建了名为 `demo1-log-backup-s3` 的 `Backup` CR，因此可以直接更新该 `Backup` CR 的配置，来激活清理日志备份数据的操作。执行如下操作来清理 2022-10-10T15:21:00+08:00 之前的所有日志备份数据。
 
     ```shell
     kubectl edit backup demo1-log-backup-s3 -n backup-test
@@ -389,9 +485,9 @@ demo1-log-backup-s3        log      Stopped   ....
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
-        cluster: demo1
-        clusterNamespace: test1
+        mespace: test1
         sendCredToTikv: true
       s3:
         provider: aws
@@ -437,6 +533,65 @@ demo1-log-backup-s3        log      Stopped   ....
     demo1-log-backup-s3    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
+### 压缩日志备份
+
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。 
+
+本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
+
+1. 在 `backup-test` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+    `compact-backup-demo1.yaml` 的内容如下：
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      s3:
+        provider: aws
+        secretName: s3-secret
+        region: us-west-1
+        bucket: my-bucket
+        prefix: my-log-backup-folder
+    ```
+
+    其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
+  
+    `s3` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
+
+#### 查看压缩日志备份状态
+
+创建 `CompactBackup` CR 后，TiDB Operator 会自动开始压缩日志备份。你可以运行以下命令查看备份状态：
+
+```shell
+kubectl get cpbk -n backup-test
+```
+
+从上述命令的输出中，你可以找到描述名为 `demo1-compact-backup` 的 `CompactBackup` CR 的信息，输出示例如下：
+
+```
+NAME                   STATUS                   PROGRESS                                     MESSAGE
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+```
+
+如果 `STATUS` 字段显示为 `Complete` 则代表压缩日志备份已经完成。
+
 ### 备份示例
 
 <details>
@@ -456,12 +611,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -492,12 +641,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -528,12 +671,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -566,12 +703,6 @@ spec:
     cluster: demo1
     sendCredToTikv: false
     clusterNamespace: test1
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb_host}
-    # port: ${tidb_port}
-    # user: ${tidb_user}
-    # secretName: backup-demo1-tidb-secret
   s3:
     provider: aws
     region: us-west-1
@@ -629,12 +760,6 @@ spec:
           # timeAgo: ${time}
           # checksum: true
           # sendCredToTikv: true
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
           secretName: s3-secret
@@ -681,12 +806,6 @@ spec:
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
           region: us-west-1
@@ -731,12 +850,6 @@ spec:
           # rateLimit: 0
           # timeAgo: ${time}
           # checksum: true
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
           region: us-west-1
@@ -856,6 +969,93 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     NAME                                                   MODE       STATUS    ....
     integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....  
     log-integrated-backup-schedule-s3                      log        Running   ....
+    ```
+
+## 集成定时快照备份、日志备份和压缩日志备份
+
+为了加快下游恢复速度，可以在 `BackupSchedule` CR 中添加压缩日志备份。压缩日志备份可以定期压缩远程存储中的日志备份文件。你必须先启用日志备份，才能使用压缩日志备份。本节基于上一节内容进行扩展。
+
+### 前置条件：准备定时快照备份环境
+
+同[准备 Ad-hoc 备份环境](#前置条件准备-ad-hoc-备份环境)。
+
+### 创建 `BackupSchedule`
+
+1. 在 `backup-test` 这个 namespace 中创建一个名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR。
+
+    ```shell
+    kubectl apply -f integrated-backup-schedule-s3.yaml
+    ```
+
+    `integrated-backup-schedule-s3` 文件内容如下：
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-s3
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      compactInterval: "1h"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-snapshot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-log
+      compactBackupTemplate:
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        s3:
+          provider: aws
+          secretName: s3-secret
+          region: us-west-1
+          bucket: my-bucket
+          prefix: my-folder-log
+    ```
+
+    以上 `integrated-backup-schedule-s3.yaml` 文件配置示例中，`backupSchedule` 配置基于上一节内容，新增了 `compactBackup` 相关设置，主要改动如下：
+    
+    - 新增 `BackupSchedule.spec.compactInterval` 字段，用于指定日志压缩备份的时间间隔。建议不要超过定时快照备份的间隔，并控制在定时快照备份间隔的二分之一至三分之一之间。
+    
+    - 新增 `BackupSchedule.spec.compactBackupTemplate` 字段。请确保 `BackupSchedule.spec.compactBackupTemplate.s3` 配置与 `BackupSchedule.spec.logBackupTemplate.s3` 保持一致。
+
+    关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
+
+2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    压缩日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `CompactBackup` CR 的信息。
+
+    ```shell
+    kubectl get cpbk -n backup-test
     ```
 
 ## 删除备份的 Backup CR

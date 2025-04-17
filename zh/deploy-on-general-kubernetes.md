@@ -44,18 +44,18 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v7.1.0）：
+    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v8.5.0）：
 
     ```shell
-    pingcap/pd:v7.1.0
-    pingcap/tikv:v7.1.0
-    pingcap/tidb:v7.1.0
-    pingcap/tidb-binlog:v7.1.0
-    pingcap/ticdc:v7.1.0
-    pingcap/tiflash:v7.1.0
+    pingcap/pd:v8.5.0
+    pingcap/tikv:v8.5.0
+    pingcap/tidb:v8.5.0
+    pingcap/ticdc:v8.5.0
+    pingcap/tiflash:v8.5.0
+    pingcap/tiproxy:latest
     pingcap/tidb-monitor-reloader:v1.0.1
-    pingcap/tidb-monitor-initializer:v7.1.0
-    grafana/grafana:6.0.1
+    pingcap/tidb-monitor-initializer:v8.5.0
+    grafana/grafana:7.5.11
     prom/prometheus:v2.18.1
     busybox:1.26.2
     ```
@@ -65,27 +65,27 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/pd:v7.1.0
-    docker pull pingcap/tikv:v7.1.0
-    docker pull pingcap/tidb:v7.1.0
-    docker pull pingcap/tidb-binlog:v7.1.0
-    docker pull pingcap/ticdc:v7.1.0
-    docker pull pingcap/tiflash:v7.1.0
+    docker pull pingcap/pd:v8.5.0
+    docker pull pingcap/tikv:v8.5.0
+    docker pull pingcap/tidb:v8.5.0
+    docker pull pingcap/ticdc:v8.5.0
+    docker pull pingcap/tiflash:v8.5.0
+    docker pull pingcap/tiproxy:latest
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-    docker pull pingcap/tidb-monitor-initializer:v7.1.0
-    docker pull grafana/grafana:6.0.1
+    docker pull pingcap/tidb-monitor-initializer:v8.5.0
+    docker pull grafana/grafana:7.5.11
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
-    docker save -o pd-v7.1.0.tar pingcap/pd:v7.1.0
-    docker save -o tikv-v7.1.0.tar pingcap/tikv:v7.1.0
-    docker save -o tidb-v7.1.0.tar pingcap/tidb:v7.1.0
-    docker save -o tidb-binlog-v7.1.0.tar pingcap/tidb-binlog:v7.1.0
-    docker save -o ticdc-v7.1.0.tar pingcap/ticdc:v7.1.0
-    docker save -o tiflash-v7.1.0.tar pingcap/tiflash:v7.1.0
+    docker save -o pd-v8.5.0.tar pingcap/pd:v8.5.0
+    docker save -o tikv-v8.5.0.tar pingcap/tikv:v8.5.0
+    docker save -o tidb-v8.5.0.tar pingcap/tidb:v8.5.0
+    docker save -o ticdc-v8.5.0.tar pingcap/ticdc:v8.5.0
+    docker save -o tiproxy-latest.tar pingcap/tiproxy:latest
+    docker save -o tiflash-v8.5.0.tar pingcap/tiflash:v8.5.0
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-    docker save -o tidb-monitor-initializer-v7.1.0.tar pingcap/tidb-monitor-initializer:v7.1.0
-    docker save -o grafana-6.0.1.tar grafana/grafana:6.0.1
+    docker save -o tidb-monitor-initializer-v8.5.0.tar pingcap/tidb-monitor-initializer:v8.5.0
+    docker save -o grafana-6.0.1.tar grafana/grafana:7.5.11
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
     ```
@@ -95,14 +95,14 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i pd-v7.1.0.tar
-    docker load -i tikv-v7.1.0.tar
-    docker load -i tidb-v7.1.0.tar
-    docker load -i tidb-binlog-v7.1.0.tar
-    docker load -i ticdc-v7.1.0.tar
-    docker load -i tiflash-v7.1.0.tar
+    docker load -i pd-v8.5.0.tar
+    docker load -i tikv-v8.5.0.tar
+    docker load -i tidb-v8.5.0.tar
+    docker load -i ticdc-v8.5.0.tar
+    docker load -i tiproxy-latest.tar
+    docker load -i tiflash-v8.5.0.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
-    docker load -i tidb-monitor-initializer-v7.1.0.tar
+    docker load -i tidb-monitor-initializer-v8.5.0.tar
     docker load -i grafana-6.0.1.tar
     docker load -i prometheus-v2.18.1.tar
     docker load -i busybox-1.26.2.tar
@@ -129,3 +129,15 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-on-general-kubernetes/','/zh/t
 > **注意：**
 >
 > TiDB（v4.0.2 起且发布于 2023 年 2 月 20 日前的版本）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见 [TiDB 遥测功能使用文档](https://docs.pingcap.com/zh/tidb/stable/telemetry)。自 2023 年 2 月 20 日起，新发布的 TiDB 版本默认不再收集使用情况信息分享给 PingCAP，参见 [TiDB 版本发布时间线](https://docs.pingcap.com/zh/tidb/stable/release-timeline)。
+
+## 配置 TiDB 监控
+
+请参阅[部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)。
+
+> **注意：**
+>
+> TiDB 监控默认不会持久化数据，为确保数据长期可用，建议[持久化监控数据](monitor-a-tidb-cluster.md#持久化监控数据)。TiDB 监控不包含 Pod 的 CPU、内存、磁盘监控，也没有报警系统。为实现更全面的监控和告警，建议[设置 kube-prometheus 与 AlertManager](monitor-a-tidb-cluster.md#设置-kube-prometheus-与-alertmanager)。
+
+## 收集日志
+
+系统与程序的运行日志对排查问题和实现自动化操作可能非常有用。TiDB 各组件默认将日志输出到容器的 `stdout` 和 `stderr` 中，并依据容器运行时环境自动进行日志的滚动清理。当 Pod 重启时，容器日志会丢失。为防止日志丢失，建议[收集 TiDB 及相关组件日志](logs-collection.md)。

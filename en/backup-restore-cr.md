@@ -20,11 +20,11 @@ This section introduces the fields in the `Backup` CR.
 
     - When using BR for backup, you can specify the BR version in this field.
         - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
-        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v7.1.0`, the image of the specified version is used for backup.
+        - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v8.5.0`, the image of the specified version is used for backup.
         - If an image is specified without the version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
     - When using Dumpling for backup, you can specify the Dumpling version in this field.
-        - If the Dumpling version is specified in this field, such as `spec.toolImage: pingcap/dumpling:v7.1.0`, the image of the specified version is used for backup.
-        - If the field is not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for backup by default.
+        - If the Dumpling version is specified in this field, such as `spec.toolImage: pingcap/dumpling:v8.5.0`, the image of the specified version is used for backup.
+        - If the field is not specified, the Dumpling version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) is used for backup by default.
 
 * `.spec.backupType`: the backup type. This field is valid only when you use BR for backup. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
     * `full`: back up all databases in a TiDB cluster.
@@ -35,6 +35,13 @@ This section introduces the fields in the `Backup` CR.
     * `snapshot`: back up data through snapshots in the KV layer.
     * `volume-snapshot`: back up data by volume snapshots.
     * `log`: back up log data in real time in the KV layer.
+
+* `.spec.logSubcommand`: the subcommand for controlling the log backup status in the Backup CR. This field provides three options for managing a log backup task:
+    * `log-start`: initiates a new log backup task or resumes a paused task. Use this command to start the log backup process or resume a task from a paused state.
+    * `log-pause`: temporarily pauses the currently running log backup task. After pausing, you can use the `log-start` command to resume the task.
+    * `log-stop`: permanently stops the log backup task. After executing this command, the Backup CR enters a stopped state and cannot be restarted.
+
+  For versions before v1.5.5, use the `logStop` field with boolean values (`true`/`false`) to control log backup operations. While `logStop` is still supported in v1.5.5 and v1.6.1, it is recommended to use `logSubcommand` instead.
 
 * `.spec.restoreMode`: the restore mode. The default value is `snapshot`, which means restoring data from snapshots in the KV layer. This field is valid only for restore and has three value options currently:
     * `snapshot`: restore data from snapshots in the KV layer.
@@ -251,6 +258,33 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.local.volume`: the persistent volume configuration.
 * `.spec.local.volumeMount`: the persistent volume mount configuration.
 
+## CompactBackup CR fields
+
+For TiDB v9.0.0 and later versions, you can use `CompactBackup` to accelerate PITR (Point-in-time recovery). To compact log backup data into structured SST files, you can create a custom `CompactBackup` CR object to define a backup task. The following introduces the fields in the `CompactBackup` CR:
+
+* `.spec.startTs`: the start timestamp for log compaction backup.
+* `.spec.endTs`: the end timestamp for log compaction backup.
+* `.spec.concurrency`: the maximum number of concurrent log compaction tasks. The default value is `4`.
+* `.spec.maxRetryTimes`: the maximum number of retries for failed compaction tasks. The default value is `6`.
+* `.spec.toolImage`：the tool image used by `CompactBackup`. BR is the only tool image used in `CompactBackup`. When using BR for backup, you can specify the BR version with this field:
+
+    - If not specified or left empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
+    - If a BR version is specified, such as `.spec.toolImage: pingcap/br:v9.0.0`, the image of the specified version is used for backup.
+    - If an image is specified without a version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
+
+* `.spec.env`: the environment variables for the Pod that runs the compaction task.
+* `.spec.affinity`: the affinity configuration for the Pod that runs the compaction task. For details on affinity, refer to [Affinity and anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).
+* `.spec.tolerations`: specifies that the Pod that runs the compaction task can schedule onto nodes with matching [taints](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint). For details on taints and tolerations, refer to [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
+* `.spec.podSecurityContext`: the security context configuration for the Pod that runs the compaction task, which allows the Pod to run as a non-root user. For details on `podSecurityContext`, refer to [Run Containers as a Non-root User](containers-run-as-non-root-user.md).
+* `.spec.priorityClassName`: the name of the priority class for the Pod that runs the compaction task, which sets priority for the Pod. For details on priority classes, refer to [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/).
+* `.spec.imagePullSecrets`: the [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod) for the Pod that runs the compaction task.
+* `.spec.serviceAccount`: the name of the ServiceAccount used for compact.
+* `.spec.useKMS`: whether to use AWS-KMS to decrypt the S3 storage key used for the backup.
+* `.spec.br`: BR-related configuration. For more information, refer to [BR fields](#br-fields).
+* `.spec.s3`: S3-related configuration. For more information, refer to [S3 storage fields](#s3-storage-fields).
+* `.spec.gcs`: GCS-related configuration. For more information, refer to [GCS fields](#gcs-fields).
+* `.spec.azblob`：Azure Blob Storage-related configuration. For more information, refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
+
 ## Restore CR fields
 
 To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR object. For detailed restore process, refer to documents listed in [Restore data](backup-restore-overview.md#restore-data).
@@ -260,8 +294,8 @@ This section introduces the fields in the `Restore` CR.
 * `.spec.metadata.namespace`: the namespace where the `Restore` CR is located.
 * `.spec.toolImage`：the tools image used by `Restore`. TiDB Operator supports this configuration starting from v1.1.9.
 
-    - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v7.1.0`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
-    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v7.1.0`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
+    - When using BR for restoring, you can specify the BR version in this field. For example,`spec.toolImage: pingcap/br:v8.5.0`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
+    - When using Lightning for restoring, you can specify the Lightning version in this field. For example, `spec.toolImage: pingcap/lightning:v8.5.0`. If not specified, the Lightning version specified in `TOOLKIT_VERSION` of the [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) is used for restoring by default.
 
 * `.spec.backupType`: the restore type. This field is valid only when you use BR to restore data. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
     * `full`: restore all databases in a TiDB cluster.
@@ -345,6 +379,7 @@ The `backupSchedule` configuration consists of three parts: the configuration of
 
 * `backupTemplate`: the configuration of the snapshot backup. Specifies the configuration related to the cluster and remote storage of the snapshot backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
 * `logBackupTemplate`: the configuration of the log backup. Specifies the configuration related to the cluster and remote storage of the log backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields). The log backup is created and deleted along with `backupSchedule` and recycled according to `.spec.maxReservedTime`. The log backup name is saved in `status.logBackup`.
+* `compactBackupTemplate`: the configuration template of the log compaction backup. The fields are the same as those in the `spec` configuration of [the `CompactBackup` CR](#compactbackup-cr-fields). The compaction backup is created and deleted along with `backupSchedule`. The log backup names are stored in `status.logBackup`. The storage settings of the compaction backup should be the same as that of `logBackupTemplate` in the same `backupSchedule`.
 
     > **Note:**
     >
@@ -355,4 +390,5 @@ The `backupSchedule` configuration consists of three parts: the configuration of
     * `.spec.maxBackups`: a backup retention policy, which determines the maximum number of backup files to be retained. When the number of backup files exceeds this value, the outdated backup file will be deleted. If you set this field to `0`, all backup items are retained.
     * `.spec.maxReservedTime`: a backup retention policy based on time. For example, if you set the value of this field to `24h`, only backup files within the recent 24 hours are retained. All backup files older than this value are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set `.spec.maxBackups` and `.spec.maxReservedTime` at the same time, the latter takes effect.
     * `.spec.schedule`: the time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
+    * `.spec.compactInterval`: the time interval used to trigger a new compaction task.
     * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time point is reached. During this pause, the backup garbage collection runs normally. If you change `true` to `false`, the scheduled snapshot backup process is restarted. Because currently, log backup does not support pause, this configuration does not take effect for log backup.

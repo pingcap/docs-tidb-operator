@@ -48,7 +48,7 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl create namespace backup-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `test1` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n backup-test
@@ -88,12 +88,6 @@ This document provides an example about how to back up the data of the `demo1` T
       namespace: backup-test
     spec:
       # backupType: full
-      # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-      from:
-        host: ${tidb-host}
-        port: ${tidb-port}
-        user: ${tidb-user}
-        secretName: backup-demo1-tidb-secret
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -148,7 +142,27 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 ### Log backup
 
-You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. Log backup grants permissions to remote storages in the same way as snapshot backup. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-s3`. See the following detailed steps.
+You can use a `Backup` CR to describe the start and stop of a log backup task and manage the log backup data. Log backup grants permissions to remote storages in the same way as snapshot backup. In this section, the example shows how to create a `Backup` CR named `demo1-log-backup-gcs`. See the following detailed steps.
+
+#### Description of the `logSubcommand` field
+
+In the Backup Custom Resource (CR), you can use the `logSubcommand` field to control the state of a log backup task. The `logSubcommand` field supports the following commands:
+
+- `log-start`: initiates a new log backup task or resumes a paused task. Use this command to start the log backup process or resume a task from a paused state.
+
+- `log-pause`: temporarily pauses the currently running log backup task. After pausing, you can use the `log-start` command to resume the task.
+
+- `log-stop`: permanently stops the log backup task. After executing this command, the Backup CR enters a stopped state and cannot be restarted.
+
+These commands provide fine-grained control over the lifecycle of log backup tasks, enabling you to start, pause, resume, and stop tasks effectively to manage log data retention in Kubernetes environments.
+
+<Tip>
+
+In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.  
+
+However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.1, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
+
+</Tip>
 
 #### Start log backup
 
@@ -169,6 +183,7 @@ You can use a `Backup` CR to describe the start and stop of a log backup task an
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -229,15 +244,15 @@ Conditions:
 Log Checkpoint Ts:       436569119308644661
 ```
 
-#### Stop log backup
+#### Pause log backup
 
-Because you already created a `Backup` CR named `demo1-log-backup-gcs` when you started log backup, you can stop the log backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup.
+You can pause a log backup task by setting the `logSubcommand` field of the Backup Custom Resource (CR) to `log-pause`. The following example shows how to pause the `demo1-log-backup-gcs` CR created in [Start log backup](#start-log-backup).
 
 ```shell
 kubectl edit backup demo1-log-backup-gcs -n backup-test
 ```
 
-In the last line of the CR, append `spec.logStop: true`. Then save and quit the editor. The modified content is as follows:
+To pause the log backup task, change the value of `logSubcommand` from `log-start` to `log-pause`, then save and exit the editor. The modified content is as follows:
 
 ```yaml
 ---
@@ -248,6 +263,7 @@ metadata:
   namespace: backup-test
 spec:
   backupMode: log
+  logSubcommand: log-pause
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -257,10 +273,97 @@ spec:
     secretName: gcs-secret
     bucket: my-bucket
     prefix: my-log-backup-folder
-  logStop: true
 ```
 
-You can see the `STATUS` of the `Backup` CR named `demo1-log-backup-gcs` change from `Running` to `Stopped`:
+You can verify that the `STATUS` of the `demo1-log-backup-gcs` Backup CR changes from `Running` to `Pause`:
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-gcs        log      Pause     ....
+```
+
+#### Resume log backup
+
+If a log backup task is paused, you can resume it by setting the `logSubcommand` field to `log-start`. The following example shows how to resume the `demo1-log-backup-gcs` CR that was paused in [Pause Log Backup](#pause-log-backup).
+
+> **Note:**
+> 
+> This operation applies only to tasks in the `Pause` state. You cannot resume tasks in the `Fail` or `Stopped` state.
+
+```shell
+kubectl edit backup demo1-log-backup-gcs -n backup-test
+```
+
+To resume the log backup task, change the value of `logSubcommand` from `log-pause` to `log-start`, then save and exit the editor. The modified content is as follows:
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-gcs
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-start
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+You can verify that the `STATUS` of the `demo1-log-backup-gcs` Backup CR changes from `Pause` to `Running`:
+
+```shell
+kubectl get backup -n backup-test
+```
+
+```
+NAME                       MODE     STATUS    ....
+demo1-log-backup-gcs        log      Running   ....
+```
+
+#### Stop log backup
+
+You can stop a log backup task by setting the `logSubcommand` field of the Backup Custom Resource (CR) to `log-stop`. The following example shows how to stop the `demo1-log-backup-gcs` CR created in [Start log backup](#start-log-backup).
+
+```shell
+kubectl edit backup demo1-log-backup-gcs -n backup-test
+```
+
+Change the value of `logSubcommand` to `log-stop`, then save and exit the editor. The modified content is as follows:
+
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-log-backup-gcs
+  namespace: backup-test
+spec:
+  backupMode: log
+  logSubcommand: log-stop
+  br:
+    cluster: demo1
+    clusterNamespace: test1
+    sendCredToTikv: true
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
+
+You can verify that the `STATUS` of the `Backup` CR named `demo1-log-backup-gcs` changes from `Running` to `Stopped`:
 
 ```shell
 kubectl get backup -n backup-test
@@ -272,12 +375,16 @@ demo1-log-backup-gcs       log      Stopped   ....
 ```
 
 <Tip>
-You can also stop log backup by taking the same steps as in [Start log backup](#start-log-backup). The existing `Backup` CR will be updated.
+
+`Stopped` is the terminal state for log backup. In this state, you cannot change the backup state again, but you can still clean up the log backup data.
+
+In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.
+
 </Tip>
 
 #### Clean log backup data
 
-1. Because you already created a `Backup` CR named `demo1-log-backup-gcs` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The priority of all operations is: stop log backup > delete log backup data > start log backup. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
+1. Because you already created a `Backup` CR named `demo1-log-backup-gcs` when you started log backup, you can clean the log data backup by modifying the same `Backup` CR. The following example shows how to clean log backup data generated before 2022-10-10T15:21:00+08:00.
 
     ```shell
     kubectl edit backup demo1-log-backup-gcs -n backup-test
@@ -294,6 +401,7 @@ You can also stop log backup by taking the same steps as in [Start log backup](#
       namespace: backup-test
     spec:
       backupMode: log
+      logSubcommand: log-start/log-pause/log-stop
       br:
         cluster: demo1
         clusterNamespace: test1
@@ -341,6 +449,64 @@ You can also stop log backup by taking the same steps as in [Start log backup](#
     demo1-log-backup-gcs    log        Stopped    ...   2022-10-10T15:21:00+08:00
     ```
 
+### Compact log backup
+
+For TiDB v9.0.0 and later versions, you can use a `CompactBackup` CR to compact log backup data into SST format, accelerating downstream PITR (Point-in-time recovery).
+
+This section explains how to compact log backup based on the log backup example from previous sections.
+
+1. In the `backup-test` namespace, create a `CompactBackup` CR named `demo1-compact-backup`.
+
+    ```shell
+    kubectl apply -f compact-backup-demo1.yaml
+    ```
+
+    The content of `compact-backup-demo1.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: CompactBackup
+    metadata:
+      name: demo1-compact-backup
+      namespace: backup-test
+    spec:
+      startTs: "***"
+      endTs: "***"
+      concurrency: 8
+      maxRetryTimes: 2
+      br:
+        cluster: demo1
+        clusterNamespace: test1
+        sendCredToTikv: true
+      gcs:
+        projectId: ${project_id}
+        secretName: gcs-secret
+        bucket: my-bucket
+        prefix: my-log-backup-folder
+    ```
+
+    The `startTs` and `endTs` fields specify the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the final compacted data might include data written outside this range.
+    
+    The `gcs` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
+
+#### View the status of log backup compaction
+
+After creating the `CompactBackup` CR, TiDB Operator automatically starts compacting the log backup. You can check the backup status using the following command:
+
+```shell
+kubectl get cpbk -n backup-test
+```
+
+From the output, you can find the status of the `CompactBackup` CR named `demo1-compact-backup`. An example output is as follows:
+
+```
+NAME                   STATUS                   PROGRESS                                     MESSAGE
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+```
+
+If the `STATUS` field displays `Complete`, the compact log backup process has finished successfully.
+
 ### Backup CR examples
 
 <details>
@@ -355,12 +521,6 @@ metadata:
   namespace: backup-test
 spec:
   # backupType: full
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb-host}
-    # port: ${tidb-port}
-    # user: ${tidb-user}
-    # secretName: backup-demo1-tidb-secret
   br:
     cluster: demo1
     clusterNamespace: test1
@@ -390,12 +550,6 @@ metadata:
   namespace: backup-test
 spec:
   # backupType: full
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb-host}
-    # port: ${tidb-port}
-    # user: ${tidb-user}
-    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.*"
   br:
@@ -427,12 +581,6 @@ metadata:
   namespace: backup-test
 spec:
   # backupType: full
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb-host}
-    # port: ${tidb-port}
-    # user: ${tidb-user}
-    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   br:
@@ -464,12 +612,6 @@ metadata:
   namespace: backup-test
 spec:
   # backupType: full
-  # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # from:
-    # host: ${tidb-host}
-    # port: ${tidb-port}
-    # user: ${tidb-user}
-    # secretName: backup-demo1-tidb-secret
   tableFilter:
   - "db1.table1"
   - "db1.table2"
@@ -525,12 +667,6 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
       backupTemplate:
         # Clean outdated backup data based on maxBackups or maxReservedTime. If not configured, the default policy is Retain
         # cleanPolicy: Delete
-        # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-        from:
-          host: ${tidb_host}
-          port: ${tidb_port}
-          user: ${tidb_user}
-          secretName: backup-demo1-tidb-secret
         br:
           cluster: demo1
           clusterNamespace: test1
@@ -650,6 +786,89 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     NAME                                                       MODE       STATUS    ....
     integrated-backup-schedule-gcs-2023-03-08t02-50-00         snapshot   Complete  ....
     log-integrated-backup-schedule-gcs                         log        Running   ....
+    ```
+
+## Integrated management of scheduled snapshot backup, log backup, and compact log backup
+
+To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. You must enable log backup before using log backup compaction. This section extends the configuration from the previous section.
+
+### Prerequisites: Prepare for a scheduled snapshot backup
+
+The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
+
+### Create `BackupSchedule`
+
+1. Create a `BackupSchedule` CR named `integrated-backup-schedule-gcs` in the `backup-test` namespace.
+
+    ```shell
+    kubectl apply -f integrated-backup-schedule-s3.yaml
+    ```
+
+    The content of `integrated-backup-schedule-gcs.yaml` is as follows:
+
+    ```yaml
+    ---
+    apiVersion: pingcap.com/v1alpha1
+    kind: BackupSchedule
+    metadata:
+      name: integrated-backup-schedule-gcs
+      namespace: backup-test
+    spec:
+      maxReservedTime: "3h"
+      schedule: "* */2 * * *"
+      backupTemplate:
+        backupType: full
+        cleanPolicy: Delete
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-snapshot
+      logBackupTemplate:
+        backupMode: log
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-log
+      compactBackupTemplate:
+        br:
+          cluster: demo1
+          clusterNamespace: test1
+          sendCredToTikv: true
+        gcs:
+          projectId: ${project_id}
+          secretName: gcs-secret
+          bucket: my-bucket
+          prefix: schedule-backup-folder-log
+    ```
+
+    In the preceding example of `integrated-backup-schedule-gcs.yaml`,  the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
+    
+    * Added the `BackupSchedule.spec.compactInterval` field to specify the time interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
+    
+    * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.gcs` configuration matches the `BackupSchedule.spec.logBackupTemplate.gcs` configuration.
+
+    For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).
+
+2. After creating `backupSchedule`, use the following command to check the backup status:
+
+    ```shell
+    kubectl get bks -n backup-test -o wide
+    ```
+
+    A compact log backup task is created together with `backupSchedule`. You can check the `CompactBackup` CR using the following command:
+
+    ```shell
+    kubectl get cpbk -n backup-test
     ```
 
 ## Delete the backup CR

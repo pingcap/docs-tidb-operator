@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0-rc.1 Release Notes
+summary: TiDB Operator 1.2.0-rc.1 发布，滚动升级改动会导致 Pump Pod 删除重建。新增支持为 TidbCluster 中的 Pod 与 service 设置自定义的 label，以及对 Pump 的完整生命周期管理。优化提升包括隐藏数据库密码的展示、支持为 Grafana 配置额外的 volumeMount、为 TidbMonitor 增加额外的信息展示列，以及 TidbMonitor 支持将配置信息直接写入到 PD 的 etcd 中。Bug 修复包括对启用了 TLS 的 DmCluster 进行监控的问题、PD 在扩容过程中 member 数量统计不正确的问题、DM-master 可能无法成功重启的问题、`configUpdateStrategy` 从 `InPlace` 修改为 `RollingUpdate` 后可能造成的 TidbCluster 组件滚动更新的问题，以及使用 Dumpling 备份数据时可能失败的问题。
 ---
 
 # TiDB Operator 1.2.0-rc.1 Release Notes

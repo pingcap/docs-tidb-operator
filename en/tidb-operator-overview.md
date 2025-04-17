@@ -6,17 +6,19 @@ aliases: ['/docs/tidb-in-kubernetes/dev/tidb-operator-overview/']
 
 # TiDB Operator Overview
 
-[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for TiDB clusters on Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public cloud or in a self-hosted environment.
+[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for TiDB clusters on Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public cloud or in a self-managed environment.
 
 The corresponding relationship between TiDB Operator and TiDB versions is as follows:
 
 | TiDB versions | Compatible TiDB Operator versions |
 |:---|:---|
 | dev               | dev                 |
-| TiDB >= 6.5       | 1.4 (Recommended), 1.3 |
+| TiDB >= 8.0       | 1.6 (Recommended), 1.5 |
+| 7.1 <= TiDB < 8.0 | 1.5 (Recommended), 1.4 |
+| 6.5 <= TiDB < 7.1 | 1.5, 1.4 (Recommended), 1.3 |
 | 5.4 <= TiDB < 6.5 | 1.4, 1.3 (Recommended)   |
-| 5.1 <= TiDB < 5.4 | 1.4, 1.3 (Recommended), 1.2      |
-| 3.0 <= TiDB < 5.1 | 1.4, 1.3 (Recommended), 1.2, 1.1 |
+| 5.1 <= TiDB < 5.4 | 1.4, 1.3 (Recommended), 1.2 (End of support)      |
+| 3.0 <= TiDB < 5.1 | 1.4, 1.3 (Recommended), 1.2 (End of support), 1.1 (End of support) |
 | 2.1 <= TiDB < v3.0| 1.0 (End of support)       |
 
 ## Manage TiDB clusters using TiDB Operator
@@ -33,7 +35,6 @@ TiDB Operator provides several ways to deploy TiDB clusters on Kubernetes:
         - [Deploy TiDB on AWS EKS](deploy-on-aws-eks.md)
         - [Deploy TiDB on Google Cloud GKE](deploy-on-gcp-gke.md)
         - [Deploy TiDB on Azure AKS](deploy-on-azure-aks.md)
-        - [Deploy TiDB on Alibaba Cloud ACK](deploy-on-alibaba-cloud.md)
 
     - In an existing Kubernetes cluster:
 
@@ -60,9 +61,6 @@ When a problem occurs and the cluster needs diagnosis, you can:
 + See [TiDB FAQs on Kubernetes](faq.md) for any available solution;
 + See [Troubleshoot TiDB on Kubernetes](tips.md) to shoot troubles.
 
-TiDB on Kubernetes provides a dedicated command-line tool `tkctl` for cluster management and auxiliary diagnostics. Meanwhile, some of TiDB's tools are used differently on Kubernetes. You can:
-
-+ Use `tkctl` according to [`tkctl` Guide](use-tkctl.md );
-+ See [Tools on Kubernetes](tidb-toolkit.md) to understand how TiDB tools are used on Kubernetes.
+Some of TiDB's tools are used differently on Kubernetes. You can see [Tools on Kubernetes](tidb-toolkit.md) to understand how TiDB tools are used on Kubernetes.
 
 Finally, when a new version of TiDB Operator is released, you can refer to [Upgrade TiDB Operator](upgrade-tidb-operator.md) to upgrade to the latest version.

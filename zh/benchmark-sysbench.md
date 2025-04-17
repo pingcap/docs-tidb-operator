@@ -1,6 +1,7 @@
 ---
 title: TiDB on Kubernetes Sysbench 性能测试
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/benchmark-sysbench/']
+summary: TiDB Operator GA 发布后，我们在 GKE 平台进行了全面的性能测试。测试结果显示，在 Host 网络模式下，TiDB 性能略优于 Pod 网络模式（约 7%）。此外，使用 Ubuntu 系统的 Host 网络模式下，TiDB 性能也略优于 COS 系统（约 9%）。在集群外访问时，使用 Load Balancer 会略损失性能（约 5%）。多可用区下节点之间的延迟增加，会对 TiDB 性能产生一定影响（30% ~ 6%）。计算型机型相对普通型机器带来了很大 QPS 提升（50% ~ 60%）。
 ---
 
 # TiDB on Kubernetes Sysbench 性能测试
@@ -320,7 +321,7 @@ Latency 对比：
 
 #### n1-standard-16 vs c2-standard-16
 
-在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB 的不同表现。其中 n1-stadnard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
+在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB 的不同表现。其中 n1-standard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
 
 此次测试中操作系统为 Ubuntu，Pod 为 Host 网络，使用 Service 访问 TiDB。
 

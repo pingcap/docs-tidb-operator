@@ -64,6 +64,6 @@ kubectl -n ${namespace} get svc ${cluster_name}-tidb -ojsonpath="{.spec.ports[?(
 
 若运行在有 LoadBalancer 的环境，比如 Google Cloud、AWS 平台，建议使用云平台的 LoadBalancer 特性。
 
-参考 [EKS](deploy-on-aws-eks.md#安装-mysql-客户端并连接)、[GKE](deploy-on-gcp-gke.md#安装-mysql-客户端并连接) 和 [ACK](deploy-on-alibaba-cloud.md#连接数据库) 文档，通过 LoadBalancer 访问 TiDB 服务。
+参考 [EKS](deploy-on-aws-eks.md#安装-mysql-客户端并连接) 和 [GKE](deploy-on-gcp-gke.md#安装-mysql-客户端并连接) 文档，通过 LoadBalancer 访问 TiDB 服务。
 
 访问 [Kubernetes Service 文档](https://kubernetes.io/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。

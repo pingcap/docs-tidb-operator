@@ -6,7 +6,11 @@ aliases: ['/docs/tidb-in-kubernetes/dev/configure-tidb-binlog-drainer/']
 
 # TiDB Binlog Drainer Configurations on Kubernetes
 
-This document introduces the configuration parameters for a TiDB Binlog drainer on Kubernetes.
+This document introduces the configuration parameters for a [TiDB Binlog](deploy-tidb-binlog.md) drainer on Kubernetes.
+
+> **Warning:**
+>
+> Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, with removal planned for a future release. For incremental data replication, use [TiCDC](deploy-ticdc.md) instead. For point-in-time recovery (PITR), use PITR.
 
 ## Configuration parameters
 

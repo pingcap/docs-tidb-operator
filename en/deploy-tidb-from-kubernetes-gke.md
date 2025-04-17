@@ -8,7 +8,9 @@ aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-from-kubernetes-gke/']
 
 This document is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md).
 
-<a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
+<a href="https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/pingcap/docs-tidb-operator&cloudshell_tutorial=en/deploy-tidb-from-kubernetes-gke.md">
+  <img src="https://gstatic.com/cloudssh/images/open-btn.png" alt="Google Cloud Shell" />
+</a>
 
 It takes you through the following steps:
 
@@ -97,19 +99,15 @@ If you see `Ready` for all nodes, congratulations. You've set up your first Kube
 TiDB Operator uses [Custom Resource Definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` CRD.
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml && \
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/crd.yaml && \
 kubectl get crd tidbclusters.pingcap.com
 ```
-
-> **Note:**
->
-> For Kubernetes earlier than 1.16, only v1beta1 CRD is supported, so you need to change `crd.yaml` in the above command to `crd_v1beta1.yaml`.
 
 After the `TidbCluster` CRD is created, install TiDB Operator in your Kubernetes cluster.
 
 ```shell
 kubectl create namespace tidb-admin
-helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.1
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -126,13 +124,13 @@ To deploy the TiDB cluster, perform the following steps:
 2. Deploy the TiDB cluster:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-cluster.yaml -n demo
     ```
 
 3. Deploy the TiDB cluster monitor:
 
     ``` shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml -n demo
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-monitor.yaml -n demo
     ```
 
 4. View the Pod status:

@@ -38,7 +38,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     kubectl create namespace restore-test
     ```
 
-2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
+2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test
@@ -69,7 +69,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 在 `restore-test` 这个 namespace 中产生一个名为 `demo2-restore-azblob` 的 `Restore` CR，用于恢复快照备份产生的数据：
 
 ```shell
-kubectl apply -f resotre-full-azblob.yaml
+kubectl apply -f restore-full-azblob.yaml
 ```
 
 `restore-full-azblob.yaml` 文件内容如下：
@@ -92,12 +92,6 @@ spec:
     # timeAgo: ${time}
     # checksum: true
     # sendCredToTikv: true
-  # # Only needed for TiDB Operator < v1.1.10 or TiDB < v4.0.8
-  # to:
-  #   host: ${tidb_host}
-  #   port: ${tidb_port}
-  #   user: ${tidb_user}
-  #   secretName: restore-demo2-tidb-secret
   azblob:
     secretName: azblob-secret
     container: my-container
@@ -155,7 +149,7 @@ demo2-restore-azblob   Complete   ...
     kubectl create namespace restore-test
     ```
 
-2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
+2. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `restore-test` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n restore-test

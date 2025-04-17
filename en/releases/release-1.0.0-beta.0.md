@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 Beta.0 Release Notes
+summary: TiDB Operator 1.0 Beta.0 was released on November 26, 2018. Notable changes include the introduction of basic chaos testing, improved unit test coverage, default log-level values for PD/TiKV/TiDB, and various bug fixes and enhancements. The release also includes a user guide and migration to Go 1.11 module.
 ---
 
 # TiDB Operator 1.0 Beta.0 Release Notes

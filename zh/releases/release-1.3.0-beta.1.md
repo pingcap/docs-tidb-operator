@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.0-beta.1 Release Notes
+summary: TiDB Operator 1.3.0-beta.1 发布日期为 2022 年 1 月 12 日。此版本的兼容性改动包括删除 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级后不会影响 TiDB 集群管理。升级到 1.3.0-beta.1 版本后，需要按照操作来升级 TiDB Operator。此版本还支持新功能和优化提升，包括支持 TiFlash 的 init container 配置资源使用量，支持持续性能分析，以及优化 TidbMonitor 部署示例等。
 ---
 
 # TiDB Operator 1.3.0-beta.1 Release Notes
@@ -23,7 +24,7 @@ TiDB Operator 版本：1.3.0-beta.1
 ## 滚动升级改动
 
 - 由于 [#4358](https://github.com/pingcap/tidb-operator/pull/4358) 的变更，如果使用 v1.2 版本 TiDB Operator 部署了 v5.4 及更新版本的 TiDB 集群，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiFlash 组件滚动更新。建议在升级 TiDB 集群到 v5.4.0 或更新版本之前，先升级 TiDB Operator 到 v1.3 及以上版本。
-- 由于 [#4169](https://github.com/pingcap/tidb-operator/pull/4169) 的变更，如果部署了 v5.0 及更新版本的 TiDB 集群，并且设置了 `spec.tikv.seperateRocksDBLog: true` 或者 `spec.tikv.separateRaftLog: true`，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiKV 组件滚动更新。
+- 由于 [#4169](https://github.com/pingcap/tidb-operator/pull/4169) 的变更，如果部署了 v5.0 及更新版本的 TiDB 集群，并且设置了 `spec.tikv.separateRocksDBLog: true` 或者 `spec.tikv.separateRaftLog: true`，升级 TiDB Operator 到 v1.3.0-beta.1 版本会导致 TiKV 组件滚动更新。
 - 由于 [#4198](https://github.com/pingcap/tidb-operator/pull/4198) 的改动，升级 TiDB Operator 会导致 TidbMonitor Pod 删除重建。
 
 ## 新功能

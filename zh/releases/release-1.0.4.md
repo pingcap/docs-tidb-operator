@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0.4 Release Notes
+summary: TiDB Operator version 1.0.4 was released on November 23, 2019. The new version introduces HostNetwork support for better performance, podSecurityContext support, and new Helm charts for TiDB Lightning and TiDB Binlog. It also includes bug fixes and changes. Users of the v1.1.0.alpha branch are advised to upgrade to v1.0.4, as it includes all fixes from the alpha branch and introduces additional improvements.
 ---
 
 # TiDB Operator 1.0.4 Release Notes
@@ -46,7 +47,7 @@ Another new Helm chart `tidb-drainer` brings multiple drainers support for TiDB 
 - Fix the pump/drainer data directory to avoid data loss caused by bad configuration ([#1183](https://github.com/pingcap/tidb-operator/pull/1183))
 - Add init sql case to e2e ([#1199](https://github.com/pingcap/tidb-operator/pull/1199))
 - Keep the instance label of drainer same with the TiDB cluster in favor of monitoring ([#1170](https://github.com/pingcap/tidb-operator/pull/1170))
-- Set `podSecuriyContext` to nil by default in favor of backward compatibility ([#1184](https://github.com/pingcap/tidb-operator/pull/1184))
+- Set `podSecurityContext` to nil by default in favor of backward compatibility ([#1184](https://github.com/pingcap/tidb-operator/pull/1184))
 
 ## Additional Notes for Users of v1.1.0.alpha branch
 

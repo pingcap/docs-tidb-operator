@@ -22,23 +22,6 @@ Before deploying a TiDB cluster on Azure AKS, perform the following operations:
 
 * Refer to [use Ultra disks](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) to create a new cluster that can use Ultra disks or enable Ultra disks in an exist cluster.
 * Acquire [AKS service permissions](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#aks-service-permissions).
-* If the Kubernetes version of the cluster is earlier than 1.21, install [aks-preview CLI extension](https://docs.microsoft.com/en-us/azure/aks/custom-node-configuration#install-aks-preview-cli-extension) for using Ultra Disks and register [EnableAzureDiskFileCSIDriver](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers#install-csi-storage-drivers-on-a-new-cluster-with-version--121) in [your subscription](https://docs.microsoft.com/en-us/cli/azure/feature?view=azure-cli-latest#az_feature_register-optional-parameters).
-
-    - Install the aks-preview CLI extension:
-
-      {{< copyable "shell-regular" >}}
-
-      ```shell
-      az extension add --name aks-preview
-      ```
-
-    - Register `EnableAzureDiskFileCSIDriver`:
-
-      {{< copyable "shell-regular" >}}
-
-      ```shell
-      az feature register --name EnableAzureDiskFileCSIDriver --namespace Microsoft.ContainerService --subscription ${your-subscription-id}
-      ```
 
 ## Create an AKS cluster and a node pool
 
@@ -47,12 +30,6 @@ Most of the TiDB cluster components use Azure disk as storage. According to [AKS
 ### Create an AKS cluster with CSI enabled
 
 To create an AKS cluster with [CSI enabled](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers), run the following command:
-
-> **Note:**
->
-> If the Kubernetes version of the cluster is earlier than 1.21, you need to append an `--aks-custom-headers` flag to enable the **EnableAzureDiskFileCSIDriver** feature by running the following command:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 # create AKS cluster
@@ -64,8 +41,7 @@ az aks create \
     --vm-set-type VirtualMachineScaleSets \
     --load-balancer-sku standard \
     --node-count 3 \
-    --zones 1 2 3 \
-    --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+    --zones 1 2 3
 ```
 
 ### Create component node pools
@@ -81,7 +57,6 @@ After creating an AKS cluster, run the following commands to create component no
         --cluster-name ${clusterName} \
         --resource-group ${resourceGroup} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=admin
     ```
@@ -96,7 +71,6 @@ After creating an AKS cluster, run the following commands to create component no
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=pd \
         --node-taints dedicated=pd:NoSchedule
@@ -112,7 +86,6 @@ After creating an AKS cluster, run the following commands to create component no
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 2 \
         --labels dedicated=tidb \
         --node-taints dedicated=tidb:NoSchedule
@@ -128,7 +101,6 @@ After creating an AKS cluster, run the following commands to create component no
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -149,7 +121,6 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -166,7 +137,6 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 2 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -183,7 +153,6 @@ The Azure AKS cluster deploys nodes across multiple zones using "best effort zon
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 1 \
         --labels dedicated=tikv \
         --node-taints dedicated=tikv:NoSchedule \
@@ -205,7 +174,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 # ...
 mountOptions:
-- nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 ## Deploy TiDB Operator
@@ -237,9 +207,9 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-monitor.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/aks/tidb-dashboard.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/aks/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/aks/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/aks/tidb-dashboard.yaml
 ```
 
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
@@ -342,7 +312,7 @@ After access to the internal host via SSH, you can access the TiDB cluster throu
     $ mysql --comments -h 20.240.0.7 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 1189
-    Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
     Copyright (c) 2000, 2022, Oracle and/or its affiliates.
 
@@ -457,7 +427,6 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=tiflash \
         --node-taints dedicated=tiflash:NoSchedule
@@ -473,7 +442,6 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
         --resource-group ${resourceGroup} \
         --node-vm-size ${nodeType} \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --labels dedicated=ticdc \
         --node-taints dedicated=ticdc:NoSchedule
@@ -526,7 +494,7 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
 
 Finally, run the `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` command to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Use other Disk volume types
 
@@ -547,7 +515,8 @@ Azure disks support multiple volume types. Among them, `UltraSSD` delivers low l
     allowVolumeExpansion: true
     volumeBindingMode: WaitForFirstConsumer
     mountOptions:
-    - nodelalloc,noatime
+      - nodelalloc
+      - noatime
     ```
 
     You can add more [Driver Parameters](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/driver-parameters.md) as required.
@@ -590,7 +559,6 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
         --resource-group ${resourceGroup} \
         --node-vm-size Standard_L8s_v2 \
         --zones 1 2 3 \
-        --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
         --node-count 3 \
         --enable-ultra-ssd \
         --labels dedicated=tikv \
@@ -606,7 +574,7 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/eks/local-volume-provisioner.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/eks/local-volume-provisioner.yaml
     ```
 
 3. Use local storage.
@@ -616,3 +584,15 @@ For instance types that provide local disks, refer to [Lsv2-series](https://docs
     Add the `tikv.storageClassName` field to the `tidb-cluster.yaml` file and set the value of the field to `local-storage`.
 
     For more information, refer to [Deploy TiDB cluster and its monitoring components](#deploy)
+
+## Configure TiDB monitoring
+
+For more information, see [Deploy monitoring and alerts for a TiDB cluster](monitor-a-tidb-cluster.md).
+
+> **Note:**
+>
+> TiDB monitoring does not persist data by default. To ensure long-term data availability, it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitoring does not include Pod CPU, memory, or disk monitoring, nor does it have an alerting system. For more comprehensive monitoring and alerting, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Collect logs
+
+System and application logs can be useful for troubleshooting issues and automating operations. By default, TiDB components output logs to the container's `stdout` and `stderr`, and log rotation is automatically performed based on the container runtime environment. When a Pod restarts, container logs will be lost. To prevent log loss, it is recommended to [Collect logs of TiDB and its related components](logs-collection.md).

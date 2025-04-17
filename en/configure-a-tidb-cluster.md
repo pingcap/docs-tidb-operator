@@ -24,7 +24,7 @@ If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management 
 
 ## Configure TiDB deployment
 
-To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md).
+To configure a TiDB deployment, you need to configure the `TiDBCluster` CR. Refer to the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/v1.6.1/examples/advanced/tidb-cluster.yaml) for an example. For the complete configurations of `TiDBCluster` CR, refer to [API documentation](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md).
 
 > **Note:**
 >
@@ -41,11 +41,11 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 Here are the formats of the parameters:
 
-- `spec.version`: the format is `imageTag`, such as `v7.1.0`
+- `spec.version`: the format is `imageTag`, such as `v8.5.0`
 
 - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.baseImage`: the format is `imageName`, such as `pingcap/tidb`
 
-- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v7.1.0`
+- `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v8.5.0`
 
 ### Recommended configuration
 
@@ -69,7 +69,7 @@ It is recommended that you configure `spec.pvReclaimPolicy: Retain` to ensure th
 
 #### mountClusterClientSecret
 
-PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled between cluster components](enable-tls-between-components.md), it is recommended to configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`. Under such configuration, TiDB Operator automatically mounts the `${cluster_name}-cluster-client-secret` certificate to the PD and TiKV container, so you can conveniently [use `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster).
+PD and TiKV supports configuring `mountClusterClientSecret`. If [TLS is enabled between cluster components](enable-tls-between-components.md), it is recommended to configure `spec.pd.mountClusterClientSecret: true` and `spec.tikv.mountClusterClientSecret: true`. Under such configuration, TiDB Operator automatically mounts the `${cluster_name}-cluster-client-secret` certificate to the PD and TiKV container, so you can conveniently [use `pd-ctl` and `tikv-ctl`](enable-tls-between-components.md#step-3-configure-pd-ctl-tikv-ctl-and-connect-to-the-cluster).
 
 #### startScriptVersion
 
@@ -215,6 +215,29 @@ To mount multiple PVs for TiCDC:
 
 </div>
 
+<div label="PD microservices">
+
+To mount multiple PVs for PD microservices (taking the `tso` microservice as an example):
+
+> **Note:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+
+```yaml
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+    storageVolumes:
+    - name: log
+      storageSize: "10Gi"
+      mountPath: "/pdms/log"
+```
+
+</div>
 </SimpleTab>
 
 > **Note:**
@@ -223,7 +246,7 @@ To mount multiple PVs for TiCDC:
 
 ### HostNetwork
 
-For PD, TiKV, TiDB, TiFlash, TiCDC, and Pump, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
+For PD, TiKV, TiDB, TiFlash, TiProxy, TiCDC, and Pump, you can configure the Pods to use the host namespace [`HostNetwork`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy).
 
 To enable `HostNetwork` for all supported components, configure `spec.hostNetwork: true`.
 
@@ -254,6 +277,43 @@ The deployed cluster topology by default has three PD Pods, three TiKV Pods, and
 > **Note:**
 >
 > If the number of Kubernetes cluster nodes is less than three, one PD Pod goes to the Pending state, and neither TiKV Pods nor TiDB Pods are created. When the number of nodes in the Kubernetes cluster is less than three, to start the TiDB cluster, you can reduce the number of PD Pods in the default deployment to `1`.
+
+#### Enable PD microservices
+
+> **Note:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+
+To enable PD microservices in your cluster, configure `spec.pd.mode` and `spec.pdms` in the `${cluster_name}/tidb-cluster.yaml` file:
+
+```yaml
+spec:
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    baseImage: pingcap/pd
+    replicas: 2
+  - name: "scheduling"
+    baseImage: pingcap/pd
+    replicas: 1
+```
+
+- `spec.pd.mode` is used to enable or disable PD microservices. Setting it to `"ms"` enables PD microservices, while setting it to `""` or removing this field disables PD microservices.
+- `spec.pdms.config` is used to configure PD microservices, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see the [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
+
+#### Enable TiProxy
+
+The deployment method is the same as that of PD. In addition, you need to modify `spec.tiproxy` to manually specify the number of TiProxy components.
+
+```yaml
+  tiproxy:
+    baseImage: pingcap/tiproxy
+    replicas: 3
+    config:
+```
+
+When deploying TiProxy, you also need to configure additional parameters for TiDB. For detailed configuration steps, refer to [Deploy TiProxy Load Balancer for an Existing TiDB Cluster](deploy-tiproxy.md).
 
 #### Enable TiFlash
 
@@ -313,7 +373,7 @@ If you want to enable TiCDC in the cluster, you can add TiCDC spec to the `TiDBC
 
 ### Configure TiDB components
 
-This section introduces how to configure the parameters of TiDB/TiKV/PD/TiFlash/TiCDC.
+This section introduces how to configure the parameters of TiDB/TiKV/PD/TiProxy/TiFlash/TiCDC.
 
 #### Configure TiDB parameters
 
@@ -376,6 +436,58 @@ For all the configurable parameters of PD, refer to [PD Configuration File](http
 >
 > - If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 > - After the cluster is started for the first time, some PD configuration items are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD. Therefore, after the first start, you cannot modify some PD configuration using parameters. You need to dynamically modify the configuration using SQL statements, pd-ctl, or PD server API. Currently, among all the configuration items listed in [Modify PD configuration online](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-pd-configuration-online), except `log.level`, all the other configuration items cannot be modified using parameters after the first start.
+
+##### Configure PD microservices
+
+> **Note:**
+>
+> Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+
+You can configure PD microservice using the `spec.pd.mode` and `spec.pdms` parameters of the TidbCluster CR. Currently, PD supports two microservices: the `tso` microservice and the `scheduling` microservice. The configuration example is as follows:
+
+```yaml
+spec:
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    baseImage: pingcap/pd
+    replicas: 2
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+  - name: "scheduling"
+    baseImage: pingcap/pd
+    replicas: 1
+    config: |
+      [log.file]
+        filename = "/pdms/log/scheduling.log"
+```
+
+In the preceding configuration, `spec.pdms` is used to configure PD microservices, and the specific configuration parameters are the same as `spec.pd.config`. To get all the parameters that can be configured for PD microservices, see the [PD configuration file](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
+
+> **Note:**
+>
+> - If you deploy your TiDB cluster using CR, make sure that `config: {}` is set, no matter you want to modify `config` or not. Otherwise, PD microservice components might fail to start. This step is meant to be compatible with `Helm` deployment.
+> - If you enable the PD microservice mode when you deploy a TiDB cluster, some configuration items of PD microservices are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD.
+> - If you enable the PD microservice mode for an existing TiDB cluster, some configuration items of PD microservices adopt the same values in PD configuration and are persisted in etcd. The persisted configuration in etcd takes precedence over that in PD.
+> - Hence, after the first startup of PD microservices, you cannot modify these configuration items using parameters. Instead, you can modify them dynamically using [SQL statements](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-pd-configuration-dynamically), [pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules), or PD server API. Currently, among all the configuration items listed in [Modify PD configuration dynamically](https://docs.pingcap.com/tidb/stable/dynamic-config#modify-pd-configuration-dynamically), except `log.level`, all the other configuration items cannot be modified using parameters after the first startup of PD microservices.
+
+#### Configure TiProxy parameters
+
+TiProxy parameters can be configured by `spec.tiproxy.config` in TidbCluster Custom Resource.
+
+For example:
+
+```yaml
+spec:
+  tiproxy:
+    config: |
+      [log]
+      level = "info"
+```
+
+For all the configurable parameters of TiProxy, refer to [TiProxy Configuration File](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
 
 #### Configure TiFlash parameters
 
@@ -642,6 +754,8 @@ spec:
 
 See [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/) to know more about the features of Service and what LoadBalancer in the cloud platform supports.
 
+If TiProxy is specified, `tiproxy-api` and `tiproxy-sql` services are also automatically created for use.
+
 ### IPv6 Support
 
 Starting v6.5.1, TiDB supports using IPv6 addresses for all network connections. If you deploy TiDB using TiDB Operator v1.4.3 or later versions, you can enable the TiDB cluster to listen on IPv6 addresses by configuring `spec.preferIPv6` to `true`.
@@ -779,11 +893,6 @@ affinity:
 
 By configuring `topologySpreadConstraints`, you can make pods evenly spread in different topologies. For instructions about configuring `topologySpreadConstraints`, see [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
 
-To use `topologySpreadConstraints`, you must meet the following conditions:
-
-- Your Kubernetes cluster uses `default-scheduler` instead of `tidb-scheduler`. For details, refer to [tidb-scheduler and default-scheduler](tidb-scheduler.md#tidb-scheduler-and-default-scheduler).
-- Your Kubernetes cluster enables the `EvenPodsSpread` feature gate. If the Kubernetes version in use is earlier than v1.16 or if the `EvenPodsSpread` feature gate is disabled, the configuration of `topologySpreadConstraints` does not take effect.
-
 You can either configure `topologySpreadConstraints` at a cluster level (`spec.topologySpreadConstraints`) for all components or at a component level (such as `spec.tidb.topologySpreadConstraints`) for specific components.
 
 The following is an example configuration:
@@ -847,7 +956,13 @@ To add the data high availability feature on Kubernetes:
 
     Currently, TiDB Operator automatically sets the labels for the TiDB server corresponding to the `location-labels` in `pd.config`. TiDB depends on the `zone` label to support some features of Follower Read. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiDB server is located and ignores other labels.
 
-Since v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a node, then TiDB Operator uses the original labels automatically.
+* Set the topological information of the Node where the TiProxy node is located.
+
+    Starting from TiDB Operator v1.6.0, if the deployed TiProxy version >= v1.1.0, TiDB Operator automatically obtains the topological information of the Node for TiProxy and calls the corresponding interface of the TiProxy to set this information as TiProxy's labels. Based on these labels, TiProxy prioritizes forwarding requests to a local TiDB server.
+
+    Currently, TiDB Operator automatically sets the labels for the TiProxy node corresponding to the `location-labels` in `pd.config`. TiProxy depends on the `zone` label to forward requests to a local TiDB server. TiDB Operator obtains the value of `zone`, `failure-domain.beta.kubernetes.io/zone`, and `topology.kubernetes.io/zone` labels as `zone`. TiDB Operator only sets labels of the node where the TiProxy is located and ignores other labels.
+
+Starting from v1.4.0, when setting labels for TiKV and TiDB nodes, TiDB Operator supports setting shortened aliases for some labels provided by Kubernetes by default. In some scenarios, using aliases can help optimize the scheduling performance of PD. When you use TiDB Operator to set aliases for the `location-labels` of PD, if there are no corresponding labels for a Kubernetes node, then TiDB Operator uses the original labels automatically.
 
 Currently, TiDB Operator supports the following label aliases:
 

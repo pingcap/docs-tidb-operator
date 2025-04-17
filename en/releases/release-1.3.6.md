@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.6 Release Notes
+summary: TiDB Operator 1.3.6 was released on July 5, 2022. The improvement in this version includes reducing the impact of PVC scale-up on cluster performance by scaling up PVCs pod by pod and evicting TiKV leader before resizing PVCs of TiKV.
 ---
 
 # TiDB Operator 1.3.6 Release Notes

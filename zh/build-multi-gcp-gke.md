@@ -136,7 +136,7 @@ gcloud config set core/project <google-cloud-project>
         --node-labels=dedicated=tidb --node-taints=dedicated=tidb:NoSchedule
     ```
 
-3. 获取每个集群的 Kubenetes context，后续当你使用 `kubectl` 命令操作特定的集群时，需要指定对应的 context。
+3. 获取每个集群的 Kubernetes context，后续当你使用 `kubectl` 命令操作特定的集群时，需要指定对应的 context。
 
     {{< copyable "shell-regular" >}}
 

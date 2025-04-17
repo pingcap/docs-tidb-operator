@@ -8,6 +8,10 @@ aliases: ['/docs/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 
 This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) of a TiDB cluster on Kubernetes.
 
+> **Warning:**
+>
+> Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, with removal planned for a future release. For incremental data replication, use [TiCDC](deploy-ticdc.md) instead. For point-in-time recovery (PITR), use PITR.
+
 ## Prerequisites
 
 - [Deploy TiDB Operator](deploy-tidb-operator.md);
@@ -28,7 +32,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v7.1.0
+        version: v8.1.0
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -47,7 +51,7 @@ TiDB Binlog is disabled in the TiDB cluster by default. To create a TiDB cluster
       ...
       pump:
         baseImage: pingcap/tidb-binlog
-        version: v7.1.0
+        version: v8.1.0
         replicas: 1
         storageClassName: local-storage
         requests:
@@ -188,7 +192,7 @@ To deploy multiple drainers using the `tidb-drainer` Helm chart for a TiDB clust
 
     ```yaml
     clusterName: example-tidb
-    clusterVersion: v7.1.0
+    clusterVersion: v8.1.0
     baseImage:pingcap/tidb-binlog
     storageClassName: local-storage
     storage: 10Gi

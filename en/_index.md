@@ -6,7 +6,7 @@ hide_sidebar: true
 hide_commit: true
 ---
 
-<LearningPathContainer platform="tidb-operator" title="TiDB on Kubernetes Documentation" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly on the Kubernetes clusters deployed on a public cloud or in a self-hosted environment.">
+<LearningPathContainer platform="tidb-operator" title="TiDB on Kubernetes" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly on the Kubernetes clusters deployed on a public cloud or in a self-managed environment.">
 
 <LearningPath label="Learn" icon="cloud1">
 
@@ -27,8 +27,6 @@ hide_commit: true
 [On Google Cloud GKE](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-gcp-gke)
 
 [On Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-azure-aks)
-
-[On Alibaba ACK](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-alibaba-cloud)
 
 [On Self-managed Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-on-general-kubernetes)
 
@@ -70,7 +68,7 @@ hide_commit: true
 
 <LearningPath label="Reference" icon="cloud-dev">
 
-[API Docs](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)
+[API Docs](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md)
 
 [Tools](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-toolkit)
 

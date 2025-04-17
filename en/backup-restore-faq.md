@@ -3,6 +3,10 @@ title: FAQs on EBS Snapshot Backup and Restore
 summary: Learn about the common questions and solutions for EBS snapshot backup and restore.
 ---
 
+> **Warning:**
+>
+> This document is deprecated.
+
 # FAQs on EBS Snapshot Backup and Restore
 
 This document describes the common questions that occur during EBS snapshot backup and restore and the solutions.
@@ -186,7 +190,7 @@ Solution:
 
 2. Edit the configuration file of the TiDB cluster and increase the value of TiKV's `keepalive`:
 
-    ```shell
+    ```yaml
     config: |
       [server]
         grpc-keepalive-time = "500s"
@@ -208,7 +212,7 @@ Solution:
       backupType: full
       restoreMode: volume-snapshot
       serviceAccount: tidb-backup-manager
-      toolImage: pingcap/br:v7.1.0
+      toolImage: pingcap/br:v8.5.0
       br:
         cluster: basic
         clusterNamespace: tidb-cluster

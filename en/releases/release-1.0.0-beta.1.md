@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.0 Beta.1 Release Notes
+summary: TiDB Operator 1.0 Beta.1 was released on December 27, 2018. The release includes bug fixes such as pd_control bug, orphan pod cleaner, scheduler configuration fix, Grafana configuration fix, and more. Minor improvements include adding Kubernetes 1.12 local DinD scripts, bumping default TiDB to v2.1.0, releasing tidb-operator/tidb-cluster charts, and more.
 ---
 
 # TiDB Operator 1.0 Beta.1 Release Notes

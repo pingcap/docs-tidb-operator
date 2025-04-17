@@ -44,6 +44,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
             "Action": [
                 "ec2:AttachVolume",
                 "ec2:CreateSnapshot",
+                "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
                 "ec2:DeleteSnapshot",
@@ -53,7 +54,9 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
                 "ec2:DescribeSnapshots",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
-                "ec2:DetachVolume"
+                "ec2:DetachVolume",
+                "ebs:ListSnapshotBlocks",
+                "ebs:ListChangedBlocks"
             ],
             "Resource": "*"
         }
@@ -99,6 +102,7 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
             "Action": [
                 "ec2:AttachVolume",
                 "ec2:CreateSnapshot",
+                "ec2:CreateSnapshots",
                 "ec2:CreateTags",
                 "ec2:CreateVolume",
                 "ec2:DeleteSnapshot",
@@ -108,7 +112,9 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
                 "ec2:DescribeSnapshots",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
-                "ec2:DetachVolume"
+                "ec2:DetachVolume",
+                "ebs:ListSnapshotBlocks",
+                "ebs:ListChangedBlocks"
             ],
             "Resource": "*"
         }
@@ -141,6 +147,14 @@ kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-lit
     ```
 
     将 `spec.tikv.serviceAccount` 修改为 tidb-backup-manager，等到 TiKV Pod 重启后，查看 Pod 的 `serviceAccountName` 是否有变化。
+
+5. (可选)如果集群中包含 TiFlash 节点，重复步骤 4 将 ServiceAccount 绑定到 TiFlash Pod：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl patch tc demo1 -n test1 --type merge -p '{"spec":{"tiflash":{"serviceAccount": "tidb-backup-manager"}}}'
+    ```
 
 > **注意：**
 >
@@ -183,7 +197,7 @@ Azure 的客户端支持读取进程环境变量中的 `AZURE_STORAGE_ACCOUNT`�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic azblob-secret-ad --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_CLIENT_ID=yyy --from-    literal=AZURE_TENANT_ID=zzz --from-literal=AZURE_CLIENT_SECRET=aaa --namespace=test1
+    kubectl create secret generic azblob-secret-ad --from-literal=AZURE_STORAGE_ACCOUNT=xxx --from-literal=AZURE_CLIENT_ID=yyy --from-literal=AZURE_TENANT_ID=zzz --from-literal=AZURE_CLIENT_SECRET=aaa --namespace=test1
     ```
 
 2. 绑定 secret 到 TiKV Pod:

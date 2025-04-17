@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.2.0 Release Notes
+summary: TiDB Operator 1.2.0 was released on July 29, 2021. The update includes changes to the rolling update process, new features such as setting Prometheus retentionTime and priorityClassName, improvements to the default Region leader eviction timeout, and bug fixes related to URL parsing in TiDBMonitor.
 ---
 
 # TiDB Operator 1.2.0 Release Notes

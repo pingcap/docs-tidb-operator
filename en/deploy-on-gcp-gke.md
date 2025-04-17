@@ -98,7 +98,8 @@ allowVolumeExpansion: true
 parameters:
   type: pd-ssd
 mountOptions:
-  - nodelalloc,noatime
+  - nodelalloc
+  - noatime
 ```
 
 > **Note:**
@@ -135,7 +136,7 @@ If you need to simulate bare-metal performance, some Google Cloud instance types
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/gke/local-ssd-provision/local-ssd-provision.yaml
     ```
 
 3. Use the local storage.
@@ -173,9 +174,9 @@ First, download the sample `TidbCluster` and `TidbMonitor` configuration files:
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-cluster.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-monitor.yaml && \
-curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/gcp/tidb-dashboard.yaml
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-cluster.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-monitor.yaml && \
+curl -O https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/gcp/tidb-dashboard.yaml
 ```
 
 Refer to [configure the TiDB cluster](configure-a-tidb-cluster.md) to further customize and configure the CR before applying.
@@ -234,8 +235,6 @@ The LoadBalancer created for your TiDB cluster is an intranet LoadBalancer. You 
 ```shell
 gcloud compute instances create bastion \
     --machine-type=n1-standard-4 \
-    --image-project=centos-cloud \
-    --image-family=centos-7 \
     --zone=${your-region}-a
 ```
 
@@ -279,7 +278,7 @@ After the bastion host is created, you can connect to the bastion host via SSH a
     $ mysql --comments -h 10.128.15.243 -P 4000 -u root
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MySQL connection id is 7823
-    Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+    Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
     Copyright (c) 2000, 2022, Oracle and/or its affiliates.
 
@@ -467,4 +466,16 @@ The two components are *not required* in the deployment. This section shows a qu
 
 Finally, execute `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/v1.6.1/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+
+## Configure TiDB monitoring
+
+For more information, see [Deploy monitoring and alerts for a TiDB cluster](monitor-a-tidb-cluster.md).
+
+> **Note:**
+>
+> TiDB monitoring does not persist data by default. To ensure long-term data availability, it is recommended to [persist monitoring data](monitor-a-tidb-cluster.md#persist-monitoring-data). TiDB monitoring does not include Pod CPU, memory, or disk monitoring, nor does it have an alerting system. For more comprehensive monitoring and alerting, it is recommended to [Set kube-prometheus and AlertManager](monitor-a-tidb-cluster.md#set-kube-prometheus-and-alertmanager).
+
+## Collect logs
+
+System and application logs can be useful for troubleshooting issues and automating operations. By default, TiDB components output logs to the container's `stdout` and `stderr`, and log rotation is automatically performed based on the container runtime environment. When a Pod restarts, container logs will be lost. To prevent log loss, it is recommended to [Collect logs of TiDB and its related components](logs-collection.md).

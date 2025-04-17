@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 0.2.1 Release Notes
+summary: TiDB Operator 0.2.1 was released on September 20, 2018. This version includes bug fixes for retry on conflict logic, TiDB timezone configuration, failover, and repeated updating of pod and pd/tidb StatefulSet.
 ---
 
 # TiDB Operator 0.2.1 Release Notes

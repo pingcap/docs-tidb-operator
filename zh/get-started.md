@@ -41,11 +41,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/get-started/','/docs-cn/dev/tidb-in-k
 部署前，请确保满足以下要求：
 
 - [docker](https://docs.docker.com/install/)：版本 >= 18.09
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.12
-- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.8.0
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：版本 >= 1.24
+- [kind](https://kind.sigs.k8s.io/)：版本 >= 0.19.0
 - 若使用 Linux, [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
 
-以下以 0.8.1 版本为例：
+以下以 0.19.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -58,7 +58,7 @@ kind create cluster
 
 ```
 Creating cluster "kind" ...
-✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+✓ Ensuring node image (kindest/node:v1.27.1) 🖼
 ✓ Preparing nodes 📦
 ✓ Writing configuration 📜
 ✓ Starting control-plane 🕹️
@@ -101,7 +101,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 部署前，请确保满足以下要求：
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/)：版本 1.0.0 及以上，推荐使用较新版本。minikube 需要安装一个兼容的 hypervisor，详情见官方安装教程。
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): 版本 >= 1.24
 
 你可以使用 minikube start 直接启动 Kubernetes 集群，中国大陆用户也可以通过 gcr.io mirror 仓库启动 Kubernetes 集群。以下分别对这几种方法进行介绍。
 
@@ -114,31 +114,6 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 ```shell
 minikube start
 ```
-
-<details>
-<summary>点击查看期望输出</summary>
-如果一切运行正常，会看到类似下面的输出，根据操作系统和使用的 hypervisor 会有些许差异。
-
-```
-😄  minikube v1.24.0 on Darwin 12.1
-✨  Automatically selected the docker driver. Other choices: hyperkit, virtualbox, ssh
-👍  Starting control plane node minikube in cluster minikube
-🚜  Pulling base image ...
-💾  Downloading Kubernetes v1.22.3 preload ...
-    > gcr.io/k8s-minikube/kicbase: 355.78 MiB / 355.78 MiB  100.00% 4.46 MiB p/
-    > preloaded-images-k8s-v13-v1...: 501.73 MiB / 501.73 MiB  100.00% 5.18 MiB
-🔥  Creating docker container (CPUs=2, Memory=1985MB) ...
-🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
-    ▪ Generating certificates and keys ...
-    ▪ Booting up control plane ...
-    ▪ Configuring RBAC rules ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-```
-
-</details>
 
 #### 使用 gcr.io mirror 仓库启动 Kubernetes 集群
 
@@ -196,7 +171,7 @@ TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/crd.yaml
+kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/crd.yaml
 ```
 
 <details>
@@ -213,10 +188,6 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
 ```
 
 </details>
-
-> **注意：**
->
-> 对于 Kubernetes 1.16 之前的版本，Kubernetes 仅支持 v1beta1 版本的 CRD，你需要将上述命令中的 `crd.yaml` 修改为 `crd_v1beta1.yaml`。
 
 ### 安装 TiDB Operator
 
@@ -261,7 +232,7 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.1
     ```
 
     如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
@@ -269,10 +240,9 @@ customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com
     {{< copyable "shell-regular" >}}
 
     ```
-    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.5.0-beta.1 \
-        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.5.0-beta.1 \
-        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.5.0-beta.1 \
-        --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler
+    helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.1 \
+        --set operatorImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-operator:v1.6.1 \
+        --set tidbBackupManagerImage=registry.cn-beijing.aliyuncs.com/tidb/tidb-backup-manager:v1.6.1
     ```
 
     <details>
@@ -307,7 +277,6 @@ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-opera
 ```
 NAME                                       READY   STATUS    RESTARTS   AGE
 tidb-controller-manager-6d8d5c6d64-b8lv4   1/1     Running   0          2m22s
-tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 ```
 
 </details>
@@ -324,7 +293,7 @@ tidb-scheduler-644d59b46f-4f6sb            2/2     Running   0          2m22s
 
 ``` shell
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-cluster.yaml
 ```
 
 如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
@@ -333,7 +302,7 @@ kubectl create namespace tidb-cluster && \
 
 ```
 kubectl create namespace tidb-cluster && \
-    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-cluster.yaml
+    kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic-cn/tidb-cluster.yaml
 ```
 
 <details>
@@ -348,12 +317,38 @@ tidbcluster.pingcap.com/basic created
 
 如果要将 TiDB 集群部署到 ARM64 机器上，可以参考[在 ARM64 机器上部署 TiDB 集群](deploy-cluster-on-arm64.md)。
 
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。如需部署 PD 微服务，可以按照如下方式进行部署：
+>
+> ``` shell
+> kubectl create namespace tidb-cluster && \
+>     kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/pd-micro-service-cluster.yaml
+> ```
+>
+> 查看 Pod 状态：
+>
+> ``` shell
+> watch kubectl get po -n tidb-cluster
+> ```
+> 
+> ```
+> NAME                              READY   STATUS    RESTARTS   AGE
+> basic-discovery-6bb656bfd-xl5pb   1/1     Running   0          9m
+> basic-pd-0                        1/1     Running   0          9m
+> basic-scheduling-0                1/1     Running   0          9m
+> basic-tidb-0                      2/2     Running   0          7m
+> basic-tikv-0                      1/1     Running   0          8m
+> basic-tso-0                       1/1     Running   0          9m
+> basic-tso-1                       1/1     Running   0          9m
+> ``` 
+
 ### 部署独立的 TiDB Dashboard
 
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-dashboard.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-dashboard.yaml
 ```
 
 如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
@@ -361,7 +356,7 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-dashboard.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic-cn/tidb-dashboard.yaml
 ```
 
 <details>
@@ -378,7 +373,7 @@ tidbdashboard.pingcap.com/basic created
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic/tidb-monitor.yaml
 ```
 
 如果访问 Docker Hub 网速较慢，可以使用 UCloud 上的镜像：
@@ -386,7 +381,7 @@ kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/examples/basic-cn/tidb-monitor.yaml
+kubectl -n tidb-cluster apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/examples/basic-cn/tidb-monitor.yaml
 ```
 
 <details>
@@ -432,7 +427,7 @@ basic-tikv-0                      1/1     Running   0          8m13s
 
 ### 转发 TiDB 服务 4000 端口
 
-本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Servcie**。
+本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Service**。
 
 首先，获取 tidb-cluster 命名空间中的服务列表：
 
@@ -490,7 +485,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 5.7.25-TiDB-v7.1.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -539,14 +534,13 @@ mysql> select * from information_schema.tikv_region_status where db_name=databas
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v7.1.0
+         tidb_version(): Release Version: v8.5.0
                 Edition: Community
-        Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-             Git Branch: heads/refs/tags/v7.1.0
-         UTC Build Time: 2023-05-30 10:58:57
-              GoVersion: go1.20.3
+        Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
+             Git Branch: heads/refs/tags/v8.5.0
+         UTC Build Time: 2024-12-19 14:38:24
+              GoVersion: go1.23.2
            Race Enabled: false
-       TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
                   Store: tikv
 1 row in set (0.01 sec)
@@ -735,14 +729,13 @@ mysql --comments -h 127.0.0.1 -P 24000 -u root -e 'select tidb_version()\G'
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v7.1.0
+tidb_version(): Release Version: v8.5.0
 Edition: Community
-Git Commit Hash: 635a4362235e8a3c0043542e629532e3c7bb2756
-Git Branch: heads/refs/tags/v7.1.0
-UTC Build Time: 2023-05-30 10:58:57
-GoVersion: go1.20.3
+Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
+Git Branch: heads/refs/tags/v8.5.0
+UTC Build Time: 2024-12-19 14:38:24
+GoVersion: go1.23.2
 Race Enabled: false
-TiKV Min Version: 6.2.0-alpha
 Check Table Before Drop: false
 Store: tikv
 ```
@@ -845,7 +838,6 @@ minikube delete
 - [在 AWS EKS 上部署 TiDB 集群](deploy-on-aws-eks.md)
 - [在 Google Cloud GKE 上部署 TiDB 集群](deploy-on-gcp-gke.md)
 - [在 Azure AKS 上部署 TiDB 集群](deploy-on-azure-aks.md)
-- [在阿里云 ACK 上部署 TiDB 集群](deploy-on-alibaba-cloud.md)
 
 自托管 Kubernetes 集群：
 

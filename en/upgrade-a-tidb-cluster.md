@@ -14,7 +14,11 @@ This document describes how to upgrade a TiDB cluster on Kubernetes using rollin
 
 Kubernetes provides the [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) feature to update your application with zero downtime.
 
-When you perform a rolling update, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of PD, TiFlash, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
+When you perform a rolling update, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of PD, TiProxy, TiFlash, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
+
+> **Note:**
+>
+> If [PD microservices](https://docs.pingcap.com/tidb/dev/pd-microservices) (introduced in TiDB v8.0.0) are deployed in a cluster, when you perform a rolling update to upgrade the cluster, TiDB Operator serially deletes an old Pod and creates the corresponding new Pod in the order of each PD microservice component, PD, TiKV, and TiDB. After the new Pod runs normally, TiDB Operator proceeds with the next Pod.
 
 During the rolling update, TiDB Operator automatically completes Leader transfer for PD and TiKV. Under the highly available deployment topology (minimum requirements: PD \* 3, TiKV \* 3, TiDB \* 2), performing a rolling update to PD and TiKV servers does not impact the running application. If your client supports retrying stale connections, performing a rolling update to TiDB servers does not impact application, either.
 
@@ -54,7 +58,7 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 
     The `version` field has following formats:
 
-    - `spec.version`: the format is `imageTag`, such as `v7.1.0`
+    - `spec.version`: the format is `imageTag`, such as `v8.5.0`
     - `spec.<pd/tidb/tikv/pump/tiflash/ticdc>.version`: the format is `imageTag`, such as `v3.1.0`
 
 2. Check the upgrade progress:

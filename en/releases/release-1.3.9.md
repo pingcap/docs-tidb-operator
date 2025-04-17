@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.3.9 Release Notes
+summary: TiDB Operator 1.3.9 was released on October 10, 2022. This version includes a bug fix for the issue that PD upgrade would get stuck if the `acrossK8s` field is set but the `clusterDomain` field is not set.
 ---
 
 # TiDB Operator 1.3.9 Release Notes

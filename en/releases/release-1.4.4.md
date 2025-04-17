@@ -1,5 +1,6 @@
 ---
 title: TiDB Operator 1.4.4 Release Notes
+summary: TiDB Operator 1.4.4 released on March 13, 2023. New features include support for volume-snapshot backup and restore on TiDB cluster with TiFlash, accurate backup size display, retries for snapshot backups, and integrated management of log and snapshot backups. Bug fixes address sync failure with custom TiDB builds, volume-snapshot backup data restoration, panic during snapshot backup, and potential failure during restore.
 ---
 
 # TiDB Operator 1.4.4 Release Notes

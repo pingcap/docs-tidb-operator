@@ -9,7 +9,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
-    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
 
     > **注意：**
@@ -20,7 +20,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     > **注意：**
     >
-    > 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
+    > - 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
+    > - 若集群无法重建且需要启用 TLS，请参阅[将非 TLS 集群升级为 TLS 集群](#将非-tls-集群升级为-tls-集群)。
 
 3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
 
@@ -156,6 +157,33 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             ],
         ...
         ```
+
+        > **注意：**
+        >
+        > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。如需部署 PD 微服务，并不需要为 PD 微服务的各个组件生成证书，只需要在 `pd-server.json` 文件的 `hosts` 字段中添加微服务相关的 hosts 配置即可。以 `scheduling` 微服务为例，你需要进行以下配置：
+        >
+        > ``` json
+        > ...
+        >     "CN": "TiDB",
+        >     "hosts": [
+        >       "127.0.0.1",
+        >       "::1",
+        >       "${cluster_name}-pd",
+        >       ...
+        >       "*.${cluster_name}-pd-peer.${namespace}.svc",
+        >       // 以下是为 `scheduling` 微服务添加的 hosts 配置
+        >       "${cluster_name}-scheduling",
+        >       "${cluster_name}-scheduling.${cluster_name}",
+        >       "${cluster_name}-scheduling.${cluster_name}.svc",
+        >       "${cluster_name}-scheduling-peer",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >       "*.${cluster_name}-scheduling-peer",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}",
+        >       "*.${cluster_name}-scheduling-peer.${cluster_name}.svc",
+        >     ],
+        > ...
+        > ```
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
@@ -401,6 +429,43 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ticdc-server.json | cfssljson -bare ticdc-server
         ```
 
+    - TiProxy Server 端证书
+
+        首先生成默认的 `tiproxy-server.json` 文件：
+
+        ``` shell
+        cfssl print-defaults csr > tiproxy-server.json
+        ```
+
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
+
+        ``` json
+        ...
+            "CN": "TiDB",
+            "hosts": [
+              "127.0.0.1",
+              "::1",
+              "${cluster_name}-tiproxy",
+              "${cluster_name}-tiproxy.${namespace}",
+              "${cluster_name}-tiproxy.${namespace}.svc",
+              "${cluster_name}-tiproxy-peer",
+              "${cluster_name}-tiproxy-peer.${namespace}",
+              "${cluster_name}-tiproxy-peer.${namespace}.svc",
+              "*.${cluster_name}-tiproxy-peer",
+              "*.${cluster_name}-tiproxy-peer.${namespace}",
+              "*.${cluster_name}-tiproxy-peer.${namespace}.svc"
+            ],
+        ...
+        ```
+
+        其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
+
+        最后生成 TiProxy Server 端证书：
+
+        ``` shell
+        cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiproxy-server.json | cfssljson -bare tiproxy-server
+        ```
+
     - TiFlash Server 端证书
 
         首先生成默认的 `tiflash-server.json` 文件：
@@ -594,6 +659,12 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     ``` shell
     kubectl create secret generic ${cluster_name}-ticdc-cluster-secret --namespace=${namespace} --from-file=tls.crt=ticdc-server.pem --from-file=tls.key=ticdc-server-key.pem --from-file=ca.crt=ca.pem
+    ```
+
+    TiProxy 集群证书 Secret：
+
+    ``` shell
+    kubectl create secret generic ${cluster_name}-tiproxy-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiproxy-server.pem --from-file=tls.key=tiproxy-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
     TiFlash 集群证书 Secret：
@@ -1314,7 +1385,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     spec:
      tlsCluster:
        enabled: true
-     version: v7.1.0
+     version: v8.5.0
      timezone: UTC
      pvReclaimPolicy: Retain
      pd:
@@ -1373,7 +1444,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
        version: 7.5.11
      initializer:
        baseImage: pingcap/tidb-monitor-initializer
-       version: v7.1.0
+       version: v8.5.0
      reloader:
        baseImage: pingcap/tidb-monitor-reloader
        version: v1.0.1
@@ -1384,6 +1455,35 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     ```
 
     然后使用 `kubectl apply -f tidb-cluster.yaml` 来创建 TiDB 集群。
+
+    > **注意：**
+    >
+    > PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性），如需部署 PD 微服务，需要为各个微服务配置 `cert-allowed-cn`。以 Scheduling 服务为例，你需要进行以下配置：
+    >
+    > - 更新 `pd.mode` 为 `ms`
+    > - 为 `scheduling` 微服务配置 `security` 字段
+    >
+    > ```yaml
+    >   pd:
+    >    baseImage: pingcap/pd
+    >    maxFailoverCount: 0
+    >    replicas: 1
+    >    requests:
+    >     storage: "10Gi"
+    >    config:
+    >     security:
+    >       cert-allowed-cn:
+    >         - TiDB
+    >    mode: "ms"
+    >   pdms:
+    >   - name: "scheduling"
+    >     baseImage: pingcap/pd
+    >     replicas: 1
+    >     config:
+    >       security:
+    >         cert-allowed-cn:
+    >           - TiDB
+    > ```
 
 2. 创建 Drainer 组件并开启 TLS 以及 CN 验证。
 
@@ -1446,11 +1546,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          from:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1481,11 +1576,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             cluster: ${cluster_name}
             clusterNamespace: ${namespace}
             sendCredToTikv: true
-          to:
-            host: ${host}
-            secretName: ${tidb_secret}
-            port: 4000
-            user: root
           s3:
             provider: aws
             region: ${my_region}
@@ -1557,3 +1647,89 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     cd /var/lib/cluster-client-tls
     /tikv-ctl --ca-path=ca.crt --cert-path=tls.crt --key-path=tls.key --host 127.0.0.1:20160 cluster
     ```
+
+## 将非 TLS 集群升级为 TLS 集群
+
+本节介绍如何为现有的非 TLS TiDB 集群启用 TLS 加密通信。
+
+> **注意：**
+>
+> 该操作仅适用于无法重建的现有集群。在开始操作前，请确保已充分理解每个步骤及其潜在风险。
+
+1. 如果集群包含多个 PD 节点，需要先将 PD 节点数量缩减为 1 个。
+
+2. 参考[第一步：为 TiDB 集群各个组件生成证书](#第一步为-tidb-集群各个组件生成证书)生成 TLS 证书，并创建 Kubernetes Secret 对象。
+
+3. 启用 TLS：
+
+    你可以选择以下两种方法之一启用 TLS：
+
+    - 方法 1：执行以下命令更新 TiDB 集群配置，等待 PD Pod 完成重启后继续下一步。
+
+        ``` shell
+        kubectl patch tc ${cluster_name} -n ${namespace} --type merge -p '{
+          "spec": {
+            "tlsCluster": {
+              "enabled": true
+            }
+          }
+        }'
+        ```
+
+        输出示例：
+
+        ``` shell
+        tidbcluster.pingcap.com/basic patched
+        ```
+
+    - 方法 2：参考[第二步：部署 TiDB 集群](#第二步部署-tidb-集群)启用 TLS，同时设置 `cert-allowed-cn` 配置项（TiDB 为 `cluster-verify-cn`），用于验证集群间各组件证书的 CN (Common Name)。
+
+4. 配置 PD 节点：
+
+    1. 使用 `kubectl exec` 进入 PD Pod 并安装 etcdctl。详细安装步骤可参考 [etcdctl 安装指南](https://etcd.io/docs/v3.4/install/)。安装完成后，etcdctl 位于解压后的文件夹目录下。
+
+    2. 查看 etcd 成员信息，此时 `peerURLs` 使用 HTTP 协议：
+
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        输出示例：
+
+        ``` shell
+        # memberID        status   name        peerURLs                                          clientURL                                          isLearner
+        e94cfb12fa384e23, started, basic-pd-0, http://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+        记录以下信息用于下一步操作：
+    
+        - `memberID`：示例中为 `e94cfb12fa384e23`。
+        - `peerURLs`：示例中为 `http://basic-pd-0.basic-pd-peer.pingcap.svc:2380`。
+
+    3. 将 etcd member 的 `peerURLs` 从 HTTP 更新为 HTTPS 协议：
+
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member update e94cfb12fa384e23 --peer-urls="https://basic-pd-0.basic-pd-peer.pingcap.svc:2380"
+        ```
+
+        输出示例：
+
+        ``` shell
+        Member e94cfb12fa384e23 updated in cluster 32ab5936d81ad54c
+        ```
+
+    4. 查看更新后的 `peerURLs`，确保已更新为 HTTPS 协议：
+
+        ``` shell
+        ./etcdctl --endpoints https://127.0.0.1:2379 --cert /var/lib/pd-tls/tls.crt --key /var/lib/pd-tls/tls.key --cacert /var/lib/pd-tls/ca.crt member list
+        ```
+
+        输出示例：
+
+        ``` shell
+        e94cfb12fa384e23, started, basic-pd-0, https://basic-pd-0.basic-pd-peer.pingcap.svc:2380, https://basic-pd-0.basic-pd-peer.pingcap.svc:2379, false
+        ```
+
+5. 如果之前进行了 PD 节点缩容，请将其扩容为原有数量。
+
+6. 等待 TiDB 集群中的所有 Pod 完成重启。

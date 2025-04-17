@@ -22,7 +22,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
         - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
     - 使用 Dumpling 备份时，可以用该字段指定 Dumpling 的版本：
         - 如果指定了 Dumpling 的版本，例如 `spec.toolImage: pingcap/dumpling:v5.3.0`，那么使用指定的版本镜像进行备份。
-        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
+        - 如果未指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Dumpling 版本进行备份。
 
 * `.spec.backupType`：指定 Backup 类型，该字段仅在使用 BR 备份时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
@@ -33,6 +33,13 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `snapshot`：基于 KV 层的快照备份。
     * `volume-snapshot`：基于卷快照的备份。
     * `log`：从 KV 层备份实时数据变更日志数据。
+
+* `.spec.logSubcommand`：指定日志备份任务的子命令，用于控制日志备份任务的状态。该字段支持以下三个选项：
+    * `log-start`：启动一个新的日志备份任务，或恢复一个已暂停的任务。使用此命令可以开始日志备份流程，或从暂停状态恢复任务。
+    * `log-pause`：暂停当前正在进行的日志备份任务。暂停任务后，你可以使用 `log-start` 命令恢复任务。
+    * `log-stop`：永久停止日志备份任务。执行此命令后，Backup CR 会进入停止状态，且无法再次启动。
+
+  对于 v1.5.5 之前的版本，请使用 `logStop` 字段（布尔值 `true`/`false`）控制日志备份操作。虽然 v1.5.5 和 v1.6.1 版本仍支持 `logStop`，但建议使用 `logSubcommand`。
 
 * `.spec.restoreMode`：指定 Restore 的模式，默认为 `snapshot`，即基于 KV 层的快照恢复。该字段仅在恢复时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照恢复。
@@ -240,6 +247,33 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.local.volume`：持久卷配置。
 * `.spec.local.volumeMount`：持久卷挂载配置。
 
+## CompactBackup CR 字段介绍
+
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
+
+* `.spec.startTs`：指定日志压缩备份的起始时间戳。
+* `.spec.endTs`：指定日志压缩备份的结束时间戳。
+* `.spec.concurrency`：指定同时进行的压缩日志任务的最大数量，默认值为 `4`。
+* `.spec.maxRetryTimes`：指定压缩任务失败的最大重试次数，默认值为 `6`。
+* `.spec.toolImage`：指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR。使用 BR 备份时，你可以使用该字段指定 BR 的版本：
+
+    - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
+    - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v9.0.0`，那么使用指定的版本镜像进行备份。
+    - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
+
+* `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
+* `.spec.affinity`：指定运行备份任务的 Pod 亲和性 (affinity) 配置。关于亲和性的详细说明，请参阅[亲和性与反亲和性](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+* `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够被调度到带有与之匹配的[污点 (Taint)](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) 的节点上。关于污点与容忍度的更多说明，请参阅[污点和容忍度](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.podSecurityContext`：指定运行压缩备份任务的 Pod 的安全上下文配置，以支持非 root 用户运行 Pod。关于 `podSecurityContext` 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
+* `.spec.priorityClassName`：指定运行压缩备份任务的 Pod 的 `priorityClass` 的名称，用于设置运行优先级。关于 `priorityClass` 的更多说明，请参阅 [Pod 优先级和抢占](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
+* `.spec.imagePullSecrets`：指定运行压缩备份任务的 Pod 使用的 [`imagePullSecrets`](https://kubernetes.io/zh-cn/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)。
+* `.spec.serviceAccount`：指定恢复时使用的 ServiceAccount 名称。
+* `.spec.useKMS`：指定恢复时是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
+* `.spec.br`：BR 相关配置，详情请参阅 [BR 字段介绍](#br-字段介绍)。
+* `.spec.s3`：S3 兼容存储相关配置，详情请参阅 [S3 字段介绍](#s3-存储字段介绍)。
+* `.spec.gcs`：GCS 存储相关配置，详情请参阅 [GCS 字段介绍](#gcs-存储字段介绍)。
+* `.spec.azblob`：Azure Blob Storage 存储相关配置，详情请参阅 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
+
 ## Restore CR 字段介绍
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#数据恢复)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
@@ -247,7 +281,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 * `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像。TiDB Operator 从 v1.1.9 版本起支持这项配置。
     - 使用 BR 恢复时，可以用该字段指定 BR 的版本。例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
-    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/master/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
+    - 使用 Lightning 恢复时，可以用该字段指定 Lightning 的版本，例如`spec.toolImage: pingcap/lightning:v5.3.0`。如果不指定，默认使用 [Backup Manager Dockerfile](https://github.com/pingcap/tidb-operator/blob/v1.6.1/images/tidb-backup-manager/Dockerfile) 文件中 `TOOLKIT_VERSION` 指定的 Lightning 版本进行恢复。
 
 * `.spec.backupType`：指定 Restore 类型，该字段仅在使用 BR 恢复时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
@@ -327,6 +361,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 + `backupTemplate`：快照备份相关配置。指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
 + `logBackupTemplate`：日志备份相关配置。指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除，且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
++ `compactBackupTemplate`：压缩日志备份的配置模板，字段和 CompactBackup CR 中的 `spec` 一样，详细介绍可参考 [CompactBackup CR 字段介绍](#compactbackup-cr-字段介绍)。压缩日志备份会随 `backupSchedule` 创建和删除，日志备份名称存储在 `status.logBackup` 中。压缩日志备份的存储设置应与同一 `backupSchedule` 中的 `logBackupTemplate` 保持一致。
 
     > **注意：**
     >
@@ -336,4 +371,5 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
     + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
     + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为 `false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
+    + `.spec.compactInterval`：用于触发新压缩任务的时间间隔。
+    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为`false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
