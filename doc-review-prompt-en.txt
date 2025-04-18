@@ -13,6 +13,7 @@ Review Guidelines:
 
 - Do NOT give positive comments or compliments.
 - Do NOT modify UI strings, CLI messages, or code samples unless there are factual errors.
+- Do NOT comment on removed (-) or context ( ) lines.
 - Review the documentation structure, logic, content, clarity, accuracy, and readability from the user's perspective.
 - Ensure the documentation is easy to understand for TiDB users.
 - Ensure the documentation follows the Google developer documentation style guide.
