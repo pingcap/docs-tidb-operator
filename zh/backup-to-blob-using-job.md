@@ -25,14 +25,16 @@ az aks nodepool add --name dumpling \
 
 ## 部署 Dumpling Job
 
-以下是 Dumpling Job 的配置示例，请根据实际情况替换以下变量：
+本章节介绍如何配置、部署以及监控 Dumpling Job。
+
+### 配置 Dumpling Job
+
+Dumpling Job 的配置文件 (`dumpling_job.yaml`) 示例如下。使用前，请替换以下变量：
 
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
 - `${version}`：Dumpling 镜像版本
 - Dumpling 的相关参数，请参考 [Dumpling 主要选项表](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview/#dumpling-主要选项表)。
-
-### Dumpling Job 配置文件
 
 ```yaml
 # dumpling_job.yaml
