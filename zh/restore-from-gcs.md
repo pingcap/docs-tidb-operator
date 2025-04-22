@@ -4,11 +4,11 @@ summary: 介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份数据�
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/restore-from-gcs/']
 ---
 
+# 使用 TiDB Lightning 恢复 GCS 上的备份数据 (Helm)
+
 > **警告：**
 >
-> helm 方式已弃用，建议使用 [job 方式](restore-from-gcs-using-job.md)。
-
-# 使用 TiDB Lightning 恢复 GCS 上的备份数据
+> 本文介绍的 Helm 部署方式已弃用，建议使用 [Job 方式](restore-from-gcs-using-job.md)进行数据恢复操作。
 
 本文档介绍如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群。
 
