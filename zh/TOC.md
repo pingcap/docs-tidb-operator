@@ -72,8 +72,8 @@
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-job.md)
       - [使用 TiDB Lightning 恢复 GCS 上的备份数据](restore-from-gcs-using-job.md)
-      - [使用 Dumpling 备份 TiDB 集群数据到 GCS (helm)](backup-to-gcs.md)
-      - [使用 TiDB Lightning 恢复 GCS 上的备份数据 (helm)](restore-from-gcs.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到 GCS（已弃用）](backup-to-gcs.md)
+      - [使用 TiDB Lightning 恢复 GCS 上的备份数据（已弃用）](restore-from-gcs.md)
     - 使用 Azure Blob Storage
       - [使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)
       - [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
