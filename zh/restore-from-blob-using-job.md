@@ -25,7 +25,11 @@ az aks nodepool add --name lightning \
 
 ## 部署 TiDB Lightning Job
 
-以下是 TiDB Lightning Job 的配置示例，请根据实际情况替换以下变量：
+本章节介绍如何配置、部署以及监控 TiDB Lightning Job。
+
+### 配置 TiDB Lightning Job
+
+以下是 TiDB Lightning Job 的配置文件 (`lightning_job.yaml`) 示例，请根据实际情况替换以下变量：
 
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
@@ -33,8 +37,6 @@ az aks nodepool add --name lightning \
 - `${storageClassName}`：存储类名称
 - `${storage}`：存储大小
 - TiDB Lightning 的相关参数，请参考 [TiDB Lightning 配置参数](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-configuration/)。
-
-### TiDB Lightning Job 配置文件
 
 ```yaml
 # lightning_job.yaml
