@@ -5,7 +5,7 @@ summary: 介绍如何使用 TiDB Lightning 将存储在 Azure Blob Storage 上�
 
 # 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
 
-本文档介绍如何使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/) 将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。以下示例展示了如何完成恢复操作。
+本文档介绍如何使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/) 将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。以下示例展示了如何将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
 
 ## 准备运行 TiDB Lightning 的节点池
 
