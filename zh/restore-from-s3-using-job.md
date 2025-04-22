@@ -1,6 +1,6 @@
 ---
 title: 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
-summary: 本文介绍如何使用 TiDB Lightning 将兼容 Amazon S3 存储上的备份数据恢复到 TiDB 集群。
+summary: 介绍如何使用 TiDB Lightning 将兼容 Amazon S3 存储上的备份数据恢复到 TiDB 集群。
 ---
 
 # 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
