@@ -33,9 +33,9 @@ gcloud container node-pools create lightning \
 kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json
 ```
 
-### TiDB Lightning Job 配置文件
+### 配置 TiDB Lightning Job
 
-以下是 TiDB Lightning Job 的配置示例，请根据实际情况替换以下变量：
+以下是 TiDB Lightning Job 的配置文件 (`lightning_job.yaml`) 示例，请根据实际情况替换以下变量：
 
 - `${name}`：Job 名称
 - `${namespace}`：Kubernetes 命名空间
