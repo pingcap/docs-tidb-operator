@@ -1,13 +1,13 @@
 ---
-title: Overlay 功能
-summary: 介绍如何使用 TiDB Operator 的 Overlay 功能自定义并覆盖 Kubernetes 原生资源的配置，例如调整 Pod、PersistentVolumeClaim 等资源，以满足不同的部署需求。
+title: 使用 Overlay 来自定义 Kubernetes 原生资源的配置
+summary: 介绍如何使用 TiDB Operator 的 Overlay 功能自定义 Kubernetes 原生资源的配置，例如调整 Pod、PersistentVolumeClaim 等资源，以满足不同的部署需求。
 ---
 
-# Overlay 功能
+# 使用 Overlay 来自定义 Kubernetes 原生资源的配置
 
 本文介绍 TiDB Operator 的 Overlay 功能，包括其适用场景、使用方法、注意事项和最佳实践。
 
-Overlay 功能是 TiDB Operator 提供的一种配置机制，允许用户在不修改 TiDB Operator 源代码的前提下，自定义并覆盖 Kubernetes 集群中原生资源的配置。通过 Overlay 功能，你可以灵活地调整 Pod 和 PersistentVolumeClaim (PVC) 等 Kubernetes 资源的配置，以满足特定的部署需求。
+Overlay 功能是 TiDB Operator 提供的一种配置机制，允许用户在不修改 TiDB Operator 源代码的前提下，自定义 Kubernetes 集群中原生资源的配置。通过 Overlay 功能，你可以灵活地调整 Pod 和 PersistentVolumeClaim (PVC) 等 Kubernetes 资源的配置，以满足特定的部署需求。
 
 ## 适用场景
 
@@ -75,7 +75,7 @@ spec:
 
 - 在使用 Overlay 功能修改配置前，请务必充分了解这些修改可能带来的影响，特别是涉及安全上下文 (`securityContext`) 和资源限制等关键配置时。
 
-4. 某些字段可能不支持通过 Overlay 进行修改，这取决于 TiDB Operator 的实现。
+- 支持通过 Overlay 进行修改的字段取决于 TiDB Operator 依赖的 Kubernetes API 版本。
 
 ## 最佳实践
 
