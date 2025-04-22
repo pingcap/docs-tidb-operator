@@ -65,8 +65,8 @@
       - [使用 BR 恢复 Amazon S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
       - [使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储](backup-to-s3-using-job.md)
       - [使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据](restore-from-s3-using-job.md)
-      - [使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储 (helm)](backup-to-s3.md)
-      - [使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据 (helm)](restore-from-s3.md)
+      - [使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储（已弃用）](backup-to-s3.md)
+      - [使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据（已弃用）](restore-from-s3.md)
     - 使用 Google Cloud Storage
       - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
       - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
