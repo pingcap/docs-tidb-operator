@@ -5,7 +5,7 @@ summary: 本文介绍如何使用 TiDB Lightning 将存储在 GCS 上的备份�
 
 # 使用 TiDB Lightning 恢复 GCS 上的备份数据
 
-本文档介绍如何将 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。有关 TiDB Lightning 的详细使用方式和配置参数，请参阅 [TiDB Lightning 官方文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
+本文档介绍如何使用 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/) 将 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上的备份数据恢复到 TiDB 集群。TiDB Lightning 是一款将全量数据高速导入到 TiDB 集群的工具，本文采用[物理导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode/)。有关 TiDB Lightning 的详细使用方式和配置参数，请参阅 [TiDB Lightning 官方文档](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview/)。
 
 以下示例展示了如何将 GCS 上的备份数据恢复到 TiDB 集群。
 
