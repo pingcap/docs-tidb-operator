@@ -1,6 +1,6 @@
 ---
 title: 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
-summary: 本文介绍如何使用 TiDB Lightning 将 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
+summary: 介绍如何使用 TiDB Lightning 将存储在 Azure Blob Storage 上的备份数据恢复到 TiDB 集群。
 ---
 
 # 使用 TiDB Lightning 恢复 Azure Blob Storage 上的备份数据
