@@ -25,7 +25,7 @@ controllerManager:
 
 对于按照 Custom Resource (CR) 生成的容器，可以在任意一种 CR（例如 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiCDCGroup`、`Backup`、`CompactBackup`、`BackupSchedule`、`Restore`）中配置安全上下文 (`securityContext`)。
 
-- 对于 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiCDCGroup` 等 CR，可以通过 [Overlay](overlay.md) 的方式配置安全上下文。配置 `PDGroup` CR 的示例如下：
+- 对于 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiCDCGroup` 等 CR，可以通过 Overlay 的方式配置安全上下文。配置 `PDGroup` CR 的示例如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
