@@ -25,7 +25,7 @@ gcloud container node-pools create dumpling \
 
 ### 创建凭证 ConfigMap
 
-将从 Google Cloud Console 下载的 `service account key` 文件保存为 `google-credentials.json`，并创建 ConfigMap：
+将从 Google Cloud Console 下载的 `service account key` 文件保存为 `google-credentials.json`，然后使用以下命令创建 ConfigMap：
 
 ```shell
 kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json
