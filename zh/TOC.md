@@ -21,6 +21,7 @@
         - 基于快照的备份和恢复
     - 运维
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
+        - [查看 TiDB 日志](view-logs.md)
         - 为 TiDB 集群更换节点
     - 灾难恢复
 - 故障诊断
