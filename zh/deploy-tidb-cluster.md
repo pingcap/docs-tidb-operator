@@ -18,8 +18,8 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-cluster/']
 - PD
 - TiKV
 - TiDB
-- TiFlash(optional)
-- TiCDC(optional)
+- TiFlash(可选)
+- TiCDC(可选)
 
 每个组件对应一个直接面向用户的 CRD
 
@@ -182,12 +182,12 @@ kubectl apply -f tidb.yaml --server-side
 
 </SimpleTab>
 
-也可以将所有 yaml 文件保存到本地文件夹下，并用如下命令创建集群
+也可以将上述所有 yaml 文件保存到本地文件夹下，并用如下命令创建集群：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl apply -f ./cluster --server-side
+kubectl apply -f ./<directory> --server-side
 ```
 
 ## 版本
@@ -229,7 +229,7 @@ spec:
 
 > **注意：**
 >
-> version 被用于约束组件间的升级依赖，建议始终使用镜像的真实版本
+> version 被 TiDB Operator 用于约束组件间的升级依赖，建议始终使用镜像的真实版本，否则...
 >
 
 ## 资源
@@ -325,7 +325,7 @@ spec:
           topology.kubernetes.io/zone: us-west-2c
 ```
 
-也支持设置 `weight`
+也支持设置 `weight`，表示...
 
 {{< copyable "" >}}
 
