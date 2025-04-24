@@ -1,11 +1,15 @@
 ---
-title: 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
+title: 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储 (Helm)
 summary: 介绍如何使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储。
 category: how-to
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-s3/']
 ---
 
-# 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储
+# 使用 Dumpling 备份 TiDB 集群数据到兼容 S3 的存储 (Helm)
+
+> **警告：**
+>
+> 本文介绍的 Helm 部署方式已弃用，建议使用 [Job 方式](backup-to-s3-using-job.md)进行数据备份操作。
 
 本文档介绍如何将 Kubernetes 上 TiDB 集群的数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（即 Ad-hoc 全量备份和定时全量备份）。
 
