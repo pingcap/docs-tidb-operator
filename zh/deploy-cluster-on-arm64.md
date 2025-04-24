@@ -52,9 +52,6 @@ summary: 本文档介绍如何在 ARM64 机器上部署 TiDB 集群
     tikv:
       baseImage: pingcap/tikv-arm64
       # ...
-    pump:
-      baseImage: pingcap/tidb-binlog-arm64
-      # ...
     ticdc:
       baseImage: pingcap/ticdc-arm64
       # ...
