@@ -1,12 +1,7 @@
 ---
-<<<<<<< HEAD
-title: 使用 Dumpling 备份 TiDB 集群数据到 GCS
-summary: 介绍如何使用 Dumpling 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
-=======
 title: 使用 Dumpling 备份 TiDB 集群数据到 GCS (Helm)
 summary: 介绍如何使用 Helm 部署 Dumpling 将 TiDB 集群数据备份到 Google Cloud Storage (GCS)。
 aliases: ['/docs-cn/tidb-in-kubernetes/dev/backup-to-gcs/']
->>>>>>> 78dda3ea (add dumpling-lightning-job (#2732))
 ---
 
 # 使用 Dumpling 备份 TiDB 集群数据到 GCS (Helm)
