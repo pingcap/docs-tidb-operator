@@ -343,4 +343,3 @@ spec:
 ```
 
 另外，也可以通过 [Overlay](overlay.md) 的方式设置 [NodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector), [Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/), [Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) 和 [TopologySpreadConstraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
-
