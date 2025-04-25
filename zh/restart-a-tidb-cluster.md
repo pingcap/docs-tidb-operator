@@ -33,7 +33,7 @@ spec:
 
 ## 优雅重启单个 Pod
 
-对于 TiKV Pod，需要在删除时额外指定 `--grace-period` 选项，以确保 TiKV 有足够的时间 evict region leader。 以下示例中，为 TiKV Pod 设置了 60 秒的宽限期，表示 TiKV 有 60 秒的时间 evict region leader：
+对于 TiKV Pod，为确保有足够的时间 evict region leader，需要在删除时指定 `--grace-period` 选项，否则会失败。 以下示例中，为 TiKV Pod 设置了 60 秒的宽限期：
 
 {{< copyable "shell-regular" >}}
 
