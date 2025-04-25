@@ -22,6 +22,7 @@
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
+        - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
         - 为 TiDB 集群更换节点
     - 灾难恢复
 - 故障诊断
