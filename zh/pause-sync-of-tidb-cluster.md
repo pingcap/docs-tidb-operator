@@ -31,15 +31,11 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称, `${namespace}` 表示 TiDB 集群所在的 namespace。
 
-   {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl patch cluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": true}}'
     ```
 
 2. TiDB 集群同步暂停后，可以使用以下命令查看 TiDB Operator Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 TiDB Operator Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
-
-   {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl logs ${pod_name} -n ${namespace} | grep paused
@@ -61,15 +57,11 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称, `${namespace}` 表示 TiDB 集群所在的 namespace。
 
-   {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl patch cluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": false}}'
     ```
 
 2. 恢复 TiDB 集群同步后，可以使用以下命令查看 TiDB Operator Pod 日志确认 TiDB 集群同步状态。其中 `${pod_name}` 表示 TiDB Operator Pod 的名称，`${namespace}` 表示 TiDB Operator 所在的 namespace。
-
-   {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl logs ${pod_name} -n ${namespace} | grep "paused"
