@@ -1,7 +1,6 @@
 ---
 title: 重启 Kubernetes 上的 TiDB 集群
 summary: 了解如何重启 Kubernetes 集群上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
 ---
 
 # 重启 Kubernetes 上的 TiDB 集群
@@ -35,15 +34,11 @@ spec:
 
 对于 TiKV Pod，为确保有足够的时间 evict region leader，需要在删除时指定 `--grace-period` 选项，否则会失败。 以下示例中，为 TiKV Pod 设置了 60 秒的宽限期：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl -n ${namespace} delete pod ${pod_name} --grace-period=60
 ```
 
 对于其他 Pod 直接删除即可，TiDB Operator 会优雅重启该 Pod：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl -n ${namespace} delete pod ${pod_name}
