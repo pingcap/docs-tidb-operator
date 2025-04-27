@@ -7,13 +7,13 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 本文介绍如何通过配置暂停同步 Kubernetes 上的 TiDB 集群。
 
-## 什么是同步
+## TiDB Operator 的同步机制
 
-在 TiDB Operator 中，控制器会不断对比 Custom Resource (CR) 对象中记录的期望状态与实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态。这个不断调整的过程通常被称为**同步**。更多细节参见 TiDB Operator 架构。
+在 TiDB Operator 中，控制器会不断对比 Custom Resource (CR) 对象中记录的期望状态与实际状态，并通过创建、更新或删除 Kubernetes 资源来驱动 TiDB 集群满足期望状态。这个不断调整的过程通常被称为**同步**。更多细节参见 TiDB Operator 架构。
 
 ## 暂停同步的应用场景
 
-以下为一些暂停同步的应用场景。
+暂停同步适用于以下场景：
 
 - 避免意外的滚动升级
 
@@ -53,7 +53,7 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 ## 恢复同步 TiDB 集群
 
-如果想要恢复 TiDB 集群的同步，可以在 Cluster CR 中配置 `spec.paused: false`，恢复同步 TiDB 集群。
+如果想要恢复 TiDB 集群的同步，可以在 Cluster CR 中配置 `spec.paused: false`。恢复同步后，TiDB Operator 会立即开始处理暂停期间累积的所有配置变更。
 
 1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称, `${namespace}` 表示 TiDB 集群所在的 namespace。
 
