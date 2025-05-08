@@ -21,6 +21,7 @@
         - 基于快照的备份和恢复
     - 运维
         - [查看 TiDB 日志](view-logs.md)
+        - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
         - [重启 TiDB 集群](restart-a-tidb-cluster.md)
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
         - 为 TiDB 集群更换节点
