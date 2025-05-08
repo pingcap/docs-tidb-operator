@@ -30,7 +30,7 @@ summary: 了解如何在 Kubernetes 上对 TiDB 集群手动扩缩容。
     kubectl get pdgroup ${name} -n ${namespace}
     ```
 
-   上述命令输出的 `DESIRED` 的值预期应与你之前配置的值一致。
+    上述命令输出的 `DESIRED` 的值预期应与你之前配置的值一致。
 
 3. 观察 Pod 是否新增或者减少。
 
@@ -38,9 +38,9 @@ summary: 了解如何在 Kubernetes 上对 TiDB 集群手动扩缩容。
     kubectl -n ${namespace} get pod -w
     ```
 
-   PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。
+    PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。
 
-   TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
+    TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
 
 ### 水平扩缩容 TiFlash
 
@@ -70,7 +70,7 @@ kubectl patch -n ${namespace} tiflashgroup ${name} --type merge --patch '{"spec"
     curl 127.0.0.1:2379/pd/api/v1/config/rules/group/tiflash | grep count
     ```
 
-   输出结果中 `count` 的最大值就是所有数据表的最大副本数 N。
+    输出结果中 `count` 的最大值就是所有数据表的最大副本数 N。
 
 3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止 `port-forward`。
 
@@ -88,7 +88,7 @@ kubectl patch -n ${namespace} tiflashgroup ${name} --type merge --patch '{"spec"
 
 5. 等待并确认相关表的 TiFlash 副本数更新。
 
-   连接到 TiDB 服务，执行如下命令，查询相关表的 TiFlash 副本数：
+    连接到 TiDB 服务，执行如下命令，查询相关表的 TiFlash 副本数：
 
     ```sql
     SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
@@ -96,7 +96,7 @@ kubectl patch -n ${namespace} tiflashgroup ${name} --type merge --patch '{"spec"
 
 6. 修改 `spec.replicas` 对 TiFlash 进行缩容。
 
-   你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下命令输出内容中，`DESIRED` 的值是否符合预期值。
+    你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下命令输出内容中，`DESIRED` 的值是否符合预期值。
 
     ```shell
     kubectl get tiflashgroup ${name} -n ${namespace}
