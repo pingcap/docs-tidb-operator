@@ -9,7 +9,7 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 ## TiDB Operator 的同步机制
 
-在 TiDB Operator 中，控制器会不断对比 Custom Resource (CR) 对象中记录的期望状态与实际状态，并通过创建、更新或删除 Kubernetes 资源来驱动 TiDB 集群满足期望状态。这个不断调整的过程通常被称为**同步**。更多细节参见 TiDB Operator 架构。
+在 TiDB Operator 中，控制器会不断对比 Custom Resource (CR) 对象中记录的期望状态与实际状态，并通过创建、更新或删除 Kubernetes 资源来驱动 TiDB 集群满足期望状态。这个不断调整的过程通常被称为**同步**。更多细节参见 TiDB Operator 架构。<!-- TODO: add link -->
 
 ## 暂停同步的应用场景
 
