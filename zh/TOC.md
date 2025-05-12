@@ -29,5 +29,6 @@
 - 故障诊断
 - 参考
     - 架构
+      - [TiDB Operator 架构](architecture.md)
     - 工具
     - 配置
