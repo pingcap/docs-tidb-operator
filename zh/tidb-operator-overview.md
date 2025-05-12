@@ -20,7 +20,6 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 | 3.0 <= TiDB < 5.1 | 1.4，1.3（推荐），1.2（停止维护），1.1（停止维护） |
 | 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
 
-
 ## V2 vs V1
 
 由于 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布了不兼容的大版本 V2。V2 和 V1 的具体区别以及可以参考文档 [V2 VS V1](v2-vs-v1.md)
