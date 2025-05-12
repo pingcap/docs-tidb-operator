@@ -8,6 +8,9 @@
 - 监控与告警
 - 数据迁移
     - 从 MySQL 迁移
+- 集群配置
+    - [自定义 Pod](overlay.md)
+    - [存储卷配置](configure-volume.md)
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
