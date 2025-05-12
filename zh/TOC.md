@@ -3,6 +3,7 @@
 
 - [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
 - 关于 TiDB Operator
+    - [简介](tidb-operator-overview.md)
 - 部署
     - 自托管的 Kubernetes
 - 监控与告警
