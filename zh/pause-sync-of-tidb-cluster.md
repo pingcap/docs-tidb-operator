@@ -29,6 +29,8 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
 
 ## 暂停同步 TiDB 集群
 
+如果想要暂停同步 TiDB 集群，可以在 Cluster CR 中配置 `spec.paused: true`。
+
 1. 使用以下命令修改集群配置，其中 `${cluster_name}` 表示 TiDB 集群名称，`${namespace}` 表示 TiDB 集群所在的 namespace。
 
     ```shell
@@ -67,7 +69,7 @@ summary: 介绍如何暂停同步 Kubernetes 上的 TiDB 集群
     kubectl logs ${pod_name} -n ${namespace} | grep "paused"
     ```
 
-    输出结果示例如下，可以看到同步成功时间戳大于暂停同步日志中显示的时间戳，表示 TiDB 集群同步已经被恢复。
+    输出结果示例如下，可以看到同步成功时间戳（`cluster paused` 状态从 `true` 变为 `false` 的时间戳）大于暂停同步日志中显示的时间戳（`cluster paused` 状态从 `false` 变为 `true` 的时间戳），表示 TiDB 集群同步已经被恢复。
 
     ```
     2025-04-25T09:32:38.867Z    INFO    TiKV     cluster paused is updating    {"from": true, "to": false}
