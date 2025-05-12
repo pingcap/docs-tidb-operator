@@ -8,6 +8,9 @@
 - 监控与告警
 - 数据迁移
     - 从 MySQL 迁移
+- 集群配置
+    - [自定义 Pod](overlay.md)
+    - [存储卷配置](configure-volume.md)
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
@@ -22,6 +25,7 @@
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [挂起和恢复 TiDB 集群](suspend-tidb-cluster.md)
+        - [重启 TiDB 集群](restart-a-tidb-cluster.md)
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
         - 为 TiDB 集群更换节点
     - 灾难恢复
