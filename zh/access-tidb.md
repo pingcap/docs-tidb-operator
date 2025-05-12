@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/access-tidb/']
 
 # 访问 TiDB 集群
 
-Service 可以根据不同访问场景配置为 `ClusterIP`、`NodePort` 或 `LoadBalancer` 类型，每种类型对应不同的访问方式。
+[Service](https://kubernetes.io/docs/concepts/services-networking/service/) 可以根据不同访问场景配置为 `ClusterIP`、`NodePort` 或 `LoadBalancer` 类型，每种类型对应不同的访问方式。
 
 ## ClusterIP
 
@@ -18,9 +18,9 @@ Service 可以根据不同访问场景配置为 `ClusterIP`、`NodePort` 或 `Lo
 - basic-tidb.default
 - basic-tidb.default.svc
 
-详见 [Kubernetes Service 的 DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#namespaces-of-services)
+其中，`basic-tidb` 是 `Service` 的名称，`default` 是 `Namespace` 的名称, 详见 [Kubernetes Service 的 DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#namespaces-of-services)
 
-每个 `TiDBGroup` 会默认创建一个能够访问该 TiDBGroup 所有 TiDB 的内部 Service。例如，TiDBGroup `tidb-0` 会创建一个内部 Service `tidb-0-tidb`。
+每个 `TiDBGroup` 会创建一个能够访问该 TiDBGroup 所有 TiDB 的 Service。例如，TiDBGroup `tidb-0` 会创建一个内部 Service `tidb-0-tidb`。
 
 可以直接使用该默认 Service 访问 TiDB，也可以根据需要自行创建 Service。
 
