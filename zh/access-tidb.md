@@ -1,7 +1,6 @@
 ---
 title: 访问 Kubernetes 上的 TiDB 集群
 summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/access-tidb/']
 ---
 
 # 访问 TiDB 集群
@@ -26,8 +25,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/access-tidb/']
 
 以下 YAML 示例用于创建一个能够访问 Cluster `db` 下所有 TiDB 节点的 Service。
 
-{{< copyable "" >}}
-
 ```yaml
 apiVersion: v1
 kind: Service
@@ -46,8 +43,6 @@ spec:
 ```
 
 以下 YAML 示例用于创建一个能够访问 Cluster `db` 下特定 TiDBGroup `tidb-0` 所有 TiDB 节点的 Service。
-
-{{< copyable "" >}}
 
 ```yaml
 apiVersion: v1
@@ -70,8 +65,6 @@ spec:
 ## NodePort
 
 在没有 LoadBalancer 的环境下，可以通过 NodePort 将服务暴露到集群外部，允许通过节点 IP 和端口访问服务。
-
-{{< copyable "" >}}
 
 ```yaml
 apiVersion: v1
@@ -97,7 +90,6 @@ spec:
 > **注意：**
 >
 > NodePort 模式并不适合在生产环境下使用，生产环境下建议使用 LoadBalancer 模式暴露服务
->
 
 ## LoadBalancer
 
