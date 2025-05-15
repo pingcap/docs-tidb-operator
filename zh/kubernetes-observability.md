@@ -23,14 +23,15 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 常见的可用于监控服务器资源的开源监控系统有：
 
+- [Prometheus](https://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
+- [VictoriaMetrics](https://victoriametrics.com/)
 - [CollectD](https://collectd.org/)
 - [Nagios](https://www.nagios.org/)
-- [Prometheus](https://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
 - [Zabbix](https://www.zabbix.com/)
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的监控解决方案可以选择。
 
-我们推荐通过 [Prometheus Operator](https://github.com/coreos/prometheus-operator) 在 Kubernetes 集群内部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于 Kubernetes 自身组件的监控。
+我们推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 在 Kubernetes 集群内部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于 Kubernetes 自身组件的监控。
 
 ### 1.3 Kubernetes 组件监控
 
@@ -40,11 +41,11 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 由于 TiDB Operator 实际上是运行于 Kubernetes 中的容器，选择任一可以覆盖对 Kubernetes 容器状态及资源进行监控的监控系统即可覆盖对 TiDB Operator 的监控，无需再额外部署监控组件。
 
-我们推荐通过 [Prometheus Operator](https://github.com/coreos/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
+我们推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
 
 ## 2. 告警
 
-如果使用 Prometheus Operator 部署针对 Kubernetes 宿主机和服务的监控，会默认配置一些告警规则，并且会部署一个 AlertManager 服务，具体的设置方法请参阅 [kube-prometheus](https://github.com/coreos/kube-prometheus) 的说明。
+如果使用 Prometheus Operator 部署针对 Kubernetes 宿主机和服务的监控，会默认配置一些告警规则，并且会部署一个 AlertManager 服务，具体的设置方法请参阅 [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) 的说明。
 
 如果使用其他的工具或服务对 Kubernetes 宿主机和服务进行监控，请查阅该工具或服务提供商的对应资料。
 
@@ -58,6 +59,7 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 常见的可用于收集 Kubernetes 日志的开源工具有：
 
+- [Vector](https://vector.dev/)
 - [Fluentd](https://www.fluentd.org/)
 - [Fluent Bit](https://fluentbit.io/)
 - [Filebeat](https://www.elastic.co/products/beats/filebeat)
