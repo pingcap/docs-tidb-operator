@@ -34,4 +34,5 @@
     - 架构
       - [TiDB Operator 架构](architecture.md)
     - 工具
+      - [TiDB Toolkit](tidb-toolkit.md)
     - 配置
