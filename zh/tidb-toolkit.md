@@ -47,6 +47,7 @@ kubectl port-forward -n ${namespace} svc/${pd_group_name}-pd 2379:2379 &>/tmp/po
 
 ```shell
 kubectl port-forward -n ${namespace} ${pod_name} 20160:20160 &>/tmp/portforward-tikv.log &
+```
 
 建立连接后，即可通过本地的对应端口访问 PD 服务和 TiKV 节点：
 
