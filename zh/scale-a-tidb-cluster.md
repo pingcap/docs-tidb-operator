@@ -9,14 +9,14 @@ summary: 了解如何在 Kubernetes 上手动对 TiDB 集群进行水平和垂�
 
 ## 水平扩缩容
 
-水平扩缩容操作是指通过增加或减少 Pod 的数量，来达到集群扩缩容的目的。扩缩容 TiDB 集群时，会按照填入的 `replicas` 值进行扩缩容操作。
+水平扩缩容操作是指通过增加或减少组件的 Pod 的数量，来达到集群扩缩容的目的。可通过修改组件的 `replicas` 参数来控制 Pod 数量，从而实现扩容或缩容。
 
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
 ### 水平扩缩容 PD、TiKV、TiDB、TiCDC
 
-如果要对 PD、TiKV、TiDB 或 TiCDC 进行水平扩缩容，可以使用 `kubectl` 修改对应的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
+如果要对 PD、TiKV、TiDB 或 TiCDC 进行水平扩缩容，可以使用 `kubectl` 修改对应组件的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
 
 1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 PD 的 `replicas` 值设置为 `3`：
 
@@ -133,7 +133,7 @@ kubectl -n ${namespace} get pod -w
 
 > **注意：**
 >
-> - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
+> - 如果在垂直扩容时修改了资源的 `requests` 字段，并且 PD、TiKV、TiFlash、TiCDC 使用了 `Local PV`，那升级后 Pod 还会调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
 > - TiDB 是一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
 
 ## 扩缩容故障诊断
