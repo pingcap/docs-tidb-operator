@@ -178,7 +178,7 @@ spec:
 - [NodeSelector](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
 - [Toleration](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)
 - [Affinity](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
-- [TopologySpreadConstraints](https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
+- [TopologySpreadConstraints](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/topology-spread-constraints/)
 
 ## 部署 TiDB 集群
 
