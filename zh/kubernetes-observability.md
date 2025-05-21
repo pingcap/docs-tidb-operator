@@ -1,5 +1,5 @@
 ---
-title: Kubernetes 监控、告警与日志收集
+title: Kubernetes 可观测性：监控、告警与日志收集
 summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收集。
 ---
 
@@ -7,13 +7,13 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 本文介绍如何在 Kubernetes 集群中进行监控、告警与日志收集，帮助你全面掌握集群及其组件的运行状态。
 
-## 1. 监控
+## 监控
 
-### 1.1 TiDB 组件监控
+### TiDB 组件监控
 
 随集群部署的 TiDB 监控只关注 TiDB 本身各组件的运行情况，并不包括对容器资源、宿主机、Kubernetes 组件和 TiDB Operator 等的监控。对于这些组件或资源的监控，需要在整个 Kubernetes 集群维度部署监控系统来实现。
 
-### 1.2 宿主机监控
+### 宿主机监控
 
 对宿主机及其资源的监控与传统的服务器物理资源监控相同。
 
@@ -23,7 +23,7 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 常见的可用于监控服务器资源的开源监控系统有：
 
-- [Prometheus](https://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
+- [Prometheus](https://prometheus.io/) 和 [node_exporter](https://github.com/prometheus/node_exporter)
 - [VictoriaMetrics](https://victoriametrics.com/)
 - [CollectD](https://collectd.org/)
 - [Nagios](https://www.nagios.org/)
@@ -31,9 +31,9 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的监控解决方案可以选择。
 
-我们推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 在 Kubernetes 集群内部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于 Kubernetes 自身组件的监控。
+推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 在 Kubernetes 集群内部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于 Kubernetes 自身组件的监控。
 
-### 1.3 Kubernetes 组件监控
+### Kubernetes 组件监控
 
 对 Kubernetes 组件的监控可以参考[官方文档](https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-usage-monitoring/)提供的方案，也可以使用其他兼容 Kubernetes 的监控系统来进行。
 
@@ -41,21 +41,21 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 由于 TiDB Operator 实际上是运行于 Kubernetes 中的容器，选择任一可以覆盖对 Kubernetes 容器状态及资源进行监控的监控系统即可覆盖对 TiDB Operator 的监控，无需再额外部署监控组件。
 
-我们推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
+推荐通过 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
 
-## 2. 告警
+## 告警
 
 如果使用 Prometheus Operator 部署针对 Kubernetes 宿主机和服务的监控，会默认配置一些告警规则，并且会部署一个 AlertManager 服务，具体的设置方法请参阅 [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) 的说明。
 
 如果使用其他的工具或服务对 Kubernetes 宿主机和服务进行监控，请查阅该工具或服务提供商的对应资料。
 
-## 3. 日志收集
+## 日志收集
 
-### 3.1 TiDB 与 Kubernetes 组件运行日志
+### TiDB 与 Kubernetes 组件运行日志
 
-通过 TiDB Operator 部署的 TiDB 各组件默认将日志输出在容器的 `stdout` 和 `stderr` 中。对于 Kubernetes 而言，这些日志会被存放在宿主机的 `/var/log/containers` 目录下，并且文件名中包含了 Pod 和容器名称等信息。因此，可以直接在宿主机上收集容器中应用的日志。
+通过 TiDB Operator 部署的 TiDB 各组件默认将运行日志输出到容器的 `stdout` 和 `stderr`。在 Kubernetes 环境中，这些日志存储在宿主机的 `/var/log/containers` 目录下，文件名包含 Pod 和容器名称等信息。因此，你可以直接在宿主机上收集容器中应用的日志。
 
-如果你现有的基础设施中已经有用于收集日志的系统，只需要通过常规方法将 Kubernetes 所在的宿主机上的 `/var/log/containers/*.log` 文件加入采集范围即可；如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，可以使用你熟悉的任意日志收集系统或方案。
+如果你现有的基础设施已具备日志收集系统，只需要通过常规方法将 Kubernetes 所在的宿主机上的 `/var/log/containers/*.log` 文件加入采集范围即可。如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，可以使用你熟悉的任何日志收集系统或方案。
 
 常见的可用于收集 Kubernetes 日志的开源工具有：
 
@@ -65,12 +65,12 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 - [Filebeat](https://www.elastic.co/products/beats/filebeat)
 - [Logstash](https://www.elastic.co/logstash/)
 
-收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 [Elasticsearch](https://www.elastic.co/elasticsearch/) 等专用的存储、分析系统当中。
+收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 [Elasticsearch](https://www.elastic.co/elasticsearch/) 等专用的存储和分析系统中。
 
-一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的日志收集方案可以选择。
+此外，一些云服务商或性能监控服务提供商也提供了免费或付费的日志收集方案。
 
-### 3.2 系统日志
+### 系统日志
 
-系统日志可以通过常规方法在 Kubernetes 宿主机上收集，如果在你的现有基础设施中已经有用于收集日志的系统，只需要通过常规方法将相关服务器和日志文件添加到收集范围即可；如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，可以使用你熟悉的任意日志收集系统或方案。
+系统日志可以通过常规方法在 Kubernetes 宿主机上收集。如果你现有的基础设施已具备日志收集系统，只需要通过常规方法将相关服务器和日志文件添加到收集范围即可。如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，可以使用你熟悉的任何日志收集系统或方案。
 
-上文提到的几种常见日志收集工具均支持对系统日志的收集，一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的日志收集方案可以选择。 
+[TiDB 与 Kubernetes 组件运行日志](#tidb-与-kubernetes-组件运行日志)章节提到的几种常见日志收集工具均支持对系统日志的收集。此外，一些云服务商或性能监控服务提供商也提供了免费或付费的日志收集方案。
