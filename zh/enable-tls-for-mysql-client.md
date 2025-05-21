@@ -416,8 +416,6 @@ spec:
         cluster-verify-cn = ["TiDB"]
 ```
 
-
-
 ## 第三步：配置 MySQL 客户端使用加密连接
 
 可以根据[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-mysql-client-使用安全连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
