@@ -9,6 +9,8 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
+    - 安全
+      - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
     - [自定义 Pod](overlay.md)
     - [存储卷配置](configure-volume.md)
 - 运维管理
