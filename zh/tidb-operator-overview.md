@@ -7,28 +7,31 @@ summary: 介绍 TiDB Operator 的整体架构及使用方式。
 
 [TiDB Operator](https://github.com/pingcap/tidb-operator) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或自托管的 Kubernetes 集群上。
 
+## TiDB Operator 与 TiDB 的版本兼容性
+
 TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 | TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
 | dev               | dev                 |
-| TiDB >= 8.0       | 2.0, 1.6（推荐），1.5 |
+| TiDB >= 8.0       | 2.0，1.6（推荐），1.5 |
 | 7.1 <= TiDB < 8.0 | 1.5（推荐），1.4 |
-| 6.5 <= TiDB < 7.1 | 1.5, 1.4（推荐），1.3     |
-| 5.4 <= TiDB < 6.5 | 1.4, 1.3（推荐）   |
+| 6.5 <= TiDB < 7.1 | 1.5，1.4（推荐），1.3     |
+| 5.4 <= TiDB < 6.5 | 1.4，1.3（推荐）   |
 | 5.1 <= TiDB < 5.4 | 1.4，1.3（推荐），1.2（停止维护）      |
 | 3.0 <= TiDB < 5.1 | 1.4，1.3（推荐），1.2（停止维护），1.1（停止维护） |
 | 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
 
-## V2 vs V1
+## TiDB Operator v2 与 v1 的区别
 
-由于 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布了不兼容的大版本 V2。V2 和 V1 的具体区别以及可以参考文档 [V2 VS V1](v2-vs-v1.md)
+随着 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布了与 v1 不兼容的 v2 版本。关于 v2 与 v1 的详细差异，请参考 [TiDB Operator v2 与 v1 版本对比](v2-vs-v1.md)
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 
-TiDB Operator 可以在 Kubernetes 环境中快速部署 TiDB 集群，可以参考 [快速开始](get-started.md) 在测试环境快速部署一个 TiDB Operator 并搭建一个 TiDB 集群。
+在 Kubernetes 环境中，TiDB Operator 可用于高效部署和管理 TiDB 集群。你可以根据不同需求选择以下部署方式：
 
-也可以参考 [如何部署 TiDB Operator](deploy-tidb-operator.md) 自定义部署 TiDB Operator。
+- 如需在测试环境中快速部署 TiDB Operator 并搭建一个 TiDB 集群，请参考[快速开始](get-started.md)。
+- 如需自定义部署 TiDB Operator，请参阅[部署 TiDB Operator](deploy-tidb-operator.md)。
 
 在任何环境上部署前，都可以参考下面的文档来自定义 TiDB 配置：
 
