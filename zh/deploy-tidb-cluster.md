@@ -1,0 +1,327 @@
+---
+title: 部署 TiDB 集群
+summary: 了解如何在 Kubernetes 环境中部署 TiDB 集群。
+category: how-to
+aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-cluster/']
+---
+
+<!-- markdownlint-disable MD007 -->
+
+# 在 Kubernetes 中部署 TiDB 集群
+
+本文介绍如何在 Kubernetes 环境中部署 TiDB 集群。
+
+## 前提条件
+
+<!-- TODO -->
+
+## 配置 TiDB 集群
+
+TiDB 集群包含以下组件：
+
+- [PD (Placement Driver)](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling/)
+- [TiKV](https://docs.pingcap.com/zh/tidb/stable/tidb-storage/)
+- [TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/)
+- （可选）[TiFlash](https://docs.pingcap.com/zh/tidb/stable/tiflash-overview/)
+- （可选）[TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)
+
+每个组件由相应的 [Custom Resource Definition (CRD)](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) 进行管理：
+
+- PDGroup
+- TiKVGroup
+- TiDBGroup
+- TiFlashGroup
+- TiCDCGroup
+
+通过 `Cluster` CRD 定义一个 TiDB 集群。各组件通过以下字段指定所属的 TiDB 集群：
+
+```yaml
+spec:
+  cluster:
+    name: <cluster>
+```
+
+### 设置组件版本
+
+通过 `version` 字段指定组件版本：
+
+```yaml
+spec:
+  template:
+    spec:
+      version: v8.1.0
+```
+
+如需使用非官方镜像，可通过 `image` 字段指定：
+
+```yaml
+spec:
+  template:
+    spec:
+      version: v8.1.0
+      image: gcr.io/xxx/tidb
+```
+
+如需使用非[语义化版本 (Semantic Version)](https://semver.org/) 格式的版本，可通过 `image` 字段指定：
+
+```yaml
+spec:
+  template:
+    spec:
+      version: v8.1.0
+      image: gcr.io/xxx/tidb:dev
+```
+
+> **注意：**
+>
+> TiDB Operator 会根据 `version` 字段判断组件之间的升级依赖关系。为避免升级失败，请确保指定的镜像版本准确无误。
+
+### 配置资源
+
+通过 `spec.resources` 字段配置组件所需的资源：
+
+```yaml
+spec:
+  resources:
+    cpu: "4"
+    memory: 8Gi
+```
+
+默认情况下，配置的资源会同时应用于 [Requests 和 Limits](https://kubernetes.io/zh-cn/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)，即 Requests 与 Limits 使用相同的资源配置。
+
+如需分别设置 Requests 和 Limits，请使用 [Overlay](overlay.md) 进行配置。
+
+### 配置组件参数
+
+通过 `spec.config` 字段设置组件的 `config.toml` 参数：
+
+```yaml
+spec:
+  config: |
+    [log]
+    level = warn
+```
+
+> **注意：**
+>
+> 暂不支持校验 `config.toml` 配置的合法性，请确保配置内容正确。
+
+### 配置存储卷
+
+通过 `spec.volumes` 为组件配置挂载的存储卷 (volume)：
+
+```yaml
+spec:
+  template:
+    spec:
+      volumes:
+      - name: test
+        mounts:
+        - mountPath: "/test"
+        storage: 100Gi
+```
+
+部分组件支持使用 `type` 字段指定特定用途的 volume。此时，`config.toml` 中的相关配置也会自动更新，例如：
+
+```yaml
+apiVersion: core.pingcap.com/v1alpha1
+kind: TiKVGroup
+...
+spec:
+  template:
+    spec:
+      volumes:
+      - name: data
+        mounts:
+        # data is for TiKV's data dir
+        - type: data
+        storage: 100Gi
+```
+
+此外，volume 支持指定 [StorageClass](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/) 和 [VolumeAttributeClass](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/)。详情参考[如何配置组件的 Volume](configure-volume.md)。
+
+### 配置调度策略
+
+通过 `spec.schedulePolicies` 字段将组件均匀分布到不同节点：
+
+```yaml
+spec:
+  schedulePolicies:
+  - type: EvenlySpread
+    evenlySpread:
+      topologies:
+      - topology:
+          topology.kubernetes.io/zone: us-west-2a
+      - topology:
+          topology.kubernetes.io/zone: us-west-2b
+      - topology:
+          topology.kubernetes.io/zone: us-west-2c
+```
+
+如需为拓扑设置权重，可设置 `weight` 字段：
+
+```yaml
+spec:
+  schedulePolicies:
+  - type: EvenlySpread
+    evenlySpread:
+      topologies:
+      - weight: 2
+        topology:
+          topology.kubernetes.io/zone: us-west-2a
+      - topology:
+          topology.kubernetes.io/zone: us-west-2b
+```
+
+你还可以使用 [Overlay](overlay.md) 配置以下调度选项：
+
+- [NodeSelector](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
+- [Toleration](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)
+- [Affinity](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+- [TopologySpreadConstraints](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/topology-spread-constraints/)
+
+## 部署 TiDB 集群
+
+配置 TiDB 集群后，按照以下步骤部署 TiDB 集群：
+
+1. 创建命名空间 Namespace：
+
+    > **注意：**
+    >
+    > 暂不支持跨 Namespace 引用 `Cluster`。请确保所有组件部署在同一个 Kubernetes Namespace 中。
+
+    ```shell
+    kubectl create namespace db
+    ```
+
+2. 部署 TiDB 集群：
+
+    方法一：使用以下命令创建一个包含 PD、TiKV 和 TiDB 组件的 TiDB 集群
+
+    <SimpleTab>
+
+    <div label="Cluster">
+
+    创建 `Cluster`：
+
+    ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: Cluster
+    metadata:
+      name: basic
+      namespace: db
+    ```
+
+    ```shell
+    kubectl apply -f cluster.yaml --server-side
+    ```
+
+    </div>
+
+    <div label="PD">
+
+    创建 PD 组件：
+
+    ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: PDGroup
+    metadata:
+      name: pd
+      namespace: db
+    spec:
+      cluster:
+        name: basic
+      replicas: 1
+      template:
+        metadata:
+          annotations:
+            author: pingcap
+        spec:
+          version: v8.1.0
+          volumes:
+          - name: data
+            mounts:
+            - type: data
+            storage: 20Gi
+    ```
+
+    ```shell
+    kubectl apply -f pd.yaml --server-side
+    ```
+
+    </div>
+
+    <div label="TiKV">
+
+    创建 TiKV 组件：
+
+    ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: TiKVGroup
+    metadata:
+      name: tikv
+      namespace: db
+    spec:
+      cluster:
+        name: basic
+      replicas: 3
+      template:
+        metadata:
+          annotations:
+            author: pingcap
+        spec:
+          version: v8.1.0
+          volumes:
+          - name: data
+            mounts:
+            - type: data
+            storage: 100Gi
+    ```
+
+    ```shell
+    kubectl apply -f tikv.yaml --server-side
+    ```
+
+    </div>
+
+    <div label="TiDB">
+
+    创建 TiDB 组件：
+
+    ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: TiDBGroup
+    metadata:
+      name: tidb
+      namespace: db
+    spec:
+      cluster:
+        name: basic
+      replicas: 2
+      service:
+        type: ClusterIP
+      template:
+        metadata:
+          annotations:
+            author: pingcap
+        spec:
+          version: v8.1.0
+    ```
+
+    ```shell
+    kubectl apply -f tidb.yaml --server-side
+    ```
+
+    </div>
+
+    </SimpleTab>
+
+    方法二：将以上 YAML 文件保存在本地目录中，并使用以下命令一次性部署 TiDB 集群
+
+    ```shell
+    kubectl apply -f ./<directory> --server-side
+    ```
+
+3. 查看 TiDB 集群各组件的运行状态：
+
+    <!-- TODO -->
