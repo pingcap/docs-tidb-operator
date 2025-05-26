@@ -15,6 +15,7 @@
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
+    - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
         - 升级 TiDB Operator
     - 备份与恢复
@@ -26,6 +27,7 @@
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
+        - [挂起和恢复 TiDB 集群](suspend-tidb-cluster.md)
         - [重启 TiDB 集群](restart-a-tidb-cluster.md)
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
         - 为 TiDB 集群更换节点
