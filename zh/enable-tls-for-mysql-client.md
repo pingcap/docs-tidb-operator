@@ -38,8 +38,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
 1. 首先下载 `cfssl` 软件并初始化证书颁发机构：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     mkdir -p ~/bin
     curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
@@ -109,8 +107,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
 4. 使用定义的选项生成 CA：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
     ```
@@ -118,8 +114,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 5. 生成 Server 端证书。
 
     首先生成默认的 `server.json` 文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > server.json
@@ -150,8 +144,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     最后生成 Server 端证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server server.json | cfssljson -bare server
     ```
@@ -159,8 +151,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 6. 生成 Client 端证书。
 
     首先生成默认的 `client.json` 文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > client.json
@@ -177,8 +167,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     最后生成 Client 端证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
     ```
@@ -186,8 +174,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 7. 创建 Kubernetes Secret 对象。
 
     到这里假设你已经按照上述文档把两套证书都创建好了。通过下面的命令为 TiDB 集群创建 Secret 对象：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl create secret generic ${tidb_group_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem
@@ -212,8 +198,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     为了配置 `cert-manager` 颁发证书，必须先创建 Issuer 资源。
 
     首先创建一个目录保存 `cert-manager` 创建证书所需文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p cert-manager
@@ -263,8 +247,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     - 一个可以用于颁发 TiDB Server TLS 证书的 Issuer。
 
     最后执行下面的命令进行创建：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-server-issuer.yaml
@@ -333,8 +315,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     通过执行下面的命令来创建证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f tidb-server-cert.yaml
     ```
@@ -376,8 +356,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
     通过执行下面的命令来创建证书：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-client-cert.yaml
@@ -422,15 +400,11 @@ spec:
 
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
 kubectl get secret -n ${namespace} ${tidb_group_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
 kubectl get secret -n ${namespace} ${tidb_group_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
 kubectl get secret -n ${namespace} ${tidb_group_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
 ```
-
-{{< copyable "shell-regular" >}}
 
 ``` shell
 mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
