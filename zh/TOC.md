@@ -9,9 +9,13 @@
 - 监控与告警
 - 数据迁移
     - 从 MySQL 迁移
+- 集群配置
+    - [自定义 Pod](overlay.md)
+    - [存储卷配置](configure-volume.md)
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
+    - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
         - 升级 TiDB Operator
     - 备份与恢复
@@ -22,6 +26,8 @@
         - 基于快照的备份和恢复
     - 运维
         - [查看 TiDB 日志](view-logs.md)
+        - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
+        - [挂起和恢复 TiDB 集群](suspend-tidb-cluster.md)
         - [重启 TiDB 集群](restart-a-tidb-cluster.md)
         - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
         - 为 TiDB 集群更换节点
@@ -29,5 +35,6 @@
 - 故障诊断
 - 参考
     - 架构
+      - [TiDB Operator 架构](architecture.md)
     - 工具
     - 配置
