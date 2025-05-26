@@ -3,7 +3,7 @@ title: 访问 Kubernetes 上的 TiDB 集群
 summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
 ---
 
-# 访问 TiDB 集群
+# 访问 Kubernetes 上的 TiDB 集群
 
 本文介绍如何通过 Kubernetes [Service](https://kubernetes.io/zh-cn/docs/concepts/services-networking/service/) 访问 TiDB 集群。根据不同的访问场景需求，你可以将 Service 配置为以下类型：
 
