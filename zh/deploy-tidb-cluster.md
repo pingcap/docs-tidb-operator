@@ -1,13 +1,9 @@
 ---
-title: 部署 TiDB 集群
+title: 在 Kubernetes 上部署 TiDB 集群
 summary: 了解如何在 Kubernetes 环境中部署 TiDB 集群。
-category: how-to
-aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-cluster/']
 ---
 
-<!-- markdownlint-disable MD007 -->
-
-# 在 Kubernetes 中部署 TiDB 集群
+# 在 Kubernetes 上部署 TiDB 集群
 
 本文介绍如何在 Kubernetes 环境中部署 TiDB 集群。
 
