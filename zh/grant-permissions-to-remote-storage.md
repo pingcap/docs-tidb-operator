@@ -115,9 +115,13 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 1. 参考 [AWS 官方文档](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)来为账号创建一个 IAM 角色，并为其赋予 `AmazonS3FullAccess` 权限。
 
-2. 通过 [Overlay](overlay.md) 的方式，给 TiKV 或 TiFlash Pod 加上 annotation 来绑定 IAM 角色：
+2. 通过 [Overlay](overlay.md) 的方式，给 TiKV 或 TiFlash Pod 加上 annotation 来绑定 IAM 角色，以 TiKVGroup 为例：
 
     ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: TiKVGroup
+    metadata:
+      name: tikv
     spec:
       template:
         spec:
@@ -141,9 +145,13 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 3. 创建一个名为 `br-s3` 的 K8s ServiceAccount，参考 [AWS 官方文档](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)将创建的 IAM 角色分配给该 ServiceAccount。
 
-4. 通过 [Overlay](overlay.md) 的方式，将 ServiceAccount 绑定到 TiKVGroup 或 TiFlashGroup 的 Pod：
+4. 通过 [Overlay](overlay.md) 的方式，将 ServiceAccount 绑定到 TiKVGroup 或 TiFlashGroup 的 Pod，以 TiKVGroup 为例：
 
     ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: TiKVGroup
+    metadata:
+      name: tikv
     spec:
       template:
         spec:
@@ -178,11 +186,13 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 3. 参考 [Google Cloud 官方文档](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add)在对应 Bucket 上授予第一步中创建的服务账号访问权限，同时授予 `roles/storage.objectUser` 角色。
 
-4. 给 Pod 设置环境变量：
-
-    下面是一个使用 [Overlay](overlay.md) 的方式，给 TiKVGroup 或 TiFlashGroup 的配置示例：
+4. 给 Pod 设置环境变量，以 TiKVGroup 为例：
 
     ```yaml
+    apiVersion: core.pingcap.com/v1alpha1
+    kind: TiKVGroup
+    metadata:
+      name: tikv
     spec:
       template:
         spec:
@@ -234,9 +244,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 Azure 客户端支持通过进程环境变量 `AZURE_STORAGE_ACCOUNT` 和 `AZURE_STORAGE_KEY` 获取访问权限。你可以通过以下步骤授权：
 
-1. 登录 [Azure 门户](https://portal.azure.com/)，在"存储账户"页面获取目标存储账户的名称和访问密钥。
-
-2. 创建一个名为 `azblob-secret` 的 K8s Secret，将存储账户名称和密钥写入 Secret：
+1. 创建一个名为 `azblob-secret` 的 K8s Secret，将存储账户名称和密钥写入 Secret：
 
     ```shell
     kubectl create secret generic azblob-secret \
@@ -245,7 +253,7 @@ Azure 客户端支持通过进程环境变量 `AZURE_STORAGE_ACCOUNT` 和 `AZURE
       --namespace=<your-namespace>
     ```
 
-3. 通过 Overlay 的方式，将 Secret 绑定到 TiKVGroup 或 TiFlashGroup 的环境变量，以 TiKVGroup 为例：
+2. 通过 Overlay 的方式，将 Secret 绑定到 TiKVGroup 或 TiFlashGroup 的环境变量，以 TiKVGroup 为例：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -288,7 +296,7 @@ Azure 客户端支持通过环境变量 `AZURE_STORAGE_ACCOUNT`、`AZURE_CLIENT_
       --namespace=<your-namespace>
     ```
 
-4. 通过 Overlay 的方式，将 Secret 绑定到 TiKVGroup 或 TiFlashGroup 的环境变量，以 TiKVGroup 为例：
+2. 通过 Overlay 的方式，将 Secret 绑定到 TiKVGroup 或 TiFlashGroup 的环境变量，以 TiKVGroup 为例：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
