@@ -1,10 +1,14 @@
 ---
-title: Back up Data to S3-Compatible Storage Using Dumpling
+title: Back up Data to S3-Compatible Storage Using Dumpling (Helm)
 summary: Learn how to back up the TiDB cluster to the S3-compatible storage using Dumpling.
 aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-s3/']
 ---
 
-# Back up Data to S3-Compatible Storage Using Dumpling
+# Back up Data to S3-Compatible Storage Using Dumpling (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](backup-to-s3-using-job.md) for backup operations.
 
 This document describes how to back up the data of the TiDB cluster on Kubernetes to an S3-compatible storage. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup).
 

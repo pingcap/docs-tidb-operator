@@ -1,10 +1,14 @@
 ---
-title: Back up Data to GCS Using Dumpling
-summary: Learn how to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
+title: Back up Data to GCS Using Dumpling (Helm)
+summary: Learn how to use Helm to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
 aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-gcs/']
 ---
 
-# Back up Data to GCS Using Dumpling
+# Back up Data to GCS Using Dumpling (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](backup-to-gcs-using-job.md) for backup operations.
 
 This document describes how to back up the data of the TiDB cluster on Kubernetes to [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/). "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup).
 
