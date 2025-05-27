@@ -5,6 +5,7 @@
 - 关于 TiDB Operator
 - 部署
     - 自托管的 Kubernetes
+    - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
 - 数据迁移
     - 从 MySQL 迁移
