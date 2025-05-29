@@ -1,10 +1,14 @@
 ---
-title: Restore Data from GCS
+title: Restore Data from GCS (Helm)
 summary: Learn how to restore the backup data from GCS.
 aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-gcs/']
 ---
 
-# Restore Data from GCS
+# Restore Data from GCS (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](restore-from-gcs-using-job.md) for data restore operations.
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator on Kubernetes.
 
