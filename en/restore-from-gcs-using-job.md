@@ -27,7 +27,7 @@ gcloud container node-pools create lightning \
 
 ### Create a credential ConfigMap
 
-Save the `service account key` file downloaded from the Google Cloud Console as `google-credentials.json`, then create a ConfigMap with the following command:
+Save the `service account key` file downloaded from the Google Cloud Console as `google-credentials.json`, and then create a ConfigMap with the following command:
 
 ```shell
 kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json

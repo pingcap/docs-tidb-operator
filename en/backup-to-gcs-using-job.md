@@ -33,7 +33,7 @@ kubectl -n ${namespace} create configmap google-credentials --from-file=google-c
 
 ### Configure the Dumpling job
 
-Below is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables as needed:
+The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace
@@ -94,9 +94,9 @@ spec:
   backoffLimit: 0
 ```
 
-### Create Dumpling Job
+### Create the Dumpling job
 
-Run the following commands to create the Dumpling Job:
+Run the following commands to create the Dumpling job:
 
 ```shell
 export name=dumpling
@@ -108,7 +108,7 @@ envsubst < dumpling_job.yaml | kubectl apply -f -
 
 ### Check the Dumpling job status
 
-Run the following command to check the Pod status of the Dumpling Job:
+Run the following command to check the Pod status of the Dumpling job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}

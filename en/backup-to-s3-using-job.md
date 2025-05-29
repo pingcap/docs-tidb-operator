@@ -110,7 +110,7 @@ spec:
 
 ### Create the Dumpling job
 
-Run the following commands to create the Dumpling Job:
+Run the following commands to create the Dumpling job:
 
 ```shell
 export name=dumpling
@@ -126,7 +126,7 @@ envsubst < dumpling_job.yaml | kubectl apply -f -
 
 ### Check the Dumpling job status
 
-Run the following command to check the Pod status of the Dumpling Job:
+Run the following command to check the Pod status of the Dumpling job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}
@@ -134,7 +134,7 @@ kubectl -n ${namespace} get pod ${name}
 
 ### View Dumpling job logs
 
-Run the following command to view the logs of the Dumpling Job:
+Run the following command to view the logs of the Dumpling job:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}

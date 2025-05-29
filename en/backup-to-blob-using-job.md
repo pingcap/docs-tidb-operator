@@ -25,6 +25,11 @@ az aks nodepool add --name dumpling \
 
 ## Deploy the Dumpling job
 
+
+This section describes how to configure, deploy, and monitor Dumpling jobs.
+
+### Configure the Dumpling job
+
 The following is a sample configuration for the Dumpling job. Replace the variables with your specific values as needed:
 
 - `${name}`: Job name
@@ -32,9 +37,6 @@ The following is a sample configuration for the Dumpling job. Replace the variab
 - `${version}`: Dumpling image version
 - For Dumpling parameters, refer to the [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/#option-list-of-dumpling).
 
-### The Dumpling job configuration file
-
-The following is an example of the Dumpling job configuration file.
 
 ```yaml
 # dumpling_job.yaml

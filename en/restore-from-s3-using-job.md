@@ -42,7 +42,7 @@ eksctl create nodegroup -f eks_lightning.yaml
 
 ## Deploy the TiDB Lightning job
 
-This section describes how to configure, deploy, and monitor the TiDB Lightning Job.
+This section describes how to configure, deploy, and monitor the TiDB Lightning job.
 
 ### Configure the TiDB Lightning job
 

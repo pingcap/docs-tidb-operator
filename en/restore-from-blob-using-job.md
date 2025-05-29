@@ -25,11 +25,11 @@ az aks nodepool add --name lightning \
 
 ## Deploy the TiDB Lightning job
 
-This section describes how to configure, deploy, and monitor the TiDB Lightning Job.
+This section describes how to configure, deploy, and monitor the TiDB Lightning job.
 
 ### Configure the TiDB Lightning job
 
-Below is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning Job. Replace the variables as needed:
+The following is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning job. Replace the variables as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace
@@ -148,7 +148,7 @@ envsubst < lightning_job.yaml | kubectl apply -f -
 
 ### Check the TiDB Lightning job status
 
-Run the following command to check the Pod status of the TiDB Lightning Job:
+Run the following command to check the Pod status of the TiDB Lightning job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}
