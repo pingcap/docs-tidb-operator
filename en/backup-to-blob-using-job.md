@@ -23,9 +23,9 @@ az aks nodepool add --name dumpling \
     --labels dedicated=dumpling
 ```
 
-## Deploy Dumpling Job
+## Deploy Dumpling jobs
 
-Below is a sample configuration for the Dumpling Job. Replace the variables as needed:
+The following is a sample configuration for the Dumpling job. Replace the variables with your specific values as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace
@@ -84,7 +84,7 @@ spec:
 
 ### Create Dumpling Job
 
-Run the following commands to create the Dumpling Job:
+Run the following commands to create the Dumpling Job. Replace the variables with your specific values as needed:
 
 ```shell
 export name=dumpling
@@ -98,15 +98,15 @@ envsubst < dumpling_job.yaml | kubectl apply -f -
 
 ### Check Dumpling Job Status
 
-Run the following command to check the Pod status of the Dumpling Job:
+Run the following command to check the Pod status of the Dumpling job. Replace the variables with your specific values as needed:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}
 ```
 
-### View Dumpling Job Logs
+### View Dumpling job logs
 
-Run the following command to view the logs of the Dumpling Job:
+Run the following command to view the logs of the Dumpling Job. Replace the variables with your specific values as needed:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}

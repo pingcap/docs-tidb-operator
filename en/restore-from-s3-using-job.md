@@ -11,7 +11,7 @@ The following example shows how to restore backup data from Amazon S3-compatible
 
 ## Prepare a Node Pool for TiDB Lightning
 
-You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following is a sample configuration for creating a new node pool. Replace the variables as needed:
+You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following is a sample configuration for creating a new node pool. Replace the variables with your specific values as needed:
 
 - `${clusterName}`: EKS cluster name
 
@@ -46,7 +46,7 @@ This section describes how to configure, deploy, and monitor the TiDB Lightning 
 
 ### Configure TiDB Lightning Job
 
-Below is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning Job. Replace the variables as needed:
+The following is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning job. Replace the variables with your specific values as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace
@@ -176,7 +176,7 @@ envsubst < lightning_job.yaml | kubectl apply -f -
 
 ### Check TiDB Lightning Job Status
 
-Run the following command to check the Pod status of the TiDB Lightning Job:
+Run the following command to check the status of the Pod associated with the TiDB Lightning Job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}
@@ -184,7 +184,7 @@ kubectl -n ${namespace} get pod ${name}
 
 ### View TiDB Lightning Job Logs
 
-Run the following command to view the logs of the TiDB Lightning Job:
+Run the following command to retrieve and view the logs of the TiDB Lightning job:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}

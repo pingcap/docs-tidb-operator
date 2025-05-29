@@ -35,7 +35,7 @@ kubectl -n ${namespace} create configmap google-credentials --from-file=google-c
 
 ### Configure TiDB Lightning Job
 
-Below is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning Job. Replace the variables as needed:
+The following is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning job. This file defines the necessary resources and configurations for the job. Replace the variables with your specific values as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace

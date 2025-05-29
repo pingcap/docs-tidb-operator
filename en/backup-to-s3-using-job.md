@@ -44,7 +44,7 @@ This section describes how to configure, deploy, and monitor the Dumpling Job.
 
 ### Configure Dumpling Job
 
-Below is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables as needed:
+The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables with your specific values as needed:
 
 - `${name}`: Job name
 - `${namespace}`: Kubernetes namespace
