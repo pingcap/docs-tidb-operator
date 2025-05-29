@@ -86,7 +86,7 @@ spec:
 
 ### Create the Dumpling job
 
-Run the following commands to create the Dumpling Job. Replace the variables with your specific values as needed:
+Run the following commands to create the Dumpling job. Replace the variables with your specific values as needed:
 
 ```shell
 export name=dumpling
