@@ -7,7 +7,7 @@ summary: This document describes how to use Dumpling to back up TiDB cluster dat
 
 This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on AWS EKS to Amazon S3-compatible storage. Dumpling is a data export tool that can export data from TiDB or MySQL in SQL or CSV format for full data backup or export.
 
-## Prepare Dumpling Node Pool
+## Prepare the Dumpling node pool
 
 You can run Dumpling in an existing node pool or create a dedicated node pool. The following is a sample configuration for creating a new node pool. Replace the variables as needed:
 
@@ -38,11 +38,11 @@ Run the following command to create the node pool:
 eksctl create nodegroup -f eks_dumpling.yaml
 ```
 
-## Deploy Dumpling Job
+## Deploy the Dumpling job
 
 This section describes how to configure, deploy, and monitor the Dumpling Job.
 
-### Configure Dumpling Job
+### Configure the Dumpling job
 
 The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables with your specific values as needed:
 
@@ -108,7 +108,7 @@ spec:
   backoffLimit: 0
 ```
 
-### Create Dumpling Job
+### Create the Dumpling job
 
 Run the following commands to create the Dumpling Job:
 
@@ -124,7 +124,7 @@ export AWS_SESSION_TOKEN=<your-session-token> # Optional
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-### Check Dumpling Job Status
+### Check the Dumpling job status
 
 Run the following command to check the Pod status of the Dumpling Job:
 
@@ -132,7 +132,7 @@ Run the following command to check the Pod status of the Dumpling Job:
 kubectl -n ${namespace} get pod ${name}
 ```
 
-### View Dumpling Job Logs
+### View Dumpling job logs
 
 Run the following command to view the logs of the Dumpling Job:
 

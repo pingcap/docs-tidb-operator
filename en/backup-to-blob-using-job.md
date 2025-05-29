@@ -7,7 +7,7 @@ summary: This document describes how to use Dumpling to back up TiDB cluster dat
 
 This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on Azure AKS to Azure Blob Storage. Dumpling is a data export tool that can export data from TiDB or MySQL in SQL or CSV format for full data backup or export.
 
-## Prepare Dumpling Node Pool
+## Prepare the Dumpling node pool
 
 You can run Dumpling in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
 
@@ -23,7 +23,7 @@ az aks nodepool add --name dumpling \
     --labels dedicated=dumpling
 ```
 
-## Deploy Dumpling jobs
+## Deploy the Dumpling job
 
 The following is a sample configuration for the Dumpling job. Replace the variables with your specific values as needed:
 
@@ -32,7 +32,9 @@ The following is a sample configuration for the Dumpling job. Replace the variab
 - `${version}`: Dumpling image version
 - For Dumpling parameters, refer to the [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/#option-list-of-dumpling).
 
-### Dumpling Job Configuration File
+### The Dumpling job configuration file
+
+The following is an example of the Dumpling job configuration file.
 
 ```yaml
 # dumpling_job.yaml
@@ -82,7 +84,7 @@ spec:
   backoffLimit: 0
 ```
 
-### Create Dumpling Job
+### Create the Dumpling job
 
 Run the following commands to create the Dumpling Job. Replace the variables with your specific values as needed:
 
@@ -96,7 +98,7 @@ export accountkey=<your-account-key>
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-### Check Dumpling Job Status
+### Check the Dumpling job status
 
 Run the following command to check the Pod status of the Dumpling job. Replace the variables with your specific values as needed:
 

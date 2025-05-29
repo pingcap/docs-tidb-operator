@@ -9,7 +9,7 @@ This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tid
 
 The following example shows how to restore backup data from Amazon S3-compatible storage to a TiDB cluster.
 
-## Prepare a Node Pool for TiDB Lightning
+## Prepare a node pool for TiDB Lightning
 
 You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following is a sample configuration for creating a new node pool. Replace the variables with your specific values as needed:
 
@@ -40,11 +40,11 @@ Run the following command to create the node pool:
 eksctl create nodegroup -f eks_lightning.yaml
 ```
 
-## Deploy TiDB Lightning Job
+## Deploy the TiDB Lightning job
 
 This section describes how to configure, deploy, and monitor the TiDB Lightning Job.
 
-### Configure TiDB Lightning Job
+### Configure the TiDB Lightning job
 
 The following is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning job. Replace the variables with your specific values as needed:
 
@@ -156,9 +156,9 @@ spec:
   backoffLimit: 0
 ```
 
-### Create TiDB Lightning Job
+### Create the TiDB Lightning job
 
-Run the following commands to create the TiDB Lightning Job:
+Run the following commands to create the TiDB Lightning job:
 
 ```shell
 export name=lightning
@@ -174,15 +174,15 @@ export AWS_SESSION_TOKEN=<your-session-token> # Optional
 envsubst < lightning_job.yaml | kubectl apply -f -
 ```
 
-### Check TiDB Lightning Job Status
+### Check the TiDB Lightning job status
 
-Run the following command to check the status of the Pod associated with the TiDB Lightning Job:
+Run the following command to check the status of the Pod associated with the TiDB Lightning job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}
 ```
 
-### View TiDB Lightning Job Logs
+### View TiDB Lightning job logs
 
 Run the following command to retrieve and view the logs of the TiDB Lightning job:
 

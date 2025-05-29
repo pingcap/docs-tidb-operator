@@ -9,7 +9,7 @@ This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tid
 
 The following example shows how to restore backup data from GCS to a TiDB cluster.
 
-## Prepare a Node Pool for TiDB Lightning
+## Prepare a node pool for TiDB Lightning
 
 You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
 
@@ -23,9 +23,9 @@ gcloud container node-pools create lightning \
     --node-labels=dedicated=lightning
 ```
 
-## Deploy TiDB Lightning Job
+## Deploy the TiDB Lightning job
 
-### Create Credential ConfigMap
+### Create a credential ConfigMap
 
 Save the `service account key` file downloaded from the Google Cloud Console as `google-credentials.json`, then create a ConfigMap with the following command:
 
@@ -33,7 +33,7 @@ Save the `service account key` file downloaded from the Google Cloud Console as 
 kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json
 ```
 
-### Configure TiDB Lightning Job
+### Configure the TiDB Lightning job
 
 The following is a sample configuration file (`lightning_job.yaml`) for the TiDB Lightning job. This file defines the necessary resources and configurations for the job. Replace the variables with your specific values as needed:
 
@@ -141,9 +141,9 @@ spec:
   backoffLimit: 0
 ```
 
-### Create TiDB Lightning Job
+### Create the TiDB Lightning job
 
-Run the following commands to create the TiDB Lightning Job:
+Run the following commands to create the TiDB Lightning job:
 
 ```shell
 export name=lightning
@@ -155,7 +155,7 @@ export storage=250G
 envsubst < lightning_job.yaml | kubectl apply -f -
 ```
 
-### Check TiDB Lightning Job Status
+### Check the TiDB Lightning job status
 
 Run the following command to check the Pod status of the TiDB Lightning Job:
 
@@ -163,9 +163,9 @@ Run the following command to check the Pod status of the TiDB Lightning Job:
 kubectl -n ${namespace} get pod ${name}
 ```
 
-### View TiDB Lightning Job Logs
+### View TiDB Lightning job logs
 
-Run the following command to view the logs of the TiDB Lightning Job:
+Run the following command to view the logs of the TiDB Lightning job:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}

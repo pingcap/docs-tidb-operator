@@ -7,7 +7,7 @@ summary: This document describes how to use Dumpling to back up TiDB cluster dat
 
 This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on Google GKE to [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs). Dumpling is a data export tool that can export data from TiDB or MySQL in SQL or CSV format for full data backup or export.
 
-## Prepare Dumpling Node Pool
+## Prepare the Dumpling node pool
 
 You can run Dumpling in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
 
@@ -21,9 +21,9 @@ gcloud container node-pools create dumpling \
     --node-labels=dedicated=dumpling
 ```
 
-## Deploy Dumpling Job
+## Deploy the Dumpling job
 
-### Create Credential ConfigMap
+### Create a credential ConfigMap
 
 Save the `service account key` file downloaded from the Google Cloud Console as `google-credentials.json`, and then create a ConfigMap with the following command:
 
@@ -31,7 +31,7 @@ Save the `service account key` file downloaded from the Google Cloud Console as 
 kubectl -n ${namespace} create configmap google-credentials --from-file=google-credentials.json
 ```
 
-### Configure Dumpling Job
+### Configure the Dumpling job
 
 Below is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables as needed:
 
@@ -106,7 +106,7 @@ export namespace=tidb-cluster
 envsubst < dumpling_job.yaml | kubectl apply -f -
 ```
 
-### Check Dumpling Job Status
+### Check the Dumpling job status
 
 Run the following command to check the Pod status of the Dumpling Job:
 
@@ -114,9 +114,9 @@ Run the following command to check the Pod status of the Dumpling Job:
 kubectl -n ${namespace} get pod ${name}
 ```
 
-### View Dumpling Job Logs
+### View Dumpling job logs
 
-Run the following command to view the logs of the Dumpling Job:
+Run the following command to view the logs of the Dumpling job:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}
