@@ -20,11 +20,13 @@
     - 升级
         - 升级 TiDB Operator
     - 备份与恢复
-        - 使用 Amazon S3 兼容的存储
-        - 使用 Google Cloud Storage
-        - 使用 Azure Blob Storage
-        - 使用持久卷
-        - 基于快照的备份和恢复
+      - [备份与恢复简介](backup-restore-overview.md)
+      - [备份与恢复 CR 介绍](backup-restore-cr.md)
+      - 使用 Amazon S3 兼容的存储
+      - 使用 Google Cloud Storage
+      - 使用 Azure Blob Storage
+      - 使用持久卷
+      - 基于快照的备份和恢复
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
