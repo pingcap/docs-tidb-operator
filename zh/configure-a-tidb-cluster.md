@@ -412,7 +412,7 @@ spec:
 > **注意：**
 >
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 TiKV 组件无法正常启动。
-> - TiKV 的 rocksdb 日志默认存储在 `/var/lib/tikv` 数据目录，建议配置 `max-days` 和 `max-backups` 来自动清理日志文件。
+> - TiKV 的 RocksDB 日志默认存储在 `/var/lib/tikv` 数据目录，建议配置 `max-days` 和 `max-backups` 来自动清理日志文件。
 
 #### 配置 PD 配置参数
 

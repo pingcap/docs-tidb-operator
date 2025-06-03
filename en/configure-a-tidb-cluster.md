@@ -418,7 +418,7 @@ For all the configurable parameters of TiKV, refer to [TiKV Configuration File](
 > **Note:**
 >
 > - If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
-> - TiKV rocksdb log store in `/var/lib/tikv` data directory, recommend configure `max-days` and `max-backups` to automatically clean log files.
+> - TiKV RocksDB logs are stored in the `/var/lib/tikv` data directory. It is recommended that you configure `max-days` and `max-backups` to automatically clean log files.
 
 #### Configure PD parameters
 
