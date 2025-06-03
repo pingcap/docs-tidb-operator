@@ -57,7 +57,7 @@ tikv-ctl --host 127.0.0.1:20160 --pd 127.0.0.1:2379 ${subcommands}
 
 ## 在 Kubernetes 上使用 TiDB Control
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/stable/tidb-control) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 [`kubectl port-forward`](https://kubernetes.io/zh-cn/docs/reference/kubectl/generated/kubectl_port-forward/) 建立到集群中 TiDB 节点和 PD 服务的连接：
+[TiDB Control](https://docs.pingcap.com/zh/tidb/stable/tidb-control) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 [`kubectl port-forward`](https://kubernetes.io/zh-cn/docs/reference/kubectl/generated/kubectl_port-forward/) 建立本地到集群中 TiDB 节点和 PD 服务的连接：
 
 以下示例将本地 2379 端口转发至 PD 服务：
 
@@ -71,7 +71,7 @@ kubectl port-forward -n ${namespace} svc/${pd_group_name}-pd 2379:2379 &>/tmp/po
 kubectl port-forward -n ${namespace} ${pod_name} 10080:10080 &>/tmp/portforward-tidb.log &
 ```
 
-建立连接后，即可使用 `tidb-ctl` 执行相关操作，例如查看 `mysql` 数据库的 schema：
+建立连接后，即可使用 `tidb-ctl` 执行相关操作。例如，查看 `mysql` 数据库的 schema：
 
 ```shell
 tidb-ctl schema in mysql
