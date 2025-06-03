@@ -361,13 +361,17 @@ spec:
       [storage]
         [storage.block-cache]
           capacity = "16GB"
+      [log.file]
+        max-days = 30
+        max-backups = 30
 ```
 
 For all the configurable parameters of TiKV, refer to [TiKV Configuration File](https://docs.pingcap.com/tidb/stable/tikv-configuration-file).
 
 > **Note:**
 >
-> If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
+> - If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
+> - TiKV rocksdb log store in `/var/lib/tikv` data directory, recommend configure `max-days` and `max-backups` to automatically clean log files.
 
 #### Configure PD parameters
 
