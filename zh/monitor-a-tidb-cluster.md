@@ -147,7 +147,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
       selectAllByDefault: true
     ```
 
-3. 在每个 TiDB 集群所在的命名空间中创建一个 `VMPodScrape` CR，用来发现 TiDB 集群的 Pod，并为 `VMAgent` 生成相应的 scrape 配置:
+4. 在每个 TiDB 集群所在的命名空间中创建一个 `VMPodScrape` CR，用来发现 TiDB 集群的 Pod，并为 `VMAgent` 生成相应的 scrape 配置:
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -215,7 +215,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
             targetLabel: tidb_cluster
     ```
 
-4. 可以通过 `kubectl port-forward` 来访问 VMAgent，查看是否采集到了监控指标：
+5. 可以通过 `kubectl port-forward` 来访问 VMAgent，查看是否采集到了监控指标：
 
     ```shell
     kubectl port-forward -n monitoring svc/vmagent-demo 8429:8429 &>/tmp/portforward-vmagent.log &
@@ -226,7 +226,6 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 ### 监控面板
 
 1. 参考[官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana。
-
 
 2. 可以通过 `kubectl port-forward` 访问 Grafana 监控面板：
 
