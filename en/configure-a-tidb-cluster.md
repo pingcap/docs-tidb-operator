@@ -419,7 +419,7 @@ For all the configurable parameters of TiKV, refer to [TiKV Configuration File](
 >
 > - If you deploy your TiDB cluster using CR, make sure that `Config: {}` is set, no matter you want to modify `config` or not. Otherwise, TiKV components might not be started successfully. This step is meant to be compatible with `Helm` deployment.
 > - TiKV RocksDB logs are stored in the `/var/lib/tikv` data directory by default. It is recommended that you configure `max-days` and `max-backups` to automatically clean log files.
-> - You can also use the `separateRocksDBLog` configuration item to configure TiKV to output RocksDB log to stdout. For more information, see the [TidbCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml).
+> - You can also use the `separateRocksDBLog` configuration item to configure TiKV to output RocksDB logs to stdout through a sidecar container. For more information, see the [TiDB Cluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml).
 
 #### Configure PD parameters
 
