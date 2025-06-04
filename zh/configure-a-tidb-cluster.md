@@ -482,7 +482,7 @@ spec:
       level = "info"
 ```
 
-获取所有可以配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-configuration)。
+获取所有可以配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiproxy-configuration)。
 
 #### 配置 TiFlash 配置参数
 
