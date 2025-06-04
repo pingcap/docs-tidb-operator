@@ -321,13 +321,18 @@ spec:
       [storage]
         [storage.block-cache]
           capacity = "16GB"
+      [log.file]
+        max-days = 30
+        max-backups = 30
 ```
 
 获取所有可以配置的 TiKV 配置参数，请参考 [TiKV 配置文档](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file)
 
 > **注意：**
 >
-> 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 TiKV 组件无法正常启动。
+> - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 TiKV 组件无法正常启动。
+> - TiKV 的 RocksDB 日志默认存储在 `/var/lib/tikv` 数据目录，建议配置 `max-days` 和 `max-backups` 来自动清理日志文件。
+> - 你也可通过配置 `separateRocksDBLog` 将 RocksDB 日志通过单独的 sidecar 容器输出到 stdout。完整配置项请参考 [TiDB Cluster 示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml)。
 
 #### 配置 PD 配置参数
 
@@ -348,6 +353,59 @@ spec:
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 PD 组件无法正常启动。
 > - PD 部分配置项在首次启动成功后会持久化到 etcd 中且后续将以 etcd 中的配置为准。因此 PD 在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 SQL、pd-ctl 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 首次启动之后均不再支持通过配置参数进行修改。
 
+<<<<<<< HEAD
+=======
+##### 配置 PD 微服务
+
+> **注意：**
+>
+> PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+
+你可以通过 TidbCluster CR 的 `spec.pd.mode` 与 `spec.pdms` 来配置 PD 微服务参数。目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，配置示例如下：
+
+```yaml
+spec:
+  pd:
+    mode: "ms"
+  pdms:
+  - name: "tso"
+    baseImage: pingcap/pd
+    replicas: 2
+    config: |
+      [log.file]
+        filename = "/pdms/log/tso.log"
+  - name: "scheduling"
+    baseImage: pingcap/pd
+    replicas: 1
+    config: |
+      [log.file]
+        filename = "/pdms/log/scheduling.log"
+```
+
+其中，`spec.pdms` 用于配置 PD 微服务，具体的配置参数与 `spec.pd.config` 相同。要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+
+> **注意：**
+>
+> - 为了兼容 `helm` 部署，如果你的 TiDB 集群是通过 CR 文件部署的，即使你不设置 `config` 配置，也需要保证 `config: {}` 的设置，避免 PD 微服务组件无法正常启动。
+> - 如果在部署 TiDB 集群时就启用了 PD 微服务模式，PD 微服务的部分配置项会持久化到 etcd 中且后续将以 etcd 中的配置为准。
+> - 如果在现有 TiDB 集群中启用 PD 微服务模式，PD 微服务的部分配置会沿用 PD 的配置并持久化到 etcd 中，后续将以 etcd 中的配置为准。
+> - 因此，PD 微服务在首次启动后，这些配置项将无法再通过配置参数来进行修改，而需要使用 [SQL](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)、[pd-ctl](https://docs.pingcap.com/tidb/stable/pd-control#config-show--set-option-value--placement-rules) 或 PD server API 来动态进行修改。目前，[在线修改 PD 配置](https://docs.pingcap.com/zh/tidb/stable/dynamic-config#在线修改-pd-配置)文档中所列的配置项中，除 `log.level` 外，其他配置项在 PD 微服务首次启动之后均不再支持通过配置参数进行修改。
+
+#### 配置 TiProxy 配置参数
+
+你可以通过 TidbCluster CR 的 `spec.tiproxy.config` 来配置 TiProxy 配置参数。
+
+```yaml
+spec:
+  tiproxy:
+    config: |
+      [log]
+      level = "info"
+```
+
+获取所有可以配置的 TiProxy 配置参数，请参考 [TiProxy 配置文档](https://docs.pingcap.com/zh/tidb/stable/tiproxy-configuration)。
+
+>>>>>>> c0cb1959 (add-tikv-config: add `max-days` and `max-backups` (#2777))
 #### 配置 TiFlash 配置参数
 
 你可以通过 TidbCluster CR 的 `spec.tiflash.config` 来配置 TiFlash 配置参数。
