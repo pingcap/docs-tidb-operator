@@ -409,7 +409,7 @@ spec:
       level = "info"
 ```
 
-For all the configurable parameters of TiProxy, refer to [TiProxy Configuration File](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
+For all the configurable parameters of TiProxy, refer to [TiProxy Configuration File](https://docs.pingcap.com/tidb/stable/tiproxy-configuration).
 
 #### Configure TiFlash parameters
 
