@@ -7,7 +7,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。开启步骤为：
 
-1. 为 TiDB Server 颁发一套 Server 端证书，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${tidb_group_name}-tidb-server-secret` 和  `${tidb_group_name}-tidb-client-secret`，分别包含前面创建的两套证书；
+1. 为 TiDB Server 颁发一套 Server 端证书，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${tidb_group_name}-tidb-server-secret` 和 `${tidb_group_name}-tidb-client-secret`，分别包含前面创建的两套证书；
 
     > **注意：**
     >
@@ -21,14 +21,14 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     > **注意：**
     >
-    > 已部署的 `TiDBGroup` 开启或变更 tls 配置，将导致 TiDB Pod 滚动重启。
+    > 已部署的 `TiDBGroup` 开启或变更 TLS 配置，将导致 TiDB Pod 滚动重启。
 
 3. 配置 MySQL 客户端使用加密连接。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
 
 - 使用 `cfssl` 系统颁发证书；
-- 使用 `cert-manager` 系统颁发证书(推荐)；
+- （推荐）使用 `cert-manager` 系统颁发证书；
 
 当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
 
@@ -140,7 +140,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     ...
     ```
 
-    其中 `${tidb_group_name}` 为 TiDBGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+    其中 `${tidb_group_name}` 为 `TiDBGroup` 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
     最后生成 Server 端证书：
 
@@ -293,21 +293,21 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
         group: cert-manager.io
     ```
 
-    其中 `${cluster_name}` 为集群的名字, `${tidb_group_name}` 为 TiDBGroup 的名字：
+    其中 `${cluster_name}` 为集群的名字，`${tidb_group_name}` 为 `TiDBGroup` 的名字：
 
     - `spec.secretName` 请设置为 `${tidb_group_name}-tidb-server-secret`；
     - `usages` 请添加上 `server auth`；
     - `dnsNames` 需要填写这 6 个 DNS，根据需要可以填写其他 DNS：
-      - "${tidb_group_name}-tidb"
-      - "${tidb_group_name}-tidb.${namespace}"
-      - "${tidb_group_name}-tidb.${namespace}.svc"
-      - "*.${tidb_group_name}-tidb"
-      - "*.${tidb_group_name}-tidb.${namespace}"
-      - "*.${tidb_group_name}-tidb.${namespace}.svc"
-      - "*.${tidb_group_name}-tidb-peer"
-      - "*.${tidb_group_name}-tidb-peer.${namespace}"
-      - "*.${tidb_group_name}-tidb-peer.${namespace}.svc"
-    - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
+      - `${tidb_group_name}-tidb`
+      - `${tidb_group_name}-tidb.${namespace}`
+      - `${tidb_group_name}-tidb.${namespace}.svc`
+      - `*.${tidb_group_name}-tidb`
+      - `*.${tidb_group_name}-tidb.${namespace}`
+      - `*.${tidb_group_name}-tidb.${namespace}.svc`
+      - `*.${tidb_group_name}-tidb-peer`
+      - `*.${tidb_group_name}-tidb-peer.${namespace}`
+      - `*.${tidb_group_name}-tidb-peer.${namespace}.svc`
+    - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
       - `127.0.0.1`
       - `::1`
     - `issuerRef` 请填写上面创建的 Issuer；
@@ -347,7 +347,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
         group: cert-manager.io
     ```
 
-    其中 `${cluster_name}` 为集群的名字, `${tidb_group_name}` 为 TiDBGroup 的名字：
+    其中 `${cluster_name}` 为集群的名字，`${tidb_group_name}` 为 `TiDBGroup` 的名字：
 
     - `spec.secretName` 请设置为 `${tidb_group_name}-tidb-client-secret`；
     - `usages` 请添加上 `client auth`；
@@ -371,7 +371,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
 ## 第二步：部署 TiDBGroup
 
-接下来将会创建一个开启了 MySQL TLS 的 TiDBGroup：
+以下配置示例展示如何创建一个启用了 MySQL TLS 的 `TiDBGroup`：
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
