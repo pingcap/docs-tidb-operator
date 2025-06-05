@@ -5,10 +5,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 # 为 TiDB 组件间开启 TLS
 
-本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
+本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件 Group 生成证书：
-    - 为 Group 分别创建一套证书，保存为 Kubernetes Secret 对象：`${group_name}-${component_name}-cluster-secret`
+    - 每个组件 Group 分别创建一套证书，保存为 Kubernetes Secret 对象：`${group_name}-${component_name}-cluster-secret`
 
     > **注意：**
     >
@@ -20,7 +20,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     >
     > - 在集群创建后，不能修改此字段，否则将导致集群升级失败，此时需要删除已有集群，并重新创建。
 
-3. 配置 `pd-ctl`，`tikv-ctl` 连接集群。
+3. 配置 `pd-ctl` 和 `tikv-ctl` 连接集群。
 
 其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
 
@@ -35,7 +35,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 1. 首先下载 `cfssl` 软件并初始化证书颁发机构：
 
-    ``` shell
+    ```shell
     mkdir -p ~/bin
     curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
     curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
@@ -47,6 +47,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     ```
 
 2. 生成 `ca-config.json` 配置文件：
+
+    > **注意：**
+    >
+    > TiDB 所有组件在进行组件间通信时，共用一套 TLS 证书来加密客户端与服务端的流量，因此，生成 CA 配置时必须同时指定 `server auth` 和 `client auth`。此外，建议所有所有组件的证书均由同一个 CA 签发。
 
     ```shell
     cat << EOF > ca-config.json
@@ -70,10 +74,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     }
     EOF
     ```
-
-    > **注意：**
-    >
-    > - TiDB 目前所有组件均使用同一套证书加密组件间访问时的 Client 和 Server 端流量，因此必须同时指定 `server auth` 和 `client auth`，且推荐所有组件证书均由同一个 CA 签发
 
 3. 生成 `ca-csr.json` 配置文件：
 
@@ -103,7 +103,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 4. 使用定义的选项生成 CA：
 
-    ``` shell
+    ```shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
     ```
 
@@ -115,13 +115,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         首先生成默认的 `pd.json` 文件：
 
-        ``` shell
+        ```shell
         cfssl print-defaults csr > pd.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
 
-        ``` json
+        ```json
         ...
             "CN": "TiDB",
             "hosts": [
@@ -140,11 +140,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${pd_group_name}` 为 PDGroup 的名字, `${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${pd_group_name}` 为 PDGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
         最后生成 PD 证书：
 
-        ``` shell
+        ```shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal pd.json | cfssljson -bare pd
         ```
 
@@ -152,13 +152,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         首先生成默认的 `tikv.json` 文件：
 
-        ``` shell
+        ```shell
         cfssl print-defaults csr > tikv.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
 
-        ``` json
+        ```json
         ...
             "CN": "TiDB",
             "hosts": [
@@ -181,7 +181,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         最后生成 TiKV 证书：
 
-        ``` shell
+        ```shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tikv.json | cfssljson -bare tikv
         ```
 
@@ -189,13 +189,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         首先生成默认的 `tidb.json` 文件：
 
-        ``` shell
+        ```shell
         cfssl print-defaults csr > tidb.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
 
-        ``` json
+        ```json
         ...
             "CN": "TiDB",
             "hosts": [
@@ -218,23 +218,23 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
         最后生成 TiDB 证书：
 
-        ``` shell
+        ```shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tidb.json | cfssljson -bare tidb
         ```
 
     - 其他组件证书
 
-        参考 PD，TiKV 和 TiDB，其他组件 Group 也需要生成自己的组件证书
+        除了 PD、TiKV 和 TiDB 外，其他组件的 Group 也需要生成各自的 TLS 证书。以下示例展示了生成组件证书的基本步骤：
 
         首先生成默认的 `${component_name}.json` 文件：
 
-        ``` shell
+        ```shell
         cfssl print-defaults csr > ${component_name}.json
         ```
 
-        然后编辑这个文件，修改 `CN`，`hosts` 属性：
+        然后编辑这个文件，修改 `CN` 和 `hosts` 属性：
 
-        ``` json
+        ```json
         ...
             "CN": "TiDB",
             "hosts": [
@@ -253,14 +253,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名(均小写，如 pd, tikv, tidb), `${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`），`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
         最后生成组件证书：
 
-        ``` shell
+        ```shell
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal ${component_name}.json | cfssljson -bare ${component_name}
         ```
-
 
 6. 创建 Kubernetes Secret 对象。
 
@@ -268,29 +267,28 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     PD 集群证书 Secret：
 
-    ``` shell
+    ```shell
     kubectl create secret generic ${pd_group_name}-pd-cluster-secret --namespace=${namespace} --from-file=tls.crt=pd.pem --from-file=tls.key=pd-key.pem --from-file=ca.crt=ca.pem
     ```
 
     TiKV 集群证书 Secret：
 
-    ``` shell
+    ```shell
     kubectl create secret generic ${tikv_group_name}-tikv-cluster-secret --namespace=${namespace} --from-file=tls.crt=tikv.pem --from-file=tls.key=tikv-key.pem --from-file=ca.crt=ca.pem
     ```
 
     TiDB 集群证书 Secret：
 
-    ``` shell
+    ```shell
     kubectl create secret generic ${tidb_group_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb.pem --from-file=tls.key=tidb-key.pem --from-file=ca.crt=ca.pem
 
     其他组件证书 Secret：
 
-    ``` shell
+    ```shell
     kubectl create secret generic ${group_name}-${component_name}-cluster-secret --namespace=${namespace} --from-file=tls.crt=${component_name}.pem --from-file=tls.key=${component_name}-key.pem --from-file=ca.crt=ca.pem
     ```
-    ```
 
-    这里给 PD/TiKV/TiDB/Pump/Drainer 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
+    这里给 PD、TiKV、TiDB、Pump、Drainer 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
 ### 使用 `cert-manager` 系统颁发证书
 
@@ -304,14 +302,14 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     首先创建一个目录保存 `cert-manager` 创建证书所需文件：
 
-    ``` shell
+    ```shell
     mkdir -p cert-manager
     cd cert-manager
     ```
 
     然后创建一个 `tidb-cluster-issuer.yaml` 文件，输入以下内容：
 
-    ``` yaml
+    ```yaml
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
@@ -347,13 +345,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     其中 `${cluster_name}` 为集群的名字，上面的文件创建三个对象：
 
-    - 一个 SelfSigned 类型的 Issuer 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
-    - 一个 Certificate 对象，`isCa` 属性设置为 `true`；
-    - 一个可以用于颁发 TiDB 组件间 TLS 证书的 Issuer。
+    - 一个 SelfSigned 类型的 Issuer 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）
+    - 一个 Certificate 对象，`isCa` 属性设置为 `true`
+    - 一个可以用于颁发 TiDB 组件间 TLS 证书的 Issuer
 
     最后执行下面的命令进行创建：
 
-    ``` shell
+    ```shell
     kubectl apply -f tidb-cluster-issuer.yaml
     ```
 
@@ -361,11 +359,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     在 `cert-manager` 中，Certificate 资源表示证书接口，该证书将由上面创建的 Issuer 颁发并保持更新。
 
-    根据官网文档：[Enable TLS Authentication](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components)，我们需要为每个组件创建一个组件证书。
+    根据[为 TiDB 组件间通信开启加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components)文档，需要为每个组件创建一个组件证书。
 
     - PD 组件的证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
@@ -401,10 +399,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             group: cert-manager.io
         ```
 
-        其中 `${pd_group_name}` 为 PDGroup 的名字, `${cluster_name}`  为 TiDB 集群的名字：
+        其中 `${pd_group_name}` 为 PDGroup 的名字，`${cluster_name}` 为 TiDB 集群的名字：
 
         - `spec.secretName` 请设置为 `${pd_group_name}-pd-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
           - `${pd_group_name}-pd`
           - `${pd_group_name}-pd.${namespace}`
@@ -415,7 +413,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
           - `*.${pd_group_name}-pd-peer`
           - `*.${pd_group_name}-pd-peer.${namespace}`
           - `*.${pd_group_name}-pd-peer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
+        - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
@@ -425,7 +423,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     - TiKV 组件的证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
@@ -461,10 +459,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             group: cert-manager.io
         ```
 
-        其中 `${tikv_group_name}` 为 PDGroup 的名字, `${cluster_name}`  为 TiDB 集群的名字：
+        其中 `${tikv_group_name}` 为 PDGroup 的名字，`${cluster_name}` 为 TiDB 集群的名字：
 
         - `spec.secretName` 请设置为 `${tikv_group_name}-tikv-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
           - `${tikv_group_name}-tikv`
           - `${tikv_group_name}-tikv.${namespace}`
@@ -475,7 +473,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
           - `*.${tikv_group_name}-tikv-peer`
           - `*.${tikv_group_name}-tikv-peer.${namespace}`
           - `*.${tikv_group_name}-tikv-peer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
+        - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
@@ -485,7 +483,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     - TiDB 组件的证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
@@ -521,10 +519,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             group: cert-manager.io
         ```
 
-        其中 `${tidb_group_name}` 为 TiDBGroup 的名字, `${cluster_name}` 为 TiDB 集群的名字：
+        其中 `${tidb_group_name}` 为 TiDBGroup 的名字，`${cluster_name}` 为 TiDB 集群的名字：
 
         - `spec.secretName` 请设置为 `${tidb_group_name}-tidb-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
           - `${tidb_group_name}-tidb`
           - `${tidb_group_name}-tidb.${namespace}`
@@ -535,7 +533,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
           - `*.${tidb_group_name}-tidb-peer`
           - `*.${tidb_group_name}-tidb-peer.${namespace}`
           - `*.${tidb_group_name}-tidb-peer.${namespace}.svc`
-        - `ipAddresses` 需要填写这两个 IP ，根据需要可以填写其他 IP：
+        - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
           - `127.0.0.1`
           - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
@@ -545,7 +543,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     - 其他组件的证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
@@ -581,10 +579,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             group: cert-manager.io
         ```
 
-        其中 `${group_name}` 为组件 Group 的名字, `${component_name}` 为组件名, `${cluster_name}` 为 TiDB 集群的名字：
+        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名，`${cluster_name}` 为 TiDB 集群的名字：
 
         - `spec.secretName` 请设置为 `${group_name}-${component_name}-cluster-secret`；
-        - `usages` 请添加上  `server auth` 和 `client auth`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
         - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
           - `${group_name}-${component_name}`
           - `${group_name}-${component_name}.${namespace}`
@@ -610,9 +608,9 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 > **注意：**
 >
-> 对于 v8.3.0 及之前版本，PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有 `Certificate` 对象的 `commonName` 都要设置成同样一个值。
-> 从 v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 Common Name。
-> 详见 [为 TiDB 组件间通信开启加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components/)
+> - 对于 TiDB v8.3.0 及之前版本，PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `Common Name` 必须设置成同一个值。
+> - 从 TiDB v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 Common Name。
+> - 详情参考[为 TiDB 组件间通信开启加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components/)。
 
 在这一步中，需要完成以下操作：
 
@@ -623,7 +621,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     创建 `tidb-cluster.yaml` 文件：
 
-    ``` yaml
+    ```yaml
     apiVersion: core.pingcap.com/v1alpha1
     kind: Cluster
     metadata:
@@ -693,4 +691,3 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     ```
 
     然后使用 `kubectl apply -f tidb-cluster.yaml` 来创建 TiDB 集群。
-
