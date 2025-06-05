@@ -108,7 +108,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
     ```yaml
     ---
-    apiVersion: pingcap.com/v1alpha1
+    apiVersion: br.pingcap.com/v1alpha1
     kind: Restore
     metadata:
       name: demo2-restore-s3
@@ -143,7 +143,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
     ```yaml
     ---
-    apiVersion: pingcap.com/v1alpha1
+    apiVersion: br.pingcap.com/v1alpha1
     kind: Restore
     metadata:
       name: demo2-restore-s3
@@ -179,7 +179,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
     ```yaml
     ---
-    apiVersion: pingcap.com/v1alpha1
+    apiVersion: br.pingcap.com/v1alpha1
     kind: Restore
     metadata:
       name: demo2-restore-s3
@@ -246,7 +246,7 @@ demo2-restore-s3   Complete   ...
 
 ### 第 1 步：准备恢复环境
 
-参考 [使用 BR 备份 TiDB 集群数据到兼容 S3 的存储](backup-to-aws-s3-using-br.md#第-1-步准备恢复环境)
+参考 [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md#第-1-步准备恢复环境)
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
@@ -262,7 +262,7 @@ demo2-restore-s3   Complete   ...
 
     ```yaml
     ---
-    apiVersion: pingcap.com/v1alpha1
+    apiVersion: br.pingcap.com/v1alpha1
     kind: Restore
     metadata:
       name: demo3-restore-s3
