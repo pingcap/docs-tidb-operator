@@ -11,11 +11,9 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     > **注意：**
     >
-    > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。显式指定 MySQL TLS Secret 的功能会在后续版本支持。
-
-    > **注意：**
-    >
-    > v1 集群使用 `${cluster_name}-tidb-server-secret` 和 `${cluster_name}-tidb-client-secret` 作为 Secret 名称。v2 支持不同 `TiDBGroup` 使用不同的 TLS 证书，因此使用 `${tidb_group_name}-tidb-server-secret` 和 `${tidb_group_name}-tidb-client-secret` 作为默认的 Secret 命名。
+    > - 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
+    > - 显式指定 MySQL TLS Secret 的功能将在后续版本中支持。
+    > - 对于 TiDB Operator v1 创建的 TiDB 集群，Secret 的默认命名为 `${cluster_name}-tidb-server-secret` 和 `${cluster_name}-tidb-client-secret`。在 TiDB Operator v2 中，不同的 `TiDBGroup` 支持使用不同的 TLS 证书，因此默认使用 `${tidb_group_name}-tidb-server-secret` 和 `${tidb_group_name}-tidb-client-secret` 作为 Secret 命名。
 
 2. 部署集群，设置 `TiDBGroup` 的 `.spec.template.spec.security.tls.mysql.enabled` 属性为 `true`：
 
@@ -365,9 +363,8 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     > **注意：**
     >
-    > Cert manager 签发的 Secret 中所包含的 `ca.crt` 是签发该证书的 CA，不是验证对端 mTLS 证书的 CA。
-    > 本例子中使用了相同的 CA 签发了 client 和 server 端的 TLS 证书，因此可以直接使用，如果 client 和 server 端证书使用了不同的 CA 签发, 建议通过 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发 `ca.crt`
-    >
+    > - 由 cert-manager 签发的 Secret 中包含的 `ca.crt` 是该证书的签发 CA，并非用于验证对端 mTLS 证书的 CA。
+    > - 本示例中，客户端和服务端的 TLS 证书由同一个 CA 签发，因此可以直接使用。如果客户端和服务端的证书由不同 CA 签发，建议使用 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发对应的 `ca.crt`。
 
 ## 第二步：部署 TiDBGroup
 
