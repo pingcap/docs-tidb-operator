@@ -21,6 +21,7 @@
         - 升级 TiDB Operator
     - 备份与恢复
         - 使用 Amazon S3 兼容的存储
+          - [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
         - 使用 Google Cloud Storage
         - 使用 Azure Blob Storage
         - 使用持久卷
