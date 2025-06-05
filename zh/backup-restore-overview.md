@@ -19,7 +19,7 @@ summary: 介绍如何对 Kubernetes 上的 TiDB 集群进行数据备份和数�
 
 如果你对数据备份有以下要求，可考虑使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 对 TiDB 进行数据备份：
 
-- 备份的数据量较大（大于 1 TB），而且要求备份速度较快
+- 备份的数据量较大（大于 1 TiB），而且要求备份速度较快
 - 直接备份数据的 SST 文件（键值对）
 - 对延迟不敏感的增量备份
 
