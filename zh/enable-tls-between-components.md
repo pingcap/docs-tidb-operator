@@ -281,6 +281,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     ```shell
     kubectl create secret generic ${tidb_group_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb.pem --from-file=tls.key=tidb-key.pem --from-file=ca.crt=ca.pem
+    ```
 
     其他组件证书 Secret：
 
@@ -600,7 +601,6 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${group_name}-${component_name}-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiDB 组件使用。
-
 
 ## 第二步：部署 TiDB 集群
 
