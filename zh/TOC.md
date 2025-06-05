@@ -22,6 +22,7 @@
     - 备份与恢复
         - 使用 Amazon S3 兼容的存储
         - 使用 Google Cloud Storage
+          - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
         - 使用 Azure Blob Storage
         - 使用持久卷
         - 基于快照的备份和恢复
