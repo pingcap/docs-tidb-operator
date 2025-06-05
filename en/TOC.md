@@ -21,6 +21,7 @@
         - Snapshot Backup and Restore across Multiple Kubernetes
     - Maintain
         - [View TiDB Logs](view-logs.md)
+        - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
         - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
         - Replace Nodes for a TiDB Cluster
     - Disaster Recovery
