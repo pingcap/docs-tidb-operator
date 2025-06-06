@@ -8,7 +8,8 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件 Group 生成证书：
-    - 每个组件 Group 分别创建一套证书，保存为 Kubernetes Secret 对象：`${group_name}-${component_name}-cluster-secret`
+
+    为每个组件 Group 分别创建一套证书，保存为 Kubernetes Secret 对象：`${group_name}-${component_name}-cluster-secret`。
 
     > **注意：**
     >
