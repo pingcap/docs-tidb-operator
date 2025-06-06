@@ -5,7 +5,7 @@
 - 关于 TiDB Operator
 - 部署
     - 自托管的 Kubernetes
-    - [访问 TiDB 集群](access-tidb.md)
+        - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
     - [Kubernetes 监控、告警与日志收集](kubernetes-observability.md)
 - 数据迁移
