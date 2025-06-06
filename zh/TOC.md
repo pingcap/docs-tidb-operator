@@ -20,12 +20,27 @@
     - 升级
         - 升级 TiDB Operator
     - 备份与恢复
+      - [备份与恢复简介](backup-restore-overview.md)
+      - [备份与恢复 CR 介绍](backup-restore-cr.md)
       - [远程存储访问授权](grant-permissions-to-remote-storage.md)
       - 使用 Amazon S3 兼容的存储
+        - [使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的存储](backup-to-aws-s3-using-br.md)
+        - [使用 BR 恢复 Amazon S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
+        - 使用 Dumpling 备份 TiDB 集群数据到兼容 Amazon S3 的存储
+        - 使用 TiDB Lightning 恢复 Amazon S3 兼容存储上的备份数据
       - 使用 Google Cloud Storage
+        - [使用 BR 备份 TiDB 集群数据到 GCS](backup-to-gcs-using-br.md)
+        - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
+        - 使用 Dumpling 备份 TiDB 集群数据到 GCS
+        - 使用 TiDB Lightning 恢复 GCS 上的备份数据
       - 使用 Azure Blob Storage
+        - [使用 BR 备份 TiDB 集群数据到 Azure Blob Storage](backup-to-azblob-using-br.md)
+        - [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
+        - 使用 Dumpling 备份 TiDB 集群数据到 Azure Blob Storage
+        - 使用 TiDB Lightning 恢复 Azure Blob Storage 的备份数据
       - 使用持久卷
-      - 基于快照的备份和恢复
+        - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
+        - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
@@ -39,4 +54,5 @@
     - 架构
       - [TiDB Operator 架构](architecture.md)
     - 工具
+      - [TiDB Toolkit](tidb-toolkit.md)
     - 配置
