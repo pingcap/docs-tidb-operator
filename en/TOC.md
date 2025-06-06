@@ -29,4 +29,5 @@
 - Reference
     - Architecture
     - Tools
+        - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
