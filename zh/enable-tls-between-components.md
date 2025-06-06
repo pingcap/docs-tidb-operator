@@ -23,7 +23,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 3. 配置 `pd-ctl` 和 `tikv-ctl` 连接集群。
 
-其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
+其中，颁发证书的方式有多种，本文档提供两种方式，你也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
 
 - 使用 `cfssl` 系统颁发证书；
 - 使用 `cert-manager` 系统颁发证书；
@@ -141,7 +141,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${pd_group_name}` 为 PDGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${pd_group_name}` 为 PDGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
 
         最后生成 PD 证书：
 
@@ -178,7 +178,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${tikv_group_name}` 为 TiKVGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${tikv_group_name}` 为 TiKVGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
 
         最后生成 TiKV 证书：
 
@@ -215,7 +215,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${tidb_group_name}` 为 TiDBGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${tidb_group_name}` 为 TiDBGroup 的名字，`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
 
         最后生成 TiDB 证书：
 
@@ -254,7 +254,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`），`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
+        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`），`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
 
         最后生成组件证书：
 
