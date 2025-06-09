@@ -23,16 +23,12 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 1. 备份原 CA 证书与密钥。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     mv ca.pem ca.old.pem && \
     mv ca-key.pem ca-key.old.pem
     ```
 
 2. 基于原 CA 证书的配置与证书签名请求 (CSR)，生成新的 CA 证书和密钥。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
@@ -44,8 +40,6 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 3. 备份新 CA 证书与密钥，并基于原有 CA 证书及新的 CA 证书生成组合 CA 证书。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     mv ca.pem ca.new.pem && \
     mv ca-key.pem ca-key.new.pem && \
@@ -54,15 +48,13 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 4. 基于组合 CA 证书更新各相应的 Kubernetes Secret 对象。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl create secret generic ${pd_group_name}-pd-cluster-secret --namespace=${namespace} --from-file=tls.crt=pd-server.pem --from-file=tls.key=pd-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret generic ${tikv_group_name}-tikv-cluster-secret --namespace=${namespace} --from-file=tls.crt=tikv-server.pem --from-file=tls.key=tikv-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret generic ${tidb_group_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb-server.pem --from-file=tls.key=tidb-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-    其中 `${pd_group_name}`, `${tikv_group_name}`, `${tidb_group_name}` 为组件 Group 的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
+    其中 `${pd_group_name}`、`${tikv_group_name}`、`${tidb_group_name}` 为组件 Group 的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
 
     > **注意：**
     >
@@ -80,8 +72,6 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 1. 基于各组件原配置信息，生成新的 Server 端与 Client 端证书。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     cfssl gencert -ca=ca.new.pem -ca-key=ca-key.new.pem -config=ca-config.json -profile=internal pd-server.json | cfssljson -bare pd-server
     cfssl gencert -ca=ca.new.pem -ca-key=ca-key.new.pem -config=ca-config.json -profile=internal tikv-server.json | cfssljson -bare tikv-server
@@ -95,15 +85,13 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 2. 基于新生成的 Server 端与 Client 端证书，更新相应的 Kubernetes Secret 对象。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl create secret generic ${pd_group_name}-pd-cluster-secret --namespace=${namespace} --from-file=tls.crt=pd-server.pem --from-file=tls.key=pd-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret generic ${tikv_group_name}-tikv-cluster-secret --namespace=${namespace} --from-file=tls.crt=tikv-server.pem --from-file=tls.key=tikv-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     kubectl create secret generic ${tidb_group_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb-server.pem --from-file=tls.key=tidb-server-key.pem --from-file=ca.crt=ca.pem --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-    其中 `${pd_group_name}`, `${tikv_group_name}`, `${tidb_group_name}` 为组件 Group 的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
+    其中 `${pd_group_name}`、`${tikv_group_name}`、`${tidb_group_name}` 为组件 Group 的名字，`${namespace}` 为 TiDB 集群部署的命名空间。
 
     > **注意：**
     >
@@ -118,8 +106,6 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 若同时参考[更新和替换 CA 证书](#更新和替换-ca-证书)与[更新和替换组件间证书](#更新和替换组件间证书)更新与替换了组合 CA 证书与 Server 端、Client 端组件证书，且计划移除原 CA 证书（如原 CA 证书已过期或原 CA 证书的密钥被盗），则可按如下步骤移除原 CA 证书。
 
 1. 基于新 CA 证书更新 Kubernetes Secret 对象。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl create secret generic ${cluster_name}-pd-cluster-secret --namespace=${namespace} --from-file=tls.crt=pd-server.pem --from-file=tls.key=pd-server-key.pem --from-file=ca.crt=ca.new.pem --dry-run=client -o yaml | kubectl apply -f -
@@ -147,15 +133,15 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 ### 仅更新和替换组件间证书
 
-使用 cert-manager 颁发证书时，通过指定 `Certificate` 资源的 `spec.renewBefore` 可由 cert-manager 在证书过期之前自动进行更新。
+使用 cert-manager 颁发证书时，可通过配置 `Certificate` 资源的 `spec.renewBefore` 字段，让 cert-manager 在证书过期前自动进行更新。
 
-1. cert-manager 支持在证书过期之前自动更新各组件的证书及 Kubernetes Secret 对象。如果需要手动更新，可以参考 [使用 cmctl renew 证书](https://cert-manager.io/docs/reference/cmctl/#renew)
+1. cert-manager 支持在证书过期前自动更新各组件的证书及对应的 Kubernetes Secret 对象。如需手动更新，可以参考[使用 cmctl renew 证书](https://cert-manager.io/docs/reference/cmctl/#renew)
 
 2. 对于各组件间的证书，各组件会在之后新建连接时自动重新加载新的证书，无需手动操作。
 
     > **注意：**
     >
-    > - 各组件目前[暂不支持 CA 证书的自动重新加载](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components#证书重加载)，需要参考[更新和替换 CA 证书及组件间证书](#更新和替换-ca-证书及组件间证书)进行处理。
+    > - 各组件目前[暂不支持 CA 证书的自动重新加载](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components#证书重加载)，需要参考[更新和替换 CA 证书](#更新和替换-ca-证书)进行处理。
     > - 对于 TiDB Server 端证书，可参考以下任意方式进行手动重加载：
     >     - 参考[重加载证书、密钥和 CA](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#重加载证书密钥和-ca)。
     >     - 参考[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)对 TiDB Server 进行滚动重启。
