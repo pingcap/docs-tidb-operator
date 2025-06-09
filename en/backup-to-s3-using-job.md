@@ -1,11 +1,11 @@
 ---
 title: Back Up TiDB Data to Amazon S3-Compatible Storage Using Dumpling
-summary: This document describes how to use Dumpling to back up TiDB cluster data to Amazon S3-compatible storage.
+summary: Learn how to use Dumpling to back up TiDB cluster data to Amazon S3-compatible storage.
 ---
 
 # Back Up TiDB Data to Amazon S3-Compatible Storage Using Dumpling
 
-This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on AWS EKS to Amazon S3-compatible storage. Dumpling is a data export tool that can export data from TiDB or MySQL in SQL or CSV format for full data backup or export.
+This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on AWS EKS to Amazon S3-compatible storage. Dumpling is a data export tool that exports data from TiDB or MySQL in SQL or CSV format for full data backup or export.
 
 ## Prepare the Dumpling node pool
 
@@ -40,13 +40,13 @@ eksctl create nodegroup -f eks_dumpling.yaml
 
 ## Deploy the Dumpling job
 
-This section describes how to configure, deploy, and monitor the Dumpling Job.
+This section describes how to configure, deploy, and monitor the Dumpling job.
 
 ### Configure the Dumpling job
 
-The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables with your specific values as needed:
+The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling job. Replace the variables with your specific values as needed:
 
-- `${name}`: Job name
+- `${name}`: job name
 - `${namespace}`: Kubernetes namespace
 - `${version}`: Dumpling image version
 - For Dumpling parameters, refer to the [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/#option-list-of-dumpling).

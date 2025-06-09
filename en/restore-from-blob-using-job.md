@@ -1,6 +1,6 @@
 ---
 title: Restore Backup Data from Azure Blob Storage Using TiDB Lightning
-summary: This document describes how to use TiDB Lightning to restore backup data stored in Azure Blob Storage to a TiDB cluster.
+summary: Learn how to use TiDB Lightning to restore backup data stored in Azure Blob Storage to a TiDB cluster.
 ---
 
 # Restore Backup Data from Azure Blob Storage Using TiDB Lightning
@@ -9,7 +9,7 @@ This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tid
 
 ## Prepare a node pool for TiDB Lightning
 
-You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
+You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following example shows how to create a new node pool. Replace the variables as needed:
 
 - `${clusterName}`: AKS cluster name
 - `${resourceGroup}`: Resource group name

@@ -1,6 +1,6 @@
 ---
 title: Back Up TiDB Data to Google Cloud Storage (GCS) Using Dumpling
-summary: This document describes how to use Dumpling to back up TiDB cluster data to Google Cloud Storage (GCS).
+summary: Learn how to use Dumpling to back up TiDB cluster data to Google Cloud Storage (GCS).
 ---
 
 # Back Up TiDB Data to Google Cloud Storage (GCS) Using Dumpling
@@ -9,7 +9,7 @@ This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stab
 
 ## Prepare the Dumpling node pool
 
-You can run Dumpling in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
+You can run Dumpling in an existing node pool or create a dedicated node pool. The following example shows how to create a new node pool. Replace the variables as needed:
 
 - `${clusterName}`: GKE cluster name
 
@@ -33,9 +33,9 @@ kubectl -n ${namespace} create configmap google-credentials --from-file=google-c
 
 ### Configure the Dumpling job
 
-The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling Job. Replace the variables as needed:
+The following is a sample configuration file (`dumpling_job.yaml`) for the Dumpling job. Replace the variables as needed:
 
-- `${name}`: Job name
+- `${name}`: job name
 - `${namespace}`: Kubernetes namespace
 - `${version}`: Dumpling image version
 - For Dumpling parameters, refer to the [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/#option-list-of-dumpling).

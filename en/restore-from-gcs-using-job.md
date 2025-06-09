@@ -1,17 +1,17 @@
 ---
 title: Restore Backup Data from Google Cloud Storage (GCS) Using TiDB Lightning
-summary: This document describes how to use TiDB Lightning to restore backup data stored in Google Cloud Storage (GCS) to a TiDB cluster.
+summary: Learn how to use TiDB Lightning to restore backup data stored in Google Cloud Storage (GCS) to a TiDB cluster.
 ---
 
 # Restore Backup Data from Google Cloud Storage (GCS) Using TiDB Lightning
 
-This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/) to restore backup data from [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) to a TiDB cluster. TiDB Lightning is a tool for fast full data import into a TiDB cluster. This document uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode/). For detailed usage and configuration parameters of TiDB Lightning, refer to the [official documentation](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/).
+This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/) to restore backup data from [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) to a TiDB cluster. TiDB Lightning is a tool for fast full data import into a TiDB cluster. This document uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode/). For detailed usage and configuration items of TiDB Lightning, refer to the [official documentation](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/).
 
 The following example shows how to restore backup data from GCS to a TiDB cluster.
 
 ## Prepare a node pool for TiDB Lightning
 
-You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
+You can run TiDB Lightning in an existing node pool or create a dedicated node pool. The following example shows how to create a new node pool. Replace the variables as needed:
 
 - `${clusterName}`: GKE cluster name
 
@@ -157,7 +157,7 @@ envsubst < lightning_job.yaml | kubectl apply -f -
 
 ### Check the TiDB Lightning job status
 
-Run the following command to check the Pod status of the TiDB Lightning Job:
+Run the following command to check the Pod status of the TiDB Lightning job:
 
 ```shell
 kubectl -n ${namespace} get pod ${name}

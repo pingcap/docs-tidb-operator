@@ -1,15 +1,15 @@
 ---
 title: Back Up TiDB Data to Azure Blob Storage Using Dumpling
-summary: This document describes how to use Dumpling to back up TiDB cluster data to Azure Blob Storage.
+summary: Learn how to use Dumpling to back up TiDB cluster data to Azure Blob Storage.
 ---
 
 # Back Up TiDB Data to Azure Blob Storage Using Dumpling
 
-This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on Azure AKS to Azure Blob Storage. Dumpling is a data export tool that can export data from TiDB or MySQL in SQL or CSV format for full data backup or export.
+This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) to back up data from a TiDB cluster deployed on Azure AKS to Azure Blob Storage. Dumpling is a data export tool that exports data from TiDB or MySQL in SQL or CSV format for full data backup or export.
 
 ## Prepare the Dumpling node pool
 
-You can run Dumpling in an existing node pool or create a dedicated node pool. The following command example shows how to create a new node pool. Replace the variables as needed:
+You can run Dumpling in an existing node pool or create a dedicated node pool. The following example shows how to create a new node pool. Replace the variables as needed:
 
 - `${clusterName}`: AKS cluster name
 - `${resourceGroup}`: Resource group name
@@ -108,7 +108,7 @@ kubectl -n ${namespace} get pod ${name}
 
 ### View Dumpling job logs
 
-Run the following command to view the logs of the Dumpling Job. Replace the variables with your specific values as needed:
+Run the following command to view the logs of the Dumpling job. Replace the variables with your specific values as needed:
 
 ```shell
 kubectl -n ${namespace} logs pod ${name}

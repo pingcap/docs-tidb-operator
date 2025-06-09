@@ -1,10 +1,10 @@
 ---
-title: Back up Data to GCS Using Dumpling (Helm)
+title: Back Up Data to GCS Using Dumpling (Helm)
 summary: Learn how to use Helm to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
 aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-gcs/']
 ---
 
-# Back up Data to GCS Using Dumpling (Helm)
+# Back Up Data to GCS Using Dumpling (Helm)
 
 > **Warning:**
 >

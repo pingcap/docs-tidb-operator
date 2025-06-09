@@ -1,11 +1,11 @@
 ---
 title: Restore Backup Data from Amazon S3-Compatible Storage Using TiDB Lightning
-summary: This document describes how to use TiDB Lightning to restore backup data stored in Amazon S3-compatible storage to a TiDB cluster.
+summary: Learn how to use TiDB Lightning to restore backup data stored in Amazon S3-compatible storage to a TiDB cluster.
 ---
 
 # Restore Backup Data from Amazon S3-Compatible Storage Using TiDB Lightning
 
-This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/) to restore backup data from Amazon S3-compatible storage to a TiDB cluster. TiDB Lightning is a tool for fast full data import into a TiDB cluster. This document uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode/). For detailed usage and configuration parameters of TiDB Lightning, refer to the [official documentation](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/).
+This document describes how to use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/) to restore backup data from Amazon S3-compatible storage to a TiDB cluster. TiDB Lightning is a tool for fast full data import into a TiDB cluster. This document uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode/). For detailed usage and configuration items of TiDB Lightning, refer to the [official documentation](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview/).
 
 The following example shows how to restore backup data from Amazon S3-compatible storage to a TiDB cluster.
 
