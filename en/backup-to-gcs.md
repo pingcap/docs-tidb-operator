@@ -1,13 +1,18 @@
 ---
-title: Back up Data to GCS Using Dumpling
-summary: Learn how to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
+title: Back Up Data to GCS Using Dumpling (Helm)
+summary: Learn how to use Helm to back up the TiDB cluster to GCS (Google Cloud Storage) using Dumpling.
+aliases: ['/docs/tidb-in-kubernetes/dev/backup-to-gcs/']
 ---
 
-# Back up Data to GCS Using Dumpling
+# Back Up Data to GCS Using Dumpling (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](backup-to-gcs-using-job.md) for backup operations.
 
 This document describes how to back up the data of the TiDB cluster on Kubernetes to [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/). "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup).
 
-The backup method described in this document is implemented using CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. [Dumpling](https://docs.pingcap.com/tidb/stable/export-or-backup-using-dumpling) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the remote GCS.
+The backup method described in this document is implemented using CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the remote GCS.
 
 Dumpling is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV files and can be used to make a logical full backup or export.
 
