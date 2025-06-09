@@ -15,7 +15,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     >
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致各组件部署失败。
 
-2. 部署集群，设置 `.spec.tlsCluster.enabled` 属性为 `true`；
+2. 部署集群，为 Cluster Custom Resource (CR) 设置 `.spec.tlsCluster.enabled` 属性为 `true`；
 
     > **注意：**
     >
@@ -461,7 +461,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             group: cert-manager.io
         ```
 
-        其中 `${tikv_group_name}` 为 PDGroup 的名字，`${cluster_name}` 为 TiDB 集群的名字：
+        其中 `${tikv_group_name}` 为 TiKVGroup 的名字，`${cluster_name}` 为 TiDB 集群的名字：
 
         - `spec.secretName` 请设置为 `${tikv_group_name}-tikv-cluster-secret`；
         - `usages` 请添加上 `server auth` 和 `client auth`；
