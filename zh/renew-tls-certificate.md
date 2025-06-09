@@ -135,7 +135,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 使用 cert-manager 颁发证书时，可通过配置 `Certificate` 资源的 `spec.renewBefore` 字段，让 cert-manager 在证书过期前自动进行更新。
 
-1. cert-manager 支持在证书过期前自动更新各组件的证书及对应的 Kubernetes Secret 对象。如需手动更新，可以参考[使用 cmctl renew 证书](https://cert-manager.io/docs/reference/cmctl/#renew)
+1. cert-manager 支持在证书过期前自动更新各组件的证书及对应的 Kubernetes Secret 对象。如需手动更新，可以参考[使用 cmctl renew 证书](https://cert-manager.io/docs/reference/cmctl/#renew)。
 
 2. 对于各组件间的证书，各组件会在之后新建连接时自动重新加载新的证书，无需手动操作。
 
