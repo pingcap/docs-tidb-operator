@@ -64,16 +64,22 @@
     - Amazon S3 Compatible Storage
       - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
       - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
-      - [Back Up Data Using Dumpling](backup-to-s3.md)
-      - [Restore Data Using TiDB Lightning](restore-from-s3.md)
+      - [Back Up Data Using Dumpling](backup-to-s3-using-job.md)
+      - [Restore Data Using TiDB Lightning](restore-from-s3-using-job.md)
+      - [Back Up Data Using Dumpling (Deprecated)](backup-to-s3.md)
+      - [Restore Data Using TiDB Lightning (Deprecated)](restore-from-s3.md)
     - Google Cloud Storage
       - [Back Up Data Using BR](backup-to-gcs-using-br.md)
       - [Restore Data Using BR](restore-from-gcs-using-br.md)
-      - [Back Up Data Using Dumpling](backup-to-gcs.md)
-      - [Restore Data Using TiDB Lightning](restore-from-gcs.md)
+      - [Back Up Data Using Dumpling](backup-to-gcs-using-job.md)
+      - [Restore Data Using TiDB Lightning](restore-from-gcs-using-job.md)
+      - [Back Up Data Using Dumpling (Deprecated)](backup-to-gcs.md)
+      - [Restore Data Using TiDB Lightning (Deprecated)](restore-from-gcs.md)
     - Azure Blob Storage
       - [Back Up Data Using BR](backup-to-azblob-using-br.md)
       - [Restore Data Using BR](restore-from-azblob-using-br.md)
+      - [Back Up Data Using Dumpling](backup-to-blob-using-job.md)
+      - [Restore Data Using TiDB Lightning](restore-from-blob-using-job.md)
     - Persistent Volumes
       - [Back Up Data](backup-to-pv-using-br.md)
       - [Restore Data](restore-from-pv-using-br.md)
