@@ -1,13 +1,17 @@
 ---
-title: Back up Data to S3-Compatible Storage Using Dumpling
+title: Back Up Data to S3-Compatible Storage Using Dumpling (Helm)
 summary: Learn how to back up the TiDB cluster to the S3-compatible storage using Dumpling.
 ---
 
-# Back up Data to S3-Compatible Storage Using Dumpling
+# Back Up Data to S3-Compatible Storage Using Dumpling (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](backup-to-s3-using-job.md) for backup operations.
 
 This document describes how to back up the data of the TiDB cluster on Kubernetes to an S3-compatible storage. "Backup" in this document refers to full backup (ad-hoc full backup and scheduled full backup).
 
-The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. For the underlying implementation, [Dumpling](https://docs.pingcap.com/tidb/stable/export-or-backup-using-dumpling) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the S3-compatible storage.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator v1.1 or later versions. For the underlying implementation, [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview/) is used to get the logic backup of the TiDB cluster, and then this backup data is sent to the S3-compatible storage.
 
 Dumpling is a data export tool that exports data stored in TiDB/MySQL as SQL or CSV files and can be used to make a logical full backup or export.
 
