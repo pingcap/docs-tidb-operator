@@ -1,9 +1,13 @@
 ---
-title: Restore Data from S3-Compatible Storage Using TiDB Lightning
+title: Restore Data from S3-Compatible Storage Using TiDB Lightning (Helm)
 summary: Learn how to restore data from the S3-compatible storage.
 ---
 
-# Restore Data from S3-Compatible Storage Using TiDB Lightning
+# Restore Data from S3-Compatible Storage Using TiDB Lightning (Helm)
+
+> **Warning:**
+>
+> The Helm deployment method described in this document is deprecated. It is recommended to use the [Job method](restore-from-s3-using-job.md) for data restore operations.
 
 This document describes how to restore the TiDB cluster data backed up using TiDB Operator on Kubernetes.
 
