@@ -5,7 +5,7 @@ summary: Learn how to use operation tools for TiDB on Kubernetes, including PD C
 
 # Tools on Kubernetes
 
-This document describes how to use operation tools for TiDB on Kubernetes, including PD Control, TiKV Control, and TiDB Control.
+This document describes how to use operational tools for TiDB on Kubernetes, including PD Control, TiKV Control, and TiDB Control.
 
 ## Use PD Control on Kubernetes
 
