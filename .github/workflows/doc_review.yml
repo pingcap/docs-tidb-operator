@@ -20,7 +20,7 @@ jobs:
       (
         github.event_name == 'issue_comment' &&
         contains(github.event.comment.body, '/bot-review') &&
-        contains('hfxsd,likidu,lilin90,Oreoxmt,qiancai', github.event.comment.user.login)
+        (github.event.comment.user.login == 'hfxsd' || github.event.comment.user.login == 'likidu' || github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'Oreoxmt' || github.event.comment.user.login == 'qiancai')
       )
     outputs:
       zh_files_count: ${{ steps.diff.outputs.zh_files_count }}
@@ -30,11 +30,6 @@ jobs:
       base_sha: ${{ steps.extract.outputs.BASE_SHA }}
       head_sha: ${{ steps.extract.outputs.HEAD_SHA }}
     steps:
-      - name: Debug Info
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Comment body: ${{ github.event.comment.body || 'No comment body' }}"
-          echo "Comment author: ${{ github.event.comment.user.login || 'No user' }}"
 
       - name: Checkout Repo
         uses: actions/checkout@v3
