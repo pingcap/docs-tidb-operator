@@ -61,7 +61,6 @@ jobs:
           else
             echo "REVIEW_MODE=invalid" >> $GITHUB_OUTPUT
             echo "Invalid bot-review command format"
-            printf "Raw comment: %s\n" "$COMMENT"
           fi
 
       - name: Get PR diff
