@@ -18,6 +18,7 @@
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
     - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
+        - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
         - 升级 TiDB Operator
     - 备份与恢复
       - [备份与恢复简介](backup-restore-overview.md)
