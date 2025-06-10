@@ -41,7 +41,6 @@ jobs:
         if: github.event_name == 'issue_comment'
         run: |
           COMMENT="${{ github.event.comment.body }}"
-          echo "Raw comment: $COMMENT"
           
           # Match commit range
           if [[ "$COMMENT" =~ \/bot-review:[[:space:]]*([a-f0-9]{7,40})[[:space:]]*\.\.[[:space:]]*([a-f0-9]{7,40}) ]]; then
@@ -62,6 +61,7 @@ jobs:
           else
             echo "REVIEW_MODE=invalid" >> $GITHUB_OUTPUT
             echo "Invalid bot-review command format"
+            echo "Raw comment: $COMMENT"
           fi
 
       - name: Get PR diff
