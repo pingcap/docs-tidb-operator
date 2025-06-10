@@ -46,7 +46,7 @@ spec:
       targetPort: mysql-client
 ```
 
-The following YAML example defines a Service that provides access to all TiDB nodes in the TiDBGroup `tidb-0` of cluster `db`:
+The following YAML example defines a Service that provides access to all TiDB nodes in the TiDBGroup `tidb-0` of the cluster `db`:
 
 ```yaml
 apiVersion: v1
