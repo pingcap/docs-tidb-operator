@@ -1,0 +1,33 @@
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD041 -->
+
+- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
+- Introduction
+- Deploy
+    - On Self-Managed Kubernetes
+- Monitor and Alert
+- Migrate
+    - Migrate from MySQL
+- Manage
+    - Security
+      - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+    - Upgrade
+        - Upgrade TiDB Operator
+    - Backup and Restore
+        - Amazon S3 Compatible Storage
+        - Google Cloud Storage
+        - Azure Blob Storage
+        - Persistent Volumes
+        - Snapshot Backup and Restore across Multiple Kubernetes
+    - Maintain
+        - [View TiDB Logs](view-logs.md)
+        - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
+        - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+        - Replace Nodes for a TiDB Cluster
+    - Disaster Recovery
+- Troubleshoot
+- Reference
+    - Architecture
+    - Tools
+        - [TiDB Toolkit](tidb-toolkit.md)
+    - Configure
