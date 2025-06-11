@@ -52,9 +52,6 @@ Before starting the process, make sure that Kubernetes clusters are deployed on 
     tikv:
       baseImage: pingcap/tikv-arm64
       # ...
-    pump:
-      baseImage: pingcap/tidb-binlog-arm64
-      # ...
     ticdc:
       baseImage: pingcap/ticdc-arm64
       # ...
