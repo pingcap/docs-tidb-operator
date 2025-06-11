@@ -11,8 +11,11 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
-    - [自定义 Pod](overlay.md)
-    - [存储卷配置](configure-volume.md)
+  - [资源与部署配置](resource-and-deployment-configuration.md)
+  - [组件配置](component-configuration.md)
+  - [存储卷配置](volume-configuration.md)
+  - [服务与高可用配置](service-and-high-availability-configuration.md)
+  - [自定义 Kubernetes 原生资源的配置](overlay.md)
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
