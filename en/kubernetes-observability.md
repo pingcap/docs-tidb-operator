@@ -17,7 +17,7 @@ The TiDB monitoring system deployed with the cluster only focuses on the operati
 
 Monitoring the host and its resources works in the same way as monitoring physical resources of a traditional server.
 
-If you already have a monitoring system for your physical server in your existing infrastructure, you only need to add the host that holds Kubernetes to the existing monitoring system by conventional means; if there is no monitoring system available, or if you want to deploy a separate monitoring system to monitor the host that holds Kubernetes, then you can use any monitoring system that you are familiar with.
+If you already have a monitoring system for your physical server in your existing infrastructure, you only need to add the host that holds Kubernetes to the existing monitoring system by conventional means. If there is no monitoring system available, or if you want to deploy a separate monitoring system to monitor the host that holds Kubernetes, then you can use any monitoring system that you are familiar with.
 
 The newly deployed monitoring system can run on a separate server, directly on the host that holds Kubernetes, or in a Kubernetes cluster. Different deployment methods might have differences in the deployment configuration and resource utilization, but there are no major differences in usage.
 
@@ -29,7 +29,7 @@ The following lists some common open source monitoring systems that can be used 
 - [Nagios](https://www.nagios.org/)
 - [Zabbix](https://www.zabbix.com/)
 
-Some cloud service providers or specialized performance monitoring service providers also have their own free or chargeable monitoring solutions that you can choose from.
+Some cloud service providers or specialized performance monitoring service providers also have their own free or paid monitoring solutions that you can choose from.
 
 It is recommended to deploy a host monitoring system in the Kubernetes cluster using [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) based on [Node Exporter](https://github.com/prometheus/node_exporter) and Prometheus. This solution can also be compatible with and used for monitoring the Kubernetes' own components.
 
@@ -55,7 +55,7 @@ If you monitor Kubernetes hosts and services by using other tools or services, y
 
 When you deploy TiDB using TiDB Operator, all components write runtime logs the container's `stdout` and `stderr` by default. On Kubernetes, these logs are stored in the `/var/log/containers` directory on host machines, and filenames include the Pod and container names. You can collect application logs in the container directly from the host.
 
-If you already have a log collection system in your existing infrastructure, you only need to add the `/var/log/containers/*.log` files from the Kubernetes hosts to your collection scope; if there is no log collection system available, or if you want to deploy a separate log collection system, then you can use any log collection system that you are familiar with.
+If you already have a log collection system in your existing infrastructure, you only need to add the `/var/log/containers/*.log` files from the Kubernetes hosts to your collection scope. If there is no log collection system available, or if you want to deploy a separate log collection system, then you can use any log collection system that you are familiar with.
 
 The following lists some common open source tools for Kubernetes log collection:
 
@@ -71,6 +71,6 @@ Some cloud service providers or performance monitoring service providers also of
 
 ### Collect system logs
 
-You can collect system logs from Kubernetes hosts using standard methods. If you already have a log collection system in your existing infrastructure, you only need to add the relevant servers and log files to the collection scope; if there is no log collection system available, or if you want to deploy a separate log collection system, then you can use any log collection system that you are familiar with.
+You can collect system logs from Kubernetes hosts using standard methods. If you already have a log collection system in your existing infrastructure, you only need to add the relevant servers and log files to the collection scope. If there is no log collection system available, or if you want to deploy a separate log collection system, then you can use any log collection system that you are familiar with.
 
 All tools listed in the [Collect TiDB and Kubernetes component runtime logs](#collect-tidb-and-kubernetes-component-runtime-logs) section support system log collection. Additionally, some cloud service providers or performance monitoring service providers also offer free or paid log collection solutions.
