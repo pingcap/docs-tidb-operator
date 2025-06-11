@@ -21,7 +21,7 @@ summary: 介绍如何使用 BR 备份 TiDB 集群到 Google Cloud Storage (GCS)�
 
 如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)的方式备份至 GCS 上（同时也需要配合快照备份的数据，来更高效地[恢复](restore-from-gcs-using-br.md#pitr-恢复)数据）：
 
-- 需要在新集群上恢复备份集群的历史任意时刻点快照（PITR）
+- 需要在新集群上恢复备份集群的历史任意时刻点快照 (PITR)
 - 数据的 RPO 在分钟级别
 
 如有其他备份需求，请参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
@@ -42,114 +42,107 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
 ### 前置条件：准备 Ad-hoc 备份环境
 
-1. 将如下 RBAC 资源保存为 backup-rbac.yaml
+> **注意：**
+>
+> - BR 使用的 ServiceAccount 名称为固定值，必须为 `tidb-backup-manager`。
+> - 从 TiDB Operator v2 开始，`Backup`、`Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
 
-   ```yaml
-   ---
-   kind: Role
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   rules:
-   - apiGroups: [""]
-     resources: ["events"]
-     verbs: ["*"]
-   - apiGroups: ["br.pingcap.com"]
-     resources: ["backups", "restores"]
-     verbs: ["get", "watch", "list", "update"]
+1. 将以下内容保存为 `backup-rbac.yaml` 文件，用于创建所需的 RBAC 资源：
 
-   ---
-   kind: ServiceAccount
-   apiVersion: v1
-   metadata:
-     name: tidb-backup-manager
+    ```yaml
+    ---
+    kind: Role
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    rules:
+    - apiGroups: [""]
+      resources: ["events"]
+      verbs: ["*"]
+    - apiGroups: ["br.pingcap.com"]
+      resources: ["backups", "restores"]
+      verbs: ["get", "watch", "list", "update"]
 
-   ---
-   kind: RoleBinding
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   subjects:
-   - kind: ServiceAccount
-     name: tidb-backup-manager
-   roleRef:
-     apiGroup: rbac.authorization.k8s.io
-     kind: Role
-     name: tidb-backup-manager
+    ---
+    kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: tidb-backup-manager
 
-   ```
+    ---
+    kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    subjects:
+    - kind: ServiceAccount
+      name: tidb-backup-manager
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: tidb-backup-manager
+    ```
 
-2. 执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
-
-    {{< copyable "shell-regular" >}}
+2. 执行以下命令在 namespace `test1` 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-3. 为 namespace `test1` 授予远程存储访问权限。
+3. 为 namespace `test1` 授予远程存储访问权限：
 
     参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，授权访问 GCS 远程存储。
 
-> **注意：**
->
-> - br 使用的 ServiceAccount 名称固定，只能使用 `tidb-backup-manager`
-> - TiDB Operator v2 将 `backup`, `restore` 等资源的 `apiGroup` 从 `pingcap.com` 改为了 `br.pingcap.com`
-
 ### 快照备份
 
-1. 创建 `Backup` CR，将数据备份到 GCS：
+创建 `Backup` CR，将数据备份到 GCS：
 
-    {{< copyable "shell-regular" >}}
+```shell
+kubectl apply -f full-backup-gcs.yaml
+```
 
-    ```shell
-    kubectl apply -f full-backup-gcs.yaml
-    ```
+`full-backup-gcs.yaml` 文件内容如下：
 
-    `full-backup-gcs.yaml` 文件内容如下：
+```yaml
+---
+apiVersion: br.pingcap.com/v1alpha1
+kind: Backup
+metadata:
+  name: demo1-full-backup-gcs
+  namespace: test1
+spec:
+  # backupType: full
+  br:
+    cluster: demo1
+    # logLevel: info
+    # statusAddr: ${status-addr}
+    # concurrency: 4
+    # rateLimit: 0
+    # checksum: true
+    # sendCredToTikv: true
+    # options:
+    # - --lastbackupts=420134118382108673
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-full-backup-folder
+    # location: us-east1
+    # storageClass: STANDARD_IA
+    # objectAcl: private
+```
 
-    {{< copyable "" >}}
+在配置 `full-backup-gcs.yaml` 文件时，请参考以下信息：
 
-    ```yaml
-    ---
-    apiVersion: br.pingcap.com/v1alpha1
-    kind: Backup
-    metadata:
-      name: demo1-full-backup-gcs
-      namespace: test1
-    spec:
-      # backupType: full
-      br:
-        cluster: demo1
-        # logLevel: info
-        # statusAddr: ${status-addr}
-        # concurrency: 4
-        # rateLimit: 0
-        # checksum: true
-        # sendCredToTikv: true
-        # options:
-        # - --lastbackupts=420134118382108673
-      gcs:
-        projectId: ${project_id}
-        secretName: gcs-secret
-        bucket: my-bucket
-        prefix: my-full-backup-folder
-        # location: us-east1
-        # storageClass: STANDARD_IA
-        # objectAcl: private
-    ```
-
-    在配置 `full-backup-gcs.yaml` 文件时，请参考以下信息：
-
-    - 自 v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
-    - `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
-    - `spec.gcs` 中的一些参数为可选项，如 `location`、`objectAcl`、`storageClass`。GCS 存储相关配置参考 [GCS 存储字段介绍](backup-restore-cr.md#gcs-存储字段介绍)。
-    - 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
-    - 更多 `Backup` CR 字段的详细解释，请参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
+- 自 TiDB Operator v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
+- `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `spec.gcs` 中的一些参数为可选项，如 `location`、`objectAcl`、`storageClass`。GCS 存储相关配置参考 [GCS 存储字段介绍](backup-restore-cr.md#gcs-存储字段介绍)。
+- 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
+- 更多 `Backup` CR 字段的详细解释，请参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
 #### 查看快照备份的状态
 
@@ -184,9 +177,7 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 <Tip>
 
-在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
-
-但是，请勿在同一个 Backup CR 中同时使用 `logStop` 和 `logSubcommand` 字段，这属于不支持的用法。对于 TiDB Operator v1.5.5、v1.6.1 及之后版本，推荐使用 `logSubcommand` 以确保配置清晰且一致。
+在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段在 TiDB Operator v2 中不再保留，推荐使用 `logSubcommand` 以确保配置清晰且一致。
 
 </Tip>
 
@@ -476,39 +467,39 @@ demo1-log-backup-gcs       log      Stopped   ....
 
 本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
-1. 在 `test1` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
+在 `test1` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
 
-    ```shell
-    kubectl apply -f compact-backup-demo1.yaml
-    ```
+```shell
+kubectl apply -f compact-backup-demo1.yaml
+```
 
-    `compact-backup-demo1.yaml` 的内容如下：
+`compact-backup-demo1.yaml` 的内容如下：
 
-    ```yaml
-    ---
-    apiVersion: br.pingcap.com/v1alpha1
-    kind: CompactBackup
-    metadata:
-      name: demo1-compact-backup
-      namespace: test1
-    spec:
-      startTs: "***"
-      endTs: "***"
-      concurrency: 8
-      maxRetryTimes: 2
-      br:
-        cluster: demo1
-        sendCredToTikv: true
-      gcs:
-        projectId: ${project_id}
-        secretName: gcs-secret
-        bucket: my-bucket
-        prefix: my-log-backup-folder
-    ```
+```yaml
+---
+apiVersion: br.pingcap.com/v1alpha1
+kind: CompactBackup
+metadata:
+  name: demo1-compact-backup
+  namespace: test1
+spec:
+  startTs: "***"
+  endTs: "***"
+  concurrency: 8
+  maxRetryTimes: 2
+  br:
+    cluster: demo1
+    sendCredToTikv: true
+  gcs:
+    projectId: ${project_id}
+    secretName: gcs-secret
+    bucket: my-bucket
+    prefix: my-log-backup-folder
+```
 
-    其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
+其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
 
-    `gcs` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
+`gcs` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
 
@@ -648,7 +639,7 @@ spec:
 
 ## 定时快照备份
 
-用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时快照备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次快照备份，定时快照备份底层通过 Ad-hoc 快照备份来实现。下面是创建定时快照备份的具体步骤：
+你可以通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时快照备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次快照备份，定时快照备份底层通过 Ad-hoc 快照备份来实现。下面是创建定时快照备份的具体步骤。
 
 ### 前置条件：准备定时快照备份环境
 
@@ -657,8 +648,6 @@ spec:
 ### 执行快照备份
 
 1. 创建 `BackupSchedule` CR，开启 TiDB 集群的定时快照备份，将数据备份到 GCS：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-schedule-gcs.yaml
@@ -706,15 +695,11 @@ spec:
 
 2. 定时快照备份创建完成后，通过以下命令查看备份的状态：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    kubectl get bks -n test1 -owide
+    kubectl get bks -n test1 -o wide
     ```
 
     查看定时快照备份下面所有的备份条目：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n test1
@@ -722,7 +707,9 @@ spec:
 
 ## 集成管理定时快照备份和日志备份
 
-`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PiTR 恢复。本节示例创建了名为 `integrated-backup-schedule-gcs` 的 `BackupSchedule` CR 为例，其中访问 GCS 远程存储的方式参考[GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，具体操作如下所示。
+`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份。通过设置备份的保留时间，可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
+
+本节示例创建了名为 `integrated-backup-schedule-gcs` 的 `BackupSchedule` CR，其中访问 GCS 远程存储的方式参考[GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，具体操作如下所示。
 
 ### 前置条件：准备定时快照备份环境
 
@@ -732,13 +719,11 @@ spec:
 
 1. 在 `test1` 这个 namespace 中创建一个名为 `integrated-backup-schedule-gcs` 的 `BackupSchedule` CR。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f integrated-backup-scheduler-gcs.yaml
     ```
 
-    `integrated-backup-scheduler-gcs` 文件内容如下：
+    `integrated-backup-scheduler-gcs.yaml` 文件内容如下：
 
     ```yaml
     ---
@@ -779,23 +764,17 @@ spec:
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl get bks -n test1 -o wide
     ```
 
     日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `backupSchedule` 的 `status.logBackup`，即日志备份名称。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl describe bks integrated-backup-schedule-gcs -n test1
     ```
 
-3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
-
-    {{< copyable "shell-regular" >}}
+3. 在进行集群恢复时，需要指定备份的路径。你可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
 
     ```shell
     kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-gcs -n test1
@@ -823,7 +802,7 @@ spec:
     kubectl apply -f integrated-backup-scheduler-gcs.yaml
     ```
 
-    `integrated-backup-scheduler-gcs` 文件内容如下：
+    `integrated-backup-scheduler-gcs.yaml` 文件内容如下：
 
     ```yaml
     ---
