@@ -966,7 +966,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     kubectl apply -f integrated-backup-schedule-s3.yaml
     ```
 
-    `integrated-backup-schedule-s3` 文件内容如下：
+    `integrated-backup-schedule-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
