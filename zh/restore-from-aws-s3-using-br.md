@@ -32,73 +32,67 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 使用 BR 将 S3 兼容存储上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
 
-1. 将如下 RBAC 资源保存为 backup-rbac.yaml
+> **注意：**
+>
+> - BR 使用的 ServiceAccount 名称为固定值，必须为 `tidb-backup-manager`。
+> - 从 TiDB Operator v2 开始，`Backup`、`Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
 
-   ```yaml
-   ---
-   kind: Role
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   rules:
-   - apiGroups: [""]
-     resources: ["events"]
-     verbs: ["*"]
-   - apiGroups: ["br.pingcap.com"]
-     resources: ["backups", "restores"]
-     verbs: ["get", "watch", "list", "update"]
+1. 将以下内容保存为 `backup-rbac.yaml` 文件，用于创建所需的 RBAC 资源：
 
-   ---
-   kind: ServiceAccount
-   apiVersion: v1
-   metadata:
-     name: tidb-backup-manager
+    ```yaml
+    ---
+    kind: Role
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    rules:
+    - apiGroups: [""]
+      resources: ["events"]
+      verbs: ["*"]
+    - apiGroups: ["br.pingcap.com"]
+      resources: ["backups", "restores"]
+      verbs: ["get", "watch", "list", "update"]
 
-   ---
-   kind: RoleBinding
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   subjects:
-   - kind: ServiceAccount
-     name: tidb-backup-manager
-   roleRef:
-     apiGroup: rbac.authorization.k8s.io
-     kind: Role
-     name: tidb-backup-manager
+    ---
+    kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: tidb-backup-manager
 
-   ```
+    ---
+    kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    subjects:
+    - kind: ServiceAccount
+      name: tidb-backup-manager
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: tidb-backup-manager
+    ```
 
-2. 执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
-
-    {{< copyable "shell-regular" >}}
+2. 执行以下命令在 namespace `test1` 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-3. 为 namespace `test1` 授予远程存储访问权限。
+3. 为 namespace `test1` 授予远程存储访问权限：
 
     - 如果使用 Amazon S3 来备份集群，可以使用三种方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
     - 如果使用其他兼容 S3 的存储来备份集群，例如 Ceph、MinIO，可以使用 AccessKey 和 SecretKey 授权的方式，可参考文档[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
-
-
-> **注意：**
->
-> - br 使用的 ServiceAccount 名称固定，只能使用 `tidb-backup-manager`
-> - TiDB Operator v2 将 `backup`, `restore` 等资源的 `apiGroup` 从 `pingcap.com` 改为了 `br.pingcap.com`
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
 + 方法 1: 如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f restore-full-s3.yaml
@@ -133,8 +127,6 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 + 方法 2: 如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f restore-full-s3.yaml
     ```
@@ -168,8 +160,6 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     ```
 
 + 方法 3: 如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f restore-full-s3.yaml
@@ -211,8 +201,6 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl get restore -n restore-test -o wide
 ```
@@ -246,7 +234,7 @@ demo2-restore-s3   Complete   ...
 
 ### 第 1 步：准备恢复环境
 
-参考 [使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md#第-1-步准备恢复环境)
+参考[使用 BR 恢复 S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md#第-1-步准备恢复环境)。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
