@@ -11,6 +11,8 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
+    - 安全
+        - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
     - [自定义 Pod](overlay.md)
     - [存储卷配置](configure-volume.md)
 - 运维管理
