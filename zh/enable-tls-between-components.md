@@ -51,7 +51,8 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     > **注意：**
     >
-    > TiDB 所有组件在进行组件间通信时，共用一套 TLS 证书来加密客户端与服务端的流量，因此，生成 CA 配置时必须同时指定 `server auth` 和 `client auth`。此外，建议所有所有组件的证书均由同一个 CA 签发。
+    > - TiDB 所有组件在进行组件间通信时，共用一套 TLS 证书来加密客户端与服务端的流量，因此，生成 CA 配置时必须同时指定 `server auth` 和 `client auth`。
+    > - 建议所有组件的证书均由同一个 CA 签发。
 
     ```shell
     cat << EOF > ca-config.json
@@ -254,7 +255,12 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ...
         ```
 
-        其中 `${group_name}` 为组件 Group 的名字，`${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`），`${namespace}` 为 TiDB 集群部署的命名空间，你也可以添加自定义 `hosts`。
+        其中：
+        
+             - `${group_name}` 为组件 Group 的名字
+             - `${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`）
+             - `${namespace}` 为 TiDB 集群部署的命名空间
+             - 你也可以添加自定义 `hosts`
 
         最后生成组件证书：
 
@@ -290,7 +296,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     kubectl create secret generic ${group_name}-${component_name}-cluster-secret --namespace=${namespace} --from-file=tls.crt=${component_name}.pem --from-file=tls.key=${component_name}-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    这里给 PD、TiKV、TiDB、Pump、Drainer 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
+    这里给 PD、TiKV、TiDB 的 Server 端证书分别创建了一个 Secret 供他们启动时加载使用，另外一套 Client 端证书供他们的客户端连接使用。
 
 ### 使用 `cert-manager` 系统颁发证书
 
