@@ -11,7 +11,7 @@ summary: 介绍如何升级 Kubernetes 上的 TiDB 集群。
 
 Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)，在不影响应用可用性的前提下执行更新。
 
-使用滚动更新时，TiDB Operator 会当新版本的 Pod 正常运行后，再处理下一个 Pod。
+使用滚动更新时，TiDB Operator 会等待新版本的 Pod 正常运行后，再处理下一个 Pod。
 
 滚动更新中，TiDB Operator 会自动处理 PD 和 TiKV 的 Leader 迁移。因此，在多节点的部署拓扑下（最小环境：PD \* 3、TiKV \* 3、TiDB \* 2），滚动更新 TiKV、PD 不会影响业务正常运行。对于有连接重试功能的客户端，滚动更新 TiDB 同样不会影响业务。
 
@@ -35,7 +35,7 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
 
 ## 升级步骤
 
-1. 修改待升级集群的各组件 group 的版本配置, 通过 `version` 字段指定组件版本：
+1. 修改待升级集群的各组件 Group 的版本配置，通过 `version` 字段指定每个组件的目标版本。例如：
 
     ```yaml
     spec:
@@ -44,11 +44,11 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
           version: v8.1.0
     ```
 
-    可以通过 `kubectl apply` 一次性完成所有组件的变更，也可以通过 `kubectl edit` 一个个组件完成变更。TiDB Operator 会自动编排组件升级的顺序, 在组件不符合升级前置条件的情况下阻塞升级。
+    你可以使用 `kubectl apply` 命令一次性更新所有组件的配置，也可以通过 `kubectl edit` 逐个修改组件。TiDB Operator 会自动处理升级顺序，并在组件未满足升级前置条件时阻止升级继续执行。
 
     > **注意：**
     >
-    > - TiDB Operator 会限制集群内的各组件都使用相同的版本，所以需要将所有组件的 `spec.template.spec.version` 都设置成相同的值。
+    > TiDB Operator 要求集群中的所有组件使用相同版本。请确保所有组件的 `spec.template.spec.version` 字段设置为相同的版本号。
 
 2. 查看升级进度：
 
@@ -57,4 +57,3 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/ku
     ```
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
-
