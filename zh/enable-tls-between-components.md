@@ -256,11 +256,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
         ```
 
         其中：
-        
-             - `${group_name}` 为组件 Group 的名字
-             - `${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`）
-             - `${namespace}` 为 TiDB 集群部署的命名空间
-             - 你也可以添加自定义 `hosts`
+
+        - `${group_name}` 为组件 Group 的名字
+        - `${component_name}` 为组件名（需使用小写字母，如 `pd`、`tikv`、`tidb`）
+        - `${namespace}` 为 TiDB 集群部署的命名空间
+        - 你也可以添加自定义 `hosts`
 
         最后生成组件证书：
 
