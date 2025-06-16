@@ -14,11 +14,26 @@
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
-        - Amazon S3 Compatible Storage
-        - Google Cloud Storage
-        - Azure Blob Storage
-        - Persistent Volumes
-        - Snapshot Backup and Restore across Multiple Kubernetes
+      - [Overview](backup-restore-overview.md)
+      - [Backup and Restore Custom Resources](backup-restore-cr.md)
+      - Amazon S3 Compatible Storage
+        - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
+        - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
+        - Back Up Data Using Dumpling
+        - Restore Data Using TiDB Lightning
+      - Google Cloud Storage
+        - [Back Up Data Using BR](backup-to-gcs-using-br.md)
+        - [Restore Data Using BR](restore-from-gcs-using-br.md)
+        - Back Up Data Using Dumpling
+        - Restore Data Using TiDB Lightning
+      - Azure Blob Storage
+        - [Back Up Data Using BR](backup-to-azblob-using-br.md)
+        - [Restore Data Using BR](restore-from-azblob-using-br.md)
+        - Back Up Data Using Dumpling
+        - Restore Data Using TiDB Lightning
+      - Persistent Volumes
+        - [Back Up Data](backup-to-pv-using-br.md)
+        - [Restore Data](restore-from-pv-using-br.md)
     - Maintain
         - [View TiDB Logs](view-logs.md)
         - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
