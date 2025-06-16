@@ -9,7 +9,7 @@ This document introduces how to pause sync of a TiDB cluster on Kubernetes by mo
 
 ## What is sync in TiDB Operator
 
-In TiDB Operator, the controller constantly compares the desired state recorded in the Custom Resource (CR) object with the actual state. The controller then creates, updates, or deletes Kubernetes resources to ensure the TiDB cluster matches the desired state. This ongoing adjustment process is referred to as **sync**. For more details, see [TiDB Operator Architecture](architecture.md).
+In TiDB Operator, the controller constantly compares the desired state recorded in the Custom Resource (CR) object with the actual state. The controller then creates, updates, or deletes Kubernetes resources to ensure the TiDB cluster matches the desired state. This ongoing adjustment process is referred to as **sync**. For more information, see [TiDB Operator Architecture](architecture.md).
 
 ## Usage scenarios
 
@@ -31,13 +31,13 @@ The following lists some cases where you might need to pause sync of a TiDB clus
 
 To pause sync of a TiDB cluster, set `spec.paused: true` in the Cluster CR.
 
-1. Run the following command to modify the TiDB cluster configuration. `${cluster_name}` represents the name of the TiDB cluster, and `${namespace}` refers to the TiDB cluster namespace.
+1. Run the following command to modify the TiDB cluster configuration. `${cluster_name}` represents the name of the TiDB cluster, and `${namespace}` represents the TiDB cluster namespace.
 
     ```shell
     kubectl patch cluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": true}}'
     ```
 
-2. After the sync is paused, you can confirm the cluster status by checking the TiDB Operator Pod logs. `${pod_name}` is the name of TiDB Operator Pod name and `${namespace}` is the namespace of TiDB Operator.
+2. After the sync is paused, you can confirm the cluster status by checking the TiDB Operator Pod logs. `${pod_name}` represents the name of TiDB Operator Pod, and `${namespace}` represents the namespace of TiDB Operator.
 
     ```shell
     kubectl logs ${pod_name} -n ${namespace} | grep paused
@@ -57,13 +57,13 @@ To pause sync of a TiDB cluster, set `spec.paused: true` in the Cluster CR.
 
 To resume the sync of the TiDB cluster, set `spec.paused: false` in the Cluster CR. Once resumed, TiDB Operator immediately processes all configuration changes that accumulated during the pause.
 
-1. Run the following command to modify the TiDB cluster configuration. `${cluster_name}` represents the name of the TiDB cluster, and `${namespace}` refers to the TiDB cluster namespace.
+1. Run the following command to modify the TiDB cluster configuration. `${cluster_name}` represents the name of the TiDB cluster, and `${namespace}` represents the TiDB cluster namespace.
 
     ```shell
     kubectl patch cluster ${cluster_name} -n ${namespace} --type merge -p '{"spec":{"paused": false}}'
     ```
 
-2. After the sync is resumed, you can confirm the cluster status by checking the TiDB Operator Pod logs. `${pod_name}` is the name of TiDB Operator Pod name and `${namespace}` is the namespace of TiDB Operator.
+2. After the sync is resumed, you can confirm the cluster status by checking the TiDB Operator Pod logs. `${pod_name}` represents the name of TiDB Operator Pod, and `${namespace}` represents the namespace of TiDB Operator.
 
     ```shell
     kubectl logs ${pod_name} -n ${namespace} | grep "paused"
