@@ -107,7 +107,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 ### 通过 IAM 绑定 Pod 授权
 
-通过 IAM 绑定 Pod 的授权方式是由开源工具 [`kube2iam`](https://github.com/jtblin/kube2iam) 提供，通过将 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) 绑定到 Pod，实现 Pod 中的进程继承 IAM 角色的访问权限。
+通过 IAM 绑定 Pod 的授权方式由开源工具 [kube2iam](https://github.com/jtblin/kube2iam) 提供，通过将 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) 绑定到 Pod，实现 Pod 中的进程继承 IAM 角色的访问权限。
 
 > **注意：**
 >
@@ -137,11 +137,11 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
     > **注意：**
     >
-    > 将 `arn:aws:iam::123456789012:role/user` 替换为步骤 1 中创建的 IAM 角色的实际 ARN。
+    > 你需要将 `arn:aws:iam::123456789012:role/user` 替换为步骤 1 中创建的 IAM 角色的实际 ARN。
 
 ### 通过 IAM 绑定 ServiceAccount 授权
 
-通过将用户的 [IAM](https://aws.amazon.com/cn/iam/) 角色与 Kubernetes 中的 [`ServiceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) 资源绑定，使使用该 ServiceAccount 的 Pod 继承该角色的权限。
+通过将用户的 [IAM](https://aws.amazon.com/cn/iam/) 角色与 Kubernetes 中的 [`ServiceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) 资源绑定，使用该 ServiceAccount 的 Pod 将继承该角色的权限。
 
 通过 IAM 绑定 ServiceAccount 授权的步骤如下：
 
@@ -192,7 +192,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
     kubectl create secret generic gcp-secret --from-file=credentials=./google-credentials.json -n <your-namespace>
     ```
 
-3. 参考[将主账号添加到存储桶级层政策中](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add)，授予第一步中创建的服务账号对目标存储通的访问权限，同时授予 `roles/storage.objectUser` 角色。
+3. 参考[将主账号添加到存储桶级层政策中](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add)，授予第 1 步中创建的服务账号对目标存储桶的访问权限，同时授予 `roles/storage.objectUser` 角色。
 
 4. 为 Pod 设置环境变量，以 TiKVGroup 为例：
 
