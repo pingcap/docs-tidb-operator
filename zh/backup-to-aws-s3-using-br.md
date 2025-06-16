@@ -10,18 +10,18 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的�
 - **快照备份**。使用快照备份，你可以通过[全量恢复](restore-from-aws-s3-using-br.md#全量恢复)将 TiDB 集群恢复到快照备份的时刻点。
 - **日志备份**。使用快照备份与日志备份，你可以通过快照备份与日志备份产生的备份数据将 TiDB 集群恢复到历史任意时刻点，即 [Point-in-Time Recovery (PITR)](restore-from-aws-s3-using-br.md#pitr-恢复)。
 
-本文使用的备份方式基于 TiDB Operator 的 Custom Resource Definition(CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到 AWS 的存储上。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+本文使用的备份方式基于 TiDB Operator 的 Custom Resource Definition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool) 获取集群数据，然后再将数据上传到 AWS 的存储上。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 ## 使用场景
 
 如果你对数据备份有以下要求，可考虑使用 BR 的**快照备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)或[定时快照备份](#定时快照备份)的方式备份至兼容 S3 的存储上：
 
-- 需要备份的数据量较大（大于 1 TB），而且要求备份速度较快
+- 需要备份的数据量较大（大于 1 TiB），而且要求备份速度较快
 - 需要直接备份数据的 SST 文件（键值对）
 
 如果你对数据备份有以下要求，可考虑使用 BR 的**日志备份**方式将 TiDB 集群数据以 [Ad-hoc 备份](#ad-hoc-备份)的方式备份至兼容 S3 的存储上（同时也需要配合快照备份的数据，来更高效地[恢复](restore-from-aws-s3-using-br.md#pitr-恢复)数据）：
 
-- 需要在新集群上恢复备份集群的历史任意时刻点快照（PITR）
+- 需要在新集群上恢复备份集群的历史任意时刻点快照 (PITR)
 - 数据的 RPO 在分钟级别
 
 如有其他备份需求，请参考[备份与恢复简介](backup-restore-overview.md)选择合适的备份方式。
@@ -36,80 +36,73 @@ summary: 介绍如何使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的�
 
 Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停止](#停止日志备份)日志备份任务，以及[清理](#清理日志备份数据)日志备份数据等操作。
 
-要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` custom resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
+要进行 Ad-hoc 备份，你需要创建一个自定义的 `Backup` Custom Resource (CR) 对象来描述本次备份。创建好 `Backup` 对象后，TiDB Operator 根据这个对象自动完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
 本文假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份。下面是具体的操作过程。
 
 ### 前置条件：准备 Ad-hoc 备份环境
 
-1. 将如下 RBAC 资源保存为 backup-rbac.yaml
+> **注意：**
+>
+> - BR 使用的 ServiceAccount 名称为固定值，必须为 `tidb-backup-manager`。
+> - 从 TiDB Operator v2 开始，`Backup`、`Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
 
-   ```yaml
-   ---
-   kind: Role
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   rules:
-   - apiGroups: [""]
-     resources: ["events"]
-     verbs: ["*"]
-   - apiGroups: ["br.pingcap.com"]
-     resources: ["backups", "restores"]
-     verbs: ["get", "watch", "list", "update"]
+1. 将以下内容保存为 `backup-rbac.yaml` 文件，用于创建所需的 RBAC 资源：
 
-   ---
-   kind: ServiceAccount
-   apiVersion: v1
-   metadata:
-     name: tidb-backup-manager
+    ```yaml
+    ---
+    kind: Role
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    rules:
+    - apiGroups: [""]
+      resources: ["events"]
+      verbs: ["*"]
+    - apiGroups: ["br.pingcap.com"]
+      resources: ["backups", "restores"]
+      verbs: ["get", "watch", "list", "update"]
 
-   ---
-   kind: RoleBinding
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   subjects:
-   - kind: ServiceAccount
-     name: tidb-backup-manager
-   roleRef:
-     apiGroup: rbac.authorization.k8s.io
-     kind: Role
-     name: tidb-backup-manager
+    ---
+    kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: tidb-backup-manager
 
-   ```
+    ---
+    kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    subjects:
+    - kind: ServiceAccount
+      name: tidb-backup-manager
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: tidb-backup-manager
+    ```
 
-2. 执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
-
-    {{< copyable "shell-regular" >}}
+2. 执行以下命令在 namespace `test1` 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-3. 为 namespace `test1` 授予远程存储访问权限。
+3. 为 namespace `test1` 授予远程存储访问权限：
 
     - 如果使用 Amazon S3 来备份集群，可以使用三种方式授予权限，可参考文档 [AWS 账号授权](grant-permissions-to-remote-storage.md#aws-账号授权)。
     - 如果使用其他兼容 S3 的存储来备份集群，例如 Ceph、MinIO，可以使用 AccessKey 和 SecretKey 授权的方式，可参考文档[通过 AccessKey 和 SecretKey 授权](grant-permissions-to-remote-storage.md#通过-accesskey-和-secretkey-授权)。
-
-
-> **注意：**
->
-> - br 使用的 ServiceAccount 名称固定，只能使用 `tidb-backup-manager`
-> - TiDB Operator v2 将 `backup`, `restore` 等资源的 `apiGroup` 从 `pingcap.com` 改为了 `br.pingcap.com`
-
 
 ### 快照备份
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将数据导出到兼容 S3 的存储上：
 
-+ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据：
 
     ```shell
     kubectl apply -f full-backup-s3.yaml
@@ -145,9 +138,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
         prefix: my-full-backup-folder
     ```
 
-+ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据：
 
     ```shell
     kubectl apply -f full-backup-s3.yaml
@@ -184,9 +175,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
         prefix: my-full-backup-folder
     ```
 
-+ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据:
-
-    {{< copyable "shell-regular" >}}
++ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Backup` CR 备份集群数据：
 
     ```shell
     kubectl apply -f full-backup-s3.yaml
@@ -739,8 +728,6 @@ spec:
 
 + 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f backup-scheduler-aws-s3.yaml
     ```
@@ -781,8 +768,6 @@ spec:
     ```
 
 + 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-scheduler-aws-s3.yaml
@@ -825,8 +810,6 @@ spec:
     ```
 
 + 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `BackupSchedule` CR，开启 TiDB 集群定时快照备份：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-scheduler-aws-s3.yaml
@@ -874,15 +857,11 @@ spec:
 
 定时快照备份创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl get bks -n test1 -o wide
 ```
 
 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，这些备份的名称以定时快照备份名称为前缀：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
@@ -902,13 +881,11 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 1. 在 `test1` 这个 namespace 中创建一个名为 `integrated-backup-schedule-s3` 的 `BackupSchedule` CR。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl apply -f integrated-backup-schedule-s3.yaml
     ```
 
-    `integrated-backup-schedule-s3` 文件内容如下：
+    `integrated-backup-schedule-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
@@ -951,23 +928,17 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 2. `backupSchedule` 创建完成后，可以通过以下命令查看定时快照备份的状态：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl get bks -n test1 -o wide
     ```
 
     日志备份会随着 `backupSchedule` 创建，可以通过如下命令查看 `backupSchedule` 的 `status.logBackup`，即日志备份名称。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl describe bks integrated-backup-schedule-s3 -n test1
     ```
 
 3. 在进行集群恢复时，需要指定备份的路径。你可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-s3 -n test1
@@ -995,7 +966,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     kubectl apply -f integrated-backup-schedule-s3.yaml
     ```
 
-    `integrated-backup-schedule-s3` 文件内容如下：
+    `integrated-backup-schedule-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
