@@ -35,7 +35,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 1. 创建恢复需要的 RBAC 相关资源：
 
     ```shell
-    kubectl apply -n test1 -f - <<EOF
+    kubectl apply -n test2 -f - <<EOF
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
@@ -71,13 +71,12 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     EOF
     ```
 
-2. 可参考文档 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限，可以使用两种方式授予权限。创建成功后, namespace 下就有了名为 `azblob-secret` 或 `azblob-secret-ad` 的 secret 对象。
+2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中会生成名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
 
     > **注意：**
     >
-    > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
-    >
-    > 在创建 secret 对象时，你可以自定义 secret 对象的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > - 授权账户应至少具备对 Blob 数据的写入权限，例如具备[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)角色。
+    > - 在创建 Secret 对象时，你可以自定义其名称。为便于说明，本文统一使用 `azblob-secret` 作为示例 Secret 对象名称。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
@@ -116,7 +115,7 @@ spec:
 
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
 - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
-- `spec.azblob.secretName`：填写你在创建 secret 对象时自定义的 secret 对象的名字，例如 `azblob-secret`。
+- `.spec.azblob.secretName`：填写你在创建 Secret 对象时设置的名称，例如 `azblob-secret`。
 - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
@@ -160,7 +159,7 @@ demo2-restore-azblob   Complete   ...
 
 本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-azblob-using-br.md#查看快照备份的状态)之后，并在[日志备份的最新恢复点](backup-to-azblob-using-br.md#查看日志备份的状态)之前。具体步骤如下：
 
-1. 在 `test3` 这个 namespace 中创建一个名为 `demo3-restore-azblob` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
+1. 在 `test3` 这个 namespace 中创建一个名为 `demo3-restore-azblob` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`：
 
     ```shell
     kubectl apply -n test3 -f restore-point-azblob.yaml
