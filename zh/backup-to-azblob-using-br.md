@@ -81,7 +81,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
     EOF
     ```
 
-2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中会生成名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
+2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中应存在名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
 
     > **注意：**
     >
