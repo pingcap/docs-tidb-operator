@@ -20,6 +20,7 @@
 - 运维管理
     - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
+      - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
         - 升级 TiDB Operator
