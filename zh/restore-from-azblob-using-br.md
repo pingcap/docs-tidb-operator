@@ -71,7 +71,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     EOF
     ```
 
-2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中会生成名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
+2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中应存在名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
 
     > **注意：**
     >
