@@ -3,6 +3,7 @@
 
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
+  - [Overview](tidb-operator-overview.md)
 - Deploy
     - On Self-Managed Kubernetes
 - Monitor and Alert
