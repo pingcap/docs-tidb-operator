@@ -13,16 +13,13 @@ summary: 了解 TiDB Operator 架构及其工作原理。
 
 ![TiDB Operator Architecture](/media/tidb-operator-architecture.png)
 
-其中，`Cluster`、`PDGroup`、`PD`、`TiKVGroup`、`TiKV`、`TiDBGroup`、`TiDB`、`Backup`、`Restore` 等是 [CustomResourceDefinition（CRD）](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/)：
+其中，`Cluster`、`PDGroup`、`PD`、`TiKVGroup`、`TiKV`、`TiDBGroup`、`TiDB`、`Backup`、`Restore` 等是 [CustomResourceDefinition（CRD）](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/)，其中：
 
-Cluster 是一个 CRD，它抽象了一个 TiDB 集群。它包含了 TiDB 集群的一些通用配置和特性开关，并展示了整个集群的概览状态。这个 CRD 被设计成 TiDB 集群的 “命名空间”。TiDB 集群的所有组件都应该引用一个 Cluster CR。
-
-* `Cluster` 用于描述用户期望的 TiDB 集群
-* `TidbMonitor` 用于描述用户期望的 TiDB 集群监控组件
-* `Backup` 用于描述用户期望的 TiDB 集群备份
-* `Restore` 用于描述用户期望的 TiDB 集群恢复
-
-TiDB 集群的编排由各 CRD 对应的 controller 负责。
+- `Cluster` 抽象了一个 TiDB 集群，它包含了 TiDB 集群的一些通用配置和特性开关，并展示了整个集群的概览状态。这个 CRD 被设计成 TiDB 集群的 “命名空间”。TiDB 集群的所有组件都应该引用一个 Cluster CR。
+- `ComponentGroup` 用于描述一组具有相同配置的 TiDB 集群组件，比如 `PDGroup` 表示一组具有相同配置的 PD 实例，`TiKVGroup` 表示一组具有相同配置的 TiKV 实例。
+- `Component` 用于描述一个 TiDB 集群组件，比如 `PD` 表示一个 PD 实例，`TiKV` 表示一个 TiKV 实例。
+- `Backup` 用于描述用户期望的 TiDB 集群备份。
+- `Restore` 用于描述用户期望的 TiDB 集群恢复。
 
 ## 流程解析
 
