@@ -13,13 +13,15 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     >
     > - 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
     > - 显式指定 MySQL TLS Secret 的功能将在后续版本中支持。
-    > - 对于 TiDB Operator v1 创建的 TiDB 集群，Secret 的默认命名为 `${cluster_name}-tidb-server-secret` 和 `${cluster_name}-tidb-client-secret`。在 TiDB Operator v2 中，不同的 `TiDBGroup` 支持使用不同的 TLS 证书，因此默认使用 `${tidb_group_name}-tidb-server-secret` 和 `${tidb_group_name}-tidb-client-secret` 作为 Secret 命名。
+    > TiDB Operator v2 与 v1 的 Secret 的默认命名方式不同：
+    >     - 对于 TiDB Operator v1 创建的 TiDB 集群，Secret 的默认命名为 `${cluster_name}-tidb-server-secret` 和 `${cluster_name}-tidb-client-secret`。
+    >     - 在 TiDB Operator v2 中，不同的 `TiDBGroup` 支持使用不同的 TLS 证书，因此 Secret 的默认命名 `${tidb_group_name}-tidb-server-secret` 和 `${tidb_group_name}-tidb-client-secret`。
 
 2. 部署集群，设置 `TiDBGroup` 的 `.spec.template.spec.security.tls.mysql.enabled` 属性为 `true`：
 
     > **注意：**
     >
-    > 已部署的 `TiDBGroup` 开启或变更 TLS 配置，将导致 TiDB Pod 滚动重启。
+    > 开启或变更已部署的 `TiDBGroup` 的 TLS 配置，将导致 TiDB Pod 滚动重启，请谨慎操作。
 
 3. 配置 MySQL 客户端使用加密连接。
 
