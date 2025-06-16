@@ -23,8 +23,8 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${ve
 
 你可以使用以下两种方式升级 TiDB Operator 组件：
 
-* [使用 `kubectl apply`](#使用-kubectl-apply-升级)
-* [使用 Helm](#使用-helm-升级)
+* [使用 `kubectl apply`](#方式一使用-kubectl-apply-升级)
+* [使用 Helm](#方式二使用-helm-升级)
 
 ### 方式一：使用 `kubectl apply` 升级
 
