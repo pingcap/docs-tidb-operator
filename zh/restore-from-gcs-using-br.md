@@ -10,7 +10,7 @@ summary: 介绍如何使用 BR 将存储在 GCS 上的备份数据恢复到 TiDB
 - 全量恢复，可以将 TiDB 集群恢复到快照备份的时刻点。备份数据来自于快照备份。
 - PITR 恢复，可以将 TiDB 集群恢复到历史任意时刻点。备份数据来自于快照备份和日志备份。
 
-本文使用的恢复方式基于 TiDB Operator 的 CustomResourceDefinition (CRD) 实现，底层通过使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview) 来进行集群恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
+本文使用的恢复方式基于 TiDB Operator 的 Custom Resource Definition (CRD) 实现，底层使用 [BR](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview) 进行数据恢复。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢复备份集群的历史任意时刻点的快照。使用 PITR 功能恢复时需要快照备份数据和日志备份数据。在恢复时，首先将快照备份的数据恢复到 TiDB 集群中，再以快照备份的时刻点作为起始时刻点，并指定任意恢复时刻点，将日志备份数据恢复到 TiDB 集群中。
 
@@ -32,70 +32,64 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 使用 BR 将 GCS 上的备份数据恢复到 TiDB 前，你需要准备恢复环境，并拥有数据库的相关权限。
 
-1. 将如下 RBAC 资源保存为 backup-rbac.yaml
+> **注意：**
+>
+> - BR 使用的 ServiceAccount 名称为固定值，必须为 `tidb-backup-manager`。
+> - 从 TiDB Operator v2 开始，`Backup`、`Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
 
-   ```yaml
-   ---
-   kind: Role
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   rules:
-   - apiGroups: [""]
-     resources: ["events"]
-     verbs: ["*"]
-   - apiGroups: ["br.pingcap.com"]
-     resources: ["backups", "restores"]
-     verbs: ["get", "watch", "list", "update"]
+1. 将以下内容保存为 `backup-rbac.yaml` 文件，用于创建所需的 RBAC 资源：
 
-   ---
-   kind: ServiceAccount
-   apiVersion: v1
-   metadata:
-     name: tidb-backup-manager
+    ```yaml
+    ---
+    kind: Role
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    rules:
+    - apiGroups: [""]
+      resources: ["events"]
+      verbs: ["*"]
+    - apiGroups: ["br.pingcap.com"]
+      resources: ["backups", "restores"]
+      verbs: ["get", "watch", "list", "update"]
 
-   ---
-   kind: RoleBinding
-   apiVersion: rbac.authorization.k8s.io/v1
-   metadata:
-     name: tidb-backup-manager
-     labels:
-       app.kubernetes.io/component: tidb-backup-manager
-   subjects:
-   - kind: ServiceAccount
-     name: tidb-backup-manager
-   roleRef:
-     apiGroup: rbac.authorization.k8s.io
-     kind: Role
-     name: tidb-backup-manager
+    ---
+    kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: tidb-backup-manager
 
-   ```
+    ---
+    kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: tidb-backup-manager
+      labels:
+        app.kubernetes.io/component: tidb-backup-manager
+    subjects:
+    - kind: ServiceAccount
+      name: tidb-backup-manager
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: tidb-backup-manager
+    ```
 
-2. 执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
-
-    {{< copyable "shell-regular" >}}
+2. 执行以下命令在 namespace `test1` 中创建备份需要的 RBAC 相关资源：
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-3. 为 namespace `test1` 授予远程存储访问权限。
+3. 为 namespace `test1` 授予远程存储访问权限：
 
     参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，授权访问 GCS 远程存储。
 
-> **注意：**
->
-> - br 使用的 ServiceAccount 名称固定，只能使用 `tidb-backup-manager`
-> - TiDB Operator v2 将 `backup`, `restore` 等资源的 `apiGroup` 从 `pingcap.com` 改为了 `br.pingcap.com`
-
-
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
-1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
-
-    {{< copyable "shell-regular" >}}
+1. 创建 `Restore` Custom Resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
     ```shell
     kubectl apply -f restore-full-gcs.yaml
@@ -139,10 +133,8 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
 
-    {{< copyable "shell-regular" >}}
-
      ```shell
-     kubectl get restore -n test1 -owide
+     kubectl get restore -n test1 -o wide
      ```
 
      ```
@@ -174,13 +166,13 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 ### 第 1 步：准备恢复环境
 
-参考 [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md#第-1-步准备恢复环境)
+参考[使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md#第-1-步准备恢复环境)。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
 本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-gcs-using-br.md#查看快照备份的状态)之后，并在[日志备份的最新恢复点](backup-to-gcs-using-br.md#查看日志备份的状态)之前，具体步骤如下：
 
-1. 在 `test1` 这个 namespace 中产生一个名为 `demo3-restore-gcs` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
+1. 在 `test1` 这个 namespace 中产生一个名为 `demo3-restore-gcs` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`：
 
     ```shell
     kubectl apply -f restore-point-gcs.yaml
