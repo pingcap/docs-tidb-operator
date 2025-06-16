@@ -9,17 +9,19 @@ summary: 介绍如何监控 TiDB 集群。
 
 ## TiDB 集群的监控
 
-TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控数据采集可以由 [Prometheus](https://prometheus.io/) 或 [VictoriaMetrics](https://victoriametrics.com/) 等开源组件完成（任选其一即可），然后通过 [Grafana](https://grafana.com/) 实现监控面板。
+TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)和[监控面板](#监控面板)。你可以使用 [Prometheus](https://prometheus.io/) 或 [VictoriaMetrics](https://victoriametrics.com/) 等开源组件采集监控数据，然后通过 [Grafana](https://grafana.com/) 实现监控面板的展示。
 
-![TiDB 集群的监控架构](../media/overview-of-monitoring-tidb-clusters.png)
+![TiDB 集群的监控架构](/media/overview-of-monitoring-tidb-clusters.png)
 
 ### 监控数据采集
 
-#### Prometheus
+#### 使用 Prometheus 采集监控数据
 
-1. 参考[官方文档](https://prometheus-operator.dev/docs/getting-started/installation/)，在 Kubernetes 集群中部署 Prometheus Operator，本文档以 `v0.82.0` 版本为例。
+使用 Prometheus 采集监控数据的步骤如下：
 
-2. 在每个 TiDB 集群所在的命名空间中创建一个 `PodMonitor` CR:
+1. 参考 [Prometheus Operator 官方文档](https://prometheus-operator.dev/docs/getting-started/installation/)，在 Kubernetes 集群中部署 Prometheus Operator，本文档以 `v0.82.0` 版本为例。
+
+2. 在每个 TiDB 集群所在的命名空间中创建一个 `PodMonitor` Custom Resource (CR)：
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -42,7 +44,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
           # 若 TiDB 集群启用了 TLS，则设置为 https，否则设置为 http
           scheme: https
           honorLabels: true
-          # 若 TiDB 集群启用了 TLS，则需配置 TLS 认证，否则无需配置
+          # 若 TiDB 集群启用了 TLS，则需配置 tlsConfig，否则无需配置
           tlsConfig:
             ca:
               secret:
@@ -89,7 +91,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
               targetLabel: tidb_cluster
     ```
 
-3. 参考[官方文档](https://prometheus-operator.dev/docs/platform/platform-guide/#deploying-prometheus)，创建一个 `Prometheus` CR 用来采集监控指标（注意给 ServiceAccount 配置相应权限）:
+3. 参考 [Prometheus Operator 官方文档](https://prometheus-operator.dev/docs/platform/platform-guide/#deploying-prometheus)，创建一个 `Prometheus` CR 用来采集监控指标，确保为 ServiceAccount 分配必要权限：
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -104,23 +106,25 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
       podMonitorSelector:
         matchLabels:
           monitor: tidb-cluster
-      # 设置为空，表示采集所有命名空间中的 PodMonitor
+      # podMonitorNamespaceSelector 设置为空，表示采集所有命名空间中的 PodMonitor
       podMonitorNamespaceSelector: {}
     ```
 
-4. 可以通过 `kubectl port-forward` 来访问 Prometheus，查看是否采集到了监控指标：
+4. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Prometheus：
 
     ```shell
     kubectl port-forward -n monitoring prometheus-prometheus-0 9090:9090 &>/tmp/portforward-prometheus.log &
     ```
 
-然后在浏览器中打开 [http://localhost:9090/targets](http://localhost:9090/targets) 查看。
+    然后在浏览器中访问 <http://localhost:9090/targets> 查看监控数据采集状态。
 
-#### VictoriaMetrics
+#### 使用 VictoriaMetrics 采集监控数据
 
-1. 参考[官方文档](https://docs.victoriametrics.com/operator/quick-start/)，在 Kubernetes 集群中部署 VictoriaMetrics Operator，本文档以 `v0.58.1` 版本为例。
+使用 VictoriaMetrics 部署监控数据采集的步骤如下：
 
-2. 创建一个 `VMSingle` Custom Resource（CR）用来存储监控指标:
+1. 参考 [VictoriaMetrics 官方文档](https://docs.victoriametrics.com/operator/quick-start/)，在 Kubernetes 集群中部署 VictoriaMetrics Operator，本文档以 `v0.58.1` 版本为例。
+
+2. 创建一个 `VMSingle` Custom Resource (CR) 用来存储监控指标：
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -130,7 +134,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
       namespace: monitoring
     ```
 
-3. 创建一个 `VMAgent` CR 用来采集监控指标:
+3. 创建一个 `VMAgent` CR 用来采集监控指标：
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -147,7 +151,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
       selectAllByDefault: true
     ```
 
-4. 在每个 TiDB 集群所在的命名空间中创建一个 `VMPodScrape` CR，用来发现 TiDB 集群的 Pod，并为 `VMAgent` 生成相应的 scrape 配置:
+4. 在每个 TiDB 集群所在的命名空间中创建一个 `VMPodScrape` CR，用来发现 TiDB 集群的 Pod，并为 `VMAgent` 生成相应的 scrape 配置：
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -201,53 +205,56 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
             - sourceLabels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
               targetLabel: __metrics_path__
             - sourceLabels: [__meta_kubernetes_namespace]
-            targetLabel: kubernetes_namespace
+              targetLabel: kubernetes_namespace
             - sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-            targetLabel: cluster
+              targetLabel: cluster
             - sourceLabels: [__meta_kubernetes_pod_name]
-            targetLabel: instance
+              targetLabel: instance
             - sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
-            targetLabel: component
+              targetLabel: component
             - sourceLabels:
                 - __meta_kubernetes_namespace
                 - __meta_kubernetes_pod_label_app_kubernetes_io_instance
-            separator: '-'
-            targetLabel: tidb_cluster
+              separator: '-'
+              targetLabel: tidb_cluster
     ```
 
-5. 可以通过 `kubectl port-forward` 来访问 VMAgent，查看是否采集到了监控指标：
+5. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 VMAgent：
 
     ```shell
     kubectl port-forward -n monitoring svc/vmagent-demo 8429:8429 &>/tmp/portforward-vmagent.log &
     ```
 
-然后在浏览器中打开 [http://localhost:8429/targets](http://localhost:8429/targets) 查看。
+    然后在浏览器中访问 <http://localhost:8429/targets> 查看监控数据采集状态。
 
 ### 监控面板
 
-1. 参考[官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
+配置监控面板的步骤如下：
 
-2. 可以通过 `kubectl port-forward` 访问 Grafana 监控面板：
+1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
+
+2. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Grafana 监控面板：
 
     ```shell
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. 在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`，若是通过 helm 安装，则通过以下命令查看 admin 密码：
+3. 在浏览器中访问 <http://localhost:3000>，默认用户名和密码都为 `admin`。如果是通过 Helm 安装，可以使用以下命令查看 `admin` 密码：
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
 
 4. 在 Grafana 中添加 Prometheus 类型的数据源，并配置 Prometheus Server URL：
-   - 若是通过 Prometheus 采集监控指标，则 URL 为 `http://prometheus-operated.monitoring.svc:9090`
-   - 若是通过 VictoriaMetrics 采集监控指标，则 URL 为 `http://vmsingle-demo.monitoring.svc:8429`
 
-5. 可以通过该[脚本](https://github.com/pingcap/tidb-operator/blob/feature/v2/hack/get-grafana-dashboards.sh)下载各组件的监控面板，然后手动导入到 Grafana 中。
+    - 如果使用 Prometheus 采集监控指标，设置 URL 为 `http://prometheus-operated.monitoring.svc:9090`。
+    - 如果使用 VictoriaMetrics 采集监控指标，设置 URL 为 `http://vmsingle-demo.monitoring.svc:8429`。
+
+5. 可以使用 [`get-grafana-dashboards.sh`](https://github.com/pingcap/tidb-operator/blob/feature/v2/hack/get-grafana-dashboards.sh) 脚本下载各组件的监控面板，然后手动导入到 Grafana 中。<!--TODO: update the GitHub link later -->
 
 ## 告警配置
 
-你可以通过 [AlertManager](https://github.com/prometheus/alertmanager) 管理与发送告警消息，具体的部署和配置步骤请参考 [官方文档](https://prometheus.io/docs/alerting/alertmanager/)。
+你可以通过 [AlertManager](https://github.com/prometheus/alertmanager) 管理与发送告警信息，具体的部署和配置步骤请参考 [Alertmanager 官方文档](https://prometheus.io/docs/alerting/alertmanager/)。
 
 ## 多集群监控
 
@@ -255,7 +262,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 
 要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
 
-1. 点击 Grafana Dashboard 中的 **Dashboard settings** 选项，打开 **Settings** 面板。
-2. 在 **Settings** 面板中，选择 **Variables** 中的 **tidb_cluster** 变量，将 **tidb_cluster** 变量的 **Hide** 属性设置为 "Nothing"。
+1. 在 Grafana Dashboard 中，点击 **Dashboard settings** 选项，打开 **Settings** 页面。
+2. 在 **Settings** 页面中，选择 **Variables** 中的 **tidb_cluster** 变量，将 **tidb_cluster** 变量的 **Hide** 属性设置为空选项。
 3. 返回当前 Grafana Dashboard，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${tidb_cluster_name}`。
-4. 保存对 Dashboard 的修改。
+4. 点击 **Save dashboard** 保存对该 Dashboard 的修改。
