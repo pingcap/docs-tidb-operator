@@ -17,7 +17,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 
 #### Prometheus
 
-1. 参考[官方文档](https://prometheus-operator.dev/docs/getting-started/installation/)，在 Kubernetes 集群中部署 Prometheus Operator。
+1. 参考[官方文档](https://prometheus-operator.dev/docs/getting-started/installation/)，在 Kubernetes 集群中部署 Prometheus Operator，本文档以 `v0.82.0` 版本为例。
 
 2. 在每个 TiDB 集群所在的命名空间中创建一个 `PodMonitor` CR:
 
@@ -118,7 +118,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 
 #### VictoriaMetrics
 
-1. 参考[官方文档](https://docs.victoriametrics.com/operator/quick-start/)，在 Kubernetes 集群中部署 VictoriaMetrics Operator。
+1. 参考[官方文档](https://docs.victoriametrics.com/operator/quick-start/)，在 Kubernetes 集群中部署 VictoriaMetrics Operator，本文档以 `v0.58.1` 版本为例。
 
 2. 创建一个 `VMSingle` Custom Resource（CR）用来存储监控指标:
 
@@ -225,7 +225,7 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 
 ### 监控面板
 
-1. 参考[官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana。
+1. 参考[官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
 
 2. 可以通过 `kubectl port-forward` 访问 Grafana 监控面板：
 
@@ -257,5 +257,5 @@ TiDB 集群的监控包括两部分：监控数据采集和监控面板。监控
 
 1. 点击 Grafana Dashboard 中的 **Dashboard settings** 选项，打开 **Settings** 面板。
 2. 在 **Settings** 面板中，选择 **Variables** 中的 **tidb_cluster** 变量，将 **tidb_cluster** 变量的 **Hide** 属性设置为 "Nothing"。
-3. 返回当前 Grafana Dashboard (目前无法保存对于 **Hide** 属性的修改)，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${tidb_cluster_name}`。
+3. 返回当前 Grafana Dashboard，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${tidb_cluster_name}`。
 4. 保存对 Dashboard 的修改。
