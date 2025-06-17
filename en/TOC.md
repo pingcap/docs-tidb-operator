@@ -5,6 +5,7 @@
 - Introduction
 - Deploy
     - On Self-Managed Kubernetes
+        - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
 - Migrate
     - Migrate from MySQL
