@@ -81,13 +81,12 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
     EOF
     ```
 
-2. 可参考文档 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限，可以使用两种方式授予权限。创建成功后, namespace 下就有了名为 `azblob-secret` 或 `azblob-secret-ad` 的 secret 对象。
+2. 参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)授予远程存储访问权限。Azure 提供两种方式进行授权。授权成功后，namespace 中应存在名为 `azblob-secret` 或 `azblob-secret-ad` 的 Secret 对象。
 
     > **注意：**
     >
-    > 授予的账户所拥有的角色至少拥有对 blob 修改的权限（例如[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)）。
-    >
-    > 在创建 secret 对象时，你可以自定义 secret 对象的名字。下文为了叙述简洁，统一使用名为 `azblob-secret` 的 secret 对象。
+    > - 授权账户应至少具备对 Blob 数据的写入权限，例如具备[参与者](https://learn.microsoft.com/zh-cn/azure/role-based-access-control/built-in-roles#contributor)角色。
+    > - 在创建 Secret 对象时，你可以自定义其名称。为便于说明，本文统一使用 `azblob-secret` 作为示例 Secret 对象名称。
 
 ### 快照备份
 
@@ -131,8 +130,8 @@ spec:
 
 - 如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
-- `spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
-- `spec.azblob.secretName`：填写你在创建 secret 对象时自定义的 secret 对象的名字，例如 `azblob-secret`。
+- `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
+- `.spec.azblob.secretName`：填写你在创建 Secret 对象时设置的名称，例如 `azblob-secret`。
 - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
 #### 查看快照备份的状态
@@ -445,7 +444,7 @@ demo1-log-backup-azblob    log    Stopped   ....
 
 ### 压缩日志备份
 
-对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 PITR。 
+对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。
 
 本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
@@ -709,7 +708,9 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 ## 集成管理定时快照备份和日志备份
 
-`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。本节示例创建了名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR 为例，其中访问 Azure 远程存储的方式参考[Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)，具体操作如下所示。
+`BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份，通过设置备份的保留时间可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
+
+本节示例创建了名为 `integrated-backup-schedule-azblob` 的 `BackupSchedule` CR，其中访问 Azure Blob Storage 的方式参考 [Azure 账号授权](grant-permissions-to-remote-storage.md#azure-账号授权)。具体操作如下所示。
 
 ### 前置条件：准备定时快照备份环境
 
@@ -723,7 +724,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     kubectl apply -f integrated-backup-scheduler-azblob.yaml
     ```
 
-    `integrated-backup-scheduler-azblob` 文件内容如下：
+    `integrated-backup-scheduler-azblob.yaml` 文件内容如下：
 
     ```yaml
     apiVersion: br.pingcap.com/v1alpha1
@@ -773,7 +774,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     kubectl describe bks integrated-backup-schedule-azblob -n test1
     ```
 
-3. 在进行集群恢复时，需要指定备份的路径，可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
+3. 在进行集群恢复时，需要指定备份的路径。你可以通过如下命令查看定时快照备份下面所有的备份条目，在命令输出中 `MODE` 为 `snapshot` 的条目为快照备份，`MODE` 为 `log` 的条目为日志备份。
 
     ```shell
     kubectl get bk -l tidb.pingcap.com/backup-schedule=integrated-backup-schedule-azblob -n test1
@@ -801,7 +802,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     kubectl apply -f integrated-backup-scheduler-azblob.yaml
     ```
 
-    `integrated-backup-scheduler-azblob` 文件内容如下：
+    `integrated-backup-scheduler-azblob.yaml` 文件内容如下：
 
     ```yaml
     apiVersion: br.pingcap.com/v1alpha1
