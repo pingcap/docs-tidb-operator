@@ -92,7 +92,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 根据上一步选择的远程存储访问授权方式，你需要使用下面对应的方法将备份数据恢复到 TiDB：
 
-+ 方法 1: 如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 1：如果通过了 accessKey 和 secretKey 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     ```shell
     kubectl apply -f restore-full-s3.yaml
@@ -125,7 +125,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         prefix: my-full-backup-folder
     ```
 
-+ 方法 2: 如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 2：如果通过了 IAM 绑定 Pod 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     ```shell
     kubectl apply -f restore-full-s3.yaml
@@ -159,7 +159,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
         prefix: my-full-backup-folder
     ```
 
-+ 方法 3: 如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
++ 方法 3：如果通过了 IAM 绑定 ServiceAccount 的方式授权，你可以按照以下说明创建 `Restore` CR 恢复集群数据：
 
     ```shell
     kubectl apply -f restore-full-s3.yaml
@@ -240,7 +240,7 @@ demo2-restore-s3   Complete   ...
 
 本节示例中首先将快照备份恢复到集群中，因此 PITR 的恢复时刻点需要在[快照备份的时刻点](backup-to-aws-s3-using-br.md#查看快照备份的状态)之后，并在[日志备份的最新恢复点](backup-to-aws-s3-using-br.md#查看日志备份的状态)之前。PITR 恢复对远程存储访问授权方式与快照备份恢复一致。本节示例对远程存储访问授权方式仅以通过 accessKey 和 secretKey 的方式为例，具体步骤如下：
 
-1. 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-s3` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`:
+1. 在 `restore-test` 这个 namespace 中产生一个名为 `demo3-restore-s3` 的 `Restore` CR，并指定恢复到 `2022-10-10T17:21:00+08:00`：
 
     ```shell
     kubectl apply -f restore-point-s3.yaml
