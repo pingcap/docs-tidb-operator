@@ -27,6 +27,7 @@
     - 备份与恢复
       - [备份与恢复简介](backup-restore-overview.md)
       - [备份与恢复 CR 介绍](backup-restore-cr.md)
+      - [远程存储访问授权](grant-permissions-to-remote-storage.md)
       - 使用 Amazon S3 兼容的存储
         - [使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的存储](backup-to-aws-s3-using-br.md)
         - [使用 BR 恢复 Amazon S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
