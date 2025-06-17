@@ -166,7 +166,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 ### 第 1 步：准备恢复环境
 
-参考[使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md#第-1-步准备恢复环境)。
+参考[使用 BR 恢复 GCS 上的备份数据](#第-1-步准备恢复环境)。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
