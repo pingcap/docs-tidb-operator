@@ -45,7 +45,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 > **注意：**
 >
 > - BR 使用的 ServiceAccount 名称为固定值，必须为 `tidb-backup-manager`。
-> - 从 TiDB Operator v2 开始，`Backup`、`Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
+> - 从 TiDB Operator v2 开始，`Backup` 和 `Restore` 等资源的 `apiGroup` 从 `pingcap.com` 修改为 `br.pingcap.com`。
 
 1. 将以下内容保存为 `backup-rbac.yaml` 文件，用于创建所需的 RBAC 资源：
 
