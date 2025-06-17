@@ -13,13 +13,12 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
-    - 安全
-      - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
-      - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
     - [自定义 Pod](overlay.md)
     - [存储卷配置](configure-volume.md)
 - 运维管理
     - 安全
+      - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
+      - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
       - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
