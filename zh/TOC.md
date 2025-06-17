@@ -45,7 +45,6 @@
       - 使用持久卷
         - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
         - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
-      - 基于快照的备份和恢复
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
