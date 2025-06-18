@@ -85,7 +85,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 3. 为 namespace `test1` 授予远程存储访问权限：
 
-    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，授权访问 GCS 远程存储。
+    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#google-cloud-账号授权)，授权访问 GCS 远程存储。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
