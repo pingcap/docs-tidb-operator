@@ -95,7 +95,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 
 3. 为 namespace `test1` 授予远程存储访问权限：
 
-    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，授权访问 GCS 远程存储。
+    参考 [GCS 账号授权](grant-permissions-to-remote-storage.md#google-cloud-账号授权)，授权访问 GCS 远程存储。
 
 ### 快照备份
 
@@ -709,7 +709,7 @@ spec:
 
 `BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份。通过设置备份的保留时间，可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
 
-本节示例创建了名为 `integrated-backup-schedule-gcs` 的 `BackupSchedule` CR，其中访问 GCS 远程存储的方式参考[GCS 账号授权](grant-permissions-to-remote-storage.md#gcs-账号授权)，具体操作如下所示。
+本节示例创建了名为 `integrated-backup-schedule-gcs` 的 `BackupSchedule` CR，其中访问 GCS 远程存储的方式参考[GCS 账号授权](grant-permissions-to-remote-storage.md#google-cloud-账号授权)，具体操作如下所示。
 
 ### 前置条件：准备定时快照备份环境
 
