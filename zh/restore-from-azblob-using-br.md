@@ -153,7 +153,7 @@ demo2-restore-azblob   Complete   ...
 
 ### 第 1 步：准备恢复环境
 
-与[全量恢复](restore-from-azblob-using-br.md#全量恢复)的步骤相同。
+与[全量恢复](#全量恢复)的准备步骤相同。
 
 ### 第 2 步：将指定备份数据恢复到 TiDB 集群
 
