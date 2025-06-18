@@ -556,7 +556,7 @@ demo1-log-backup-s3        log      Stopped   ....
 
     ```yaml
     ---
-    apiVersion: core.br.pingcap.com/v1alpha1
+    apiVersion: br.pingcap.com/v1alpha1
     kind: CompactBackup
     metadata:
       name: demo1-compact-backup
