@@ -12,7 +12,7 @@ TiDB Operator 支持两种配置更新策略：
 - `Restart`（默认值）：更新配置时，自动滚动重启相关组件，使配置生效。
 - `HotReload`：更新配置后组件不重启，由组件自动应用新配置，或由用户手动触发滚动更新。
 
-你可以通过 CR 资源（如 TiDBGroup、TiKVGroup、PDGroup、TiProxyGroup、TiFlashGroup、TiCDCGroup）中 `spec.template.spec.updateStrategy.config` 字段设置配置更新策略。
+你可以通过 CR 资源（如 TiDBGroup、TiKVGroup、PDGroup、TiProxyGroup、TiFlashGroup、TiCDCGroup）中的 `spec.template.spec.updateStrategy.config` 字段设置配置更新策略。
 
 ## 配置 TiDB 配置参数
 
@@ -54,7 +54,7 @@ spec:
           max-backups = 30
 ```
 
-获取所有可以配置的 TiKV 配置参数，请参考 [TiKV 配置文档](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file)
+获取所有可以配置的 TiKV 配置参数，请参考 [TiKV 配置文档](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file)。
 
 > **注意：**
 >
@@ -77,7 +77,7 @@ spec:
         enable-prevote = true
 ```
 
-获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)
+获取所有可以配置的 PD 配置参数，请参考 [PD 配置文档](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
 
 > **注意：**
 >
