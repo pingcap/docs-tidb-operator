@@ -115,7 +115,7 @@ When the number of Pods for all components reaches the preset value and all comp
 > **Note:**
 >
 > - When the TiKV component scales in, TiDB Operator calls the PD interface to mark the corresponding TiKV instance as offline, and then migrates the data on it to other TiKV nodes. During the data migration, the TiKV Pod is still in the `Running` state, and the corresponding Pod is deleted only after the data migration is completed. The time consumed by scaling in depends on the amount of data on the TiKV instance to be scaled in. You can check whether TiKV is in the `Removing` state by running `kubectl get -n ${namespace} tikv`.
-> - When the number of `Serving` TiKV is equal to or less than the parameter value of `MaxReplicas` in the PD configuration, the TiKV components can not be scaled in.
+> - When the number of `Serving` TiKV is equal to or less than the value of the `MaxReplicas` parameter in the PD configuration, the TiKV components cannot be scaled in.
 > - The TiKV component does not support scaling out while a scale-in operation is in progress. Forcing a scale-out operation might cause anomalies in the cluster. If an anomaly already happens, refer to [TiKV Store is in Tombstone status abnormally](exceptions.md#tikv-store-is-in-tombstone-status-abnormally) to fix it.
 > - The TiFlash component has the same scale-in logic as TiKV.
 
