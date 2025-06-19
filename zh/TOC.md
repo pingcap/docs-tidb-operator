@@ -5,8 +5,8 @@
 - 关于 TiDB Operator
     - [简介](tidb-operator-overview.md)
 - 部署
-    - [部署 TiDB 集群](deploy-tidb-cluster.md)
-        - [访问 TiDB 集群](access-tidb.md)
+    - [部署 TiDB Operator](deploy-tidb-operator.md)
+    - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
   - [Kubernetes 监控、告警与日志收集](kubernetes-observability.md)
@@ -24,6 +24,7 @@
       - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
+        - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
         - 升级 TiDB Operator
     - 备份与恢复
       - [备份与恢复简介](backup-restore-overview.md)
