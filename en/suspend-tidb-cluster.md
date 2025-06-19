@@ -13,7 +13,7 @@ You can suspend a TiDB cluster in the following scenarios:
 
 - Temporarily release compute resources in a test environment.
 - Stop a development cluster that is unused for an extended period.
-- Pause a cluster while retaining its data and configuration.
+- Pause a cluster temporarily while retaining its data and configuration.
 
 ## Before you begin
 
