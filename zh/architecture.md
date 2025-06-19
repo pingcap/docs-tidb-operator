@@ -36,7 +36,7 @@ summary: 了解 TiDB Operator 架构及其工作原理。
 TiDB Operator 采用声明式 API，通过监控用户定义的资源对象实现自动化控制。其核心流程如下：
 
 1. 用户通过 `kubectl` 创建 `Cluster` 以及其他组件的自定义资源 (Custom Resource, CR) 对象，例如 `PDGroup`、`TiKVGroup` 和 `TiDBGroup` 等。
-2. TiDB Operator 持续监控 (watch) 这些 CR，根据集群实际状态动态调整各组件对应的 `Pod`、`Service`、`PVC` 和 `ConfigMap` 等对象。
+2. TiDB Operator 持续监控 (Watch) 这些 CR，根据集群实际状态动态调整各组件对应的 `Pod`、`Service`、`PVC` 和 `ConfigMap` 等对象。
 
 通过这种控制（协调）循环，TiDB Operator 能够自动进行集群节点健康检查和故障恢复。部署、升级、扩缩容等操作也可以通过修改 `Cluster` 和其他组件的 CR 对象“一键”完成。
 
