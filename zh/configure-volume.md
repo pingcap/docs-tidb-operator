@@ -151,7 +151,6 @@ spec:
 
 Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/) 功能修改卷的属性。
 
-
 **前提条件：**
 
 - Kubernetes 1.29 及以上版本。
