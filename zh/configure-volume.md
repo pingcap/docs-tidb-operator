@@ -159,7 +159,7 @@ Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernet
 
 使用 Kubernetes 原生方式修改卷属性的操作步骤如下：
 
-1. 在 TiDB 集群中启用 `VolumeAttributeClass` 功能开关：
+1. 在 TiDB 集群中启用 `VolumeAttributesClass` 功能开关：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -168,7 +168,7 @@ Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernet
       name: basic
     spec:
       featureGates:
-        - name: VolumeAttributeClass
+        - name: VolumeAttributesClass
     ```
 
 2. 创建 `VolumeAttributesClass` 资源：
@@ -204,7 +204,7 @@ Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernet
 >
 > 使用云厂商 API 方式时，你需要为 TiDB Operator 配置相应的云厂商权限。
 
-未启用 `VolumeAttributeClass` 功能时，TiDB Operator 会调用云厂商的 API 直接修改存储卷属性。目前支持对以下云厂商存储卷的修改：
+未启用 `VolumeAttributesClass` 功能时，TiDB Operator 会调用云厂商的 API 直接修改存储卷属性。目前支持对以下云厂商存储卷的修改：
 
 - **AWS EBS**：使用 AWS EC2 API 修改 EBS 卷的大小、IOPS 和吞吐量。
 - **Azure Disk**：使用 Azure API 修改 Managed Disk 的大小、IOPS 和吞吐量。
