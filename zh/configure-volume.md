@@ -270,7 +270,6 @@ allowVolumeExpansion: true
 
 ## 常见问题
 
-
 ### 如何为不同的 TiKV 实例配置不同的存储大小？
 
 同一个 TiKVGroup 中的所有实例使用相同的存储配置。如果你需要为不同的 TiKV 实例配置不同的存储，可以创建多个 TiKVGroup。
