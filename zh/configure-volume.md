@@ -142,7 +142,7 @@ spec:
 
 ### 修改存储卷属性
 
-对于底层使用云厂商存储的 TiDB 集群，TiDB Operator 支持两种方式修改存储卷的属性（例如 IOPS 和吞吐量）：
+对于底层使用云厂商存储的 TiDB 集群，TiDB Operator 支持以下两种方式修改存储卷的属性（例如 IOPS 和吞吐量）：
 
 - （推荐）[Kubernetes 原生方式](#方式一kubernetes-原生方式)
 - [云厂商 API 方式](#方式二云厂商-api)
@@ -150,6 +150,7 @@ spec:
 #### 方式一：Kubernetes 原生方式
 
 Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/) 功能修改卷的属性。
+
 **前提条件：**
 
 - Kubernetes 1.29 及以上版本。
