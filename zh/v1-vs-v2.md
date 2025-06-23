@@ -5,7 +5,7 @@ summary: 介绍 TiDB Operator v1 和 v2 的差异
 
 # TiDB Operator v1 和 v2 的对比
 
-TiDB Operator v2 对 v1 进行了一次比较大的重构，将核心 CRD (TidbCluster) 按组件拆分成了多个 CRD，并对移除了核心组件对 StatefulSet 的依赖，同时引入了 [Overlay](overlay,md) 机制来应对快速发展的 Kubernetes 生态
+TiDB Operator v2 对 v1 进行了一次比较大的重构，将核心 CRD (TidbCluster) 按组件拆分成了多个 CRD，并对移除了核心组件对 StatefulSet 的依赖，同时引入了 [Overlay](overlay.md) 机制来应对快速发展的 Kubernetes 生态
 
 ## TiDB Operator v2 新特性
 
