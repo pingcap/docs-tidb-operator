@@ -16,6 +16,7 @@
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
+        - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
         - Amazon S3 Compatible Storage
         - Google Cloud Storage
         - Azure Blob Storage
