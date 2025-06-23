@@ -16,10 +16,8 @@
   - 安全
       - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
       - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-    - [资源与部署配置](resource-and-deployment-configuration.md)
   - [组件配置](component-configuration.md)
-  - [存储卷配置](volume-configuration.md)
-  - [服务与高可用配置](service-and-high-availability-configuration.md)
+  - [存储卷配置](configure-volume.md)
   - [自定义 Kubernetes 原生资源的配置](overlay.md)
 - 运维管理
     - 安全
