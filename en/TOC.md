@@ -16,6 +16,7 @@
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
+      - [Backup and Restore Custom Resources](backup-restore-cr.md)
         - Amazon S3 Compatible Storage
         - Google Cloud Storage
         - Azure Blob Storage
