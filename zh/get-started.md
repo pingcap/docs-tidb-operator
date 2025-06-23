@@ -1,6 +1,6 @@
 ---
 title: 在 Kubernetes 上快速上手 TiDB
-summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群
+summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群。
 ---
 
 # 在 Kubernetes 上快速上手 TiDB
@@ -9,20 +9,20 @@ summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB
 
 > **警告：**
 >
-> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。
+> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 Kubernetes 上部署 TiDB 集群](deploy-tidb-cluster.md)。
 
 部署的基本步骤如下：
 
 1. [创建 Kubernetes 测试集群](#第-1-步创建-kubernetes-测试集群)
 2. [部署 TiDB Operator](#第-2-步部署-tidb-operator)
-3. [部署 TiDB 集群和监控](#第-3-步部署-tidb-集群和监控)
+3. [部署 TiDB 集群](#第-3-步部署-tidb-集群)
 4. [连接 TiDB 集群](#第-4-步连接-tidb-集群)
 
 ## 第 1 步：创建 Kubernetes 测试集群
 
-本节通过 [kind](https://kind.sigs.k8s.io/) 创建 Kubernetes 测试集群。你也可以参考 [Kubernetes 官方文档](https://kubernetes.io/docs/setup/#learning-environment) 选择一种方案部署 Kubernetes 集群。
+本节介绍如何使用 [kind](https://kind.sigs.k8s.io/) 创建一个 Kubernetes 测试集群。你也可以参考 [Kubernetes 官方文档](https://kubernetes.io/docs/setup/#learning-environment)，选择其他方法部署 Kubernetes 集群。
 
-kind 可以使用容器作为集群节点运行本地 Kubernetes 集群。请参阅 [kind 官方文档](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) 完成安装。
+kind 可以使用容器作为集群节点运行本地 Kubernetes 集群。请参阅 [kind 官方文档](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)完成安装。
 
 以下以 kind 0.24.0 版本为例：
 
@@ -98,8 +98,6 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0
 
 检查 TiDB Operator 组件是否正常运行起来：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl get pods --namespace tidb-admin
 ```
@@ -117,6 +115,8 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 当所有的 pods 都处于 Running 状态时，继续下一步。
 
 ## 第 3 步：部署 TiDB 集群
+
+按照以下步骤部署 TiDB 集群：
 
 1. 创建命名空间 Namespace：
 
@@ -246,15 +246,15 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
     </div>
     </SimpleTab>
 
-    方法二：将以上 YAML 文件保存在本地目录中，并使用以下命令一次性部署 TiDB 集群
+    方法二：将以上 YAML 文件保存到本地目录中，并使用以下命令一次性部署 TiDB 集群
 
     ```shell
     kubectl apply -f ./<directory> --server-side
     ```
 
-3. 查看 Pod 状态
+3. 查看 Pod 状态：
 
-    ``` shell
+    ```shell
     watch kubectl get pods -n db
     ```
 
@@ -284,9 +284,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
 本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Service**。
 
-首先，获取 tidb-cluster 命名空间中的服务列表：
-
-{{< copyable "shell-regular" >}}
+首先，获取 `db` 命名空间中的服务列表：
 
 ``` shell
 kubectl get svc -n db
@@ -310,8 +308,6 @@ tikv-tikv-peer   ClusterIP   None            <none>        20160/TCP,20180/TCP  
 
 然后，使用以下命令转发本地端口到集群：
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
 kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 ```
@@ -324,7 +320,7 @@ kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 >
 > 当使用 MySQL Client 8.0 访问 TiDB 服务（TiDB 版本 < v4.0.7）时，如果用户账户有配置密码，必须显式指定 `--default-auth=mysql_native_password` 参数，因为 `mysql_native_password` [不再是默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
 
-``` shell
+```shell
 mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 
