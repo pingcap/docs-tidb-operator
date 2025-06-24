@@ -448,37 +448,37 @@ demo1-log-backup-azblob    log    Stopped   ....
 
 本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
-1. 在 `test1` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
+在 `test1` namespace 中创建一个名为 `demo1-compact-backup` 的 CompactBackup CR。
 
-    ```shell
-    kubectl apply -f compact-backup-demo1.yaml
-    ```
+```shell
+kubectl apply -f compact-backup-demo1.yaml
+```
 
-    `compact-backup-demo1.yaml` 的内容如下：
+`compact-backup-demo1.yaml` 的内容如下：
 
-    ```yaml
-    apiVersion: br.pingcap.com/v1alpha1
-    kind: CompactBackup
-    metadata:
-      name: demo1-compact-backup
-      namespace: test1
-    spec:
-      startTs: "***"
-      endTs: "***"
-      concurrency: 8
-      maxRetryTimes: 2
-      br:
-        cluster: demo1
-        sendCredToTikv: true
-      azblob:
-        secretName: azblob-secret
-        container: my-container
-        prefix: my-log-backup-folder
-    ```
+```yaml
+apiVersion: br.pingcap.com/v1alpha1
+kind: CompactBackup
+metadata:
+  name: demo1-compact-backup
+  namespace: test1
+spec:
+  startTs: "***"
+  endTs: "***"
+  concurrency: 8
+  maxRetryTimes: 2
+  br:
+    cluster: demo1
+    sendCredToTikv: true
+  azblob:
+    secretName: azblob-secret
+    container: my-container
+    prefix: my-log-backup-folder
+```
 
-    其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
+其中，`startTs` 和 `endTs` 指定 `demo1-compact-backup` 需要压缩的日志备份时间范围。任何包含至少一个该时间区间内写入的日志都会被送去压缩。因此，最终的压缩结果可能包含该时间范围之外的写入数据。
 
-    `azblob` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
+`azblob` 设置应与需要压缩的日志备份的存储设置相同，`CompactBackup` 会读取相应地址的日志文件并进行压缩。
 
 #### 查看压缩日志备份状态
 

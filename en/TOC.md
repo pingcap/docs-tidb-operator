@@ -16,11 +16,12 @@
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
-        - Amazon S3 Compatible Storage
-        - Google Cloud Storage
-        - Azure Blob Storage
-        - Persistent Volumes
-        - Snapshot Backup and Restore across Multiple Kubernetes
+      - Amazon S3 Compatible Storage
+      - Google Cloud Storage
+      - Azure Blob Storage
+        - [Back Up Data Using BR](backup-to-azblob-using-br.md)
+      - Persistent Volumes
+      - Snapshot Backup and Restore across Multiple Kubernetes
     - Maintain
         - [View TiDB Logs](view-logs.md)
         - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
