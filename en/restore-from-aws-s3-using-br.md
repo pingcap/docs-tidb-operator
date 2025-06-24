@@ -77,7 +77,7 @@ Before restoring backup data on a S3-compatible storage to TiDB using BR, take t
       name: tidb-backup-manager
     ```
 
-2. execute the following command to create the RBAC resources in the `test1` namespace:
+2. Execute the following command to create the RBAC resources in the `test1` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
