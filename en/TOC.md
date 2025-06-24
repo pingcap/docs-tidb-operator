@@ -5,7 +5,9 @@
 - Introduction
 - Deploy
     - On Self-Managed Kubernetes
+        - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
+    - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
 - Migrate
     - Migrate from MySQL
 - Manage
@@ -30,4 +32,5 @@
 - Reference
     - Architecture
     - Tools
+        - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
