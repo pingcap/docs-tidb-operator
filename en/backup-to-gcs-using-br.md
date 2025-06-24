@@ -87,7 +87,7 @@ This document provides an example about how to back up the data of the `demo1` T
       name: tidb-backup-manager
     ```
 
-2. execute the following command to create the RBAC resources in the `test1` namespace:
+2. Execute the following command to create the RBAC resources in the `test1` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
