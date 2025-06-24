@@ -256,7 +256,7 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
 
 </Tip>
 
-#### 启动日志备份
+#### Start log backup
 
 1. In the `test1` namespace, create a `Backup` CR named `demo1-log-backup-s3`.
 
