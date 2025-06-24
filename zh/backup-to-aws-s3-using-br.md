@@ -494,7 +494,7 @@ demo1-log-backup-s3        log      Stopped   ....
       backupMode: log
       logSubcommand: log-start/log-pause/log-stop
       br:
-        mespace: test1
+        namespace: test1
         sendCredToTikv: true
       s3:
         provider: aws
