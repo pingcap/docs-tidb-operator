@@ -621,82 +621,77 @@ When you deploy a TiDB cluster, you can enable TLS between TiDB components, and 
 > - Starting from TiDB v8.4.0, the PD configuration item `cert-allowed-cn` supports multiple values. You can configure multiple `Common Name` in the `cluster-verify-cn` configuration item for TiDB and in the `cert-allowed-cn` configuration item for other components as needed.
 > - For more information, see [Enable TLS Between TiDB Components](https://docs.pingcap.com/tidb/stable/enable-tls-between-components/).
 
-In this step, you need to perform the following operations:
+Perform the following steps to create a TiDB cluster and enable TLS between TiDB components:
 
-- Create a TiDB cluster
-- Enable TLS between the TiDB components, and enable CN verification
+Create the `tidb-cluster.yaml` file:
 
-1. Create a TiDB cluster:
-
-    Create the `tidb-cluster.yaml` file:
-
-    ```yaml
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: Cluster
-    metadata:
-     name: ${cluster_name}
-     namespace: ${namespace}
+```yaml
+apiVersion: core.pingcap.com/v1alpha1
+kind: Cluster
+metadata:
+ name: ${cluster_name}
+ namespace: ${namespace}
+spec:
+ tlsCluster:
+   enabled: true
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: PDGroup
+metadata:
+  name: ${pd_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 3
+  template:
     spec:
-     tlsCluster:
-       enabled: true
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: PDGroup
-    metadata:
-      name: ${pd_group_name}
-     namespace: ${namespace}
+      config: |
+        [security]
+        cert-allowed-cn = ["TiDB"]
+      volumes:
+      - name: data
+        mounts:
+        - type: data
+        storage: 20Gi
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: TiKVGroup
+metadata:
+  name: ${tikv_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 3
+  template:
     spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 3
-      template:
-        spec:
-          config: |
-            [security]
-            cert-allowed-cn = ["TiDB"]
-          volumes:
-          - name: data
-            mounts:
-            - type: data
-            storage: 20Gi
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: TiKVGroup
-    metadata:
-      name: ${tikv_group_name}
-     namespace: ${namespace}
+      config: |
+        [security]
+        cert-allowed-cn = ["TiDB"]
+      volumes:
+      - name: data
+        mounts:
+        - type: data
+        storage: 100Gi
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: TiDBGroup
+metadata:
+  name: ${tidb_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 1
+  template:
     spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 3
-      template:
-        spec:
-          config: |
-            [security]
-            cert-allowed-cn = ["TiDB"]
-          volumes:
-          - name: data
-            mounts:
-            - type: data
-            storage: 100Gi
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: TiDBGroup
-    metadata:
-      name: ${tidb_group_name}
-     namespace: ${namespace}
-    spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 1
-      template:
-        spec:
-          config: |
-            [security]
-            cluster-verify-cn = ["TiDB"]
-    ```
+      config: |
+        [security]
+        cluster-verify-cn = ["TiDB"]
+```
 
-    Then, execute `kubectl apply -f tidb-cluster.yaml` to create a TiDB cluster.
+Then, execute `kubectl apply -f tidb-cluster.yaml` to create a TiDB cluster.

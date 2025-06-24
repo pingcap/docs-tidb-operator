@@ -619,82 +619,77 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 > - 从 TiDB v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 Common Name。
 > - 详情参考[为 TiDB 组件间通信开启加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-components/)。
 
-在这一步中，需要完成以下操作：
+按照如下步骤部署 TiDB 集群并开启集群间的 TLS：
 
-- 创建一套 TiDB 集群
-- 为 TiDB 组件间开启 TLS，并开启 CN 验证
+创建 `tidb-cluster.yaml` 文件：
 
-1. 创建一套 TiDB 集群：
-
-    创建 `tidb-cluster.yaml` 文件：
-
-    ```yaml
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: Cluster
-    metadata:
-     name: ${cluster_name}
-     namespace: ${namespace}
+```yaml
+apiVersion: core.pingcap.com/v1alpha1
+kind: Cluster
+metadata:
+ name: ${cluster_name}
+ namespace: ${namespace}
+spec:
+ tlsCluster:
+   enabled: true
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: PDGroup
+metadata:
+  name: ${pd_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 3
+  template:
     spec:
-     tlsCluster:
-       enabled: true
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: PDGroup
-    metadata:
-      name: ${pd_group_name}
-     namespace: ${namespace}
+      config: |
+        [security]
+        cert-allowed-cn = ["TiDB"]
+      volumes:
+      - name: data
+        mounts:
+        - type: data
+        storage: 20Gi
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: TiKVGroup
+metadata:
+  name: ${tikv_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 3
+  template:
     spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 3
-      template:
-        spec:
-          config: |
-            [security]
-            cert-allowed-cn = ["TiDB"]
-          volumes:
-          - name: data
-            mounts:
-            - type: data
-            storage: 20Gi
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: TiKVGroup
-    metadata:
-      name: ${tikv_group_name}
-     namespace: ${namespace}
+      config: |
+        [security]
+        cert-allowed-cn = ["TiDB"]
+      volumes:
+      - name: data
+        mounts:
+        - type: data
+        storage: 100Gi
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: TiDBGroup
+metadata:
+  name: ${tidb_group_name}
+ namespace: ${namespace}
+spec:
+  cluster:
+    name: ${cluster_name}
+  version: v8.1.0
+  replicas: 1
+  template:
     spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 3
-      template:
-        spec:
-          config: |
-            [security]
-            cert-allowed-cn = ["TiDB"]
-          volumes:
-          - name: data
-            mounts:
-            - type: data
-            storage: 100Gi
-    ---
-    apiVersion: core.pingcap.com/v1alpha1
-    kind: TiDBGroup
-    metadata:
-      name: ${tidb_group_name}
-     namespace: ${namespace}
-    spec:
-      cluster:
-        name: ${cluster_name}
-      version: v8.1.0
-      replicas: 1
-      template:
-        spec:
-          config: |
-            [security]
-            cluster-verify-cn = ["TiDB"]
-    ```
+      config: |
+        [security]
+        cluster-verify-cn = ["TiDB"]
+```
 
-    然后使用 `kubectl apply -f tidb-cluster.yaml` 来创建 TiDB 集群。
+然后使用 `kubectl apply -f tidb-cluster.yaml` 来创建 TiDB 集群。
