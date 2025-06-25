@@ -9,7 +9,7 @@ This document describes how to grant permissions to access remote storage for ba
 
 ## Grant permissions to an AWS account
 
-Amazon Web Service (AWS) provides different methods to grant permissions for different types of Kubernetes clusters. This document introduces the following three methods:
+Amazon Web Services (AWS) provides different methods to grant permissions for different types of Kubernetes clusters. This document introduces the following three methods:
 
 - [Grant permissions by AccessKey and SecretKey](#grant-permissions-by-accesskey-and-secretkey): applicable to self-managed Kubernetes clusters and AWS EKS clusters.
 - [Grant permissions by associating IAM with Pod](#grant-permissions-by-associating-iam-with-pod): applicable to self-managed Kubernetes clusters.
@@ -63,7 +63,7 @@ To grant permissions to S3-compatible storage using AccessKey and SecretKey, per
                             key: "secret_key"
     ```
 
-    The following example shows how to configure environment variables for Backup:
+    The following example shows how to configure environment variables for the Backup resource:
 
     ```yaml
     apiVersion: br.pingcap.com/v1alpha1
@@ -84,7 +84,7 @@ To grant permissions to S3-compatible storage using AccessKey and SecretKey, per
               key: "secret_key"
     ```
 
-    The following example shows how to configure environment variables for Restore:
+    The following example shows how to configure environment variables for the Restore resource:
 
     ```yaml
     apiVersion: br.pingcap.com/v1alpha1
@@ -167,7 +167,7 @@ To grant permissions by associating IAM with a ServiceAccount, perform the follo
                 serviceAccountName: br-s3
     ```
 
-5. Specify the `serviceAccount` in the Backup or Restore configuration. The following example shows how to specify it in a Backup resource:
+5. Specify the `serviceAccount` in the backup or restore configuration. The following example shows how to specify it in a Backup resource:
 
     ```yaml
     apiVersion: br.pingcap.com/v1alpha1
@@ -304,11 +304,11 @@ Azure clients can obtain access through the environment variables `AZURE_STORAGE
       --namespace=<your-namespace>
     ```
 
-2. Use the [Overlay](overlay.md) feature to inject the Secret into the TiKVGroup or TiFlashGroup Pod. The following example shows how to configure it for a TiKVGroup:
+2. Use the [Overlay](overlay.md) feature to inject the Secret as environment variables into the TiKVGroup or TiFlashGroup Pod. The following example shows how to configure it for a TiKVGroup:
 
     > **Note:**
     >
-    > - Ensure the service principal has access to the target storage account.
+    > - When granting permissions by Azure AD, ensure the service principal has access to the target storage account.
     > - Restart the Pods after modifying the Secret to apply updated environment variables.
 
     ```yaml
