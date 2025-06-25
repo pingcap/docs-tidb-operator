@@ -14,6 +14,7 @@
     - Security
       - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
     - Upgrade
+        - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
         - Upgrade TiDB Operator
     - Backup and Restore
         - Amazon S3 Compatible Storage
