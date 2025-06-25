@@ -110,7 +110,7 @@ spec:
 
 Supported mount types for TiFlash:
 
-- `data`: TiFlash data directory. Default path is `/var/lib/tiflash`.
+- `data`: TiFlash data directory. The default path is `/var/lib/tiflash`.
 
 Example:
 
