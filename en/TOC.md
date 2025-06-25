@@ -4,8 +4,8 @@
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
 - Deploy
-    - On Self-Managed Kubernetes
-        - [Access a TiDB Cluster](access-tidb.md)
+    - [Deploy TiDB Operator](deploy-tidb-operator.md)
+    - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
     - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
 - Migrate
