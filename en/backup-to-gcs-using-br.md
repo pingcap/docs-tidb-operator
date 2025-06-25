@@ -10,7 +10,7 @@ This document describes how to back up the data of a TiDB cluster on Kubernetes 
 - **Snapshot backup**. With snapshot backup, you can restore a TiDB cluster to the time point of the snapshot backup using [full restoration](restore-from-gcs-using-br.md#full-restoration).
 - **Log backup**. With snapshot backup and log backup, you can restore a TiDB cluster to any point in time. This is also known as [Point-in-Time Recovery (PITR)](restore-from-gcs-using-br.md#point-in-time-recovery).
 
-The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the AWS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
+The backup method described in this document is implemented based on CustomResourceDefinition (CRD) in TiDB Operator. For the underlying implementation, [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview) is used to get the backup data of the TiDB cluster, and then send the data to the GCS storage. BR stands for Backup & Restore, which is a command-line tool for distributed backup and recovery of the TiDB cluster data.
 
 ## Usage scenarios
 
@@ -36,7 +36,7 @@ For other backup needs, refer to [Backup and Restore Overview](backup-restore-ov
 
 Ad-hoc backup includes snapshot backup and log backup. For log backup, you can [start](#start-log-backup) or [stop](#stop-log-backup) a log backup task and [clean log backup data](#clean-log-backup-data).
 
-To get an Ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
+To get an ad-hoc backup, you need to create a `Backup` Custom Resource (CR) object to describe the backup details. Then, TiDB Operator performs the specific backup operation based on this `Backup` object. If an error occurs during the backup process, TiDB Operator does not retry, and you need to handle this error manually.
 
 This document provides an example about how to back up the data of the `demo1` TiDB cluster in the `test1` Kubernetes namespace to GCS. The following are the detailed steps.
 
@@ -183,7 +183,7 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
 
 #### Start log backup
 
-1. In the `backup-test` namespace, create a `Backup` CR named `demo1-log-backup-gcs`.
+1. In the `test1` namespace, create a `Backup` CR named `demo1-log-backup-gcs`.
 
     ```shell
     kubectl apply -f log-backup-gcs.yaml
@@ -497,9 +497,9 @@ spec:
     prefix: my-log-backup-folder
 ```
 
-The `startTs` and `endTs` fields specify the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one write within this time range will be included in the compaction process. As a result, the final compacted data might include data written outside this range.
+The `startTs` and `endTs` fields specify the time range for the logs to be compacted by `demo1-compact-backup`. Any log that contains at least one data write within this time range will be included in the compaction process. As a result, the final compacted data might include data written outside this range.
 
-The `gcs` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compact them.
+The `gcs` settings should be the same as the storage settings of the log backup to be compacted. `CompactBackup` reads log files from the corresponding location and compacts them.
 
 #### View the status of log backup compaction
 
@@ -643,7 +643,7 @@ You can set a backup policy to perform scheduled backups of the TiDB cluster, an
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
 
-The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
+The steps to prepare for a scheduled snapshot backup are the same as those of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
 
 ### Perform a scheduled snapshot backup
 
@@ -794,7 +794,7 @@ To accelerate downstream recovery, you can enable `CompactBackup` CR in the `Bac
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
 
-The steps to prepare for a scheduled snapshot backup are the same as that of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
+The steps to prepare for a scheduled snapshot backup are the same as those of [Prepare for an ad-hoc backup](#prerequisites-prepare-for-an-ad-hoc-backup).
 
 ### Create `BackupSchedule`
 
