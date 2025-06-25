@@ -233,7 +233,7 @@ To configure the monitoring dashboard, perform the following steps:
 
 1. Follow the [Grafana official documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes) to deploy Grafana. This document uses version `12.0.0-security-01` as an example.
 
-2.  Execute the following `kubectl port-forward` command to access Grafana through port forwarding:
+2. Execute the following `kubectl port-forward` command to access Grafana through port forwarding:
 
     ```shell
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
