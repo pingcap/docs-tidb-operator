@@ -5,12 +5,15 @@
 - Introduction
 - Deploy
     - On Self-Managed Kubernetes
+        - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
+    - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
 - Migrate
     - Migrate from MySQL
 - Manage
     - Security
-        - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+        - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
+      - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
@@ -31,4 +34,5 @@
     - Architecture
         - [TiDB Operator](architecture.md)
     - Tools
+        - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
