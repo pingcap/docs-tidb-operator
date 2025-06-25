@@ -1,20 +1,19 @@
 ---
 title: Enable TLS for the MySQL Client
-summary: Learn how to enable TLS for MySQL client of the TiDB cluster on Kubernetes.
+summary: Learn how to enable TLS for the MySQL client of the TiDB cluster on Kubernetes.
 ---
 
 # Enable TLS for the MySQL Client
 
 This document describes how to enable TLS for MySQL client of the TiDB cluster on Kubernetes. To enable TLS for the MySQL client, perform the following steps:
 
-1. Issue two sets of certificates: a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${tidb_group_name}-tidb-server-secret` and `${tidb_group_name}-tidb-client-secret`, respectively including these two sets of certificates.
+1. Issue two sets of certificates: a set of server-side certificates for the TiDB server, and a set of client-side certificates for the MySQL client. Create two Secret objects, `${tidb_group_name}-tidb-server-secret` and `${tidb_group_name}-tidb-client-secret`, respectively including these two sets of certificates.
 
     > **Note:**
     >
     > - The Secret objects you created must follow the preceding naming convention. Otherwise, the deployment of the TiDB cluster will fail.
     > - Explicitly specifying the MySQL TLS Secret will be supported in a future release.
     > - The default naming convention for Secrets differs between TiDB Operator v2 and v1:
-   >
     >     - For TiDB clusters created by TiDB Operator v1, the default Secret names are `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`.
     >     - In TiDB Operator v2, different `TiDBGroup` objects support different TLS certificates. Therefore, the default Secret names are `${tidb_group_name}-tidb-server-secret` and `${tidb_group_name}-tidb-client-secret`.
 
@@ -184,7 +183,7 @@ To renew existing TLS certificates, see [Renew and Replace the TLS Certificate](
     You have created two Secret objects for the server-side and client-side certificates:
 
     - The TiDB server loads one Secret object when it starts
-    - The MySQL client uses another Secret object when it connects to the TiDB cluster
+    - The MySQL client uses the other Secret object when it connects to the TiDB cluster
 
 You can generate multiple sets of client-side certificates. At least one set of client-side certificates is needed for the internal components of TiDB Operator to access the TiDB server.
 
@@ -198,7 +197,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     To configure `cert-manager`, create the Issuer resources.
 
-    First, create a directory which saves the files that `cert-manager` needs to create certificates:
+    First, create a directory to save the files that `cert-manager` needs to create certificates:
 
     ```shell
     mkdir -p cert-manager
@@ -243,7 +242,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     This `.yaml` file creates three objects:
 
-    - An Issuer object of SelfSigned class, used to generate the CA certificate needed by Issuer of CA class
+    - An Issuer object of SelfSigned class, used to generate the CA certificate needed by the Issuer of the CA class
     - A Certificate object, whose `isCa` is set to `true`
     - An Issuer, used to issue TLS certificates for the TiDB server
 
