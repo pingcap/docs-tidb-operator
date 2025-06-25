@@ -41,8 +41,8 @@ Before deploying in any environment, you can customize TiDB configurations using
 After the deployment is complete, see the following documents to use, operate, and maintain TiDB clusters on Kubernetes:
 
 + [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
-+ [Access the TiDB Cluster](access-tidb.md)
-+ [Scale TiDB Cluster](scale-a-tidb-cluster.md)
++ [Access a TiDB Cluster](access-tidb.md)
++ [Scale a TiDB Cluster](scale-a-tidb-cluster.md)
 + [View TiDB Logs on Kubernetes](view-logs.md)
 
 When a problem occurs and the cluster needs diagnosis, you can:
