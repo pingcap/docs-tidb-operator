@@ -25,8 +25,8 @@ This document describes how to enable Transport Layer Security (TLS) between com
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
-- Using the `cfssl` system
-- Using the `cert-manager` system
+- Use the `cfssl` system
+- Use the `cert-manager` system
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
@@ -34,7 +34,7 @@ If you need to renew the existing TLS certificate, refer to [Renew and Replace t
 
 This section describes how to issue certificates using two methods: `cfssl` and `cert-manager`.
 
-### Using `cfssl`
+### Use `cfssl`
 
 1. Download `cfssl` and initialize the certificate issuer:
 
@@ -115,7 +115,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In this step, you need to generate a set of certificates for each component group of the TiDB cluster.
 
-    - PD
+    - PD certificate
 
         First, generate the default `pd.json` file:
 
@@ -152,7 +152,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal pd.json | cfssljson -bare pd
         ```
 
-    - TiKV
+    - TiKV certificate
 
         First, generate the default `tikv.json` file:
 
@@ -189,7 +189,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tikv.json | cfssljson -bare tikv
         ```
 
-    - TiDB
+    - TiDB certificate
 
         First, generate the default `tidb.json` file:
 
@@ -300,7 +300,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     In this step, separate Secrets are created for the server-side certificates of PD, TiKV, and TiDB for loading during startup, and another set of client-side certificates is provided for their client connections.
 
-### Using `cert-manager`
+### Use `cert-manager`
 
 1. Install `cert-manager`.
 
@@ -310,7 +310,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     To configure `cert-manager`, create the Issuer resources.
 
-    First, create a directory which saves the files that `cert-manager` needs to create certificates:
+    First, create a directory to save the files that `cert-manager` needs to create certificates:
 
     ```shell
     mkdir -p cert-manager
@@ -371,7 +371,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     According to [Enable TLS Between TiDB Components](https://docs.pingcap.com/tidb/stable/enable-tls-between-components), each component needs a certificate.
 
-    - PD
+    - PD certificate
 
         ```yaml
         apiVersion: cert-manager.io/v1
@@ -431,7 +431,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${pd_group_name}-pd-cluster-secret` Secret object to be used by the PD component of the TiDB server.
 
-    - TiKV
+    - TiKV certificate
 
         ```yaml
         apiVersion: cert-manager.io/v1
@@ -491,7 +491,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${tikv_group_name}-tikv-cluster-secret` Secret object to be used by the TiKV component of the TiDB server.
 
-    - TiDB
+    - TiDB certificate
 
         ```yaml
         apiVersion: cert-manager.io/v1
