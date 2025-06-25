@@ -30,7 +30,7 @@ In this example, the `my-full-backup-folder` folder in the `my-bucket` bucket of
 
 ### Step 1: Prepare the restore environment
 
-Before restoring backup data on a S3-compatible storage to TiDB using BR, take the following steps to prepare the restore environment:
+Before restoring backup data on an S3-compatible storage to TiDB using BR, take the following steps to prepare the restore environment:
 
 > **Note:**
 >
@@ -85,7 +85,7 @@ Before restoring backup data on a S3-compatible storage to TiDB using BR, take t
 
 3. Grant permissions to the remote storage for the `test1` namespace:
 
-    - If you are using Amazon S3 to back up your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    - If you are using Amazon S3 to back up your cluster, you can grant permissions in three methods. For more information, see [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
     - If you are using other S3-compatible storage (such as Ceph and MinIO) to back up your cluster, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
 ### Step 2: Restore the backup data to a TiDB cluster
