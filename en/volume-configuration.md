@@ -40,7 +40,7 @@ Field descriptions:
 
 Supported mount types for PD:
 
-- `data`: PD data directory. Default path is `/var/lib/pd`.
+- `data`: PD data directory. The default path is `/var/lib/pd`.
 
 Example:
 
@@ -63,7 +63,7 @@ spec:
 
 Supported mount types for TiKV:
 
-- `data`: TiKV data directory. Default path is `/var/lib/tikv`.
+- `data`: TiKV data directory. The default path is `/var/lib/tikv`.
 
 Example:
 
@@ -86,8 +86,8 @@ spec:
 
 Supported mount types for TiDB:
 
-- `data`: TiDB data directory. Default path is `/var/lib/tidb`.
-- `slowlog`: TiDB slow log directory. Default path is `/var/log/tidb`.
+- `data`: TiDB data directory. The default path is `/var/lib/tidb`.
+- `slowlog`: TiDB slow log directory. The default path is `/var/log/tidb`.
 
 Example:
 
@@ -131,7 +131,7 @@ spec:
 
 ## Modify storage volumes
 
-### Modify storage size
+### Modify the storage size
 
 By modifying the `volumes.storage` field in the component group CR, TiDB Operator automatically updates the corresponding PVC to adjust the storage size.
 
@@ -142,7 +142,7 @@ By modifying the `volumes.storage` field in the component group CR, TiDB Operato
 
 ### Change volume attributes
 
-For TiDB clusters that use cloud provider storage, TiDB Operator supports the following two methods to modify storage volume attributes (such as IOPS and throughput):
+For TiDB clusters that use cloud provider storages, TiDB Operator supports the following two methods to modify storage volume attributes (such as IOPS and throughput):
 
 - (Recommended) [Kubernetes native method](#method-1-kubernetes-native)
 - [Cloud provider API](#method-2-cloud-provider-api)
@@ -273,7 +273,7 @@ Because the StorageClass of a PVC cannot be modified directly, TiDB Operator add
 
 All instances in the same `TiKVGroup` share the same storage configuration. To configure different storage for different TiKV instances, you can create multiple `TiKVGroups` resources.
 
-### Why does the volume update not take effect immediately?
+### Why does the volume modification not take effect immediately?
 
 Storage volume modifications might not take effect immediately for the following reasons:
 
