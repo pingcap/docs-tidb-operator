@@ -12,6 +12,7 @@
     - Migrate from MySQL
 - Manage
     - Security
+      - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
       - [Enable TLS Between TiDB Components](enable-tls-between-components.md)
       - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
     - Upgrade
