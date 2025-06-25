@@ -35,7 +35,7 @@ The diagram includes several resource objects defined by [Custom Resource Defini
 
 TiDB Operator uses a declarative API to automate cluster management by continuously monitoring user-defined resources. The core workflow is as follows:
 
-1. The user creates `Cluster` and other component Custom Resource (CR) objects through `kubectl`,, such as `PDGroup`, `TiKVGroup`, and `TiDBGroup`.
+1. The user creates `Cluster` and other component Custom Resource (CR) objects through `kubectl`, such as `PDGroup`, `TiKVGroup`, and `TiDBGroup`.
 2. TiDB Operator continuously watches these CRs and dynamically adjusts the corresponding `Pod`, `PVC`, and `ConfigMap` objects based on the actual cluster state.
 
 Through this control (reconciliation) loop, TiDB Operator can automatically perform cluster node health checks and failure recovery. Operations such as deployment, upgrades, and scaling can also be completed with one action by modifying the `Cluster` and other component CRs.
