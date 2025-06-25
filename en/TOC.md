@@ -14,6 +14,7 @@
     - Security
       - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
       - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+      - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
     - Upgrade
         - Upgrade TiDB Operator
     - Backup and Restore
