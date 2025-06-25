@@ -111,7 +111,7 @@ spec:
     prefix: my-full-backup-folder
 ```
 
-When configuring `restore-azblob.yaml`, note the following:
+When configuring `restore-full-azblob.yaml`, note the following:
 
 - For more information about Azure Blob Storage configuration, refer to [Azure Blob Storage fields](backup-restore-cr.md#azure-blob-storage-fields).
 - Some parameters in `.spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-cr.md#br-fields).
