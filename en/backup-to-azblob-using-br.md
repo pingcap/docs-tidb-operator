@@ -391,7 +391,7 @@ demo1-log-backup-azblob    log    Stopped   ....
     apiVersion: br.pingcap.com/v1alpha1
     kind: Backup
     metadata:
-      name: demo1-backup-azblob
+      name: demo1-log-backup-azblob
       namespace: test1
     spec:
       backupMode: log
@@ -439,7 +439,7 @@ demo1-log-backup-azblob    log    Stopped   ....
 
     ```
     NAME                MODE       STATUS     ...   LOGTRUNCATEUNTIL
-    demo1-log-backup    log        Complete   ...   2022-10-10T15:21:00+08:00
+    demo1-log-backup-azblob    log        Complete   ...   2022-10-10T15:21:00+08:00
     ```
 
 ### Compact log backup
