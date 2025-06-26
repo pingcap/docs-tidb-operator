@@ -1,37 +1,37 @@
 ---
-title: 在 Kubernetes 上快速上手 TiDB
-summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB 集群。
+title: Get Started with TiDB on Kubernetes
+summary: Learn how to quickly deploy a TiDB cluster on Kubernetes using TiDB Operator.
 ---
 
-# 在 Kubernetes 上快速上手 TiDB
+# Get Started with TiDB on Kubernetes
 
-本文档介绍了如何创建一个简单的 Kubernetes 集群，部署 TiDB Operator，并使用 TiDB Operator 部署 TiDB 集群。
+This document introduces how to create a simple Kubernetes cluster and use it to deploy a basic test TiDB cluster using TiDB Operator.
 
-> **警告：**
+> **Warning:**
 >
-> 本文中的部署说明仅用于测试目的，**不要**直接用于生产环境。如果要在生产环境部署，请参阅[在 Kubernetes 上部署 TiDB 集群](deploy-tidb-cluster.md)。
+> This document is for demonstration purposes only. **Do not** follow it in production environments. For deployment in production environments, see [Deploy TiDB on Kubernetes](deploy-tidb-cluster.md).
 
-部署的基本步骤如下：
+To deploy TiDB Operator and a TiDB cluster, follow these steps:
 
-1. [创建 Kubernetes 测试集群](#第-1-步创建-kubernetes-测试集群)
-2. [部署 TiDB Operator](#第-2-步部署-tidb-operator)
-3. [部署 TiDB 集群](#第-3-步部署-tidb-集群)
-4. [连接 TiDB 集群](#第-4-步连接-tidb-集群)
+1. [Create a test Kubernetes cluster](#step-1-create-a-test-kubernetes-cluster)
+2. [Deploy TiDB Operator](#step-2-deploy-tidb-operator)
+3. [Deploy a TiDB cluster](#step-3-deploy-a-tidb-cluster)
+4. [Connect to TiDB](#step-4-connect-to-tidb)
 
-## 第 1 步：创建 Kubernetes 测试集群
+## Step 1: Create a test Kubernetes cluster
 
-本节介绍如何使用 [kind](https://kind.sigs.k8s.io/) 创建一个 Kubernetes 测试集群。你也可以参考 [Kubernetes 官方文档](https://kubernetes.io/docs/setup/#learning-environment)，选择其他方法部署 Kubernetes 集群。
+This section describes how to create a local test Kubernetes cluster using [kind](https://kind.sigs.k8s.io/). You can also refer to the [Kubernetes official documentation](https://kubernetes.io/docs/setup/#learning-environment) for other deployment options.
 
-kind 可以使用容器作为集群节点运行本地 Kubernetes 集群。请参阅 [kind 官方文档](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)完成安装。
+kind lets you run a local Kubernetes cluster using containers as nodes. To install kind, see [Quick Start](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
 
-以下以 kind 0.24.0 版本为例：
+The following uses kind v0.24.0 as an example:
 
 ```shell
 kind create cluster --name tidb-operator
 ```
 
 <details>
-<summary>点击查看期望输出</summary>
+<summary>Expected output</summary>
 
 ```
 create cluster with image kindest/node:v1.31.0@sha256:53df588e04085fd41ae12de0c3fe4c72f7013bba32a20e7325357a1ac94ba865
@@ -53,14 +53,14 @@ Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/
 
 </details>
 
-检查集群是否创建成功：
+Check whether the cluster is successfully created:
 
 ```shell
 kubectl cluster-info --context kind-tidb-operator
 ```
 
 <details>
-<summary>点击查看期望输出</summary>
+<summary>Expected output</summary>
 
 ```
 Kubernetes master is running at https://127.0.0.1:51026
@@ -71,39 +71,39 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 </details>
 
-Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
+Now that your Kubernetes cluster is ready, you can deploy TiDB Operator.
 
-## 第 2 步：部署 TiDB Operator
+## Step 2: Deploy TiDB Operator
 
-部署 TiDB Operator 的过程分为两步：
+To deploy TiDB Operator, perform the following steps:
 
-1. 安装 TiDB Operator CRDs
-2. 安装 TiDB Operator
+1. Install TiDB Operator CRDs
+2. Install TiDB Operator
 
-### 安装 TiDB Operator CRDs
+### Install TiDB Operator CRDs
 
-TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型 (CRD)。执行以下命令安装 CRD 到集群中：
+TiDB Operator includes multiple Custom Resource Definitions (CRDs) that implement different components of the TiDB cluster. Run the following command to install the CRDs in the cluster:
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.crds.yaml --server-side
 ```
 
-### 安装 TiDB Operator
+### Install TiDB Operator
 
-执行以下命令安装 TiDB Operator 到集群中：
+Run the following command to install TiDB Operator into the cluster:
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.yaml --server-side
 ```
 
-检查 TiDB Operator 组件是否正常运行起来：
+Check whether the TiDB Operator components are running normally:
 
 ```shell
 kubectl get pods --namespace tidb-admin
 ```
 
 <details>
-<summary>点击查看期望输出</summary>
+<summary>Expected output</summary>
 
 ```
 NAME                             READY   STATUS    RESTARTS   AGE
@@ -112,30 +112,30 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
 </details>
 
-当所有的 pods 都处于 Running 状态时，继续下一步。
+When all pods are in the Running state, continue to the next step.
 
-## 第 3 步：部署 TiDB 集群
+## Step 3: Deploy a TiDB cluster
 
-按照以下步骤部署 TiDB 集群：
+To deploy a TiDB cluster, perform the following steps:
 
-1. 创建命名空间 Namespace：
+1. Create a namespace:
 
-    > **注意：**
+    > **Note:**
     >
-    > 暂不支持跨 Namespace 引用 `Cluster`。请确保所有组件部署在同一个 Kubernetes Namespace 中。
+    > Cross-namespace `Cluster` references are not supported. Make sure that all components are deployed in the same Kubernetes namespace.
 
     ```shell
     kubectl create namespace db
     ```
 
-2. 部署 TiDB 集群：
+2. Deploy the TiDB cluster.
 
-    方法一：使用以下命令创建一个包含 PD、TiKV 和 TiDB 组件的 TiDB 集群
+    Method 1: use the following command to create a TiDB cluster that includes PD, TiKV, and TiDB components
 
     <SimpleTab>
     <div label="Cluster">
 
-    创建 `Cluster`：
+    Create the `Cluster` resource:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -153,7 +153,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
     <div label="PD">
 
-    创建 PD 组件：
+    Create the PD component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -186,7 +186,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
     <div label="TiKV">
 
-    创建 TiKV 组件：
+    Create the TiKV component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -219,7 +219,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
     <div label="TiDB">
 
-    创建 TiDB 组件：
+    Create the TiDB component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -246,20 +246,20 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
     </div>
     </SimpleTab>
 
-    方法二：将以上 YAML 文件保存到本地目录中，并使用以下命令一次性部署 TiDB 集群
+    Method 2: save the preceding YAML files to a local directory and deploy the TiDB cluster with a single command:
 
     ```shell
     kubectl apply -f ./<directory> --server-side
     ```
 
-3. 查看 Pod 状态：
+3. Monitor the status of Pod:
 
     ```shell
     watch kubectl get pods -n db
     ```
 
     <details>
-    <summary>点击查看期望输出</summary>
+    <summary>Expected output</summary>
 
     ```
     NAME               READY   STATUS    RESTARTS   AGE
@@ -270,28 +270,28 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
     </details>
 
-    所有组件的 Pod 都启动后，每种类型组件（`pd`、`tikv` 和 `tidb`）都会处于 Running 状态。此时，你可以按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 返回命令行，然后进行下一步。
+    After all component Pods start, each component type (`pd`, `tikv`, and `tidb`) will be in the Running state. You can press <kbd>Ctrl</kbd>+<kbd>C</kbd> to return to the command line and proceed to the next step.
 
-## 第 4 步：连接 TiDB 集群
+## Step 4: Connect to TiDB
 
-由于 TiDB 支持 MySQL 传输协议及其绝大多数的语法，因此你可以直接使用 `mysql` 命令行工具连接 TiDB 进行操作。以下说明连接 TiDB 集群的步骤。
+Because TiDB supports the MySQL transport protocol and most of its syntax, you can use the `mysql` command-line tool to connect to TiDB directly. The following steps describe how to connect to the TiDB cluster.
 
-### 安装 `mysql` 命令行工具
+### Install the `mysql` command-line tool
 
-要连接到 TiDB，你需要在使用 `kubectl` 的主机上安装与 MySQL 兼容的命令行客户端。可以安装 MySQL Server、MariaDB Server 和 Percona Server 的 MySQL 可执行文件，也可以从操作系统软件仓库中安装。
+To connect to TiDB, you need to install a MySQL-compatible command-line client on the machine where you are running `kubectl`. You can install MySQL Server, MariaDB Server, or Percona Server MySQL executables, or install them from your operating system's software repository.
 
-### 转发 TiDB 服务 4000 端口
+### Forward port 4000
 
-本步骤将端口从本地主机转发到 Kubernetes 中的 TiDB **Service**。
+To connect to TiDB, you need to forward a port from the local host to the TiDB service on Kubernetes.
 
-首先，获取 `db` 命名空间中的服务列表：
+First, list services in the `db` namespace:
 
 ```shell
 kubectl get svc -n db
 ```
 
 <details>
-<summary>点击查看期望输出</summary>
+<summary>Expected output</summary>
 
 ```
 NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)               AGE
@@ -304,28 +304,28 @@ tikv-tikv-peer   ClusterIP   None            <none>        20160/TCP,20180/TCP  
 
 </details>
 
-这个例子中，TiDB **Service** 是 **tidb-tidb**。
+In this example, the TiDB service is `tidb-tidb`.
 
-然后，使用以下命令转发本地端口到集群：
+Then, use the following command to forward a local port to the cluster:
 
 ```shell
 kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 ```
 
-如果端口 `14000` 已经被占用，可以更换一个空闲端口。命令会在后台运行，并将输出转发到文件 `pf14000.out`。所以，你可以继续在当前 shell 会话中执行命令。
+If port `14000` is already in use, you can use a different available port. The command runs in the background and forwards output to the file `pf14000.out`, so you can continue to run commands in the current shell session.
 
-### 连接 TiDB 服务
+### Connect to the TiDB service
 
-> **注意：**
+> **Note:**
 >
-> 当使用 MySQL Client 8.0 访问 TiDB 服务（TiDB 版本 < v4.0.7）时，如果用户账户有配置密码，必须显式指定 `--default-auth=mysql_native_password` 参数，因为 `mysql_native_password` [不再是默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
+> To connect to TiDB (version < v4.0.7) using a MySQL 8.0 client, if the user account has a password, you must explicitly specify `--default-auth=mysql_native_password`. This is because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
 
 ```shell
 mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 
 <details>
-<summary>点击查看期望输出</summary>
+<summary>Expected output</summary>
 
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -341,10 +341,10 @@ MySQL [(none)]>
 
 </details>
 
-以下是一些可以用来验证集群功能的命令。
+Use the following sample commands to verify the cluster is working.
 
 <details>
-<summary>创建 <code>hello_world</code> 表</summary>
+<summary>Create a <code>hello_world</code> table</summary>
 
 ```sql
 mysql> use test;
@@ -379,7 +379,7 @@ REPLICATIONSTATUS_STATEID: NULL
 </details>
 
 <details>
-<summary>查询 TiDB 版本号</summary>
+<summary>Query the TiDB version</summary>
 
 ```sql
 mysql> select tidb_version()\G

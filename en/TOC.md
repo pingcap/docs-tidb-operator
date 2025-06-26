@@ -3,6 +3,7 @@
 
 - [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
 - Introduction
+- [Get Started](get-started.md)
 - Deploy
     - On Self-Managed Kubernetes
         - [Access a TiDB Cluster](access-tidb.md)
