@@ -35,7 +35,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 在任何环境上部署前，都可以参考下面的文档来自定义 TiDB 配置：
 
-+ [存储卷配置](configure-volume.md)
++ [存储卷配置](volume-configuration.md)
 + [自定义 Pod](overlay.md)
 
 部署完成后，你可以参考下面的文档进行 Kubernetes 上 TiDB 集群的使用和运维：
