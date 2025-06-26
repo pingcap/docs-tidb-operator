@@ -87,7 +87,7 @@ For a full list of configurable PD parameters, see [PD Configuration File](https
 
 > **Note:**
 >
-> - Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices) (experimental).
+> - Starting from v8.0.0, PD supports the [microservice mode](https://docs.pingcap.com/tidb/dev/pd-microservices).
 > - PD microservice mode can only be enabled during initial deployment and cannot be changed afterward.
 
 To enable PD microservice mode, set `spec.template.spec.mode` to `"ms"` in the `PDGroup` CR:
