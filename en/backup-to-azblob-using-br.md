@@ -81,7 +81,7 @@ This document provides an example about how to back up the data of the `demo1` T
     EOF
     ```
 
-2. Refer to [Grant permissions to an Azure account](grant-permissions-to-remote-storage.md#azure-account-permissions) to grant access to remote storage. Azure provides two methods for granting permissions. After successful authorization, a Secret object named `azblob-secret` or `azblob-secret-ad` should exist in the `test1` namespace.
+2. Refer to [Grant permissions to an Azure account](grant-permissions-to-remote-storage.md#grant-permissions-to-an-azure-account) to grant access to remote storage. Azure provides two methods for granting permissions. After successful authorization, a Secret object named `azblob-secret` or `azblob-secret-ad` should exist in the `test1` namespace.
 
     > **Note:**
     >
@@ -710,7 +710,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
 You can use the `BackupSchedule` CR to integrate the management of scheduled snapshot backup and log backup for TiDB clusters. By setting the backup retention time, you can regularly recycle the scheduled snapshot backup and log backup, and ensure that you can perform PITR recovery through the scheduled snapshot backup and log backup within the retention period.
 
-The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-azblob`. For more information about the authorization method, refer to [Azure account permissions](grant-permissions-to-remote-storage.md#azure-account-permissions).
+The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-azblob`. For more information about the authorization method, refer to [Azure account permissions](grant-permissions-to-remote-storage.md#grant-permissions-to-an-azure-account).
 
 ### Prerequisites: Prepare a scheduled snapshot backup environment
 
