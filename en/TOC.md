@@ -12,6 +12,8 @@
   - [Storage Volume Configuration](volume-configuration.md)
 - Migrate
     - Migrate from MySQL
+- Configure
+  - [Component Configuration](component-configuration.md)
 - Manage
     - Security
       - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
