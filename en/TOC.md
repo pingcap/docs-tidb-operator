@@ -40,6 +40,7 @@
         - [Restore Data](restore-from-pv-using-br.md)
     - Maintain
         - [View TiDB Logs](view-logs.md)
+        - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
         - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
         - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
         - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
@@ -48,6 +49,7 @@
 - Troubleshoot
 - Reference
     - Architecture
+        - [TiDB Operator](architecture.md)
     - Tools
         - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
