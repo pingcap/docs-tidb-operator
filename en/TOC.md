@@ -26,12 +26,12 @@
       - [Backup and Restore Custom Resources](backup-restore-cr.md)
       - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
       - Amazon S3 Compatible Storage
-      - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
+        - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
         - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
         - Back Up Data Using Dumpling
         - Restore Data Using TiDB Lightning
       - Google Cloud Storage
-      - [Back Up Data Using BR](backup-to-gcs-using-br.md)
+        - [Back Up Data Using BR](backup-to-gcs-using-br.md)
         - [Restore Data Using BR](restore-from-gcs-using-br.md)
         - Back Up Data Using Dumpling
         - Restore Data Using TiDB Lightning
@@ -40,9 +40,8 @@
         - [Restore Data Using BR](restore-from-azblob-using-br.md)
         - Back Up Data Using Dumpling
         - Restore Data Using TiDB Lightning
-      - [Back Up Data Using BR](backup-to-azblob-using-br.md)
       - Persistent Volumes
-      - [Back Up Data](backup-to-pv-using-br.md)
+        - [Back Up Data](backup-to-pv-using-br.md)
         - [Restore Data](restore-from-pv-using-br.md)
     - Maintain
         - [View TiDB Logs](view-logs.md)
