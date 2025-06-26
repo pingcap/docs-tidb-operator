@@ -162,7 +162,7 @@ To modify volume attributes using the Kubernetes native method, perform the foll
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
-    kind: TidbCluster
+    kind: Cluster
     metadata:
       name: basic
     spec:
