@@ -175,9 +175,9 @@ To collect monitoring data using VictoriaMetrics, perform the following steps:
           # Configure tlsConfig only if TLS is enabled in the TiDB cluster.
           tlsConfig:
             ca:
-            secret:
-              name: db-cluster-client-secret
-              key: ca.crt
+              secret:
+                name: db-cluster-client-secret
+                key: ca.crt
             cert:
               secret:
                 name: db-cluster-client-secret
