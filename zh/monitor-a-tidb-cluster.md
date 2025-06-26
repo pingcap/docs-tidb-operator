@@ -175,9 +175,9 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
           # 若 TiDB 集群启用了 TLS，则需配置 TLS 认证，否则无需配置
           tlsConfig:
             ca:
-            secret:
-              name: db-cluster-client-secret
-              key: ca.crt
+              secret:
+                name: db-cluster-client-secret
+                key: ca.crt
             cert:
               secret:
                 name: db-cluster-client-secret
