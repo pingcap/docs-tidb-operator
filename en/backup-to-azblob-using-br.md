@@ -1,9 +1,9 @@
 ---
-title: Back up Data to Azure Blob Storage Using BR
+title: Back Up Data to Azure Blob Storage Using BR
 summary: Learn how to back up data to Azure Blob Storage using BR.
 ---
 
-# Back up Data to Azure Blob Storage Using BR
+# Back Up Data to Azure Blob Storage Using BR
 
 This document describes how to back up the data of a TiDB cluster on Kubernetes to Azure Blob Storage. There are two backup types:
 
