@@ -49,7 +49,7 @@
 - Troubleshoot
 - Reference
     - Architecture
-        - [TiDB Operator](architecture.md)
+      - [TiDB Operator](architecture.md)
     - Tools
         - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
