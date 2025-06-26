@@ -15,6 +15,7 @@
     - Migrate from MySQL
 - Configure
   - [Component Configuration](component-configuration.md)
+  - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
 - Manage
     - Security
       - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
