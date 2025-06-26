@@ -13,7 +13,7 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
-  -  [组件配置](component-configuration.md)
+  - [组件配置](component-configuration.md)
   - [存储卷配置](volume-configuration.md)
   - [自定义 Kubernetes 原生资源的配置](overlay.md)
 - 运维管理
