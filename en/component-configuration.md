@@ -178,7 +178,7 @@ spec:
           log = "/data0/logs/server.log"
 ```
 
-For a full list of configurable TiFlash parameters, see [TiFlash Configuration File](https://docs.pingcap.com/zh/tidb/stable/tiflash-configuration).
+For a full list of configurable TiFlash parameters, see [TiFlash Configuration File](https://docs.pingcap.com/tidb/stable/tiflash-configuration).
 
 ## Configure TiCDC startup parameters
 
