@@ -71,7 +71,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
     EOF
     ```
 
-2. Refer to [Grant permissions to an Azure account](grant-permissions-to-remote-storage.md#azure-account-permissions) to grant access to remote storage. Azure provides two methods for granting permissions. After successful authorization, a Secret object named `azblob-secret` or `azblob-secret-ad` should exist in the namespace.
+2. Refer to [Grant permissions to an Azure account](grant-permissions-to-remote-storage.md#grant-permissions-to-an-azure-account) to grant access to remote storage. Azure provides two methods for granting permissions. After successful authorization, a Secret object named `azblob-secret` or `azblob-secret-ad` should exist in the namespace.
 
     > **Note:**
     >
