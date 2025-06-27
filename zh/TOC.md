@@ -60,3 +60,5 @@
     - 工具
       - [TiDB Toolkit](tidb-toolkit.md)
     - 配置
+- 版本发布历史
+  - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)

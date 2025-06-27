@@ -28,7 +28,6 @@ BR 相关使用文档可参考：
 - [使用 BR 备份 TiDB 集群到兼容 S3 的存储](backup-to-aws-s3-using-br.md)
 - [使用 BR 备份 TiDB 集群到 GCS](backup-to-gcs-using-br.md)
 - [使用 BR 备份 TiDB 集群到 Azure Blob Storage](backup-to-azblob-using-br.md)
-- [使用 BR 备份 TiDB 集群到持久卷](backup-to-pv-using-br.md)
 
 ### 数据恢复
 
@@ -37,7 +36,6 @@ BR 相关使用文档可参考：
 - [使用 BR 恢复兼容 S3 的存储上的备份数据](restore-from-aws-s3-using-br.md)
 - [使用 BR 恢复 GCS 上的备份数据](restore-from-gcs-using-br.md)
 - [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
-- [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
 
 ## 备份与恢复过程
 

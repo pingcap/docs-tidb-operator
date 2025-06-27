@@ -26,7 +26,7 @@ summary: 了解 TiDB Operator 架构及其工作原理。
 
     - `PD` 表示一个 PD 实例
     - `TiKV` 表示一个 TiKV 实例
-    - `TiDB` 表示一个 TiKV 实例
+    - `TiDB` 表示一个 TiDB 实例
 
 - `Backup`：用于描述用户期望执行的 TiDB 集群备份任务。
 - `Restore`：用于描述用户期望执行的 TiDB 集群恢复任务。
