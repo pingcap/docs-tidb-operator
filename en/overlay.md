@@ -44,7 +44,7 @@ spec:
 
 ### Customize PVC configurations (PVC Overlay)
 
-PVC Overlay 可以修改 PVC 的元数据（如标签、注解）和规格配置。你可以在 Component Group（例如 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiProxyGroup`、`TiCDCGroup` 等）的 Custom Resource (CR) 中使用 `spec.template.spec.overlay.volumeClaims` 字段进行配置。
+PVC Overlay enables you to modify PVC metadata (such as labels and annotations) and specifications. You can configure this using the `spec.template.spec.overlay.volumeClaims` field in the Custom Resource (CR) of a component group (such as `PDGroup`, `TiDBGroup`, `TiKVGroup`, `TiFlashGroup`, `TiProxyGroup`, or `TiCDCGroup`).
 
 The following example shows how to add a custom label named `custom-label` to the PVC of the TiKV component:
 
