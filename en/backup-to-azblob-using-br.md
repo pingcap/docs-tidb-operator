@@ -48,7 +48,7 @@ This document provides an example about how to back up the data of the `demo1` T
     kubectl create namespace backup-test
     ```
 
-2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `backup-test` namespace:
+2. Download [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.6.2/manifests/backup/backup-rbac.yaml), and execute the following command to create the role-based access control (RBAC) resources in the `backup-test` namespace:
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n backup-test
@@ -155,7 +155,7 @@ These commands provide fine-grained control over the lifecycle of log backup tas
 
 In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.  
 
-However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.1, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
+However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.2, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
 
 </Tip>
 
