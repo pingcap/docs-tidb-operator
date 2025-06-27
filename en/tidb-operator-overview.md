@@ -35,7 +35,7 @@ In Kubernetes environments, you can use TiDB Operator to efficiently deploy and 
 
 Before deploying in any environment, you can customize TiDB configurations using the following guides:
 
-+ [Configure storage volumes](configure-volume.md)
++ [Configure storage volumes](volume-configuration.md)
 + [Customize pods](overlay.md)
 
 After the deployment is complete, see the following documents to use, operate, and maintain TiDB clusters on Kubernetes:
