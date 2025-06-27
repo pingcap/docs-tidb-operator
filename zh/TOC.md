@@ -4,29 +4,32 @@
 - [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
 - 关于 TiDB Operator
     - [简介](tidb-operator-overview.md)
+- [快速上手](get-started.md)
 - 部署
-    - 自托管的 Kubernetes
+    - [部署 TiDB Operator](deploy-tidb-operator.md)
     - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
-    - [Kubernetes 监控、告警与日志收集](kubernetes-observability.md)
+  - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
+  - [Kubernetes 监控、告警与日志收集](kubernetes-observability.md)
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
+  - [组件配置](component-configuration.md)
+  - [自定义 Kubernetes 原生资源的配置](overlay.md)
+- 运维管理
     - 安全
       - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
       - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-    - [自定义 Pod](overlay.md)
-    - [存储卷配置](configure-volume.md)
-- 运维管理
-    - 安全
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
       - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
+        - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
         - 升级 TiDB Operator
     - 备份与恢复
       - [备份与恢复简介](backup-restore-overview.md)
       - [备份与恢复 CR 介绍](backup-restore-cr.md)
+      - [远程存储访问授权](grant-permissions-to-remote-storage.md)
       - 使用 Amazon S3 兼容的存储
         - [使用 BR 备份 TiDB 集群数据到兼容 Amazon S3 的存储](backup-to-aws-s3-using-br.md)
         - [使用 BR 恢复 Amazon S3 兼容存储上的备份数据](restore-from-aws-s3-using-br.md)
@@ -42,9 +45,6 @@
         - [使用 BR 恢复 Azure Blob Storage 上的备份数据](restore-from-azblob-using-br.md)
         - 使用 Dumpling 备份 TiDB 集群数据到 Azure Blob Storage
         - 使用 TiDB Lightning 恢复 Azure Blob Storage 的备份数据
-      - 使用持久卷
-        - [使用 BR 备份 TiDB 集群数据到持久卷](backup-to-pv-using-br.md)
-        - [使用 BR 恢复持久卷上的备份数据](restore-from-pv-using-br.md)
     - 运维
         - [查看 TiDB 日志](view-logs.md)
         - [暂停 TiDB 集群同步](pause-sync-of-tidb-cluster.md)
