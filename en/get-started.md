@@ -458,10 +458,10 @@ APPROXIMATE_KEYS: 0
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-         tidb_version(): Release Version: v8.5.0
+         tidb_version(): Release Version: v8.5.2
                 Edition: Community
         Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
-             Git Branch: heads/refs/tags/v8.5.0
+             Git Branch: heads/refs/tags/v8.5.2
          UTC Build Time: 2024-12-19 14:38:24
               GoVersion: go1.23.2
            Race Enabled: false
@@ -647,10 +647,10 @@ Note that `nightly` is not a fixed version and the version might vary depending 
 
 ```
 *************************** 1. row ***************************
-tidb_version(): Release Version: v8.5.0
+tidb_version(): Release Version: v8.5.2
 Edition: Community
 Git Commit Hash: d13e52ed6e22cc5789bed7c64c861578cd2ed55b
-Git Branch: heads/refs/tags/v8.5.0
+Git Branch: heads/refs/tags/v8.5.2
 UTC Build Time: 2024-12-19 14:38:24
 GoVersion: go1.23.2
 Race Enabled: false
