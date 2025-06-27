@@ -160,7 +160,7 @@ demo1-full-backup-gcs   full   snapshot   Complete   gcs://my-bucket/my-full-bac
 
 在 TiDB Operator v1.5.4、v1.6.0 及之前版本中，可以使用 `logStop: true/false` 字段来停止或启动日志备份任务。此字段仍然保留以确保向后兼容。
 
-但是，请勿在同一个 Backup CR 中同时使用 `logStop` 和 `logSubcommand` 字段，这属于不支持的用法。对于 TiDB Operator v1.5.5、v1.6.2 及之后版本，推荐使用 `logSubcommand` 以确保配置清晰且一致。
+但是，请勿在同一个 Backup CR 中同时使用 `logStop` 和 `logSubcommand` 字段，这属于不支持的用法。对于 TiDB Operator v1.5.5、v1.6.1 及之后版本，推荐使用 `logSubcommand` 以确保配置清晰且一致。
 
 </Tip>
 

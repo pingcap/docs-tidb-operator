@@ -244,7 +244,7 @@ These commands provide fine-grained control over the lifecycle of log backup tas
 
 In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop: true/false` field to stop or start log backup tasks. This field is retained for backward compatibility.  
 
-However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.2, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
+However, do not use `logStop` and `logSubcommand` fields in the same Backup CR, as this is not supported. For TiDB Operator v1.5.5, v1.6.1, and later versions, it is recommended to use the `logSubcommand` field to ensure clear and consistent configuration.
 
 </Tip>
 
