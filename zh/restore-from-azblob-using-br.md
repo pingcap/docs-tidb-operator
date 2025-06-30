@@ -111,7 +111,7 @@ spec:
     prefix: my-full-backup-folder
 ```
 
-在配置 `restore-azblob.yaml` 文件时，请参考以下信息：
+在配置 `restore-full-azblob.yaml` 文件时，请参考以下信息：
 
 - 关于 Azure Blob Storage 相关配置，请参考 [Azure Blob Storage 存储字段介绍](backup-restore-cr.md#azure-blob-storage-存储字段介绍)。
 - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。

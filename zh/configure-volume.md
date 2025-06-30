@@ -162,7 +162,7 @@ Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernet
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
-    kind: TidbCluster
+    kind: Cluster
     metadata:
       name: basic
     spec:
