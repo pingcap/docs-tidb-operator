@@ -95,7 +95,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 3. Grant permissions to the remote storage for the `test1` namespace:
 
-    - If you are using Amazon S3 to back up your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#aws-account-permissions).
+    - If you are using Amazon S3 to back up your cluster, you can grant permissions in three methods. For more information, refer to [AWS account permissions](grant-permissions-to-remote-storage.md#grant-permissions-aws).
     - If you are using other S3-compatible storage (such as Ceph and MinIO) to back up your cluster, you can grant permissions by [using AccessKey and SecretKey](grant-permissions-to-remote-storage.md#grant-permissions-by-accesskey-and-secretkey).
 
 ### Snapshot backup
