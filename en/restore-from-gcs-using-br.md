@@ -85,7 +85,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
 
 3. Grant permissions to the remote storage for the `test1` namespace:
 
-    Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
+    Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#grant-permissions-to-a-google-cloud-account).
 
 ### Step 2: Restore the backup data to a TiDB cluster
 
