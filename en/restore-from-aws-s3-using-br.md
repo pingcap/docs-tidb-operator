@@ -202,7 +202,7 @@ When configuring `restore-full-s3.yaml`, note the following:
 After creating the `Restore` CR, execute the following command to check the restore status:
 
 ```shell
-kubectl get restore -n restore-test -o wide
+kubectl get restore -n test1 -o wide
 ```
 
 ```
@@ -280,7 +280,7 @@ The example in this section restores the snapshot backup data to the cluster. Th
 2. Wait for the restoration operation to complete:
 
     ```shell
-    kubectl get jobs -n restore-test
+    kubectl get jobs -n test1
     ```
 
     ```
@@ -291,7 +291,7 @@ The example in this section restores the snapshot backup data to the cluster. Th
     You can also check the restoration status by using the following command:
 
     ```shell
-    kubectl get restore -n restore-test -o wide
+    kubectl get restore -n test1 -o wide
     ```
 
     ```
