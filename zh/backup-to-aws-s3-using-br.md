@@ -488,13 +488,13 @@ demo1-log-backup-s3        log      Stopped   ....
     apiVersion: br.pingcap.com/v1alpha1
     kind: Backup
     metadata:
-      name: demo1-backup-s3
+      name: demo1-log-backup-s3
       namespace: test1
     spec:
       backupMode: log
       logSubcommand: log-start/log-pause/log-stop
       br:
-        namespace: test1
+        cluster: demo1
         sendCredToTikv: true
       s3:
         provider: aws
