@@ -87,7 +87,7 @@ spec:
 
 > **注意：**
 >
-> - PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)（实验特性）。
+> - PD 从 v8.0.0 版本开始支持[微服务模式](https://docs.pingcap.com/zh/tidb/dev/pd-microservices)。
 > - 目前只支持在创建时开启 PD 微服务模式，后续无法再修改该字段。
 
 你可以通过设置 PDGroup CR 的 `spec.template.spec.mode` 为 `"ms"` 来开启 PD 微服务模式：
