@@ -45,7 +45,7 @@ hide_commit: true
 
 [Scale a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/scale-a-tidb-cluster)
 
-[Backup and Restore Data](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/backup-restore-overview)
+[Back Up and Restore Data](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/backup-restore-overview)
 
 [Deploy Monitoring and Alerts](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/monitor-a-tidb-cluster)
 
