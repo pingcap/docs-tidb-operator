@@ -25,8 +25,8 @@ This document describes how to enable Transport Layer Security (TLS) between com
 
 Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
 
-- Use the `cfssl` system
-- Use the `cert-manager` system
+- Use `cfssl`
+- Use `cert-manager`
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
@@ -280,13 +280,13 @@ This section describes how to issue certificates using two methods: `cfssl` and 
     kubectl create secret generic ${pd_group_name}-pd-cluster-secret --namespace=${namespace} --from-file=tls.crt=pd.pem --from-file=tls.key=pd-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    Create the Secret for the TiKV cluster certificate Secret:
+    Create the Secret for the TiKV cluster certificate:
 
     ```shell
     kubectl create secret generic ${tikv_group_name}-tikv-cluster-secret --namespace=${namespace} --from-file=tls.crt=tikv.pem --from-file=tls.key=tikv-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    Create the Secret for the TiDB cluster certificate Secret:
+    Create the Secret for the TiDB cluster certificate:
 
     ```shell
     kubectl create secret generic ${tidb_group_name}-tidb-cluster-secret --namespace=${namespace} --from-file=tls.crt=tidb.pem --from-file=tls.key=tidb-key.pem --from-file=ca.crt=ca.pem
@@ -304,7 +304,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
 1. Install `cert-manager`.
 
-    For more information, see [cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html).
+    For more information, see [cert-manager installation on Kubernetes](https://cert-manager.io/docs/installation/).
 
 2. Create an Issuer to issue certificates to the TiDB cluster.
 
@@ -417,7 +417,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
           - `${pd_group_name}-pd`
           - `${pd_group_name}-pd.${namespace}`
           - `${pd_group_name}-pd.${namespace}.svc`
-          - `${pd_group_name}-pd-pee`
+          - `${pd_group_name}-pd-peer`
           - `${pd_group_name}-pd-peer.${namespace}`
           - `${pd_group_name}-pd-peer.${namespace}.svc`
           - `*.${pd_group_name}-pd-peer`
@@ -429,7 +429,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - Add the preceding created Issuer in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
-        After the object is created, `cert-manager` generates a `${pd_group_name}-pd-cluster-secret` Secret object to be used by the PD component of the TiDB server.
+        After the object is created, `cert-manager` generates a `${pd_group_name}-pd-cluster-secret` Secret object to be used by the PD component of the TiDB cluster.
 
     - TiKV certificate
 
