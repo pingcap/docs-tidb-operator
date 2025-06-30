@@ -28,9 +28,9 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
 
 ### 新特性与功能增强
 
-- **Overlay 字段**：
+- **支持 Overlay 字段**：
     - 允许用户在不修改 TiDB Operator 源码的情况下，灵活地为 Pod 指定 Kubernetes 支持的所有字段
-    - 提供安全校验，防止覆盖系统关键标签
+    - 提供安全校验机制，防止关键系统标签被误覆盖
 
 - **拓扑感知调度**：
     - 支持 `EvenlySpread` 策略，实现 Pod 在不同拓扑域间的均匀分布
@@ -48,14 +48,14 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
     - 增强与 Kubernetes 生态系统的集成能力
 
 - **优化配置管理**：
-    - 通过改进配置哈希算法，可避免不必要的滚动更新
+    - 优化配置哈希算法，避免因无效变更导致不必要的滚动更新
 
 ### 移除功能
 
 - 移除[基于 AWS EBS 卷快照的备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/volume-snapshot-backup-restore/)相关功能。
 - 移除 `tidb-scheduler` 组件。
-- 移除 `DMCluster`、`FedVolumeBackup`、`FedVolumeBackupSchedule`、`FedVolumeRestore` 等 CRD。
-- 移除 `TiDBInitializer`、`TiDBDashboard`、`TiDBMonitor`、`TiDBNGMonitoring` 等 CRD，相关功能已通过其他方式集成，详情请查阅[相关文档](xxx.md)。
+- 移除 `TiDBInitializer`、`TiDBDashboard`、`DMCluster`、`FedVolumeBackup`、`FedVolumeBackupSchedule`、`FedVolumeRestore` 等 CRD。
+- 移除 `TiDBMonitor`、`TiDBNGMonitoring` 等 CRD，相关功能已通过其他方式集成，详情请查阅 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md)。
 
 ## 致谢
 
