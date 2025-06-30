@@ -302,7 +302,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 1. 安装 cert-manager。
 
-    请参考官网安装：[cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
+    请参考官网安装：[cert-manager installation on Kubernetes](https://cert-manager.io/docs/installation/)。
 
 2. 创建一个 Issuer 用于给 TiDB 集群颁发证书。
 
@@ -415,7 +415,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
           - `${pd_group_name}-pd`
           - `${pd_group_name}-pd.${namespace}`
           - `${pd_group_name}-pd.${namespace}.svc`
-          - `${pd_group_name}-pd-pee`
+          - `${pd_group_name}-pd-peer`
           - `${pd_group_name}-pd-peer.${namespace}`
           - `${pd_group_name}-pd-peer.${namespace}.svc`
           - `*.${pd_group_name}-pd-peer`
@@ -679,7 +679,7 @@ apiVersion: core.pingcap.com/v1alpha1
 kind: TiDBGroup
 metadata:
   name: ${tidb_group_name}
- namespace: ${namespace}
+  namespace: ${namespace}
 spec:
   cluster:
     name: ${cluster_name}

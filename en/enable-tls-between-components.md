@@ -681,7 +681,7 @@ apiVersion: core.pingcap.com/v1alpha1
 kind: TiDBGroup
 metadata:
   name: ${tidb_group_name}
- namespace: ${namespace}
+  namespace: ${namespace}
 spec:
   cluster:
     name: ${cluster_name}
