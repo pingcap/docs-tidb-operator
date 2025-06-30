@@ -27,26 +27,26 @@ TiDB Operator 版本：2.0.0-beta.0
 ### 新功能与增强
 
 - **Overlay 字段**：
-  - 允许用户在不修改 TiDB Operator 源码的情况下，灵活地为 Pod 指定 Kubernetes 支持的所有字段
-  - 提供安全校验，防止覆盖系统关键标签
+    - 允许用户在不修改 TiDB Operator 源码的情况下，灵活地为 Pod 指定 Kubernetes 支持的所有字段
+    - 提供安全校验，防止覆盖系统关键标签
 
 - **拓扑感知调度**
-  - 支持 `EvenlySpread` 策略，确保 Pod 在不同拓扑域均匀分布
-  - 支持权重配置，灵活控制各拓扑域的实例分布比例
-  - 提高集群可用性和容错能力
+    - 支持 `EvenlySpread` 策略，确保 Pod 在不同拓扑域均匀分布
+    - 支持权重配置，灵活控制各拓扑域的实例分布比例
+    - 提高集群可用性和容错能力
 
 - **增强的字段校验**：
-  - 集成了 Kubernetes 的[合法性检查规则 (Validation Rule)](https://kubernetes.io/zh-cn/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation-rules) 和[验证准入策略 (Validating Admission Policy)](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/validating-admission-policy/)
-  - 字段格式和取值范围验证
-  - 提供更友好的错误提示
+    - 集成了 Kubernetes 的[合法性检查规则 (Validation Rule)](https://kubernetes.io/zh-cn/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation-rules) 和[验证准入策略 (Validating Admission Policy)](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/validating-admission-policy/)
+    - 字段格式和取值范围验证
+    - 提供更友好的错误提示
 
 - **[CRD 子资源](https://kubernetes.io/zh-cn/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#subresources)支持**：
-  - `status` 子资源：统一的状态管理
-  - `scale` 子资源：支持与 HPA 集成实现自动扩缩容
-  - 更好地融入 Kubernetes 生态系统
+    - `status` 子资源：统一的状态管理
+    - `scale` 子资源：支持与 HPA 集成实现自动扩缩容
+    - 更好地融入 Kubernetes 生态系统
 
 - **优化配置管理**：
-  - 通过改进配置哈希算法，可避免不必要的滚动更新
+    - 通过改进配置哈希算法，可避免不必要的滚动更新
 
 ### 功能调整与移除
 
