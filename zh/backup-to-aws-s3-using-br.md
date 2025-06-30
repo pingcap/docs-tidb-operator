@@ -216,7 +216,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
 - 自 TiDB Operator v1.1.6 版本起，如果需要增量备份，只需要在 `spec.br.options` 中指定上一次的备份时间戳 `--lastbackupts` 即可。有关增量备份的限制，可参考[使用 BR 进行备份与恢复](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#增量备份)。
 - Amazon S3 的 `acl`、`endpoint`、`storageClass` 配置项均可以省略。兼容 S3 的存储相关配置，请参考 [S3 存储字段介绍](backup-restore-cr.md#s3-存储字段介绍)。
 - `.spec.br` 中的一些参数是可选的，例如 `logLevel`、`statusAddr` 等。完整的 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
-- 如果你使用的 TiDB 为 v4.0.8 及以上版本, BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
+- 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要配置 `spec.tikvGCLifeTime` 和 `spec.from` 字段。
 - 更多 `Backup` CR 字段的详细解释参考 [Backup CR 字段介绍](backup-restore-cr.md#backup-cr-字段介绍)。
 
 #### 查看快照备份的状态
@@ -488,13 +488,13 @@ demo1-log-backup-s3        log      Stopped   ....
     apiVersion: br.pingcap.com/v1alpha1
     kind: Backup
     metadata:
-      name: demo1-backup-s3
+      name: demo1-log-backup-s3
       namespace: test1
     spec:
       backupMode: log
       logSubcommand: log-start/log-pause/log-stop
       br:
-        mespace: test1
+        cluster: demo1
         sendCredToTikv: true
       s3:
         provider: aws

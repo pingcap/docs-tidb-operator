@@ -133,14 +133,14 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 
 2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
 
-     ```shell
-     kubectl get restore -n test1 -o wide
-     ```
+    ```shell
+    kubectl get restore -n test1 -o wide
+    ```
 
-     ```
-     NAME                STATUS     ...
-     demo2-restore-gcs   Complete   ...
-     ```
+    ```
+    NAME                STATUS     ...
+    demo2-restore-gcs   Complete   ...
+    ```
 
 ## PITR 恢复
 
