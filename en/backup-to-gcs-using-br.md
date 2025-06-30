@@ -95,7 +95,7 @@ This document provides an example about how to back up the data of the `demo1` T
 
 3. Grant permissions to the remote storage for the `test1` namespace:
 
-    Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
+    Refer to [GCS account permissions](grant-permissions-to-remote-storage.md#grant-permissions-to-a-google-cloud-account).
 
 ### Snapshot backup
 
@@ -709,7 +709,7 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
 
 You can use the `BackupSchedule` CR to integrate the management of scheduled snapshot backup and log backup for TiDB clusters. By setting the backup retention time, you can regularly recycle the scheduled snapshot backup and log backup, and ensure that you can perform PITR recovery through the scheduled snapshot backup and log backup within the retention period.
 
-The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-gcs`. For more information about the authorization method, refer to [GCS account permissions](grant-permissions-to-remote-storage.md#gcs-account-permissions).
+The following example creates a `BackupSchedule` CR named `integrated-backup-schedule-gcs`. For more information about the authorization method, refer to [GCS account permissions](grant-permissions-to-remote-storage.md#grant-permissions-to-a-google-cloud-account).
 
 ### Prerequisites: Prepare for a scheduled snapshot backup environment
 
