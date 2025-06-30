@@ -41,9 +41,9 @@ The above example describes the information of the `basic-tidb` service in the `
 
 ## NodePort
 
-If there is no LoadBalancer, you can choose to expose the service through NodePort. NodePort exposes services through the node's IP and static port. You can access a NodePort service from outside of the cluster by requesting `NodeIP + NodePort`.
+If there is no LoadBalancer, you can choose to expose the service through NodePort. NodePort exposes services through the node's IP and a static port. You can access a NodePort service from outside of the cluster by requesting `NodeIP + NodePort`.
 
-To view the Node Port assigned by Service, run the following commands to obtain the Service object of TiDB:
+To view the Node Port assigned by the Service, run the following commands to obtain the Service object of TiDB:
 
 {{< copyable "shell-regular" >}}
 
@@ -51,7 +51,7 @@ To view the Node Port assigned by Service, run the following commands to obtain 
 kubectl -n ${namespace} get svc ${cluster_name}-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
 ```
 
-To check you can access TiDB services by using the IP of what nodes, see the following two cases:
+To check, you can access TiDB services by using the IP of what nodes, see the following two cases:
 
 - When `externalTrafficPolicy` is configured as `Cluster`, you can use the IP of any node to access TiDB services.
 - When `externalTrafficPolicy` is configured as `Local`, use the following commands to get the nodes where the TiDB instance of a specified cluster is located:
