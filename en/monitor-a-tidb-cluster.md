@@ -1,27 +1,27 @@
 ---
-title: TiDB 集群的监控与告警
-summary: 介绍如何监控 TiDB 集群。
+title: Deploy Monitoring and Alerts for a TiDB Cluster
+summary: Learn how to monitor a TiDB cluster on Kubernetes.
 ---
 
-# TiDB 集群的监控与告警
+# Deploy Monitoring and Alerts for a TiDB Cluster
 
-本文介绍如何对通过 TiDB Operator 部署的 TiDB 集群进行监控及配置告警。
+This document describes how to monitor a TiDB cluster deployed using TiDB Operator and how to configure alerts for the cluster.
 
-## TiDB 集群的监控
+## Monitor the TiDB cluster
 
-TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)和[监控面板](#监控面板)。你可以使用 [Prometheus](https://prometheus.io/) 或 [VictoriaMetrics](https://victoriametrics.com/) 等开源组件采集监控数据，然后通过 [Grafana](https://grafana.com/) 实现监控面板的展示。
+TiDB cluster monitoring consists of two parts: [monitoring data](#collect-monitoring-data) and [dashboards](#configure-monitoring-dashboards). You can collect metrics using open-source tools such as [Prometheus](https://prometheus.io/) or [VictoriaMetrics](https://victoriametrics.com/), and display the metrics using [Grafana](https://grafana.com/).
 
-![TiDB 集群的监控架构](/media/overview-of-monitoring-tidb-clusters.png)
+![Monitoring architecture of TiDB clusters](/media/overview-of-monitoring-tidb-clusters.png)
 
-### 监控数据采集
+### Collect monitoring data
 
-#### 使用 Prometheus 采集监控数据
+#### Collect monitoring data using Prometheus
 
-使用 Prometheus 采集监控数据的步骤如下：
+To collect monitoring data using Prometheus, perform the following steps:
 
-1. 参考 [Prometheus Operator 官方文档](https://prometheus-operator.dev/docs/getting-started/installation/)，在 Kubernetes 集群中部署 Prometheus Operator，本文档以 `v0.82.0` 版本为例。
+1. Deploy Prometheus Operator in your Kubernetes cluster by following the [Prometheus Operator official documentation](https://prometheus-operator.dev/docs/getting-started/installation/). This document uses version `v0.82.0` as an example.
 
-2. 在每个 TiDB 集群所在的命名空间中创建一个 `PodMonitor` Custom Resource (CR)：
+2. Create a `PodMonitor` Custom Resource (CR) in the namespace of your TiDB cluster:
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -41,10 +41,10 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
           app.kubernetes.io/managed-by: tidb-operator
       podMetricsEndpoints:
         - interval: 15s
-          # 若 TiDB 集群启用了 TLS，则设置为 https，否则设置为 http
+          # If TLS is enabled in the TiDB cluster, set the scheme to https. Otherwise, set it to http.
           scheme: https
           honorLabels: true
-          # 若 TiDB 集群启用了 TLS，则需配置 tlsConfig，否则无需配置
+          # Configure tlsConfig only if TLS is enabled in the TiDB cluster.
           tlsConfig:
             ca:
               secret:
@@ -91,7 +91,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
               targetLabel: tidb_cluster
     ```
 
-3. 参考 [Prometheus Operator 官方文档](https://prometheus-operator.dev/docs/platform/platform-guide/#deploying-prometheus)，创建一个 `Prometheus` CR 用来采集监控指标，确保为 ServiceAccount 分配必要权限：
+3. Create a `Prometheus` CR to collect metrics. Follow the [Prometheus Operator official documentation](https://prometheus-operator.dev/docs/platform/platform-guide/#deploying-prometheus) and make sure the appropriate permissions are granted to the ServiceAccount:
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -106,25 +106,25 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
       podMonitorSelector:
         matchLabels:
           monitor: tidb-cluster
-      # podMonitorNamespaceSelector 设置为空，表示采集所有命名空间中的 PodMonitor
+      # An empty podMonitorNamespaceSelector means PodMonitors in all namespaces are collected.
       podMonitorNamespaceSelector: {}
     ```
 
-4. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Prometheus：
+4. Execute the following `kubectl port-forward` command to access Prometheus through port forwarding:
 
     ```shell
     kubectl port-forward -n monitoring prometheus-prometheus-0 9090:9090 &>/tmp/portforward-prometheus.log &
     ```
 
-    然后在浏览器中访问 <http://localhost:9090/targets> 查看监控数据采集状态。
+    Then, you can access <http://localhost:9090/targets> in your browser view the monitoring data collection status.
 
-#### 使用 VictoriaMetrics 采集监控数据
+#### Collect monitoring data using VictoriaMetrics
 
-使用 VictoriaMetrics 部署监控数据采集的步骤如下：
+To collect monitoring data using VictoriaMetrics, perform the following steps:
 
-1. 参考 [VictoriaMetrics 官方文档](https://docs.victoriametrics.com/operator/quick-start/)，在 Kubernetes 集群中部署 VictoriaMetrics Operator，本文档以 `v0.58.1` 版本为例。
+1. Deploy VictoriaMetrics Operator in your Kubernetes cluster by following the [VictoriaMetrics official documentation](https://docs.victoriametrics.com/operator/quick-start/). This document uses version `v0.58.1` as an example.
 
-2. 创建一个 `VMSingle` Custom Resource (CR) 用来存储监控指标：
+2. Create a `VMSingle` Custom Resource (CR) to store monitoring data:
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -134,7 +134,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
       namespace: monitoring
     ```
 
-3. 创建一个 `VMAgent` CR 用来采集监控指标：
+3. Create a `VMAgent` CR to collect monitoring data:
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -143,7 +143,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
       name: demo
       namespace: monitoring
     spec:
-      # 配置远程写入，将采集到的监控指标写入 VMSingle
+      # Configure remoteWrite to write collected monitoring metrics to VMSingle.
       remoteWrite:
         - url: "http://vmsingle-demo.monitoring.svc:8429/api/v1/write"
       externalLabels:
@@ -151,7 +151,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
       selectAllByDefault: true
     ```
 
-4. 在每个 TiDB 集群所在的命名空间中创建一个 `VMPodScrape` CR，用来发现 TiDB 集群的 Pod，并为 `VMAgent` 生成相应的 scrape 配置：
+4. Create a `VMPodScrape` CR in the TiDB cluster namespace to discover Pods and generate scrape configs for VMAgent:
 
     ```yaml
     apiVersion: victoriametrics.com/v1beta1
@@ -169,10 +169,10 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
           app.kubernetes.io/managed-by: tidb-operator
       podMetricsEndpoints:
         - interval: 15s
-          # 若 TiDB 集群启用了 TLS，则设置为 https，否则设置为 http
+          # If TLS is enabled in the TiDB cluster, set the scheme to https. Otherwise, set it to http.
           scheme: https
           honorLabels: true
-          # 若 TiDB 集群启用了 TLS，则需配置 TLS 认证，否则无需配置
+          # Configure tlsConfig only if TLS is enabled in the TiDB cluster.
           tlsConfig:
             ca:
               secret:
@@ -219,48 +219,48 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
               targetLabel: tidb_cluster
     ```
 
-5. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 VMAgent：
+5. Execute the following `kubectl port-forward` command to access VMAgent through port forwarding:
 
     ```shell
     kubectl port-forward -n monitoring svc/vmagent-demo 8429:8429 &>/tmp/portforward-vmagent.log &
     ```
 
-    然后在浏览器中访问 <http://localhost:8429/targets> 查看监控数据采集状态。
+    Then, you can access <http://localhost:8429/targets> in your browser view the monitoring data collection status.
 
-### 监控面板
+### Configure monitoring dashboards
 
-配置监控面板的步骤如下：
+To configure the monitoring dashboard, perform the following steps:
 
-1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
+1. Follow the [Grafana official documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes) to deploy Grafana. This document uses version `12.0.0-security-01` as an example.
 
-2. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Grafana 监控面板：
+2. Execute the following `kubectl port-forward` command to access Grafana through port forwarding:
 
     ```shell
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. 在浏览器中访问 <http://localhost:3000>，默认用户名和密码都为 `admin`。如果是通过 Helm 安装，可以使用以下命令查看 `admin` 密码：
+3. Then, you can access <http://localhost:3000> in your browser. The default username and password are both `admin`. If you install Grafana using Helm, execute the following command to get the password of `admin`:
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
 
-4. 在 Grafana 中添加 Prometheus 类型的数据源，并配置 Prometheus Server URL：
+4. Add a data source of type Prometheus in Grafana and set the Prometheus Server URL based on your monitoring setup:
 
-    - 如果使用 Prometheus 采集监控指标，设置 URL 为 `http://prometheus-operated.monitoring.svc:9090`。
-    - 如果使用 VictoriaMetrics 采集监控指标，设置 URL 为 `http://vmsingle-demo.monitoring.svc:8429`。
+    - For Prometheus, set the URL to `http://prometheus-operated.monitoring.svc:9090`.
+    - For VictoriaMetrics, set the URL to `http://vmsingle-demo.monitoring.svc:8429`.
 
-5. 可以使用 [`get-grafana-dashboards.sh`](https://github.com/pingcap/tidb-operator/blob/feature/v2/hack/get-grafana-dashboards.sh) 脚本下载各组件的监控面板，然后手动导入到 Grafana 中。<!--TODO: update the GitHub link later -->
+5. Download Grafana dashboards for TiDB components using the [`get-grafana-dashboards.sh`](https://github.com/pingcap/tidb-operator/blob/feature/v2/hack/get-grafana-dashboards.sh) script and import them manually into Grafana. <!--TODO: update the GitHub link later -->
 
-## 告警配置
+## Configure alerts
 
-你可以通过 [AlertManager](https://github.com/prometheus/alertmanager) 管理与发送告警信息，具体的部署和配置步骤请参考 [Alertmanager 官方文档](https://prometheus.io/docs/alerting/alertmanager/)。
+You can manage and send alerts using [Alertmanager](https://github.com/prometheus/alertmanager). For specific deployment and configuration steps, refer to the [Alertmanager official documentation](https://prometheus.io/docs/alerting/alertmanager/).
 
-## 使用 Grafana 查看多集群监控
+## Monitor multiple clusters using Grafana
 
-要使用 Grafana 查看多个集群的监控，请在每个 Grafana Dashboard 中进行以下操作：
+To monitor multiple clusters in Grafana, perform the following steps:
 
-1. 在 Grafana Dashboard 中，点击 **Dashboard settings** 选项，打开 **Settings** 页面。
-2. 在 **Settings** 页面中，选择 **Variables** 中的 **tidb_cluster** 变量，将 **tidb_cluster** 变量的 **Hide** 属性设置为空选项。
-3. 返回当前 Grafana Dashboard，即可看到集群选择下拉框。下拉框中的集群名称格式为 `${namespace}-${tidb_cluster_name}`。
-4. 点击 **Save dashboard** 保存对该 Dashboard 的修改。
+1. In the Grafana dashboard, click **Dashboard settings** to open the **Settings** page.
+2. On the **Settings** page, select the **tidb_cluster** variable under **Variables**, and set the **Hide** property of the **tidb_cluster** variable to empty.
+3. Return to the dashboard. You will see a cluster selector dropdown. Each option follows the `${namespace}-${tidb_cluster_name}` format.
+4. Click **Save dashboard** to apply the changes.
