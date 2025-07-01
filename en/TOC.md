@@ -23,8 +23,8 @@
       - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
     - [Scale](scale-a-tidb-cluster.md)
     - Upgrade
-        - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
-        - Upgrade TiDB Operator
+      - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+      - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
     - Backup and Restore
       - [Overview](backup-restore-overview.md)
       - [Backup and Restore Custom Resources](backup-restore-cr.md)
