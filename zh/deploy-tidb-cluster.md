@@ -9,7 +9,7 @@ summary: 了解如何在 Kubernetes 环境中部署 TiDB 集群。
 
 ## 前提条件
 
-<!-- TODO -->
+- TiDB Operator [部署](deploy-tidb-operator.md)完成。
 
 ## 配置 TiDB 集群
 
@@ -18,6 +18,7 @@ TiDB 集群包含以下组件：
 - [PD (Placement Driver)](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling/)
 - [TiKV](https://docs.pingcap.com/zh/tidb/stable/tidb-storage/)
 - [TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/)
+- （可选）[TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy-overview/)
 - （可选）[TiFlash](https://docs.pingcap.com/zh/tidb/stable/tiflash-overview/)
 - （可选）[TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)
 
@@ -26,6 +27,7 @@ TiDB 集群包含以下组件：
 - PDGroup
 - TiKVGroup
 - TiDBGroup
+- TiProxyGroup
 - TiFlashGroup
 - TiCDCGroup
 
@@ -134,7 +136,7 @@ spec:
         storage: 100Gi
 ```
 
-此外，volume 支持指定 [StorageClass](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/) 和 [VolumeAttributeClass](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/)。详情参考[如何配置组件的 Volume](configure-volume.md)。
+此外，volume 支持指定 [StorageClass](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/) 和 [VolumeAttributeClass](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/)。详情参考[存储卷配置](volume-configuration.md)。
 
 ### 配置调度策略
 
@@ -227,7 +229,7 @@ spec:
     spec:
       cluster:
         name: basic
-      replicas: 1
+      replicas: 3
       template:
         metadata:
           annotations:
@@ -320,4 +322,7 @@ spec:
 
 3. 查看 TiDB 集群各组件的运行状态：
 
-    <!-- TODO -->
+```shell
+kubectl get cluster -n db
+kubectl get group -n db
+```
