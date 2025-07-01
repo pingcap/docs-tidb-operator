@@ -44,9 +44,6 @@
         - [Restore Data Using BR](restore-from-azblob-using-br.md)
         - Back Up Data Using Dumpling
         - Restore Data Using TiDB Lightning
-      - Persistent Volumes
-        - [Back Up Data](backup-to-pv-using-br.md)
-        - [Restore Data](restore-from-pv-using-br.md)
     - Maintain
         - [View TiDB Logs](view-logs.md)
         - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
@@ -62,3 +59,6 @@
     - Tools
         - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
+- Release Notes
+  - v2.0
+    - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
