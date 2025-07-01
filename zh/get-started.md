@@ -286,7 +286,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
 
 首先，获取 `db` 命名空间中的服务列表：
 
-``` shell
+```shell
 kubectl get svc -n db
 ```
 
@@ -308,7 +308,7 @@ tikv-tikv-peer   ClusterIP   None            <none>        20160/TCP,20180/TCP  
 
 然后，使用以下命令转发本地端口到集群：
 
-``` shell
+```shell
 kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 ```
 
