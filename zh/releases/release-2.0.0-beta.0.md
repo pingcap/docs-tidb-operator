@@ -11,10 +11,11 @@ TiDB Operator 版本：2.0.0-beta.0
 
 随着 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布 v2.0.0-beta.0 版本，对 v1.x 进行了全面重构，旨在提供更稳定、高效且易于维护的集群管理体验。
 
-> **注意：**
+关于 TiDB Operator v2 与 v1 的详细差异，请参考 [TiDB Operator v2 与 v1 版本对比](../tidb-operator-v2-vs-v1.md)。
+
+> **警告：**
 >
-> - 此版本为 beta 版本，**建议在生产环境中部署前进行充分测试**。
-> - 关于 TiDB Operator v2 与 v1 的详细差异，请参考 [TiDB Operator v2 与 v1 版本对比](../tidb-operator-v2-vs-v1.md)。
+> 此版本为 beta 版本，**建议在生产环境中部署前进行充分测试**。
 
 ## 主要变化和改进
 
