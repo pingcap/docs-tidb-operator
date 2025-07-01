@@ -4,6 +4,7 @@
 - [TiDB on Kubernetes 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev)
 - 关于 TiDB Operator
     - [简介](tidb-operator-overview.md)
+- [快速上手](get-started.md)
 - 部署
     - [部署 TiDB Operator](deploy-tidb-operator.md)
     - [访问 TiDB 集群](access-tidb.md)
@@ -13,13 +14,13 @@
 - 数据迁移
     - 从 MySQL 迁移
 - 集群配置
-  - 安全
-      - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
-      - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
-    - [组件配置](component-configuration.md)
+  - [组件配置](component-configuration.md)
+  - [存储卷配置](volume-configuration.md)
   - [自定义 Kubernetes 原生资源的配置](overlay.md)
 - 运维管理
     - 安全
+      - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
+      - [为 TiDB 组件间开启 TLS](enable-tls-between-components.md)
       - [以非 root 用户运行](containers-run-as-non-root-user.md)
       - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
@@ -60,3 +61,6 @@
     - 工具
       - [TiDB Toolkit](tidb-toolkit.md)
     - 配置
+- 版本发布历史
+  - v2.0
+    - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
