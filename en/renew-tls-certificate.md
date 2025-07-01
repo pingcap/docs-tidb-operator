@@ -117,7 +117,7 @@ After you [renew and replace the combined CA certificate](#renew-and-replace-the
 
     > **Note:**
     >
-    > - The preceding command assumes that you have [renewed and replaced the CA certificate](#renew-and-replace-the-tls-certificate) and saved the new CA certificate as `ca.new.pem`.
+    > - The preceding command assumes that you have [renewed and replaced the CA certificate](#renew-and-replace-the-ca-certificate) and saved the new CA certificate as `ca.new.pem`.
 
 2. [Perform the rolling restart](restart-a-tidb-cluster.md) to components that need to load the new certificates.
 
@@ -141,7 +141,7 @@ When using cert-manager to issue certificates, you can configure the `spec.renew
 
     > **Note:**
     >
-    > - Currently, each component does not support [reload CA certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) manually，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate-and-certificates-between-components).
+    > - Currently, each component does not support [reload CA certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) automatically，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate-and-certificates-between-components).
     > - For the TiDB server-side certificate, you can manually reload by referring to any of the following methods:
     >     - Refer to [Reload certificate, key, and CA](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#reload-certificate-key-and-ca).
     >     - Refer to [Rolling restart the TiDB Cluster](restart-a-tidb-cluster.md) to perform a rolling restart of TiDB server.
