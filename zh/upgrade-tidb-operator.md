@@ -57,11 +57,11 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 helm upgrade tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version=${version} --namespace=tidb-admin
 ```
 
-> **注意：**
->
-> * `tidb-operator` 是 TiDB Operator 的 Helm release 名称。如果你的 release 名称不同，请替换为实际的名称。
-> * `${version}` 是目标升级的 TiDB Operator 版本号，例如 `v2.0.0-alpha.3`。
-> * `--namespace=tidb-admin` 指定 TiDB Operator 所在的命名空间。如果你的命名空间不同，请替换为实际的命名空间。
+命令说明：
+
+- `tidb-operator`：TiDB Operator 的 Helm release 名称。如果你的 release 名称不同，请替换为实际的名称。
+- `${version}`：目标升级的 TiDB Operator 版本号，例如 `v2.0.0-alpha.3`。
+- `--namespace=tidb-admin`：指定 TiDB Operator 所在的命名空间。如果你的命名空间不同，请替换为实际的命名空间。
 
 升级完成后，你可以通过以下命令检查 Pod 状态，确认升级是否成功：
 
