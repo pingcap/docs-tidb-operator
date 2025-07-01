@@ -13,7 +13,7 @@ summary: 介绍如何将 TiDB Operator 升级到指定版本。
 
 ## 升级 CRD
 
-执行以下命令以升级 TiDB Operator 的 Custom Resource Definition (CRD)。请将 `${version}` 替换为目标 TiDB Operator 版本，例如 `v2.0.0-alpha.3`。
+执行以下命令升级 TiDB Operator 的 Custom Resource Definition (CRD)。请将 `${version}` 替换为目标 TiDB Operator 版本，例如 `v2.0.0-alpha.3`：
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${version}/tidb-operator.crds.yaml --server-side
@@ -23,18 +23,18 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${ve
 
 你可以使用以下两种方式升级 TiDB Operator 组件：
 
-* [使用 `kubectl apply`](#方式一使用-kubectl-apply-升级)
-* [使用 Helm](#方式二使用-helm-升级)
+* [方式一：使用 `kubectl apply`](#方式一使用-kubectl-apply-升级)
+* [方式二：使用 Helm](#方式二使用-helm-升级)
 
 ### 方式一：使用 `kubectl apply` 升级
 
-执行以下命令以升级 TiDB Operator 组件：
+执行以下命令升级 TiDB Operator 组件：
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${version}/tidb-operator.yaml --server-side
 ```
 
-此命令会升级部署在 `tidb-admin` namespace 下的 TiDB Operator。你可以运行以下命令确认 Pod 是否升级成功：
+此命令会升级部署在 `tidb-admin` 命名空间中的 TiDB Operator。你可以运行以下命令确认 Pod 是否升级成功：
 
 ```shell
 kubectl get pods -n tidb-admin
@@ -49,7 +49,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 
 ### 方式二：使用 Helm 升级
 
-如果你的 TiDB Operator 是使用 Helm 部署，可以使用 `helm upgrade` 命令进行升级。
+如果你使用 Helm 部署 TiDB Operator，可以使用 `helm upgrade` 命令进行升级。
 
 执行以下命令升级 TiDB Operator：
 
@@ -71,7 +71,7 @@ kubectl get pods -n tidb-admin
 
 #### 自定义升级
 
-如果部署或升级过程中使用了自定义配置（即修改了 `values.yaml` 文件），你需要确保在本次升级中也使用这些自定义配置。
+如果在部署或之前的升级中使用了自定义配置（即修改了 `values.yaml` 文件），请确保在本次升级中也使用这些自定义配置。具体升级步骤如下：
 
 1. 获取当前部署所使用的 `values.yaml` 文件：
 
