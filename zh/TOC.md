@@ -25,8 +25,8 @@
       - [更新和替换 TLS 证书](renew-tls-certificate.md)
     - [扩缩容](scale-a-tidb-cluster.md)
     - 升级
-        - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
-        - 升级 TiDB Operator
+      - [升级 TiDB Operator](upgrade-tidb-operator.md)
+      - [升级 TiDB 集群](upgrade-a-tidb-cluster.md)
     - 备份与恢复
       - [备份与恢复简介](backup-restore-overview.md)
       - [备份与恢复 CR 介绍](backup-restore-cr.md)
