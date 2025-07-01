@@ -1,5 +1,5 @@
 ---
-title: Kubernetes Observability: Monitoring, Alerts, and Log Collection
+title: "Kubernetes Observability: Monitoring, Alerts, and Log Collection"
 summary: Learn how to monitor, configure alerts, and collect logs on Kubernetes.
 ---
 
