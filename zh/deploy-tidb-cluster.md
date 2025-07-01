@@ -322,7 +322,7 @@ spec:
 
 3. 查看 TiDB 集群各组件的运行状态：
 
-```shell
-kubectl get cluster -n db
-kubectl get group -n db
-```
+    ```shell
+    kubectl get cluster -n db
+    kubectl get group -n db
+    ```
