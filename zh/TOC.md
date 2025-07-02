@@ -58,6 +58,7 @@
 - 参考
     - 架构
       - [TiDB Operator 架构](architecture.md)
+      - [TiDB Operator v2 和 v1 的对比](v2-vs-v1.md)
     - 工具
       - [TiDB Toolkit](tidb-toolkit.md)
     - 配置
