@@ -11,12 +11,12 @@
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
-- Configure
-  - [Storage Volume Configuration](volume-configuration.md)
 - Migrate
     - Migrate from MySQL
 - Configure
   - [Component Configuration](component-configuration.md)
+  - [Storage Volume Configuration](volume-configuration.md)
+  - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
 - Manage
     - Security
       - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
