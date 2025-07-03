@@ -13,7 +13,7 @@ The renewal and replacement operations in this document assume that the original
 
 ## Renew and replace certificates issued by the `cfssl` system
 
-If the original TLS certificates are issued by [the `cfssl` system](enable-tls-between-components.md#using-cfssl) and the original certificates have not expired, you can renew and replace the certificates between PD, TiKV and TiDB components as follows.
+If the original TLS certificates are issued by [the `cfssl` system](enable-tls-between-components.md#use-cfssl) and the original certificates have not expired, you can renew and replace the certificates between PD, TiKV and TiDB components as follows.
 
 ### Renew and replace the CA certificate
 
@@ -125,7 +125,7 @@ After you [renew and replace the combined CA certificate](#renew-and-replace-the
 
 ## Renew and replace the certificate issued by `cert-manager`
 
-If the original TLS certificate is issued by [the `cert-manager` system](enable-tls-between-components.md#using-cert-manager), and the original certificate has not expired, the procedure varies with whether to renew the CA certificate.
+If the original TLS certificate is issued by [the `cert-manager` system](enable-tls-between-components.md#use-cert-manager), and the original certificate has not expired, the procedure varies with whether to renew the CA certificate.
 
 ### Renew and replace the CA certificate
 
@@ -141,7 +141,7 @@ When using cert-manager to issue certificates, you can configure the `spec.renew
 
     > **Note:**
     >
-    > - Currently, each component does not support [reload CA certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) automatically，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate-and-certificates-between-components).
+    > - Currently, each component does not support [reload CA certificates](https://docs.pingcap.com/tidb/stable/enable-tls-between-components#reload-certificates) automatically，you need to refer to [renew and replace the CA certificate and certificates between components](#renew-and-replace-the-ca-certificate).
     > - For the TiDB server-side certificate, you can manually reload by referring to any of the following methods:
     >     - Refer to [Reload certificate, key, and CA](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#reload-certificate-key-and-ca).
     >     - Refer to [Rolling restart the TiDB Cluster](restart-a-tidb-cluster.md) to perform a rolling restart of TiDB server.
