@@ -5,30 +5,30 @@ summary: 介绍 TiDB Operator v2 与 v1 的主要差异。
 
 # TiDB Operator v2 和 v1 的对比
 
-由于 Kubernetes 和 TiDB 生态的快速发展，TiDB Operator v1 现有的架构和实现遇到了一些挑战。为了更好的适配 Kubernetes 和 TiDB 生态，TiDB Operator v2 对 TiDB Operator v1 进行了大幅重构。
+由于 Kubernetes 和 TiDB 生态的快速发展，TiDB Operator v1 现有的架构和实现遇到了一些挑战。为了更好地适配 Kubernetes 和 TiDB 生态，TiDB Operator v2 对 TiDB Operator v1 进行了大幅重构。
 
 ## TiDB Operator v2 的核心变更
 
 ### 拆分 `TidbCluster` CRD
 
-最初 TiDB 集群只有 3 个核心组件：PD、TiKV、TiDB。为了尽可能简化部署，降低用户心智负担，最初的设计将所有 TiDB 集群的组件定义在了同一个 CRD `TidbCluster` 中。然而随着 TiDB 的发展，这种设计迎来了一些挑战。
+最初 TiDB 集群只有 3 个核心组件：PD、TiKV、TiDB。为了尽可能简化部署，降低用户心智负担，最初的设计将所有 TiDB 集群的组件定义在了同一个 CRD `TidbCluster` 中。然而，随着 TiDB 的发展，这种设计迎来了一些挑战。
 
 - TiDB 集群的组件不断增加，目前已经有 8 个组件定义在 `TidbCluster` CRD 中
 - 为了实现状态展示，所有节点的状态都定义在了 `TidbCluster` CRD 中
-- 最初没有考虑异构集群，只能通过引入额外的 `TidbCluster` CR 去实现异构集群
-- 无法支持 `/scale` API，无法和 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
+- 缺乏原生对异构集群对支持，只能通过引入额外的 `TidbCluster` CR 实现异构集群
+- 无法支持 `/scale` API，无法与 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
 - 一个巨大的 CR/CRD 可能带来难以解决的性能问题
 
-TiDB Operator v2 选择将 `TidbCluster` 按组件拆分为多个独立的 CRD，来解决上述问题。
+为解决上述问题，TiDB Operator v2 将 `TidbCluster` CRD 按组件拆分为多个独立的 CRD。
 
 ### 移除 StatefulSet 依赖，直接管理 Pod
 
-由于 TiDB 集群本身的复杂性，Kubernetes 原生的 Deployment 和 StatefulSet 控制器并不能非常完美的适配 TiDB 的部署和运维需求。TiDB Operator v1 通过 StatefulSet 管理所有 TiDB 组件，然而 StatefulSet 的一些限制无法最大化 Kubernetes 能够提供的能力，比如
+由于 TiDB 集群本身的复杂性，Kubernetes 原生的 Deployment 和 StatefulSet 控制器无法完美适配 TiDB 的部署和运维需求。TiDB Operator v1 通过 StatefulSet 管理所有 TiDB 组件，然而 StatefulSet 的一些限制无法最大化 Kubernetes 能够提供的能力，比如：
 
 - StatefulSet 限制了 `VolumeClaimTemplate` 的修改，无法原生支持扩容
 - StatefulSet 限制了缩容和滚动更新的顺序，导致 leader 的反复调度
 - StatefulSet 限制了同一个控制器下的 Pod 配置必须相同，不得不通过复杂的启动脚本来差异化同一组 Pod 的启动参数
-- 没有 API 提供 raft member 的定义，导致重启 Pod 和移除 raft member 的语义冲突，没有直观的方法可以移除某一个 TiKV 节点
+- 没有 API 提供 Raft member 的定义，导致重启 Pod 和移除 Raft member 的语义冲突，没有直观的方法可以移除某一个 TiKV 节点
 
 TiDB Operator v2 移除了对 StatefulSet 的依赖，并引入了以下 CRD：
 
@@ -70,27 +70,27 @@ TiDB Operator v2 支持配置 Evenly Spread Policy 来将组件按需均匀分�
 
 #### `Binlog` (Pump + Drainer)
 
-该组件已经废弃，详见 [TiDB Binlog 简介](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/)。
+`Binlog` 组件已经废弃，详见 [TiDB Binlog 简介](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/)。
 
 #### Dumpling + TiDB Lightning
 
-TiDB Operator 不再提供直接支持，建议使用 Kubernetes 原生 Job 的方式运行。
+TiDB Operator 不再提供对 Dumpling 和 TiDB Lightning 的直接支持，建议使用 Kubernetes 原生 Job 的方式运行。
 
 #### `TidbInitializer`
 
-TiDB Operator v2 不再支持该 CRD。用户可以使用 BootstrapSQL 的方式运行初始化的 SQL。
+TiDB Operator v2 不再支持 `TidbInitializer` CRD，你可以使用 BootstrapSQL 的方式运行初始化的 SQL。
 
 #### `TidbMonitor`
 
-TiDB Operator v2 不再支持该 CRD。由于用户的监控系统通常比较复杂并且方案众多，`TidbMonitor` 往往无法很好的集成进生产级别的监控系统。TiDB 将通过更灵活的方式直接为你提供集成常用监控系统的方案，不再通过 CRD 的方式运行一个 Prometheus + Grafana + Alert-Manager 的组合，详情见 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md)。
+TiDB Operator v2 不再支持 `TidbMonitor` CRD。由于用户的监控系统通常比较复杂并且方案众多，`TidbMonitor` 往往无法很好地集成到生产级别的监控系统中。TiDB 通过更灵活的方式直接为你提供集成常用监控系统的方案，不再通过 CRD 的方式运行 Prometheus + Grafana + Alert-Manager 的组合。详情请参阅 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md)。
 
 #### `TidbNgMonitoring`
 
-暂不支持。
+暂不支持 `TidbNgMonitoring`。
 
 #### `TidbDashboard`
 
-暂不支持通过 CRD 部署。你可以使用内置的 Dashboard 或者通过 Deployment 自行部署。
+暂不支持通过 CRD 部署 `TidbDashboard`。你可以使用内置的 Dashboard 或者通过 Deployment 自行部署。
 
 ### 功能
 
@@ -106,7 +106,7 @@ TiDB Operator v2 不再支持该 CRD。由于用户的监控系统通常比较�
 
 基于 EBS 卷快照的备份存在以下难以解决的问题：
 
-- 成本太高。EBS 卷快照的成本非常高。
-- RTO 过长。从 EBS 卷快照恢复的时间非常长。
+- **成本过高**：EBS 卷快照的成本非常高。
+- **RTO 过长**：从 EBS 卷快照恢复的时间非常长。
 
-随着持续的优化 TiDB BR 的性能提升非常大，基于 EBS 卷快照的备份恢复不再是必须的，因此 TiDB Operator v2 不再支持该功能。
+随着持续的优化，TiDB BR 的性能提升显著，基于 EBS 卷快照的备份恢复不再是必需的。因此，TiDB Operator v2 不再支持该功能。
