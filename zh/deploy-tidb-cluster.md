@@ -181,7 +181,7 @@ spec:
 
 ## 部署 TiDB 集群
 
-在准备好 TiDB 集群的 YAML 配置文件后，按照以下步骤部署 TiDB 集群：
+在准备好 TiDB 集群各组件的 YAML 配置文件后，按照以下步骤部署 TiDB 集群：
 
 1. 创建命名空间 Namespace：
 
@@ -201,7 +201,7 @@ spec:
 
     <div label="Cluster">
 
-    创建 `Cluster` CRD 的示例配置如下：
+    `Cluster` CRD 的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -210,7 +210,7 @@ spec:
       name: basic
       namespace: db
     ```
-
+    创建 `Cluster`：
     ```shell
     kubectl apply -f cluster.yaml --server-side
     ```
@@ -219,7 +219,7 @@ spec:
 
     <div label="PD">
 
-    创建 PD 组件的示例配置如下：
+    PD 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -244,6 +244,8 @@ spec:
             storage: 20Gi
     ```
 
+    创建 PD 组件：
+
     ```shell
     kubectl apply -f pd.yaml --server-side
     ```
@@ -252,7 +254,7 @@ spec:
 
     <div label="TiKV">
 
-    创建 TiKV 组件的示例配置如下：
+    TiKV 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -277,6 +279,8 @@ spec:
             storage: 100Gi
     ```
 
+    创建 TiKV 组件：
+
     ```shell
     kubectl apply -f tikv.yaml --server-side
     ```
@@ -285,7 +289,7 @@ spec:
 
     <div label="TiDB">
 
-    创建 TiDB 组件的示例配置如下：
+    TiDB 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -306,6 +310,8 @@ spec:
         spec:
           version: v8.1.0
     ```
+
+    创建 TiDB 组件：
 
     ```shell
     kubectl apply -f tidb.yaml --server-side
