@@ -60,7 +60,7 @@ TiDB Operator v2 enhances configuration validation through Validation Rules and 
 
 TiDB Operator v2 supports CRD sub resources and can integrate with Kubernetes HPA for automated scaling.
 
-#### Remove `tidb scheduler` component and support for the evenly spread policy
+#### Remove `tidb scheduler` component and support the evenly spread policy
 
 TiDB Operator v2 supports configuring the evenly spread policy to distribute components evenly across regions and zones as needed, and removes the `tidb scheduler` component.
 
