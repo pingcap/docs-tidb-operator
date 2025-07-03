@@ -23,14 +23,14 @@ For a detailed comparison between v2 and v1, see [Comparison Between TiDB Operat
 
 TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with the following key changes:
 
-- **CRD splitting**: split the v1 `TidbCluster` CRD into multiple independent CRDs for more granular component management, improved maintainability, and flexibility.
+- **CRD splitting**: split the v1 `TidbCluster` CRD into multiple independent CRDs for more granular component management, improving maintainability and flexibility.
 - **Direct Pod management**: remove the dependency on StatefulSet. Pods are now managed directly, providing higher flexibility and more precise control over Pod lifecycle and scheduling behavior.
 - **Controller architecture upgrade**: implement controller logic based on the [controller-runtime](https://github.com/kubernetes-sigs/controller-runtime) framework. This simplifies controller development, improves development efficiency, and enhances system stability and reliability.
 
 ### New features and enhancements
 
 - **Support the Overlay field**:
-    - Enable users to flexibly specify all Kubernetes-supported fields for Pods without modifying TiDB Operator source code.
+    - Enable you to flexibly specify all Kubernetes-supported fields for Pods without modifying TiDB Operator source code.
     - Provide security validation mechanisms to prevent accidental overwrites of critical system labels.
 
 - **Support topology-aware scheduling**:
