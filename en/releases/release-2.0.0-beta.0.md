@@ -30,7 +30,7 @@ TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with 
 ### New features and enhancements
 
 - **Support the Overlay field**:
-    - Enable you to flexibly specify all Kubernetes-supported fields for Pods without modifying TiDB Operator source code.
+    - Enable you to flexibly specify all Kubernetes-supported fields for Pods without modifying the TiDB Operator source code.
     - Provide security validation mechanisms to prevent accidental overwrites of critical system labels.
 
 - **Support topology-aware scheduling**:
@@ -45,11 +45,11 @@ TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with 
 
 - **Support [CRD subresources](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#subresources)**:
     - Support the `status` subresource for unified status management.
-    - Support the `scale` subresource for integration with [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), enabling auto-scaling.
+    - Support the `scale` subresource to integrate with [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), enabling auto-scaling.
     - Improve compatibility with the Kubernetes ecosystem.
 
 - **Optimize the configuration management**:
-    - Optimize the configuration hash algorithm to avoid unnecessary rolling updates caused by ineffective changes.
+    - Optimize the configuration hash algorithm to avoid unnecessary rolling updates caused by invalid changes.
 
 ### Removed features
 
