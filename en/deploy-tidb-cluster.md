@@ -24,7 +24,7 @@ A TiDB cluster consists of the following components. Each component is managed b
 | [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview/) (optional) | `TiFlashGroup` |
 | [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview/) (optional) | `TiCDCGroup` |
 
-In the following steps, you define a TiDB cluster using the `Cluster` CRD. Then, in each component CRD, specify the `cluster.name` field to associate the component with the cluster.
+In the following steps, you will define a TiDB cluster using the `Cluster` CRD. Then, in each component CRD, specify the `cluster.name` field to associate the component with the cluster.
 
 ```yaml
 spec:
@@ -181,13 +181,13 @@ You can also configure the following scheduling options using the [Overlay](over
 
 ## Deploy the TiDB cluster
 
-After preparing the YAML files, deploy the TiDB cluster by following these steps:
+After preparing the YAML files for each component, deploy the TiDB cluster by following these steps:
 
 1. Create a namespace:
 
     > **Note:**
     >
-    > Cross-namespace references for `Cluster` resources are not supported. Deploy all components in the same namespace.
+    > Cross-namespace references for `Cluster` resources are not supported. Make sure to deploy all components in the same namespace.
 
     ```shell
     kubectl create namespace db
@@ -201,7 +201,7 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
 
     <div label="Cluster">
 
-    The following is an example configuration for creating the `Cluster` CRD:
+    The following is an example configuration for the `Cluster` CRD:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -211,6 +211,8 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
       namespace: db
     ```
 
+Create the `Cluster` CRD:
+
     ```shell
     kubectl apply -f cluster.yaml --server-side
     ```
@@ -219,7 +221,7 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
 
     <div label="PD">
 
-    The following is an example configuration for creating the PD component:
+    The following is an example configuration for the PD component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -244,6 +246,8 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
             storage: 20Gi
     ```
 
+Create the PD component:
+
     ```shell
     kubectl apply -f pd.yaml --server-side
     ```
@@ -252,7 +256,7 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
 
     <div label="TiKV">
 
-    The following is an example configuration for creating the TiKV component:
+    The following is an example configuration for the TiKV component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -277,6 +281,8 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
             storage: 100Gi
     ```
 
+Create the TiKV component:
+
     ```shell
     kubectl apply -f tikv.yaml --server-side
     ```
@@ -285,7 +291,7 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
 
     <div label="TiDB">
 
-    The following is an example configuration for creating the TiDB component:
+    The following is an example configuration for the TiDB component:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -306,6 +312,8 @@ After preparing the YAML files, deploy the TiDB cluster by following these steps
         spec:
           version: v8.1.0
     ```
+
+Create the TiDB component:
 
     ```shell
     kubectl apply -f tidb.yaml --server-side
