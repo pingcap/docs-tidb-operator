@@ -61,7 +61,7 @@ In the preceding command:
 
 * `tidb-operator`: the Helm release name for TiDB Operator. Replace it if you use a different name.
 * `${version}`: the target TiDB Operator version, such as `v2.0.0-alpha.3`.
-* `--namespace=tidb-admin`: specifies the namespace where TiDB Operator is deployed. Replace it with your actual namespace if different.
+* `--namespace=tidb-admin`: the namespace where TiDB Operator is deployed. Replace it with your actual namespace if different.
 
 After the upgrade is complete, you can check the Pod status with the following command to verify that the upgrade is successful:
 
