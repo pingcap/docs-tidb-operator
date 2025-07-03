@@ -9,46 +9,46 @@ summary: 介绍 TiDB Operator v2 与 v1 的主要差异。
 
 ## TiDB Operator v2 的核心变更
 
-### 拆分 TidbCluster CRD
+### 拆分 `TidbCluster` CRD
 
-最初 TiDB 集群只有 3 个核心组件：PD，TiKV 和 TiDB。为了尽可能简化部署，降低用户心智负担，最初的设计将所有 TiDB 集群的组件定义在了同一个 CRD `TidbCluster` 中。然而随着 TiDB 的发展，这种设计迎来了一些挑战。
+最初 TiDB 集群只有 3 个核心组件：PD、TiKV、TiDB。为了尽可能简化部署，降低用户心智负担，最初的设计将所有 TiDB 集群的组件定义在了同一个 CRD `TidbCluster` 中。然而随着 TiDB 的发展，这种设计迎来了一些挑战。
 
-- TiDB 集群的组件不断增加，目前已经有 8 个组件定义在 TidbCluster CRD 中
-- 为了实现状态展示，所有节点的状态都定义在了 TidbCluster CRD 中
-- 最初没有考虑异构集群，只能通过引入额外的 TidbCluster CR 去实现异构集群
-- 无法支持 /scale API, 无法和 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
+- TiDB 集群的组件不断增加，目前已经有 8 个组件定义在 `TidbCluster` CRD 中
+- 为了实现状态展示，所有节点的状态都定义在了 `TidbCluster` CRD 中
+- 最初没有考虑异构集群，只能通过引入额外的 `TidbCluster` CR 去实现异构集群
+- 无法支持 `/scale` API, 无法和 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
 - 一个巨大的 CR/CRD 可能带来难以解决的性能问题
 
-TiDB Operator v2 选择将 TidbCluster 按组件拆分为多个独立的 CRD, 来解决上述问题。
+TiDB Operator v2 选择将 `TidbCluster` 按组件拆分为多个独立的 CRD, 来解决上述问题。
 
 ### 移除 StatefulSet 依赖，直接管理 Pod
 
 由于 TiDB 集群本身的复杂性，Kubernetes 原生的 Deployment 和 StatefulSet 控制器并不能非常完美的适配 TiDB 的部署和运维需求。TiDB Operator v1 通过 StatefulSet 管理所有 TiDB 组件，然而 StatefulSet 的一些限制无法最大化 Kubernetes 能够提供的能力，比如
 
-- StatefulSet 限制了 VolumeClaimTemplate 的修改，无法原生支持扩容
+- StatefulSet 限制了 `VolumeClaimTemplate` 的修改，无法原生支持扩容
 - StatefulSet 限制了缩容和滚动更新的顺序，导致 leader 的反复调度
 - StatefulSet 限制了同一个控制器下的 Pod 配置必须相同，不得不通过复杂的启动脚本来差异化同一组 Pod 的启动参数
 - 没有 API 提供 raft member 的定义，导致重启 Pod 和移除 raft member 的语义冲突，没有直观的方法可以移除某一个 TiKV 节点
 
 TiDB Operator v2 移除了对 StatefulSet 的依赖，并引入了以下 CRD：
 
-- Cluster
-- ComponentGroup
-- Instance
+- `Cluster`
+- `ComponentGroup`
+- `Instance`
 
-这三层 CRD 可以直接管理 Pod。TiDB Operator v2 通过 ComponentGroup CRD 来管理具有共同特性的节点，降低复杂度，通过 Instance CRD 来方便对单个有状态实例进行管理，提供实例级别的运维操作，保证了灵活性。
+这三层 CRD 可以直接管理 Pod。TiDB Operator v2 通过 `ComponentGroup` CRD 来管理具有共同特性的节点，降低复杂度，通过 `Instance` CRD 来方便对单个有状态实例进行管理，提供实例级别的运维操作，保证了灵活性。
 
 这带来了如下好处:
 
 - 能够更好的支持 Volume 的变更
 - 能够支持更合理的滚动更新顺序，比如最后重启 leader，防止 leader 的反复迁移
-- 能够支持非核心组件(比如 log tail，istio)的原地升级，降低 TiDB Operator 升级以及 infra 变更对 TiDB 集群的影响
+- 能够支持非核心组件（例如 log tail 和 istio）的原地升级，降低 TiDB Operator 升级以及 infra 变更对 TiDB 集群的影响
 - 能够通过 `kubectl delete ${pod}` 优雅重启 Pod，也能通过 `kubectl delete ${instance}` 重建特定的 TiKV 节点
 - 更加直观的状态展示
 
-### 引入 Overlay 机制，不再直接管理 TiDB 无关的 Kuberenetes 字段
+### 引入 Overlay 机制，不再直接管理 TiDB 无关的 Kubernetes 字段
 
-每个 Kubernetes 的新版本都可能会引入一些用户需要的新字段，然而这些字段可能 TiDB Operator 并不关心。TiDB Operator v1 的开发过程中花了大量的时间在支持快速发展的 Kubernetes 的新功能，包括手动在 TidbCluster CRD 中添加新字段，并将新字段层层下发。TiDB Operator v2 引入了 Overlay 机制，通过统一的方式支持所有 Kubernetes 资源（尤其是 Pod）上的新字段，详情见 [Overlay](overlay.md)。
+每个 Kubernetes 的新版本都可能会引入一些用户需要的新字段，然而这些字段可能 TiDB Operator 并不关心。TiDB Operator v1 的开发过程中花了大量的时间在支持快速发展的 Kubernetes 的新功能，包括手动在 `TidbCluster` CRD 中添加新字段，并将新字段层层下发。TiDB Operator v2 引入了 Overlay 机制，通过统一的方式支持所有 Kubernetes 资源（尤其是 Pod）上的新字段，详情见 [Overlay](overlay.md)。
 
 ### 其他 TiDB Operator v2 的新特性
 
@@ -68,7 +68,7 @@ TiDB Operator v2 支持配置 Evenly Spread Policy 来将组件按需均匀分�
 
 ### 组件
 
-#### Binlog (Pump + Drainer)
+#### `Binlog` (Pump + Drainer)
 
 该组件已经废弃，详见 [TiDB Binlog 简介](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/)。
 
@@ -76,19 +76,19 @@ TiDB Operator v2 支持配置 Evenly Spread Policy 来将组件按需均匀分�
 
 TiDB Operator 不再提供直接支持，建议使用 Kubernetes 原生 Job 的方式运行。
 
-#### TidbInitializer
+#### `TidbInitializer`
 
 TiDB Operator v2 不再支持该 CRD。用户可以使用 BootstrapSQL 的方式运行初始化的 SQL。
 
-#### TidbMonitor
+#### `TidbMonitor`
 
-TiDB Operator v2 不再支持该 CRD。由于用户的监控系统通常比较复杂并且方案众多，TidbMonitor 往往无法很好的集成进生产级别的监控系统。TiDB 将通过更灵活的方式直接为你提供集成常用监控系统的方案，不再通过 CRD 的方式运行一个 Prometheus + Grafana + Alert-Manager，详情见 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md)。
+TiDB Operator v2 不再支持该 CRD。由于用户的监控系统通常比较复杂并且方案众多，`TidbMonitor` 往往无法很好的集成进生产级别的监控系统。TiDB 将通过更灵活的方式直接为你提供集成常用监控系统的方案，不再通过 CRD 的方式运行一个 Prometheus + Grafana + Alert-Manager 的组合，详情见 [TiDB 集群的监控与告警](monitor-a-tidb-cluster.md)。
 
-#### TidbNgMonitoring
+#### `TidbNgMonitoring`
 
 暂不支持。
 
-#### TidbDashboard
+#### `TidbDashboard`
 
 暂不支持通过 CRD 部署。你可以使用内置的 Dashboard 或者通过 Deployment 自行部署。
 
