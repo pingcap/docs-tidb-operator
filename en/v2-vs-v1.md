@@ -1,11 +1,11 @@
 ---
-title: Comparison between TiDB Operator v2 and v1
-summary: Introduces the main differences between TiDB Operator v2 and v1.
+title: Comparison Between TiDB Operator v2 and v1
+summary: Introduce the key differences between TiDB Operator v2 and v1.
 ---
 
-# Comparison between TiDB Operator v2 and v1
+# Comparison Between TiDB Operator v2 and v1
 
-Due to the rapid development of the Kubernetes and TiDB ecosystems, the existing architecture and implementation of TiDB Operator v1 have encountered some challenges. To better adapt to the Kubernetes and TiDB ecosystems, TiDB Operator v2 has undergone a major refactor compared to v1.
+With the rapid development of TiDB and the Kubernetes ecosystem, the existing architecture and implementation of TiDB Operator v1 have encountered some challenges. To better adapt to these changes, TiDB Operator v2 introduces a major refactor of v1.
 
 ## Core changes in TiDB Operator v2
 
@@ -13,7 +13,7 @@ Due to the rapid development of the Kubernetes and TiDB ecosystems, the existing
 
 Initially, the TiDB cluster has only three core components: PD, TiKV, and TiDB. To simplify deployment and reduce user cognitive load, all components of the TiDB cluster are defined in a single CRD, `TidbCluster`. However, as TiDB evolves, this design faces several challenges:
 
-- The number of TiDB cluster components has increased, with 8 components now defined in the `TidbCluster` CRD.
+- The number of TiDB cluster components has increased, with eight components currently defined in the `TidbCluster` CRD.
 - To display status, the state of all nodes is defined in the `TidbCluster` CRD.
 - Heterogeneous clusters are not considered initially, so additional `TidbCluster` CRs has to be introduced to support them.
 - The `/scale` API is not supported, making it impossible to integrate with Kubernetes [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
@@ -25,7 +25,7 @@ TiDB Operator v2 addresses these issues by splitting `TidbCluster` into multiple
 
 Due to the complexity of TiDB clusters, Kubernetes' native deployment and StatefulSet controllers cannot fully meet TiDB's deployment and operation needs. TiDB Operator v1 manages all TiDB components using StatefulSet, but some limitations of StatefulSet prevent maximizing Kubernetes' capabilities, such as:
 
-- StatefulSet restricts modifications to VolumeClaimTemplate, making native scaling impossible.
+- StatefulSet restricts modifications to `VolumeClaimTemplate`, making native scaling impossible.
 - StatefulSet enforces the order of scaling and rolling updates, causing repeated leader scheduling.
 - StatefulSet requires all Pods under the same controller to have identical configurations, necessitating complex startup scripts to differentiate Pod parameters.
 - There is no API for defining raft members, leading to semantic conflicts between restarting Pods and removing raft members, and no intuitive way to remove a specific TiKV node.
@@ -36,14 +36,14 @@ TiDB Operator v2 removes the dependency on StatefulSet and introduces the follow
 - `ComponentGroup`
 - `Instance`
 
-These three CRDs can manage Pods directly. TiDB Operator v2 uses the `ComponentGroup` CRD to manage nodes with common characteristics, reducing complexity, and the `Instance` CRD to facilitate management of individual stateful instances, providing instance-level operations and ensuring flexibility.
+These three-layer CRDs can manage Pods directly. TiDB Operator v2 uses the `ComponentGroup` CRD to manage nodes with common characteristics, reducing complexity, and the `Instance` CRD to facilitate management of individual stateful instances, providing instance-level operations and ensuring flexibility.
 
 Benefits include:
 
-- Better support for volume changes.
+- Better support for volume configuration changes.
 - More reasonable rolling update order, such as restarting the leader last to prevent repeated leader migration.
 - In-place upgrades for non-core components (such as log tail and istio), reducing the impact of TiDB Operator and infrastructure changes on the TiDB cluster.
-- Graceful Pod restarts via `kubectl delete ${pod}` and rebuilding specific TiKV nodes via `kubectl delete ${instance}`.
+- Graceful Pod restarts using `kubectl delete ${pod}` and rebuilding specific TiKV nodes using `kubectl delete ${instance}`.
 - More intuitive status display.
 
 ### Introduce the Overlay mechanism and no longer manage Kubernetes fields unrelated to TiDB directly
@@ -70,7 +70,7 @@ TiDB Operator v2 supports configuring the evenly spread policy to distribute com
 
 #### `Binlog` (Pump + Drainer)
 
-This component has been deprecated. See [TiDB Binlog Overview](https://docs.pingcap.com/tidb/v8.3/tidb-binlog-overview/).
+This component is deprecated. For more information, see [TiDB Binlog Overview](https://docs.pingcap.com/tidb/v8.3/tidb-binlog-overview/).
 
 #### Dumpling + TiDB Lightning
 
@@ -82,7 +82,7 @@ TiDB Operator v2 no longer supports this CRD. You can use BootstrapSQL to run in
 
 #### `TidbMonitor`
 
-TiDB Operator v2 no longer supports this CRD. Because monitoring systems are often complex and varied, `TidbMonitor` is difficult to integrate into production-grade monitoring systems. TiDB will provide more flexible solutions for integrating with common monitoring systems, rather than running a Prometheus + Grafana + Alert-Manager combination via CRD. For details, see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
+TiDB Operator v2 no longer supports this CRD. Because monitoring systems are often complex and varied, `TidbMonitor` is difficult to integrate into production-grade monitoring systems. TiDB provides more flexible solutions for integrating with common monitoring systems, rather than running a Prometheus + Grafana + Alert-Manager combination through CRD. For details, see [Deploy Monitoring and Alerts for a TiDB Cluster](monitor-a-tidb-cluster.md).
 
 #### `TidbNgMonitoring`
 
@@ -90,7 +90,7 @@ Not supported yet.
 
 #### `TidbDashboard`
 
-Not supported via the CRD deployment. You can use the built-in dashboard or deploy it yourself via deployment.
+Deployment through CRD is not supported. You can use the built-in dashboard or deploy it yourself through Deployment.
 
 ### Features
 

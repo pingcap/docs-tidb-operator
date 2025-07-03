@@ -16,10 +16,10 @@ summary: 介绍 TiDB Operator v2 与 v1 的主要差异。
 - TiDB 集群的组件不断增加，目前已经有 8 个组件定义在 `TidbCluster` CRD 中
 - 为了实现状态展示，所有节点的状态都定义在了 `TidbCluster` CRD 中
 - 最初没有考虑异构集群，只能通过引入额外的 `TidbCluster` CR 去实现异构集群
-- 无法支持 `/scale` API, 无法和 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
+- 无法支持 `/scale` API，无法和 Kubernetes 的 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) 生态集成
 - 一个巨大的 CR/CRD 可能带来难以解决的性能问题
 
-TiDB Operator v2 选择将 `TidbCluster` 按组件拆分为多个独立的 CRD, 来解决上述问题。
+TiDB Operator v2 选择将 `TidbCluster` 按组件拆分为多个独立的 CRD，来解决上述问题。
 
 ### 移除 StatefulSet 依赖，直接管理 Pod
 
@@ -38,7 +38,7 @@ TiDB Operator v2 移除了对 StatefulSet 的依赖，并引入了以下 CRD：
 
 这三层 CRD 可以直接管理 Pod。TiDB Operator v2 通过 `ComponentGroup` CRD 来管理具有共同特性的节点，降低复杂度，通过 `Instance` CRD 来方便对单个有状态实例进行管理，提供实例级别的运维操作，保证了灵活性。
 
-这带来了如下好处:
+这带来了如下好处：
 
 - 能够更好的支持 Volume 的变更
 - 能够支持更合理的滚动更新顺序，比如最后重启 leader，防止 leader 的反复迁移
