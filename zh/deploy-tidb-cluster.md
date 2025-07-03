@@ -13,25 +13,18 @@ summary: 了解如何在 Kubernetes 环境中部署 TiDB 集群。
 
 ## 配置 TiDB 集群
 
-TiDB 集群包含以下组件：
+TiDB 集群包含以下组件，每个组件由对应的 [Custom Resource Definition (CRD)](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) 进行管理：
 
-- [PD (Placement Driver)](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling/)
-- [TiKV](https://docs.pingcap.com/zh/tidb/stable/tidb-storage/)
-- [TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/)
-- （可选）[TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy-overview/)
-- （可选）[TiFlash](https://docs.pingcap.com/zh/tidb/stable/tiflash-overview/)
-- （可选）[TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)
+| 组件名称 | CRD 名称 |
+|----------|-----------|
+| [PD](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling/) | `PDGroup` |
+| [TiKV](https://docs.pingcap.com/zh/tidb/stable/tidb-storage/) | `TiKVGroup` |
+| [TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/) | `TiDBGroup` |
+| [TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy-overview/)（可选） | `TiProxyGroup` |
+| [TiFlash](https://docs.pingcap.com/zh/tidb/stable/tiflash-overview/)（可选） | `TiFlashGroup` |
+| [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)（可选） | `TiCDCGroup` |
 
-每个组件由相应的 [Custom Resource Definition (CRD)](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) 进行管理：
-
-- PDGroup
-- TiKVGroup
-- TiDBGroup
-- TiProxyGroup
-- TiFlashGroup
-- TiCDCGroup
-
-通过 `Cluster` CRD 定义一个 TiDB 集群。各组件通过以下字段指定所属的 TiDB 集群：
+在下面的步骤中，你将通过 `Cluster` CRD 定义一个 TiDB 集群，然后在各组件的 CRD 配置中，通过指定以下 `cluster.name` 字段将其关联到该集群。
 
 ```yaml
 spec:
@@ -60,7 +53,7 @@ spec:
       image: gcr.io/xxx/tidb
 ```
 
-如需使用非[语义化版本 (Semantic Version)](https://semver.org/) 格式的版本，可通过 `image` 字段指定：
+如果要使用的版本不符合[语义化版本 (Semantic Version)](https://semver.org/) 格式，也可通过 `image` 字段指定：
 
 ```yaml
 spec:
@@ -194,7 +187,7 @@ spec:
 
 2. 部署 TiDB 集群：
 
-    方法一：使用以下命令创建一个包含 PD、TiKV 和 TiDB 组件的 TiDB 集群
+    方法一：各个组件分别部署（以部署一个包含 PD、TiKV 和 TiDB 组件的 TiDB 集群为例）
 
     <SimpleTab>
 
@@ -314,7 +307,7 @@ spec:
 
     </SimpleTab>
 
-    方法二：将以上 YAML 文件保存在本地目录中，并使用以下命令一次性部署 TiDB 集群
+    方法二：将以上各组件的 YAML 文件保存在本地目录中，然后使用以下命令一次性部署 TiDB 集群
 
     ```shell
     kubectl apply -f ./<directory> --server-side
