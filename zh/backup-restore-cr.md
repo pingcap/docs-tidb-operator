@@ -39,7 +39,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     * `log-pause`：暂停当前正在进行的日志备份任务。暂停任务后，你可以使用 `log-start` 命令恢复任务。
     * `log-stop`：永久停止日志备份任务。执行此命令后，Backup CR 会进入停止状态，且无法再次启动。
 
-  对于 v1.5.5 之前的版本，请使用 `logStop` 字段（布尔值 `true`/`false`）控制日志备份操作。虽然 v1.5.5 和 v1.6.2 版本仍支持 `logStop`，但建议使用 `logSubcommand`。
+  对于 v1.5.5 之前的版本，请使用 `logStop` 字段（布尔值 `true`/`false`）控制日志备份操作。虽然 v1.5.5 和 v1.6.1 版本仍支持 `logStop`，但建议使用 `logSubcommand`。
 
 * `.spec.restoreMode`：指定 Restore 的模式，默认为 `snapshot`，即基于 KV 层的快照恢复。该字段仅在恢复时有效，目前支持以下三种类型：
     * `snapshot`：基于 KV 层的快照恢复。
