@@ -39,11 +39,11 @@
       - [Back Up Data Using BR](backup-to-azblob-using-br.md)
       - [Restore Data Using BR](restore-from-azblob-using-br.md)
   - Maintain
-      - [View TiDB Logs](view-logs.md)
-      - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
-      - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
-      - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
-      - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+    - [View TiDB Logs](view-logs.md)
+    - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
+    - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
+    - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
+    - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)
