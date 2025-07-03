@@ -32,6 +32,14 @@ spec:
     name: <cluster>
 ```
 
+在部署 TiDB 集群之前，你需要为每个组件准备对应的 YAML 配置文件，以下是部分配置示例：
+
+- PD 组件：[`pd.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/01-pd.yaml)
+- TiKV 组件：[`tikv.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/02-tikv.yaml)
+- TiDB 组件：[`tidb.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/03-tidb.yaml)
+- TiFlash 组件：[`tiflash.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/04-tiflash.yaml)
+- TiCDC 组件：[`ticdc.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/05-ticdc.yaml)
+
 ### 设置组件版本
 
 通过 `version` 字段指定组件版本：
@@ -173,7 +181,7 @@ spec:
 
 ## 部署 TiDB 集群
 
-配置 TiDB 集群后，按照以下步骤部署 TiDB 集群：
+在准备好 TiDB 集群的 YAML 配置文件后，按照以下步骤部署 TiDB 集群：
 
 1. 创建命名空间 Namespace：
 
@@ -193,7 +201,7 @@ spec:
 
     <div label="Cluster">
 
-    创建 `Cluster`：
+    创建 `Cluster` CRD 的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -211,7 +219,7 @@ spec:
 
     <div label="PD">
 
-    创建 PD 组件：
+    创建 PD 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -244,7 +252,7 @@ spec:
 
     <div label="TiKV">
 
-    创建 TiKV 组件：
+    创建 TiKV 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -277,7 +285,7 @@ spec:
 
     <div label="TiDB">
 
-    创建 TiDB 组件：
+    创建 TiDB 组件的示例配置如下：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
