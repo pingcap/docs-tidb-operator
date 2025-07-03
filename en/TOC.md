@@ -6,8 +6,8 @@
   - [Overview](tidb-operator-overview.md)
 - [Get Started](get-started.md)
 - Deploy
-    - On Self-Managed Kubernetes
-        - [Access a TiDB Cluster](access-tidb.md)
+    - [Deploy TiDB Operator](deploy-tidb-operator.md)
+    - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
