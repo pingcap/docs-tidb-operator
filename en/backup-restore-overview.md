@@ -28,7 +28,6 @@ For more information, see the following documents:
 - [Back Up Data to S3-Compatible Storage Using BR](backup-to-aws-s3-using-br.md)
 - [Back Up Data to GCS Using BR](backup-to-gcs-using-br.md)
 - [Back Up Data to Azure Blob Storage Using BR](backup-to-azblob-using-br.md)
-- [Back Up Data to PV Using BR](backup-to-pv-using-br.md)
 
 ### Restore data
 
@@ -37,7 +36,6 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. For more info
 - [Restore Data from S3-Compatible Storage Using BR](restore-from-aws-s3-using-br.md)
 - [Restore Data from GCS Using BR](restore-from-gcs-using-br.md)
 - [Restore Data from Azure Blob Storage Using BR](restore-from-azblob-using-br.md)
-- [Restore Data from PV Using BR](restore-from-pv-using-br.md)
 
 ## Backup and restore process
 
