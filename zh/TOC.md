@@ -7,6 +7,7 @@
 - [快速上手](get-started.md)
 - 部署
     - [部署 TiDB Operator](deploy-tidb-operator.md)
+    - [部署 TiDB 集群](deploy-tidb-cluster.md)
     - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
