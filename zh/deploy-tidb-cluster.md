@@ -210,7 +210,9 @@ spec:
       name: basic
       namespace: db
     ```
+
     创建 `Cluster`：
+
     ```shell
     kubectl apply -f cluster.yaml --server-side
     ```
