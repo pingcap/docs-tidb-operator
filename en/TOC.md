@@ -7,7 +7,8 @@
 - [Get Started](get-started.md)
 - Deploy
   - [Deploy TiDB Operator](deploy-tidb-operator.md)
-  - [Access a TiDB Cluster](access-tidb.md)
+  - [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
+    - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
@@ -47,7 +48,8 @@
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)
-  - Tools
+  - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
+    -Tools
     - [TiDB Toolkit](tidb-toolkit.md)
 - Release Notes
   - v2.0

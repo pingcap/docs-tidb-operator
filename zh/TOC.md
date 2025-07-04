@@ -7,7 +7,8 @@
 - [快速上手](get-started.md)
 - 部署
   - [部署 TiDB Operator](deploy-tidb-operator.md)
-  - [访问 TiDB 集群](access-tidb.md)
+  - [部署 TiDB 集群](deploy-tidb-cluster.md)
+    - [访问 TiDB 集群](access-tidb.md)
 - 监控与告警
   - [部署 TiDB 集群监控与告警](monitor-a-tidb-cluster.md)
   - [Kubernetes 监控、告警与日志收集](kubernetes-observability.md)
@@ -47,7 +48,8 @@
 - 参考
   - 架构
     - [TiDB Operator 架构](architecture.md)
-  - 工具
+  - [TiDB Operator v2 和 v1 的对比](v2-vs-v1.md)
+    -工具
     - [TiDB Toolkit](tidb-toolkit.md)
 - 版本发布历史
   - v2.0
