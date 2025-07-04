@@ -24,7 +24,7 @@ TiDB Operator 与适用的 TiDB 版本的对应关系如下：
 
 ## TiDB Operator v2 与 v1 的区别
 
-随着 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布了与 v1 不兼容的 v2 版本。关于 v2 与 v1 的详细差异，请参考 [TiDB Operator v2 与 v1 版本对比](tidb-operator-v2-vs-v1.md)。
+随着 TiDB 和 Kubernetes 生态的快速发展，TiDB Operator 发布了与 v1 不兼容的 v2 版本。关于 v2 与 v1 的详细差异，请参考 [TiDB Operator v2 与 v1 版本对比](v2-vs-v1.md)。
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 

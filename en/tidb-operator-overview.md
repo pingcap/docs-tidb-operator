@@ -24,7 +24,7 @@ The corresponding relationship between TiDB Operator and TiDB versions is as fol
 
 ## Differences between TiDB Operator v2 and v1
 
-With the rapid development of TiDB and the Kubernetes ecosystem, TiDB Operator releases v2, which is incompatible with v1. For a detailed comparison between v2 and v1, see [Comparison Between TiDB Operator v2 and v1](tidb-operator-v2-vs-v1.md).
+With the rapid development of TiDB and the Kubernetes ecosystem, TiDB Operator releases v2, which is incompatible with v1. For a detailed comparison between v2 and v1, see [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md).
 
 ## Manage TiDB clusters using TiDB Operator
 
