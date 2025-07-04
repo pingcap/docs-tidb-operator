@@ -8,7 +8,7 @@
 - Deploy
   - [Deploy TiDB Operator](deploy-tidb-operator.md)
   - [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
-    - [Access a TiDB Cluster](access-tidb.md)
+  - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
