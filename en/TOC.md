@@ -1,68 +1,56 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
+- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/v2.0)
 - Introduction
   - [Overview](tidb-operator-overview.md)
 - [Get Started](get-started.md)
 - Deploy
-    - [Deploy TiDB Operator](deploy-tidb-operator.md)
-    - [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
-    - [Access a TiDB Cluster](access-tidb.md)
+  - [Deploy TiDB Operator](deploy-tidb-operator.md)
+  - [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
+  - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
-- Migrate
-    - Migrate from MySQL
 - Configure
   - [Component Configuration](component-configuration.md)
   - [Storage Volume Configuration](volume-configuration.md)
   - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
 - Manage
-    - Security
-      - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
-      - [Enable TLS Between TiDB Components](enable-tls-between-components.md)
-      - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
-      - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
-    - [Scale](scale-a-tidb-cluster.md)
-    - Upgrade
-      - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
-      - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
-    - Backup and Restore
-      - [Overview](backup-restore-overview.md)
-      - [Backup and Restore Custom Resources](backup-restore-cr.md)
-      - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
-      - Amazon S3 Compatible Storage
-        - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
-        - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
-        - Back Up Data Using Dumpling
-        - Restore Data Using TiDB Lightning
-      - Google Cloud Storage
-        - [Back Up Data Using BR](backup-to-gcs-using-br.md)
-        - [Restore Data Using BR](restore-from-gcs-using-br.md)
-        - Back Up Data Using Dumpling
-        - Restore Data Using TiDB Lightning
-      - Azure Blob Storage
-        - [Back Up Data Using BR](backup-to-azblob-using-br.md)
-        - [Restore Data Using BR](restore-from-azblob-using-br.md)
-        - Back Up Data Using Dumpling
-        - Restore Data Using TiDB Lightning
-    - Maintain
-        - [View TiDB Logs](view-logs.md)
-        - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
-        - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
-        - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
-        - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
-        - Replace Nodes for a TiDB Cluster
-    - Disaster Recovery
-- Troubleshoot
+  - Security
+    - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
+    - [Enable TLS Between TiDB Components](enable-tls-between-components.md)
+    - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+    - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
+  - [Scale](scale-a-tidb-cluster.md)
+  - Upgrade
+    - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+    - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
+  - Backup and Restore
+    - [Overview](backup-restore-overview.md)
+    - [Backup and Restore Custom Resources](backup-restore-cr.md)
+    - [Grant Permissions to Remote Storage](grant-permissions-to-remote-storage.md)
+    - Amazon S3 Compatible Storage
+      - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
+      - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
+    - Google Cloud Storage
+      - [Back Up Data Using BR](backup-to-gcs-using-br.md)
+      - [Restore Data Using BR](restore-from-gcs-using-br.md)
+    - Azure Blob Storage
+      - [Back Up Data Using BR](backup-to-azblob-using-br.md)
+      - [Restore Data Using BR](restore-from-azblob-using-br.md)
+  - Maintain
+    - [View TiDB Logs](view-logs.md)
+    - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
+    - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
+    - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
+    - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
 - Reference
-    - Architecture
-      - [TiDB Operator](architecture.md)
-      - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
-    - Tools
-        - [TiDB Toolkit](tidb-toolkit.md)
-    - Configure
+  - Architecture
+    - [TiDB Operator](architecture.md)
+  - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
+    -Tools
+    - [TiDB Toolkit](tidb-toolkit.md)
 - Release Notes
   - v2.0
     - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
