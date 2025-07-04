@@ -58,6 +58,7 @@
 - Reference
     - Architecture
       - [TiDB Operator](architecture.md)
+      - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
     - Tools
         - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
