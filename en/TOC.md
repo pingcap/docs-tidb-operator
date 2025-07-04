@@ -6,25 +6,27 @@
   - [Overview](tidb-operator-overview.md)
 - [Get Started](get-started.md)
 - Deploy
-    - On Self-Managed Kubernetes
-        - [Access a TiDB Cluster](access-tidb.md)
+    - [Deploy TiDB Operator](deploy-tidb-operator.md)
+    - [Access a TiDB Cluster](access-tidb.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
-- Configure
-  - [Storage Volume Configuration](volume-configuration.md)
 - Migrate
     - Migrate from MySQL
 - Configure
   - [Component Configuration](component-configuration.md)
+  - [Storage Volume Configuration](volume-configuration.md)
+  - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
 - Manage
     - Security
       - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
+      - [Enable TLS Between TiDB Components](enable-tls-between-components.md)
       - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+      - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
     - [Scale](scale-a-tidb-cluster.md)
     - Upgrade
-        - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
-        - Upgrade TiDB Operator
+      - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+      - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
     - Backup and Restore
       - [Overview](backup-restore-overview.md)
       - [Backup and Restore Custom Resources](backup-restore-cr.md)
@@ -44,9 +46,6 @@
         - [Restore Data Using BR](restore-from-azblob-using-br.md)
         - Back Up Data Using Dumpling
         - Restore Data Using TiDB Lightning
-      - Persistent Volumes
-        - [Back Up Data](backup-to-pv-using-br.md)
-        - [Restore Data](restore-from-pv-using-br.md)
     - Maintain
         - [View TiDB Logs](view-logs.md)
         - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
@@ -63,3 +62,6 @@
     - Tools
         - [TiDB Toolkit](tidb-toolkit.md)
     - Configure
+- Release Notes
+  - v2.0
+    - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
