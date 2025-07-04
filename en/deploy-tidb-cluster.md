@@ -211,7 +211,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
       namespace: db
     ```
 
-Create the `Cluster` CRD:
+    Create the `Cluster` CRD:
 
     ```shell
     kubectl apply -f cluster.yaml --server-side
@@ -246,7 +246,7 @@ Create the `Cluster` CRD:
             storage: 20Gi
     ```
 
-Create the PD component:
+    Create the PD component:
 
     ```shell
     kubectl apply -f pd.yaml --server-side
@@ -281,7 +281,7 @@ Create the PD component:
             storage: 100Gi
     ```
 
-Create the TiKV component:
+    Create the TiKV component:
 
     ```shell
     kubectl apply -f tikv.yaml --server-side
@@ -313,7 +313,7 @@ Create the TiKV component:
           version: v8.1.0
     ```
 
-Create the TiDB component:
+    Create the TiDB component:
 
     ```shell
     kubectl apply -f tidb.yaml --server-side
