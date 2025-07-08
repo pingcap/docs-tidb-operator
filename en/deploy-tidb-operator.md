@@ -65,7 +65,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 Use Helm to deploy all resources except CRDs:
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
 ```
 
 TiDB Operator will be deployed in the `tidb-admin` namespace. To verify the deployment, run:

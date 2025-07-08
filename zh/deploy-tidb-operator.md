@@ -65,7 +65,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 使用 Helm 部署除 CRD 外的所有资源：
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
 ```
 
 TiDB Operator 将被部署到 `tidb-admin` namespace 下。你可以运行以下命令验证安装是否成功：
