@@ -34,11 +34,11 @@ spec:
 
 在部署 TiDB 集群之前，你需要为每个组件准备对应的 YAML 配置文件，以下是部分配置示例：
 
-- PD 组件：[`pd.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/01-pd.yaml)
-- TiKV 组件：[`tikv.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/02-tikv.yaml)
-- TiDB 组件：[`tidb.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/03-tidb.yaml)
-- TiFlash 组件：[`tiflash.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/04-tiflash.yaml)
-- TiCDC 组件：[`ticdc.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/05-ticdc.yaml)
+- PD 组件：[`pd.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/01-pd.yaml)
+- TiKV 组件：[`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/02-tikv.yaml)
+- TiDB 组件：[`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/03-tidb.yaml)
+- TiFlash 组件：[`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/04-tiflash.yaml)
+- TiCDC 组件：[`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-ticdc.yaml)
 
 ### 设置组件版本
 

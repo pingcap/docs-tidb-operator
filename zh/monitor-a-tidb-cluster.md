@@ -250,7 +250,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
     - 如果使用 Prometheus 采集监控指标，设置 URL 为 `http://prometheus-operated.monitoring.svc:9090`。
     - 如果使用 VictoriaMetrics 采集监控指标，设置 URL 为 `http://vmsingle-demo.monitoring.svc:8429`。
 
-5. 可以使用 [`get-grafana-dashboards.sh`](https://github.com/pingcap/tidb-operator/blob/feature/v2/hack/get-grafana-dashboards.sh) 脚本下载各组件的监控面板，然后手动导入到 Grafana 中。<!--TODO: update the GitHub link later -->
+5. 可以使用 [`get-grafana-dashboards.sh`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/hack/get-grafana-dashboards.sh) 脚本下载各组件的监控面板，然后手动导入到 Grafana 中。
 
 ## 告警配置
 
