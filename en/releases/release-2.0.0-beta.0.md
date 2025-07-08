@@ -5,7 +5,7 @@ summary: TiDB Operator 2.0.0-beta.0 is released. The v2 version introduces major
 
 # TiDB Operator 2.0.0-beta.0 Release Notes
 
-Release date: July x, 2025 <!-- TODO: update release date -->
+Release date: July 9, 2025
 
 TiDB Operator version: 2.0.0-beta.0
 
