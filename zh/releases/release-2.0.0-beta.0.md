@@ -5,7 +5,7 @@ summary: TiDB Operator 2.0.0-beta.0 版本发布。v2 版本对 v1 版本进行�
 
 # TiDB Operator 2.0.0-beta.0 Release Notes
 
-发布日期：2025 年 7 月 x 日 <!-- TODO: update release date -->
+发布日期：2025 年 7 月 9 日
 
 TiDB Operator 版本：2.0.0-beta.0
 
