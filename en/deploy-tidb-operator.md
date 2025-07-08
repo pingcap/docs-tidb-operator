@@ -86,11 +86,11 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 To customize deployment parameters, first export the default `values.yaml` file:
 
 ```shell
-helm show values oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.6 > values.yaml
+helm show values oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 > values.yaml
 ```
 
 Edit the `values.yaml` file as needed, then install TiDB Operator with the customized settings:
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.6 -f values.yaml
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 -f values.yaml
 ```
