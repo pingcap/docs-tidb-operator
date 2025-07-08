@@ -85,7 +85,7 @@ Kubernetes 集群部署完成，现在就可以开始部署 TiDB Operator 了！
 TiDB Operator 包含许多实现 TiDB 集群不同组件的自定义资源类型 (CRD)。执行以下命令安装 CRD 到集群中：
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.crds.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.crds.yaml --server-side
 ```
 
 ### 安装 TiDB Operator
@@ -93,7 +93,7 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0
 执行以下命令安装 TiDB Operator 到集群中：
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.yaml --server-side
 ```
 
 检查 TiDB Operator 组件是否正常运行起来：
