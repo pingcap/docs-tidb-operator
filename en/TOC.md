@@ -1,12 +1,13 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/dev)
+- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/v2.0)
 - Introduction
   - [Overview](tidb-operator-overview.md)
   - [What's New in v1.6](whats-new-in-v1.6.md)
 - [Get Started](get-started.md)
 - Deploy
+<<<<<<< HEAD
   - On Self-Managed Kubernetes
     - [Prerequisites](prerequisites.md)
     - [Configure Storage Class](configure-storage-class.md)
@@ -56,6 +57,28 @@
     - Upgrade TiDB Operator
       - [Normal Upgrade](upgrade-tidb-operator.md)
       - [Canary Upgrade](canary-upgrade-tidb-operator.md)
+=======
+  - [Deploy TiDB Operator](deploy-tidb-operator.md)
+  - [Deploy a TiDB Cluster](deploy-tidb-cluster.md)
+  - [Access a TiDB Cluster](access-tidb.md)
+- Monitor and Alert
+  - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
+  - [Kubernetes Observability: Monitoring, Alerts, and Log Collection](kubernetes-observability.md)
+- Configure
+  - [Component Configuration](component-configuration.md)
+  - [Storage Volume Configuration](volume-configuration.md)
+  - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
+- Manage
+  - Security
+    - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
+    - [Enable TLS Between TiDB Components](enable-tls-between-components.md)
+    - [Run Containers as a Non-Root User](containers-run-as-non-root-user.md)
+    - [Renew and Replace the TLS Certificate](renew-tls-certificate.md)
+  - [Scale](scale-a-tidb-cluster.md)
+  - Upgrade
+    - [Upgrade TiDB Operator](upgrade-tidb-operator.md)
+    - [Upgrade a TiDB Cluster](upgrade-a-tidb-cluster.md)
+>>>>>>> 4ec504e0 (release: init v2 (#2844))
   - Backup and Restore
     - [Overview](backup-restore-overview.md)
     - [Backup and Restore Custom Resources](backup-restore-cr.md)
@@ -63,6 +86,7 @@
     - Amazon S3 Compatible Storage
       - [Back Up Data Using BR](backup-to-aws-s3-using-br.md)
       - [Restore Data Using BR](restore-from-aws-s3-using-br.md)
+<<<<<<< HEAD
       - [Back Up Data Using Dumpling](backup-to-s3-using-job.md)
       - [Restore Data Using TiDB Lightning](restore-from-s3-using-job.md)
       - [Back Up Data Using Dumpling (Deprecated)](backup-to-s3.md)
@@ -129,6 +153,26 @@
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)
+=======
+    - Google Cloud Storage
+      - [Back Up Data Using BR](backup-to-gcs-using-br.md)
+      - [Restore Data Using BR](restore-from-gcs-using-br.md)
+    - Azure Blob Storage
+      - [Back Up Data Using BR](backup-to-azblob-using-br.md)
+      - [Restore Data Using BR](restore-from-azblob-using-br.md)
+  - Maintain
+    - [View TiDB Logs](view-logs.md)
+    - [Pause Sync of a TiDB Cluster](pause-sync-of-tidb-cluster.md)
+    - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
+    - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
+    - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+- Reference
+  - Architecture
+    - [TiDB Operator](architecture.md)
+  - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
+    -Tools
+    - [TiDB Toolkit](tidb-toolkit.md)
+>>>>>>> 4ec504e0 (release: init v2 (#2844))
 - Release Notes
   - v1.6
     - [1.6.1](releases/release-1.6.1.md)
