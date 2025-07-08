@@ -85,7 +85,7 @@ To deploy TiDB Operator, perform the following steps:
 TiDB Operator includes multiple Custom Resource Definitions (CRDs) that implement different components of the TiDB cluster. Run the following command to install the CRDs in the cluster:
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.crds.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.crds.yaml --server-side
 ```
 
 ### Install TiDB Operator
@@ -93,7 +93,7 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0
 Run the following command to install TiDB Operator into the cluster:
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.yaml --server-side
 ```
 
 Check whether the TiDB Operator components are running normally:
