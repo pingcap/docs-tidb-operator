@@ -49,7 +49,7 @@
   - Architecture
     - [TiDB Operator](architecture.md)
   - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
-    -Tools
+  - Tools
     - [TiDB Toolkit](tidb-toolkit.md)
 - Release Notes
   - v2.0
