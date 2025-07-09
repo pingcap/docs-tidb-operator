@@ -7,7 +7,7 @@ summary: Learn how to configure parameters for components such as TiDB, TiKV, PD
 
 This document describes how to configure parameters for TiDB, TiKV, PD, TiProxy, TiFlash, and TiCDC in a Kubernetes cluster.
 
-TiDB Operator automatically rolling update components to apply configurations.
+By default, TiDB Operator applies configuration changes by performing a rolling restart of the related components.
 
 ## Configure TiDB parameters
 
