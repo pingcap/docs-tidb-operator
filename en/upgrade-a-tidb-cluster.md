@@ -41,7 +41,7 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
     spec:
       template:
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     You can use the `kubectl apply` command to update all components at once, or use `kubectl edit` to update each component individually. TiDB Operator automatically handles the upgrade order and prevents the upgrade from continuing if the preconditions are not met.

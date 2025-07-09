@@ -15,7 +15,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 * `.spec.toolImage`：用于指定 `Backup` 使用的工具镜像。
     * 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
-    * 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v5.3.0`，那么使用指定的版本镜像进行备份。
+    * 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:{{{ .tidb_version }}}`，那么使用指定的版本镜像进行备份。
     * 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
 
 * `.spec.backupType`：指定 Backup 类型，该字段仅在使用 BR 备份时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
@@ -223,7 +223,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个自定义的 `Restore` CR 对象来描述一次恢复，具体恢复过程可参考[备份与恢复简介](backup-restore-overview.md#数据恢复)中列出的文档。以下介绍 Restore CR 各个字段的具体含义。
 
-* `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像，例如，`spec.toolImage: pingcap/br:v5.3.0`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
+* `.spec.toolImage`：用于指定 `Restore` 使用的工具镜像，例如，`spec.toolImage: pingcap/br:{{{ .tidb_version }}}`。如果不指定，默认使用 `pingcap/br:${tikv_version}` 进行恢复。
 
 * `.spec.backupType`：指定 Restore 类型，该字段仅在使用 BR 恢复时有效，目前支持以下三种类型，可以结合 `.spec.tableFilter` 配置表库过滤规则：
     * `full`：对 TiDB 集群所有的 database 数据执行备份。
