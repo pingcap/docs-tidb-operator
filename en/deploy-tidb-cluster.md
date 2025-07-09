@@ -34,12 +34,12 @@ spec:
 
 Before deploying the cluster, prepare a YAML file for each component. The following lists some example configurations:
 
-- PD: [`pd.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/01-pd.yaml)
-- TiKV: [`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/02-tikv.yaml)
-- TiDB: [`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/03-tidb.yaml)
-- TiFlash: [`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/04-tiflash.yaml)
-- TiProxy: [`tiproxy.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/05-tiproxy.yaml)
-- TiCDC: [`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/06-ticdc.yaml)
+- PD: [`pd.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/01-pd.yaml>)
+- TiKV: [`tikv.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/02-tikv.yaml>)
+- TiDB: [`tidb.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/03-tidb.yaml>)
+- TiFlash: [`tiflash.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/04-tiflash.yaml>)
+- TiProxy: [`tiproxy.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/05-tiproxy.yaml>)
+- TiCDC: [`ticdc.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/06-ticdc.yaml>)
 
 ### Configure component version
 
