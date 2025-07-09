@@ -123,6 +123,10 @@ kubectl -n ${namespace} get pod -w
 
 如果要对 PD、TiKV、TiDB、TiFlash 或 TiCDC 进行垂直扩缩容，通过 `kubectl` 修改对应的 Component Group CR 对象的 `spec.template.spec.resources` 至期望值。
 
+> **注意：**
+>
+> 暂不支持[原地调整 Pod 的资源](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/resize-container-resources/)。
+
 ### 查看垂直扩缩容进度
 
 ```shell
