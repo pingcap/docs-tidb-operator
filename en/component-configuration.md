@@ -7,12 +7,7 @@ summary: Learn how to configure parameters for components such as TiDB, TiKV, PD
 
 This document describes how to configure parameters for TiDB, TiKV, PD, TiProxy, TiFlash, and TiCDC in a Kubernetes cluster.
 
-TiDB Operator supports two configuration update strategies:
-
-- `Restart` (default): automatically rolls out component restarts to apply configuration changes.
-- `HotReload`: applies configuration changes without restarting the component. The new configuration takes effect either automatically or after a manual rolling update.
-
-You can set the update strategy using the `spec.template.spec.updateStrategy.config` field in Custom Resources (CRs) such as `TiDBGroup`, `TiKVGroup`, `PDGroup`, `TiProxyGroup`, `TiFlashGroup`, and `TiCDCGroup`.
+By default, TiDB Operator applies configuration changes by performing a rolling restart of the related components.
 
 ## Configure TiDB parameters
 
