@@ -129,7 +129,6 @@ To vertically scale up or scale down components including PD, TiKV, TiDB, TiFlas
 >
 > [In-Place Pod Resize](https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/) is not support now
 
-
 ### View the vertical scaling progress
 
 To view the upgrade progress of the cluster, run the following command:
