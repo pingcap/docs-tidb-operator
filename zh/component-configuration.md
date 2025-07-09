@@ -103,7 +103,7 @@ spec:
       mode: "ms"
 ```
 
-目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，你可以通过 TSOGroup 和 SchedulingGroup CR 的 `spec.template.spec.config` 来配置 PD 微服务参数。
+目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，你可以通过 TSOGroup 和 SchedulerGroup CR 的 `spec.template.spec.config` 来配置 PD 微服务参数。
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -118,7 +118,7 @@ spec:
           filename = "/pdms/log/tso.log"
 ---
 apiVersion: core.pingcap.com/v1alpha1
-kind: SchedulingGroup
+kind: SchedulerGroup
 metadata:
   name: scheduling
 spec:
@@ -129,7 +129,11 @@ spec:
           filename = "/pdms/log/scheduling.log"
 ```
 
-要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
+关于 PD 微服务、`tso` 组件和 `scheduling` 组件的完整配置参数，请参考以下文档：
+
+- [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)
+- [TSO 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/tso-configuration-file/)
+- [Scheduling 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/scheduling-configuration-file/)
 
 > **注意：**
 >
@@ -169,7 +173,7 @@ spec:
     spec:
       config: |
         [flash]
-          [flash.flash_cluster]  
+          [flash.flash_cluster]
             log = "/data0/logs/flash_cluster_manager.log"
         [logger]
           count = 10
