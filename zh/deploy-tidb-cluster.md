@@ -38,7 +38,8 @@ spec:
 - TiKV 组件：[`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/02-tikv.yaml)
 - TiDB 组件：[`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/03-tidb.yaml)
 - TiFlash 组件：[`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/04-tiflash.yaml)
-- TiCDC 组件：[`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-ticdc.yaml)
+- TiProxy 组件：[`tiproxy.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-tiproxy.yaml)
+- TiCDC 组件：[`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/06-ticdc.yaml)
 
 ### 设置组件版本
 
@@ -304,8 +305,6 @@ spec:
       cluster:
         name: basic
       replicas: 2
-      service:
-        type: ClusterIP
       template:
         metadata:
           annotations:

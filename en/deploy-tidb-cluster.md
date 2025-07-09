@@ -38,7 +38,8 @@ Before deploying the cluster, prepare a YAML file for each component. The follow
 - TiKV: [`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/02-tikv.yaml)
 - TiDB: [`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/03-tidb.yaml)
 - TiFlash: [`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/04-tiflash.yaml)
-- TiCDC: [`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-ticdc.yaml)
+- TiProxy: [`tiproxy.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-tiproxy.yaml)
+- TiCDC: [`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/06-ticdc.yaml)
 
 ### Configure component version
 
@@ -304,8 +305,6 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
       cluster:
         name: basic
       replicas: 2
-      service:
-        type: ClusterIP
       template:
         metadata:
           annotations:
