@@ -13,14 +13,18 @@ The Overlay feature is a configuration mechanism in TiDB Operator that enables y
 
 Currently, TiDB Operator supports customizing the following resource types through the Overlay feature:
 
-- **Pod**: modify the Pod metadata (such as labels and annotations) and specifications
-- **PersistentVolumeClaim (PVC)**: modify PVC metadata (such as labels and annotations) and specifications
+- **Pod**: modify the Pod metadata (such as labels and annotations) and the [`spec`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) field.
+- **PersistentVolumeClaim (PVC)**: modify PVC metadata (such as labels and annotations).
+
+> **Note:**
+>
+> It is not supported to modify the `spec` field of a PVC.
 
 ## Usage
 
 ### Customize Pod configurations (Pod Overlay)
 
-Pod Overlay enables you to modify the Pod metadata (such as labels and annotations) and specifications. You can configure this using the `spec.template.spec.overlay.pod` field in the Custom Resource (CR) of a component group (such as `PDGroup`, `TiDBGroup`, `TiKVGroup`, `TiFlashGroup`, `TiProxyGroup`, or `TiCDCGroup`).
+Pod Overlay enables you to modify the Pod metadata (such as labels and annotations) and the `spec` field. You can configure this using the `spec.template.spec.overlay.pod` field in the Custom Resource (CR) of a component group (such as `PDGroup`, `TiDBGroup`, `TiKVGroup`, `TiFlashGroup`, `TiProxyGroup`, or `TiCDCGroup`).
 
 The following example shows how to add an environment variable named `CUSTOM_ENV_VAR` to the PD container:
 
@@ -44,7 +48,7 @@ spec:
 
 ### Customize PVC configurations (PVC Overlay)
 
-PVC Overlay enables you to modify the PVC metadata (such as labels and annotations) and specifications. You can configure this using the `spec.template.spec.overlay.volumeClaims` field in the Custom Resource (CR) of a component group (such as `PDGroup`, `TiDBGroup`, `TiKVGroup`, `TiFlashGroup`, `TiProxyGroup`, or `TiCDCGroup`).
+PVC Overlay enables you to modify the PVC metadata (such as labels and annotations) and the `spec` field. You can configure this using the `spec.template.spec.overlay.volumeClaims` field in the Custom Resource (CR) of a component group (such as `PDGroup`, `TiDBGroup`, `TiKVGroup`, `TiFlashGroup`, `TiProxyGroup`, or `TiCDCGroup`).
 
 The following example shows how to add a custom label named `custom-label` to the PVC of the TiKV component:
 
@@ -158,7 +162,7 @@ spec:
 
 ### Inject a sidecar container
 
-You can use Overlay to inject a [sidecar container](https://kubernetes.io/docs/concepts/workloads/pods/#sidecar-containers) into a Pod for purposes such as monitoring or log collection:
+You can use Overlay to inject a [sidecar container](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) into a Pod for purposes such as monitoring or log collection:
 
 ```yaml
 spec:

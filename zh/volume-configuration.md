@@ -260,7 +260,7 @@ allowVolumeExpansion: true
 
 由于 PVC 的 StorageClass 不能直接修改，TiDB Operator 会在 PVC 上添加以下注解来跟踪修改状态：
 
-- `spec.tidb.pingcap.com/revision`：规格修改版本号
+- `spec.tidb.pingcap.com/revision`：期望的修改版本号
 - `spec.tidb.pingcap.com/storage-class`：期望的存储类
 - `spec.tidb.pingcap.com/storage-size`：期望的存储大小
 - `status.tidb.pingcap.com/revision`：当前的修改版本号
