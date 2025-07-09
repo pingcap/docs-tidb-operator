@@ -14,9 +14,7 @@ summary: 了解如何在 Kubernetes 上手动对 TiDB 集群进行水平和垂�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
-### 水平扩缩容 PD、TiKV、TiDB、TiCDC
-
-如果要对 PD、TiKV、TiDB 或 TiCDC 进行水平扩缩容，可以使用 `kubectl` 修改对应组件的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
+如果要对 TiDB 集群进行水平扩缩容，你可以使用 `kubectl` 修改对应组件的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
 
 1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 PD 的 `replicas` 值设置为 `3`：
 
@@ -38,77 +36,11 @@ summary: 了解如何在 Kubernetes 上手动对 TiDB 集群进行水平和垂�
     kubectl -n ${namespace} get pod -w
     ```
 
+    当所有组件的 Pod 数量都达到了预设值，并且都进入 `Running` 状态后，水平扩缩容完成。
+
     PD 和 TiDB 通常需要 10 到 30 秒左右的时间进行扩容或者缩容。
 
     TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
-
-### 水平扩缩容 TiFlash
-
-如果你部署了 TiFlash，想对 TiFlash 进行水平扩缩容，请参照本小节的步骤进行操作。
-
-#### 水平扩容 TiFlash
-
-如果要对 TiFlash 进行水平扩容，可以通过修改 TiFlashGroup CR 的 `spec.replicas` 来实现。例如，执行以下命令可将 TiFlash 的 `replicas` 值设置为 `3`：
-
-```shell
-kubectl patch -n ${namespace} tiflashgroup ${name} --type merge --patch '{"spec":{"replicas":3}}'
-```
-
-#### 水平缩容 TiFlash
-
-如果要对 TiFlash 进行水平缩容，执行以下步骤：
-
-1. 通过 `port-forward` 暴露 PD 服务：
-
-    ```shell
-    kubectl port-forward -n ${namespace} svc/${pd_group_name}-pd 2379:2379
-    ```
-
-2. 打开一个**新**终端标签或窗口，通过如下命令确认开启 TiFlash 的所有数据表的最大副本数 N：
-
-    ```shell
-    curl 127.0.0.1:2379/pd/api/v1/config/rules/group/tiflash | grep count
-    ```
-
-    输出结果中 `count` 的最大值就是所有数据表的最大副本数 N。
-
-3. 回到 `port-forward` 命令所在窗口，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止 `port-forward`。
-
-4. 如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数大于等于所有数据表的最大副本数 N，则直接进行下面第 6 步。如果缩容 TiFlash 后，TiFlash 集群剩余 Pod 数小于所有数据表的最大副本数 N，则执行以下步骤：
-
-    1. 参考[访问 TiDB 集群](access-tidb.md)的步骤连接到 TiDB 服务。
-
-    2. 针对所有副本数大于集群剩余 TiFlash Pod 数的表执行如下命令：
-
-        ```sql
-        alter table <db_name>.<table_name> set tiflash replica ${pod_number};
-        ```
-
-        `${pod_number}` 为缩容 TiFlash 后，TiFlash 集群的剩余 Pod 数。
-
-5. 等待并确认相关表的 TiFlash 副本数更新。
-
-    连接到 TiDB 服务，执行如下命令，查询相关表的 TiFlash 副本数：
-
-    ```sql
-    SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
-    ```
-
-6. 修改 `spec.replicas` 对 TiFlash 进行缩容。
-
-    你可以通过以下命令查看 Kubernetes 集群中对应的 TiDB 集群中的 TiFlash 是否更新到了你的期望定义。检查以下命令输出内容中，`DESIRED` 的值是否符合预期值。
-
-    ```shell
-    kubectl get tiflashgroup ${name} -n ${namespace}
-    ```
-
-### 查看集群水平扩缩容状态
-
-```shell
-kubectl -n ${namespace} get pod -w
-```
-
-当所有组件的 Pod 数量都达到了预设值，并且都进入 `Running` 状态后，水平扩缩容完成。
 
 > **注意：**
 >
@@ -121,7 +53,7 @@ kubectl -n ${namespace} get pod -w
 
 垂直扩缩容操作指的是通过增加或减少 Pod 的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是 Pod 滚动升级的过程。
 
-如果要对 PD、TiKV、TiDB、TiFlash 或 TiCDC 进行垂直扩缩容，通过 `kubectl` 修改对应的 Component Group CR 对象的 `spec.template.spec.resources` 至期望值。
+如果要对 PD、TiKV、TiDB、TiProxy、TiFlash 或 TiCDC 进行垂直扩缩容，通过 `kubectl` 修改对应的 Component Group CR 对象的 `spec.template.spec.resources` 至期望值。
 
 > **注意：**
 >
