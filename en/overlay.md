@@ -162,7 +162,7 @@ spec:
 
 ### Inject a sidecar container
 
-You can use Overlay to inject a [sidecar container](https://kubernetes.io/docs/concepts/workloads/pods/#sidecar-containers) into a Pod for purposes such as monitoring or log collection:
+You can use Overlay to inject a [sidecar container](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) into a Pod for purposes such as monitoring or log collection:
 
 ```yaml
 spec:
