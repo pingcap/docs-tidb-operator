@@ -133,8 +133,6 @@ spec:
 要获取 `tso` 组件可配置的所有参数，请参考 [TSO 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/tso-configuration-file/)。
 要获取 `scheduling` 组件可配置的所有参数，请参考 [Scheduling 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/scheduling-configuration-file/)。
 
-
-
 > **注意：**
 >
 > - 如果在部署 TiDB 集群时就启用了 PD 微服务模式，PD 微服务的部分配置项会持久化到 etcd 中且后续将以 etcd 中的配置为准。
