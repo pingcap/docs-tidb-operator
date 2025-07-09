@@ -14,7 +14,7 @@ summary: 了解如何在 Kubernetes 上手动对 TiDB 集群进行水平和垂�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
-你可以使用 `kubectl` 修改对应组件的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
+如果要对 TiDB 集群进行水平扩缩容，你可以使用 `kubectl` 修改对应组件的 Component Group Custom Resource (CR) 对象中的 `spec.replicas` 至期望值。
 
 1. 按需修改 TiDB 集群组件的 `replicas` 值。例如，执行以下命令可将 PD 的 `replicas` 值设置为 `3`：
 
