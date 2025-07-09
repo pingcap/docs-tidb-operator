@@ -105,5 +105,6 @@ For more information, see the following documents:
 
 - [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/)
 - [Google Cloud LoadBalancer Service](https://cloud.google.com/kubernetes-engine/docs/concepts/service-load-balancer)
+- [Azure Load Balancer Service](https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard)
 
 To learn more about Kubernetes Service types and cloud provider support for LoadBalancer, see the [Kubernetes Service documentation](https://kubernetes.io/docs/concepts/services-networking/service/).

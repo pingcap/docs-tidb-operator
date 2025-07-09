@@ -105,5 +105,6 @@ spec:
 
 - [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/)
 - [Google Cloud LoadBalancer Service](https://cloud.google.com/kubernetes-engine/docs/concepts/service-load-balancer)
+- [Azure Load Balancer Service](https://learn.microsoft.com/zh-cn/azure/aks/load-balancer-standard)
 
 访问 [Kubernetes Service 文档](https://kubernetes.io/zh-cn/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。
