@@ -41,7 +41,7 @@ Kubernetes 提供了[滚动更新功能](https://kubernetes.io/zh-cn/docs/tutori
     spec:
       template:
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     你可以使用 `kubectl apply` 命令一次性更新所有组件的配置，也可以通过 `kubectl edit` 逐个修改组件。TiDB Operator 会自动处理升级顺序，并在组件未满足升级前置条件时阻止升级继续执行。

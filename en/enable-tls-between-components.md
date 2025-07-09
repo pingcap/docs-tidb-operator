@@ -629,21 +629,21 @@ Create the `tidb-cluster.yaml` file:
 apiVersion: core.pingcap.com/v1alpha1
 kind: Cluster
 metadata:
- name: ${cluster_name}
- namespace: ${namespace}
+  name: ${cluster_name}
+  namespace: ${namespace}
 spec:
- tlsCluster:
-   enabled: true
+  tlsCluster:
+    enabled: true
 ---
 apiVersion: core.pingcap.com/v1alpha1
 kind: PDGroup
 metadata:
   name: ${pd_group_name}
- namespace: ${namespace}
+  namespace: ${namespace}
 spec:
   cluster:
     name: ${cluster_name}
-  version: v8.1.0
+  version: {{{ .tidb_version }}}
   replicas: 3
   template:
     spec:
@@ -660,11 +660,11 @@ apiVersion: core.pingcap.com/v1alpha1
 kind: TiKVGroup
 metadata:
   name: ${tikv_group_name}
- namespace: ${namespace}
+  namespace: ${namespace}
 spec:
   cluster:
     name: ${cluster_name}
-  version: v8.1.0
+  version: {{{ .tidb_version }}}
   replicas: 3
   template:
     spec:
@@ -685,7 +685,7 @@ metadata:
 spec:
   cluster:
     name: ${cluster_name}
-  version: v8.1.0
+  version: {{{ .tidb_version }}}
   replicas: 1
   template:
     spec:

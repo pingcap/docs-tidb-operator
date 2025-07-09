@@ -34,12 +34,12 @@ spec:
 
 Before deploying the cluster, prepare a YAML file for each component. The following lists some example configurations:
 
-- PD: [`pd.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/01-pd.yaml)
-- TiKV: [`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/02-tikv.yaml)
-- TiDB: [`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/03-tidb.yaml)
-- TiFlash: [`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/04-tiflash.yaml)
-- TiProxy: [`tiproxy.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-tiproxy.yaml)
-- TiCDC: [`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/06-ticdc.yaml)
+- PD: [`pd.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/01-pd.yaml>)
+- TiKV: [`tikv.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/02-tikv.yaml>)
+- TiDB: [`tidb.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/03-tidb.yaml>)
+- TiFlash: [`tiflash.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/04-tiflash.yaml>)
+- TiProxy: [`tiproxy.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/05-tiproxy.yaml>)
+- TiCDC: [`ticdc.yaml`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/examples/basic/06-ticdc.yaml>)
 
 ### Configure component version
 
@@ -49,7 +49,7 @@ Use the `version` field to specify the component version:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
 ```
 
 To use a custom image, set the `image` field:
@@ -58,7 +58,7 @@ To use a custom image, set the `image` field:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb
 ```
 
@@ -68,7 +68,7 @@ If the version does not follow [semantic versioning](https://semver.org/), you c
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb:dev
 ```
 
@@ -240,7 +240,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -275,7 +275,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -310,7 +310,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     Create the TiDB component:
