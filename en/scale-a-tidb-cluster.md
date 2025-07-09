@@ -14,7 +14,7 @@ Horizontal scaling refers to increasing or decreasing the number of Pods in a co
 * To scale out a TiDB cluster, **increase** the value of `replicas` of a certain component. The scaling out operations add Pods until the number of Pods equals the value of `replicas`.
 * To scale in a TiDB cluster, **decrease** the value of `replicas` of a certain component. The scaling in operations remove Pods until the number of Pods equals the value of `replicas`.
 
-To scale a TiDB cluster horizontally, you can use `kubectl` to modify the `spec.replicas` field in the corresponding Component Group Custom Resource (CR) object to the desired value.
+To scale a TiDB cluster horizontally, use `kubectl` to modify the `spec.replicas` field in the corresponding Component Group Custom Resource (CR) object to the desired value.
 
 1. Modify the `replicas` value of a component as needed. For example, configure the `replicas` value of PD to `3`:
 

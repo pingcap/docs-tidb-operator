@@ -27,7 +27,7 @@ summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
 
 > **注意：**
 >
-> 不建议直接使用默认创建的 Service 访问 TiDB，而是根据实际需要自行创建 Service。
+> 不建议直接使用默认创建的 Service 访问 TiDB。建议根据实际访问需求自行创建 Service。
 
 以下 YAML 示例用于创建一个能够访问 Cluster `db` 下所有 TiDB 节点的 Service：
 
