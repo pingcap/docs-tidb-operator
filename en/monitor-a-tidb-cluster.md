@@ -250,7 +250,7 @@ To configure the monitoring dashboard, perform the following steps:
     - For Prometheus, set the URL to `http://prometheus-operated.monitoring.svc:9090`.
     - For VictoriaMetrics, set the URL to `http://vmsingle-demo.monitoring.svc:8429`.
 
-5. Download Grafana dashboards for TiDB components using the [`get-grafana-dashboards.sh`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/hack/get-grafana-dashboards.sh) script and import them manually into Grafana.
+5. Download Grafana dashboards for TiDB components using the [`get-grafana-dashboards.sh`](<https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/{{{ .tidb_operator_version }}}/hack/get-grafana-dashboards.sh>) script and import them manually into Grafana.
 
 ## Configure alerts
 
