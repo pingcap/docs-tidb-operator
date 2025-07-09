@@ -20,7 +20,7 @@ summary: 介绍如何快速地在 Kubernetes 上使用 TiDB Operator 部署 TiDB
 
 ## 第 1 步：创建 Kubernetes 测试集群
 
-本节介绍如何使用 [kind](https://kind.sigs.k8s.io/) 创建一个 Kubernetes 测试集群。你也可以参考 [Kubernetes 官方文档](https://kubernetes.io/docs/setup/#learning-environment)，选择其他方法部署 Kubernetes 集群。
+本节介绍如何使用 [kind](https://kind.sigs.k8s.io/) 创建一个 Kubernetes 测试集群。你也可以参考 [Kubernetes 官方文档](https://kubernetes.io/zh-cn/docs/setup/#learning-environment)，选择其他方法部署 Kubernetes 集群。
 
 kind 可以使用容器作为集群节点运行本地 Kubernetes 集群。请参阅 [kind 官方文档](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)完成安装。
 

@@ -12,7 +12,7 @@ summary: 了解如何在 Kubernetes 上部署 TiDB Operator。
 部署 TiDB Operator 前，请确保你的环境满足以下软件要求：
 
 - [Kubernetes >= v1.30](https://kubernetes.io/releases/)
-- [kubectl >= v1.30](https://kubernetes.io/docs/tasks/tools/)
+- [kubectl >= v1.30](https://kubernetes.io/zh-cn/docs/tasks/tools/)
 - [Helm >= v3.8](https://helm.sh/)
 
 ## 部署 Kubernetes 集群
