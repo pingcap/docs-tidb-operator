@@ -25,7 +25,9 @@ In these formats, `basic-tidb` is the Service name, and `default` is the namespa
 
 Each TiDBGroup automatically creates a Service that provides access to all TiDB instances in that group. For example, the TiDBGroup `tidb-0` creates an internal Service named `tidb-0-tidb`.
 
-You can directly use the default Service to access TiDB, or create a custom Service as needed.
+> **Note:**
+>
+> It is not recommended to directly use the default Service to access TiDB. Instead, create custom Services based on your specific needs.
 
 The following YAML example defines a Service that provides access to all TiDB nodes in the `db` cluster:
 
