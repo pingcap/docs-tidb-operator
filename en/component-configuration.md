@@ -103,7 +103,7 @@ spec:
       mode: "ms"
 ```
 
-Currently, PD supports the `tso` and `scheduling` microservices. You can configure them using the `TSOGroup` and `SchedulingGroup` CRs.
+Currently, PD supports the `tso` and `scheduling` microservices. You can configure them using the `TSOGroup` and `SchedulerGroup` CRs.
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -118,7 +118,7 @@ spec:
           filename = "/pdms/log/tso.log"
 ---
 apiVersion: core.pingcap.com/v1alpha1
-kind: SchedulingGroup
+kind: SchedulerGroup
 metadata:
   name: scheduling
 spec:
@@ -130,6 +130,8 @@ spec:
 ```
 
 For a full list of configurable PD microservice parameters, see [PD Configuration File](https://docs.pingcap.com/tidb/stable/pd-configuration-file).
+For a full list of configurable `tso` parameters, see [TSO Configuration File](https://docs.pingcap.com/tidb/stable/tso-configuration-file/).
+For a full list of configurable `scheduling` parameters, see [Scheduling Configuration File](https://docs.pingcap.com/tidb/stable/scheduling-configuration-file/).
 
 > **Note:**
 >
@@ -169,7 +171,7 @@ spec:
     spec:
       config: |
         [flash]
-          [flash.flash_cluster]  
+          [flash.flash_cluster]
             log = "/data0/logs/flash_cluster_manager.log"
         [logger]
           count = 10
