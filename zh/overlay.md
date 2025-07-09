@@ -13,18 +13,18 @@ Overlay 功能是 TiDB Operator 提供的一种配置机制，你无需修改 Ti
 
 目前，TiDB Operator 支持通过 Overlay 功能自定义以下资源类型：
 
-- **Pod**：修改 Pod 的元数据（如标签、注解）和规约(spec)
+- **Pod**：修改 Pod 的元数据（如标签、注解）和规约（[`spec`](https://kubernetes.io/zh-cn/docs/concepts/overview/working-with-objects/#object-spec-and-status) 字段）
 - **PersistentVolumeClaim (PVC)**：修改 PVC 的元数据（如标签、注解）
 
 > **注意：**
 >
-> 暂不支持修改 PVC 的规约(spec)
+> 暂不支持修改 PVC 的规约 (`spec`)。
 
 ## 使用方法
 
 ### 自定义 Pod 配置 (Pod Overlay)
 
-Pod Overlay 可以修改 Pod 的元数据（如标签、注解）和规约(spec)配置。你可以在 Component Group（例如 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiProxyGroup`、`TiCDCGroup` 等）的 Custom Resource (CR) 中使用 `spec.template.spec.overlay.pod` 字段进行配置。
+Pod Overlay 可以修改 Pod 的元数据（如标签、注解）和规约 (`spec`) 配置。你可以在 Component Group（例如 `PDGroup`、`TiDBGroup`、`TiKVGroup`、`TiFlashGroup`、`TiProxyGroup`、`TiCDCGroup` 等）的 Custom Resource (CR) 中使用 `spec.template.spec.overlay.pod` 字段进行配置。
 
 以下示例展示如何为 PD 容器添加一个名为 `CUSTOM_ENV_VAR` 的环境变量：
 
