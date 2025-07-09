@@ -86,9 +86,10 @@ spec:
     memory: 8Gi
 ```
 
-By default, the same values apply to both [requests and limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits).
-
-To set different values for requests and limits, use the [Overlay](overlay.md) feature.
+> **Note:**
+>
+> - By default, the same values apply to both [requests and limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits).
+> - To set different values for requests and limits, use the [Overlay](overlay.md) feature.
 
 ### Configure component parameters
 
