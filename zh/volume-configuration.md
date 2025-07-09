@@ -154,7 +154,7 @@ Kubernetes 原生方式是指通过 [Volume Attributes Classes](https://kubernet
 **前提条件：**
 
 - Kubernetes 1.29 及以上版本。
-- 已开启 Kubernetes 的 [Volume Attributes Classes](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) 功能。
+- 已开启 Kubernetes 的 [Volume Attributes Classes](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/) 功能。
 
 使用 Kubernetes 原生方式修改卷属性的操作步骤如下：
 

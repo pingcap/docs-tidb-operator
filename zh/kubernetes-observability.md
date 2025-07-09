@@ -35,7 +35,7 @@ summary: 介绍如何在 Kubernetes 集群中进行监控、告警与日志收�
 
 ### Kubernetes 组件监控
 
-对 Kubernetes 组件的监控可以参考[官方文档](https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-usage-monitoring/)提供的方案，也可以使用其他兼容 Kubernetes 的监控系统来进行。
+对 Kubernetes 组件的监控可以参考[官方文档](https://kubernetes.io/zh-cn/docs/tasks/debug/debug-cluster/resource-usage-monitoring/)提供的方案，也可以使用其他兼容 Kubernetes 的监控系统来进行。
 
 一些云服务商可能提供了自己的 Kubernetes 组件监控方案，一些专门的性能监控服务商也有各自的 Kubernetes 集成方案可以选择。
 
