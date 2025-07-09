@@ -86,7 +86,7 @@ spec:
     memory: 8Gi
 ```
 
-默认情况下，配置的资源会同时应用于 [Requests 和 Limits](https://kubernetes.io/zh-cn/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)，即 Requests 与 Limits 使用相同的资源配置。
+**默认情况下，配置的资源会同时应用于 [Requests 和 Limits](https://kubernetes.io/zh-cn/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)，即 Requests 与 Limits 使用相同的资源配置。**
 
 如需分别设置 Requests 和 Limits，请使用 [Overlay](overlay.md) 进行配置。
 
