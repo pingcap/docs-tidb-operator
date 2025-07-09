@@ -9,7 +9,7 @@ summary: 介绍如何升级 Kubernetes 上的 TiDB 集群。
 
 ## 滚动更新功能介绍
 
-Kubernetes 提供了[滚动更新功能](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)，在不影响应用可用性的前提下执行更新。
+Kubernetes 提供了[滚动更新功能](https://kubernetes.io/zh-cn/docs/tutorials/kubernetes-basics/update/update-intro/)，在不影响应用可用性的前提下执行更新。
 
 使用滚动更新时，TiDB Operator 会等待新版本的 Pod 正常运行后，再处理下一个 Pod。
 
