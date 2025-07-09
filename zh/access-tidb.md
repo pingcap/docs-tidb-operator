@@ -25,7 +25,9 @@ summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
 
 每个 TiDBGroup 会自动创建一个能够访问该 TiDBGroup 所有 TiDB 的 Service。例如，TiDBGroup `tidb-0` 会创建一个内部 Service `tidb-0-tidb`。
 
-你可以直接使用默认创建的 Service 访问 TiDB，也可以根据需要自行创建 Service。
+> **注意：**
+>
+> 不建议直接使用默认创建的 Service 访问 TiDB。建议根据实际访问需求自行创建 Service。
 
 以下 YAML 示例用于创建一个能够访问 Cluster `db` 下所有 TiDB 节点的 Service：
 
