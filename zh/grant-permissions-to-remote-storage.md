@@ -113,7 +113,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 >
 > - kube2iam 仅适用于运行在 AWS EC2 实例上的 Kubernetes 集群，不支持其他类型的节点。
 > - 使用该授权模式时，可以参考 [kube2iam 文档](https://github.com/jtblin/kube2iam#usage)在 Kubernetes 集群中创建 kube2iam 环境，并且部署 TiDB Operator 以及 TiDB 集群。
-> - 该模式不适用于使用 [`hostNetwork`](https://kubernetes.io/docs/concepts/policy/pod-security-policy) 网络模式的 Pod。
+> - 该模式不适用于使用 [`hostNetwork`](https://kubernetes.io/zh-cn/docs/concepts/policy/pod-security-policy) 网络模式的 Pod。
 
 通过 IAM 绑定 Pod 授权的步骤如下：
 
@@ -141,7 +141,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 ### 通过 IAM 绑定 ServiceAccount 授权
 
-通过将用户的 [IAM](https://aws.amazon.com/cn/iam/) 角色与 Kubernetes 中的 [`ServiceAccount`](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) 资源绑定，使用该 ServiceAccount 的 Pod 将继承该角色的权限。
+通过将用户的 [IAM](https://aws.amazon.com/cn/iam/) 角色与 Kubernetes 中的 [`ServiceAccount`](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/admission-controllers/#serviceaccount) 资源绑定，使用该 ServiceAccount 的 Pod 将继承该角色的权限。
 
 通过 IAM 绑定 ServiceAccount 授权的步骤如下：
 
