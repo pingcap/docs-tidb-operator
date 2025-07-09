@@ -49,7 +49,7 @@ spec:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
 ```
 
 如需使用非官方镜像，可通过 `image` 字段指定：
@@ -58,7 +58,7 @@ spec:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb
 ```
 
@@ -68,7 +68,7 @@ spec:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb:dev
 ```
 
@@ -240,7 +240,7 @@ spec:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -275,7 +275,7 @@ spec:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -310,7 +310,7 @@ spec:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     创建 TiDB 组件：

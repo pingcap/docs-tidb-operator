@@ -170,7 +170,7 @@ To deploy a TiDB cluster, perform the following steps:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -203,7 +203,7 @@ To deploy a TiDB cluster, perform the following steps:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -236,7 +236,7 @@ To deploy a TiDB cluster, perform the following steps:
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     ```shell
@@ -330,7 +330,7 @@ mysql --comments -h 127.0.0.1 -P 14000 -u root
 ```
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 178505
-Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Server version: 8.0.11-TiDB-{{{ .tidb_version }}} TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
@@ -384,7 +384,7 @@ REPLICATIONSTATUS_STATEID: NULL
 ```sql
 mysql> select tidb_version()\G
 *************************** 1. row ***************************
-tidb_version(): Release Version: v8.1.0
+tidb_version(): Release Version: {{{ .tidb_version }}}
 Edition: Community
 Git Commit Hash: 945d07c5d5c7a1ae212f6013adfb187f2de24b23
 Git Branch: HEAD

@@ -15,7 +15,7 @@ To back up data for a TiDB cluster on Kubernetes, you can create a `Backup` cust
 
 * `.spec.toolImage`: the tool image used by `Backup`.
     - If the field is not specified or the value is empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
-    - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:v5.3.0`, the image of the specified version is used for backup.
+    - If the BR version is specified in this field, such as `.spec.toolImage: pingcap/br:{{{ .tidb_version }}}`, the image of the specified version is used for backup.
     - If an image is specified without the version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
 
 * `.spec.backupType`: the backup type. This field is valid only when you use BR for backup. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
@@ -100,8 +100,8 @@ To back up data for a TiDB cluster on Kubernetes, you can create a `Backup` cust
 * `.spec.s3.bucket`: the bucket name of the S3-compatible storage.
 * `.spec.s3.prefix`: if you set this field, the value is used to make up the remote storage path `s3://${.spec.s3.bucket}/${.spec.s3.prefix}/backupName`.
 * `.spec.s3.path`: specifies the storage path of backup files on the remote storage. This field is valid only when the data is backed up using Dumpling or restored using TiDB Lightning. For example, `s3://test1-demo1/backup-2019-12-11T04:32:12Z.tgz`.
-* `.spec.s3.endpoint`：the endpoint of S3 compatible storage service, for example, `http://minio.minio.svc.cluster.local:9000`.
-* `.spec.s3.secretName`：the name of secret which stores S3 compatible storage's access key and secret key.
+* `.spec.s3.endpoint`: the endpoint of S3 compatible storage service, for example, `http://minio.minio.svc.cluster.local:9000`.
+* `.spec.s3.secretName`: the name of secret which stores S3 compatible storage's access key and secret key.
 * `.spec.s3.sse`: specifies the S3 server-side encryption method. For example, `aws:kms`.
 * `.spec.s3.acl`: the supported access-control list (ACL) policies.
 
@@ -201,7 +201,7 @@ For TiDB v9.0.0 and later versions, you can use `CompactBackup` to accelerate PI
 * `.spec.endTs`: the end timestamp for log compaction backup.
 * `.spec.concurrency`: the maximum number of concurrent log compaction tasks. The default value is `4`.
 * `.spec.maxRetryTimes`: the maximum number of retries for failed compaction tasks. The default value is `6`.
-* `.spec.toolImage`：the tool image used by `CompactBackup`. BR is the only tool image used in `CompactBackup`. When using BR for backup, you can specify the BR version with this field:
+* `.spec.toolImage`: the tool image used by `CompactBackup`. BR is the only tool image used in `CompactBackup`. When using BR for backup, you can specify the BR version with this field:
     - If not specified or left empty, the `pingcap/br:${tikv_version}` image is used for backup by default.
     - If a BR version is specified, such as `.spec.toolImage: pingcap/br:v9.0.0`, the image of the specified version is used for backup.
     - If an image is specified without a version, such as `.spec.toolImage: private/registry/br`, the `private/registry/br:${tikv_version}` image is used for backup.
@@ -217,13 +217,13 @@ For TiDB v9.0.0 and later versions, you can use `CompactBackup` to accelerate PI
 * `.spec.br`: BR-related configuration. For more information, refer to [BR fields](#br-fields).
 * `.spec.s3`: S3-related configuration. For more information, refer to [S3 storage fields](#s3-storage-fields).
 * `.spec.gcs`: GCS-related configuration. For more information, refer to [GCS fields](#gcs-fields).
-* `.spec.azblob`：Azure Blob Storage-related configuration. For more information, refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
+* `.spec.azblob`: Azure Blob Storage-related configuration. For more information, refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
 
 ## Restore CR fields
 
 To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR object. For detailed restore process, refer to documents listed in [Restore data](backup-restore-overview.md#restore-data). This section introduces the fields in the `Restore` CR.
 
-* `.spec.toolImage`：the tools image used by `Restore`. For example, `spec.toolImage: pingcap/br:v5.3.0`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
+* `.spec.toolImage`: the tools image used by `Restore`. For example, `spec.toolImage: pingcap/br:{{{ .tidb_version }}}`. If not specified, `pingcap/br:${tikv_version}` is used for restoring by default.
 
 * `.spec.backupType`: the restore type. This field is valid only when you use BR to restore data. Currently, the following three types are supported, and this field can be combined with the `.spec.tableFilter` field to configure table filter rules:
     * `full`: restore all databases in a TiDB cluster.
@@ -256,7 +256,7 @@ To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR o
 * `.spec.br`: BR-related configuration. Refer to [BR fields](#br-fields).
 * `.spec.s3`: S3-related configuration. Refer to [S3 storage fields](#s3-storage-fields).
 * `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
-* `.spec.azblob`：Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
+* `.spec.azblob`: Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
 * `.spec.local`: persistent volume-related configuration. Refer to [Local storage fields](#local-storage-fields).
 
 ## BackupSchedule CR fields

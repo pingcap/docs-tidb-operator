@@ -49,7 +49,7 @@ Use the `version` field to specify the component version:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
 ```
 
 To use a custom image, set the `image` field:
@@ -58,7 +58,7 @@ To use a custom image, set the `image` field:
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb
 ```
 
@@ -68,7 +68,7 @@ If the version does not follow [semantic versioning](https://semver.org/), you c
 spec:
   template:
     spec:
-      version: v8.1.0
+      version: {{{ .tidb_version }}}
       image: gcr.io/xxx/tidb:dev
 ```
 
@@ -240,7 +240,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -275,7 +275,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
           volumes:
           - name: data
             mounts:
@@ -310,7 +310,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
           annotations:
             author: pingcap
         spec:
-          version: v8.1.0
+          version: {{{ .tidb_version }}}
     ```
 
     Create the TiDB component:
