@@ -43,11 +43,11 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.storageSize`：备份时指定所需的 PV 大小，默认为 100 GiB。该值应大于备份 TiDB 集群数据的大小。一个 TiDB 集群的 Backup CR 对应的 PVC 名字是确定的，如果集群命名空间中已存在该 PVC 并且其大小小于 `.spec.storageSize`，这时需要先删除该 PVC 再运行 Backup job。
 * `.spec.resources`：指定运行备份任务的 Pod 的资源请求与上限值。
 * `.spec.env`：指定运行备份任务的 Pod 的环境变量信息。
-* `.spec.affinity`：指定运行备份任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-* `.spec.tolerations`：指定运行备份任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.affinity`：指定运行备份任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+* `.spec.tolerations`：指定运行备份任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
 * `.spec.podSecurityContext`：指定运行备份任务的 Pod 的安全上下文配置，允许 Pod 以非 root 用户的方式运行，关于 podSecurityContext 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
-* `.spec.priorityClassName`：指定运行备份任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
-* `.spec.imagePullSecrets`：指定运行备份任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)。
+* `.spec.priorityClassName`：指定运行备份任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
+* `.spec.imagePullSecrets`：指定运行备份任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/zh-cn/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)。
 * `.spec.serviceAccount`：备份时指定所使用的 ServiceAccount 名称。
 * `.spec.useKMS`：备份时指定是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
 * `.spec.tableFilter`：备份时指定让 BR 备份符合 [table-filter 规则](https://docs.pingcap.com/zh/tidb/stable/table-filter/)的表。默认情况下该字段可以不用配置。当不配置时，BR 会备份除系统库以外的所有数据库。
@@ -208,7 +208,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 * `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
 * `.spec.affinity`：指定运行备份任务的 Pod 亲和性 (affinity) 配置。关于亲和性的详细说明，请参阅[亲和性与反亲和性](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-* `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够被调度到带有与之匹配的[污点 (Taint)](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) 的节点上。关于污点与容忍度的更多说明，请参阅[污点和容忍度](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够被调度到带有与之匹配的[污点 (Taint)](https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-taint) 的节点上。关于污点与容忍度的更多说明，请参阅[污点和容忍度](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
 * `.spec.podSecurityContext`：指定运行压缩备份任务的 Pod 的安全上下文配置，以支持非 root 用户运行 Pod。关于 `podSecurityContext` 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
 * `.spec.priorityClassName`：指定运行压缩备份任务的 Pod 的 `priorityClass` 的名称，用于设置运行优先级。关于 `priorityClass` 的更多说明，请参阅 [Pod 优先级和抢占](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
 * `.spec.imagePullSecrets`：指定运行压缩备份任务的 Pod 使用的 [`imagePullSecrets`](https://kubernetes.io/zh-cn/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)。
@@ -232,11 +232,11 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 * `.spec.resources`：指定运行恢复任务的 Pod 的资源请求与上限值。
 * `.spec.env`：指定运行恢复任务的 Pod 的环境变量信息。
-* `.spec.affinity`：指定运行恢复任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-* `.spec.tolerations`：指定运行恢复任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)。
+* `.spec.affinity`：指定运行恢复任务的 Pod 亲和性配置，关于 affinity 的使用说明，请参阅 [Affinity & AntiAffinity](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
+* `.spec.tolerations`：指定运行恢复任务的 Pod 能够调度到带有与之匹配的[污点](https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-taint) (Taint) 的节点上。关于污点与容忍度的更多说明，请参阅 [Taints and Tolerations](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
 * `.spec.podSecurityContext`：指定运行恢复任务的 Pod 的安全上下文配置，允许 Pod 以非 root 用户的方式运行，关于 podSecurityContext 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
-* `.spec.priorityClassName`：指定运行恢复任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
-* `.spec.imagePullSecrets`：指定运行恢复任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
+* `.spec.priorityClassName`：指定运行恢复任务的 Pod 的 priorityClass 的名称，以设置运行优先级，关于 priorityClass 的更多说明，请参阅 [Pod Priority and Preemption](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
+* `.spec.imagePullSecrets`：指定运行恢复任务的 Pod 的 [imagePullSecrets](https://kubernetes.io/zh-cn/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
 * `.spec.serviceAccount`：指定恢复时所使用的 ServiceAccount 名称。
 * `.spec.useKMS`：指定恢复时是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
 * `.spec.storageClassName`：指定恢复时所需的 PV 类型。
@@ -270,7 +270,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     > **注意：**
     >
     > 若删除日志备份数据，需要先停止日志备份任务，避免由于未停止 TiKV 中的日志备份任务，造成资源浪费或者后续无法重新开启日志备份。
-  
+
 + `backupSchedule` 独有的配置：
     + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
     + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
