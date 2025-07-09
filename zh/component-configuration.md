@@ -129,9 +129,11 @@ spec:
           filename = "/pdms/log/scheduling.log"
 ```
 
-要获取 PD 微服务可配置的所有参数，请参考 [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)。
-要获取 `tso` 组件可配置的所有参数，请参考 [TSO 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/tso-configuration-file/)。
-要获取 `scheduling` 组件可配置的所有参数，请参考 [Scheduling 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/scheduling-configuration-file/)。
+关于 PD 微服务、`tso` 组件和 `scheduling` 组件的完整配置参数，请参考以下文档：
+
+- [PD 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file)
+- [TSO 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/tso-configuration-file/)
+- [Scheduling 配置文件描述](https://docs.pingcap.com/zh/tidb/stable/scheduling-configuration-file/)
 
 > **注意：**
 >
