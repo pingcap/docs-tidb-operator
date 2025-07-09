@@ -42,7 +42,6 @@ You can use `kubectl` to modify the `spec.replicas` field in the corresponding C
 
     TiKV components usually take 3 to 5 minutes to scale in or out because the process involves data migration.
 
-
 > **Note:**
 >
 > - When the TiKV component scales in, TiDB Operator calls the PD interface to mark the corresponding TiKV instance as offline, and then migrates the data on it to other TiKV nodes. During the data migration, the TiKV Pod is still in the `Running` state, and the corresponding Pod is deleted only after the data migration is completed. The time consumed by scaling in depends on the amount of data on the TiKV instance to be scaled in. You can check whether TiKV is in the `Removing` state by running `kubectl get -n ${namespace} tikv`.
