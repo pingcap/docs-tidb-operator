@@ -13,7 +13,7 @@ It is not supported to upgrade TiDB Operator from v1.x to v2.x.
 
 ## Upgrade CRDs
 
-To upgrade the Custom Resource Definitions (CRDs) for TiDB Operator, run the following command. Replace `${version}` with your target TiDB Operator version, such as `v2.0.0-alpha.3`:
+To upgrade the Custom Resource Definitions (CRDs) for TiDB Operator, run the following command. Replace `${version}` with your target TiDB Operator version, such as `v2.0.0-alpha.6`:
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${version}/tidb-operator.crds.yaml --server-side
@@ -60,7 +60,7 @@ helm upgrade tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version=
 In the preceding command:
 
 * `tidb-operator`: the Helm release name for TiDB Operator. Replace it if you use a different name.
-* `${version}`: the target TiDB Operator version, such as `v2.0.0-alpha.3`.
+* `${version}`: the target TiDB Operator version, such as `v2.0.0-alpha.6`.
 * `--namespace=tidb-admin`: the namespace where TiDB Operator is deployed. Replace it with your actual namespace if different.
 
 After the upgrade is complete, you can check the Pod status with the following command to verify that the upgrade is successful:

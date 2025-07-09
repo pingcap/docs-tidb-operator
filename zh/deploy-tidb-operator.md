@@ -29,7 +29,7 @@ TiDB Operator 运行在 Kubernetes 集群中。你可以选择以下任一方式
 执行以下命令，安装 TiDB Operator 所需的 [Custom Resource Definition (CRD)](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions)：
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.crds.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.crds.yaml --server-side
 ```
 
 ## 部署 TiDB Operator
@@ -44,7 +44,7 @@ kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0
 TiDB Operator 安装所需的所有资源（包括 RBAC 和 Deployment 等，CRD 除外）都已打包在 `tidb-operator.yaml` 文件中。你可以使用以下命令一键部署，无需额外指定参数：
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.yaml --server-side
 ```
 
 TiDB Operator 将被部署到 `tidb-admin` namespace 下。你可以运行以下命令验证安装是否成功：
@@ -65,7 +65,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 使用 Helm 部署除 CRD 外的所有资源：
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 --namespace tidb-admin --create-namespace
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
 ```
 
 TiDB Operator 将被部署到 `tidb-admin` namespace 下。你可以运行以下命令验证安装是否成功：
@@ -86,11 +86,11 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 如需自定义部署参数，请先导出默认的 `values.yaml` 文件：
 
 ```shell
-helm show values oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 > values.yaml
+helm show values oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 > values.yaml
 ```
 
 根据需要修改 `values.yaml`，然后执行以下命令安装：
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 -f values.yaml
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 -f values.yaml
 ```

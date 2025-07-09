@@ -34,11 +34,11 @@ spec:
 
 Before deploying the cluster, prepare a YAML file for each component. The following lists some example configurations:
 
-- PD: [`pd.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/01-pd.yaml)
-- TiKV: [`tikv.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/02-tikv.yaml)
-- TiDB: [`tidb.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/03-tidb.yaml)
-- TiFlash: [`tiflash.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/04-tiflash.yaml)
-- TiCDC: [`ticdc.yaml`](https://github.com/pingcap/tidb-operator/blob/feature/v2/examples/basic/05-ticdc.yaml)
+- PD: [`pd.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/01-pd.yaml)
+- TiKV: [`tikv.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/02-tikv.yaml)
+- TiDB: [`tidb.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/03-tidb.yaml)
+- TiFlash: [`tiflash.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/04-tiflash.yaml)
+- TiCDC: [`ticdc.yaml`](https://raw.githubusercontent.com/pingcap/tidb-operator/refs/tags/v2.0.0-alpha.6/examples/basic/05-ticdc.yaml)
 
 ### Configure component version
 

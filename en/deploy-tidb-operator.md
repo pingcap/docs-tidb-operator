@@ -29,7 +29,7 @@ Whichever option you choose, make sure your Kubernetes version is v1.30 or later
 Run the following command to install the [Custom Resource Definitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) required by TiDB Operator:
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.crds.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.crds.yaml --server-side
 ```
 
 ## Deploy TiDB Operator
@@ -44,7 +44,7 @@ You can deploy TiDB Operator using either of the following methods:
 All resources required to install TiDB Operator (except CRDs), including RBAC and Deployment objects, are packaged in the `tidb-operator.yaml` file. You can deploy everything with a single command:
 
 ```shell
-kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.3/tidb-operator.yaml --server-side
+kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/v2.0.0-alpha.6/tidb-operator.yaml --server-side
 ```
 
 TiDB Operator will be deployed in the `tidb-admin` namespace. To verify the deployment, run:
@@ -65,7 +65,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 Use Helm to deploy all resources except CRDs:
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 --namespace tidb-admin --create-namespace
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 --namespace tidb-admin --create-namespace
 ```
 
 TiDB Operator will be deployed in the `tidb-admin` namespace. To verify the deployment, run:
@@ -86,11 +86,11 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m
 To customize deployment parameters, first export the default `values.yaml` file:
 
 ```shell
-helm show values oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 > values.yaml
+helm show values oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 > values.yaml
 ```
 
 Edit the `values.yaml` file as needed, then install TiDB Operator with the customized settings:
 
 ```shell
-helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator:v2.0.0-alpha.3 -f values.yaml
+helm install tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version v2.0.0-alpha.6 -f values.yaml
 ```

@@ -13,7 +13,7 @@ summary: 介绍如何将 TiDB Operator 升级到指定版本。
 
 ## 升级 CRD
 
-执行以下命令升级 TiDB Operator 的 Custom Resource Definition (CRD)。请将 `${version}` 替换为目标 TiDB Operator 版本，例如 `v2.0.0-alpha.3`：
+执行以下命令升级 TiDB Operator 的 Custom Resource Definition (CRD)。请将 `${version}` 替换为目标 TiDB Operator 版本，例如 `v2.0.0-alpha.6`：
 
 ```shell
 kubectl apply -f https://github.com/pingcap/tidb-operator/releases/download/${version}/tidb-operator.crds.yaml --server-side
@@ -60,7 +60,7 @@ helm upgrade tidb-operator oci://ghcr.io/pingcap/charts/tidb-operator --version=
 命令说明：
 
 - `tidb-operator`：TiDB Operator 的 Helm release 名称。如果你的 release 名称不同，请替换为实际的名称。
-- `${version}`：目标升级的 TiDB Operator 版本号，例如 `v2.0.0-alpha.3`。
+- `${version}`：目标升级的 TiDB Operator 版本号，例如 `v2.0.0-alpha.6`。
 - `--namespace=tidb-admin`：指定 TiDB Operator 所在的命名空间。如果你的命名空间不同，请替换为实际的命名空间。
 
 升级完成后，你可以通过以下命令检查 Pod 状态，确认升级是否成功：
