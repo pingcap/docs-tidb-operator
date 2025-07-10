@@ -43,17 +43,17 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
 
     如果服务器没有外网，需要在有外网的机器上将 TiDB 集群用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 v8.5.2）：
+    部署一套 TiDB 集群会用到下面这些 Docker 镜像（假设 TiDB 集群的版本是 {{{ .tidb_version }}}）：
 
     ```shell
-    pingcap/pd:v8.5.2
-    pingcap/tikv:v8.5.2
-    pingcap/tidb:v8.5.2
-    pingcap/ticdc:v8.5.2
-    pingcap/tiflash:v8.5.2
+    pingcap/pd:{{{ .tidb_version }}}
+    pingcap/tikv:{{{ .tidb_version }}}
+    pingcap/tidb:{{{ .tidb_version }}}
+    pingcap/ticdc:{{{ .tidb_version }}}
+    pingcap/tiflash:{{{ .tidb_version }}}
     pingcap/tiproxy:latest
     pingcap/tidb-monitor-reloader:v1.0.1
-    pingcap/tidb-monitor-initializer:v8.5.2
+    pingcap/tidb-monitor-initializer:{{{ .tidb_version }}}
     grafana/grafana:7.5.11
     prom/prometheus:v2.18.1
     busybox:1.26.2
@@ -64,26 +64,26 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/pd:v8.5.2
-    docker pull pingcap/tikv:v8.5.2
-    docker pull pingcap/tidb:v8.5.2
-    docker pull pingcap/ticdc:v8.5.2
-    docker pull pingcap/tiflash:v8.5.2
+    docker pull pingcap/pd:{{{ .tidb_version }}}
+    docker pull pingcap/tikv:{{{ .tidb_version }}}
+    docker pull pingcap/tidb:{{{ .tidb_version }}}
+    docker pull pingcap/ticdc:{{{ .tidb_version }}}
+    docker pull pingcap/tiflash:{{{ .tidb_version }}}
     docker pull pingcap/tiproxy:latest
     docker pull pingcap/tidb-monitor-reloader:v1.0.1
-    docker pull pingcap/tidb-monitor-initializer:v8.5.2
+    docker pull pingcap/tidb-monitor-initializer:{{{ .tidb_version }}}
     docker pull grafana/grafana:7.5.11
     docker pull prom/prometheus:v2.18.1
     docker pull busybox:1.26.2
 
-    docker save -o pd-v8.5.2.tar pingcap/pd:v8.5.2
-    docker save -o tikv-v8.5.2.tar pingcap/tikv:v8.5.2
-    docker save -o tidb-v8.5.2.tar pingcap/tidb:v8.5.2
-    docker save -o ticdc-v8.5.2.tar pingcap/ticdc:v8.5.2
+    docker save -o pd-{{{ .tidb_version }}}.tar pingcap/pd:{{{ .tidb_version }}}
+    docker save -o tikv-{{{ .tidb_version }}}.tar pingcap/tikv:{{{ .tidb_version }}}
+    docker save -o tidb-{{{ .tidb_version }}}.tar pingcap/tidb:{{{ .tidb_version }}}
+    docker save -o ticdc-{{{ .tidb_version }}}.tar pingcap/ticdc:{{{ .tidb_version }}}
     docker save -o tiproxy-latest.tar pingcap/tiproxy:latest
-    docker save -o tiflash-v8.5.2.tar pingcap/tiflash:v8.5.2
+    docker save -o tiflash-{{{ .tidb_version }}}.tar pingcap/tiflash:{{{ .tidb_version }}}
     docker save -o tidb-monitor-reloader-v1.0.1.tar pingcap/tidb-monitor-reloader:v1.0.1
-    docker save -o tidb-monitor-initializer-v8.5.2.tar pingcap/tidb-monitor-initializer:v8.5.2
+    docker save -o tidb-monitor-initializer-{{{ .tidb_version }}}.tar pingcap/tidb-monitor-initializer:{{{ .tidb_version }}}
     docker save -o grafana-6.0.1.tar grafana/grafana:7.5.11
     docker save -o prometheus-v2.18.1.tar prom/prometheus:v2.18.1
     docker save -o busybox-1.26.2.tar busybox:1.26.2
@@ -94,14 +94,14 @@ summary: 介绍如何在标准 Kubernetes 集群上通过 TiDB Operator 部署 T
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i pd-v8.5.2.tar
-    docker load -i tikv-v8.5.2.tar
-    docker load -i tidb-v8.5.2.tar
-    docker load -i ticdc-v8.5.2.tar
+    docker load -i pd-{{{ .tidb_version }}}.tar
+    docker load -i tikv-{{{ .tidb_version }}}.tar
+    docker load -i tidb-{{{ .tidb_version }}}.tar
+    docker load -i ticdc-{{{ .tidb_version }}}.tar
     docker load -i tiproxy-latest.tar
-    docker load -i tiflash-v8.5.2.tar
+    docker load -i tiflash-{{{ .tidb_version }}}.tar
     docker load -i tidb-monitor-reloader-v1.0.1.tar
-    docker load -i tidb-monitor-initializer-v8.5.2.tar
+    docker load -i tidb-monitor-initializer-{{{ .tidb_version }}}.tar
     docker load -i grafana-6.0.1.tar
     docker load -i prometheus-v2.18.1.tar
     docker load -i busybox-1.26.2.tar
