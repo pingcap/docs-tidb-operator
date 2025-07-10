@@ -244,7 +244,7 @@ To enable this feature, you need to deploy TidbNGMonitoring CR using TiDB Operat
     EOF
     ```
 
-    For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/v1.6.2/examples/advanced/tidb-ng-monitoring.yaml).
+    For more configuration items of the TidbNGMonitoring CR, see [example in tidb-operator](https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/examples/advanced/tidb-ng-monitoring.yaml).
 
 3. Enable Continuous Profiling.
 
