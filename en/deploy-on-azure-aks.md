@@ -494,7 +494,7 @@ Add a node pool for TiFlash/TiCDC respectively. You can set `--node-count` as re
 
 Finally, run the `kubectl -n tidb-cluster apply -f tidb-cluster.yaml` command to update the TiDB cluster configuration.
 
-For detailed CR configuration, refer to [API references](https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
+For detailed CR configuration, refer to [API references](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>) and [Configure a TiDB Cluster](configure-a-tidb-cluster.md).
 
 ## Use other Disk volume types
 

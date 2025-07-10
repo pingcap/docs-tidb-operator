@@ -53,7 +53,7 @@ GRANT
 
 ### Step 1: Prepare for ad-hoc full backup
 
-1. Execute the following command to create the role-based access control (RBAC) resources in the `tidb-cluster` namespace based on [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/{{{ .tidb_operator_version }}}/manifests/backup/backup-rbac.yaml):
+1. Execute the following command to create the role-based access control (RBAC) resources in the `tidb-cluster` namespace based on [backup-rbac.yaml](<https://raw.githubusercontent.com/pingcap/tidb-operator/{{{ .tidb_operator_version }}}/manifests/backup/backup-rbac.yaml>):
 
     {{< copyable "shell-regular" >}}
 
