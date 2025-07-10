@@ -11,6 +11,7 @@ TiDB Operator version: 1.6.2
 
 ## New features
 
+- Support backup log compaction and its scheduler ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
 
 ## Improvements
 
@@ -18,7 +19,6 @@ TiDB Operator version: 1.6.2
 - Support checking if PD members are ready with the new PD `ready` API when upgrading PD ([#6243](https://github.com/pingcap/tidb-operator/pull/6243), [@csuzhangxc](https://github.com/csuzhangxc))
 - Support force flush backup log before shutdown TiKV ([#6057](https://github.com/pingcap/tidb-operator/pull/6057), [@YuJuncen](https://github.com/YuJuncen))
 - Support policy based retry to failed restore task ([#6092](https://github.com/pingcap/tidb-operator/pull/6092), [@RidRisR](https://github.com/RidRisR))
-- Support backup log compaction and its scheduler ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
 - Make `--pitrRestoredTs` optional in restore CR([#6135](https://github.com/pingcap/tidb-operator/pull/6135), [@RidRisR](https://github.com/RidRisR))
 - Support namespace scope log backup tracker ([#6160](https://github.com/pingcap/tidb-operator/pull/6160), [@WangLe1321](https://github.com/WangLe1321))
 - Support force path style URL for FIPS backup ([#6250](https://github.com/pingcap/tidb-operator/pull/6250), [@3pointer](https://github.com/3pointer))
