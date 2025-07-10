@@ -11,6 +11,7 @@ TiDB Operator 版本：1.6.2
 
 ## 新功能
 
+- 支持对 backup log 的压缩以及设置对应的定时任务 ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
 
 ## 优化提升
 
@@ -18,7 +19,6 @@ TiDB Operator 版本：1.6.2
 - 在升级 PD 时，支持使用 PD 新的 `ready` API 检测 PD 是否 ready ([#6243](https://github.com/pingcap/tidb-operator/pull/6243), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持在优雅重启 TiKV 之前强制将 backup log 文件落盘 ([#6057](https://github.com/pingcap/tidb-operator/pull/6057), [@YuJuncen](https://github.com/YuJuncen))
 - 支持基于策略的自动重试失败的恢复任务 ([#6092](https://github.com/pingcap/tidb-operator/pull/6092), [@RidRisR](https://github.com/RidRisR))
-- 支持对 backup log 的压缩以及设置对应的定时任务 ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
 - 将恢复任务的 `--pitrRestoredTs` 参数从必选变为可选 ([#6135](https://github.com/pingcap/tidb-operator/pull/6135), [@RidRisR](https://github.com/RidRisR))
 - 支持 namespace 级别的 backup tracker ([#6160](https://github.com/pingcap/tidb-operator/pull/6160), [@WangLe1321](https://github.com/WangLe1321))
 - 针对 FIPS 备份，支持指定强制路径样式的 URL ([#6250](https://github.com/pingcap/tidb-operator/pull/6250), [@3pointer](https://github.com/3pointer))
