@@ -58,7 +58,6 @@ If you need to suspend the TiDB cluster, take the following steps:
     * TiFlash
     * TiCDC
     * TiKV
-    * Pump
     * TiProxy
     * PD
 

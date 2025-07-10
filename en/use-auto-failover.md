@@ -39,7 +39,7 @@ In addition, when configuring a TiDB cluster, you can specify `spec.${component}
 
 ## Automatic failover policies
 
-There are six components in a TiDB cluster: PD, TiKV, TiDB, TiFlash, TiCDC, and Pump. Currently, TiCDC and Pump do not support the automatic failover feature. PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives a detailed introduction to these policies.
+There are six components in a TiDB cluster: PD, TiKV, TiDB, TiFlash and TiCDC. Currently, TiCDC do not support the automatic failover feature. PD, TiKV, TiDB, and TiFlash have different failover policies. This section gives a detailed introduction to these policies.
 
 ### Failover with PD
 

@@ -28,7 +28,6 @@
     - [Deploy TiDB Across Multiple Kubernetes Clusters](deploy-tidb-cluster-across-multiple-kubernetes.md)
   - [Deploy a Heterogeneous TiDB Cluster](deploy-heterogeneous-tidb-cluster.md)
   - [Deploy TiCDC](deploy-ticdc.md)
-  - [Deploy TiDB Binlog](deploy-tidb-binlog.md)
 - Monitor and Alert
   - [Deploy Monitoring and Alerts for TiDB](monitor-a-tidb-cluster.md)
   - [Monitor and Diagnose TiDB Using TiDB Dashboard](access-dashboard.md)
@@ -124,8 +123,6 @@
   - [Required RBAC Rules](tidb-operator-rbac.md)
   - Tools
     - [TiDB Toolkit](tidb-toolkit.md)
-  - Configure
-    - [Configure tidb-drainer Chart](configure-tidb-binlog-drainer.md)
   - [Log Collection](logs-collection.md)
   - [Monitoring and Alert on Kubernetes](monitor-kubernetes.md)
   - [PingCAP Clinic Diagnostic Data](clinic-data-collection.md)

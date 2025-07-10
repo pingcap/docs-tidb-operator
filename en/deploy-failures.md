@@ -37,7 +37,7 @@ kubectl describe restores -n ${namespace} ${restore_name}
 
 The Pending state of a Pod is usually caused by conditions of insufficient resources, for example:
 
-- The `StorageClass` of the PVC used by PD, TiKV, TiFlash, Pump, Monitor, Backup, and Restore Pods does not exist or the PV is insufficient.
+- The `StorageClass` of the PVC used by PD, TiKV, TiFlash, Monitor, Backup, and Restore Pods does not exist or the PV is insufficient.
 - No nodes in the Kubernetes cluster can satisfy the CPU or memory resources requested by the Pod.
 - The number of TiKV or PD replicas and the number of nodes in the cluster do not satisfy the high availability scheduling policy of tidb-scheduler.
 - The certificates used by TiDB or TiProxy components are not configured.
