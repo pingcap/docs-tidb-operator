@@ -29,9 +29,9 @@ Usually, components in a cluster are in the same version. It is recommended to c
 
 The formats of the related parameters are as follows:
 
-- `spec.version`: the format is `imageTag`, such as `v8.5.2`.
+- `spec.version`: the format is `imageTag`, such as `{{{ .tidb_version }}}`.
 - `spec.<master/worker>.baseImage`: the format is `imageName`, such as `pingcap/dm`.
-- `spec.<master/worker>.version`: the format is `imageTag`, such as `v8.5.2`.
+- `spec.<master/worker>.version`: the format is `imageTag`, such as `{{{ .tidb_version }}}`.
 
 TiDB Operator only supports deploying DM 2.0 and later versions.
 
@@ -50,7 +50,7 @@ metadata:
   name: ${dm_cluster_name}
   namespace: ${namespace}
 spec:
-  version: v8.5.2
+  version: {{{ .tidb_version }}}
   configUpdateStrategy: RollingUpdate
   pvReclaimPolicy: Retain
   discovery: {}
@@ -136,10 +136,10 @@ kubectl apply -f ${dm_cluster_name}.yaml -n ${namespace}
 
 If the server does not have an external network, you need to download the Docker image used by the DM cluster and upload the image to the server, and then execute `docker load` to install the Docker image on the server:
 
-1. Deploy a DM cluster requires the following Docker image (assuming the version of the DM cluster is v8.5.2):
+1. Deploy a DM cluster requires the following Docker image (assuming the version of the DM cluster is {{{ .tidb_version }}}):
 
     ```shell
-    pingcap/dm:v8.5.2
+    pingcap/dm:{{{ .tidb_version }}}
     ```
 
 2. To download the image, execute the following command:
@@ -147,8 +147,8 @@ If the server does not have an external network, you need to download the Docker
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/dm:v8.5.2
-    docker save -o dm-v8.5.2.tar pingcap/dm:v8.5.2
+    docker pull pingcap/dm:{{{ .tidb_version }}}
+    docker save -o dm-{{{ .tidb_version }}}.tar pingcap/dm:{{{ .tidb_version }}}
     ```
 
 3. Upload the Docker image to the server, and execute `docker load` to install the image on the server:
@@ -156,7 +156,7 @@ If the server does not have an external network, you need to download the Docker
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker load -i dm-v8.5.2.tar
+    docker load -i dm-{{{ .tidb_version }}}.tar
     ```
 
 After deploying the DM cluster, execute the following command to view the Pod status:
