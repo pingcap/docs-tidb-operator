@@ -22,7 +22,7 @@ summary: 介绍如何将存储在持久卷上的备份数据恢复到 TiDB 集�
 
 使用 BR 将 PV 上的备份数据恢复到 TiDB 前，请按照以下步骤准备恢复环境。
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.6.1/manifests/backup/backup-rbac.yaml) 到执行恢复的服务器。
+1. 下载文件 [`backup-rbac.yaml`](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/manifests/backup/backup-rbac.yaml>) 到执行恢复的服务器。
 
 2. 执行以下命令在 `test2` 这个命名空间中创建恢复所需的 RBAC 相关资源：
 
