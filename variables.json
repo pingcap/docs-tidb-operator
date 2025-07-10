@@ -1,4 +1,4 @@
 {
-  "tidb_operator_version": "{{{ .tidb_operator_version }}}",
+  "tidb_operator_version": "v1.6.2",
   "tidb_version": "v8.5.2"
 }

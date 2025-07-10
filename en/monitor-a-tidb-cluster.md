@@ -84,13 +84,13 @@ You can customize the Prometheus configuration by using a customized configurati
 2. Set `spec.prometheus.config.configMapRef.name` and `spec.prometheus.config.configMapRef.namespace` to the name and namespace of the customized ConfigMap respectively.
 3. Check if TidbMonitor has enabled [dynamic configuration](enable-monitor-dynamic-configuration.md). If not, you need to restart TidbMonitor's pod to reload the configuration.
 
-For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/examples/monitor-with-externalConfigMap/prometheus/README.md).
+For the complete configuration, refer to the [tidb-operator example](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/examples/monitor-with-externalConfigMap/prometheus/README.md>).
 
 #### Add extra options to the command
 
 To add extra options to the command that starts Prometheus, configure `spec.prometheus.config.commandOptions`.
 
-For the complete configuration, refer to the [tidb-operator example](https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/examples/monitor-with-externalConfigMap/prometheus/README.md).
+For the complete configuration, refer to the [tidb-operator example](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/examples/monitor-with-externalConfigMap/prometheus/README.md>).
 
 > **Note:**
 >
@@ -367,7 +367,7 @@ spec:
   imagePullPolicy: IfNotPresent
 ```
 
-For a complete configuration example, refer to [Example](https://github.com/pingcap/tidb-operator/tree/{{{ .tidb_operator_version }}}/examples/monitor-multiple-cluster-non-tls) in the TiDB Operator repository.
+For a complete configuration example, refer to [Example](<https://github.com/pingcap/tidb-operator/tree/{{{ .tidb_operator_version }}}/examples/monitor-multiple-cluster-non-tls>) in the TiDB Operator repository.
 
 ### Monitor multiple clusters using Grafana
 

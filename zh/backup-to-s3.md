@@ -54,7 +54,7 @@ GRANT
 
 ### 第 1 步：Ad-hoc 全量备份环境准备
 
-1. 执行以下命令，根据 [backup-rbac.yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/{{{ .tidb_operator_version }}}/manifests/backup/backup-rbac.yaml) 在 `tidb-cluster` 命名空间创建基于角色的访问控制 (RBAC) 资源。
+1. 执行以下命令，根据 [backup-rbac.yaml](<https://raw.githubusercontent.com/pingcap/tidb-operator/{{{ .tidb_operator_version }}}/manifests/backup/backup-rbac.yaml>) 在 `tidb-cluster` 命名空间创建基于角色的访问控制 (RBAC) 资源。
 
     {{< copyable "shell-regular" >}}
 
