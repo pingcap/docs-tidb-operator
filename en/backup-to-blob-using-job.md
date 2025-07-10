@@ -90,7 +90,7 @@ Run the following commands to create the Dumpling job. Replace the variables wit
 
 ```shell
 export name=dumpling
-export version=v8.5.1
+export version={{{ .tidb_version }}}
 export namespace=tidb-cluster
 export accountname=<your-account-name>
 export accountkey=<your-account-key>
