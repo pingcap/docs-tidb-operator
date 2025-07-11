@@ -12,6 +12,7 @@ TiDB Operator version: 1.6.2
 ## New features
 
 - Support compressing backup logs and configuring scheduled tasks to optimize storage usage ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
+- Support the new `restore abort` command to clean up restore related meta data from operator  ([#6296](https://github.com/pingcap/tidb-operator/pull/6296), [@RidRisR](https://github.com/RidRisR))
 
 ## Improvements
 

@@ -12,6 +12,7 @@ TiDB Operator 版本：1.6.2
 ## 新功能
 
 - 新增压缩备份日志功能，并支持配置相应的定时任务，有助于优化存储空间管理 ([#6033](https://github.com/pingcap/tidb-operator/pull/6033), [@RidRisR](https://github.com/RidRisR))
+- 支持 `restore abort` 命令清理 restore 作业残留的元数据 ([#6296](https://github.com/pingcap/tidb-operator/pull/6296), [@RidRisR](https://github.com/RidRisR))
 
 ## 优化提升
 
