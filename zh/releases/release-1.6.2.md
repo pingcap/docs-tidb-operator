@@ -16,7 +16,7 @@ TiDB Operator 版本：1.6.2
 
 ## 优化提升
 
-- 在缩容 TiKV 节点时，支持先 evict leader 再删除 store ([#6239](https://github.com/pingcap/tidb-operator/pull/6239), [@liubog2008](https://github.com/liubog2008))
+- 在缩容 TiKV 节点时，支持先驱逐 leader 再删除 store ([#6239](https://github.com/pingcap/tidb-operator/pull/6239), [@liubog2008](https://github.com/liubog2008))
 - 在升级 PD 时，TiDB Operator 使用 PD 新的 `pd/api/v2/ready` API 检测 PD 就绪状态 ([#6243](https://github.com/pingcap/tidb-operator/pull/6243), [@csuzhangxc](https://github.com/csuzhangxc))
 - 支持在优雅重启 TiKV 之前强制将备份日志文件写入磁盘，以防止数据丢失 ([#6057](https://github.com/pingcap/tidb-operator/pull/6057), [@YuJuncen](https://github.com/YuJuncen))
 - 支持基于策略自动重试失败的恢复任务 ([#6092](https://github.com/pingcap/tidb-operator/pull/6092), [@RidRisR](https://github.com/RidRisR))
