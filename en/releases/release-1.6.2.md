@@ -22,7 +22,7 @@ TiDB Operator version: 1.6.2
 - Support automatic retries of failed restore tasks based on policies ([#6092](https://github.com/pingcap/tidb-operator/pull/6092), [@RidRisR](https://github.com/RidRisR))
 - Make the `--pitrRestoredTs` parameter optional in the restore custom resource (CR) ([#6135](https://github.com/pingcap/tidb-operator/pull/6135), [@RidRisR](https://github.com/RidRisR))
 - Support namespace-level log backup tracking ([#6160](https://github.com/pingcap/tidb-operator/pull/6160), [@WangLe1321](https://github.com/WangLe1321))
-- Support specifying forced path-style URLs in FIPS backups ([#6250](https://github.com/pingcap/tidb-operator/pull/6250), [@3pointer](https://github.com/3pointer))
+- Support specifying forced path-style URLs for FIPS backups ([#6250](https://github.com/pingcap/tidb-operator/pull/6250), [@3pointer](https://github.com/3pointer))
 - Support using a custom S3 endpoint in the backup manager ([#6268](https://github.com/pingcap/tidb-operator/pull/6268), [@3pointer](https://github.com/3pointer))
 
 ## Bug fixes
