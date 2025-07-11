@@ -28,5 +28,5 @@ TiDB Operator version: 1.6.2
 ## Bug fixes
 
 - Fix the issue that the TidbCluster CR is incorrectly marked as `Ready` when some Tiproxy Pods are unhealthy ([#6151](https://github.com/pingcap/tidb-operator/pull/6151), [@ideascf](https://github.com/ideascf))
-- Fix the issue that EBS volume snapshot backups cannot exit normally due to invalid TC format ([#6087](https://github.com/pingcap/tidb-operator/pull/6087), [@BornChanger](https://github.com/BornChanger))
+- Fix the issue that EBS volume snapshot backup tasks cannot exit normally due to invalid TC format([#6087](https://github.com/pingcap/tidb-operator/pull/6087), [@BornChanger](https://github.com/BornChanger))
 - Fix the issue that incorrect data is restored during PITR due to the `gc.ratio-threshold` parameter being reset after a TiKV restart ([#6267](https://github.com/pingcap/tidb-operator/pull/6267), [@YuJuncen](https://github.com/YuJuncen))
