@@ -549,7 +549,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
          name: ${cluster_name}
          namespace: ${namespace}
         spec:
-         version: v8.5.0
+         version: {{{ .tidb_version }}}
          timezone: UTC
          pvReclaimPolicy: Retain
          pd:

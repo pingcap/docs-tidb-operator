@@ -147,7 +147,7 @@ spec:
 
 ```shell
 export name=lightning
-export version=v8.5.1
+export version={{{ .tidb_version }}}
 export namespace=tidb-cluster
 export storageClassName=<your-storage-class>
 export storage=250G
