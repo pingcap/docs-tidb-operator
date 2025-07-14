@@ -83,6 +83,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
       namespace: restore-test
     spec:
       # backupType: full
+      # prune: afterFailed
       br:
         cluster: demo2
         clusterNamespace: test2
@@ -108,6 +109,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
     - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
     - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
+    - 对于 V9.0.0 以上的集群，`Restore` CR 支持一个新的字段 `prune:afterFailed` 用于清理失败的恢复遗留的元数据表等信息，它会改变 `Restore` CR 在 `failed` 状态下的行为和状态。在 V9.0.0之前的版本，你不需要这个功能。详细解释参考[prune 字段介绍](#prune-字段介绍)
 
 2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
 
@@ -121,6 +123,17 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
      NAME                STATUS     ...
      demo2-restore-gcs   Complete   ...
      ```
+
+    如果你设置了 `prune:afterFailed` 可能会看到这样的状态：
+
+      ```shell
+      kubectl get restore -n restore-test -o wide
+      ```
+
+      ```shell
+      NAME               STATUS     ...
+      demo3-restore-s3   PruneComplete   ...
+      ```
 
 ## PITR 恢复
 
@@ -185,6 +198,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
       namespace: restore-test
     spec:
       restoreMode: pitr
+      # prune: afterFailed
       br:
         cluster: demo3
         clusterNamespace: test3
@@ -226,6 +240,17 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     ```
     NAME                STATUS     ...
     demo3-restore-gcs   Complete   ...
+    ```
+
+    如果你设置了 `prune:afterFailed` 可能会看到这样的状态：
+
+    ```shell
+    kubectl get restore -n restore-test -o wide
+    ```
+
+    ```shell
+    NAME               STATUS     ...
+    demo3-restore-s3   PruneComplete   ...
     ```
 
 ## 故障诊断
