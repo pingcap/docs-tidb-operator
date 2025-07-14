@@ -106,7 +106,7 @@ When configuring `restore-azblob.yaml`, note the following:
 - `spec.azblob.secretName`: fill in the name of the secret object, such as `azblob-secret`.
 - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure the `spec.to` fields in the `Restore` CR.
 - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
-- For TiDB v9.0.0 and later versions,  the `Restore` CR supports a new field, `.spec.prune`, which can be set to `afterFailed` to clean up residual metadata tables after a failed restore. Enabling this field changes the behavior and status of the `Restore` CR when it enters the `Failed` state. This feature is not supported in versions earlier than v9.0.0. For more details about the `.spec.prune` field, see [Prune field](backup-restore-cr.md#prune-field).
+- For TiDB v9.0.0 and later versions, the `Restore` CR supports a new field `.spec.prune`, which can be set to `afterFailed` to clean up residual metadata tables after a failed restore. Enabling this field changes the behavior and status of the `Restore` CR when it enters the `Failed` state. This feature is not supported in versions earlier than v9.0.0. For more details about the `.spec.prune` field, see [Prune field](backup-restore-cr.md#prune-field).
 
 After creating the `Restore` CR, execute the following command to check the restore status:
 

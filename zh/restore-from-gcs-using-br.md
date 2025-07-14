@@ -110,7 +110,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
     - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
     - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
     - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
-    - 对于 TiDB v9.0.0 及以上版本的 TiDB 集群，`Restore` CR 支持新的字段 `.spc.prune`，并可设置为 `afterFailed`，用于在恢复失败后清理遗留的元数据表等信息。启用该字段会影响 `Restore` CR 在 `Failed` 状态下的行为和状态。v9.0.0 之前的版本不支持此功能。更多 `.spec.prune` 字段的详细解释，请参考 [Prune 字段介绍](backup-restore-cr.md#prune-字段介绍)
+    - 对于 TiDB v9.0.0 及以上版本的 TiDB 集群，`Restore` CR 支持新的字段 `.spec.prune`，并可设置为 `afterFailed`，用于在恢复失败后清理遗留的元数据表等信息。启用该字段会影响 `Restore` CR 在 `Failed` 状态下的行为和状态。v9.0.0 之前的版本不支持此功能。更多 `.spec.prune` 字段的详细解释，请参考 [Prune 字段介绍](backup-restore-cr.md#prune-字段介绍)
 
 2. 创建好 `Restore` CR 后，通过以下命令查看恢复的状态：
 

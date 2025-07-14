@@ -260,7 +260,7 @@ This section introduces the fields in the `Backup` CR.
 
 ### Prune field
 
-* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Enabling the `prune` field changes the final status behavior of the restore task. If the restore task ends in the `Failed` status, a cleanup task is automatically triggered to remove metadata table information. Based on the cleanup task status, the restore task displays one of the following statuses:
+* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Enabling the `prune` field affects the final status of the restore task. If the restore task ends in the `Failed` status, a cleanup task is automatically triggered to remove metadata table information. Based on the cleanup task status, the restore task displays one of the following statuses:
     * `PruneScheduled`: the cleanup task is scheduled but has not started.
     * `PruneRunning`: the cleanup task is running.
     * `PruneComplete`: the cleanup task completed successfully.
