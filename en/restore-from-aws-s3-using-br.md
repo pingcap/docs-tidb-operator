@@ -185,7 +185,7 @@ When configuring `restore-full-s3.yaml`, note the following:
 - Some parameters in `.spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-cr.md#br-fields).
 - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR.
 - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
-- For V9.0.0 and later TiDB cluster, `Restore` CR supports a new field `prune:afterFailed` to clean up the metadata table left over from failed restores. It will change the behavior and status of `Restore` CR in the `failed` state. For versions before V9.0.0, you don't need this feature. For detailed details, refer to [prune field introduction](#prune-field introduction)
+- For V9.0.0 and later TiDB cluster, `Restore` CR supports a new field `prune:afterFailed` to clean up the metadata table left over from failed restores. It will change the behavior and status of `Restore` CR in the `failed` state. For versions before V9.0.0, you don't need this feature. For detailed details, refer to [prune field introduction](backup-restore-cr.md#prune-field)
 
 After creating the `Restore` CR, execute the following command to check the restore status:
 
