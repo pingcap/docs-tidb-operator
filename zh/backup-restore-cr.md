@@ -255,7 +255,6 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
     - `PruneComplete`: 清理任务执行完成
     - `PruneFailed`: 清理任务执行失败
 
-
 ## CompactBackup CR 字段介绍
 
 对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
@@ -363,7 +362,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
 * `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 * `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
-*  `.spec.prune`：目前只支持填入`afterFailed`，可以在恢复任务失败后清理对应的元数据表信息，具体介绍参考 [prune 字段介绍](#prune-字段介绍)。
+* `.spec.prune`：目前只支持填入`afterFailed`，可以在恢复任务失败后清理对应的元数据表信息，具体介绍参考 [prune 字段介绍](#prune-字段介绍)。
 
 ## BackupSchedule CR 字段介绍
 
