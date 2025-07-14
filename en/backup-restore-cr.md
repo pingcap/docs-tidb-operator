@@ -258,6 +258,14 @@ This section introduces the fields in the `Backup` CR.
 * `.spec.local.volume`: the persistent volume configuration.
 * `.spec.local.volumeMount`: the persistent volume mount configuration.
 
+### Prune field
+
+* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Enabling the `prune` field affects the final status of the restore task. If the restore task ends in the `Failed` status, a cleanup task is automatically triggered to remove metadata table information. Based on the cleanup task status, the restore task displays one of the following statuses:
+    * `PruneScheduled`: the cleanup task is scheduled but has not started.
+    * `PruneRunning`: the cleanup task is running.
+    * `PruneComplete`: the cleanup task completed successfully.
+    * `PruneFailed`: the cleanup task failed.
+
 ## CompactBackup CR fields
 
 For TiDB v9.0.0 and later versions, you can use `CompactBackup` to accelerate PITR (Point-in-time recovery). To compact log backup data into structured SST files, you can create a custom `CompactBackup` CR object to define a backup task. The following introduces the fields in the `CompactBackup` CR:
@@ -372,6 +380,7 @@ This section introduces the fields in the `Restore` CR.
 * `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
 * `.spec.azblob`：Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
 * `.spec.local`: persistent volume-related configuration. Refer to [Local storage fields](#local-storage-fields).
+* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Refer to [Prune field](#prune-field).
 
 ## BackupSchedule CR fields
 

@@ -247,6 +247,14 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.local.volume`：持久卷配置。
 * `.spec.local.volumeMount`：持久卷挂载配置。
 
+### Prune 字段介绍
+
+* `.spec.prune`：仅在 BR v9.0.0 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息。启用 `prune` 字段会影响恢复任务的终止状态。如果恢复任务以 `Failed` 状态结束，清理任务会自动开始，并尝试清理元数据表信息。根据清理任务的执行状态，恢复任务将显示以下新状态：
+    - `PruneScheduled`：清理任务已调度，但尚未开始运行
+    - `PruneRunning`：清理任务正在运行中
+    - `PruneComplete`：清理任务已成功完成
+    - `PruneFailed`：清理任务执行失败
+
 ## CompactBackup CR 字段介绍
 
 对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
@@ -354,6 +362,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
 * `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 * `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
+* `.spec.prune`：仅在 BR v9.0.0 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息，具体介绍参考 [Prune 字段介绍](#prune-字段介绍)。
 
 ## BackupSchedule CR 字段介绍
 

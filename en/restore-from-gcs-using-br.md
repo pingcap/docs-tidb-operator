@@ -83,6 +83,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
       namespace: restore-test
     spec:
       # backupType: full
+      # prune: afterFailed
       br:
         cluster: demo2
         clusterNamespace: test2
@@ -108,6 +109,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
     - Some parameters in `.spec.br` are optional, such as `logLevel`, `statusAddr`, `concurrency`, `rateLimit`, `checksum`, `timeAgo`, and `sendCredToTikv`. For more information about BR configuration, refer to [BR fields](backup-restore-cr.md#br-fields).
     - For v4.0.8 or a later version, BR can automatically adjust `tikv_gc_life_time`. You do not need to configure `spec.to` fields in the `Restore` CR.
     - For more information about the `Restore` CR fields, refer to [Restore CR fields](backup-restore-cr.md#restore-cr-fields).
+    - For TiDB v9.0.0 and later versions, the `Restore` CR supports a new field `.spec.prune`, which can be set to `afterFailed` to clean up residual metadata tables after a failed restore. Enabling this field changes the behavior and status of the `Restore` CR when it enters the `Failed` state. This feature is not supported in versions earlier than v9.0.0. For more details about the `.spec.prune` field, see [Prune field](backup-restore-cr.md#prune-field).
 
 2. After creating the `Restore` CR, execute the following command to check the restore status:
 
@@ -121,6 +123,17 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
     NAME                STATUS     ...
     demo2-restore-gcs   Complete   ...
      ```
+
+    If you set `.spec.prune` to `afterFailed`, you might see the following restore status:
+
+    ```shell
+    kubectl get restore -n restore-test -o wide
+    ```
+
+    ```shell
+    NAME               STATUS     ...
+    demo3-restore-s3   PruneComplete   ...
+    ```
 
 ## Point-in-time recovery
 
@@ -187,6 +200,7 @@ The detailed steps are as follows:
       namespace: restore-test
     spec:
       restoreMode: pitr
+      # prune: afterFailed
       br:
         cluster: demo3
         clusterNamespace: test3
@@ -228,6 +242,17 @@ The detailed steps are as follows:
     ```
     NAME                STATUS     ...
     demo3-restore-gcs   Complete   ...
+    ```
+
+    If you set `.spec.prune` to `afterFailed`, you might see the following restore status:
+
+    ```shell
+    kubectl get restore -n restore-test -o wide
+    ```
+
+    ```shell
+    NAME               STATUS     ...
+    demo3-restore-s3   PruneComplete   ...
     ```
 
 ## Troubleshooting
