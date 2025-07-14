@@ -34,7 +34,7 @@ spec:
     version: v2.27.1
   initializer:
     baseImage: pingcap/tidb-monitor-initializer
-    version: v8.5.0
+    version: {{{ .tidb_version }}}
   reloader:
     baseImage: pingcap/tidb-monitor-reloader
     version: v1.0.1
