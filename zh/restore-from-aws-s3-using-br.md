@@ -183,7 +183,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
 - `.spec.br` 中的一些参数为可选项，如 `logLevel`、`statusAddr`、`concurrency`、`rateLimit`、`checksum`、`timeAgo`、`sendCredToTikv`。更多 `.spec.br` 字段的详细解释，请参考 [BR 字段介绍](backup-restore-cr.md#br-字段介绍)。
 - 如果你使用的 TiDB 为 v4.0.8 及以上版本，BR 会自动调整 `tikv_gc_life_time` 参数，不需要在 Restore CR 中配置 `spec.to` 字段。
 - 更多 `Restore` CR 字段的详细解释，请参考 [Restore CR 字段介绍](backup-restore-cr.md#restore-cr-字段介绍)。
-- 对于 V9.0.0 以上的集群，`Restore` CR 支持一个新的字段 `prune:afterFailed` 用于清理失败的恢复遗留的元数据表等信息，它会改变 `Restore` CR 在 `failed` 状态下的行为和状态。在 V9.0.0之前的版本，你不需要这个功能。详细解释参考[prune 字段介绍](backup-restore-cr.md#prune-字段介绍)
+- 对于 TiDB v9.0.0 及以上版本的 TiDB 集群，`Restore` CR 支持新的字段 `.spc.prune`，并可设置为 `afterFailed`，用于在恢复失败后清理遗留的元数据表等信息。启用该字段会影响 `Restore` CR 在 `Failed` 状态下的行为和状态。v9.0.0 之前的版本不支持此功能。更多 `.spec.prune` 字段的详细解释，请参考 [Prune 字段介绍](backup-restore-cr.md#prune-字段介绍)
 
 创建好 `Restore` CR 后，可通过以下命令查看恢复的状态：
 
@@ -198,7 +198,7 @@ NAME               STATUS     ...
 demo2-restore-s3   Complete   ...
 ```
 
-如果你设置了 `prune:afterFailed` 可能会看到这样的状态：
+如果你将 `.spec.prune` 设置为 `afterFailed`，可能会看到如下状态：
 
 ```shell
 kubectl get restore -n restore-test -o wide
@@ -317,7 +317,7 @@ demo3-restore-s3   PruneComplete   ...
     demo3-restore-s3   Complete   ...
     ```
 
-    如果你设置了 `prune:afterFailed` 可能会看到这样的状态：
+    如果你将 `.spec.prune` 设置为 `afterFailed`，可能会看到如下状态：
 
     ```shell
     kubectl get restore -n restore-test -o wide

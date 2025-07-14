@@ -260,11 +260,11 @@ This section introduces the fields in the `Backup` CR.
 
 ### Prune field
 
-* `.spec.prune`: Currently only supports in br V9.0.0 and later. You could fill in `afterFailed`, which can clean up the corresponding metadata table information after the recovery task fails. The Prune field will modify the `failed` status of the recovery task. If the recovery task ends in the `Failed` status, the cleanup task will automatically start and try to clean up the metadata table information. Depending on the cleanup status, different new states will appear:
-    - `PruneScheduled`: The cleanup task has been scheduled but has not yet run.
-    - `PruneRunning`: The cleanup task is running
-    - `PruneComplete`: The cleanup task is completed
-    - `PruneFailed`: The cleanup task failed
+* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Enabling the `prune` field changes the final status behavior of the restore task. If the restore task ends in the `Failed` status, a cleanup task is automatically triggered to remove metadata table information. Based on the cleanup task status, the restore task displays one of the following statuses:
+    * `PruneScheduled`: the cleanup task is scheduled but has not started.
+    * `PruneRunning`: the cleanup task is running.
+    * `PruneComplete`: the cleanup task completed successfully.
+    * `PruneFailed`: the cleanup task failed.
 
 ## CompactBackup CR fields
 
@@ -380,7 +380,7 @@ This section introduces the fields in the `Restore` CR.
 * `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
 * `.spec.azblob`：Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
 * `.spec.local`: persistent volume-related configuration. Refer to [Local storage fields](#local-storage-fields).
-* `.spec.prune`: Currently only supports in br V9.0.0 and later. You could fill in `afterFailed`, which can clean up the corresponding metadata table information after the recovery task fails. Refer to [Prune field introduction](#prune-field).
+* `.spec.prune`: supported in BR v9.0.0 and later versions. Currently, this field only supports the value `afterFailed`, which enables automatic cleanup of metadata tables when a restore task fails. Refer to [Prune field](#prune-field).
 
 ## BackupSchedule CR fields
 
