@@ -196,8 +196,8 @@ helm search repo pingcap
 
 ```
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-pingcap/tidb-lightning  v1.6.1                          A Helm chart for TiDB Lightning
-pingcap/tidb-operator   v1.6.1          v1.6.1          tidb-operator Helm chart for Kubernetes
+pingcap/tidb-lightning  {{{ .tidb_operator_version }}}                          A Helm chart for TiDB Lightning
+pingcap/tidb-operator   {{{ .tidb_operator_version }}}          {{{ .tidb_operator_version }}}          tidb-operator Helm chart for Kubernetes
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
@@ -257,8 +257,8 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.6.1.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
+wget http://charts.pingcap.org/tidb-operator-{{{ .tidb_operator_version }}}.tgz
+wget http://charts.pingcap.org/tidb-lightning-{{{ .tidb_operator_version }}}.tgz
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：
@@ -266,7 +266,7 @@ wget http://charts.pingcap.org/tidb-lightning-v1.6.1.tgz
 {{< copyable "shell-regular" >}}
 
 ```shell
-tar zxvf tidb-operator.v1.6.1.tgz
+tar zxvf tidb-operator.{{{ .tidb_operator_version }}}.tgz
 helm install ${release_name} ./tidb-operator --namespace=${namespace}
 ```
 
