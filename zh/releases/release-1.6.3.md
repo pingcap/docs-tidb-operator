@@ -16,3 +16,4 @@ TiDB Operator 版本：1.6.3
 ## Bug 修复
 
 - 修复当 TiProxy Pods 不健康时，TidbCluster CR 被错误地标记为 `Ready` 的问题 ([#6151](https://github.com/pingcap/tidb-operator/pull/6151), [@ideascf](https://github.com/ideascf))
+- 修复 Operator 在线升级时会因为已经存在的 Backup Schedule 中的 Log Backup 而崩溃的问题 ([#6300](https://github.com/pingcap/tidb-operator/pull/6300), [@RidRisR](https://github.com/RidRisR))
