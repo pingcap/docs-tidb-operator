@@ -11,4 +11,4 @@ TiDB Operator 版本：1.6.3
 
 ## Bug 修复
 
-- 修复 Operator 在线升级后会因为已经存在的 Backup Schedule 中的 Log Backup 而崩溃的问题 ([#6300](https://github.com/pingcap/tidb-operator/pull/6300), [@RidRisR](https://github.com/RidRisR))
+- 修复在线升级 TiDB Operator 后，由于 backup schedule 中已经存在日志备份任务，导致 TiDB Operator 崩溃的问题 ([#6300](https://github.com/pingcap/tidb-operator/pull/6300), [@RidRisR](https://github.com/RidRisR))
