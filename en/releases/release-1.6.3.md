@@ -17,4 +17,4 @@ TiDB Operator version: 1.6.3
 ## Bug fixes
 
 - Fix the issue that the TidbCluster CR is incorrectly marked as `Ready` when some Tiproxy Pods are unhealthy ([#6151](https://github.com/pingcap/tidb-operator/pull/6151), [@ideascf](https://github.com/ideascf))
-
+- Fix the issue that after upgrade the operator would panic for a running backup schedule that enables log backup. ([#6300](https://github.com/pingcap/tidb-operator/pull/6300), [@RidRisR](https://github.com/RidRisR))
