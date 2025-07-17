@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator 1.6.3 Release Notes
-summary: Learn about new features, improvements, and bug fixes in TiDB Operator 1.6.3.
+summary: Learn about bug fixes in TiDB Operator 1.6.3.
 ---
 
 # TiDB Operator 1.6.3 Release Notes
