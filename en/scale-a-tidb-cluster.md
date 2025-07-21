@@ -15,6 +15,12 @@ Horizontally scaling TiDB means that you scale TiDB out or in by adding or remov
 
 - To scale in a TiDB cluster, **decrease** the value of `replicas` of a certain component. The scaling in operations remove Pods based on the Pod ID in descending order, until the number of Pods equals the value of `replicas`.
 
+> **Note:**
+>
+> - When you scale in PD, TiKV, or TiFlash components, if the `reclaimPolicy` of the corresponding PV is set to `Retain`, the associated PVC and PV data will be retained after scaling in.
+>     - The retained PVC and PV are no longer managed by the cluster, and the corresponding nodes have been removed from the cluster. Therefore, these data cannot be directly added back to the cluster by simply scaling out again.
+>     - If you plan to scale out after scaling in, it is recommended to refer to [Delete data](destroy-a-tidb-cluster.md#delete-data) to manually clean up the retained PVC and PV data before scaling out, which avoids scaling-out failures.
+
 ### Horizontally scale PD, TiKV, TiDB, and TiProxy
 
 To scale PD, TiKV, TiDB, or TiProxy horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, `spec.tidb.replicas`, and `spec.tiproxy.replicas` in the `TidbCluster` object of the cluster to desired values.
