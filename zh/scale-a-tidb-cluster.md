@@ -15,6 +15,12 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
+> **注意：**
+>
+> - 在缩容 PD、TiKV 和 TiFlash 组件时，如果对应 PV 的 `reclaimPolicy` 为 `Retain`，缩容完成后相关的 PVC 和 PV 的数据会被保留下来。
+>     - 保留下来的 PVC 和 PV 已不再受集群管理，节点本身也已从集群中移除。因此，这些数据不能通过简单的再次扩容操作直接重新加入到集群。
+>     - 如果你计划在缩容后再进行扩容操作，建议在扩容前参考[清除数据](destroy-a-tidb-cluster.md#清除数据)手动清理缩容后残留的 PVC 和 PV 数据，以避免扩容失败。
+
 ### 水平扩缩容 PD、TiKV、TiDB、TiProxy
 
 如果要对 PD、TiKV、TiDB、TiProxy 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tikv.replicas`、`spec.tidb.replicas`、`spec.tiproxy.replicas` 至期望值。
