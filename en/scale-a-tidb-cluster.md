@@ -17,9 +17,9 @@ Horizontally scaling TiDB means that you scale TiDB out or in by adding or remov
 
 > **Note:**
 >
-> - When you scale in PD, TiKV, or TiFlash components, if the `reclaimPolicy` of the corresponding PV is set to `Retain`, the associated PVC and PV data will be retained after scaling in.
->     - The retained PVC and PV are no longer managed by the cluster, and the corresponding nodes have been removed from the cluster. Therefore, these data cannot be directly added back to the cluster by simply scaling out again.
->     - If you plan to scale out after scaling in, it is recommended to refer to [Delete data](destroy-a-tidb-cluster.md#delete-data) to manually clean up the retained PVC and PV data before scaling out, which avoids scaling-out failures.
+> When you scale in PD, TiKV, or TiFlash components, if the `reclaimPolicy` of the corresponding PV is set to `Retain`, the associated PVC and PV data will be retained after scaling in.
+> - The retained PVC and PV are no longer managed by the cluster, and the corresponding nodes have been removed from the cluster. Therefore, these data cannot be directly added back to the cluster by simply scaling out again.
+> - If you plan to scale out after scaling in, it is recommended to refer to [Delete data](destroy-a-tidb-cluster.md#delete-data) to manually clean up the retained PVC and PV data before scaling out, which avoids scaling-out failures.
 
 ### Horizontally scale PD, TiKV, TiDB, and TiProxy
 
