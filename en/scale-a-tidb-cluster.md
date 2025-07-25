@@ -16,6 +16,13 @@ Horizontally scaling TiDB means that you scale TiDB out or in by adding or remov
 
 - To scale in a TiDB cluster, **decrease** the value of `replicas` of a certain component. The scaling in operations remove Pods based on the Pod ID in descending order, until the number of Pods equals the value of `replicas`.
 
+> **Note:**
+>
+> When you scale in PD, TiKV, or TiFlash components, if the `reclaimPolicy` of the corresponding PV is set to `Retain`, the associated PVC and PV data will be retained after scaling in.
+>
+> - The retained PVC and PV are no longer managed by the cluster, and the corresponding nodes have been removed from the cluster. Therefore, these data cannot be directly added back to the cluster by simply scaling out again.
+> - If you plan to scale out after scaling in, it is recommended to manually delete the PVCs and PVs of the corresponding scaled-in components before scaling out, which avoids scaling-out failures.
+
 ### Horizontally scale PD, TiKV, TiDB, and TiProxy
 
 To scale PD, TiKV, TiDB, or TiProxy horizontally, use kubectl to modify `spec.pd.replicas`, `spec.tikv.replicas`, `spec.tidb.replicas`, and `spec.tiproxy.replicas` in the `TidbCluster` object of the cluster to desired values.
@@ -157,7 +164,6 @@ When the number of Pods for all components reaches the preset value and all comp
 > - When the number of `UP` stores is equal to or less than the parameter value of `MaxReplicas` in the PD configuration, the TiKV components can not be scaled in.
 > - The TiKV component does not support scale out while a scale-in operation is in progress. Forcing a scale-out operation might cause anomalies in the cluster. If an anomaly already happens, refer to [TiKV Store is in Tombstone status abnormally](exceptions.md#tikv-store-is-in-tombstone-status-abnormally) to fix it.
 > - The TiFlash component has the same scale-in logic as TiKV.
-> - When the PD, TiKV, and TiFlash components scale in, the PVC of the deleted node is retained during the scaling in process. Because the PV's reclaim policy is changed to `Retain`, the data can still be retrieved even if the PVC is deleted.
 
 ## Vertical scaling
 

@@ -15,6 +15,13 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 * 如果要进行扩容操作，可将某个组件的 `replicas` 值**调大**。扩容操作会按照 Pod 编号由小到大增加组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 * 如果要进行缩容操作，可将某个组件的 `replicas` 值**调小**。缩容操作会按照 Pod 编号由大到小删除组件 Pod，直到 Pod 数量与 `replicas` 值相等。
 
+> **注意：**
+>
+> 在缩容 PD、TiKV 或 TiFlash 组件时，如果对应 PV 的 `reclaimPolicy` 设置为 `Retain`，缩容完成后相关 PVC 和 PV 的数据会被保留下来。
+>
+> - 保留下来的 PVC 和 PV 已不再受集群管理，节点本身也已从集群中移除。因此，这些数据不能通过简单的再次扩容操作直接重新加入到集群。
+> - 如果你计划在缩容后再进行扩容操作，建议在扩容前手动删除已经缩容掉的组件对应的 PVC 和 PV，以避免扩容失败。
+
 ### 水平扩缩容 PD、TiKV、TiDB、TiProxy
 
 如果要对 PD、TiKV、TiDB、TiProxy 进行水平扩缩容，可以使用 kubectl 修改集群所对应的 `TidbCluster` 对象中的 `spec.pd.replicas`、`spec.tikv.replicas`、`spec.tidb.replicas`、`spec.tiproxy.replicas` 至期望值。
@@ -148,7 +155,6 @@ watch kubectl -n ${namespace} get pod -o wide
 > - 当 TiKV UP 状态的 store 数量 <= PD 配置中 `MaxReplicas` 的参数值时，无法缩容 TiKV 组件。
 > - TiKV 组件不支持在缩容过程中进行扩容操作，强制执行此操作可能导致集群状态异常。假如异常已经发生，可以参考 [TiKV Store 异常进入 Tombstone 状态](exceptions.md#tikv-store-异常进入-tombstone-状态) 进行解决。
 > - TiFlash 组件缩容处理逻辑和 TiKV 组件相同。
-> - PD、TiKV、TiFlash 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。
 
 ## 垂直扩缩容
 
