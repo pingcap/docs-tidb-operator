@@ -46,7 +46,7 @@ summary: 了解如何在 Kubernetes 上手动对 TiDB 集群进行水平和垂�
 >
 > - TiKV 组件在缩容过程中，TiDB Operator 会调用 PD 接口将对应 TiKV 标记为下线，然后将其上数据迁移到其它 TiKV 节点，在数据迁移期间 TiKV Pod 依然是 `Running` 状态，数据迁移完成后对应 Pod 才会被删除，缩容时间与待缩容的 TiKV 上的数据量有关，可以通过 `kubectl get -n ${namespace} tikv` 查看 TiKV 是否处于下线 `Removing` 状态。
 > - 当 `Serving` 状态的 TiKV 数量小于或等于 PD 配置中 `MaxReplicas` 的参数值时，无法缩容 TiKV 组件。
-> - TiKV 组件不支持在缩容过程中进行扩容操作，强制执行此操作可能导致集群状态异常。假如异常已经发生，可以参考 [TiKV Store 异常进入 Tombstone 状态](exceptions.md#tikv-store-异常进入-tombstone-状态)进行解决。
+> - TiKV 组件不支持在缩容过程中进行扩容操作，强制执行此操作可能导致集群状态异常。
 > - TiFlash 组件缩容处理逻辑和 TiKV 组件相同。
 
 ## 垂直扩缩容
