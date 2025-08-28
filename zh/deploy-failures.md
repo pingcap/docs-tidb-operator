@@ -29,7 +29,7 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 
 此时，可以通过 `kubectl describe pod` 命令查看 Pending 的具体原因：
 
-```
+```shell
 kubectl describe po -n ${namespace} ${pod_name}
 ```
 
@@ -43,7 +43,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 1. 通过以下命令获取集群中可用的 StorageClass：
 
-    ```
+    ```shell
     kubectl get storageclass
     ```
 
@@ -51,11 +51,11 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 3. 使用下述方式更新配置文件：
 
-   * 如果是运行 backup/restore 的备份/恢复任务，首先需要运行 `kubectl delete bk ${backup_name} -n ${namespace}` 删掉老的备份/恢复任务，再运行 `kubectl apply -f backup.yaml` 重新创建新的备份/恢复任务。
+    如果是运行 backup/restore 的备份/恢复任务，首先需要运行 `kubectl delete bk ${backup_name} -n ${namespace}` 删掉老的备份/恢复任务，再运行 `kubectl apply -f backup.yaml` 重新创建新的备份/恢复任务。
 
-4. 将对应的 PVC 也都删除。
+4. 删除对应的 PVC：
 
-    ```
+    ```shell
     kubectl delete pvc -n ${namespace} ${pvc_name}
     ```
 
@@ -79,7 +79,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 kubectl -n ${namespace} logs -p ${pod_name}
 ```
 
-确认日志中的错误信息后，可以根据 [tidb-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#tidb-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)，[tikv-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#tikv-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)，[pd-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster#pd-server-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99)中的指引信息进行进一步排查解决。
+确认日志中的错误信息后，可以根据 [tidb-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster/#tidb-server-启动报错 )、[tikv-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster/#tikv-server-启动报错)、[pd-server 启动报错](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-tidb-cluster/#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
 ### ulimit 不足
 

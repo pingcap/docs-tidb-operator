@@ -51,9 +51,9 @@ If the `StorageClass` of the PVC cannot be found, take the following steps:
 
 3. Update the configuration file:
 
-    * If you want to run a backup/restore task, first execute `kubectl delete bk ${backup_name} -n ${namespace}` to delete the old backup/restore task, and then execute `kubectl apply -f backup.yaml` to create a new backup/restore task.
+    If you want to run a backup/restore task, first execute `kubectl delete bk ${backup_name} -n ${namespace}` to delete the old backup/restore task, and then execute `kubectl apply -f backup.yaml` to create a new backup/restore task.
 
-4. Delete the corresponding PVCs.
+4. Delete the corresponding PVCs:
 
     ```shell
     kubectl delete pvc -n ${namespace} ${pvc_name}
