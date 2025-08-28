@@ -16,7 +16,7 @@ Load balancers often set the idle connection timeout. If no data is sent via a c
 
 In Linux, the keepalive probe packet is sent every 7,200 seconds by default. To shorten the interval, configure `sysctls` via the `podSecurityContext` field.
 
-- If `--allowed-unsafe-sysctls=net.*` can be configured for [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) in the Kubernetes cluster, configure TiDBGroup by [overlay](overlay.md):
+- If `--allowed-unsafe-sysctls=net.*` can be configured for [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) in the Kubernetes cluster, configure TiDBGroup using the [Overlay](overlay.md) feature in the following way:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -33,7 +33,7 @@ In Linux, the keepalive probe packet is sent every 7,200 seconds by default. To 
                       value: "300"
     ```
 
-- If `--allowed-unsafe-sysctls=net.*` cannot be configured for [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) in the Kubernetes cluster, configure TiDBGroup by [overlay](overlay.md):
+- If `--allowed-unsafe-sysctls=net.*` cannot be configured for [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) in the Kubernetes cluster, configure TiDBGroup using the [Overlay](overlay.md) feature in the following way:
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1

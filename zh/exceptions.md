@@ -13,7 +13,7 @@ summary: 介绍 TiDB 集群运行过程中常见异常以及处理办法。
 
 默认情况下，Linux 发送 keepalive 探测包的等待时间为 7200 秒。若需减少该时间，可通过 `podSecurityContext` 字段配置 `sysctls`。
 
-- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) 允许配置 `--allowed-unsafe-sysctls=net.*`，请通过 [overlay](overlay.md) 的方式给 TiDBGroup 配置：
+- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/zh-cn/docs/reference/command-line-tools-reference/kubelet/) 允许配置 `--allowed-unsafe-sysctls=net.*`，请使用 [Overlay](overlay.md) 功能按如下方式配置 TiDBGroup：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
@@ -30,7 +30,7 @@ summary: 介绍 TiDB 集群运行过程中常见异常以及处理办法。
                       value: "300"
     ```
 
-- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) 不允许配置 `--allowed-unsafe-sysctls=net.*`，请通过 [overlay](overlay.md) 的方式给 TiDBGroup 配置：
+- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/zh-cn/docs/reference/command-line-tools-reference/kubelet/) 不允许配置 `--allowed-unsafe-sysctls=net.*`，请使用 [Overlay](overlay.md) 功能按如下方式配置 TiDBGroup：
 
     ```yaml
     apiVersion: core.pingcap.com/v1alpha1
