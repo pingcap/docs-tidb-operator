@@ -61,7 +61,7 @@ If the `StorageClass` of the PVC cannot be found, take the following steps:
 
 ### Insufficient available PVs
 
-If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly.
+If a `StorageClass` exists in the cluster but the available PVs are insufficient, you need to add PV resources correspondingly.
 
 ## The Pod is in the `CrashLoopBackOff` state
 
@@ -81,9 +81,9 @@ kubectl -n ${namespace} logs -p ${pod_name}
 
 After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-tidb-server), [Cannot start `tikv-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-tikv-server), and [Cannot start `pd-server`](https://docs.pingcap.com/tidb/stable/troubleshoot-tidb-cluster#cannot-start-pd-server) for further troubleshooting.
 
-### `ulimit` is not big enough
+### `ulimit` is not large enough
 
-TiKV might fail to start when `ulimit` is not big enough. In this case, you can modify the `/etc/security/limits.conf` file of the Kubernetes node to increase the `ulimit`:
+TiKV might fail to start when `ulimit` is not large enough. In this case, you can modify the `/etc/security/limits.conf` file of the Kubernetes node to increase the `ulimit`:
 
 ```
 root soft nofile 1000000
