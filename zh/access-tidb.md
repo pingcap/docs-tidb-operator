@@ -25,10 +25,6 @@ basic-tidb   NodePort   10.233.6.240   <none>        4000:32498/TCP,10080:30171/
 
 上述示例描述了 `default` namespace 下 `basic-tidb` 服务的信息，类型为 `NodePort`，ClusterIP 为 `10.233.6.240`，ServicePort 为 `4000` 和 `10080`，对应的 NodePort 分别为 `32498` 和 `30171`。
 
-> **注意：**
->
-> [MySQL 8.0 默认认证插件](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)从 `mysql_native_password` 更新为 `caching_sha2_password`，因此如果使用 MySQL 8.0 客户端访问 TiDB 服务（TiDB 版本 < v4.0.7），并且用户账户有配置密码，需要显示指定 `--default-auth=mysql_native_password` 参数。
-
 ## ClusterIP
 
 `ClusterIP` 是通过集群的内部 IP 暴露服务，选择该类型的服务时，只能在集群内部访问，可以通过如下方式访问：
