@@ -1616,7 +1616,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} -- sh
     ```
 
     使用 `pd-ctl`：
@@ -1635,7 +1635,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} -- sh
     ```
 
     使用 `tikv-ctl`：

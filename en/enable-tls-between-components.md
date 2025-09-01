@@ -1630,7 +1630,7 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} -- sh
     ```
 
     Use `pd-ctl`:
@@ -1649,7 +1649,7 @@ In this step, you need to perform the following operations:
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} -- sh
     ```
 
     Use `tikv-ctl`:
