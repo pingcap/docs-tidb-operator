@@ -49,9 +49,9 @@ When a cluster is created, a default account `root` is created with no password.
 
 Make sure to do these before creating the cluster:
 
-  - Create the secret.
-  - Match the `passwordSecret` in the `TidbInitializer` with the secret name that you used for the root password.
-  - Apply `${cluster_name}/tidb-initializer.yaml` to the cluster.
+- Create the secret.
+- Match the `passwordSecret` in the `TidbInitializer` with the secret name that you used for the root password.
+- Apply `${cluster_name}/tidb-initializer.yaml` to the cluster.
 
 ## Set a host that has access to TiDB
 
