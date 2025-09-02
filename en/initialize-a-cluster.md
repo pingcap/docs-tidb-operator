@@ -15,13 +15,11 @@ This document describes how to initialize a TiDB cluster on Kubernetes (K8s), sp
 
 ## Configure TidbInitializer
 
-Refer to [TidbInitializer configuration example](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/manifests/initializer/tidb-initializer.yaml>), [API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>), and the following steps to complete TidbInitializer Custom Resource (CR), and save it to the `${cluster_name}/tidb-initializer.yaml` file. When referring to the TidbInitializer configuration example and API documentation, you need to switch the branch to the TiDB Operator version currently in use.
+Refer to [TidbInitializer configuration example](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/manifests/initializer/tidb-initializer.yaml>), [API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md#tidbinitializer>), and the following steps to complete TidbInitializer Custom Resource (CR), and save it to the `${cluster_name}/tidb-initializer.yaml` file. When referring to the TidbInitializer configuration example and API documentation, you need to switch the branch to the TiDB Operator version currently in use.
 
 ### Set the cluster namespace and name
 
 In the `${cluster_name}/tidb-initializer.yaml` file, modify the `spec.cluster.namespace` and `spec.cluster.name` fields:
-
-{{< copyable "shell-regular" >}}
 
 ```yaml
 # ...
@@ -38,21 +36,23 @@ When a cluster is created, a default account `root` is created with no password.
 
 - Create a [`secret`](https://kubernetes.io/docs/concepts/configuration/secret/) to specify the password for `root`:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl create secret generic tidb-secret --from-literal=root=${root_password} --namespace=${namespace}
     ```
 
 - If you want to create more than one user, add the desired username and the password in the above command. For example:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     kubectl create secret generic tidb-secret --from-literal=root=${root_password} --from-literal=developer=${developer_password} --namespace=${namespace}
     ```
 
     This command creates `root` and `developer` users with their passwords, which are saved in the `tidb-secret` object. By default, the regular `developer` user is only granted with the `USAGE` privilege. You can set other privileges in the `initSql` configuration item.
+
+Make sure to do these before creating the cluster:
+
+  - Create the secret.
+  - Match the `passwordSecret` in the `TidbInitializer` with the secret name that you used for the root password.
+  - Apply `${cluster_name}/tidb-initializer.yaml` to the cluster.
 
 ## Set a host that has access to TiDB
 
@@ -63,8 +63,6 @@ To set a host that has access to TiDB, modify the `permitHost: ${mysql_client_ho
 The cluster can also automatically execute the SQL statements in batch in `initSql` during the initialization. This function can be used to create some databases or tables for the cluster and perform user privilege management operations.
 
 For example, the following configuration automatically creates a database named `app` after the cluster creation, and grants the `developer` account full management privileges on `app`:
-
-{{< copyable "" >}}
 
 ```yaml
 spec:
@@ -80,8 +78,6 @@ initSql: |-
 
 ## Initialize the cluster
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl apply -f ${cluster_name}/tidb-initializer.yaml --namespace=${namespace}
 ```
@@ -94,15 +90,11 @@ If the server does not have an external network, you need to download the Docker
 
 The following Docker images are used to initialize a TiDB cluster:
 
-{{< copyable "" >}}
-
 ```
 tnir/mysqlclient:latest
 ```
 
 Next, download all these images with the following command:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 docker pull tnir/mysqlclient:latest
@@ -110,8 +102,6 @@ docker save -o mysqlclient-latest.tar tnir/mysqlclient:latest
 ```
 
 Next, upload these Docker images to the server, and execute `docker load` to install these Docker images on the server:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 docker load -i mysqlclient-latest.tar
