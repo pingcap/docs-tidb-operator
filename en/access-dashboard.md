@@ -49,7 +49,7 @@ In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashb
 
 ```shell
 export SERVICE_NAME=${cluster_name}-discovery && \
-export PORT=10261 && \
+export PORT=10262 && \
 export HTTP_PATH=/dashboard
 ```
 
