@@ -45,6 +45,8 @@
     - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+- Troubleshoot
+  - [Deployment Failures](deploy-failures.md)
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)
