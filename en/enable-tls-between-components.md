@@ -706,7 +706,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
 1. Install `cert-manager`.
 
-    Refer to [cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html) for details.
+    Refer to [cert-manager installation on Kubernetes](https://cert-manager.io/docs/installation/) for details.
 
 2. Create an Issuer to issue certificates to the TiDB cluster.
 
