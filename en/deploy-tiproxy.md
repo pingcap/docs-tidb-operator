@@ -32,6 +32,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
       tiproxy:
         baseImage: pingcap/tiproxy
         replicas: 3
+        version: v1.3.2
     ```
 
 3. Configure the related parameters in `spec.tiproxy.config` of the TidbCluster CR. For example:
