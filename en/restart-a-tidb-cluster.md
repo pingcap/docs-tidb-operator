@@ -6,7 +6,7 @@ aliases: ['/docs/tidb-in-kubernetes/dev/restart-a-tidb-cluster/']
 
 # Restart a TiDB Cluster on Kubernetes
 
-If you find that the memory leak occurs in a Pod during use, you need to restart the cluster. This document describes how to perform a graceful rolling restart to all Pods in a TiDB component and how to perform a graceful restart to a single TiKV Pod.
+This document describes how to perform a graceful rolling restart to all Pods in a TiDB component and how to perform a graceful restart to a single TiKV Pod.
 
 > **Warning:**
 >
