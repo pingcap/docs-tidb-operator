@@ -1617,7 +1617,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-pd-0 -n ${namespace} -- sh
     ```
 
     使用 `pd-ctl`：
@@ -1636,7 +1636,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} sh
+    kubectl exec -it ${cluster_name}-tikv-0 -n ${namespace} -- sh
     ```
 
     使用 `tikv-ctl`：

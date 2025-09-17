@@ -548,7 +548,7 @@ Get into the DM-master Pod:
 {{< copyable "shell-regular" >}}
 
 ``` shell
-kubectl exec -it ${cluster_name}-dm-master-0 -n ${namespace} sh
+kubectl exec -it ${cluster_name}-dm-master-0 -n ${namespace} -- sh
 ```
 
 Use `dmctl`:
