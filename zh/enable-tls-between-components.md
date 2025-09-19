@@ -1733,3 +1733,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 5. 如果之前进行了 PD 节点缩容，请将其扩容为原有数量。
 
 6. 等待 TiDB 集群中的所有 Pod 完成重启。
+
+## 证书重新加载
+
+如果通过 `cfssl` 的方式创建证书，你将需要手动更新 `Secret`。
+
+如果通过 `cert-manager` 的方式创建证书，`cert-manager` 将在重新颁发证书的时候自动更新 `Secret`。
+
+TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。所以在 `Secret` 更新后，证书将会自动更新。
