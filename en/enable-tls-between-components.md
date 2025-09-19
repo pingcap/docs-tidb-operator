@@ -1746,3 +1746,11 @@ This section describes how to enable TLS encrypted communication for an existing
 5. If you previously scaled down the PD nodes, scale them back up to the original number.
 
 6. Wait for all Pods in the TiDB cluster to restart.
+
+## Reload certificates
+
+If you used `cfssl` to generate the cert and key files manually, you'll need to update the `Secret` manually.
+
+If you used `cert-manager` to generate the cert and key files, it'll update the `Secret` automatically if any issuance happened.
+
+TiDB, PD, TiKV, TiFlash, TiCDC, TiProxy, and all kinds of clients reread the current certificates and key files each time a new connection is created, without restarting the TiDB cluster. Once the `Secret` is updated, the certs and keys will be reloaded automatically.
