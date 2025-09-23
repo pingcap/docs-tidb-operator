@@ -14,13 +14,11 @@ summary: 介绍如何初始化配置 Kubernetes 上的 TiDB 集群。
 
 ## 配置 TidbInitializer
 
-请参考 TidbInitializer [示例](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/manifests/initializer/tidb-initializer.yaml>)和 [API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）以及下面的步骤，完成 TidbInitializer CR，保存到文件 `${cluster_name}/tidb-initializer.yaml`。
+请参考 TidbInitializer [示例](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/manifests/initializer/tidb-initializer.yaml>)和 [API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md#tidbinitializer>)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）以及下面的步骤，完成 TidbInitializer CR，保存到文件 `${cluster_name}/tidb-initializer.yaml`。
 
 ### 设置集群的命名空间和名称
 
 在 `${cluster_name}/tidb-initializer.yaml` 文件中，修改 `spec.cluster.namespace` 和 `spec.cluster.name` 字段:
-
-{{< copyable "shell-regular" >}}
 
 ```yaml
 # ...
@@ -37,15 +35,11 @@ spec:
 
 通过下面命令创建 [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) 指定 root 账号密码：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 kubectl create secret generic tidb-secret --from-literal=root=${root_password} --namespace=${namespace}
 ```
 
 如果希望能自动创建其它用户，可以在上面命令里面再加上其他用户的 username 和 password，例如：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl create secret generic tidb-secret --from-literal=root=${root_password} --from-literal=developer=${developer_password} --namespace=${namespace}
@@ -55,6 +49,12 @@ kubectl create secret generic tidb-secret --from-literal=root=${root_password} -
 
 在 `${cluster_name}/tidb-initializer.yaml` 中设置 `passwordSecret: tidb-secret`。
 
+在创建集群之前，请确保完成以下操作：
+
+- 创建 Secret。
+- 在 `TidbInitializer` 中将 `passwordSecret` 设置为你为 `root` 密码创建的 Secret 名称。
+- 将 `${cluster_name}/tidb-initializer.yaml` 应用到集群中。
+
 ## 设置允许访问 TiDB 的主机
 
 在 `${cluster_name}/tidb-initializer.yaml` 中设置 `permitHost: ${mysql_client_host_name}` 配置项来设置允许访问 TiDB 的主机 **host_name**。如果不设置，则允许所有主机访问。详情请参考 [MySQL GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
@@ -62,8 +62,6 @@ kubectl create secret generic tidb-secret --from-literal=root=${root_password} -
 ## 批量执行初始化 SQL 语句
 
 集群在初始化过程还可以自动执行 `initSql` 中的 SQL 语句用于初始化，该功能可以用于默认给集群创建一些 database 或者 table，并且执行一些用户权限管理类的操作。例如如下设置会在集群创建完成后自动创建名为 `app` 的 database，并且赋予 `developer` 账号对 `app` 的所有管理权限：
-
-{{< copyable "" >}}
 
 ```yaml
 spec:
@@ -78,8 +76,6 @@ initSql: |-
 > 目前没有对 initSql 做校验，尽管也可以在 initSql 里面创建账户和设置密码，但这种方式会将密码以明文形式存到 initializer Job 对象上，不建议这么做。
 
 ## 执行初始化
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl apply -f ${cluster_name}/tidb-initializer.yaml --namespace=${namespace}
@@ -97,16 +93,12 @@ tnir/mysqlclient:latest
 
 接下来通过下面的命令将所有这些镜像下载下来：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 docker pull tnir/mysqlclient:latest
 docker save -o mysqlclient-latest.tar tnir/mysqlclient:latest
 ```
 
 接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 docker load -i mysqlclient-latest.tar
