@@ -143,6 +143,7 @@ To deploy a TiDB cluster, perform the following steps:
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     ```shell
@@ -315,10 +316,6 @@ kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 If port `14000` is already in use, you can use a different available port. The command runs in the background and forwards output to the file `pf14000.out`, so you can continue to run commands in the current shell session.
 
 ### Connect to the TiDB service
-
-> **Note:**
->
-> To connect to TiDB (version < v4.0.7) using a MySQL 8.0 client, if the user account has a password, you must explicitly specify `--default-auth=mysql_native_password`. This is because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
 
 ```shell
 mysql --comments -h 127.0.0.1 -P 14000 -u root

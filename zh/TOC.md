@@ -45,6 +45,9 @@
     - [挂起和恢复 TiDB 集群](suspend-tidb-cluster.md)
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
+- 故障诊断
+  - [部署错误](deploy-failures.md)
+  - [集群异常](exceptions.md)
 - [常见问题](faq.md)
 - 参考
   - 架构
