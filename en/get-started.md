@@ -143,6 +143,7 @@ To deploy a TiDB cluster, perform the following steps:
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     ```shell
