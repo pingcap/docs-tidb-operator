@@ -143,6 +143,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     ```shell
