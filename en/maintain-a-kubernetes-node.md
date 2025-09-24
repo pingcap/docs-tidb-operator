@@ -1,17 +1,17 @@
 ---
-title: Maintain Kubernetes Nodes that Hold the TiDB Cluster
+title: Maintain Kubernetes Nodes That Hold the TiDB Cluster
 summary: Learn how to maintain Kubernetes nodes that hold the TiDB cluster.
 ---
 
-# Maintain Kubernetes Nodes that Hold the TiDB Cluster
+# Maintain Kubernetes Nodes That Hold the TiDB Cluster
 
-TiDB is a highly available database that can run smoothly when some of the database nodes go offline. For this reason, you can safely shut down and maintain the Kubernetes nodes at the bottom layer without influencing TiDB's service.
+TiDB is a highly available database that can run smoothly when some of the database nodes go offline. For this reason, you can safely shut down and maintain the Kubernetes nodes that host TiDB clusters.
 
-This document describes in detail how to perform maintenance operations on Kubernetes nodes. Different operation strategies are provided based on maintenance duration and storage type.
+This document describes how to perform maintenance operations on Kubernetes nodes based on maintenance duration and storage type.
 
 ## Prerequisites
 
-- [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/).
 
 > **Note:**
 >
@@ -21,13 +21,13 @@ This document describes in detail how to perform maintenance operations on Kuber
 
 ### Step 1: Preparation
 
-1. Use the `kubectl cordon` command to mark the node to be maintained as unschedulable to prevent new Pods from being scheduled to the node:
+1. Use the `kubectl cordon` command to mark the node to be maintained as unschedulable to prevent new Pods from being scheduled to this node:
 
     ```shell
     kubectl cordon ${node_name}
     ```
 
-2. Check if there are TiDB cluster component Pods on the node to be maintained:
+2. Check whether any TiDB cluster component Pods are running on the node to be maintained:
 
     ```shell
     kubectl get pod --all-namespaces -o wide -l pingcap.com/managed-by=tidb-operator | grep ${node_name}
@@ -35,19 +35,22 @@ This document describes in detail how to perform maintenance operations on Kuber
 
 ### Step 2: Migrate TiDB cluster component Pods
 
-Choose the appropriate Pod migration strategy based on your storage type:
+Based on the storage type of the Kubernetes node, choose the corresponding Pod migration strategy:
 
-#### Option A: Reschedule Pods (for automatically migratable storage)
+- **Automatically migratable storage**: use [Method 1: Reschedule Pods](#method-1-reschedule-pods-for-automatically-migratable-storage).
+- **Non-automatically migratable storage**: use [Method 2: Recreate instances](#method-2-recreate-instances-for-local-storage).
 
-If the node storage can be automatically migrated (such as [Amazon EBS](https://aws.amazon.com/ebs/)), you can refer to [Gracefully restart a single Pod of a component](restart-a-tidb-cluster.md) to reschedule component Pods. Using the PD component as an example:
+#### Method 1: Reschedule Pods (for automatically migratable storage)
 
-1. Check the PD Pods on the node to be maintained:
+If you use storage that supports automatic migration (such as [Amazon EBS](https://aws.amazon.com/ebs/)), you can reschedule component Pods by following [Perform a graceful restart of a single Pod in a component](restart-a-tidb-cluster.md#perform-a-graceful-restart-of-a-single-pod-in-a-component). The following example uses the PD component:
+
+1. Check the PD Pod on the node to be maintained:
 
     ```shell
     kubectl get pod --all-namespaces -o wide -l pingcap.com/component=pd | grep ${node_name}
     ```
 
-2. Check the instance name corresponding to the PD Pod:
+2. Get the instance name of the PD Pod:
 
     ```shell
     kubectl get pod -n ${namespace} ${pod_name} -o jsonpath='{.metadata.labels.pingcap\.com/instance}'
@@ -59,41 +62,41 @@ If the node storage can be automatically migrated (such as [Amazon EBS](https://
     kubectl label pd -n ${namespace} ${pd_instance_name} pingcap.com/restartedAt=2025-06-30T12:00
     ```
 
-4. Confirm that the PD Pod has been successfully scheduled to other nodes:
+4. Confirm that the PD Pod is successfully scheduled to another node:
 
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-5. Repeat the above steps for other components (TiKV, TiDB, etc.) until all TiDB cluster component Pods on the maintenance node have been migrated.
+5. Follow the same steps to migrate Pods of other components such as TiKV and TiDB until all TiDB cluster component Pods on the node are migrated.
 
-#### Option B: Recreate instances (for local storage)
+#### Method 2: Recreate instances (for local storage)
 
-If the node storage cannot be automatically migrated (such as local storage), you need to recreate instances:
+If the node uses storage that cannot be automatically migrated (such as local storage), you need to recreate instances.
 
 > **Warning:**
 >
-> Recreating instances will cause data loss. For stateful components like TiKV, ensure that the cluster has sufficient replicas to guarantee data safety.
+> Recreating instances causes data loss. For stateful components such as TiKV, ensure that the cluster has sufficient replicas to guarantee data safety.
 
-Using recreating a TiKV instance as an example:
+The following example recreates a TiKV instance:
 
-1. Delete the TiKV instance CR. TiDB Operator will delete its associated PVC, ConfigMap, and other resources, and automatically create a new instance:
+1. Delete the CR of the TiKV instance. TiDB Operator automatically deletes the associated PVC and ConfigMap resources, and creates a new instance:
 
     ```shell
     kubectl delete -n ${namespace} tikv ${tikv_instance_name}
     ```
 
-2. Wait for the newly created TiKV instance status to become ready:
+2. Wait for the status of the newly created TiKV instance to become `Ready`:
 
     ```shell
     kubectl get -n ${namespace} tikv ${tikv_instance_name}
     ```
 
-3. After confirming that the TiDB cluster status is normal and data synchronization is complete, you can continue to maintain other components.
+3. After you confirm that the TiDB cluster status is normal and data synchronization is completed, continue to maintain other components.
 
 ### Step 3: Confirm migration completion
 
-At this point, there should only be Pods managed by DaemonSets (such as network plugins, monitoring agents, etc.):
+After you complete Pod migration, only the Pods managed by DaemonSet (such as network plugins and monitoring agents) should be running on the node:
 
 ```shell
 kubectl get pod --all-namespaces -o wide | grep ${node_name}
@@ -101,32 +104,32 @@ kubectl get pod --all-namespaces -o wide | grep ${node_name}
 
 ### Step 4: Perform node maintenance
 
-At this point, you can safely perform node maintenance operations (such as restart, system update, hardware maintenance, etc.).
+You can now safely perform maintenance operations on the node, such as restarting, updating the operating system, or performing hardware maintenance.
 
-### Step 5: Post-maintenance recovery (only for temporary maintenance)
+### Step 5: Recover after maintenance (for temporary maintenance only)
 
-If it is temporary maintenance, you need to restore the node after maintenance is completed:
+If you perform long-term maintenance or permanently take the node offline, skip this step.
 
-1. Confirm the node health status:
+For temporary maintenance, perform the following recovery operations after the node maintenance is completed:
+
+1. Check the node health status:
 
     ```shell
     watch kubectl get node ${node_name}
     ```
 
-    After observing that the node enters the `Ready` state, proceed to the next step.
+    When the node status becomes `Ready`, continue to the next step.
 
-2. Use the `kubectl uncordon` command to remove the node's scheduling restrictions:
+2. Use the `kubectl uncordon` command to remove the scheduling restriction on the node:
 
     ```shell
     kubectl uncordon ${node_name}
     ```
 
-3. Observe whether all Pods have returned to normal operation:
+3. Check whether all Pods are running normally:
 
     ```shell
     kubectl get pod --all-namespaces -o wide | grep ${node_name}
     ```
 
-    After the Pods return to normal operation, the maintenance operation is complete.
-
-If it is long-term maintenance or permanent node removal, this step is not required.
+    When all Pods are running normally, the maintenance operation is completed.

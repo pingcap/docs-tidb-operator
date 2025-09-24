@@ -40,18 +40,18 @@ spec:
 kubectl -n ${namespace} delete pod ${pod_name} --grace-period=60
 ```
 
-对于其他组件的 Pod，可以通过给 Pod 对应的实例（Instance CR）添加 label 或 annotation 的方式来优雅重启。以 PD 为例：
+对于其他组件的 Pod，可以通过给 Pod 对应的实例 (Instance CR) 添加标签或注解的方式实现优雅重启。以 PD 为例：
 
-1. 首先，通过 Pod 查询到对应的 PD Instance CR：
+1. 根据 Pod 查询对应的 PD Instance CR：
 
     ```shell
     kubectl get pod -n ${namespace} ${pod_name} -o jsonpath='{.metadata.labels.pingcap\.com/instance}'
     ```
 
-2. 给该 PD 实例打上一个新 label，例如：
+2. 给该 PD 实例添加新标签以触发重启，例如：
 
     ```shell
     kubectl label pd -n ${namespace} ${pd_instance_name} pingcap.com/restartedAt=2025-06-30T12:00
     ```
 
-3. 若该 PD 是 Leader，TiDB Operator 会将 Leader 迁移给其他 PD 后再重启该 PD Pod。
+3. 如果该 PD 为 Leader，TiDB Operator 会先将 Leader 迁移到其他 PD，再重启该 Pod。
