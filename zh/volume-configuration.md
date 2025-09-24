@@ -93,7 +93,7 @@ TiDB 组件支持的挂载类型：
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
-kind: TidbGroup
+kind: TiDBGroup
 metadata:
   name: tidb
 spec:
