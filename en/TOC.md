@@ -46,6 +46,9 @@
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
     - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
+- Troubleshoot
+  - [Deployment Failures](deploy-failures.md)
+  - [Cluster Exceptions](exceptions.md)
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)

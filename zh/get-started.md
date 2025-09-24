@@ -143,6 +143,7 @@ tidb-operator-6c98b57cc8-ldbnr   1/1     Running   0          2m22s
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     ```shell
@@ -315,10 +316,6 @@ kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 如果端口 `14000` 已经被占用，可以更换一个空闲端口。命令会在后台运行，并将输出转发到文件 `pf14000.out`。所以，你可以继续在当前 shell 会话中执行命令。
 
 ### 连接 TiDB 服务
-
-> **注意：**
->
-> 当使用 MySQL Client 8.0 访问 TiDB 服务（TiDB 版本 < v4.0.7）时，如果用户账户有配置密码，必须显式指定 `--default-auth=mysql_native_password` 参数，因为 `mysql_native_password` [不再是默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
 
 ```shell
 mysql --comments -h 127.0.0.1 -P 14000 -u root

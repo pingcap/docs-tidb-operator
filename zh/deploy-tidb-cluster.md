@@ -211,6 +211,7 @@ spec:
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     创建 `Cluster`：
