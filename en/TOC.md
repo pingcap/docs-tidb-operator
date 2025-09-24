@@ -48,6 +48,7 @@
 - Troubleshoot
   - [Deployment Failures](deploy-failures.md)
   - [Cluster Exceptions](exceptions.md)
+- [FAQs](faq.md)
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)
