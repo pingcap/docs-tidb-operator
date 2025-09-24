@@ -1733,10 +1733,9 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
 6. 等待 TiDB 集群中的所有 Pod 完成重启。
 
-## 证书重新加载
+## 重新加载证书
 
-如果通过 `cfssl` 的方式创建证书，你将需要手动更新 `Secret`。
+- 如果你使用 `cfssl` 手动生成证书和密钥文件，则必须手动更新相应的 `Secret`。
+- 如果你使用 `cert-manager` 生成证书和密钥文件，那么每次颁发新证书时，`Secret` 会自动更新 。
 
-如果通过 `cert-manager` 的方式创建证书，`cert-manager` 将在重新颁发证书的时候自动更新 `Secret`。
-
-TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。所以在 `Secret` 更新后，证书将会自动更新。
+TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 以及客户端组件会在每次建立新连接时自动重新加载当前的证书和密钥文件，因此无需重启 TiDB 集群。一旦 `Secret` 更新，证书和密钥会自动生效。
