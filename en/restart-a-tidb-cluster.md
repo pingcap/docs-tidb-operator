@@ -40,8 +40,18 @@ For a TiKV Pod, specify the `--grace-period` option when deleting the Pod to pro
 kubectl -n ${namespace} delete pod ${pod_name} --grace-period=60
 ```
 
-For other component Pods, you can delete them directly, because TiDB Operator will automatically handle a graceful restart:
+For Pods of other components, you can perform a graceful restart by adding a label or annotation to its corresponding Instance CR. The following uses the PD component as an example:
 
-```shell
-kubectl -n ${namespace} delete pod ${pod_name}
-```
+1. Query the PD Instance CR from the Pod:
+
+    ```shell
+    kubectl get pod -n ${namespace} ${pod_name} -o jsonpath='{.metadata.labels.pingcap\.com/instance}'
+    ```
+
+2. Add a new label to the PD instance to trigger a restart. For example:
+
+    ```shell
+    kubectl label pd -n ${namespace} ${pd_instance_name} pingcap.com/restartedAt=2025-06-30T12:00
+    ```
+
+3. If this PD instance is the leader, TiDB Operator first transfers the leader role to another PD instance and then restarts the Pod.
