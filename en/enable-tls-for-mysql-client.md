@@ -31,7 +31,7 @@ To enable TLS for the MySQL client, perform the following steps:
     >
     > For an existing cluster, if you change `.spec.tidb.tlsClient.enabled` from `false` to `true`, the TiDB Pods will be rolling restarted.
 
-3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-an-encrypted-connection).
+3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-a-tls-connection).
 
 If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
