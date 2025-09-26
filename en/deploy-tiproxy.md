@@ -82,6 +82,54 @@ After TiProxy is started, you can find the corresponding `tiproxy-sql` load bala
 kubectl get svc -n ${namespace}
 ```
 
+## Access TiProxy
+
+TiProxy exposes a `NodePort` type service. This service exposes two ports, one called `tiproxy-api` for API access and the other called `tiproxy-sql` for the MySQL protocol.
+
+To get the ports for these services:
+
+```shell
+$ kubectl -n tidb-cluster get service basic-tiproxy 
+NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
+```
+
+To only get the port for the `tiproxy-sql` port of the service:
+
+```shell
+$ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+{
+  "name": "tiproxy-sql",
+  "nodePort": 31539,
+  "port": 6000,
+  "protocol": "TCP",
+  "targetPort": 6000
+}
+```
+
+With this information you can connect with MySQL Client by running the following command: 
+
+```shell
+mysql -h <clusterIP> -P <nodePort>
+```
+
+If you are using minikube, then you need an extra step to get the right IP and port:
+
+```shell
+$ minikube service basic-tiproxy -n tidb-cluster
+┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
+│  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
+├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
+│ tidb-cluster │ basic-tiproxy │ tiproxy-api/3080 │ http://192.168.49.2:31006 │
+│              │               │ tiproxy-sql/6000 │ http://192.168.49.2:31539 │
+└──────────────┴───────────────┴──────────────────┴───────────────────────────┘
+[tidb-cluster basic-tiproxy tiproxy-api/3080
+tiproxy-sql/6000 http://192.168.49.2:31006
+http://192.168.49.2:31539]
+```
+
+In the preceding output, look for the line with `tiproxy-sql/6000` and use the hostname and port number from the URL line.
+
 ## Remove TiProxy
 
 If your TiDB cluster no longer needs TiProxy, follow these steps to remove it.
@@ -121,47 +169,3 @@ If your TiDB cluster no longer needs TiProxy, follow these steps to remove it.
         ```
 
         If the output is empty, the TiProxy StatefulSet has been successfully deleted.
-
-## Access TiProxy
-
-TiProxy exposes a `NodePort` type service. This service exposes two ports, one called `tiproxy-api` for API access and the other called `tiproxy-sql` for the MySQL protocol.
-
-To get the ports for these services:
-
-```
-$ kubectl -n tidb-cluster get service basic-tiproxy 
-NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
-```
-
-To only get the port for the `tiproxy-sql` port of the service:
-
-```
-$ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
-{
-  "name": "tiproxy-sql",
-  "nodePort": 31539,
-  "port": 6000,
-  "protocol": "TCP",
-  "targetPort": 6000
-}
-```
-
-With this information you can connect with MySQL Client by running the following command: `mysql -h <clusterIP> -P <nodePort>`.
-
-If you are using minikube, then you need an extra step to get the right IP and port:
-
-```
-$ minikube service basic-tiproxy -n tidb-cluster
-┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
-│  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
-├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
-│ tidb-cluster │ basic-tiproxy │ tiproxy-api/3080 │ http://192.168.49.2:31006 │
-│              │               │ tiproxy-sql/6000 │ http://192.168.49.2:31539 │
-└──────────────┴───────────────┴──────────────────┴───────────────────────────┘
-[tidb-cluster basic-tiproxy tiproxy-api/3080
-tiproxy-sql/6000 http://192.168.49.2:31006
-http://192.168.49.2:31539]
-```
-
-In the preceding output, look for the line with `tiproxy-sql/6000` and use the hostname and port number from the URL line.
