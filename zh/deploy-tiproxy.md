@@ -82,6 +82,53 @@ TiProxy 启动后，可通过以下命令找到对应的 `tiproxy-sql` 负载均
 kubectl get svc -n ${namespace}
 ```
 
+## 访问 TiProxy
+
+TiProxy 通过 `NodePort` 类型的 Service 对外暴露服务。该 Service 会暴露两个端口：一个名为 `tiproxy-api`，用于 API 访问；另一个名为 `tiproxy-sql`，用于 MySQL 协议访问。
+
+要获取这些服务的端口信息，执行以下操作：
+
+```shell
+$ kubectl -n tidb-cluster get service basic-tiproxy 
+NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
+```
+
+To only get the port for the `tiproxy-sql` port of the service:
+
+```shell
+$ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+{
+  "name": "tiproxy-sql",
+  "nodePort": 31539,
+  "port": 6000,
+  "protocol": "TCP",
+  "targetPort": 6000
+}
+```
+有了上述信息，你可以通过以下命令使用 MySQL 客户端进行连接：
+
+```shell
+mysql -h <clusterIP> -P <nodePort>
+```
+
+If you are using minikube, then you need an extra step to get the right IP and port:
+
+```shell
+$ minikube service basic-tiproxy -n tidb-cluster
+┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
+│  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
+├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
+│ tidb-cluster │ basic-tiproxy │ tiproxy-api/3080 │ http://192.168.49.2:31006 │
+│              │               │ tiproxy-sql/6000 │ http://192.168.49.2:31539 │
+└──────────────┴───────────────┴──────────────────┴───────────────────────────┘
+[tidb-cluster basic-tiproxy tiproxy-api/3080
+tiproxy-sql/6000 http://192.168.49.2:31006
+http://192.168.49.2:31539]
+```
+
+在上述输出中，找到包含 `tiproxy-sql/6000` 的行，并使用 URL 行中的主机名和端口号。
+
 ## 移除 TiProxy
 
 如果你的 TiDB 集群不再需要 TiProxy，执行以下操作移除。
