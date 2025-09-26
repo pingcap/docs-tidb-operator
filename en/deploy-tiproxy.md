@@ -122,9 +122,9 @@ If your TiDB cluster no longer needs TiProxy, follow these steps to remove it.
 
         If the output is empty, the TiProxy StatefulSet has been successfully deleted.
 
-## Accessing TiProxy
+## Access TiProxy
 
-TiProxy exposes a `NodePort` type service. This service exposes two ports, one called `tiproxy-api` for API access and one called `tiproxy-sql` for the MySQL Protocol.
+TiProxy exposes a `NodePort` type service. This service exposes two ports, one called `tiproxy-api` for API access and the other called `tiproxy-sql` for the MySQL protocol.
 
 To get the ports for these services:
 
@@ -147,7 +147,7 @@ $ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|
 }
 ```
 
-With this information you can connect with MySQL Client like `mysql -h <clusterIP> -P <nodePort>`.
+With this information you can connect with MySQL Client by running the following command: `mysql -h <clusterIP> -P <nodePort>`.
 
 If you are using minikube, then you need an extra step to get the right IP and port:
 
@@ -164,4 +164,4 @@ tiproxy-sql/6000 http://192.168.49.2:31006
 http://192.168.49.2:31539]
 ```
 
-In the above output look for the line with `tiproxy-sql/6000` and use the hostname and port number from the URL line.
+In the preceding output, look for the line with `tiproxy-sql/6000` and use the hostname and port number from the URL line.
