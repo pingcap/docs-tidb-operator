@@ -129,7 +129,12 @@ mysql -h <clusterIP> -P <nodePort>
 If you use [minikube](https://minikube.sigs.k8s.io/docs/start/), run the following command to get the correct IP address and port:
 
 ```shell
-$ minikube service basic-tiproxy -n tidb-cluster
+minikube service basic-tiproxy -n tidb-cluster
+```
+
+The output is as follows:
+
+```
 ┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
 │  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
 ├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
