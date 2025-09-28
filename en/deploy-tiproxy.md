@@ -141,7 +141,7 @@ tiproxy-sql/6000 http://192.168.49.2:31006
 http://192.168.49.2:31539]
 ```
 
-In the preceding output, look for the line with `tiproxy-sql/6000` and use the hostname and port number from the URL line.
+From the output, find the row with `tiproxy-sql/6000` and use the hostname and port number in the `URL` column to connect.
 
 ## Remove TiProxy
 
