@@ -102,7 +102,7 @@ NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)               
 basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
 ```
 
-To only get the port for the `tiproxy-sql` port of the service:
+To show details for the `tiproxy-sql` endpoint only, append a `jq` filter to the command:
 
 ```shell
 $ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
