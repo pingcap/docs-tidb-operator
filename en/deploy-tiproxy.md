@@ -126,7 +126,7 @@ Use this information to connect to TiProxy with a MySQL client:
 mysql -h <clusterIP> -P <nodePort>
 ```
 
-If you are using minikube, then you need an extra step to get the right IP and port:
+If you use [minikube](https://minikube.sigs.k8s.io/docs/start/), run the following command to get the correct IP address and port:
 
 ```shell
 $ minikube service basic-tiproxy -n tidb-cluster
