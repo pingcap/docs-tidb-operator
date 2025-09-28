@@ -89,7 +89,7 @@ TiProxy exposes a `NodePort` type service, which provides two endpoints:
 - `tiproxy-api`: for API access.
 - `tiproxy-sql`: for the MySQL protocol access.
 
-To get the ports for these services:
+To get the service ports, run the following command:
 
 ```shell
 $ kubectl -n tidb-cluster get service basic-tiproxy 
