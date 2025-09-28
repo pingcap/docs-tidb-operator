@@ -84,20 +84,33 @@ kubectl get svc -n ${namespace}
 
 ## 访问 TiProxy
 
-TiProxy 通过 `NodePort` 类型的 Service 对外暴露服务。该 Service 会暴露两个端口：一个名为 `tiproxy-api`，用于 API 访问；另一个名为 `tiproxy-sql`，用于 MySQL 协议访问。
+TiProxy 对外暴露了一个 `NodePort` 类型的服务，该服务提供两个端口：
 
-要获取这些服务的端口信息，执行以下操作：
+- `tiproxy-api`：用于 API 访问。
+- `tiproxy-sql`：用于 MySQL 协议访问。
+
+要获取这些服务的端口信息，运行以下命令：
 
 ```shell
-$ kubectl -n tidb-cluster get service basic-tiproxy 
+kubectl -n tidb-cluster get service basic-tiproxy
+```
+
+输出示例如下：
+
+```
 NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
 basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
 ```
 
-To only get the port for the `tiproxy-sql` port of the service:
+如需仅显示 `tiproxy-sql` 端点的详细信息，在命令中添加 `jq`：
 
 ```shell
-$ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+```
+
+输出示例如下：
+
+```json
 {
   "name": "tiproxy-sql",
   "nodePort": 31539,
@@ -106,16 +119,22 @@ $ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|
   "targetPort": 6000
 }
 ```
-有了上述信息，你可以通过以下命令使用 MySQL 客户端进行连接：
+
+使用以上信息，你可以通过 MySQL 客户端连接 TiProxy：
 
 ```shell
 mysql -h <clusterIP> -P <nodePort>
 ```
 
-If you are using minikube, then you need an extra step to get the right IP and port:
+如果你使用 [minikube](https://minikube.sigs.k8s.io/docs/start/)，运行以下命令获取正确的 IP 地址和端口：
 
 ```shell
-$ minikube service basic-tiproxy -n tidb-cluster
+minikube service basic-tiproxy -n tidb-cluster
+```
+
+输出示例如下：
+
+```
 ┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
 │  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
 ├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
@@ -127,7 +146,7 @@ tiproxy-sql/6000 http://192.168.49.2:31006
 http://192.168.49.2:31539]
 ```
 
-在上述输出中，找到包含 `tiproxy-sql/6000` 的行，并使用 URL 行中的主机名和端口号。
+在上述输出中，找到包含 `tiproxy-sql/6000` 的行，并使用 `URL` 列中的主机名和端口号进行连接。
 
 ## 移除 TiProxy
 
