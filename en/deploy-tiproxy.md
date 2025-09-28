@@ -84,7 +84,10 @@ kubectl get svc -n ${namespace}
 
 ## Access TiProxy
 
-TiProxy exposes a `NodePort` type service. This service exposes two ports, one called `tiproxy-api` for API access and the other called `tiproxy-sql` for the MySQL protocol.
+TiProxy exposes a `NodePort` type service, which provides two endpoints:
+
+- `tiproxy-api`: for API access.
+- `tiproxy-sql`: for the MySQL protocol access.
 
 To get the ports for these services:
 
