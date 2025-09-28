@@ -120,7 +120,7 @@ The output is as follows:
 }
 ```
 
-With this information you can connect with MySQL Client by running the following command: 
+Use this information to connect to TiProxy with a MySQL client:
 
 ```shell
 mysql -h <clusterIP> -P <nodePort>
