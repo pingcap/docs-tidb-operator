@@ -105,7 +105,12 @@ basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31
 To show details for the `tiproxy-sql` endpoint only, append a `jq` filter to the command:
 
 ```shell
-$ kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+```
+
+The output is as follows:
+
+```json
 {
   "name": "tiproxy-sql",
   "nodePort": 31539,
