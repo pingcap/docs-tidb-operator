@@ -92,7 +92,12 @@ TiProxy exposes a `NodePort` type service, which provides two endpoints:
 To get the service ports, run the following command:
 
 ```shell
-$ kubectl -n tidb-cluster get service basic-tiproxy 
+kubectl -n tidb-cluster get service basic-tiproxy
+```
+
+The output is as follows:
+
+```
 NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
 basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
 ```
