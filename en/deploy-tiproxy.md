@@ -71,6 +71,7 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
               - name: sessioncert
                 mountPath: /var/session
             config: |
+              [security]
               session-token-signing-cert = "/var/session/tls.crt"
               session-token-signing-key = "/var/session/tls.key"
         ```
