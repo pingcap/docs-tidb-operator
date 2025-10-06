@@ -5,7 +5,7 @@ summary: Learn how to deploy TiProxy for an existing TiDB cluster on Kubernetes.
 
 # Deploy TiProxy Load Balancer for an Existing TiDB Cluster
 
-This topic describes how to deploy or remove the TiDB load balancer [TiProxy](https://docs.pingcap.com/tidb/v7.6/tiproxy-overview) for an existing TiDB cluster on Kubernetes. TiProxy is placed between the client and TiDB server to provide load balancing, connection persistence, and service discovery for TiDB.
+This topic describes how to deploy or remove the TiDB load balancer [TiProxy](https://docs.pingcap.com/tidb/stable/tiproxy-overview) for an existing TiDB cluster on Kubernetes. TiProxy is placed between the client and TiDB server to provide load balancing, connection persistence, and service discovery for TiDB.
 
 > **Note:**
 >
@@ -44,11 +44,11 @@ If you need to deploy TiProxy for an existing TiDB cluster, follow these steps:
           level = "info"
     ```
 
-    For more information about TiProxy configuration, see [TiProxy Configuration](https://docs.pingcap.com/tidb/v7.6/tiproxy-configuration).
+    For more information about TiProxy configuration, see [TiProxy Configuration](https://docs.pingcap.com/tidb/stable/tiproxy-configuration).
 
 4. Configure the related parameters in `spec.tidb` of the TidbCluster CR. For example:
 
-    + It is recommended to configure `graceful-wait-before-shutdown` to a value greater than the maximum duration of the transactions in your application. This is used together with TiProxy's connection migration feature. For more information, see [TiProxy Limitations](https://docs.pingcap.com/tidb/v7.6/tiproxy-overview#limitations).
+    + It is recommended to configure `graceful-wait-before-shutdown` to a value greater than the maximum duration of the transactions in your application. This is used together with TiProxy's connection migration feature. For more information, see [TiProxy Limitations](https://docs.pingcap.com/tidb/stable/tiproxy-overview#limitations).
 
         ```yaml
           spec:
