@@ -1737,6 +1737,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 ## 重新加载证书
 
 - 如果你使用 `cfssl` 手动生成证书和密钥文件，则必须手动更新相应的 `Secret`。
-- 如果你使用 `cert-manager` 生成证书和密钥文件，那么每次颁发新证书时，`Secret` 会自动更新 。
+- 如果你使用 `cert-manager` 生成证书和密钥文件，那么每次颁发新证书时，`Secret` 会自动更新。
 
 TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 以及客户端组件会在每次建立新连接时自动重新加载当前的证书和密钥文件，因此无需重启 TiDB 集群。一旦 `Secret` 更新，证书和密钥会自动生效。
