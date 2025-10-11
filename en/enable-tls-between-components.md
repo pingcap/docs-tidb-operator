@@ -1749,7 +1749,7 @@ This section describes how to enable TLS encrypted communication for an existing
 
 ## Reload certificates
 
-- If you generate the certificate and key files manually using `cfssl`, you must update the corresponding `Secret` manually. 
+- If you generate the certificate and key files manually using `cfssl`, you must update the corresponding `Secret` manually.
 - If you generate the certificate and key files using `cert-manager`, the `Secret` is updated automatically whenever a new certificate is issued.
 
 TiDB, PD, TiKV, TiFlash, TiCDC, TiProxy, and client components automatically reload the current certificates and key files on every new connection. This means the TiDB cluster does not need to be restarted. Once the `Secret` is updated, the certs and keys are reloaded automatically.
