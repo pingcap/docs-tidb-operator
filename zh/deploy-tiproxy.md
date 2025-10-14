@@ -32,6 +32,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
       tiproxy:
         baseImage: pingcap/tiproxy
         replicas: 3
+        version: v1.3.2
     ```
 
 3. 配置 TidbCluster CR 中 `spec.tiproxy.config` 的相关参数。例如：
