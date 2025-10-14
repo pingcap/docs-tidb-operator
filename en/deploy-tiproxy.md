@@ -83,6 +83,72 @@ After TiProxy is started, you can find the corresponding `tiproxy-sql` load bala
 kubectl get svc -n ${namespace}
 ```
 
+## Access TiProxy
+
+TiProxy exposes a `NodePort` type service, which provides two endpoints:
+
+- `tiproxy-api`: for API access.
+- `tiproxy-sql`: for the MySQL protocol access.
+
+To get the service ports, run the following command:
+
+```shell
+kubectl -n tidb-cluster get service basic-tiproxy
+```
+
+The output is as follows:
+
+```
+NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+basic-tiproxy   NodePort   10.101.114.216   <none>        3080:31006/TCP,6000:31539/TCP   3h19m
+```
+
+To show details for the `tiproxy-sql` endpoint only, append a `jq` filter to the command:
+
+```shell
+kubectl -n tidb-cluster get service basic-tiproxy -o json | jq '.spec.ports[]|select(.name == "tiproxy-sql")'
+```
+
+The output is as follows:
+
+```json
+{
+  "name": "tiproxy-sql",
+  "nodePort": 31539,
+  "port": 6000,
+  "protocol": "TCP",
+  "targetPort": 6000
+}
+```
+
+Use this information to connect to TiProxy with a MySQL client:
+
+```shell
+mysql -h <clusterIP> -P <nodePort>
+```
+
+If you use [minikube](https://minikube.sigs.k8s.io/docs/start/), run the following command to get the correct IP address and port:
+
+```shell
+minikube service basic-tiproxy -n tidb-cluster
+```
+
+The output is as follows:
+
+```
+┌──────────────┬───────────────┬──────────────────┬───────────────────────────┐
+│  NAMESPACE   │     NAME      │   TARGET PORT    │            URL            │
+├──────────────┼───────────────┼──────────────────┼───────────────────────────┤
+│ tidb-cluster │ basic-tiproxy │ tiproxy-api/3080 │ http://192.168.49.2:31006 │
+│              │               │ tiproxy-sql/6000 │ http://192.168.49.2:31539 │
+└──────────────┴───────────────┴──────────────────┴───────────────────────────┘
+[tidb-cluster basic-tiproxy tiproxy-api/3080
+tiproxy-sql/6000 http://192.168.49.2:31006
+http://192.168.49.2:31539]
+```
+
+From the output, find the row with `tiproxy-sql/6000` and use the hostname and port number in the `URL` column to connect.
+
 ## Remove TiProxy
 
 If your TiDB cluster no longer needs TiProxy, follow these steps to remove it.
