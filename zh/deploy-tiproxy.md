@@ -71,6 +71,7 @@ summary: 了解如何在 Kubernetes 上为已有 TiDB 集群部署负载均衡 T
               - name: sessioncert
                 mountPath: /var/session
             config: |
+              [security]
               session-token-signing-cert = "/var/session/tls.crt"
               session-token-signing-key = "/var/session/tls.key"
         ```
