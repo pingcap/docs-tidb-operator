@@ -74,7 +74,7 @@ Diag 命令行可以在任何可以连接到 TiDB 集群所在 k8s 的地方运�
 
         完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。
 
-    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
+    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](https://docs.pingcap.com/zh/tidb/stable/clinic-user-guide-for-tiup/#方式-2打包后上传)。
 
 3. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
 
