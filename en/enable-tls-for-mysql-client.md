@@ -21,6 +21,8 @@ To enable TLS for the MySQL client, perform the following steps:
     - [Using the `cfssl` system](#using-cfssl)
     - [Using the `cert-manager` system](#using-cert-manager)
 
+    If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
 2. [Deploy the cluster](#deploy-the-tidb-cluster), and set `.spec.tidb.tlsClient.enabled` to `true`.
 
     * To skip TLS authentication for internal components that serve as the MySQL client (such as TidbInitializer, Dashboard, Backup, and Restore), you can add the `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` annotation to the cluster's corresponding `TidbCluster`.
@@ -33,9 +35,7 @@ To enable TLS for the MySQL client, perform the following steps:
 
 3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-a-tls-connection).
 
-If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
-
-## Issue two sets of certificates for the TiDB cluster
+## Step 1: Issue two sets of certificates for the TiDB cluster
 
 This section describes how to issue certificates for the TiDB cluster using two methods: `cfssl` and `cert-manager`.
 
@@ -509,7 +509,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
     >
     > TiDB server's TLS is compatible with the MySQL protocol. When the certificate content is changed, the administrator needs to manually execute the SQL statement `alter instance reload tls` to refresh the content.
 
-## Deploy the TiDB cluster
+## Step 2: Deploy the TiDB cluster
 
 In this step, you create a TiDB cluster and perform the following operations:
 
@@ -637,7 +637,7 @@ In this step, you create a TiDB cluster and perform the following operations:
     kubectl apply -f restore.yaml
     ```
 
-## Configure the MySQL client to use a TLS connection
+## Step 3: Configure the MySQL client to use a TLS connection
 
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 

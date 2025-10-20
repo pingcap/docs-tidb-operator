@@ -8,13 +8,20 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群开启 MySQL 客户端 TLS。开启步骤为：
 
-1. 为 TiDB Server 颁发一套 Server 端证书，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${cluster_name}-tidb-server-secret` 和  `${cluster_name}-tidb-client-secret`，分别包含前面创建的两套证书；
+1. [为 TiDB Server 颁发一套 Server 端证书](#第一步为-tidb-集群颁发两套证书)，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${cluster_name}-tidb-server-secret` 和  `${cluster_name}-tidb-client-secret`，分别包含前面创建的两套证书；
 
     > **注意：**
     >
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
 
-2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`：
+    其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
+
+    - [使用 `cfssl` 系统颁发证书](#使用-cfssl-系统颁发证书)
+    - [使用 `cert-manager` 系统颁发证书](#使用-cert-manager-颁发证书)
+
+    当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+
+2. [部署集群](#第二步部署-tidb-集群)，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`：
 
     * 如需跳过作为 MySQL 客户端的内部组件（如 TidbInitializer、Dashboard、Backup、Restore）的 TLS 认证，你可以给集群对应的 `TidbCluster` 加上 `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` 的 annotation。
     * 如需关闭 TiDB 服务端对客户端 CA 证书的认证，你可以设置 `.spec.tidb.tlsClient.disableClientAuthn` 属性为 `true`，即在[配置 TiDB 服务端启用安全连接](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-tidb-服务端启用安全连接) 中不设置 ssl-ca 参数。
@@ -24,14 +31,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     >
     > 已部署的集群 `.spec.tidb.tlsClient.enabled` 属性从 `false` 改为 `true`，将导致 TiDB Pod 滚动重启。
 
-3. 配置 MySQL 客户端使用加密连接。
-
-其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
-
-- 使用 `cfssl` 系统颁发证书；
-- 使用 `cert-manager` 系统颁发证书；
-
-当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+3.[ 配置 MySQL 客户端使用加密连接](#第三步配置-mysql-客户端使用-tls-连接)。
 
 ## 第一步：为 TiDB 集群颁发两套证书
 
