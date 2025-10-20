@@ -1220,7 +1220,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `*.${cluster_name}-tiproxy-peer.${namespace}`
             - `*.${cluster_name}-tiproxy-peer.${namespace}.svc`
 
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:        
+        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
             - `127.0.0.1`
             - `::1`        
         - Add the Issuer created above in `issuerRef`.

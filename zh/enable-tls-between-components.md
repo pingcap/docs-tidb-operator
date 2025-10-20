@@ -1211,7 +1211,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             - `*.${cluster_name}-tiproxy-peer.${namespace}`
             - `*.${cluster_name}-tiproxy-peer.${namespace}.svc`
         
-        - 在 `ipAddresses` 中添加以下 2 个 IP，根据需要也可添加其它 IP：        
+        - 在 `ipAddresses` 中添加以下 2 个 IP，根据需要也可添加其它 IP：
             - `127.0.0.1`
             - `::1`        
         - 在 `issuerRef` 中填写上面创建的 Issuer。
