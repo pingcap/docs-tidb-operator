@@ -663,13 +663,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     kubectl apply -f restore.yaml
     ```
 
-## 第三步：配置 MySQL 客户端使用加密连接
+## 第三步：配置 MySQL 客户端使用 TLS 连接
 
 可以根据[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-mysql-client-使用安全连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
 
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
-
-{{< copyable "shell-regular" >}}
 
 ``` shell
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
@@ -677,10 +675,65 @@ kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpat
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
 ```
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
 mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
 最后请参考[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#检查当前连接是否是加密连接)来验证是否正确开启了 TLS。
+
+当不依赖客户端证书时，可以使用以下命令：
+
+``` shell
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+```
+
+``` shell
+mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-ca=client-ca.crt
+```
+
+## 故障排查
+
+X.509 证书存储在 Kubernetes Secret 中。可以使用类似下面的命令查看这些 Secret：
+
+```shell
+kubectl -n ${namespace} get secret
+```
+
+这些 Secret 会被挂载到容器内。可以通过查看 Pod 描述中的 Volumes 部分来确认挂载点：
+
+```shell
+kubectl -n ${namespace} describe pod ${podname}
+```
+
+要在容器内部检查这些挂载点，可以进入对应的 TiDB 容器：
+
+```shell
+kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
+```
+
+在容器内查看示例目录和符号链接：
+
+```shell
+sh-5.1# ls -l /var/lib/*tls
+/var/lib/tidb-server-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+
+/var/lib/tidb-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+```
+
+检查 TiDB 容器日志以确认 TLS 已启用，示例命令及输出如下：
+
+```shell
+kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb
+```
+
+```
+[2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
+```

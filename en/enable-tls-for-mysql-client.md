@@ -667,11 +667,11 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-ca=client-ca.crt
 
 ## Troubleshooting
 
-The X.509 certiicates are stored in Kubernetes secrets. To inspect these use `kubectl -n ${namespace} get secret` and similar commands.
+The X.509 certiicates are stored in Kubernetes secrets. To inspect them, use commands similar to `kubectl -n ${namespace} get secret`.
 
 These secrets are then mounted into the containers. Check the `Volumes:` in the output of `kubectl -n ${namespace} describe pod ${podname}`.
 
-And to check these secret mounts from inside the container:
+To check these secret mounts from inside the container, run the following command:
 
 ``` shell
 kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
@@ -692,7 +692,7 @@ lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
 lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
 ```
 
-And the output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` should show something like this:
+The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` is as follows:
 
 ```
 [2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
