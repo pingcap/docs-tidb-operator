@@ -684,3 +684,26 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 ```
 
 最后请参考[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#检查当前连接是否是加密连接)来验证是否正确开启了 TLS。
+
+## 重新加载证书
+
+- 如果使用 `cfssl` 手动生成证书和私钥文件，必须手动更新对应的 Secret。
+- 如果使用 `cert-manager` 生成证书，Secret 在颁发新证书时会自动更新。
+
+要让 TiDB 使用新的证书，需要运行 [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-instance#reload-tls)。
+
+可以执行下面语句查看状态变量 `Ssl_server_not_before` 和 `Ssl_server_not_after` 来检查证书的有效期。
+
+```sql
+SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
+```
+
+```
++-----------------------+--------------------------+
+| Variable_name         | Value                    |
++-----------------------+--------------------------+
+| Ssl_server_not_after  | Apr 23 07:59:47 2026 UTC |
+| Ssl_server_not_before | Jan 24 07:59:47 2025 UTC |
++-----------------------+--------------------------+
+2 rows in set (0.011 sec)
+```
