@@ -686,8 +686,10 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 
 ## 重新加载证书
 
-- 如果使用 `cfssl` 手动生成证书和私钥文件，必须手动更新对应的 Secret。
-- 如果使用 `cert-manager` 生成证书，Secret 在颁发新证书时会自动更新。
+重新加载证书的方式取决于证书的生成方式：
+
+- 如果使用 `cfssl` 手动生成证书和密钥文件，必须手动更新对应的 Secret。
+- 如果使用 `cert-manager` 生成证书和密钥文件，Secret 在颁发新证书时会自动更新。
 
 要让 TiDB 使用新的证书，需要运行 [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-instance#reload-tls)。
 
