@@ -1221,13 +1221,13 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             - `*.${cluster_name}-tiproxy-peer.${namespace}`
             - `*.${cluster_name}-tiproxy-peer.${namespace}.svc`
 
-        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:
+        - Add the following 2 IPs in `ipAddresses`. You can also add other IPs according to your needs:        
             - `127.0.0.1`
-            - `::1`
+            - `::1`        
         - Add the Issuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
-        After the object is created, `cert-manager` generates a `${cluster_name}-tiproxy-cluster-secret` Secret object to be used by the TiProxy component of the TiDB server.
+      After the object is created, `cert-manager` generates a `${cluster_name}-tiproxy-cluster-secret` Secret object to be used by the TiProxy component of the TiDB server.
 
     - TiFlash
 

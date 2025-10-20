@@ -1158,6 +1158,68 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-ticdc-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiCDC 组件使用。
 
+    - TiProxy 组件的 Server 端证书。
+
+        ``` yaml
+        apiVersion: cert-manager.io/v1
+        kind: Certificate
+        metadata:
+          name: ${cluster_name}-tiproxy-cluster-secret
+          namespace: ${namespace}
+        spec:
+          secretName: ${cluster_name}-tiproxy-cluster-secret
+          duration: 8760h # 365d
+          renewBefore: 360h # 15d
+          subject:
+            organizations:
+            - PingCAP
+          commonName: "TiDB"
+          usages:
+            - server auth
+            - client auth
+          dnsNames:
+          - "${cluster_name}-tiproxy"
+          - "${cluster_name}-tiproxy.${namespace}"
+          - "${cluster_name}-tiproxy.${namespace}.svc"
+          - "${cluster_name}-tiproxy-peer"
+          - "${cluster_name}-tiproxy-peer.${namespace}"
+          - "${cluster_name}-tiproxy-peer.${namespace}.svc"
+          - "*.${cluster_name}-tiproxy-peer"
+          - "*.${cluster_name}-tiproxy-peer.${namespace}"
+          - "*.${cluster_name}-tiproxy-peer.${namespace}.svc"
+          ipAddresses:
+          - 127.0.0.1
+          - ::1
+          issuerRef:
+            name: ${cluster_name}-tidb-issuer
+            kind: Issuer
+            group: cert-manager.io
+        ```
+
+        `${cluster_name}` 为集群名称。按如下方式配置：
+
+        - 将 `spec.secretName` 设置为 `${cluster_name}-tiproxy-cluster-secret`。
+        - 在 `usages` 中添加 `server auth` 和 `client auth`。
+        - 在 `dnsNames` 中添加以下 DNS，你也可以根据需要添加其它 DNS：
+
+            - `${cluster_name}-tiproxy`
+            - `${cluster_name}-tiproxy.${namespace}`
+            - `${cluster_name}-tiproxy.${namespace}.svc`
+            - `${cluster_name}-tiproxy-peer`
+            - `${cluster_name}-tiproxy-peer.${namespace}`
+            - `${cluster_name}-tiproxy-peer.${namespace}.svc`
+            - `*.${cluster_name}-tiproxy-peer`
+            - `*.${cluster_name}-tiproxy-peer.${namespace}`
+            - `*.${cluster_name}-tiproxy-peer.${namespace}.svc`
+        
+        - 在 `ipAddresses` 中添加以下 2 个 IP，根据需要也可添加其它 IP：        
+            - `127.0.0.1`
+            - `::1`        
+        - 在 `issuerRef` 中填写上面创建的 Issuer。
+        - 其他属性请参阅 cert-manager API（https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec）。
+
+      创建该对象后，`cert-manager` 会生成名为 `${cluster_name}-tiproxy-cluster-secret` 的 Secret，供 TiProxy 组件使用。
+
     - TiFlash 组件的 Server 端证书。
 
         ```yaml
