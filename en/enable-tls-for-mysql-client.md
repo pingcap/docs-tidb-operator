@@ -657,12 +657,14 @@ Finally, to verify whether TLS is successfully enabled, refer to [checking the c
 
 ## Reload certificates
 
+The certificate reload process depends on how you generate certificates:
+
 - If you generate the certificate and key files manually using `cfssl`, you must update the corresponding Secret manually.
 - If you generate the certificate and key files using `cert-manager`, the Secret is updated automatically whenever a new certificate is issued.
 
 To let TiDB use the new certificate, run [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-instance/#reload-tls).
 
-You can run the following SQL statement to check the `Ssl_server_not_before` and `Ssl_server_not_after` status variables to check the validity period on the certicates.
+To verify the certificate validity period, run the following SQL statement to check the `Ssl_server_not_before` and `Ssl_server_not_after` status variables:
 
 ```sql
 SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
