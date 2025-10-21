@@ -1196,11 +1196,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
             group: cert-manager.io
         ```
 
-        `${cluster_name}` 为集群名称。按如下方式配置：
+        其中 `${cluster_name}` 为集群的名字：
 
-        - 将 `spec.secretName` 设置为 `${cluster_name}-tiproxy-cluster-secret`。
-        - 在 `usages` 中添加 `server auth` 和 `client auth`。
-        - 在 `dnsNames` 中添加以下 DNS，你也可以根据需要添加其它 DNS：
+        - `spec.secretName` 请设置为 `${cluster_name}-tiproxy-cluster-secret`；
+        - `usages` 请添加上 `server auth` 和 `client auth`；
+        - `dnsNames` 需要填写这些 DNS，根据需要可以填写其他 DNS：
 
             - `${cluster_name}-tiproxy`
             - `${cluster_name}-tiproxy.${namespace}`
