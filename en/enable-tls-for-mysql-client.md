@@ -697,6 +697,7 @@ The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` i
 ```
 [2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
+```
 
 ## Reload certificates
 
