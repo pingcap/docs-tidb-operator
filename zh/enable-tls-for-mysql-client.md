@@ -640,9 +640,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
 
 ``` shell
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.ca\.crt}' | base64 --decode > client-ca.crt
 ```
 
 ``` shell

@@ -646,7 +646,7 @@ Execute the following command to acquire the client-side certificate and connect
 ``` shell
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.ca\.crt}' | base64 --decode > client-ca.crt
 ```
 
 ``` shell
