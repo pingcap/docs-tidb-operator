@@ -1169,7 +1169,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - TiProxy
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
