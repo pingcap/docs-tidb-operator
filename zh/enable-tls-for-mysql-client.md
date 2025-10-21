@@ -651,7 +651,7 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 
 最后请参考[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#检查当前连接是否是加密连接)来验证是否正确开启了 TLS。
 
-当不依赖客户端证书时，可以使用以下命令：
+如果不使用 Client 证书，可以运行以下命令：
 
 ``` shell
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
@@ -669,19 +669,19 @@ X.509 证书存储在 Kubernetes Secret 中。可以使用类似下面的命令�
 kubectl -n ${namespace} get secret
 ```
 
-这些 Secret 会被挂载到容器内。可以通过查看 Pod 描述中的 Volumes 部分来确认挂载点：
+这些 Secret 会被挂载到容器内。可以通过查看 Pod 描述中的 **Volumes** 部分来确认挂载的卷信息：
 
 ```shell
 kubectl -n ${namespace} describe pod ${podname}
 ```
 
-要在容器内部检查这些挂载点，可以进入对应的 TiDB 容器：
+要在容器内部检查这些 Secret 挂载情况，可以运行以下命令：
 
 ```shell
 kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
 ```
 
-在容器内查看示例目录和符号链接：
+在容器内查看 TLS 目录的内容：
 
 ```shell
 sh-5.1# ls -l /var/lib/*tls

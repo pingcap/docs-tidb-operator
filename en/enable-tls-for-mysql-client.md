@@ -667,15 +667,17 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-ca=client-ca.crt
 
 ## Troubleshooting
 
-The X.509 certiicates are stored in Kubernetes secrets. To inspect them, use commands similar to `kubectl -n ${namespace} get secret`.
+The X.509 certificates are stored in Kubernetes secrets. To inspect them, use commands similar to `kubectl -n ${namespace} get secret`.
 
-These secrets are then mounted into the containers. Check the `Volumes:` in the output of `kubectl -n ${namespace} describe pod ${podname}`.
+These secrets are mounted into the containers. To view the volume mounts, check the **Volumes** section in the output of the `kubectl -n ${namespace} describe pod ${podname}` command.
 
 To check these secret mounts from inside the container, run the following command:
 
 ``` shell
 kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
 ```
+
+The contents of the TLS directories is as follows:
 
 ``` shell
 sh-5.1# ls -l /var/lib/*tls
@@ -696,7 +698,6 @@ The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` i
 
 ```
 [2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
-Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
 ```
 
 ## Reload certificates
