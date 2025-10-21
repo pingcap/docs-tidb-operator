@@ -669,6 +669,10 @@ In this step, you create a TiDB cluster and perform the following operations:
 
 ## Configure the MySQL client to use an encrypted connection
 
+> **Note:**
+>
+> By default the client certificate is not validated by the server. Use [`ALTER USER`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-user/) to configure the account with `REQUIRE X509` or other constraints on the client certificate.
+
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 
 Execute the following command to acquire the client-side certificate and connect to the TiDB server:
@@ -688,3 +692,27 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 ```
 
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
+
+## TiProxy
+
+When using TiProxy in front of a set of TiDB servers you also need to configure TLS for it.
+
+Depending on the `TiProxyCertLayout` a different certificate layout is chosen:
+- not set: This is the legacy layout.
+- `v1`: This is version one of the layout. This is recommended.
+
+There are TLS settings for these components of TiProxy:
+- `security.cluster-tls`: used to access other hosts in the cluster as a client.
+- `security.server-tls`: used for serving MySQL protocol access on port 6000.
+- `security.sql-tls`: used to access TiDB as a client.
+- `security.server-http-tls` used to serve HTTP services on port 3080.
+
+See also [the security section of the configuration](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).
+
+TiProxy will try to use the TLS secret from TiDB for client/server connections by default. If you do this make sure these certificates also contain the hostname of the TiProxy hosts.
+
+Other settings that influence this:
+- `tlsCluster.enabled`
+- `tlsClient.enabled`
+
+The certificates can be generated with cfssl or cert-manager.
