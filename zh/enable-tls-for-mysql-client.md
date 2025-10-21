@@ -31,7 +31,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     >
     > 已部署的集群 `.spec.tidb.tlsClient.enabled` 属性从 `false` 改为 `true`，将导致 TiDB Pod 滚动重启。
 
-3.[ 配置 MySQL 客户端使用加密连接](#第三步配置-mysql-客户端使用-tls-连接)。
+3. [配置 MySQL 客户端使用加密连接](#第三步配置-mysql-客户端使用-tls-连接)。
 
 ## 第一步：为 TiDB 集群颁发两套证书
 
@@ -706,6 +706,8 @@ kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb
 
 ```
 [2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
+```
+
 ## 重新加载证书
 
 重新加载证书的方式取决于证书的生成方式：
