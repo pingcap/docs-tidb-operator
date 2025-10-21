@@ -1211,10 +1211,10 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             - `*.${cluster_name}-tiproxy-peer.${namespace}`
             - `*.${cluster_name}-tiproxy-peer.${namespace}.svc`
         
-        - 在 `ipAddresses` 中添加以下 2 个 IP，根据需要也可添加其它 IP：
+        - `ipAddresses` 需要填写这两个 IP，根据需要可以填写其他 IP：
             - `127.0.0.1`
-            - `::1`        
-        - 在 `issuerRef` 中填写上面创建的 Issuer。
+            - `::1`
+        - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参阅 cert-manager API（https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec）。
 
       创建该对象后，`cert-manager` 会生成名为 `${cluster_name}-tiproxy-cluster-secret` 的 Secret，供 TiProxy 组件使用。
