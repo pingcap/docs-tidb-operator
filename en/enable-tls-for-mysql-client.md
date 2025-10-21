@@ -9,7 +9,7 @@ This document describes how to enable TLS for MySQL client of the TiDB cluster o
 
 To enable TLS for the MySQL client, perform the following steps:
 
-1. [Issue two sets of certificates](#issue-two-sets-of-certificates-for-the-tidb-cluster): a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`, respectively including these two sets of certificates.
+1. [Issue two sets of certificates](#step-1-issue-two-sets-of-certificates-for-the-tidb-cluster): a set of server-side certificates for TiDB server, and a set of client-side certificates for MySQL client. Create two Secret objects, `${cluster_name}-tidb-server-secret` and `${cluster_name}-tidb-client-secret`, respectively including these two sets of certificates.
 
     > **Note:**
     >
@@ -20,7 +20,9 @@ To enable TLS for the MySQL client, perform the following steps:
     - [Using the `cfssl` system](#using-cfssl)
     - [Using the `cert-manager` system](#using-cert-manager)
 
-2. [Deploy the cluster](#deploy-the-tidb-cluster), and set `.spec.tidb.tlsClient.enabled` to `true`.
+    If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
+
+2. [Deploy the cluster](#step-2-deploy-the-tidb-cluster), and set `.spec.tidb.tlsClient.enabled` to `true`.
 
     * To skip TLS authentication for internal components that serve as the MySQL client (such as TidbInitializer, Dashboard, Backup, and Restore), you can add the `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` annotation to the cluster's corresponding `TidbCluster`.
     * To disable the client CA certificate authentication on the TiDB server, you can set `.spec.tidb.tlsClient.disableClientAuthn` to `true`. This means skipping setting the `ssl-ca` parameter when you [configure TiDB server to enable secure connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-tidb-server-to-use-secure-connections).
@@ -30,11 +32,9 @@ To enable TLS for the MySQL client, perform the following steps:
     >
     > For an existing cluster, if you change `.spec.tidb.tlsClient.enabled` from `false` to `true`, the TiDB Pods will be rolling restarted.
 
-3. [Configure the MySQL client to use an encrypted connection](#configure-the-mysql-client-to-use-an-encrypted-connection).
+3. [Configure the MySQL client to use an encrypted connection](#step-3-configure-the-mysql-client-to-use-a-tls-connection).
 
-If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
-
-## Issue two sets of certificates for the TiDB cluster
+## Step 1. Issue two sets of certificates for the TiDB cluster
 
 This section describes how to issue certificates for the TiDB cluster using two methods: `cfssl` and `cert-manager`.
 
@@ -508,7 +508,7 @@ You can generate multiple sets of client-side certificates. At least one set of 
     >
     > TiDB server's TLS is compatible with the MySQL protocol. When the certificate content is changed, the administrator needs to manually execute the SQL statement `alter instance reload tls` to refresh the content.
 
-## Deploy the TiDB cluster
+## Step 2. Deploy the TiDB cluster
 
 In this step, you create a TiDB cluster and perform the following operations:
 
@@ -636,16 +636,16 @@ In this step, you create a TiDB cluster and perform the following operations:
     kubectl apply -f restore.yaml
     ```
 
-## Configure the MySQL client to use an encrypted connection
+## Step 3. Configure the MySQL client to use a TLS connection
 
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 
 Execute the following command to acquire the client-side certificate and connect to the TiDB server:
 
 ``` shell
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.ca\.crt}' | base64 --decode > client-ca.crt
 ```
 
 ``` shell
@@ -653,6 +653,51 @@ mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --s
 ```
 
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
+
+When not relying on client certificates the following is sufficient:
+
+``` shell
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+```
+
+``` shell
+mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-ca=client-ca.crt
+```
+
+## Troubleshooting
+
+The X.509 certificates are stored in Kubernetes secrets. To inspect them, use commands similar to `kubectl -n ${namespace} get secret`.
+
+These secrets are mounted into the containers. To view the volume mounts, check the **Volumes** section in the output of the `kubectl -n ${namespace} describe pod ${podname}` command.
+
+To check these secret mounts from inside the container, run the following command:
+
+``` shell
+kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
+```
+
+The contents of the TLS directories is as follows:
+
+``` shell
+sh-5.1# ls -l /var/lib/*tls
+/var/lib/tidb-server-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+
+/var/lib/tidb-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+```
+
+The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` is as follows:
+
+```
+[2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
+```
 
 ## Reload certificates
 
