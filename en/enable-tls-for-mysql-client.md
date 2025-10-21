@@ -696,4 +696,29 @@ The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` i
 
 ```
 [2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
+Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
+
+## Reload certificates
+
+The certificate reload process depends on how you generate certificates:
+
+- If you generate the certificate and key files manually using `cfssl`, you must update the corresponding Secret manually.
+- If you generate the certificate and key files using `cert-manager`, the Secret is updated automatically whenever a new certificate is issued.
+
+To let TiDB use the new certificate, run [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-instance/#reload-tls).
+
+To verify the certificate validity period, run the following SQL statement to check the `Ssl_server_not_before` and `Ssl_server_not_after` status variables:
+
+```sql
+SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
+```
+
+```
++-----------------------+--------------------------+
+| Variable_name         | Value                    |
++-----------------------+--------------------------+
+| Ssl_server_not_after  | Apr 23 07:59:47 2026 UTC |
+| Ssl_server_not_before | Jan 24 07:59:47 2025 UTC |
++-----------------------+--------------------------+
+2 rows in set (0.011 sec)
 ```
