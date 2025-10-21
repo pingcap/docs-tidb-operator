@@ -56,7 +56,7 @@ If TLS between components has been enabled on the target TiDB cluster (`spec.tls
 
 If the target TiDB cluster has enabled TLS for the MySQL client (`spec.tidb.tlsClient.enabled: true`), and the corresponding client-side certificate is configured (the Kubernetes Secret object is `${cluster_name}-tidb-client-secret`), you can configure `tlsClient.enabled: true` in `values.yaml` to enable TiDB Lightning to connect to the TiDB server using TLS.
 
-To use different client certificates to connect to the TiDB server, refer to [Issue two sets of certificates for the TiDB cluster](enable-tls-for-mysql-client.md#issue-two-sets-of-certificates-for-the-tidb-cluster) to generate the client-side certificate for TiDB Lightning, and configure the corresponding Kubernetes secret object in `tlsCluster.tlsClientSecretName` in `values.yaml`.
+To use different client certificates to connect to the TiDB server, refer to [Issue two sets of certificates for the TiDB cluster](enable-tls-for-mysql-client.md#step-1-issue-two-sets-of-certificates-for-the-tidb-cluster) to generate the client-side certificate for TiDB Lightning, and configure the corresponding Kubernetes secret object in `tlsCluster.tlsClientSecretName` in `values.yaml`.
 
 > **Note:**
 >
