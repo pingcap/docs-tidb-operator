@@ -1159,7 +1159,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
 
     - TiProxy 组件的 Server 端证书。
 
-        ``` yaml
+        ```yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
         metadata:
@@ -1215,9 +1215,9 @@ summary: 在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。
             - `127.0.0.1`
             - `::1`
         - `issuerRef` 请填写上面创建的 Issuer；
-        - 其他属性请参阅 cert-manager API（https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec）。
+        - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
-      创建该对象后，`cert-manager` 会生成名为 `${cluster_name}-tiproxy-cluster-secret` 的 Secret，供 TiProxy 组件使用。
+      创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiproxy-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiProxy 组件使用。
 
     - TiFlash 组件的 Server 端证书。
 
