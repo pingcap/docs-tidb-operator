@@ -43,8 +43,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 
 1. Download `cfssl` and initialize the certificate issuer:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     mkdir -p ~/bin
     curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
@@ -114,8 +112,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 
 4. Generate CA by the configured option:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
     ```
@@ -123,8 +119,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 5. Generate the server-side certificate:
 
     First, create the default `server.json` file:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > server.json
@@ -155,8 +149,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 
     Finally, generate the server-side certificate:
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server server.json | cfssljson -bare server
     ```
@@ -164,8 +156,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 6. Generate the client-side certificate:
 
     First, create the default `client.json` file:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > client.json
@@ -182,8 +172,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 
     Finally, generate the client-side certificate:
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
     ```
@@ -191,8 +179,6 @@ This section describes how to issue certificates for the TiDB cluster using two 
 7. Create the Kubernetes Secret object.
 
     If you have already generated two sets of certificates as described in the above steps, create the Secret object for the TiDB cluster by the following command:
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl create secret generic ${cluster_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem
@@ -217,8 +203,6 @@ You can generate multiple sets of client-side certificates. At least one set of 
     To configure `cert-manager`, create the Issuer resources.
 
     First, create a directory which saves the files that `cert-manager` needs to create certificates:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p cert-manager
@@ -268,8 +252,6 @@ You can generate multiple sets of client-side certificates. At least one set of 
     - An Issuer, used to issue TLS certificates for the TiDB server
 
     Finally, execute the following command to create an Issuer:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-server-issuer.yaml
@@ -338,8 +320,6 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     Execute the following command to generate the certificate:
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f tidb-server-cert.yaml
     ```
@@ -381,8 +361,6 @@ You can generate multiple sets of client-side certificates. At least one set of 
     - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)
 
     Execute the following command to generate the certificate:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-client-cert.yaml
@@ -521,8 +499,6 @@ You can generate multiple sets of client-side certificates. At least one set of 
 
     2. Create the certificate by running the following command:
 
-        {{< copyable "shell-regular" >}}
-
         ``` shell
         kubectl apply -f tidb-components-client-cert.yaml
         ```
@@ -645,23 +621,17 @@ In this step, you create a TiDB cluster and perform the following operations:
 
 2. Deploy the TiDB cluster:
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f tidb-cluster.yaml
     ```
 
 3. Back up the cluster:
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f backup.yaml
     ```
 
 4. Restore the cluster:
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f restore.yaml
@@ -673,18 +643,39 @@ To connect the MySQL client with the TiDB cluster, use the client-side certifica
 
 Execute the following command to acquire the client-side certificate and connect to the TiDB server:
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
 kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
 ```
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
 mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
 Finally, to verify whether TLS is successfully enabled, refer to [checking the current connection](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#check-whether-the-current-connection-uses-encryption).
+
+## Reload certificates
+
+The certificate reload process depends on how you generate certificates:
+
+- If you generate the certificate and key files manually using `cfssl`, you must update the corresponding Secret manually.
+- If you generate the certificate and key files using `cert-manager`, the Secret is updated automatically whenever a new certificate is issued.
+
+To let TiDB use the new certificate, run [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-instance/#reload-tls).
+
+To verify the certificate validity period, run the following SQL statement to check the `Ssl_server_not_before` and `Ssl_server_not_after` status variables:
+
+```sql
+SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
+```
+
+```
++-----------------------+--------------------------+
+| Variable_name         | Value                    |
++-----------------------+--------------------------+
+| Ssl_server_not_after  | Apr 23 07:59:47 2026 UTC |
+| Ssl_server_not_before | Jan 24 07:59:47 2025 UTC |
++-----------------------+--------------------------+
+2 rows in set (0.011 sec)
+```
