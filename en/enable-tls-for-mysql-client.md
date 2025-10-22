@@ -704,7 +704,7 @@ Depending on the `TiProxyCertLayout` a different certificate layout is chosen:
 
 There are TLS settings for these components of TiProxy:
 
-- `security.cluster-tls`: used to access other hosts in the cluster as a client.
+- `security.cluster-tls`: used to interface with other hosts in the cluster both as server and client (mTLS).
 - `security.server-tls`: used for serving MySQL protocol access on port 6000.
 - `security.sql-tls`: used to access TiDB as a client.
 - `security.server-http-tls` used to serve HTTP services on port 3080.
