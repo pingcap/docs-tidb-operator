@@ -16,10 +16,7 @@ To enable TLS for the MySQL client, perform the following steps:
     >
     > The Secret objects you created must follow the above naming convention. Otherwise, the deployment of the TiDB cluster will fail.
 
-    Certificates can be issued in multiple methods. This document describes two methods. You can choose either of them to issue certificates for the TiDB cluster:
-
-    - [Using the `cfssl` system](#using-cfssl)
-    - [Using the `cert-manager` system](#using-cert-manager)
+    Certificates can be issued in multiple methods. This document describes how to use the `cert-manager` system to issue certificates. You can also issue certificates for the TiDB cluster as needed.
 
     If you need to renew the existing TLS certificate, refer to [Renew and Replace the TLS Certificate](renew-tls-certificate.md).
 
@@ -37,162 +34,7 @@ To enable TLS for the MySQL client, perform the following steps:
 
 ## Step 1. Issue two sets of certificates for the TiDB cluster
 
-This section describes how to issue certificates for the TiDB cluster using two methods: `cfssl` and `cert-manager`.
-
-### Using `cfssl`
-
-1. Download `cfssl` and initialize the certificate issuer:
-
-    ```shell
-    mkdir -p ~/bin
-    curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-    curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-    chmod +x ~/bin/{cfssl,cfssljson}
-    export PATH=$PATH:~/bin
-
-    mkdir -p cfssl
-    cd cfssl
-    cfssl print-defaults config > ca-config.json
-    cfssl print-defaults csr > ca-csr.json
-    ```
-
-2. Configure the client auth (CA) option in `ca-config.json`:
-
-    ```json
-    {
-        "signing": {
-            "default": {
-                "expiry": "8760h"
-            },
-            "profiles": {
-                "server": {
-                    "expiry": "8760h",
-                    "usages": [
-                        "signing",
-                        "key encipherment",
-                        "server auth"
-                    ]
-                },
-                "client": {
-                    "expiry": "8760h",
-                    "usages": [
-                        "signing",
-                        "key encipherment",
-                        "client auth"
-                    ]
-                }
-            }
-        }
-    }
-    ```
-
-3. Change the certificate signing request (CSR) of `ca-csr.json`:
-
-    ```json
-    {
-        "CN": "TiDB Server",
-        "CA": {
-            "expiry": "87600h"
-        },
-        "key": {
-            "algo": "rsa",
-            "size": 2048
-        },
-        "names": [
-            {
-                "C": "US",
-                "L": "CA",
-                "O": "PingCAP",
-                "ST": "Beijing",
-                "OU": "TiDB"
-            }
-        ]
-    }
-    ```
-
-4. Generate CA by the configured option:
-
-    ```shell
-    cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
-    ```
-
-5. Generate the server-side certificate:
-
-    First, create the default `server.json` file:
-
-    ``` shell
-    cfssl print-defaults csr > server.json
-    ```
-
-    Then, edit this file to change the `CN`, `hosts` attributes:
-
-    ``` json
-    ...
-        "CN": "TiDB Server",
-        "hosts": [
-          "127.0.0.1",
-          "::1",
-          "${cluster_name}-tidb",
-          "${cluster_name}-tidb.${namespace}",
-          "${cluster_name}-tidb.${namespace}.svc",
-          "*.${cluster_name}-tidb",
-          "*.${cluster_name}-tidb.${namespace}",
-          "*.${cluster_name}-tidb.${namespace}.svc",
-          "*.${cluster_name}-tidb-peer",
-          "*.${cluster_name}-tidb-peer.${namespace}",
-          "*.${cluster_name}-tidb-peer.${namespace}.svc"
-        ],
-    ...
-    ```
-
-    `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
-
-    Finally, generate the server-side certificate:
-
-    ``` shell
-    cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server server.json | cfssljson -bare server
-    ```
-
-6. Generate the client-side certificate:
-
-    First, create the default `client.json` file:
-
-    ``` shell
-    cfssl print-defaults csr > client.json
-    ```
-
-    Then, edit this file to change the `CN`, `hosts` attributes. You can leave the `hosts` empty:
-
-    ``` json
-    ...
-        "CN": "TiDB Client",
-        "hosts": [],
-    ...
-    ```
-
-    Finally, generate the client-side certificate:
-
-    ``` shell
-    cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
-    ```
-
-7. Create the Kubernetes Secret object.
-
-    If you have already generated two sets of certificates as described in the above steps, create the Secret object for the TiDB cluster by the following command:
-
-    ```shell
-    kubectl create secret generic ${cluster_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem
-    kubectl create secret generic ${cluster_name}-tidb-client-secret --namespace=${namespace} --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem
-    ```
-
-    You have created two Secret objects for the server-side and client-side certificates:
-
-    - The TiDB server loads one Secret object when it starts
-    - The MySQL client uses another Secret object when it connects to the TiDB cluster
-
-You can generate multiple sets of client-side certificates. At least one set of client-side certificates is needed for the internal components of TiDB Operator to access the TiDB server. Currently, `TidbInitializer` accesses the TiDB server to set the password or perform initialization.
-
-### Using `cert-manager`
+This section describes how to issue certificates for the TiDB cluster using `cert-manager`.
 
 1. Install `cert-manager`.
 
@@ -702,10 +544,7 @@ The output of `kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb` i
 
 ## Reload certificates
 
-The certificate reload process depends on how you generate certificates:
-
-- If you generate the certificate and key files manually using `cfssl`, you must update the corresponding Secret manually.
-- If you generate the certificate and key files using `cert-manager`, the Secret is updated automatically whenever a new certificate is issued.
+If you generate the certificate and key files using `cert-manager`, the Secret is updated automatically whenever a new certificate is issued.
 
 To let TiDB use the new certificate, run [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-instance/#reload-tls).
 

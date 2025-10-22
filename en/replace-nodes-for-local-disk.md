@@ -46,12 +46,6 @@ This document describes a method for replacing and upgrading nodes without downt
 
 If the original cluster enables TLS, you need to sign certificates for the clone cluster. If not, you can skip this step and move to [Step 3](#step-3-mark-the-nodes-to-be-replaced-as-non-schedulable).
 
-### Use cfssl
-
-If you use cfssl to sign certificates, you must sign certificates using the same certification authority (CA) as the original cluster. To complete the signing process, follow instructions in step 5~7 in [Using cfssl](enable-tls-between-components.md#using-cfssl).
-
-### Use cert-manager
-
 If you use cert-manager, you must sign certificates using the same Issuer as the original cluster. To complete the signing process, follow instructions in step 3 in [Using cert-manager](enable-tls-between-components.md#using-cert-manager).
 
 ## Step 3: Mark the nodes to be replaced as non-schedulable

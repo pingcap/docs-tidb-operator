@@ -46,12 +46,6 @@ summary: 介绍如何为使用本地存储的 TiDB 集群更换节点。
 
 如果原集群开启了 TLS，你需要为克隆集群签发证书。如果原集群没有开启 TLS，请忽略此步骤，直接执行第三步。
 
-### 使用 cfssl 系统签发
-
-如果你使用 cfssl，必须使用和原集群相同的 CA (Certification Authority) 颁发。你需要执行[使用 cfssl 系统颁发证书](enable-tls-between-components.md#使用-cfssl-系统颁发证书)文档中 5~7 步，完成新集群组件间证书签发。
-
-### 使用 cert-manager 系统签发
-
 如果你使用 cert-manager，必须使用和原集群相同的 Issuer (`${cluster_name}-tidb-issuer`) 来创建 Certificate。你需要执行[使用 cert-manager 系统颁发证书](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)文档中第 3 步，完成新集群组件间证书签发。
 
 ## 第三步：标记需要更换的节点为不可调度

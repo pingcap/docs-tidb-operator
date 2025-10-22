@@ -152,12 +152,6 @@ EOF
 
 ### 第 1 步：签发根证书
 
-#### 使用 cfssl 系统签发根证书
-
-如果你使用 `cfssl`，签发 CA 证书的过程与一般签发过程没有差别，需要保存好第一次创建的 CA 证书，并且在后面为 TiDB 组件签发证书时都使用这个 CA 证书，即在为其他集群创建组件证书时，不需要再次创建 CA 证书，你只需要完成一次[为 TiDB 组件间开启 TLS](enable-tls-between-components.md#使用-cfssl-系统颁发证书) 文档中 1 ~ 4 步操作，完成 CA 证书签发，为其他集群组件间证书签发操作从第 5 步开始即可。
-
-#### 使用 cert-manager 系统签发根证书
-
 如果你使用 `cert-manager`，只需要在初始 Kubernetes 集群创建 `CA Issuer` 和创建 `CA Certificate`，并导出 `CA Secret` 给其他的 Kubernetes 集群，其他集群只需要创建组件证书签发 `Issuer`（在 [TLS 文档](enable-tls-between-components.md#使用-cert-manager-系统颁发证书)中指名字为 `${cluster_name}-tidb-issuer` 的 `Issuer`），配置 `Issuer` 使用该 CA，具体过程如下：
 
 1. 在初始 Kubernetes 集群上创建 `CA Issuer` 和创建 `CA Certificate`。
@@ -270,49 +264,6 @@ EOF
 ### 第 2 步：为各个 Kubernetes 集群的 TiDB 组件签发证书
 
 你需要为每个 Kubernetes 集群上的 TiDB 组件都签发组件证书。在签发组件证书时，需要在 hosts 中加上以 `.${cluster_domain}` 结尾的授权记录。例如，初始 TidbCluster 的配置为 `${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}`。
-
-#### 使用 cfssl 系统为 TiDB 组件签发证书
-
-如果使用 `cfssl`，以创建 PD 组件所使用的证书为例，可以通过如下指令创建初始 TidbCluster 的 `pd-server.json` 文件：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cat << EOF > pd-server.json
-{
-    "CN": "TiDB",
-    "hosts": [
-      "127.0.0.1",
-      "::1",
-      "${tc_name_1}-pd",
-      "${tc_name_1}-pd.${namespace_1}",
-      "${tc_name_1}-pd.${namespace_1}.svc",
-      "${tc_name_1}-pd.${namespace_1}.svc.${cluster_domain_1}",
-      "${tc_name_1}-pd-peer",
-      "${tc_name_1}-pd-peer.${namespace_1}",
-      "${tc_name_1}-pd-peer.${namespace_1}.svc",
-      "${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}",
-      "*.${tc_name_1}-pd-peer",
-      "*.${tc_name_1}-pd-peer.${namespace_1}",
-      "*.${tc_name_1}-pd-peer.${namespace_1}.svc",
-      "*.${tc_name_1}-pd-peer.${namespace_1}.svc.${cluster_domain_1}"
-    ],
-    "key": {
-        "algo": "ecdsa",
-        "size": 256
-    },
-    "names": [
-        {
-            "C": "US",
-            "L": "CA",
-            "ST": "San Francisco"
-        }
-    ]
-}
-EOF
-```
-
-#### 使用 cert-manager 系统为 TiDB 组件签发证书
 
 如果使用 `cert-manager`，以创建初始 TidbCluster 的 PD 组件所使用的证书为例，`Certificates` 如下所示。
 
