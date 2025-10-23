@@ -22,7 +22,67 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何安装、�
 - [使用 Diag 采集诊断数据](#使用-diag-采集诊断数据)
 - [使用 Diag 快速诊断集群](#使用-diag-工具快速诊断集群)
 
-## 安装 Diag
+对于 TiDB Operator 部署的 TiDB 集群。 Diag 可以运行在两种模式下：在任意地方运行的命令行模式和部署到 k8s 的 Server 模式
+命令行模式使用更加简单且可以收集部分日志。
+
+## 使用 Diag 命令行
+
+Diag 命令行可以在任何可以连接到 TiDB 集群所在 k8s 的地方运行，可以是集群内一个有权限的 pod 也可以是开发者的笔记本。
+
+### 第 1 步：安装 TiUP
+
+运行 `tiup --version` 检查是否已安装 TiUP。如果已经安装 TiUP，跳过这一步。如果没有安装 TiUP，运行以下命令：
+    ```
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
+
+### 第 2 步：安装 Diag
+    ```shell
+    tiup install diag
+    ```
+
+### 第 3 步：运行 Diag
+
+1. 运行 Diag，采集诊断数据。
+
+    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
+
+    ```bash
+    tiup diag collectk ${cluster-name} -f="-4h" -t="-2h" --kubeconfig /path/to/config --namespace xxx --monitor-namespace xxx
+    ```
+
+    如果在 k8s 集群内运行，请使用以下命令并确保所在 pod 拥有权限。
+    ```bash
+    tiup diag collectk ${cluster-name} -f="-4h" -t="-2h" --direct --namespace xxx --monitor-namespace xxx
+    ```
+
+    运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。如果确认要开始采集数据，请输入 `Y`。
+
+    采集完成后，Diag 会提示采集数据所在的文件夹路径。
+
+2. 将采集到的数据上传到 Clinic Server。
+
+    > **注意：**
+    >
+    > 上传数据（数据包文件夹打包压缩后的文件）的大小不得超过 3 GB，否则会导致上传失败。
+
+    - 如果你的集群所在的网络可以访问互联网，你可以通过以下命令上传已采集的数据包文件夹：
+
+        ```bash
+        tiup diag upload ${filepath}
+        ```
+
+        完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。
+
+    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](https://docs.pingcap.com/zh/tidb/stable/clinic-user-guide-for-tiup/#方式-2打包后上传)。
+
+3. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
+
+    诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard 信息。
+
+    你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
+
+## 安装 Diag Server
 
 本节详细介绍了安装 Diag 的步骤。
 

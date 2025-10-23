@@ -19,12 +19,74 @@ For clusters deployed using TiDB Operator, Diag is deployed as a standalone Pod.
 
 You can easily collect data from clusters and perform a quick check using the Diag of PingCAP Clinic:
 
-- [Use Diag to collect data](#use-diag-to-collect-data)
+- [Use Diag to collect diagnostic data](#use-diag-to-collect-data)
 - [Use Diag to perform a quick check on the cluster](#use-diag-to-perform-a-quick-check-on-the-cluster)
 
-## Install Diag client
+For TiDB clusters deployed using TiDB Operator, Diag can run in two modes: command line mode that can run anywhere and server mode deployed to k8s. Command line mode is simpler to use and can collect some logs.
 
-The following sections describe how to install Diag.
+## Use Diag CLI
+
+Diag CLI can run anywhere that can connect to the k8s where the TiDB cluster is located. It can be a pod with permissions in the cluster or a developer's laptop.
+
+### Step 1: Install TiUP
+
+Run `tiup --version` to check if TiUP is already installed. If TiUP is already installed, skip this step. If TiUP is not installed, run the following command:
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+```
+
+### Step 2: Install Diag
+
+```shell
+tiup install diag
+```
+
+### Step 3: Run Diag
+
+1. Run Diag to collect diagnostic data.
+
+    For example, to collect diagnostic data from 4 hours ago to 2 hours ago from the current time, you can run the following command:
+
+    ```bash
+    tiup diag collectk ${cluster-name} -f="-4h" -t="-2h" --kubeconfig /path/to/config --namespace xxx --monitor-namespace xxx
+    ```
+
+    If running inside a k8s cluster, use the following command and ensure the pod has the necessary permissions:
+
+    ```bash
+    tiup diag collectk ${cluster-name} -f="-4h" -t="-2h" --direct --namespace xxx --monitor-namespace xxx
+    ```
+
+    After running the Diag data collection command, Diag will not immediately start collecting data. Instead, it will provide an estimated data size and storage path in the output and ask if you want to proceed with data collection. If you confirm to start collecting data, enter `Y`.
+
+    After collection is complete, Diag will prompt with the folder path where the collected data is stored.
+
+2. Upload the collected data to Clinic Server.
+
+    > **Note:**
+    >
+    > The size of uploaded data (compressed folder file) must not exceed 3 GB, otherwise the upload will fail.
+
+    - If your cluster network can access the Internet, you can upload the collected data package folder using the following command:
+
+        ```bash
+        tiup diag upload ${filepath}
+        ```
+
+        After the upload is complete, Diag will provide the diagnostic data download URL.
+
+    - If your cluster cannot access the Internet, you need to package the data first and then upload it. For specific steps, refer to [Upload Method 2: Package and Upload](https://docs.pingcap.com/tidb/stable/clinic-user-guide-for-tiup/#method-2-pack-and-upload-data).
+
+3. After completing the data upload, get the diagnostic data link through the `Download URL` in the upload output.
+
+    The diagnostic data includes cluster name, cluster topology information, log content in the diagnostic data package, and Grafana Dashboard information rebuilt based on metrics information in the diagnostic data package.
+
+    You can use this data to find and diagnose cluster problems yourself, or you can send the link to PingCAP technical support staff to assist with remote troubleshooting of cluster issues.
+
+## Install Diag Server
+
+This section provides detailed instructions for installing Diag.
 
 ### Step 1: Prepare the environment
 
