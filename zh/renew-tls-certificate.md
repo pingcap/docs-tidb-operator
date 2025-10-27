@@ -13,7 +13,7 @@ summary: 介绍如何更新和替换 TiDB 组件间的 TLS 证书。
 
 ## 更新和替换 `cert-manager` 颁发的证书
 
-如原 TLS 证书是[使用 `cert-manager` 系统颁发的证书](enable-tls-between-components.md#第一步-为-tibd-集群各个组件生成证书)，且原证书尚未过期，根据是否需要更新 CA 证书需要分别处理。
+如原 TLS 证书是[使用 `cert-manager` 系统颁发的证书](enable-tls-between-components.md#第一步为-tibd-集群各个组件生成证书)，且原证书尚未过期，根据是否需要更新 CA 证书需要分别处理。
 
 ### 更新和替换 CA 证书
 
