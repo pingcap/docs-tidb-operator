@@ -13,7 +13,7 @@ The renewal and replacement operations in this document assume that the original
 
 ## Renew and replace the certificate issued by `cert-manager`
 
-If the original TLS certificate is issued by [the `cert-manager` system](enable-tls-between-components.md#use-cert-manager), and the original certificate has not expired, the procedure varies with whether to renew the CA certificate.
+If the original TLS certificate is issued by [the `cert-manager` system](enable-tls-between-components.md#step-1-generate-certificates-for-components-of-the-tidb-cluster), and the original certificate has not expired, the procedure varies with whether to renew the CA certificate.
 
 ### Renew and replace the CA certificate
 
