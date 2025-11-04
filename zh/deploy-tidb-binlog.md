@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/deploy-tidb-binlog/']
 
 # 部署 TiDB Binlog
 
-本文档介绍如何在 Kubernetes 上部署 TiDB 集群的 [TiDB Binlog](https://docs.pingcap.com/zh/tidb/stable/tidb-binlog-overview)。
+本文档介绍如何在 Kubernetes 上部署 TiDB 集群的 [TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.1/tidb-binlog-overview)。
 
 > **警告：**
 >
@@ -286,7 +286,7 @@ tlsSyncer: {}
 
 ## 缩容/移除 Pump/Drainer 节点
 
-如需详细了解如何维护 TiDB Binlog 集群节点状态信息，可以参考 [Pump/Drainer 的启动、退出流程](https://docs.pingcap.com/zh/tidb/stable/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
+如需详细了解如何维护 TiDB Binlog 集群节点状态信息，可以参考 [Pump/Drainer 的启动、退出流程](https://docs.pingcap.com/zh/tidb/v8.1/maintain-tidb-binlog-cluster#pumpdrainer-的启动退出流程)。
 
 如果需要完整移除 TiDB Binlog 组件，最好是先移除 Pump 节点，再移除 Drainer 节点。
 
