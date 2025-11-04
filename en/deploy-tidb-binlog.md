@@ -5,7 +5,7 @@ summary: Learn how to deploy TiDB Binlog for a TiDB cluster on Kubernetes.
 
 # Deploy TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) of a TiDB cluster on Kubernetes.
+This document describes how to maintain [TiDB Binlog](https://docs.pingcap.com/tidb/v8.1/tidb-binlog-overview) of a TiDB cluster on Kubernetes.
 
 > **Warning:**
 >
@@ -291,7 +291,7 @@ If you set the downstream database of `tidb-drainer` to `mysql/tidb`, and if you
 
 ## Remove Pump/Drainer nodes
 
-For details on how to maintain the node state of the TiDB Binlog cluster, refer to [Starting and exiting a Pump or Drainer process](https://docs.pingcap.com/tidb/stable/maintain-tidb-binlog-cluster#starting-and-exiting-a-pump-or-drainer-process).
+For details on how to maintain the node state of the TiDB Binlog cluster, refer to [Starting and exiting a Pump or Drainer process](https://docs.pingcap.com/tidb/v8.1/maintain-tidb-binlog-cluster#starting-and-exiting-a-pump-or-drainer-process).
 
 If you want to remove the TiDB Binlog component completely, it is recommended that you first remove Pump nodes and then remove Drainer nodes.
 
