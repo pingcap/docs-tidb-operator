@@ -86,7 +86,7 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 将待迁移集群的 TiDB 节点缩容至 0 个：
 
 - 如果待迁移集群使用 TiUP 部署，参考[缩容 TiDB/PD/TiKV 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-tiup#缩容-tidbpdtikv-节点)一节。
-- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 TiDB 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#缩容-tidb-节点)一节。
+- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 TiDB 节点](https://docs-archive.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible#缩容-tidb-节点)一节。
 
 > **注意：**
 >
@@ -97,7 +97,7 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 将待迁移集群的 TiKV 节点缩容至 0 个：
 
 - 如果待迁移集群使用 TiUP 部署，参考[缩容 TiDB/PD/TiKV 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-tiup#缩容-tidbpdtikv-节点)一节。
-- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 TiKV 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#缩容-tikv-节点)一节。
+- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 TiKV 节点](https://docs-archive.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible#缩容-tikv-节点)一节。
 
 > **注意：**
 >
@@ -109,7 +109,7 @@ summary: 介绍如何将部署在物理机或虚拟机中的 TiDB 迁移至 Kube
 将待迁移集群的 PD 节点缩容至 0 个：
 
 - 如果待迁移集群使用 TiUP 部署，参考[缩容 TiDB/PD/TiKV 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-tiup#缩容-tidbpdtikv-节点)一节。
-- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 PD 节点](https://docs.pingcap.com/zh/tidb/stable/scale-tidb-using-ansible#缩容-pd-节点)一节。
+- 如果待迁移集群使用 TiDB Ansible 部署，参考[缩容 PD 节点](https://docs-archive.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible#缩容-pd-节点)一节。
 
 ## 第六步：删除 `spec.pdAddresses` 字段
 
