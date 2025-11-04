@@ -87,7 +87,7 @@ Remove all TiDB nodes of the source cluster:
 
 - If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
-- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiDB node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-tidb-node).
+- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiDB node](https://docs-archive.pingcap.com/tidb/v4.0/scale-tidb-using-ansible#decrease-the-capacity-of-a-tidb-node).
 
 > **Note:**
 >
@@ -99,7 +99,7 @@ Remove all TiKV nodes of the source cluster:
 
 - If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
-- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiKV node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-tikv-node).
+- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a TiKV node](https://docs-archive.pingcap.com/tidb/v4.0/scale-tidb-using-ansible#decrease-the-capacity-of-a-tikv-node).
 
 > **Note:**
 >
@@ -112,7 +112,7 @@ Remove all PD nodes of the source cluster:
 
 - If the source cluster is deployed using TiUP, refer to [Scale in a TiDB/PD/TiKV cluster](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tidbpdtikv-cluster).
 
-- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a PD node](https://docs.pingcap.com/tidb/stable/scale-tidb-using-ansible#decrease-the-capacity-of-a-pd-node).
+- If the source cluster is deployed using TiDB Ansible, refer to [Decrease the capacity of a PD node](https://docs-archive.pingcap.com/tidb/v4.0/scale-tidb-using-ansible#decrease-the-capacity-of-a-pd-node).
 
 ## Step 6: Delete the `spec.pdAddresses` field
 
