@@ -46,6 +46,7 @@
     - [重启 TiDB 集群](restart-a-tidb-cluster.md)
     - [销毁 TiDB 集群](destroy-a-tidb-cluster.md)
 - 故障诊断
+  - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
   - [集群异常](exceptions.md)
 - 参考
