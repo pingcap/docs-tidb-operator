@@ -93,7 +93,7 @@ Example:
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
-kind: TidbGroup
+kind: TiDBGroup
 metadata:
   name: tidb
 spec:
