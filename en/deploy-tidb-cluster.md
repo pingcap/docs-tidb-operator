@@ -211,6 +211,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
     metadata:
       name: basic
       namespace: db
+    spec: {}
     ```
 
     Create the `Cluster` CRD:

@@ -47,6 +47,8 @@
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
 - Troubleshoot
   - [Troubleshooting Tips](tips.md)
+  - [Deployment Failures](deploy-failures.md)
+  - [Cluster Exceptions](exceptions.md)
 - Reference
   - Architecture
     - [TiDB Operator](architecture.md)
