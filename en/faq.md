@@ -9,7 +9,7 @@ This document collects frequently asked questions (FAQs) about the TiDB cluster 
 
 ## How to modify time zone settings？
 
-The default time zone setting for each component container of a TiDB cluster on Kubernetes is UTC. To change the time zone, use [Overlay](overlay.md):
+The default time zone setting for each component container of a TiDB cluster on Kubernetes is UTC. To change the timezone configuration, you can use the [Overlay](overlay.md) feature:
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -35,9 +35,9 @@ Currently, the TiDB cluster does not support HPA (Horizontal Pod Autoscaling) or
 
 ## What scenarios require manual intervention when I use TiDB Operator to orchestrate a TiDB cluster?
 
-Besides the operation of the Kubernetes cluster itself, there are the following two scenarios that might require manual intervention when using TiDB Operator:
+Besides the operation of the Kubernetes cluster itself, TiDB Operator might require manual intervention in the following scenario:
 
-* Maintaining or dropping the specified Kubernetes nodes. See [Maintaining Nodes](maintain-a-kubernetes-node.md) for details.
+* Maintaining or dropping the specified Kubernetes nodes. For more information, see [Maintaining Nodes](maintain-a-kubernetes-node.md).
 
 ## What is the recommended deployment topology when I use TiDB Operator to orchestrate a TiDB cluster on a public cloud?
 
@@ -45,8 +45,8 @@ To achieve high availability and data safety, it is recommended that you deploy 
 
 In terms of the deployment topology relationship between the TiDB cluster and TiDB services, TiDB Operator supports the following three deployment modes. Each mode has its own merits and demerits, so your choice must be based on actual application needs.
 
-* Deploy the TiDB cluster and TiDB services in the same Kubernetes cluster of the same VPC;
-* Deploy the TiDB cluster and TiDB services in different Kubernetes clusters of the same VPC;
+* Deploy the TiDB cluster and TiDB services in the same Kubernetes cluster of the same VPC.
+* Deploy the TiDB cluster and TiDB services in different Kubernetes clusters of the same VPC.
 * Deploy the TiDB cluster and TiDB services in different Kubernetes clusters of different VPCs.
 
 ## Does TiDB Operator support TiSpark?

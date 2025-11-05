@@ -9,7 +9,7 @@ summary: 介绍 Kubernetes 上的 TiDB 集群常见问题以及解决方案。
 
 ## 如何修改时区设置？
 
-默认情况下，在 Kubernetes 集群上部署的 TiDB 集群各组件容器中的时区为 UTC，如果要修改时区配置，可以通过 [Overlay](overlay.md) 的方式：
+默认情况下，在 Kubernetes 集群上部署的 TiDB 集群各组件容器中的时区为 UTC。如果要修改时区配置，可以使用 [Overlay](overlay.md) 功能进行如下配置：
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -29,7 +29,7 @@ spec:
                     value: "Asia/Shanghai"
 ```
 
-## TiDB 相关组件可以配置 HPA 或 VPA 么？
+## TiDB 相关组件可以配置 HPA 或 VPA 吗？
 
 TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩缩容）和 VPA（Vertical Pod Autoscaling，自动垂直扩缩容），因为对于数据库这种有状态应用而言，实现自动扩缩容难度较大，无法仅通过 CPU 和 memory 监控数据来简单地实现。
 
@@ -37,7 +37,7 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 如果不考虑 Kubernetes 集群本身的运维，TiDB Operator 存在以下可能需要人工介入的场景：
 
-* 维护或下线指定的 Kubernetes 节点，参考[维护节点](maintain-a-kubernetes-node.md)
+* 维护或下线指定的 Kubernetes 节点，参考[维护节点](maintain-a-kubernetes-node.md)。
 
 ## 在公有云上使用 TiDB Operator 编排 TiDB 集群时，推荐的部署拓扑是怎样的？
 
@@ -45,8 +45,8 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 当考虑 TiDB 集群与业务服务的部署拓扑关系时，TiDB Operator 支持下面几种部署形态。它们有各自的优势与劣势，具体选型需要根据实际业务需求进行权衡：
 
-* 将 TiDB 集群与业务服务部署在同一个 VPC 中的同一个 Kubernetes 集群上；
-* 将 TiDB 集群与业务服务部署在同一个 VPC 中的不同 Kubernetes 集群上；
+* 将 TiDB 集群与业务服务部署在同一个 VPC 中的同一个 Kubernetes 集群上。
+* 将 TiDB 集群与业务服务部署在同一个 VPC 中的不同 Kubernetes 集群上。
 * 将 TiDB 集群与业务服务部署在不同 VPC 中的不同 Kubernetes 集群上。
 
 ## TiDB Operator 支持 TiSpark 吗？
@@ -59,21 +59,21 @@ TiDB Operator 尚不支持自动编排 TiSpark。
 
 ## 如何查看 TiDB 集群配置？
 
-如果需要查看当前集群的 PD、TiKV、TiDB 组件的配置信息，可以执行下列命令:
+如果需要查看当前集群的 PD、TiKV、TiDB 组件的配置信息，可以执行下列命令：
 
-* 查看 PD 配置文件
+* 查看 PD 配置文件：
 
     ```shell
     kubectl exec -it ${pod_name} -n ${namespace} -- cat /etc/pd/config.toml
     ```
 
-* 查看 TiKV 配置文件
+* 查看 TiKV 配置文件：
 
     ```shell
     kubectl exec -it ${pod_name} -n ${namespace} -- cat /etc/tikv/config.toml
     ```
 
-* 查看 TiDB 配置文件
+* 查看 TiDB 配置文件：
 
     ```shell
     kubectl exec -it ${pod_name} -n ${namespace} -- cat /etc/tidb/config.toml
@@ -81,15 +81,15 @@ TiDB Operator 尚不支持自动编排 TiSpark。
 
 ## 部署 TiDB 集群时调度失败是什么原因？
 
-TiDB Operator 调度 Pod 失败的原因可能有三种情况：
+TiDB Operator 调度 Pod 失败的原因可能有两种情况：
 
 * 资源不足，导致 Pod 一直阻塞在 `Pending` 状态。详细说明参见[集群故障诊断](deploy-failures.md)。
 
-* 部分 Node 被打了 `taint`，导致 Pod 无法调度到对应的 Node 上。详请参考 [taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)。
+* 部分 Node 被打了 `taint`，导致 Pod 无法调度到对应的 Node 上。详请参考 [taint & toleration](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
 
 ## TiDB 如何保证数据安全可靠？
 
-TiDB Operator 部署的 TiDB 集群使用 Kubernetes 集群提供的[持久卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)作为存储，保证数据的持久化存储。
+TiDB Operator 部署的 TiDB 集群使用 Kubernetes 集群提供的[持久卷](https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/)作为存储，保证数据的持久化存储。
 
 PD 和 TiKV 使用 [Raft 一致性算法](https://raft.github.io/)将存储的数据在各节点间复制为多副本，以确保某个节点宕机时数据的安全性。
 
