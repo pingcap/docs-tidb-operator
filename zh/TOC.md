@@ -50,6 +50,7 @@
   - [使用技巧](tips.md)
   - [部署错误](deploy-failures.md)
   - [集群异常](exceptions.md)
+- [常见问题](faq.md)
 - 参考
   - 架构
     - [TiDB Operator 架构](architecture.md)
