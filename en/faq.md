@@ -83,9 +83,9 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
 
 Two possible reasons:
 
-* Insufficient resource or HA Policy causes the Pod stuck in the `Pending` state. Refer to [Deployment Failures](deploy-failures.md#the-pod-is-in-the-pending-state) for more details.
+* Insufficient resource or HA Policy causes the Pod stuck in the `Pending` state. For more information, see [Common Deployment Failures of TiDB on Kubernetes](deploy-failures.md#the-pod-is-in-the-pending-state).
 
-* `taint` is applied to some nodes, which prevents the Pod from being scheduled to these nodes unless the Pod has the matching `toleration`. Refer to [taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) for more details.
+* `taint` is applied to some nodes, which prevents the Pod from being scheduled to these nodes unless the Pod has the matching `toleration`. For more information, see [Taints and Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/).
 
 ## How does TiDB ensure data safety and reliability?
 
