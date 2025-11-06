@@ -45,6 +45,7 @@
     - [Suspend and Resume a TiDB Cluster](suspend-tidb-cluster.md)
     - [Restart a TiDB Cluster](restart-a-tidb-cluster.md)
     - [Destroy a TiDB Cluster](destroy-a-tidb-cluster.md)
+    - [Maintain Kubernetes Nodes](maintain-a-kubernetes-node.md)
 - Troubleshoot
   - [Troubleshooting Tips](tips.md)
   - [Deployment Failures](deploy-failures.md)
