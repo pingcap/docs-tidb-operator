@@ -7,7 +7,7 @@ summary: Learn about TiDB FAQs on Kubernetes.
 
 This document collects frequently asked questions (FAQs) about the TiDB cluster on Kubernetes.
 
-## How to modify time zone settings？
+## How to modify time zone settings?
 
 The default time zone setting for each component container of a TiDB cluster on Kubernetes is UTC. To change the timezone configuration, you can use the [Overlay](overlay.md) feature:
 
