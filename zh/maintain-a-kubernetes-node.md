@@ -7,7 +7,7 @@ summary: 介绍如何维护 TiDB 集群所在的 Kubernetes 节点。
 
 TiDB 是高可用数据库，即使部分节点下线，集群也能正常运行。因此，你可以安全地对 TiDB 集群所在的 Kubernetes 节点执行停机维护操作。
 
-本文介绍如何维护 Kubernetes 节点，并根据维护时长和存储类型提供不同的操作策略。
+本文介绍在不同存储类型和维护时长下，如何安全地维护 Kubernetes 节点。
 
 ## 前提条件
 
@@ -15,7 +15,7 @@ TiDB 是高可用数据库，即使部分节点下线，集群也能正常运行
 
 > **注意：**
 >
-> 维护节点前，需要保证 Kubernetes 集群的剩余资源足够运行 TiDB 集群。
+> 维护节点前，请确保 Kubernetes 集群的剩余资源足以支撑 TiDB 集群的正常运行。
 
 ## 维护节点步骤
 
@@ -33,6 +33,9 @@ TiDB 是高可用数据库，即使部分节点下线，集群也能正常运行
     kubectl get pod --all-namespaces -o wide -l pingcap.com/managed-by=tidb-operator | grep ${node_name}
     ```
 
+    - 如果节点上存在 TiDB 集群组件的 Pod，请按照后续步骤迁移这些 Pod。
+    - 如果节点上没有 TiDB 集群组件的 Pod，则无需迁移 Pod，可直接进行节点维护。
+    
 ### 第 2 步：迁移 TiDB 集群组件 Pod
 
 根据 Kubernetes 节点的存储类型，选择相应的 Pod 迁移策略：
@@ -42,7 +45,7 @@ TiDB 是高可用数据库，即使部分节点下线，集群也能正常运行
 
 #### 方法 1：重调度 Pod（适用于可自动迁移的存储）
 
-如果使用支持自动迁移的存储（如 [Amazon EBS](https://aws.amazon.com/cn/ebs/)），可以通过[优雅重启某个组件的单个 Pod](restart-a-tidb-cluster.md#优雅重启某个组件的单个-pod) 方式重调度各个组件 Pod。以 PD 组件为例：
+如果 Kubernetes 节点使用的存储支持自动迁移（如 [Amazon EBS](https://aws.amazon.com/cn/ebs/)），可以通过[优雅重启某个组件的单个 Pod](restart-a-tidb-cluster.md#优雅重启某个组件的单个-pod) 的方式重调度各个组件 Pod。以 PD 组件为例：
 
 1. 查看待维护节点上的 PD Pod：
 
@@ -72,7 +75,7 @@ TiDB 是高可用数据库，即使部分节点下线，集群也能正常运行
 
 #### 方法 2：重建实例（适用于本地存储）
 
-如果节点使用无法自动迁移的存储（如本地存储），你需要重建实例。
+如果 Kubernetes 节点使用的存储不支持自动迁移（如本地存储），你需要重建实例。
 
 > **警告：**
 >
@@ -108,7 +111,7 @@ kubectl get pod --all-namespaces -o wide | grep ${node_name}
 
 ### 第 5 步：维护后恢复（仅适用于临时维护）
 
-如果是长期维护或永久下线节点，请跳过此步骤。
+如果计划长期维护或永久下线节点，请跳过此步骤。
 
 对于临时维护，节点维护完成后需要执行以下恢复操作：
 

@@ -5,7 +5,7 @@ summary: Learn how to maintain Kubernetes nodes that hold the TiDB cluster.
 
 # Maintain Kubernetes Nodes That Hold the TiDB Cluster
 
-TiDB is a highly available database that can run smoothly when some of the database nodes go offline. For this reason, you can safely shut down and maintain the Kubernetes nodes that host TiDB clusters.
+TiDB is a highly available database that can run smoothly when some of the database nodes go offline. Therefore, you can safely shut down and maintain the Kubernetes nodes that host TiDB clusters.
 
 This document describes how to perform maintenance operations on Kubernetes nodes based on maintenance duration and storage type.
 
@@ -15,7 +15,7 @@ This document describes how to perform maintenance operations on Kubernetes node
 
 > **Note:**
 >
-> Before you maintain a node, you need to make sure that the remaining resources in the Kubernetes cluster are enough for running the TiDB cluster.
+> Before you maintain a node, make sure that the remaining resources in the Kubernetes cluster are enough for running the TiDB cluster.
 
 ## Maintain a node
 
@@ -33,6 +33,9 @@ This document describes how to perform maintenance operations on Kubernetes node
     kubectl get pod --all-namespaces -o wide -l pingcap.com/managed-by=tidb-operator | grep ${node_name}
     ```
 
+    - If the node has TiDB cluster component Pods, follow the subsequent steps in this document to migrate these Pods.  
+    - If the node does not have any TiDB cluster component Pods, there is no need to migrate Pods, and you can proceed directly with node maintenance.
+
 ### Step 2: Migrate TiDB cluster component Pods
 
 Based on the storage type of the Kubernetes node, choose the corresponding Pod migration strategy:
@@ -42,7 +45,7 @@ Based on the storage type of the Kubernetes node, choose the corresponding Pod m
 
 #### Method 1: Reschedule Pods (for automatically migratable storage)
 
-If you use storage that supports automatic migration (such as [Amazon EBS](https://aws.amazon.com/ebs/)), you can reschedule component Pods by following [Perform a graceful restart of a single Pod in a component](restart-a-tidb-cluster.md#perform-a-graceful-restart-of-a-single-pod-in-a-component). The following example uses the PD component:
+If you use storage that supports automatic migration (such as [Amazon EBS](https://aws.amazon.com/ebs/)), you can reschedule component Pods by following [Perform a graceful restart of a single Pod in a component](restart-a-tidb-cluster.md#perform-a-graceful-restart-of-a-single-pod-in-a-component). The following instructions take rescheduling PD Pods as an example:
 
 1. Check the PD Pod on the node to be maintained:
 
@@ -78,7 +81,7 @@ If the node uses storage that cannot be automatically migrated (such as local st
 >
 > Recreating instances causes data loss. For stateful components such as TiKV, ensure that the cluster has sufficient replicas to guarantee data safety.
 
-The following example recreates a TiKV instance:
+The following instructions take recreating a TiKV instance as an example:
 
 1. Delete the CR of the TiKV instance. TiDB Operator automatically deletes the associated PVC and ConfigMap resources, and creates a new instance:
 
@@ -108,7 +111,7 @@ You can now safely perform maintenance operations on the node, such as restartin
 
 ### Step 5: Recover after maintenance (for temporary maintenance only)
 
-If you perform long-term maintenance or permanently take the node offline, skip this step.
+If you plan to perform long-term maintenance or permanently take the node offline, skip this step.
 
 For temporary maintenance, perform the following recovery operations after the node maintenance is completed:
 
