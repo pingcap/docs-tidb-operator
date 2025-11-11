@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator 1.6.4 Release Notes
-summary: Learn about new features in TiDB Operator 1.6.2.
+summary: Learn about new features in TiDB Operator 1.6.4.
 ---
 
 # TiDB Operator 1.6.3 Release Notes
