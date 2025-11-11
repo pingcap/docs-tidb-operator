@@ -1,6 +1,6 @@
 ---
-title: TiDB Operator 1.6.3 Release Notes
-summary: 了解 TiDB Operator 1.6.3 版本的新功能。
+title: TiDB Operator 1.6.4 Release Notes
+summary: 了解 TiDB Operator 1.6.4 版本的新功能。
 ---
 
 # TiDB Operator 1.6.3 Release Notes
