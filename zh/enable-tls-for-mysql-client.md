@@ -8,13 +8,20 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群开启 MySQL 客户端 TLS。开启步骤为：
 
-1. 为 TiDB Server 颁发一套 Server 端证书，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${cluster_name}-tidb-server-secret` 和  `${cluster_name}-tidb-client-secret`，分别包含前面创建的两套证书；
+1. [为 TiDB Server 颁发一套 Server 端证书](#第一步为-tidb-集群颁发两套证书)，为 MySQL Client 颁发一套 Client 端证书。并创建两个 Secret 对象，Secret 名字分别为：`${cluster_name}-tidb-server-secret` 和  `${cluster_name}-tidb-client-secret`，分别包含前面创建的两套证书；
 
     > **注意：**
     >
     > 创建的 Secret 对象必须符合上述命名规范，否则将导致 TiDB 集群部署失败。
 
-2. 部署集群，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`：
+    其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
+
+    - [使用 `cfssl` 系统颁发证书](#使用-cfssl-系统颁发证书)
+    - [使用 `cert-manager` 系统颁发证书](#使用-cert-manager-颁发证书)
+
+    当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+
+2. [部署集群](#第二步部署-tidb-集群)，设置 `.spec.tidb.tlsClient.enabled` 属性为 `true`：
 
     * 如需跳过作为 MySQL 客户端的内部组件（如 TidbInitializer、Dashboard、Backup、Restore）的 TLS 认证，你可以给集群对应的 `TidbCluster` 加上 `tidb.tidb.pingcap.com/skip-tls-when-connect-tidb="true"` 的 annotation。
     * 如需关闭 TiDB 服务端对客户端 CA 证书的认证，你可以设置 `.spec.tidb.tlsClient.disableClientAuthn` 属性为 `true`，即在[配置 TiDB 服务端启用安全连接](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-tidb-服务端启用安全连接) 中不设置 ssl-ca 参数。
@@ -24,22 +31,13 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     >
     > 已部署的集群 `.spec.tidb.tlsClient.enabled` 属性从 `false` 改为 `true`，将导致 TiDB Pod 滚动重启。
 
-3. 配置 MySQL 客户端使用加密连接。
-
-其中，颁发证书的方式有多种，本文档提供两种方式，用户也可以根据需要为 TiDB 集群颁发证书，这两种方式分别为：
-
-- 使用 `cfssl` 系统颁发证书；
-- 使用 `cert-manager` 系统颁发证书；
-
-当需要更新已有 TLS 证书时，可参考[更新和替换 TLS 证书](renew-tls-certificate.md)。
+3. [配置 MySQL 客户端使用加密连接](#第三步配置-mysql-客户端使用-tls-连接)。
 
 ## 第一步：为 TiDB 集群颁发两套证书
 
 ### 使用 `cfssl` 系统颁发证书
 
 1. 首先下载 `cfssl` 软件并初始化证书颁发机构：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p ~/bin
@@ -110,8 +108,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 4. 使用定义的选项生成 CA：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
     ```
@@ -119,8 +115,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 5. 生成 Server 端证书。
 
     首先生成默认的 `server.json` 文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > server.json
@@ -151,8 +145,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     最后生成 Server 端证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server server.json | cfssljson -bare server
     ```
@@ -160,8 +152,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 6. 生成 Client 端证书。
 
     首先生成默认的 `client.json` 文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     cfssl print-defaults csr > client.json
@@ -178,8 +168,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     最后生成 Client 端证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
     ```
@@ -187,8 +175,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 7. 创建 Kubernetes Secret 对象。
 
     到这里假设你已经按照上述文档把两套证书都创建好了。通过下面的命令为 TiDB 集群创建 Secret 对象：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl create secret generic ${cluster_name}-tidb-server-secret --namespace=${namespace} --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem
@@ -213,8 +199,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     为了配置 `cert-manager` 颁发证书，必须先创建 Issuer 资源。
 
     首先创建一个目录保存 `cert-manager` 创建证书所需文件：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     mkdir -p cert-manager
@@ -264,8 +248,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     - 一个可以用于颁发 TiDB Server TLS 证书的 Issuer。
 
     最后执行下面的命令进行创建：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-server-issuer.yaml
@@ -334,8 +316,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     通过执行下面的命令来创建证书：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f tidb-server-cert.yaml
     ```
@@ -377,8 +357,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
     - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
     通过执行下面的命令来创建证书：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f tidb-client-cert.yaml
@@ -517,8 +495,6 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
     2. 通过执行下面的命令来创建证书：
 
-        {{< copyable "shell-regular" >}}
-
         ``` shell
         kubectl apply -f tidb-components-client-cert.yaml
         ```
@@ -641,15 +617,11 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 2. 部署 TiDB 集群：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f tidb-cluster.yaml
     ```
 
 3. 集群备份：
-
-    {{< copyable "shell-regular" >}}
 
     ``` shell
     kubectl apply -f backup.yaml
@@ -657,30 +629,106 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 4. 集群恢复：
 
-    {{< copyable "shell-regular" >}}
-
     ``` shell
     kubectl apply -f restore.yaml
     ```
 
-## 第三步：配置 MySQL 客户端使用加密连接
+## 第三步：配置 MySQL 客户端使用 TLS 连接
 
 可以根据[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-mysql-client-使用安全连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
 
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
 
-{{< copyable "shell-regular" >}}
-
 ``` shell
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
-kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.crt}' | base64 --decode > client-tls.crt
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.tls\.key}' | base64 --decode > client-tls.key
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret -ojsonpath='{.data.ca\.crt}' | base64 --decode > client-ca.crt
 ```
-
-{{< copyable "shell-regular" >}}
 
 ``` shell
 mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-cert=client-tls.crt --ssl-key=client-tls.key --ssl-ca=client-ca.crt
 ```
 
 最后请参考[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#检查当前连接是否是加密连接)来验证是否正确开启了 TLS。
+
+如果不使用 Client 证书，可以运行以下命令：
+
+``` shell
+kubectl get secret -n ${namespace} ${cluster_name}-tidb-client-secret  -ojsonpath='{.data.ca\.crt}'  | base64 --decode > client-ca.crt
+```
+
+``` shell
+mysql --comments -uroot -p -P 4000 -h ${tidb_host} --ssl-ca=client-ca.crt
+```
+
+## 故障排查
+
+X.509 证书存储在 Kubernetes Secret 中。可以使用类似下面的命令查看这些 Secret：
+
+```shell
+kubectl -n ${namespace} get secret
+```
+
+这些 Secret 会被挂载到容器内。可以通过查看 Pod 描述中的 **Volumes** 部分来确认挂载的卷信息：
+
+```shell
+kubectl -n ${namespace} describe pod ${podname}
+```
+
+要在容器内部检查这些 Secret 挂载情况，可以运行以下命令：
+
+```shell
+kubectl exec -n ${cluster_name} --stdin=true --tty=true ${cluster_name}-tidb-0 -c tidb -- /bin/sh
+```
+
+在容器内查看 TLS 目录的内容：
+
+```shell
+sh-5.1# ls -l /var/lib/*tls
+/var/lib/tidb-server-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+
+/var/lib/tidb-tls:
+total 0
+lrwxrwxrwx. 1 root root 13 Sep 25 12:23 ca.crt -> ..data/ca.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.crt -> ..data/tls.crt
+lrwxrwxrwx. 1 root root 14 Sep 25 12:23 tls.key -> ..data/tls.key
+```
+
+检查 TiDB 容器日志以确认 TLS 已启用，示例命令及输出如下：
+
+```shell
+kubectl -n ${cluster_name} logs ${cluster_name}-tidb-0 -c tidb
+```
+
+```
+[2025/09/25 12:23:19.739 +00:00] [INFO] [server.go:291] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
+```
+
+## 重新加载证书
+
+重新加载证书的方式取决于证书的生成方式：
+
+- 如果使用 `cfssl` 手动生成证书和密钥文件，必须手动更新对应的 Secret。
+- 如果使用 `cert-manager` 生成证书和密钥文件，Secret 在颁发新证书时会自动更新。
+
+要让 TiDB 使用新的证书，需要运行 [`ALTER INSTANCE RELOAD TLS`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-instance#reload-tls)。
+
+可以执行下面语句查看状态变量 `Ssl_server_not_before` 和 `Ssl_server_not_after` 来检查证书的有效期。
+
+```sql
+SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
+```
+
+```
++-----------------------+--------------------------+
+| Variable_name         | Value                    |
++-----------------------+--------------------------+
+| Ssl_server_not_after  | Apr 23 07:59:47 2026 UTC |
+| Ssl_server_not_before | Jan 24 07:59:47 2025 UTC |
++-----------------------+--------------------------+
+2 rows in set (0.011 sec)
+```
