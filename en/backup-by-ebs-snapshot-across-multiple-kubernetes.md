@@ -55,7 +55,7 @@ Snapshot backup is defined in a customized `VolumeBackup` custom resource (CR) o
 
 **You must execute the following steps in every data plane**.
 
-1. Download the [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) file to the backup server.
+1. Download the [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/v1.5.5/manifests/backup/backup-rbac.yaml) file to the backup server.
 
 2. If you have deployed the TiDB cluster in `${namespace}`, create the RBAC-related resources required for the backup in this namespace by running the following command:
 
