@@ -24,7 +24,7 @@ Push 方式指利用 Prometheus remote-write 的特性，使位于不同 Kuberne
 
 - 各 Kubernetes 集群上的 Prometheus（即 TidbMonitor）组件有能力访问 Thanos Receiver 组件。
 
-关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite)。
+关于 Thanos Receiver 部署，可参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.3.10/examples/monitor-prom-remotewrite)。
 
 ### 部署架构图
 
@@ -108,7 +108,7 @@ Pull 方式是指从不同 Kubernetes 集群的 Prometheus 实例中拉取监控
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod IP。
 - Thanos Query 组件有能力访问各 Kubernetes 集群上的 Prometheus (即 TidbMonitor) 组件的 Pod FQDN。
 
-关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-with-thanos)。
+关于 Thanos Query 部署, 参考 [kube-thanos](https://github.com/thanos-io/kube-thanos) 以及 [Example](https://github.com/pingcap/tidb-operator/tree/v1.3.10/examples/monitor-with-thanos)。
 
 #### 部署架构图
 
