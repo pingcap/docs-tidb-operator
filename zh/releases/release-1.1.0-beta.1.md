@@ -10,7 +10,7 @@ TiDB Operator 版本：1.1.0-beta.1
 
 ## 需要操作的变更
 
-- 所有 [charts](https://github.com/pingcap/tidb-operator/tree/master/charts) 支持配置 `timezone` ([#1122](https://github.com/pingcap/tidb-operator/pull/1122), [@weekface](https://github.com/weekface))
+- 所有 [charts](https://github.com/pingcap/tidb-operator/tree/v1.1.0-beta.1/charts) 支持配置 `timezone` ([#1122](https://github.com/pingcap/tidb-operator/pull/1122), [@weekface](https://github.com/weekface))
 
     对于 `tidb-cluster` chart, 之前已经有 `timezone` 配置项（默认值：`UTC`）。如果用户没有修改成不同值（如：`Asia/Shangehai`），所有 Pods 不会被重建。
 
