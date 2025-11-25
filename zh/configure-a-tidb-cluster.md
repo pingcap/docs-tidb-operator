@@ -24,7 +24,7 @@ category: how-to
 
 ## 部署配置
 
-通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)。
+通过配置 `TidbCluster` CR 来配置 TiDB 集群。参考 TidbCluster [示例](https://github.com/pingcap/tidb-operator/blob/v1.4.7/examples/advanced/tidb-cluster.yaml)和 [API 文档](https://github.com/pingcap/tidb-operator/blob/v1.4.7/docs/api-references/docs.md)（示例和 API 文档请切换到当前使用的 TiDB Operator 版本）完成 TidbCluster CR(Custom Resource)。
 
 > **注意：**
 >
@@ -351,7 +351,7 @@ spec:
 >
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 TiKV 组件无法正常启动。
 > - TiKV 的 RocksDB 日志默认存储在 `/var/lib/tikv` 数据目录，建议配置 `max-days` 和 `max-backups` 来自动清理日志文件。
-> - 你也可通过配置 `separateRocksDBLog` 将 RocksDB 日志通过单独的 sidecar 容器输出到 stdout。完整配置项请参考 [TiDB Cluster 示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml)。
+> - 你也可通过配置 `separateRocksDBLog` 将 RocksDB 日志通过单独的 sidecar 容器输出到 stdout。完整配置项请参考 [TiDB Cluster 示例](https://github.com/pingcap/tidb-operator/blob/v1.4.7/examples/advanced/tidb-cluster.yaml)。
 
 #### 配置 PD 配置参数
 

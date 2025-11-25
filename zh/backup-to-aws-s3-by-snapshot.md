@@ -40,7 +40,7 @@ summary: 介绍如何基于 EBS 卷快照使用 TiDB Operator 备份 TiDB 集群
 
 ### 第 1 步：准备 EBS 卷快照备份环境
 
-1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/v1.4.7/manifests/backup/backup-rbac.yaml) 到执行备份的服务器。
 
 2. 执行以下命令，在 `test1` 这个命名空间中，创建备份需要的 RBAC 相关资源：
 

@@ -182,4 +182,4 @@ spec:
 
 After RemoteWrite is enabled, Prometheus pushes the monitoring data to [Thanos Receiver](https://thanos.io/tip/components/receive.md/). For more information, refer to [the design of Thanos Receiver](https://thanos.io/v0.8/proposals/201812_thanos-remote-receive/).
 
-For details on the deployment, refer to [this example of integrating TidbMonitor with Thanos Receiver](https://github.com/pingcap/tidb-operator/tree/master/examples/monitor-prom-remotewrite).
+For details on the deployment, refer to [this example of integrating TidbMonitor with Thanos Receiver](https://github.com/pingcap/tidb-operator/tree/v1.4.7/examples/monitor-prom-remotewrite).

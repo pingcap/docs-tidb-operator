@@ -17,7 +17,7 @@ summary: Learn how to deploy TiDB DM cluster on Kubernetes.
 
 ## Configure DM deployment
 
-To configure the DM deployment, you need to configure the `DMCluster` Custom Resource (CR). For the complete configurations of the `DMCluster` CR, refer to the [DMCluster example](https://github.com/pingcap/tidb-operator/blob/master/examples/dm/dm-cluster.yaml) and [API documentation](https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md#dmcluster). Note that you need to choose the example and API of the current TiDB Operator version.
+To configure the DM deployment, you need to configure the `DMCluster` Custom Resource (CR). For the complete configurations of the `DMCluster` CR, refer to the [DMCluster example](https://github.com/pingcap/tidb-operator/blob/v1.4.7/examples/dm/dm-cluster.yaml) and [API documentation](https://github.com/pingcap/tidb-operator/blob/v1.4.7/docs/api-references/docs.md#dmcluster). Note that you need to choose the example and API of the current TiDB Operator version.
 
 ### Cluster name
 
