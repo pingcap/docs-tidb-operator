@@ -413,7 +413,7 @@ spec:
 >
 > - 为了兼容 `helm` 部署，如果你是通过 CR 文件部署 TiDB 集群，即使你不设置 Config 配置，也需要保证 `Config: {}` 的设置，从而避免 TiKV 组件无法正常启动。
 > - TiKV 的 RocksDB 日志默认存储在 `/var/lib/tikv` 数据目录，建议配置 `max-days` 和 `max-backups` 来自动清理日志文件。
-> - 你也可通过配置 `separateRocksDBLog` 将 RocksDB 日志通过单独的 sidecar 容器输出到 stdout。完整配置项请参考 [TiDB Cluster 示例](https://github.com/pingcap/tidb-operator/blob/master/examples/advanced/tidb-cluster.yaml)。
+> - 你也可通过配置 `separateRocksDBLog` 将 RocksDB 日志通过单独的 sidecar 容器输出到 stdout。完整配置项请参考 [TiDB Cluster 示例](https://github.com/pingcap/tidb-operator/blob/release-1.x/examples/advanced/tidb-cluster.yaml)。
 
 #### 配置 PD 配置参数
 
