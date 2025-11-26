@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/stable/)
+- [TiDB on Kubernetes Docs](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/)
 - Introduction
   - [Overview](tidb-operator-overview.md)
   - [What's New in v1.6](whats-new-in-v1.6.md)
