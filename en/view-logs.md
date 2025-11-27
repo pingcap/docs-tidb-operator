@@ -1,6 +1,7 @@
 ---
 title: View TiDB Logs on Kubernetes
 summary: Learn how to view TiDB slow logs and application logs on Kubernetes.
+aliases: ['/docs/tidb-in-kubernetes/dev/view-logs/']
 ---
 
 # View TiDB Logs on Kubernetes

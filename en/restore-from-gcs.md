@@ -1,6 +1,7 @@
 ---
 title: Restore Data from GCS (Helm)
 summary: Learn how to restore the backup data from GCS.
+aliases: ['/docs/tidb-in-kubernetes/dev/restore-from-gcs/']
 ---
 
 # Restore Data from GCS (Helm)
