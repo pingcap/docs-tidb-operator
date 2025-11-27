@@ -13,8 +13,8 @@ Before submitting your question, make sure you have:
 - Searched existing Stack Overflow questions.
 - Googled your question.
 - Read the documentation:
-  - [TiDB Operator (en)](https://github.com/pingcap/docs-tidb-operator/tree/master/en)
-  - [TiDB Operator (zh)](https://github.com/pingcap/docs-tidb-operator/tree/master/zh)
+  - [TiDB Operator (en)](https://docs.pingcap.com/tidb-in-kubernetes/dev/)
+  - [TiDB Operator (zh)](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/)
 <!-- Searched the open and closed [GitHub issues](https://github.com/pingcap/docs-tidb-operator/issues?q=is%3Aissue).-->
 
 Now, please describe your question here:
