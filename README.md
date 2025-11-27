@@ -19,13 +19,7 @@ Currently, we maintain the following versions for TiDB on Kubernetes documentati
 
 | Branch name | Version description |
 | :--- | :-- |
-<<<<<<< HEAD
-| `master` | the latest development version |
-=======
-| `main` | the latest development version for v2.x |
-| `release-2.0` | the 2.0 version |
 | `release-1.x` | the latest development version for v1.x |
->>>>>>> 1913e1e2 (update branch naming and version mapping (#3000))
 | `release-1.6` | the 1.6 version (latest stable) |
 | `release-1.5` | the 1.5 version |
 | `release-1.4` | the 1.4 version |
