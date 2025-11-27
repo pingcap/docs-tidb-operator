@@ -1,0 +1,279 @@
+name: AI Doc Review
+
+on:
+  workflow_dispatch:
+
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'issue_comment' &&
+        contains(github.event.comment.body, '/bot-review') &&
+        (github.event.comment.user.login == 'hfxsd' || github.event.comment.user.login == 'likidu' || github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'Oreoxmt' || github.event.comment.user.login == 'qiancai')
+      )
+    outputs:
+      zh_files_count: ${{ steps.diff.outputs.zh_files_count }}
+      en_files_count: ${{ steps.diff.outputs.en_files_count }}
+      review_mode: ${{ steps.extract.outputs.REVIEW_MODE }}
+      commit_sha: ${{ steps.extract.outputs.COMMIT_SHA }}
+      base_sha: ${{ steps.extract.outputs.BASE_SHA }}
+      head_sha: ${{ steps.extract.outputs.HEAD_SHA }}
+    steps:
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract review parameters
+        id: extract
+        if: github.event_name == 'issue_comment'
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+          
+          # Match commit range
+          if [[ "$COMMENT" =~ \/bot-review:[[:space:]]*([a-f0-9]{7,40})[[:space:]]*\.\.[[:space:]]*([a-f0-9]{7,40}) ]]; then
+            echo "BASE_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "HEAD_SHA=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=commit_range" >> $GITHUB_OUTPUT
+            echo "Detected commit range"
+          # Match a single commit
+          elif [[ "$COMMENT" =~ \/bot-review:[[:space:]]*([a-f0-9]{7,40}) ]]; then
+            echo "COMMIT_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=single_commit" >> $GITHUB_OUTPUT
+            printf "Detected single commit: %s\n" "${BASH_REMATCH[1]}"
+          # Match "/bot-review" or "/bot-review "
+          elif [[ "$COMMENT" =~ ^\/bot-review[[:space:]]*$ ]]; then
+            echo "REVIEW_MODE=latest" >> $GITHUB_OUTPUT
+            echo "Detected default review mode"
+          # Invalid format
+          else
+            echo "REVIEW_MODE=invalid" >> $GITHUB_OUTPUT
+            echo "Invalid bot-review command format"
+          fi
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          # Initialize variables
+          PR_NUMBER=""
+          FILES=""
+          REVIEW_MODE="${{ steps.extract.outputs.REVIEW_MODE }}"
+          printf "Review mode detected: %s\n" "$REVIEW_MODE"
+          
+          # Process single commit mode
+          if [[ "$REVIEW_MODE" == "single_commit" ]]; then
+            COMMIT_SHA="${{ steps.extract.outputs.COMMIT_SHA }}"
+            printf "Processing single commit mode with SHA: %s\n" "$COMMIT_SHA"
+            
+            FILES=$(git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA" 2>/dev/null || echo "")
+            
+            if [[ -z "$FILES" ]]; then
+              printf "Fetching commit %s\n" "$COMMIT_SHA"
+              git fetch --depth=1 origin "$COMMIT_SHA"
+              FILES=$(git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA" 2>/dev/null || git show --name-only --format="" "$COMMIT_SHA" 2>/dev/null || echo "")
+              
+              if [[ -z "$FILES" ]]; then
+                printf "No files found for commit %s\n" "$COMMIT_SHA"
+                echo "zh_files_count=0" >> "$GITHUB_OUTPUT"
+                echo "en_files_count=0" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
+            
+            ZH_COUNT=0
+            EN_COUNT=0
+            
+            while IFS= read -r file; do
+              if [[ "$file" == zh/* ]]; then
+                ZH_COUNT=$((ZH_COUNT + 1))
+              else
+                # Count any non-zh file as English
+                EN_COUNT=$((EN_COUNT + 1))
+              fi
+            done <<< "$FILES"
+            
+            printf "Files from commit %s:\n" "$COMMIT_SHA"
+            echo "$FILES"
+            echo "Chinese files: $ZH_COUNT"
+            echo "English files: $EN_COUNT"
+            
+            # Set output variables
+            echo "zh_files_count=$ZH_COUNT" >> "$GITHUB_OUTPUT"
+            echo "en_files_count=$EN_COUNT" >> "$GITHUB_OUTPUT"
+            exit 0
+          
+          # Process commit range mode
+          elif [[ "$REVIEW_MODE" == "commit_range" ]]; then
+            BASE_SHA="${{ steps.extract.outputs.BASE_SHA }}"
+            HEAD_SHA="${{ steps.extract.outputs.HEAD_SHA }}"
+            printf "Processing commit range mode with SHA range: %s..%s\n" "$BASE_SHA" "$HEAD_SHA"
+            
+            # Try to get files for this commit range
+            FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" 2>/dev/null || echo "")
+            
+            if [[ -z "$FILES" ]]; then
+              printf "Fetching commits %s and %s\n" "$BASE_SHA" "$HEAD_SHA"
+              git fetch --depth=1 origin "$BASE_SHA" "$HEAD_SHA"
+              FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" 2>/dev/null || echo "")
+              
+              if [[ -z "$FILES" ]]; then
+                printf "No files found in range %s..%s\n" "$BASE_SHA" "$HEAD_SHA"
+                echo "zh_files_count=0" >> "$GITHUB_OUTPUT"
+                echo "en_files_count=0" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
+            
+            ZH_COUNT=0
+            EN_COUNT=0
+            
+            while IFS= read -r file; do
+              if [[ "$file" == zh/* ]]; then
+                ZH_COUNT=$((ZH_COUNT + 1))
+              else
+                # Count any non-zh file as English
+                EN_COUNT=$((EN_COUNT + 1))
+              fi
+            done <<< "$FILES"
+            
+            printf "Files from commit range %s..%s:\n" "$BASE_SHA" "$HEAD_SHA"
+            echo "$FILES"
+            echo "Chinese files: $ZH_COUNT"
+            echo "English files: $EN_COUNT"
+            
+            # Set output variables
+            echo "zh_files_count=$ZH_COUNT" >> "$GITHUB_OUTPUT"
+            echo "en_files_count=$EN_COUNT" >> "$GITHUB_OUTPUT"
+            exit 0
+          
+          # Process default/latest mode (entire PR)
+          elif [[ "$REVIEW_MODE" == "latest" ]]; then
+            # Get PR number
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              if [[ "${{ github.ref }}" =~ ^refs/pull/([0-9]+)/merge$ ]]; then
+                PR_NUMBER="${BASH_REMATCH[1]}"
+              else
+                echo "zh_files_count=0" >> "$GITHUB_OUTPUT"
+                echo "en_files_count=0" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            else
+              # For issue_comment event - get PR number from different sources
+              PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH" || jq --raw-output .issue.number "$GITHUB_EVENT_PATH")
+              
+              # Extract from issue URL if null
+              if [[ "$PR_NUMBER" == "null" ]]; then
+                ISSUE_URL=$(jq --raw-output .issue.html_url "$GITHUB_EVENT_PATH")
+                if [[ "$ISSUE_URL" =~ /pull/([0-9]+)$ ]]; then
+                  PR_NUMBER="${BASH_REMATCH[1]}"
+                fi
+              fi
+            fi
+            
+            if [[ -n "$PR_NUMBER" && "$PR_NUMBER" != "null" ]]; then
+              # Default: get files for the entire PR
+              FILES=$(gh pr view $PR_NUMBER --repo ${{ github.repository }} --json files --jq '.files[].path')
+              if [[ -z "$FILES" ]]; then
+                # Fallback to git
+                PR_HEAD=$(gh pr view $PR_NUMBER --repo ${{ github.repository }} --json headRefName --jq '.headRefName')
+                PR_BASE=$(gh pr view $PR_NUMBER --repo ${{ github.repository }} --json baseRefName --jq '.baseRefName')
+                if [[ -n "$PR_HEAD" && -n "$PR_BASE" ]]; then
+                  git fetch origin "$PR_HEAD" "$PR_BASE"
+                  MERGE_BASE=$(git merge-base "origin/$PR_BASE" "origin/$PR_HEAD")
+                  FILES=$(git diff --name-only "$MERGE_BASE" "origin/$PR_HEAD")
+                fi
+              fi
+              
+              ZH_COUNT=0
+              EN_COUNT=0
+              
+              while IFS= read -r file; do
+                if [[ "$file" == zh/* ]]; then
+                  ZH_COUNT=$((ZH_COUNT + 1))
+                else
+                  # Count any non-zh file as English
+                  EN_COUNT=$((EN_COUNT + 1))
+                fi
+              done <<< "$FILES"
+              
+              printf "Files from PR %s:\n" "$PR_NUMBER"
+              echo "$FILES"
+              echo "Chinese files: $ZH_COUNT"
+              echo "English files: $EN_COUNT"
+              
+              echo "zh_files_count=$ZH_COUNT" >> "$GITHUB_OUTPUT"
+              echo "en_files_count=$EN_COUNT" >> "$GITHUB_OUTPUT"
+            else
+              echo "Could not determine PR number"
+              echo "zh_files_count=0" >> "$GITHUB_OUTPUT"
+              echo "en_files_count=0" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "Invalid review mode"
+            echo "zh_files_count=0" >> "$GITHUB_OUTPUT"
+            echo "en_files_count=0" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  review-zh:
+    needs: prepare
+    if: needs.prepare.outputs.zh_files_count > 0
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: AI Doc Reviewer for Chinese docs
+        uses: qiancai/ai-codereviewer@main
+        continue-on-error: false
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_PROVIDER: "deepseek"
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_API_MODEL: "deepseek-chat"
+          exclude: "**/*.json,!zh/**" # Exclude JSON files and non-Chinese docs
+          REVIEW_MODE: ${{ needs.prepare.outputs.review_mode }}
+          COMMIT_SHA: ${{ needs.prepare.outputs.commit_sha }}
+          BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.prepare.outputs.head_sha }}
+          PROMPT_PATH: "doc-review-prompt-zh.txt"
+
+  review-en:
+    needs: prepare
+    if: needs.prepare.outputs.en_files_count > 0
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: AI Doc Reviewer for English docs
+        uses: qiancai/ai-codereviewer@main
+        continue-on-error: false
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_PROVIDER: "openai"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: "gpt-4o"
+          exclude: "**/*.json,zh/**" # Exclude JSON files and Chinese docs
+          REVIEW_MODE: ${{ needs.prepare.outputs.review_mode }}
+          COMMIT_SHA: ${{ needs.prepare.outputs.commit_sha }}
+          BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.prepare.outputs.head_sha }}
+          PROMPT_PATH: "doc-review-prompt-en.txt"
