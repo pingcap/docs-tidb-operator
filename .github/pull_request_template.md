@@ -12,7 +12,7 @@
 
 <!--Tick the checkbox(es) below to choose the TiDB Operator version(s) that your changes apply to.-->
 
-- [ ] master (the latest development version)
+- [ ] release-1.x (the latest development version for v1.x)
 - [ ] v1.5 (TiDB Operator 1.5 versions)
 - [ ] v1.4 (TiDB Operator 1.4 versions)
 - [ ] v1.3 (TiDB Operator 1.3 versions)
