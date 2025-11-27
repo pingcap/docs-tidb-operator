@@ -4,14 +4,14 @@ This repository stores all the source files of [TiDB on Kubernetes documentation
 
 Currently, the official documentation supports two languages:
 
-- `en`: [documentation in English](https://docs.pingcap.com/tidb-in-kubernetes/stable)
-- `zh`: [documentation in Chinese](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+- `en`: [documentation in English](https://docs.pingcap.com/tidb-in-kubernetes/stable/)
+- `zh`: [documentation in Chinese](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/)
 
 You can use Google Translate to view the documentation in different languages. For example:
 
-- `fr`: [documentation in French](https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs-tidb-operator%2Fblob%2Fmaster%2Fen%2FTOC.md)
-- `ja`: [documentation in Japanese](https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://github.com/pingcap/docs-tidb-operator/blob/master/en/TOC.md)
-- `ko`: [documentation in Korean](https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs-tidb-operator%2Fblob%2Fmaster%2Fen%2FTOC.md)
+- `fr`: [documentation in French](https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs-tidb-operator%2Fblob%2Frelease-1.4%2Fen%2FTOC.md)
+- `ja`: [documentation in Japanese](https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://github.com/pingcap/docs-tidb-operator/blob/release-1.4/en/TOC.md)
+- `ko`: [documentation in Korean](https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs-tidb-operator%2Fblob%2Frelease-1.4%2Fen%2FTOC.md)
 
 ## Documentation versions
 
@@ -19,7 +19,7 @@ Currently, we maintain the following versions for TiDB on Kubernetes documentati
 
 | Branch name | Version description |
 | :--- | :-- |
-| `master` | the latest development version |
+| `release-1.x` | the latest development version for v1.x |
 | `release-1.4` | the 1.4 version |
 | `release-1.3` | the 1.3 version |
 | `release-1.2` | the 1.2 version (archived) |
