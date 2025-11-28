@@ -9,14 +9,13 @@ TiDB Operator 支持通过 Cluster CR 上的 `spec.featureGates` 开启或关闭
 
 ## 特性门控列表
 
-
-| 特性 | 默认值 | 阶段 | 自从 | 直到 |
-|:---|:---|:---|:---|:---|
-| FeatureModification            | false | Alpha | 2.0 | - |
-| VolumeAttributesClass          | false | Alpha | 2.0 | - |
-| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - |
-| UsePDReadyAPI                  | false | Alpha | 2.0 | - |
-| SessionTokenSigning            | false | Alpha | 2.0 | - |
+| 特性 | 默认值 | 阶段 | 自从 | 直到 | 重启 |
+|:---|:---|:---|:---|:---|:---|
+| FeatureModification            | false | Alpha | 2.0 | - |      |
+| VolumeAttributesClass          | false | Alpha | 2.0 | - |      |
+| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - | PD   |
+| UsePDReadyAPI                  | false | Alpha | 2.0 | - | PD   |
+| SessionTokenSigning            | false | Alpha | 2.0 | - | TiDB |
 
 ## 阶段
 
@@ -57,18 +56,12 @@ GA 阶段的特性有如下特征
 
 ### DisablePDDefaultReadinessProbe
 
-需要重启: [PD]
-
 开启后不再通过 tcp ping 来检查 PD 的 readiness
 
 ### UsePDReadyAPI
 
-需要重启: [PD]
-
-开启后通过 `/ready` 来检查 PD 的 readiness, 详见 https://github.com/tikv/pd/pull/8749
+开启后通过 `/ready` 来检查 PD 的 readiness, 详见 [tikv/pd#8749](https://github.com/tikv/pd/pull/8749)
 
 ### SessionTokenSigning
-
-需要重启: [TiDB]
 
 开启后 TiDB 会配置 `session-token-signing-cert` 和 `session-token-signing-key`, 详见 [TiDB 配置文件](https://docs.pingcap.com/tidb/stable/tidb-configuration-file/#session-token-signing-cert-new-in-v640)
