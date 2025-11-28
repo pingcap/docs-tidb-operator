@@ -98,7 +98,7 @@ spec:
       mode: "ms"
 ```
 
-目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，你可以通过 TSOGroup 和 SchedulerGroup CR 的 `spec.template.spec.config` 来配置 PD 微服务参数。
+目前 PD 支持 `tso` 和 `scheduling` 这两个微服务，你可以通过 TSOGroup 和 SchedulingGroup CR 的 `spec.template.spec.config` 来配置 PD 微服务参数。
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -113,7 +113,7 @@ spec:
           filename = "/pdms/log/tso.log"
 ---
 apiVersion: core.pingcap.com/v1alpha1
-kind: SchedulerGroup
+kind: SchedulingGroup
 metadata:
   name: scheduling
 spec:
