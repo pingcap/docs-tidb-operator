@@ -16,6 +16,7 @@
   - [Component Configuration](component-configuration.md)
   - [Storage Volume Configuration](volume-configuration.md)
   - [Customize the Configuration of Kubernetes Native Resources](overlay.md)
+  - [Feature Gates](feature-gates.md)
 - Manage
   - Security
     - [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md)
