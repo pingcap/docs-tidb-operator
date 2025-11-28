@@ -2,7 +2,7 @@ name: Upload media files to Qiniu when they change
 on:
   push:
     branches:
-      - master
+      - main
       - release-*
     paths:
       - media/**
