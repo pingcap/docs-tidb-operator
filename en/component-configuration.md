@@ -98,7 +98,7 @@ spec:
       mode: "ms"
 ```
 
-Currently, PD supports the `tso` and `scheduling` microservices. You can configure them using the `TSOGroup` and `SchedulerGroup` CRs.
+Currently, PD supports the `tso` and `scheduling` microservices. You can configure them using the `TSOGroup` and `SchedulingGroup` CRs.
 
 ```yaml
 apiVersion: core.pingcap.com/v1alpha1
@@ -113,7 +113,7 @@ spec:
           filename = "/pdms/log/tso.log"
 ---
 apiVersion: core.pingcap.com/v1alpha1
-kind: SchedulerGroup
+kind: SchedulingGroup
 metadata:
   name: scheduling
 spec:
