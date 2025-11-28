@@ -3,6 +3,7 @@ title: TiDB on Kubernetes Documentation
 summary: Learn about TiDB on Kubernetes documentation.
 hide_sidebar: true
 hide_commit: true
+aliases: ['/docs/tidb-in-kubernetes/dev/']
 ---
 
 <LearningPathContainer platform="tidb-operator" title="TiDB on Kubernetes" subTitle="Using TiDB Operator provided by PingCAP, you can run and maintain TiDB seamlessly on the Kubernetes clusters deployed on a public cloud or in a self-managed environment.">

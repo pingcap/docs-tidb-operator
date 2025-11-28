@@ -1,6 +1,7 @@
 ---
 title: Import Data
 summary: Learn how to quickly import data with TiDB Lightning.
+aliases: ['/docs/tidb-in-kubernetes/dev/restore-data-using-tidb-lightning/']
 ---
 
 # Import Data

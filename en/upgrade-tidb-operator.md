@@ -1,6 +1,7 @@
 ---
 title: Upgrade TiDB Operator
 summary: Learn how to perform online upgrade and offline upgrade to TiDB Operator in the Kubernetes cluster.
+aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 ---
 
 # Upgrade TiDB Operator
