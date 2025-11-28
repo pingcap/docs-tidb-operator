@@ -9,14 +9,13 @@ TiDB Operator supports to enable/disable feature gates by the field `spec.featur
 
 ## Feature gates list
 
-
-| Feature | Default | Stage | Since | Until |
-|:---|:---|:---|:---|:---|
-| FeatureModification            | false | Alpha | 2.0 | - |
-| VolumeAttributesClass          | false | Alpha | 2.0 | - |
-| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - |
-| UsePDReadyAPI                  | false | Alpha | 2.0 | - |
-| SessionTokenSigning            | false | Alpha | 2.0 | - |
+| Feature | Default | Stage | Since | Until | Restart |
+|:---|:---|:---|:---|:---|:---|
+| FeatureModification            | false | Alpha | 2.0 | - |      |
+| VolumeAttributesClass          | false | Alpha | 2.0 | - |      |
+| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - | PD   |
+| UsePDReadyAPI                  | false | Alpha | 2.0 | - | PD   |
+| SessionTokenSigning            | false | Alpha | 2.0 | - | TiDB |
 
 ## Stage
 
@@ -56,18 +55,12 @@ Support to change `VolumeAttributesClass` of PVCs. This feature should also be e
 
 ### DisablePDDefaultReadinessProbe
 
-Rolling Update: [PD]
-
 If enabled, default tcp readiness probe of PD will be removed.
 
 ### UsePDReadyAPI
 
-Rolling Update: [PD]
-
 If enabled, use `/ready` api as readiness probe of PD. See [tikv/pd#8749](https://github.com/tikv/pd/pull/8749)
 
 ### SessionTokenSigning
-
-Rolling Update: [TiDB]
 
 If enabled, `session-token-signing-cert` and `session-token-signing-key` will be configured. See [TiDB ConfigFile](https://docs.pingcap.com/tidb/stable/tidb-configuration-file/#session-token-signing-cert-new-in-v640)
