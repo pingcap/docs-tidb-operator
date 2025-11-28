@@ -5,7 +5,7 @@ summary: Introduce how to configure feature gates of a TiDB cluster
 
 # Feature Gates
 
-TiDB Operator supports to enable/disable a feature gates by the field `spec.featureGates` in the Cluster CR.
+TiDB Operator supports to enable/disable feature gates by the field `spec.featureGates` in the Cluster CR.
 
 ## Feature gates list
 
