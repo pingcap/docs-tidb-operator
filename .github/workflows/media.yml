@@ -2,8 +2,12 @@ name: Upload media files to Qiniu when they change
 on:
   push:
     branches:
+<<<<<<< HEAD
       - master
       - feature/v2
+=======
+      - main
+>>>>>>> e7e23d93 (ci: update docs trigger and media upload branch from master to main (#3010))
       - release-*
     paths:
       - media/**
