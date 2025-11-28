@@ -3,8 +3,9 @@ name: Trigger docs site update
 on:
   push:
     branches:
-      - master
+      - main
       - release-*
+      - '!release-1.x'
 
 jobs:
   trigger:
