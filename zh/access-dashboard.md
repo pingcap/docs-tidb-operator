@@ -38,7 +38,8 @@ metadata:
   name: basic
 spec:
   pd:
-    enableDashboardInternalProxy: true
+    config:
+      dashboard.internal-proxy: true
 ```
 
 这种方法部署的 TiDB Dashboard，service、port 和 HTTP 路径如下：
@@ -193,7 +194,7 @@ spec:
 
 当 `Service` 部署完成后，可以通过 `https://{nodeIP}:{nodePort}/dashboard` 访问 TiDB Dashboard, 其中 `nodePort` 默认由 Kubernetes 随机分配，也可以在 yaml 文件中指定一个可用的端口。
 
-需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.enableDashboardInternalProxy: true` 以保证正常访问 TiDB Dashboard。
+需要注意如果 PD Pod 数量超过 1 ，需要在 TidbCluster CR 中设置 `spec.pd.config.dashboard.internal-proxy: true` 以保证正常访问 TiDB Dashboard。
 
 ### 访问独立部署的 TiDB Dashboard
 
