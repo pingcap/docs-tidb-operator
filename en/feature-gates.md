@@ -1,66 +1,85 @@
 ---
 title: Feature Gates
-summary: Introduce how to configure feature gates of a TiDB cluster
+summary: Learn how to use feature gates to enable or disable specific features in a TiDB cluster.
 ---
 
 # Feature Gates
 
-TiDB Operator supports to enable/disable feature gates by the field `spec.featureGates` in the Cluster CR.
+Feature gates are configuration switches that enable or disable specific features in TiDB Operator. These features are typically experimental, and enabling them might require restarting certain cluster components.
 
-## Feature gates list
+You can configure feature gates in the `spec.featureGates` field of the Cluster Custom Resource (CR). The following example shows how to enable the `FeatureModification` feature gate:
 
-| Feature | Default | Stage | Since | Until | Restart |
-|:---|:---|:---|:---|:---|:---|
-| FeatureModification            | false | Alpha | 2.0 | - |      |
-| VolumeAttributesClass          | false | Alpha | 2.0 | - |      |
-| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - | PD   |
-| UsePDReadyAPI                  | false | Alpha | 2.0 | - | PD   |
-| SessionTokenSigning            | false | Alpha | 2.0 | - | TiDB |
+```yaml
+spec:
+  featureGates:
+    FeatureModification: true
+```
 
-## Stage
+## Supported feature gates
+
+This section describes the feature gates supported by TiDB Operator. For the definition of feature stages, see [Feature gate stages](#feature-gate-stages).
+
+### `FeatureModification`
+
+- When this feature is enabled, you can modify the `spec.featureGates` configuration.
+- Default value: `false`
+- Stage: Alpha in v2.0 and later versions
+- Components requiring restart: None
+
+### `VolumeAttributesClass`
+
+- When this feature is enabled, you can modify the `VolumeAttributesClass` attribute of a PVC. This feature depends on the corresponding Kubernetes capability. For more information, see the [Kubernetes documentation for VolumeAttributesClass](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/).
+- Default value: `false`
+- Stage: Alpha in v2.0 and later versions
+- Components requiring restart: None
+
+### `DisablePDDefaultReadinessProbe`
+
+- When this feature is enabled, TiDB Operator no longer checks PD readiness using TCP probes.
+- Default value: `false`
+- Stage: Alpha in v2.0 and later versions
+- Components requiring restart: PD
+
+### `UsePDReadyAPI`
+
+- When this feature is enabled, TiDB Operator checks PD readiness using the `/ready` API. For implementation details, see [`tikv/pd` #8749](https://github.com/tikv/pd/pull/8749).
+- Default value: `false`
+- Stage: Alpha in v2.0 and later versions
+- Components requiring restart: PD
+
+### `SessionTokenSigning`
+
+- When this feature is enabled, TiDB Operator automatically configures the [`session-token-signing-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file/#session-token-signing-cert-new-in-v640) and [`session-token-signing-key`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file/#session-token-signing-key-new-in-v640) parameters for TiDB.
+- Default value: `false`
+- Stage: Alpha in v2.0 and later versions
+- Components requiring restart: TiDB
+
+## Feature gate stages
+
+TiDB Operator classifies feature gates into three stages based on maturity: Alpha, Beta, and GA.
 
 ### Alpha
 
-Alpha feature means:
+Alpha-stage features have the following characteristics:
 
 - Disabled by default.
-- Recommanded to enable only when create a new TiDB cluster.
-- Might not support to enable/disable for an existing TiDB cluster.
-- Not recommanded to enable in prod env if not well tested.
+- Recommended for use only in newly created clusters.
+- Dynamic enabling or disabling in existing clusters is not guaranteed.
+- Known or unknown issues might occur after enabling.
+- **Not recommended for production environments** unless risks are fully evaluated and validated.
 
 ### Beta
 
-Beta feature means:
+Beta-stage features have the following characteristics:
 
-- Normally the feature is well tested.
-- Recommanded to enable for all new created TiDB clusters.
-- Normally enable/disable the feature for an existing TiDB cluster has been supported.
+- Typically have undergone thorough testing.
+- Recommended to enable in all newly created clusters.
+- Usually support enabling or disabling on existing clusters, but might require restarting related components.
 
 ### GA
 
-GA feature means:
+GA (General Availability) features have the following characteristics:
 
-- Normally the feature has been tested in a long time.
-- Enabled by default. And cannot be disabled.
-
-## Description of features
-
-### FeatureModification
-
-Support to change `spec.featureGates` if enabled.
-
-### VolumeAttributesClass
-
-Support to change `VolumeAttributesClass` of PVCs. This feature should also be enabled in Kubernetes, see [VolumeAttributesClass](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/)
-
-### DisablePDDefaultReadinessProbe
-
-If enabled, default tcp readiness probe of PD will be removed.
-
-### UsePDReadyAPI
-
-If enabled, use `/ready` api as readiness probe of PD. See [tikv/pd#8749](https://github.com/tikv/pd/pull/8749)
-
-### SessionTokenSigning
-
-If enabled, `session-token-signing-cert` and `session-token-signing-key` will be configured. See [TiDB ConfigFile](https://docs.pingcap.com/tidb/stable/tidb-configuration-file/#session-token-signing-cert-new-in-v640)
+- Typically have undergone long-term and large-scale testing.
+- Enabled by default.
+- Cannot be disabled.
