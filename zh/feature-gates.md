@@ -13,6 +13,7 @@ summary: 介绍如何使用特性门控 (Feature Gates) 在 TiDB 集群中开启
 spec:
   featureGates:
     FeatureModification: true
+```
 
 ## 支持的特性门控
 
@@ -82,4 +83,3 @@ GA (General Availability) 阶段的特性具有以下特点：
 - 通常已经过长期和大规模测试。
 - 默认开启。
 - 不支持关闭。
-
