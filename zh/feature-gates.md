@@ -14,15 +14,44 @@ spec:
   featureGates:
     FeatureModification: true
 
-## 特性门控列表
+## 支持的特性门控
 
-| 特性 | 默认值 | 阶段 | 自从 | 直到 | 重启 |
-|:---|:---|:---|:---|:---|:---|
-| FeatureModification            | false | Alpha | 2.0 | - |      |
-| VolumeAttributesClass          | false | Alpha | 2.0 | - |      |
-| DisablePDDefaultReadinessProbe | false | Alpha | 2.0 | - | PD   |
-| UsePDReadyAPI                  | false | Alpha | 2.0 | - | PD   |
-| SessionTokenSigning            | false | Alpha | 2.0 | - | TiDB |
+本节列出了 TiDB Operator 支持的特性门控。关于特性阶段的定义，请参考[特性门控阶段](#特性门控阶段)。
+
+### `FeatureModification`
+
+- 开启该特性后，你可以修改 `spec.featureGates` 配置。
+- 默认值：`false`
+- 阶段：v2.0 及之后版本为 Alpha
+- 需要重启的组件：无
+
+### `VolumeAttributesClass`
+
+- 开启该特性后，你可以修改 PVC 的 `VolumeAttributesClass` 属性。该功能依赖 Kubernetes 的对应能力。更多信息，请参考 [Kubernetes 官方文档 VolumeAttributesClass](https://kubernetes.io/zh-cn/docs/concepts/storage/volume-attributes-classes/)。
+- 默认值：`false`
+- 阶段：v2.0 及之后版本为 Alpha
+- 需要重启的组件：无
+
+### `DisablePDDefaultReadinessProbe`
+
+- 开启该特性后，TiDB Operator 不再通过 TCP 探测方式检查 PD 的就绪状态。
+- 默认值：`false`
+- 阶段：v2.0 及之后版本为 Alpha
+- 需要重启的组件：PD
+
+### `UsePDReadyAPI`
+
+- 开启该特性后，TiDB Operator 将通过 PD 的 `/ready` API 检查就绪状态。有关实现细节，请参阅 [`tikv/pd` #8749](https://github.com/tikv/pd/pull/8749)。
+- 默认值：`false`
+- 阶段：v2.0 及之后版本为 Alpha
+- 需要重启的组件：PD
+
+### `SessionTokenSigning`
+
+- 开启该特性后，TiDB Operator 会自动配置 TiDB 的 [`session-token-signing-cert`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file/#session-token-signing-cert-从-v640-版本开始引入) 和 [`session-token-signing-key`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file/#session-token-signing-key-从-v640-版本开始引入) 参数。
+- 默认值：`false`
+- 阶段：v2.0 及之后版本为 Alpha
+- 需要重启的组件：TiDB
 
 ## 特性门控阶段
 
