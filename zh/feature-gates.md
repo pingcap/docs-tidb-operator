@@ -5,7 +5,7 @@ summary: 介绍如何使用特性门控 (Feature Gates) 在 TiDB 集群中开启
 
 # 特性门控
 
-特性门控 (Feature Gates) 是一组开关，用于控制 TiDB Operator 中特定功能的启用状态。这些功能通常处于实验阶段，启用后可能需要重启部分组件。
+特性门控 (Feature Gates) 是一组开关，用于控制是否启用 TiDB Operator 中的特定功能。这些功能通常处于实验阶段，启用后可能需要重启部分组件才能生效。
 
 你可以在 Cluster CR 的 `spec.featureGates` 字段中配置特性门控。以下示例展示如何启用 `FeatureModification` 特性：
 

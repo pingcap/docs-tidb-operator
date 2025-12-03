@@ -5,7 +5,7 @@ summary: Learn how to use feature gates to enable or disable specific features i
 
 # Feature Gates
 
-Feature gates are configuration switches that enable or disable specific features in TiDB Operator. These features are typically experimental, and enabling them might require restarting certain cluster components.
+Feature gates are configuration switches that enable or disable specific features in TiDB Operator. These features are generally experimental, and enabling them might require restarting certain components for the changes to take effect.
 
 You can configure feature gates in the `spec.featureGates` field of the Cluster Custom Resource (CR). The following example shows how to enable the `FeatureModification` feature gate:
 
@@ -17,7 +17,7 @@ spec:
 
 ## Supported feature gates
 
-This section describes the feature gates supported by TiDB Operator. For the definition of feature stages, see [Feature gate stages](#feature-gate-stages).
+This section describes the feature gates supported by TiDB Operator. For definitions of feature stages, see [Feature gate stages](#feature-gate-stages).
 
 ### `FeatureModification`
 
@@ -56,16 +56,16 @@ This section describes the feature gates supported by TiDB Operator. For the def
 
 ## Feature gate stages
 
-TiDB Operator classifies feature gates into three stages based on maturity: Alpha, Beta, and GA.
+TiDB Operator classifies feature gates into three stages based on feature maturity: Alpha, Beta, and GA.
 
 ### Alpha
 
 Alpha-stage features have the following characteristics:
 
 - Disabled by default.
-- Recommended for use only in newly created clusters.
+- Recommended only for newly created clusters.
 - Dynamic enabling or disabling in existing clusters is not guaranteed.
-- Known or unknown issues might occur after enabling.
+- Known or unknown issues might occur after being enabled.
 - **Not recommended for production environments** unless risks are fully evaluated and validated.
 
 ### Beta
@@ -74,7 +74,7 @@ Beta-stage features have the following characteristics:
 
 - Typically have undergone thorough testing.
 - Recommended to enable in all newly created clusters.
-- Usually support enabling or disabling on existing clusters, but might require restarting related components.
+- Usually support enabling or disabling in existing clusters, but might require restarting related components.
 
 ### GA
 
