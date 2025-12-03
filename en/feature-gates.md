@@ -82,4 +82,4 @@ GA (General Availability) features have the following characteristics:
 
 - Typically have undergone long-term and large-scale testing.
 - Enabled by default.
-- Cannot be disabled.
+- Cannot be disabled using feature gates.
