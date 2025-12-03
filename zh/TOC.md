@@ -16,6 +16,7 @@
   - [组件配置](component-configuration.md)
   - [存储卷配置](volume-configuration.md)
   - [自定义 Kubernetes 原生资源的配置](overlay.md)
+  - [特性门控](feature-gates.md)
 - 运维管理
   - 安全
     - [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)
