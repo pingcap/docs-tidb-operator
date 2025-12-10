@@ -34,7 +34,7 @@ spec:
   pd:
     config: |
       [dashboard]
-        internal-proxy: true
+        internal-proxy = true
 ```
 
 ## 方法 1. 通过端口转发访问 TiDB Dashboard
