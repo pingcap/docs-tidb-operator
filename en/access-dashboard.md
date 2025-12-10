@@ -43,7 +43,7 @@ spec:
   pd:
     config: |
       [dashboard]
-        internal-proxy: true
+        internal-proxy = true
 ```
 
 In this deployment method, the `service`, `port`, and `HTTP` paths of TiDB Dashboard are as follows:
