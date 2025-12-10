@@ -38,7 +38,7 @@ spec:
   pd:
     config: |
       [dashboard]
-        internal-proxy: true
+        internal-proxy = true
 ```
 
 ## Method 1. Access TiDB Dashboard by port forward
