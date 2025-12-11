@@ -36,7 +36,9 @@ metadata:
   name: basic
 spec:
   pd:
-    enableDashboardInternalProxy: true
+    config: |
+      [dashboard]
+        internal-proxy = true
 ```
 
 ## Method 1. Access TiDB Dashboard by port forward
@@ -201,7 +203,7 @@ spec:
 
 After deploying the `Service`, you can access TiDB Dashboard via <https://{nodeIP}:{nodePort}/dashboard>. By default, `nodePort` is randomly assigned by Kubernetes. You can also specify an available port in the `.yaml` file.
 
-Note that if there is more than one PD `Pod` in the cluster, you need to set `spec.pd.enableDashboardInternalProxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
+Note that if there is more than one PD `Pod` in the cluster, you need to set `spec.pd.config.dashboard.internal-proxy: true` in the `TidbCluster` CR to ensure normal access to TiDB Dashboard.
 
 ## Enable Continuous Profiling
 
