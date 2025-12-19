@@ -451,7 +451,7 @@ In TiDB Operator v1.5.4, v1.6.0, and earlier versions, you can use the `logStop:
 
 ### Compact log backup
 
-For TiDB v9.0.0 and later versions, you can use a `CompactBackup` CR to compact log backup data into SST format, accelerating downstream PITR (Point-in-time recovery).
+For TiDB v8.5.5 and later versions, you can use a `CompactBackup` CR to compact log backup data into SST format, accelerating downstream PITR (Point-in-time recovery).
 
 This section explains how to compact log backup based on the log backup example from previous sections.
 
