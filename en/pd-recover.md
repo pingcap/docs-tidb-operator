@@ -14,7 +14,7 @@ PD Recover is a disaster recovery tool of [PD](https://docs.pingcap.com/tidb/sta
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://download.pingcap.org/tidb-community-toolkit-${version}-linux-amd64.tar.gz
+    wget https://download.pingcap.com/tidb-community-toolkit-${version}-linux-amd64.tar.gz
     ```
 
     In the command above, `${version}` is the version of the TiDB cluster, such as `v6.1.0`.
