@@ -61,3 +61,4 @@
 - 版本发布历史
   - v2.0
     - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
+    - [2.0.0](releases/release-2.0.0.md)
