@@ -44,11 +44,11 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
     - 支持 `scale` 子资源，可与 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/) 集成，实现自动扩缩容
     - 增强与 Kubernetes 生态系统的集成能力
 
-- **支持 FeatureGates**：
-    - 支持通过 [FeatureGates](../feature-gates.md) 控制可能导致集群节点重启的变更行为
+- **支持 Feature Gates 控制变更行为**：
+    - 支持通过[特性门控 (Feature Gates)](../feature-gates.md) 功能控制可能触发集群节点重启的变更操作，从而降低对集群稳定性的影响
 
-- **支持取消 TiKV 和 TiFlash 的下线**：
-    - 支持在 scale in 下线 TiKV 和 TiFlash 时再次 scale out，operator 会优先取消未完全下线的 TiKV 和 TiFlash 的下线行为
+- **支持取消 TiKV 和 TiFlash 节点下线**：
+    - 在对 TiKV 或 TiFlash 执行缩容 (scale in) 过程中，如果执行扩容 (scale out) 操作，TiDB Operator 会优先取消尚未完成下线的节点，从而避免不必要的节点重建
 
 ### 移除功能
 
