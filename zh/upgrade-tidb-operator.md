@@ -144,7 +144,7 @@ summary: 介绍如何升级 TiDB Operator。
         {{< copyable "shell-regular" >}}
 
         ```shell
-        wget http://charts.pingcap.org/tidb-operator-v1.3.10.tgz
+        wget http://charts.pingcap.com/tidb-operator-v1.3.10.tgz
         ```
 
     3. 下载 TiDB Operator 升级所需的 Docker 镜像:
