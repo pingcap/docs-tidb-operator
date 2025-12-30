@@ -44,7 +44,7 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
     - 支持 `scale` 子资源，可与 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/) 集成，实现自动扩缩容
     - 增强与 Kubernetes 生态系统的集成能力
 
-- **支持 Feature Gates 控制变更行为**：
+- **支持使用 Feature Gates 控制变更行为**：
     - 支持通过[特性门控 (Feature Gates)](../feature-gates.md) 功能控制可能触发集群节点重启的变更操作，从而降低对集群稳定性的影响
 
 - **支持取消 TiKV 和 TiFlash 节点下线**：
