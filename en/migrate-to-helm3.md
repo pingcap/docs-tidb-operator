@@ -73,7 +73,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
 
     ```
     NAME    URL
-    pingcap https://charts.pingcap.org/
+    pingcap https://charts.pingcap.com/
     ```
 
 4. Migrate the releases from Helm 2 to Helm 3:

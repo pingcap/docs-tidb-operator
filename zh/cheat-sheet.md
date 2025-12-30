@@ -434,7 +434,7 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap https://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.com/
 ```
 
 ### 更新 Helm repository

@@ -88,7 +88,7 @@ If you see `Ready` for all nodes, congratulations. You've set up your first Kube
 2. Add the PingCAP repository:
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
 ## Deploy TiDB Operator

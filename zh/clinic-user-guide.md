@@ -38,7 +38,7 @@ Diag 部署前，请确认以下软件需求：
 
 #### 安装 Helm
 
-参考[使用 Helm](tidb-toolkit.md#使用-helm) 文档安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
+参考[使用 Helm](tidb-toolkit.md#使用-helm) 文档安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.com/`。
 
 > **注意：**
 >
@@ -269,7 +269,7 @@ Make sure diag-collector components are running:
     通过以下命令，下载 Diag chart 文件：
 
     ```shell
-    wget http://charts.pingcap.org/diag-${chart_version}.tgz
+    wget http://charts.pingcap.com/diag-${chart_version}.tgz
     ```
 
     将 `diag-${chart_version}.tgz` 文件拷贝到服务器上并解压到当前目录：

@@ -218,7 +218,7 @@ This section describes how to install TiDB Operator using [Helm 3](https://helm.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
     <details>
