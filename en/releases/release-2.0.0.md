@@ -48,7 +48,7 @@ TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with 
     - You can use [Feature Gates](../feature-gates.md) to control changes that might trigger cluster node restarts, reducing the impact on cluster stability.
 
 - **Support canceling TiKV and TiFlash scale-in operations**:
-    - If you scale out TiKV or TiFlash nodes while a scale-in operation is in progress, TiDB Operator prioritizes canceling the scale-in for nodes that are not yet fully decommissioned. This prevents the unnecessary re-creation of nodes.
+    - If you add new TiKV or TiFlash nodes while a scale-in operation is in progress, TiDB Operator prioritizes canceling the scale-in for nodes that are not yet fully decommissioned. This prevents the unnecessary re-creation of nodes.
 
 ### Removed features
 
