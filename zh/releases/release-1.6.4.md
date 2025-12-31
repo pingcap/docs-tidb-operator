@@ -5,10 +5,10 @@ summary: 了解 TiDB Operator 1.6.4 版本的新功能。
 
 # TiDB Operator 1.6.4 Release Notes
 
-发布日期：2025 年 10 月 18 日
+发布日期：2025 年 12 月 2 日
 
 TiDB Operator 版本：1.6.4
 
 ## 新功能
 
-- 增加定期与内核同步的功能。如果 Operator 状态与内核不一致，Operator 会修改 logBackup CR 的状态，并在后续的 Reconcile 中尝试与内核同步（最终使内核达到期望状态）。 ([#6300](https://github.com/pingcap/tidb-operator/pull/6147), [@RidRisR](https://github.com/RidRisR))
+- 日志备份新增定期状态同步机制。当 TiDB Operator 的状态与 TiDB 集群底层备份任务的实际状态不一致时，TiDB Operator 会更新 `logBackup` CR 的状态，并在后续 Reconcile 过程中尝试与底层状态同步，直至达到预期状态。([#6300](https://github.com/pingcap/tidb-operator/pull/6147), [@RidRisR](https://github.com/RidRisR))
