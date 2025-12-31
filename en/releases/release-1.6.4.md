@@ -3,9 +3,9 @@ title: TiDB Operator 1.6.4 Release Notes
 summary: Learn about new features in TiDB Operator 1.6.4.
 ---
 
-# TiDB Operator 1.6.3 Release Notes
+# TiDB Operator 1.6.4 Release Notes
 
-Release date: Oct 18, 2025
+Release date: December 2, 2025
 
 TiDB Operator version: 1.6.4
 
