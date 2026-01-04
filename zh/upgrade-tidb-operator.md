@@ -10,13 +10,39 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 ## 升级注意事项
 
-1. 如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并进入异常状态。如果从更早版本升级 TiDB Operator 到 v1.3，你需要执行以下操作：
+1. TiDB Operator 的 Helm chart 域名已从 `charts.pingcap.org` 切换到 `charts.pingcap.com`。如果你之前使用的是旧域名，需要更新 Helm repo 配置:
+
+    1. 移除旧的 Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm repo remove pingcap
+        ```
+
+    2. 添加新的 Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm repo add pingcap https://charts.pingcap.com/
+        ```
+
+    3. 更新 Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        helm repo update pingcap
+        ```
+
+2. 如果使用 v1.3.0-beta.1 及更早版本的 TiDB Operator 跨 Kubernetes 集群部署 TiDB 集群，直接升级 TiDB Operator 会导致集群滚动更新并进入异常状态。如果从更早版本升级 TiDB Operator 到 v1.3，你需要执行以下操作：
 
     1. 更新 CRD。
     2. 修改 TidbCluster 定义将 `spec.acrossK8s` 字段设置为 `true`。
     3. 升级 TiDB Operator。
 
-2. 弃用 Pod `ValidatingWebhook` 和 `MutatingWebhook`。如果使用 v1.2 及更早版本的 TiDB Operator 在集群部署了 Webhook，并启用了 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本，Pod `ValidatingWebhook` 和 `MutatingWebhook` 被删除，但这不会对 TiDB 集群管理产生影响，也不会影响正在运行的 TiDB 集群。
+3. 弃用 Pod `ValidatingWebhook` 和 `MutatingWebhook`。如果使用 v1.2 及更早版本的 TiDB Operator 在集群部署了 Webhook，并启用了 Pod `ValidatingWebhook` 和 `MutatingWebhook`，升级 TiDB Operator 到 v1.3.0-beta.1 及之后版本，Pod `ValidatingWebhook` 和 `MutatingWebhook` 被删除，但这不会对 TiDB 集群管理产生影响，也不会影响正在运行的 TiDB 集群。
 
 ## 在线升级
 
