@@ -8,6 +8,34 @@ aliases: ['/docs/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 This document describes how to upgrade TiDB Operator to a specific version. You can choose either [online upgrade](#online-upgrade) or [offline upgrade](#offline-upgrade).
 
+## Upgrade considerations
+
+1. The Helm chart domain for TiDB Operator has been switched from `charts.pingcap.org` to `charts.pingcap.com`. If you were using the old domain, you need to update your Helm repo configuration:
+
+    1. Remove the old Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        helm repo remove pingcap
+        ```
+
+    2. Add the new Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        helm repo add pingcap https://charts.pingcap.com/
+        ```
+
+    3. Update the Helm repo:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        helm repo update pingcap
+        ```
+
 ## Online upgrade
 
 If your server has access to the internet, you can perform online upgrade by taking the following steps:
