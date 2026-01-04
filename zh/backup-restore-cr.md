@@ -249,7 +249,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ### Prune 字段介绍
 
-* `.spec.prune`：仅在 BR v9.0.0 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息。启用 `prune` 字段会影响恢复任务的终止状态。如果恢复任务以 `Failed` 状态结束，清理任务会自动开始，并尝试清理元数据表信息。根据清理任务的执行状态，恢复任务将显示以下新状态：
+* `.spec.prune`：仅在 BR v8.5.5 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息。启用 `prune` 字段会影响恢复任务的终止状态。如果恢复任务以 `Failed` 状态结束，清理任务会自动开始，并尝试清理元数据表信息。根据清理任务的执行状态，恢复任务将显示以下新状态：
     - `PruneScheduled`：清理任务已调度，但尚未开始运行
     - `PruneRunning`：清理任务正在运行中
     - `PruneComplete`：清理任务已成功完成
@@ -257,7 +257,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 ## CompactBackup CR 字段介绍
 
-对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
+对于 TiDB v8.5.5 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
 
 * `.spec.startTs`：指定日志压缩备份的起始时间戳。
 * `.spec.endTs`：指定日志压缩备份的结束时间戳。
@@ -266,7 +266,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.toolImage`：指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR。使用 BR 备份时，你可以使用该字段指定 BR 的版本：
 
     - 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
-    - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v9.0.0`，那么使用指定的版本镜像进行备份。
+    - 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v8.5.5`，那么使用指定的版本镜像进行备份。
     - 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
 
 * `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
@@ -362,7 +362,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
 * `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 * `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
-* `.spec.prune`：仅在 BR v9.0.0 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息，具体介绍参考 [Prune 字段介绍](#prune-字段介绍)。
+* `.spec.prune`：仅在 BR v8.5.5 及以上版本中支持。该字段目前仅支持设置为 `afterFailed`，用于在恢复任务失败后自动清理相应的元数据表信息，具体介绍参考 [Prune 字段介绍](#prune-字段介绍)。
 
 ## BackupSchedule CR 字段介绍
 
