@@ -12,25 +12,19 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/upgrade-tidb-operator/']
 
 1. TiDB Operator 的 Helm chart 域名已从 `charts.pingcap.org` 切换到 `charts.pingcap.com`。如果你之前使用的是旧域名，需要更新 Helm repo 配置:
 
-    1. 移除旧的 Helm repo:
-
-        {{< copyable "shell-regular" >}}
+    1. 移除旧的 Helm repo：
 
         ```shell
         helm repo remove pingcap
         ```
 
-    2. 添加新的 Helm repo:
-
-        {{< copyable "shell-regular" >}}
+    2. 添加新的 Helm repo：
 
         ```shell
         helm repo add pingcap https://charts.pingcap.com/
         ```
 
-    3. 更新 Helm repo:
-
-        {{< copyable "shell-regular" >}}
+    3. 更新 Helm repo：
 
         ```shell
         helm repo update pingcap
