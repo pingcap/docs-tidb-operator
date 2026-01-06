@@ -38,7 +38,7 @@ Before deploying Diag, make sure the following items are installed on the cluste
 
 #### Install Helm
 
-To install Helm and configure the chart repository `https://charts.pingcap.org/` maintained by PingCAP, you can refer to the [Use Helm](tidb-toolkit.md#use-helm) document.
+To install Helm and configure the chart repository `https://charts.pingcap.com/` maintained by PingCAP, you can refer to the [Use Helm](tidb-toolkit.md#use-helm) document.
 
 > **Note:**
 >
@@ -261,7 +261,7 @@ If your cluster cannot access the Internet, you can deploy Diag using the offlin
     To download Diag chart files, you can use the following command:
 
     ```shell
-    wget http://charts.pingcap.org/diag-${chart_version}.tgz
+    wget http://charts.pingcap.com/diag-${chart_version}.tgz
     ```
 
     Copy `diag-${chart_version}.tgz` to the cluster and unpack it to the current directory.
