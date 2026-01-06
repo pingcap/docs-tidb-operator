@@ -73,7 +73,7 @@ tidb-operator   1               Tue Jan  5 15:28:00 2021        DEPLOYED        
 
     ```
     NAME    URL
-    pingcap https://charts.pingcap.org/
+    pingcap https://charts.pingcap.com/
     ```
 
 4. 迁移 Helm 2 管理的 release 到 Helm 3。
