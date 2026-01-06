@@ -179,12 +179,12 @@ Kubernetes 应用在 Helm 中被打包为 chart。PingCAP 针对 Kubernetes 上�
 * `tidb-operator`：用于部署 TiDB Operator；
 * `tidb-lightning`：用于 TiDB 集群导入数据；
 
-这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
+这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.com/` 中，你可以通过下面的命令添加该仓库：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap https://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.com/
 ```
 
 添加完成后，可以使用 `helm search` 搜索 PingCAP 提供的 chart：
@@ -258,8 +258,8 @@ helm uninstall ${release_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-v1.5.5.tgz
-wget http://charts.pingcap.org/tidb-lightning-v1.5.5.tgz
+wget http://charts.pingcap.com/tidb-operator-v1.5.5.tgz
+wget http://charts.pingcap.com/tidb-lightning-v1.5.5.tgz
 ```
 
 将这些 chart 文件拷贝到服务器上并解压，可以通过 `helm install` 命令使用这些 chart 来安装相应组件，以 `tidb-operator` 为例：

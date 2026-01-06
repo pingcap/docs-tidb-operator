@@ -88,7 +88,7 @@ kubectl get nodes
 2. 通过下面的命令添加仓库：
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
 ## 部署 TiDB Operator
