@@ -66,7 +66,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
               regex: "true"
             - sourceLabels:
                 - __meta_kubernetes_pod_name
-                - __meta_kubernetes_pod_label_app_kubernetes_io_instance
+                - __meta_kubernetes_pod_label_pingcap_com_group
                 - __meta_kubernetes_pod_label_app_kubernetes_io_component
                 - __meta_kubernetes_namespace
                 - __meta_kubernetes_pod_annotation_prometheus_io_port
