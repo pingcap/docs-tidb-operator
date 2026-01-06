@@ -10,7 +10,9 @@ This document describes how to upgrade TiDB Operator to a specific version. You 
 
 ## Upgrade considerations
 
-1. Starting January 4, 2026, the domain of the TiDB Operator Helm chart repository changes from `charts.pingcap.org` to `charts.pingcap.com`. If you previously installed TiDB Operator from `charts.pingcap.org`, follow these steps to update your Helm repository configuration:
+Review the following items before you upgrade TiDB Operator.
+
+- Starting January 4, 2026, the TiDB Operator Helm chart repository domain changes from `charts.pingcap.org` to `charts.pingcap.com`. If you previously installed TiDB Operator from `charts.pingcap.org`, follow these steps to update your Helm repository configuration:
 
     1. Remove the old Helm repository:
 
@@ -24,11 +26,19 @@ This document describes how to upgrade TiDB Operator to a specific version. You 
         helm repo add pingcap https://charts.pingcap.com/
         ```
 
-    3. Update the Helm repository:
+    3. Update the Helm repository index:
 
         ```shell
         helm repo update pingcap
         ```
+
+- If you use TiDB Operator v1.3.0-beta.1 or earlier to deploy a TiDB cluster across multiple Kubernetes clusters, upgrading TiDB Operator directly causes a rolling update and can result in an abnormal cluster state. To upgrade TiDB Operator from an earlier version to v1.3, perform the following steps:
+
+    1. Update the Custom Resource Definitions (CRDs).
+    2. In the `TidbCluster` specification, set `spec.acrossK8s` to `true`.
+    3. Upgrade TiDB Operator.
+
+- The Pod `ValidatingWebhook` and `MutatingWebhook` are deprecated. If you use TiDB Operator v1.2 or earlier with these webhooks enabled, upgrading to v1.3.0-beta.1 or later removes them. This removal does not affect TiDB cluster management or any running TiDB clusters.
 
 ## Online upgrade
 
