@@ -435,7 +435,7 @@ See [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatshee
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap https://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.com/
 ```
 
 ### Update Helm repository

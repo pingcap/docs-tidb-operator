@@ -179,12 +179,12 @@ Kubernetes applications are packed as charts in Helm. PingCAP provides the follo
 * `tidb-operator`: used to deploy TiDB Operator;
 * `tidb-lightning`: used to import data into a TiDB cluster;
 
-These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
+These charts are hosted in the Helm chart repository `https://charts.pingcap.com/` maintained by PingCAP. You can add this repository to your local server or computer using the following command:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap https://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.com/
 ```
 
 Then you can search the chart provided by PingCAP using the following command:
@@ -260,8 +260,8 @@ Use the following command to download the chart file required for cluster instal
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget http://charts.pingcap.org/tidb-operator-{{{ .tidb_operator_version }}}.tgz
-wget http://charts.pingcap.org/tidb-lightning-{{{ .tidb_operator_version }}}.tgz
+wget http://charts.pingcap.com/tidb-operator-{{{ .tidb_operator_version }}}.tgz
+wget http://charts.pingcap.com/tidb-lightning-{{{ .tidb_operator_version }}}.tgz
 ```
 
 Copy these chart files to the server and decompress them. You can use these charts to install the corresponding components by running the `helm install` command. Take `tidb-operator` as an example:

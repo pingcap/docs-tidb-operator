@@ -128,7 +128,7 @@ If your server cannot access the Internet, you can offline upgrade by taking the
         {{< copyable "shell-regular" >}}
 
         ```bash
-        wget http://charts.pingcap.org/tidb-operator-{{{ .tidb_operator_version }}}.tgz
+        wget http://charts.pingcap.com/tidb-operator-{{{ .tidb_operator_version }}}.tgz
         ```
 
     3. Download the Docker images required for the new TiDB Operator version:

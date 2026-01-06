@@ -175,7 +175,7 @@ To install TiDB Operator, you can use [Helm 3](https://helm.sh/docs/intro/instal
 1. Add the PingCAP repository:
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
     <details>
