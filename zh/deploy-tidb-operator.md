@@ -146,7 +146,7 @@ tidbmonitors.pingcap.com             2020-06-11T07:59:41Z
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget http://charts.pingcap.org/tidb-operator-{{{ .tidb_operator_version }}}.tgz
+    wget http://charts.pingcap.com/tidb-operator-{{{ .tidb_operator_version }}}.tgz
     ```
 
     将 `tidb-operator-{{{ .tidb_operator_version }}}.tgz` 文件拷贝到服务器上并解压到当前目录：
