@@ -266,7 +266,7 @@ helm uninstall ${release_name} -n ${namespace}
 
 ```shell
 wget http://charts.pingcap.com/tidb-operator-v1.3.10.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.3.10.tgz
+wget http://charts.pingcap.com/tidb-drainer-v1.3.10.tgz
 wget http://charts.pingcap.com/tidb-lightning-v1.3.10.tgz
 ```
 
