@@ -266,7 +266,7 @@ Use the following command to download the chart file required for cluster instal
 
 ```shell
 wget http://charts.pingcap.com/tidb-operator-v1.4.7.tgz
-wget http://charts.pingcap.org/tidb-drainer-v1.4.7.tgz
+wget http://charts.pingcap.com/tidb-drainer-v1.4.7.tgz
 wget http://charts.pingcap.com/tidb-lightning-v1.4.7.tgz
 ```
 
