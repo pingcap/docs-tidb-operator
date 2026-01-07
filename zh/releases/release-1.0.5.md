@@ -11,7 +11,7 @@ TiDB Operator version: 1.0.5
 
 ## v1.0.5 What's New
 
-There is no action required if you are upgrading from [v1.0.4](release-1.0.4.md).
+There is no action required if you are upgrading from [v1.0.4](https://docs-archive.pingcap.com/zh/tidb-in-kubernetes/v1.0/release-1.0.4).
 
 ### Scheduled Backup
 

@@ -11,7 +11,7 @@ TiDB Operator 版本：1.1.0
 
 ## 从 v1.0.x 升级
 
-对于 v1.0.x 的用户，请参考[升级 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-tidb-operator) 来升级集群中的 TiDB Operator。注意在升级之前应该阅读发布说明（特别是重大变更和需要操作的项目）。
+对于 v1.0.x 的用户，请参考[升级 TiDB Operator](https://docs-archive.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-tidb-operator) 来升级集群中的 TiDB Operator。注意在升级之前应该阅读发布说明（特别是重大变更和需要操作的项目）。
 
 ## v1.0.0 后的重大变更
 

@@ -11,7 +11,7 @@ TiDB Operator version: 1.5.2
 
 ## New features
 
-Starting from v1.5.2, TiDB Operator supports backing up and restoring the data of a TiDB cluster deployed across multiple AWS Kubernetes clusters to AWS storage using EBS volume snapshots. For more information, refer to [Back up Data Using EBS Snapshots across Multiple Kubernetes](../backup-by-ebs-snapshot-across-multiple-kubernetes.md) and [Restore Data Using EBS Snapshots across Multiple Kubernetes](../restore-from-ebs-snapshot-across-multiple-kubernetes.md). ([#5003](https://github.com/pingcap/tidb-operator/pull/5003), [@BornChanger](https://github.com/BornChanger), [@WangLe1321](https://github.com/WangLe1321), [@YuJuncen](https://github.com/YuJuncen), [@csuzhangxc](https://github.com/csuzhangxc))
+Starting from v1.5.2, TiDB Operator supports backing up and restoring the data of a TiDB cluster deployed across multiple AWS Kubernetes clusters to AWS storage using EBS volume snapshots. For more information, refer to [Back up Data Using EBS Snapshots across Multiple Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.5/backup-by-ebs-snapshot-across-multiple-kubernetes) and [Restore Data Using EBS Snapshots across Multiple Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.5/restore-from-ebs-snapshot-across-multiple-kubernetes). ([#5003](https://github.com/pingcap/tidb-operator/pull/5003), [@BornChanger](https://github.com/BornChanger), [@WangLe1321](https://github.com/WangLe1321), [@YuJuncen](https://github.com/YuJuncen), [@csuzhangxc](https://github.com/csuzhangxc))
 
 ## Improvements
 

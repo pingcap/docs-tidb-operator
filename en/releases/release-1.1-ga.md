@@ -11,7 +11,7 @@ TiDB Operator version: 1.1.0
 
 ## Upgrade from v1.0.x
 
-For v1.0.x users, refer to [Upgrade TiDB Operator](../upgrade-tidb-operator.md) to upgrade TiDB Operator in your cluster. Note that you should read the release notes (especially breaking changes and action required items) before the upgrade.
+For v1.0.x users, refer to [Upgrade TiDB Operator](https://docs-archive.pingcap.com/tidb-in-kubernetes/v1.1/upgrade-tidb-operator) to upgrade TiDB Operator in your cluster. Note that you should read the release notes (especially breaking changes and action required items) before the upgrade.
 
 ## Breaking changes since v1.0.0
 
