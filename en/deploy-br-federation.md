@@ -184,7 +184,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 3. Add the PingCAP repository:
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
 4. Install the BR Federation:
@@ -211,7 +211,7 @@ This section describes how to install the BR Federation using [Helm 3](https://h
 3. Add the PingCAP repository:
 
     ```shell
-    helm repo add pingcap https://charts.pingcap.org/
+    helm repo add pingcap https://charts.pingcap.com/
     ```
 
 4. Get the `values.yaml` file of the desired `br-federation` chart for deployment.
