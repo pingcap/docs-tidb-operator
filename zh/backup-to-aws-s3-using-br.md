@@ -62,7 +62,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---

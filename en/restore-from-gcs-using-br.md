@@ -52,7 +52,7 @@ Before restoring backup data on GCS to TiDB using BR, take the following steps t
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---

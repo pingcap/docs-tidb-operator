@@ -57,7 +57,7 @@ This document provides an example about how to back up the data of the `demo1` T
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
     ---
     kind: ServiceAccount
@@ -293,7 +293,7 @@ demo1-log-backup-azblob    log      Pause     ....
 If a log backup task is paused, you can resume it by setting the `logSubcommand` field to `log-start`. The following example shows how to resume the `demo1-log-backup-azblob` CR that was paused in [Pause Log Backup](#pause-log-backup).
 
 > **Note:**
-> 
+>
 > This operation applies only to tasks in the `Pause` state. You cannot resume tasks in the `Fail` or `Stopped` state.
 
 ```shell
@@ -492,7 +492,7 @@ From the output, you can find the status of the `CompactBackup` CR named `demo1-
 
 ```
 NAME                   STATUS                   PROGRESS                                     MESSAGE
-demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]
 ```
 
 If the `STATUS` field displays `Complete`, the compact log backup process has finished successfully.
@@ -784,7 +784,7 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
 
     ```
     NAME                                                       MODE       STATUS    ....
-    integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....  
+    integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....
     log-integrated-backup-schedule-azblob                      log        Running   ....
     ```
 
@@ -840,9 +840,9 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     ```
 
     In the preceding example of `integrated-backup-schedule-azblob.yaml`, the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
-    
+
     * Added the `BackupSchedule.spec.compactInterval` field to specify the time interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
-    
+
     * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.azblob` configuration matches the `BackupSchedule.spec.logBackupTemplate.azblob` configuration.
 
     For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).

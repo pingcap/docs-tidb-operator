@@ -62,7 +62,7 @@ This document provides an example about how to back up the data of the `demo1` T
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---
@@ -1017,9 +1017,9 @@ The steps to prepare for a scheduled snapshot backup are the same as that of [Pr
     ```
 
     In the preceding example of `integrated-backup-schedule-s3.yaml`, the `backupSchedule` configuration is based on the previous section, with the following additions for `compactBackup`:
-    
+
     * Added the `BackupSchedule.spec.compactInterval` field to specify the interval for log backup compaction. It is recommended not to exceed the interval of scheduled snapshot backups and to keep it between one-half to one-third of the scheduled snapshot backup interval.
-    
+
     * Added the `BackupSchedule.spec.compactBackupTemplate` field. Ensure that the `BackupSchedule.spec.compactBackupTemplate.s3` configuration matches the `BackupSchedule.spec.logBackupTemplate.s3` configuration.
 
     For the field description of `backupSchedule`, refer to [BackupSchedule CR fields](backup-restore-cr.md#backupschedule-cr-fields).

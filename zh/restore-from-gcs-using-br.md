@@ -52,7 +52,7 @@ PITR 全称为 Point-in-time recovery，该功能可以让你在新集群上恢�
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---
