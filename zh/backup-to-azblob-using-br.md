@@ -57,7 +57,7 @@ Ad-hoc 备份支持快照备份，也支持[启动](#启动日志备份)和[停�
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
     ---
     kind: ServiceAccount
@@ -293,7 +293,7 @@ demo1-log-backup-azblob    log      Pause     ....
 如果日志备份任务已暂停，你可以通过将 `logSubcommand` 字段设置为 `log-start` 来恢复该任务。下面以恢复[暂停日志备份](#暂停日志备份)中已暂停的 `demo1-log-backup-azblob` CR 为例。
 
 > **Note:**
-> 
+>
 > 此操作仅适用于处于暂停状态 (`Pause`) 的任务，无法恢复状态为 `Fail` 或 `Stopped` 的任务。
 
 ```shell
@@ -492,7 +492,7 @@ kubectl get cpbk -n test1
 
 ```
 NAME                   STATUS                   PROGRESS                                     MESSAGE
-demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]   
+demo1-compact-backup   Complete   [READ_META(17/17),COMPACT_WORK(1291/1291)]
 ```
 
 如果 `STATUS` 字段显示为 `Complete` 则代表压缩日志备份已经完成。
@@ -782,7 +782,7 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
 
     ```
     NAME                                                       MODE       STATUS    ....
-    integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....  
+    integrated-backup-schedule-azblob-2023-03-08t02-48-00      snapshot   Complete  ....
     log-integrated-backup-schedule-azblob                      log        Running   ....
     ```
 
@@ -838,9 +838,9 @@ kubectl get backup -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-azb
     ```
 
     以上 `integrated-backup-scheduler-azblob.yaml` 文件配置示例中，`backupSchedule` 配置基于上一节内容，新增了 `compactBackup` 相关设置，主要改动如下：
-    
+
     - 新增 `BackupSchedule.spec.compactInterval` 字段，用于指定日志压缩备份的时间间隔。建议不要超过定时快照备份的间隔，并控制在定时快照备份间隔的二分之一至三分之一之间。
-    
+
     - 新增 `BackupSchedule.spec.compactBackupTemplate` 字段。请确保 `BackupSchedule.spec.compactBackupTemplate.azblob` 配置与 `BackupSchedule.spec.logBackupTemplate.azblob` 保持一致。
 
     关于 `backupSchedule` 配置项具体介绍，请参考 [BackupSchedule CR 字段介绍](backup-restore-cr.md#backupschedule-cr-字段介绍)。
