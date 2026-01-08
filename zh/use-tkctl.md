@@ -17,9 +17,9 @@ summary: 介绍如何使用 tkctl 命令行工具来运维集群和诊断集群�
 
 ### 下载预编译的可执行文件
 
-- [MacOS](https://download.pingcap.org/tkctl-darwin-amd64-latest.tgz)
-- [Linux](https://download.pingcap.org/tkctl-linux-amd64-latest.tgz)
-- [Windows](https://download.pingcap.org/tkctl-windows-amd64-latest.tgz)
+- [macOS](https://download.pingcap.com/tkctl-darwin-amd64-latest.tgz)
+- [Linux](https://download.pingcap.com/tkctl-linux-amd64-latest.tgz)
+- [Windows](https://download.pingcap.com/tkctl-windows-amd64-latest.tgz)
 
 下载解压后，将 `tkctl` 可执行文件加入到可执行文件路径 (`PATH`) 中即完成安装。
 

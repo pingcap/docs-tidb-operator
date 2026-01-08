@@ -14,7 +14,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    wget https://download.pingcap.org/tidb-community-toolkit-${version}-linux-amd64.tar.gz
+    wget https://download.pingcap.com/tidb-community-toolkit-${version}-linux-amd64.tar.gz
     ```
 
     `${version}` 是 TiDB 集群版本，例如，`v7.5.0`。

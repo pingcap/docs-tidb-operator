@@ -17,9 +17,9 @@ To install `tkctl`, you can download the pre-built binary or build `tkctl` from 
 
 ### Download the latest pre-built binary
 
-- [MacOS](https://download.pingcap.org/tkctl-darwin-amd64-latest.tgz)
-- [Linux](https://download.pingcap.org/tkctl-linux-amd64-latest.tgz)
-- [Windows](https://download.pingcap.org/tkctl-windows-amd64-latest.tgz)
+- [macOS](https://download.pingcap.com/tkctl-darwin-amd64-latest.tgz)
+- [Linux](https://download.pingcap.com/tkctl-linux-amd64-latest.tgz)
+- [Windows](https://download.pingcap.com/tkctl-windows-amd64-latest.tgz)
 
 After unzipping the downloaded file, you can add the `tkctl` executable file to your `PATH` to finish the installation.
 
