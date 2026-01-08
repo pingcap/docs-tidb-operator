@@ -47,7 +47,7 @@ Before restoring backup data on Azure Blob Storage to TiDB using BR, take the fo
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
     ---
     kind: ServiceAccount

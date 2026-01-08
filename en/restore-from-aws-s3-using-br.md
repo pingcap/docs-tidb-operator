@@ -52,7 +52,7 @@ Before restoring backup data on an S3-compatible storage to TiDB using BR, take 
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---

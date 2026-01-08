@@ -62,7 +62,7 @@ This document provides an example about how to back up the data of the `demo1` T
       resources: ["events"]
       verbs: ["*"]
     - apiGroups: ["br.pingcap.com"]
-      resources: ["backups", "restores"]
+      resources: ["*"]
       verbs: ["get", "watch", "list", "update"]
 
     ---
