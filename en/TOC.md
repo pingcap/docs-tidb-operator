@@ -58,7 +58,3 @@
   - [Comparison Between TiDB Operator v2 and v1](v2-vs-v1.md)
   - Tools
     - [TiDB Toolkit](tidb-toolkit.md)
-- Release Notes
-  - v2.0
-    - [2.0 GA](releases/release-2.0.0.md)
-    - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
