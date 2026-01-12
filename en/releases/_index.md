@@ -5,6 +5,8 @@ summary: This document lists all released TiDB Operator versions.
 
 # TiDB Operator Release Notes
 
+[TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/tidb-operator-overview/) is an automatic operation system for TiDB clusters on Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public cloud or in a self-managed environment.
+
 This document lists all released TiDB Operator versions, sorted by version number in descending order.
 
 ## 2.0

@@ -5,6 +5,8 @@ summary: 介绍 TiDB Operator 版本发布历史。
 
 # TiDB Operator 版本发布历史
 
+[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-operator-overview/) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或自托管的 Kubernetes 集群上。
+
 本文列出了所有已发布的 TiDB Operator 版本，按版本号降序排序。
 
 ## 2.0
