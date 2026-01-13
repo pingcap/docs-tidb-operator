@@ -1,0 +1,141 @@
+---
+title: TiDB Operator Release Notes
+summary: This document lists all released TiDB Operator versions.
+---
+
+# TiDB Operator Release Notes
+
+[TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/tidb-operator-overview/) is an automatic operation system for TiDB clusters on Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public cloud or in a self-managed environment.
+
+This document lists all released TiDB Operator versions, sorted by version number in descending order.
+
+## 2.0
+
+- [2.0.0](release-2.0.0.md): 2025-12-18
+- [2.0.0-beta.0](release-2.0.0-beta.0.md): 2025-07-09
+
+## 1.6
+
+- [1.6.4](release-1.6.4.md): 2025-12-02
+- [1.6.3](release-1.6.3.md): 2025-07-18
+- [1.6.2](release-1.6.2.md): 2025-07-14
+- [1.6.1](release-1.6.1.md): 2024-12-25
+- [1.6 GA](release-1.6.0.md): 2024-05-28
+- [1.6.0-beta.1](release-1.6.0-beta.1.md): 2024-03-27
+
+## 1.5
+
+- [1.5.5](release-1.5.5.md): 2025-01-21
+- [1.5.4](release-1.5.4.md): 2024-09-13
+- [1.5.3](release-1.5.3.md): 2024-04-18
+- [1.5.2](release-1.5.2.md): 2024-01-19
+- [1.5.1](release-1.5.1.md): 2023-10-20
+- [1.5 GA](release-1.5.0.md): 2023-08-04
+- [1.5.0-beta.1](release-1.5.0-beta.1.md): 2023-04-11
+
+## 1.4
+
+- [1.4.7](release-1.4.7.md): 2023-07-26
+- [1.4.6](release-1.4.6.md): 2023-07-19
+- [1.4.5](release-1.4.5.md): 2023-06-26
+- [1.4.4](release-1.4.4.md): 2023-03-13
+- [1.4.3](release-1.4.3.md): 2023-02-24
+- [1.4.2](release-1.4.2.md): 2023-02-03
+- [1.4.1](release-1.4.1.md): 2023-01-13
+- [1.4 GA](release-1.4.0.md): 2022-12-29
+- [1.4.0-beta.3](release-1.4.0-beta.3.md): 2022-12-02
+- [1.4.0-beta.2](release-1.4.0-beta.2.md): 2022-11-11
+- [1.4.0-beta.1](release-1.4.0-beta.1.md): 2022-10-27
+- [1.4.0-alpha.1](release-1.4.0-alpha.1.md): 2022-09-26
+
+## 1.3
+
+- [1.3.10](release-1.3.10.md): 2023-02-24
+- [1.3.9](release-1.3.9.md): 2022-10-10
+- [1.3.8](release-1.3.8.md): 2022-09-13
+- [1.3.7](release-1.3.7.md): 2022-08-01
+- [1.3.6](release-1.3.6.md): 2022-07-05
+- [1.3.5](release-1.3.5.md): 2022-06-29
+- [1.3.4](release-1.3.4.md): 2022-06-22
+- [1.3.3](release-1.3.3.md): 2022-05-17
+- [1.3.2](release-1.3.2.md): 2022-03-18
+- [1.3.1](release-1.3.1.md): 2022-02-24
+- [1.3 GA](release-1.3.0.md): 2022-02-15
+- [1.3.0-beta.1](release-1.3.0-beta.1.md): 2022-01-12
+
+## 1.2
+
+- [1.2.7](release-1.2.7.md): 2022-02-17
+- [1.2.6](release-1.2.6.md): 2022-01-04
+- [1.2.5](release-1.2.5.md): 2021-12-27
+- [1.2.4](release-1.2.4.md): 2021-10-21
+- [1.2.3](release-1.2.3.md): 2021-09-07
+- [1.2.2](release-1.2.2.md): 2021-09-03
+- [1.2.1](release-1.2.1.md): 2021-08-18
+- [1.2 GA](release-1.2.0.md): 2021-07-29
+- [1.2.0-rc.2](release-1.2.0-rc.2.md): 2021-07-02
+- [1.2.0-rc.1](release-1.2.0-rc.1.md): 2021-05-28
+- [1.2.0-beta.2](release-1.2.0-beta.2.md): 2021-04-29
+- [1.2.0-beta.1](release-1.2.0-beta.1.md): 2021-04-07
+- [1.2.0-alpha.1](release-1.2.0-alpha.1.md): 2021-01-15
+
+## 1.1
+
+- [1.1.15](release-1.1.15.md): 2022-02-17
+- [1.1.14](release-1.1.14.md): 2021-10-21
+- [1.1.13](release-1.1.13.md): 2021-07-02
+- [1.1.12](release-1.1.12.md): 2021-04-15
+- [1.1.11](release-1.1.11.md): 2021-02-26
+- [1.1.10](release-1.1.10.md): 2021-01-28
+- [1.1.9](release-1.1.9.md): 2020-12-28
+- [1.1.8](release-1.1.8.md): 2020-12-21
+- [1.1.7](release-1.1.7.md): 2020-11-13
+- [1.1.6](release-1.1.6.md): 2020-10-16
+- [1.1.5](release-1.1.5.md): 2020-09-18
+- [1.1.4](release-1.1.4.md): 2020-08-21
+- [1.1.3](release-1.1.3.md): 2020-07-27
+- [1.1.2](release-1.1.2.md): 2020-07-01
+- [1.1.1](release-1.1.1.md): 2020-06-19
+- [1.1 GA](release-1.1-ga.md): 2020-05-28
+- [1.1.0-rc.4](release-1.1.0-rc.4.md): 2020-05-15
+- [1.1.0-rc.3](release-1.1.0-rc.3.md): 2020-04-30
+- [1.1.0-rc.2](release-1.1.0-rc.2.md): 2020-04-15
+- [1.1.0-rc.1](release-1.1.0-rc.1.md): 2020-04-01
+- [1.1.0-beta.2](release-1.1.0-beta.2.md): 2020-02-26
+- [1.1.0-beta.1](release-1.1.0-beta.1.md): 2020-01-08
+
+## 1.0
+
+- [1.0.7](release-1.0.7.md): 2020-06-16
+- [1.0.6](release-1.0.6.md): 2019-12-27
+- [1.0.5](release-1.0.5.md): 2019-12-11
+- [1.0.4](release-1.0.4.md): 2019-11-23
+- [1.0.3](release-1.0.3.md): 2019-11-13
+- [1.0.2](release-1.0.2.md): 2019-11-01
+- [1.0.1](release-1.0.1.md): 2019-09-17
+- [1.0 GA](release-1.0-ga.md): 2019-07-30
+- [1.0.0-rc.1](release-1.0.0-rc.1.md): 2019-07-12
+- [1.0.0-beta.3](release-1.0.0-beta.3.md): 2019-06-06
+- [1.0.0-beta.2](release-1.0.0-beta.2.md): 2019-05-10
+- [1.0.0-beta.1-p2](release-1.0.0-beta.1-p2.md): 2019-02-21
+- [1.0.0-beta.1-p1](release-1.0.0-beta.1-p1.md): 2019-01-07
+- [1.0.0-beta.1](release-1.0.0-beta.1.md): 2018-12-27
+- [1.0.0-beta.0](release-1.0.0-beta.0.md): 2018-11-26
+
+## 0.4
+
+- [0.4.0](release-0.4.0.md): 2018-11-09
+
+## 0.3
+
+- [0.3.1](release-0.3.1.md): 2018-10-31
+- [0.3.0](release-0.3.0.md): 2018-10-12
+
+## 0.2
+
+- [0.2.1](release-0.2.1.md): 2018-09-20
+- [0.2.0](release-0.2.0.md): 2018-09-11
+
+## 0.1
+
+- [0.1.0](release-0.1.0.md): 2018-08-22
