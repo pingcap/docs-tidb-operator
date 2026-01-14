@@ -57,6 +57,17 @@ To scale PD, TiKV, TiDB, or TiProxy horizontally, use kubectl to modify `spec.pd
 
     For the TiKV component, it might take 3-5 minutes to scale in or out because the process involves data migration.
 
+4. Delete the PVC for the scaled-in TiKV node.
+
+    After TiKV scales in, TiDB Operator does not automatically delete the corresponding PVC. To avoid issues during future scale-out operations, you must manually delete the PVC.
+
+    To find and delete the PVC for the scaled-in Pod, run the following commands:
+
+    ```shell
+    kubectl get pvc -n ${namespace}
+    kubectl delete pvc -n ${namespace} ${pvc_name}
+    ```
+
 ### Horizontally scale TiFlash
 
 This section describes how to horizontally scale out or scale in TiFlash if you have deployed TiFlash in the cluster.

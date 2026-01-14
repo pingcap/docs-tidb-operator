@@ -56,6 +56,17 @@ TiDB 水平扩缩容操作指的是通过增加或减少 Pod 的数量，来达�
 
     TiKV 组件由于涉及到数据搬迁，通常需要 3 到 5 分钟来进行扩容或者缩容。
 
+4. 删除缩容 TiKV 节点对应的 PVC。
+
+    TiKV 缩容完成后，TiDB Operator 不会自动删除对应的 PVC。为避免后续扩容失败，必须手动删除该 PVC。
+
+    执行以下命令查找并删除缩容 Pod 对应的 PVC：
+
+    ```shell
+    kubectl get pvc -n ${namespace}
+    kubectl delete pvc -n ${namespace} ${pvc_name}
+    ```
+
 ### 水平扩缩容 TiFlash
 
 如果你部署了 TiFlash，想对 TiFlash 进行水平扩缩容，请参照本小节的步骤进行操作。
