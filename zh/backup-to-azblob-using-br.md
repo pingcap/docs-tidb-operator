@@ -451,7 +451,7 @@ demo1-log-backup-azblob    log    Stopped   ....
 
 ### 压缩日志备份
 
-对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。 
+对于 TiDB v8.5.5 及以上版本的集群，你可以使用 `CompactBackup` CR 将日志备份数据压缩为 SST 格式，以加速下游的日志恢复 (Point-in-time recovery, PITR)。 
 
 本节基于前文的日志备份示例，介绍如何使用压缩日志备份。
 
