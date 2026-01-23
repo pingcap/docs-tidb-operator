@@ -5,7 +5,7 @@ summary: 了解 TiDB Operator 1.6.5 版本的新功能、优化提升，以及 B
 
 # TiDB Operator 1.6.5 Release Notes
 
-发布日期：2026 年 1 月 23 日
+发布日期：2026 年 1 月 28 日
 
 TiDB Operator 版本：1.6.5
 
