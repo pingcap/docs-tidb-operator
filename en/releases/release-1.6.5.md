@@ -15,7 +15,7 @@ TiDB Operator version: 1.6.5
 
 ## Improvements
 
-- Change the shell interpreter for backup-related scripts from `sh` to `bash` to better support Bash-specific syntax ([#6618](https://github.com/pingcap/tidb-operator/pull/6618), [@liubog2008](https://github.com/liubog2008))
+- Change the shell interpreter for backup-related scripts from `sh` to `bash` to improve script compatibility and support Bash-specific syntax ([#6618](https://github.com/pingcap/tidb-operator/pull/6618), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug fixes
 
