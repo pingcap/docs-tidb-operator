@@ -15,7 +15,7 @@ TiDB Operator 版本：1.6.5
 
 ## 优化提升
 
-- 将备份相关脚本的 shell 解释器从 `sh` 更改为 `bash`，以更好地支持 Bash 特有的语法 ([#6618](https://github.com/pingcap/tidb-operator/pull/6618), [@liubog2008](https://github.com/liubog2008))
+- 将备份相关脚本的 shell 解释器从 `sh` 更改为 `bash`，以增强脚本的兼容性并支持 Bash 特有语法 ([#6618](https://github.com/pingcap/tidb-operator/pull/6618), [@liubog2008](https://github.com/liubog2008))
 
 ## Bug 修复
 
