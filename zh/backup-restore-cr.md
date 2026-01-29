@@ -5,7 +5,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 # 备份与恢复 CR 介绍
 
-本文档介绍用于备份与恢复的 `Backup`、`CompactBackup`、`Restore` 等 Custom Resource (CR) 资源的各字段，确保更好地对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+本文档介绍用于备份与恢复的 `Backup`、`Restore` 等 Custom Resource (CR) 资源的各字段，确保更好地对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 
 ## Backup CR 字段介绍
 
@@ -192,32 +192,6 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.local.prefix`：持久卷存储目录。如果设置了这个字段，则会使用这个字段来拼接在持久卷的存储路径 `local://${.spec.local.volumeMount.mountPath}/${.spec.local.prefix}/`。
 * `.spec.local.volume`：持久卷配置。
 * `.spec.local.volumeMount`：持久卷挂载配置。
-
-## CompactBackup CR 字段介绍
-
-对于 TiDB v9.0.0 及以上版本的集群，你可以使用 `CompactBackup` 加速日志恢复。要将日志备份数据压缩为结构化 SST 文件，你可以通过创建一个自定义的 `CompactBackup` CR 对象来描述一次备份任务。以下是 `CompactBackup` CR 各个字段的具体含义：
-
-* `.spec.startTs`：指定日志压缩备份的起始时间戳。
-* `.spec.endTs`：指定日志压缩备份的结束时间戳。
-* `.spec.concurrency`：指定同时进行的压缩日志任务的最大数量，默认值为 `4`。
-* `.spec.maxRetryTimes`：指定压缩任务失败的最大重试次数，默认值为 `6`。
-* `.spec.toolImage`：指定 `CompactBackup` 使用的工具镜像。在 `CompactBackup` 中，唯一使用的工具镜像为 BR。使用 BR 备份时，你可以使用该字段指定 BR 的版本：
-    * 如果未指定或者为空，默认使用镜像 `pingcap/br:${tikv_version}` 进行备份。
-    * 如果指定了 BR 的版本，例如 `.spec.toolImage: pingcap/br:v9.0.0`，那么使用指定的版本镜像进行备份。
-    * 如果指定了镜像但未指定版本，例如 `.spec.toolImage: private/registry/br`，那么使用镜像 `private/registry/br:${tikv_version}` 进行备份。
-
-* `.spec.env`：指定运行压缩备份任务的 Pod 的环境变量信息。
-* `.spec.affinity`：指定运行备份任务的 Pod 亲和性 (affinity) 配置。关于亲和性的详细说明，请参阅[亲和性与反亲和性](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)。
-* `.spec.tolerations`：指定运行压缩备份任务的 Pod 能够被调度到带有与之匹配的[污点 (Taint)](https://kubernetes.io/zh-cn/docs/reference/glossary/?all=true#term-taint) 的节点上。关于污点与容忍度的更多说明，请参阅[污点和容忍度](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)。
-* `.spec.podSecurityContext`：指定运行压缩备份任务的 Pod 的安全上下文配置，以支持非 root 用户运行 Pod。关于 `podSecurityContext` 的更多说明，请参阅[以非 root 用户运行容器](containers-run-as-non-root-user.md)。
-* `.spec.priorityClassName`：指定运行压缩备份任务的 Pod 的 `priorityClass` 的名称，用于设置运行优先级。关于 `priorityClass` 的更多说明，请参阅 [Pod 优先级和抢占](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)。
-* `.spec.imagePullSecrets`：指定运行压缩备份任务的 Pod 使用的 [`imagePullSecrets`](https://kubernetes.io/zh-cn/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)。
-* `.spec.serviceAccount`：指定恢复时使用的 ServiceAccount 名称。
-* `.spec.useKMS`：指定恢复时是否使用 AWS-KMS 解密备份使用的 S3 存储密钥。
-* `.spec.br`：BR 相关配置，详情请参阅 [BR 字段介绍](#br-字段介绍)。
-* `.spec.s3`：S3 兼容存储相关配置，详情请参阅 [S3 字段介绍](#s3-存储字段介绍)。
-* `.spec.gcs`：GCS 存储相关配置，详情请参阅 [GCS 字段介绍](#gcs-存储字段介绍)。
-* `.spec.azblob`：Azure Blob Storage 存储相关配置，详情请参阅 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 
 ## Restore CR 字段介绍
 
