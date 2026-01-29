@@ -94,6 +94,10 @@ TiDB Operator v2 不再支持 `TidbMonitor` CRD。由于用户的监控系统通
 
 ### 功能
 
+#### `BackupSchedule`
+
+暂不支持 `BackupSchedule`。
+
 #### 跨 Namespace 部署
 
 考虑到跨 Namespace 可能带来的安全性问题以及尚不明确的用户场景，暂不支持。

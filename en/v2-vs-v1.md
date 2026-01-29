@@ -94,6 +94,10 @@ Deployment through CRD is not supported. You can use the built-in dashboard or d
 
 ### Features
 
+#### `BackupSchedule`
+
+Not supported yet.
+
 #### Cross-namespace deployment
 
 Not supported due to potential security issues and unclear user scenarios.
