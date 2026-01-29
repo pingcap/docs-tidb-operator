@@ -957,8 +957,8 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....
     log-integrated-backup-schedule-s3                      log        Running   ....
     ```
-</details>
 
+</details>
 
 ## 集成定时快照备份、日志备份和压缩日志备份
 
