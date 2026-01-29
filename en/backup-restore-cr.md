@@ -5,7 +5,7 @@ summary: Learn the fields in the Backup and Restore custom resources (CR).
 
 # Backup and Restore Custom Resources
 
-This document describes the fields in the `Backup`, `CompactBackup`, `Restore`, and `BackupSchedule` custom resources (CR). You can use these fields to better perform the backup or restore of TiDB clusters on Kubernetes.
+This document describes the fields in the `Backup`, `CompactBackup`, and `Restore` custom resources (CR). You can use these fields to better perform the backup or restore of TiDB clusters on Kubernetes.
 
 ## Backup CR fields
 
@@ -258,26 +258,3 @@ To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR o
 * `.spec.gcs`: GCS-related configuration. Refer to [GCS fields](#gcs-fields).
 * `.spec.azblob`: Azure Blob Storage-related configuration. Refer to [Azure Blob Storage fields](#azure-blob-storage-fields).
 * `.spec.local`: persistent volume-related configuration. Refer to [Local storage fields](#local-storage-fields).
-
-## BackupSchedule CR fields
-
-<details>
-<summary>The BackupSchedule feature is currently not supported in version 2. </summary>
-
-The `backupSchedule` configuration consists of three parts: the configuration of the snapshot backup `backupTemplate`, the configuration of the log backup `logBackupTemplate`, and the unique configuration of `backupSchedule`.
-
-* `backupTemplate`: the configuration of the snapshot backup. Specifies the configuration related to the cluster and remote storage of the snapshot backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
-* `logBackupTemplate`: the configuration of the log backup. Specifies the configuration related to the cluster and remote storage of the log backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields). The log backup is created and deleted along with `backupSchedule` and recycled according to `.spec.maxReservedTime`. The log backup name is saved in `status.logBackup`.
-* `compactBackupTemplate`: the configuration template of the log compaction backup. The fields are the same as those in the `spec` configuration of [the `CompactBackup` CR](#compactbackup-cr-fields). The compaction backup is created and deleted along with `backupSchedule`. The log backup names are stored in `status.logBackup`. The storage settings of the compaction backup should be the same as that of `logBackupTemplate` in the same `backupSchedule`.
-
-    > **Note:**
-    >
-    > Before you delete the log backup data, you need to stop the log backup task to avoid resource waste or the inability to restart the log backup task in the future because the log backup task in TiKV is not stopped.
-
-* The unique configuration items of `backupSchedule` are as follows:
-    * `.spec.maxBackups`: a backup retention policy, which determines the maximum number of backup files to be retained. When the number of backup files exceeds this value, the outdated backup file will be deleted. If you set this field to `0`, all backup items are retained.
-    * `.spec.maxReservedTime`: a backup retention policy based on time. For example, if you set the value of this field to `24h`, only backup files within the recent 24 hours are retained. All backup files older than this value are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set `.spec.maxBackups` and `.spec.maxReservedTime` at the same time, the latter takes effect.
-    * `.spec.schedule`: the time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
-    * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time point is reached. During this pause, the backup garbage collection runs normally. If you change `true` to `false`, the scheduled snapshot backup process is restarted. Because currently, log backup does not support pause, this configuration does not take effect for log backup.
-
-</details>
