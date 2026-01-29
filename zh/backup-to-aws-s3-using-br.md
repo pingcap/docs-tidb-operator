@@ -716,6 +716,9 @@ spec:
 
 ## 定时快照备份
 
+<details>
+<summary>目前 v2 版本暂时不支持 BackupSchedule 功能 </summary>
+
 你可以通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时快照备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次快照备份，定时快照备份底层通过 Ad-hoc 快照备份来实现。
 
 ### 前置条件：准备定时快照备份环境
@@ -867,7 +870,12 @@ kubectl get bks -n test1 -o wide
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
 ```
 
+</details>
+
 ## 集成管理定时快照备份和日志备份
+
+<details>
+<summary>目前 v2 版本暂时不支持 BackupSchedule 功能 </summary>
 
 `BackupSchedule` CR 可以集成管理 TiDB 集群的定时快照备份和日志备份。通过设置备份的保留时间，可以定期回收快照备份和日志备份，且能保证在保留期内可以通过快照备份和日志备份进行 PITR 恢复。
 
@@ -949,8 +957,13 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     integrated-backup-schedule-s3-2023-03-08t02-45-00      snapshot   Complete  ....
     log-integrated-backup-schedule-s3                      log        Running   ....
     ```
+</details>
+
 
 ## 集成定时快照备份、日志备份和压缩日志备份
+
+<details>
+<summary>目前 v2 版本暂时不支持 BackupSchedule 功能 </summary>
 
 为了加快下游恢复速度，可以在 `BackupSchedule` CR 中添加压缩日志备份。压缩日志备份可以定期压缩远程存储中的日志备份文件。你必须先启用日志备份，才能使用压缩日志备份。本节基于上一节内容进行扩展。
 
@@ -1033,6 +1046,8 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
     ```shell
     kubectl get cpbk -n test1
     ```
+
+</details>
 
 ## 删除备份的 Backup CR
 

@@ -639,6 +639,9 @@ spec:
 
 ## Scheduled snapshot backup
 
+<details>
+<summary>The BackupSchedule feature is currently not supported in version 2. </summary>
+
 You can set a backup policy to perform scheduled backups of the TiDB cluster, and set a backup retention policy to avoid excessive backup items. A scheduled snapshot backup is described by a custom `BackupSchedule` CR object. A snapshot backup is triggered at each backup time point. Its underlying implementation is the ad-hoc snapshot backup.
 
 ### Prerequisites: Prepare for a scheduled snapshot backup
@@ -705,7 +708,12 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n test1
     ```
 
+</details>
+
 ## Integrated management of scheduled snapshot backup and log backup
+
+<details>
+<summary>The BackupSchedule feature is currently not supported in version 2. </summary>
 
 You can use the `BackupSchedule` CR to integrate the management of scheduled snapshot backup and log backup for TiDB clusters. By setting the backup retention time, you can regularly recycle the scheduled snapshot backup and log backup, and ensure that you can perform PITR recovery through the scheduled snapshot backup and log backup within the retention period.
 
@@ -788,7 +796,12 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     log-integrated-backup-schedule-gcs                         log        Running   ....
     ```
 
+</details>
+
 ## Integrated management of scheduled snapshot backup, log backup, and compact log backup
+
+<details>
+<summary>The BackupSchedule feature is currently not supported in version 2. </summary>
 
 To accelerate downstream recovery, you can enable `CompactBackup` CR in the `BackupSchedule` CR. This feature periodically compacts log backup files in remote storage. You must enable log backup before using log backup compaction. This section extends the configuration from the previous section.
 
@@ -868,6 +881,8 @@ The steps to prepare for a scheduled snapshot backup are the same as those of [P
     ```shell
     kubectl get cpbk -n test1
     ```
+
+</details>
 
 ## Delete the backup CR
 
