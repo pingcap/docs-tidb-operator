@@ -43,7 +43,7 @@ BR 相关使用文档可参考：
 
 > **警告：**
 >
-> 目前，TiDB Operator v2 暂不支持 `BackupSchedule` CR。如果需要定时快照备份、日志备份或压缩日志备份，请使用 TiDB Operator v1.x 版本，并参考 [BackupSchedule CR 字段介绍](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-cr/#backupschedule-cr-字段介绍)文档。
+> 目前，TiDB Operator v2 暂不支持 `BackupSchedule` CR。如果需要定时快照备份、日志备份或压缩日志备份，请使用 TiDB Operator v1.x 版本，并参考 [BackupSchedule CR 字段介绍](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/backup-restore-cr/#backupschedule-cr-字段介绍)文档。
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个 [`Restore` CR](backup-restore-cr.md#restore-cr-字段介绍) 对象来描述一次恢复。
 
