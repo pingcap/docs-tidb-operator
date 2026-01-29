@@ -5,7 +5,7 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 
 # 备份与恢复 CR 介绍
 
-本文档介绍用于备份与恢复的 `Backup`、`CompactBackup`、`Restore` 及 `BackupSchedule` 等 Custom Resource (CR) 资源的各字段，确保更好地对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+本文档介绍用于备份与恢复的 `Backup`、`CompactBackup`、`Restore` 等 Custom Resource (CR) 资源的各字段，确保更好地对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
 
 ## Backup CR 字段介绍
 
@@ -258,26 +258,3 @@ summary: 介绍用于备份与恢复的 Custom Resource (CR) 资源的各字段�
 * `.spec.gcs`：GCS 存储相关配置，具体介绍参考 [GCS 字段介绍](#gcs-存储字段介绍)。
 * `.spec.azblob`：Azure Blob Storage 存储相关配置，具体介绍参考 [Azure Blob Storage 字段介绍](#azure-blob-storage-存储字段介绍)。
 * `.spec.local`：持久卷存储相关配置，具体介绍参考 [Local 字段介绍](#local-存储字段介绍)。
-
-## BackupSchedule CR 字段介绍
-
-<details>
-<summary>目前 v2 版本暂时不支持 BackupSchedule 功能 </summary>
-
-`backupSchedule` 的配置由三部分组成。快照备份相关配置 `backupTemplate`，日志备份相关配置`logBackupTemplate`，`backupSchedule` 独有的配置。
-
-+ `backupTemplate`：快照备份相关配置。指定快照备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)。
-+ `logBackupTemplate`：日志备份相关配置。指定日志备份集群及远程存储相关的配置，字段和 Backup CR 中的 `spec` 一样，详细介绍可参考 [Backup CR 字段介绍](#backup-cr-字段介绍)，日志备份随 `backupSchedule` 创建、删除，且根据 `.spec.maxReservedTime` 进行回收。日志备份名称在 `status.logBackup` 中保存。
-+ `compactBackupTemplate`：压缩日志备份的配置模板，字段和 CompactBackup CR 中的 `spec` 一样，详细介绍可参考 [CompactBackup CR 字段介绍](#compactbackup-cr-字段介绍)。压缩日志备份会随 `backupSchedule` 创建和删除，日志备份名称存储在 `status.logBackup` 中。压缩日志备份的存储设置应与同一 `backupSchedule` 中的 `logBackupTemplate` 保持一致。
-
-    > **注意：**
-    >
-    > 若删除日志备份数据，需要先停止日志备份任务，避免由于未停止 TiKV 中的日志备份任务，造成资源浪费或者后续无法重新开启日志备份。
-
-+ `backupSchedule` 独有的配置：
-    + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
-    + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置 `.spec.maxBackups` 和 `.spec.maxReservedTime`，则以 `.spec.maxReservedTime` 为准。
-    + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-    + `.spec.pause`：是否暂停定时备份，默认为 `false`。如果将该值设置为 `true`，表示暂停定时备份，此时即使到了指定时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。如需重新开启定时快照备份，将 `true` 改为`false`。由于目前日志备份暂不支持暂停，因此该配置对日志备份无效。
-
-</details>
