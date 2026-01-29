@@ -261,6 +261,9 @@ To restore data to a TiDB cluster on Kubernetes, you can create a `Restore` CR o
 
 ## BackupSchedule CR fields
 
+<details>
+<summary>The BackupSchedule feature is currently not supported in version 2. </summary>
+
 The `backupSchedule` configuration consists of three parts: the configuration of the snapshot backup `backupTemplate`, the configuration of the log backup `logBackupTemplate`, and the unique configuration of `backupSchedule`.
 
 * `backupTemplate`: the configuration of the snapshot backup. Specifies the configuration related to the cluster and remote storage of the snapshot backup, which is the same as the `spec` configuration of [the `Backup` CR](#backup-cr-fields).
@@ -276,3 +279,5 @@ The `backupSchedule` configuration consists of three parts: the configuration of
     * `.spec.maxReservedTime`: a backup retention policy based on time. For example, if you set the value of this field to `24h`, only backup files within the recent 24 hours are retained. All backup files older than this value are deleted. For the time format, refer to [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration). If you have set `.spec.maxBackups` and `.spec.maxReservedTime` at the same time, the latter takes effect.
     * `.spec.schedule`: the time scheduling format of Cron. Refer to [Cron](https://en.wikipedia.org/wiki/Cron) for details.
     * `.spec.pause`: `false` by default. If this field is set to `true`, the scheduled scheduling is paused. In this situation, the backup operation will not be performed even if the scheduling time point is reached. During this pause, the backup garbage collection runs normally. If you change `true` to `false`, the scheduled snapshot backup process is restarted. Because currently, log backup does not support pause, this configuration does not take effect for log backup.
+
+</details>
