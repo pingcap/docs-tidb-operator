@@ -39,7 +39,11 @@ To recover the SST files exported by BR to a TiDB cluster, use BR. For more info
 
 ## Backup and restore process
 
-To make a backup of the TiDB cluster on Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup or create a [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-fields) object to describe a scheduled backup.
+To make a backup of the TiDB cluster on Kubernetes, you need to create a [`Backup` CR](backup-restore-cr.md#backup-cr-fields) object to describe the backup.
+
+> **Warning:**
+>
+> Currently, TiDB Operator v2 does not support the `BackupSchedule` CR. To perform scheduled snapshot backups, scheduled log backups, or scheduled compact log backups, use TiDB Operator v1.x and see [BackupSchedule CR fields](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/backup-restore-cr/#backupschedule-cr-fields).
 
 To restore data to the TiDB cluster on Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
 
@@ -47,20 +51,19 @@ After creating the CR object, according to your configuration, TiDB Operator cho
 
 ## Delete the Backup CR
 
-You can delete the `Backup` CR or `BackupSchedule` CR by running the following commands:
+You can delete the `Backup` CR by running the following commands:
 
 ```shell
 kubectl delete backup ${name} -n ${namespace}
-kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
 If you set the value of `spec.cleanPolicy` to `Delete`, TiDB Operator cleans the backup data when it deletes the CR.
 
 TiDB Operator automatically attempts to stop running log backup tasks when you delete the Custom Resource (CR). This automatic stop feature only applies to log backup tasks that are running normally and does not handle tasks in an error or failed state.
 
-In such cases, if you need to delete the namespace, it is recommended that you first delete all the `Backup` or `BackupSchedule` CRs and then delete the namespace.
+In such cases, if you need to delete the namespace, it is recommended that you first delete the `Backup` CR and then delete the namespace.
 
-If you delete the namespace before you delete the `Backup` or `BackupSchedule` CR, TiDB Operator will keep creating jobs to clean the backup data. However, because the namespace is in `Terminating` state, TiDB Operator fails to create such a job, which causes the namespace to be stuck in this state.
+If you delete the namespace before you delete the `Backup` CR, TiDB Operator will keep creating jobs to clean the backup data. However, because the namespace is in `Terminating` state, TiDB Operator fails to create such a job, which causes the namespace to be stuck in this state.
 
 To address this issue, delete `finalizers` by running the following command:
 
