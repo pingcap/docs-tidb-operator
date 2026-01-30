@@ -39,7 +39,11 @@ BR 相关使用文档可参考：
 
 ## 备份与恢复过程
 
-为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户需要创建一个 [`Backup` Custom Resource](backup-restore-cr.md#backup-cr-字段介绍) (CR) 对象来描述一次备份，或者创建一个 [`BackupSchedule` CR](backup-restore-cr.md#backupschedule-cr-字段介绍) 对象来描述一个定时备份。
+为了对 Kubernetes 上的 TiDB 集群进行数据备份，用户需要创建一个 [`Backup` Custom Resource](backup-restore-cr.md#backup-cr-字段介绍) (CR) 对象来描述一次备份。
+
+> **警告：**
+>
+> 目前，TiDB Operator v2 暂不支持 `BackupSchedule` CR。如果需要定时快照备份、定时日志备份或定时压缩日志备份，请使用 TiDB Operator v1.x 版本，并参考 [BackupSchedule CR 字段介绍](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/backup-restore-cr/#backupschedule-cr-字段介绍)文档。
 
 为了对 Kubernetes 上的 TiDB 集群进行数据恢复，用户可以通过创建一个 [`Restore` CR](backup-restore-cr.md#restore-cr-字段介绍) 对象来描述一次恢复。
 
@@ -51,16 +55,15 @@ BR 相关使用文档可参考：
 
 ```shell
 kubectl delete backup ${name} -n ${namespace}
-kubectl delete backupschedule ${name} -n ${namespace}
 ```
 
 如果将 `spec.cleanPolicy` 设置为 `Delete` 时，TiDB Operator 在删除 CR 时会同时清理备份文件。
 
 当你删除 CR 时，TiDB Operator 会尝试自动停止正在运行的日志备份任务。此自动停止功能仅适用于正常运行的日志备份任务，不会处理出现错误或失败状态的任务。
 
-在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup/BackupSchedule CR，再删除 namespace。
+在满足上述条件时，如果需要删除 namespace，建议首先删除所有的 Backup CR，再删除 namespace。
 
-如果直接删除存在 Backup/BackupSchedule CR 的 namespace，TiDB Operator 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
+如果直接删除存在 Backup CR 的 namespace，TiDB Operator 会持续尝试创建 Job 清理备份的数据，但因为 namespace 处于 `Terminating` 状态而创建失败，从而导致 namespace 卡在该状态。
 
 这时需要通过下述命令删除 `finalizers`：
 
