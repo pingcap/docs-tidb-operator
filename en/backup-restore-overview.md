@@ -43,7 +43,7 @@ To make a backup of the TiDB cluster on Kubernetes, you need to create a [`Backu
 
 > **Warning:**
 >
-> Currently, TiDB Operator v2 does not support the `BackupSchedule` CR. To perform scheduled snapshot backups, log backups, or compact log backups, use TiDB Operator v1.x and see [BackupSchedule CR fields](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/backup-restore-cr/#backupschedule-cr-fields).
+> Currently, TiDB Operator v2 does not support the `BackupSchedule` CR. To perform scheduled snapshot backups, scheduled log backups, or scheduled compact log backups, use TiDB Operator v1.x and see [BackupSchedule CR fields](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/backup-restore-cr/#backupschedule-cr-fields).
 
 To restore data to the TiDB cluster on Kubernetes, you need to create a [`Restore` CR](backup-restore-cr.md#restore-cr-fields) object to describe the restore.
 
