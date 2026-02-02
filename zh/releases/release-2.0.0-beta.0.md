@@ -45,7 +45,7 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
 
 - **支持 [CRD 子资源](https://kubernetes.io/zh-cn/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#subresources)**：
     - 支持 `status` 子资源，实现统一的状态管理
-    - 支持 `scale` 子资源，可与 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/) 集成，实现自动扩缩容
+    - 支持 `scale` 子资源，可与 [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/zh-cn/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/) 集成，实现自动扩缩容
     - 增强与 Kubernetes 生态系统的集成能力
 
 - **优化配置管理**：
