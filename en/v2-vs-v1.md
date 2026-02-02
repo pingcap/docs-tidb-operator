@@ -16,7 +16,7 @@ Initially, the TiDB cluster has only three core components: PD, TiKV, and TiDB. 
 - The number of TiDB cluster components has increased, with eight components currently defined in the `TidbCluster` CRD.
 - To display status, the state of all nodes is defined in the `TidbCluster` CRD.
 - Heterogeneous clusters are not considered initially, so additional `TidbCluster` CRs has to be introduced to support them.
-- The `/scale` API is not supported, making it impossible to integrate with Kubernetes [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
+- The `/scale` API is not supported, making it impossible to integrate with Kubernetes [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/).
 - A large CR/CRD can cause difficult-to-resolve performance issues.
 
 TiDB Operator v2 addresses these issues by splitting `TidbCluster` into multiple independent CRDs by component.
