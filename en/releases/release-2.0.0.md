@@ -41,7 +41,7 @@ TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with 
 
 - **Support [CRD subresources](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#subresources)**:
     - Support the `status` subresource for unified status management.
-    - Support the `scale` subresource to integrate with [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), enabling auto-scaling.
+    - Support the `scale` subresource to integrate with [HorizontalPodAutoscaler (HPA)](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/), enabling auto-scaling.
     - Improve compatibility with the Kubernetes ecosystem.
 
 - **Support feature gates to control change behavior**:
