@@ -16,6 +16,7 @@ This document lists all released TiDB Operator versions, sorted by version numbe
 
 ## 1.6
 
+- [1.6.5](release-1.6.5.md): 2026-02-06
 - [1.6.4](release-1.6.4.md): 2025-12-02
 - [1.6.3](release-1.6.3.md): 2025-07-18
 - [1.6.2](release-1.6.2.md): 2025-07-14
