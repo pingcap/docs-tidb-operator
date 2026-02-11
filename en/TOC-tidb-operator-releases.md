@@ -5,6 +5,7 @@
   - [2.0 GA](releases/release-2.0.0.md)
   - [2.0.0-beta.0](releases/release-2.0.0-beta.0.md)
 - v1.6
+  - [1.6.5](releases/release-1.6.5.md)
   - [1.6.4](releases/release-1.6.4.md)
   - [1.6.3](releases/release-1.6.3.md)
   - [1.6.2](releases/release-1.6.2.md)
