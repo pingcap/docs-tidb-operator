@@ -23,7 +23,7 @@ During the rolling update, TiDB Operator automatically completes Leader transfer
 ## Preparations before upgrade
 
 1. Refer to the [upgrade caveat](https://docs.pingcap.com/tidb/dev/upgrade-tidb-using-tiup#upgrade-caveat) to learn about the precautions. Note that all TiDB versions, including patch versions, currently do not support downgrade or rollback after upgrade.
-2. Refer to [TiDB release notes](https://docs.pingcap.com/tidb/dev/release-notes) to learn about the compatibility changes in each intermediate version. If any changes affect your upgrade, take appropriate measures.
+2. Refer to [TiDB release notes](https://docs.pingcap.com/releases/tidb-self-managed/) to learn about the compatibility changes in each intermediate version. If any changes affect your upgrade, take appropriate measures.
 
     For example, if you upgrade from TiDB v6.4.0 to v6.5.2, you need to check the compatibility changes in the following versions:
 
