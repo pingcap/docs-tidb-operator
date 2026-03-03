@@ -5,7 +5,7 @@ summary: 了解如何在 Kubernetes 上部署 TiDB DM 集群。
 
 # 在 Kubernetes 上部署 DM
 
-[TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 DM。
+[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview/) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 TiDB Operator 在 Kubernetes 上部署 DM。
 
 ## 前置条件
 
@@ -41,7 +41,7 @@ TiDB Operator 仅支持部署 DM 2.0 及更新版本。
 
 DM-master 为 DM 集群必须部署的组件。如果需要高可用部署则至少部署 3 个 DM-master Pod。
 
-可以通过 DMCluster CR 的 `spec.master.config` 来配置 DM-master 配置参数。完整的 DM-master 配置参数，参考[DM-master 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-master-configuration-file)。
+可以通过 DMCluster CR 的 `spec.master.config` 来配置 DM-master 配置参数。完整的 DM-master 配置参数，参考[DM-master 配置文件介绍](https://docs.pingcap.com/zh/tidb/stable/dm-master-configuration-file/)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -72,7 +72,7 @@ spec:
 
 #### DM-worker 配置
 
-可以通过 DMCluster CR 的 `spec.worker.config` 来配置 DM-worker 配置参数。完整的 DM-worker 配置参数，参考[DM-worker 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/dm-worker-configuration-file)。
+可以通过 DMCluster CR 的 `spec.worker.config` 来配置 DM-worker 配置参数。完整的 DM-worker 配置参数，参考[DM-worker 配置文件介绍](https://docs.pingcap.com/zh/tidb/stable/dm-worker-configuration-file/)。
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1

@@ -5,7 +5,7 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 # 在 Kubernetes 上使用 DM 迁移数据
 
-[TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 DM 迁移数据到 TiDB 集群。
+[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview/) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 DM 迁移数据到 TiDB 集群。
 
 ## 前置条件
 
@@ -32,7 +32,7 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 ### 创建数据源
 
-1. 参考[创建数据源](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-3-步创建数据源)将 MySQL 的相关信息写入到 `source1.yaml` 中。
+1. 参考[创建数据源](https://docs.pingcap.com/zh/tidb/stable/migrate-data-using-dm#第-3-步创建数据源)将 MySQL 的相关信息写入到 `source1.yaml` 中。
 
 2. 填写 `source1.yaml` 的 `from.host` 为 Kubernetes 集群内部可以访问的 MySQL host 地址。
 
@@ -44,7 +44,7 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 ### 配置同步任务
 
-1. 参考[配置同步任务](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-4-步配置任务)编辑任务配置文件 `task.yaml`。
+1. 参考[配置同步任务](https://docs.pingcap.com/zh/tidb/stable/migrate-data-using-dm#第-4-步配置任务)编辑任务配置文件 `task.yaml`。
 
 2. 填写 `task.yaml` 中的 `target-database.host` 为 Kubernetes 集群内部可以访问的 TiDB host 地址。如果是 TiDB Operator 部署的集群，填写 `${tidb_cluster_name}-tidb.${namespace}` 即可。
 
@@ -52,4 +52,4 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 ### 启动/查询/停止同步任务
 
-参考[使用 DM 迁移数据](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-data-using-dm#第-5-步启动任务) 中的对应步骤即可，注意将 master-addr 填写为 `${dm_cluster_name}-dm-master:8261`。
+参考[使用 DM 迁移数据](https://docs.pingcap.com/zh/tidb/stable/migrate-data-using-dm#第-5-步启动任务) 中的对应步骤即可，注意将 master-addr 填写为 `${dm_cluster_name}-dm-master:8261`。
