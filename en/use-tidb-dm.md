@@ -5,7 +5,7 @@ summary: Learn how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 
 # Use DM on Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
+[TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview/) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 
 ## Prerequisites
 
