@@ -5,7 +5,7 @@ summary: 了解如何在 Kubernetes 上使用 TiDB DM 迁移数据。
 
 # 在 Kubernetes 上使用 DM 迁移数据
 
-[TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 DM 迁移数据到 TiDB 集群。
+[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview/) (DM) 是一款支持从 MySQL 或 MariaDB 到 TiDB 的全量数据迁移和增量数据复制的一体化数据迁移任务管理平台。本文介绍如何使用 DM 迁移数据到 TiDB 集群。
 
 ## 前置条件
 
