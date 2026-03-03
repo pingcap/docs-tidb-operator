@@ -69,7 +69,6 @@ NAME                                 CREATED AT
 backups.pingcap.com                  2020-06-11T07:59:40Z
 backupschedules.pingcap.com          2020-06-11T07:59:41Z
 restores.pingcap.com                 2020-06-11T07:59:40Z
-tidbclusterautoscalers.pingcap.com   2020-06-11T07:59:42Z
 tidbclusters.pingcap.com             2020-06-11T07:59:38Z
 tidbinitializers.pingcap.com         2020-06-11T07:59:42Z
 tidbmonitors.pingcap.com             2020-06-11T07:59:41Z

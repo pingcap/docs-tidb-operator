@@ -14,7 +14,7 @@ The following diagram is an overview of the architecture of TiDB Operator.
 
 ![TiDB Operator Overview](/media/tidb-operator-overview-1.2.png)
 
-`TidbCluster`, `TidbMonitor`, `TidbInitializer`, `Backup`, `Restore`, `BackupSchedule`, and `TidbClusterAutoScaler` are custom resources defined by CRD (`CustomResourceDefinition`).
+`TidbCluster`, `TidbMonitor`, `TidbInitializer`, `Backup`, `Restore`, and `BackupSchedule` are custom resources defined by CRD (`CustomResourceDefinition`).
 
 * `TidbCluster` describes the desired state of the TiDB cluster.
 * `TidbMonitor` describes the monitoring components of the TiDB cluster.
@@ -22,7 +22,6 @@ The following diagram is an overview of the architecture of TiDB Operator.
 * `Backup` describes the desired backup of the TiDB cluster.
 * `Restore` describes the desired restoration of the TiDB cluster.
 * `BackupSchedule` describes the scheduled backup of the TiDB cluster.
-* `TidbClusterAutoScaler` describes the automatic scaling of the TiDB cluster.
 
 The following components are responsible for the orchestration and scheduling logic in a TiDB cluster:
 
