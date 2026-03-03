@@ -59,14 +59,6 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
     kubectl -n ${namespace} get restore ${name}
     ```
 
-* 查看 TidbClusterAutoScaler：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl -n ${namespace} get tidbclusterautoscaler ${name}
-    ```
-
 * 查看 TidbInitializer：
 
     {{< copyable "shell-regular" >}}
@@ -413,14 +405,6 @@ summary: 介绍管理 TiDB 集群的 Command Cheat Sheet。
 
     ```shell
     kubectl delete -n ${namespace} tidbmonitor ${tidb_monitor_name}
-    ```
-
-* 删除 TidbClusterAutoScaler：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl -n ${namespace} delete tidbclusterautoscaler ${name}
     ```
 
 ### 更多
