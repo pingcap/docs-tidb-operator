@@ -208,7 +208,6 @@ customresourcedefinition.apiextensions.k8s.io/restores.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/backupschedules.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbmonitors.pingcap.com created
 customresourcedefinition.apiextensions.k8s.io/tidbinitializers.pingcap.com created
-customresourcedefinition.apiextensions.k8s.io/tidbclusterautoscalers.pingcap.com created
 ```
 
 </details>

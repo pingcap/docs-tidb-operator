@@ -13,7 +13,7 @@ summary: 了解 TiDB Operator 架构及其工作原理。
 
 ![TiDB Operator Overview](/media/tidb-operator-overview-1.2.png)
 
-其中，`TidbCluster`、`TidbMonitor`、`TidbInitializer`、`Backup`、`Restore`、`BackupSchedule`、`TidbClusterAutoScaler` 是由 CRD（`CustomResourceDefinition`）定义的自定义资源：
+其中，`TidbCluster`、`TidbMonitor`、`TidbInitializer`、`Backup`、`Restore`、`BackupSchedule` 是由 CRD（`CustomResourceDefinition`）定义的自定义资源：
 
 * `TidbCluster` 用于描述用户期望的 TiDB 集群
 * `TidbMonitor` 用于描述用户期望的 TiDB 集群监控组件
@@ -21,7 +21,6 @@ summary: 了解 TiDB Operator 架构及其工作原理。
 * `Backup` 用于描述用户期望的 TiDB 集群备份
 * `Restore` 用于描述用户期望的 TiDB 集群恢复
 * `BackupSchedule` 用于描述用户期望的 TiDB 集群周期性备份
-* `TidbClusterAutoScaler` 用于描述用户期望的 TiDB 集群自动伸缩
 
 TiDB 集群的编排和调度逻辑则由下列组件负责：
 
