@@ -5,7 +5,7 @@ summary: Learn how to deploy TiDB DM cluster on Kubernetes.
 
 # Deploy DM on Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to deploy DM on Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
+[TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview/) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to deploy DM on Kubernetes using TiDB Operator and how to migrate MySQL data to TiDB cluster using DM.
 
 ## Prerequisites
 
@@ -41,7 +41,7 @@ TiDB Operator only supports deploying DM 2.0 and later versions.
 
 DM-master is an indispensable component of the DM cluster. You need to deploy at least three DM-master Pods if you want to achieve high availability.
 
-You can configure DM-master parameters by `spec.master.config` in `DMCluster` CR. For complete DM-master configuration parameters, refer to [DM-master Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-master-configuration-file).
+You can configure DM-master parameters by `spec.master.config` in `DMCluster` CR. For complete DM-master configuration parameters, refer to [DM-master Configuration File](https://docs.pingcap.com/tidb/stable/dm-master-configuration-file).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1
@@ -72,7 +72,7 @@ spec:
 
 #### Configure DM-worker
 
-You can configure DM-worker parameters by `spec.worker.config` in `DMCluster` CR. For complete DM-worker configuration parameters，refer to [DM-worker Configuration File](https://docs.pingcap.com/tidb-data-migration/v2.0/dm-worker-configuration-file).
+You can configure DM-worker parameters by `spec.worker.config` in `DMCluster` CR. For complete DM-worker configuration parameters，refer to [DM-worker Configuration File](https://docs.pingcap.com/tidb/stable/dm-worker-configuration-file).
 
 ```yaml
 apiVersion: pingcap.com/v1alpha1

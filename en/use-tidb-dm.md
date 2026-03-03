@@ -5,7 +5,7 @@ summary: Learn how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 
 # Use DM on Kubernetes
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
+[TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview/) (DM) is an integrated data migration task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB. This document describes how to migrate MySQL data to TiDB cluster using DM on Kubernetes.
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh
 
 ### Create data source
 
-1. Write MySQL-1 related information to `source1.yaml` file, which can refer to [Create data source](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-3-create-data-source).
+1. Write MySQL-1 related information to `source1.yaml` file, which can refer to [Create data source](https://docs.pingcap.com/tidb/stable/migrate-data-using-dm#step-3-create-data-source).
 
 2. Configure the `from.host` in the `source1.yaml` file as the MySQL host address that the Kubernetes cluster can access internally.
 
@@ -58,7 +58,7 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh
 
 ### Configure migration tasks
 
-1. Edit task configuration file `task.yaml`, which can refer to [Configure the data migration task](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-4-configure-the-data-migration-task).
+1. Edit task configuration file `task.yaml`, which can refer to [Configure the data migration task](https://docs.pingcap.com/tidb/stable/migrate-data-using-dm#step-4-configure-the-data-migration-task).
 
 2. Configure the `target-database.host` in `task.yaml` as the TiDB host address that the Kubernetes cluster can access internally. If the cluster is deployed by TiDB Operator, configure the host as `${tidb_cluster_name}-tidb.${namespace}`.
 
@@ -70,4 +70,4 @@ kubectl exec -ti ${dm_cluster_name}-dm-master-0 -n ${namespace} -- /bin/sh
 
 ### Start/Check/Stop the migration tasks
 
-Refer to the corresponding steps in [Migrate Data Using DM](https://docs.pingcap.com/tidb-data-migration/v2.0/migrate-data-using-dm#step-5-start-the-data-migration-task) and fill in the master-addr as `${dm_cluster_name}-dm-master:8261`.
+Refer to the corresponding steps in [Migrate Data Using DM](https://docs.pingcap.com/tidb/stable/migrate-data-using-dm#step-5-start-the-data-migration-task) and fill in the master-addr as `${dm_cluster_name}-dm-master:8261`.
