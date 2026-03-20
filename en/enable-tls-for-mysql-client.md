@@ -740,7 +740,7 @@ The following are TLS settings for these components of TiProxy:
 
 - `security.cluster-tls`: used to interface with other hosts in the cluster both as server and client (mTLS).
 - `security.server-tls`: used for serving MySQL protocol access on port 6000.
-- `security.sql-tls`: used to access TiDB as a client.
+- `security.sql-tls`: used by TiProxy to access the SQL port of TiDB.
 - `security.server-http-tls` used to serve HTTP services on port 3080.
 
 See also [the security section of the configuration](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).

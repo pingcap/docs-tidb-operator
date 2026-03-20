@@ -747,7 +747,7 @@ TiProxy 的以下组件提供了 TLS 配置项：
 
 - `security.cluster-tls`：用于与集群中的其他主机通信，同时作为服务端和客户端使用 (mTLS)。
 - `security.server-tls`：用于在 6000 端口提供 MySQL 协议访问服务。
-- `security.sql-tls`：用于作为客户端访问 TiDB。
+- `security.sql-tls`：用于 TiProxy 访问 TiDB 的 SQL 端口。
 - `security.server-http-tls`：用于在 3080 端口提供 HTTP 服务。
 
 另请参见[配置中的安全部分](https://docs.pingcap.com/zh/tidb/stable/tiproxy-configuration/#security)。
