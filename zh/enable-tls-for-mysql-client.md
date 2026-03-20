@@ -738,16 +738,14 @@ SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
 
 ## TiProxy
 
-当在一组 TiDB 服务器前使用 TiProxy 时，也需要为 TiProxy 配置 TLS。
-
-根据 `TiProxyCertLayout` 的不同，会选择不同的证书布局：
+当在一组 TiDB 服务器前使用 TiProxy 时，也需要为 TiProxy 配置 TLS。根据 `TiProxyCertLayout` 的不同，会选择不同的证书布局：
 
 - 未设置：使用旧版布局。
 - `v1`：使用第一版布局。推荐使用该版本。
 
 TiProxy 的以下组件提供了 TLS 配置项：
 
-- `security.cluster-tls`：用于与集群中的其他主机通信，同时作为服务端和客户端使用（mTLS）。
+- `security.cluster-tls`：用于与集群中的其他主机通信，同时作为服务端和客户端使用 (mTLS)。
 - `security.server-tls`：用于在 6000 端口提供 MySQL 协议访问服务。
 - `security.sql-tls`：用于作为客户端访问 TiDB。
 - `security.server-http-tls`：用于在 3080 端口提供 HTTP 服务。

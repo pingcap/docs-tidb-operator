@@ -731,14 +731,12 @@ SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
 
 ## TiProxy
 
-When using TiProxy in front of a set of TiDB servers you also need to configure TLS for it.
+When using TiProxy in front of a set of TiDB servers you also need to configure TLS for it. Depending on the `TiProxyCertLayout` a different certificate layout is chosen:
 
-Depending on the `TiProxyCertLayout` a different certificate layout is chosen:
+- not set: the legacy layout.
+- `v1`: the version one of the layout (recommended).
 
-- not set: This is the legacy layout.
-- `v1`: This is version one of the layout. This is recommended.
-
-There are TLS settings for these components of TiProxy:
+The following are TLS settings for these components of TiProxy:
 
 - `security.cluster-tls`: used to interface with other hosts in the cluster both as server and client (mTLS).
 - `security.server-tls`: used for serving MySQL protocol access on port 6000.
@@ -747,9 +745,9 @@ There are TLS settings for these components of TiProxy:
 
 See also [the security section of the configuration](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).
 
-TiProxy will try to use the TLS secret from TiDB for client/server connections by default. If you do this make sure these certificates also contain the hostname of the TiProxy hosts.
+TiProxy will try to use the TLS secret from TiDB for client/server connections by default. If you do this, make sure these certificates also contain the hostname of the TiProxy hosts.
 
-Other settings that influence this:
+Other settings that influence this include:
 
 - `tlsCluster.enabled`
 - `tlsClient.enabled`
