@@ -641,7 +641,7 @@ In this step, you create a TiDB cluster and perform the following operations:
 
 > **Note:**
 >
-> By default the client certificate is not validated by the server. Use [`ALTER USER`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-user/) to configure the account with `REQUIRE X509` or other constraints on the client certificate.
+> By default, the server does not validate the client certificate. To require client certificate validation, use [`ALTER USER`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-user/) to configure the account with `REQUIRE X509` or other client certificate constraints.
 
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 
@@ -731,25 +731,25 @@ SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
 
 ## TiProxy
 
-When using TiProxy in front of a set of TiDB servers you also need to configure TLS for it. Depending on the `TiProxyCertLayout` a different certificate layout is chosen:
+When you use TiProxy in front of multiple TiDB servers, you also need to configure TLS for TiProxy. The certificate layout depends on the `TiProxyCertLayout` setting:
 
-- not set: the legacy layout.
-- `v1`: the version one of the layout (recommended).
+- Not set: uses the legacy layout.
+- `v1`: uses version one of the layout (recommended).
 
-The following are TLS settings for these components of TiProxy:
+The following are the TLS settings for each TiProxy component:
 
-- `security.cluster-tls`: used to interface with other hosts in the cluster both as server and client (mTLS).
-- `security.server-tls`: used for serving MySQL protocol access on port 6000.
-- `security.sql-tls`: used by TiProxy to access the SQL port of TiDB.
-- `security.server-http-tls` used to serve HTTP services on port 3080.
+- `security.cluster-tls`: used for communication between TiProxy and other components in the cluster, functioning as both client and server using mutual TLS (mTLS).
+- `security.server-tls`: used to provide MySQL protocol access on port `6000`.
+- `security.sql-tls`: used for TiProxy to access the SQL port of TiDB.
+- `security.server-http-tls`: used to provide HTTP service on port `3080`.
 
-See also [the security section of the configuration](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).
+For more information, see [the security section of TiProxy configuration file](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).
 
-TiProxy will try to use the TLS secret from TiDB for client/server connections by default. If you do this, make sure these certificates also contain the hostname of the TiProxy hosts.
+By default, TiProxy attempts to reuse the TiDB TLS secret for both client and server connections. If you use this behavior, ensure that the certificates include the hostnames of the TiProxy nodes.
 
-Other settings that influence this include:
+The following settings also affect TLS behavior:
 
 - `tlsCluster.enabled`
 - `tlsClient.enabled`
 
-The certificates can be generated with cfssl or cert-manager.
+You can generate certificates using tools such as `cfssl` or `cert-manager`.
