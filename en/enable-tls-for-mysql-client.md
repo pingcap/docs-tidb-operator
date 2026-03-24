@@ -639,6 +639,10 @@ In this step, you create a TiDB cluster and perform the following operations:
 
 ## Step 3. Configure the MySQL client to use a TLS connection
 
+> **Note:**
+>
+> By default, the server does not validate the client certificate. To require client certificate validation, use [`ALTER USER`](https://docs.pingcap.com/tidb/stable/sql-statement-alter-user/) to configure the account with `REQUIRE X509` or other client certificate constraints.
+
 To connect the MySQL client with the TiDB cluster, use the client-side certificate created above and take the following methods. For details, refer to [Configure the MySQL client to use encrypted connections](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers#configure-the-mysql-client-to-use-encrypted-connections).
 
 Execute the following command to acquire the client-side certificate and connect to the TiDB server:
@@ -724,3 +728,28 @@ SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
 +-----------------------+--------------------------+
 2 rows in set (0.011 sec)
 ```
+
+## TiProxy
+
+When you use TiProxy in front of multiple TiDB servers, you also need to configure TLS for TiProxy. The certificate layout depends on the `TiProxyCertLayout` setting:
+
+- Not set: uses the legacy layout.
+- `v1`: uses version one of the layout (recommended).
+
+The following are the TLS settings for each TiProxy component:
+
+- `security.cluster-tls`: used for communication between TiProxy and other components in the cluster, functioning as both client and server using mutual TLS (mTLS).
+- `security.server-tls`: used to provide MySQL protocol access on port `6000`.
+- `security.sql-tls`: used for TiProxy to access the SQL port of TiDB.
+- `security.server-http-tls`: used to provide HTTP service on port `3080`.
+
+For more information, see [the security section of TiProxy configuration file](https://docs.pingcap.com/tidb/stable/tiproxy-configuration/#security).
+
+By default, TiProxy attempts to reuse the TiDB TLS secret for both client and server connections. If you use this behavior, ensure that the certificates include the hostnames of the TiProxy nodes.
+
+The following settings also affect TLS behavior:
+
+- `tlsCluster.enabled`
+- `tlsClient.enabled`
+
+You can generate certificates using tools such as `cfssl` or `cert-manager`.

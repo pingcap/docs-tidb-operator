@@ -635,6 +635,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-for-mysql-client/']
 
 ## 第三步：配置 MySQL 客户端使用 TLS 连接
 
+> **注意：**
+>
+> 默认情况下，服务器不会验证客户端证书。你可以使用 [`ALTER USER`](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-user/) 语句，通过 `REQUIRE X509` 或其他客户端证书约束来配置账户。
+
 可以根据[官网文档](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers#配置-mysql-client-使用安全连接)提示，使用上面创建的 Client 证书，通过下面的方法连接 TiDB 集群：
 
 获取 Client 证书的方式并连接 TiDB Server 的方法是：
@@ -732,3 +736,28 @@ SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
 +-----------------------+--------------------------+
 2 rows in set (0.011 sec)
 ```
+
+## TiProxy
+
+当在多个 TiDB 服务器之间部署 TiProxy 时，也需要为 TiProxy 配置 TLS。证书布局取决于 `TiProxyCertLayout` 设置：
+
+- 未设置：使用旧版布局。
+- `v1`：使用 v1 版本布局。推荐使用该版本。
+
+以下是 TiProxy 组件的 TLS 配置项：
+
+- `security.cluster-tls`：用于 TiProxy 与集群中其他组件之间的通信，同时作为客户端和服务端使用 (mTLS)。
+- `security.server-tls`：用于在 `6000` 端口提供 MySQL 协议访问服务。
+- `security.sql-tls`：用于 TiProxy 访问 TiDB 的 SQL 端口。
+- `security.server-http-tls`：用于在 `3080` 端口提供 HTTP 服务。
+
+另请参见 [TiProxy 配置文件的 security 部分](https://docs.pingcap.com/zh/tidb/stable/tiproxy-configuration/#security)。
+
+默认情况下，TiProxy 会尝试使用 TiDB 的 TLS Secret 来建立客户端和服务端连接。如果采用这种方式，请确保这些证书中也包含 TiProxy 节点的主机名。
+
+另外还会受以下配置项影响：
+
+- `tlsCluster.enabled`
+- `tlsClient.enabled`
+
+这些证书可以使用 `cfssl` 或 `cert-manager` 生成。
