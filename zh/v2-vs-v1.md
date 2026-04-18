@@ -70,7 +70,7 @@ TiDB Operator v2 支持配置 Evenly Spread Policy 来将组件按需均匀分�
 
 #### `Binlog` (Pump + Drainer)
 
-`Binlog` 组件已经废弃，详见 [TiDB Binlog 简介](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/)。
+`Binlog` 组件已经废弃，详见 [TiDB Binlog 简介](https://docs.pingcap.com/zh/tidb/v8.1/tidb-binlog-overview/)。
 
 #### Dumpling + TiDB Lightning
 
