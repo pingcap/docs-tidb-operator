@@ -70,7 +70,7 @@ TiDB Operator v2 supports configuring the evenly spread policy to distribute com
 
 #### `Binlog` (Pump + Drainer)
 
-This component is deprecated. For more information, see [TiDB Binlog Overview](https://docs.pingcap.com/tidb/v8.3/tidb-binlog-overview/).
+This component is deprecated. For more information, see [TiDB Binlog Overview](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview/).
 
 #### Dumpling + TiDB Lightning
 
