@@ -23,11 +23,15 @@ controllerManager:
 
 ## Configure containers controlled by CR
 
-For the containers controlled by Custom Resource (CR), you can configure security context in any CRs (`TidbCluster`/`DmCluster`/`TidbInitializer`/`TidbMonitor`/`Backup`/`BackupSchedule`/`Restore`) to make the containers run as a non-root user.
+For containers controlled by Custom Resources (CRs), you can configure the security context at the Pod or container level. The supported fields vary by CR.
 
-You can use either of the following two types of configuration. If you configure both the cluster level and the component level for a component, only the configuration of the component level takes effect.
+### Configure the Pod-level security context
 
-- Configure `podSecurityContext` at the cluster level (`spec.podSecurityContext`) for all components. The following is an example configuration:
+`podSecurityContext` applies to all containers in the generated Pod and controls Pod-level settings such as volume ownership.
+
+For `TidbCluster` and `DMCluster`, you can configure `podSecurityContext` at the following levels:
+
+- Cluster level: configure `spec.podSecurityContext` to apply the settings to all components:
 
     ```yaml
     spec:
@@ -37,7 +41,7 @@ You can use either of the following two types of configuration. If you configure
         fsGroup: 2000
     ```
 
-- Configure at the component level for a specific component. For example, configuring  `spec.tidb.podSecurityContext` for `TidbCluster`, `spec.master.podSecurityContext` for `DMCluster`. The following is an example configuration:
+- Component level: configure `spec.<component>.podSecurityContext` to apply the settings to a specific component. For example, use `spec.tidb.podSecurityContext` for the TiDB component of a `TidbCluster`, or `spec.master.podSecurityContext` for the master component of a `DMCluster`:
 
     ```yaml
     spec:
@@ -53,13 +57,29 @@ You can use either of the following two types of configuration. If you configure
           fsGroup: 2000
     ```
 
-Starting from TiDB Operator v1.6.6, you can also configure the [container-level security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container) for the main container of a component using `spec.<component>.securityContext`. Container-level settings apply only to that container. If the same field is set at both the container and Pod levels, the container-level setting takes precedence.
+If both levels are configured, the component-level `podSecurityContext` replaces the cluster-level `podSecurityContext` for that component.
 
-For example, the following configuration runs the main PD container as a non-root user and prevents its processes from gaining additional privileges:
+Other CRs, including `TidbInitializer`, `TidbMonitor`, `Backup`, `BackupSchedule`, and `Restore`, also support Pod-level security context settings. For the supported fields and paths, refer to the [API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>).
+
+### Configure the container-level security context
+
+Starting from TiDB Operator v1.6.6, the following CRs support [container-level security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container):
+
+- For `TidbCluster` and `DMCluster`, configure `spec.<component>.securityContext`, such as `spec.pd.securityContext`, `spec.tidb.securityContext`, `spec.master.securityContext`, or `spec.worker.securityContext`. These CRs do not support cluster-level `spec.securityContext`.
+- For `TidbDashboard` and `TidbNGMonitoring`, configure `spec.securityContext`.
+- For `TidbMonitor`, configure `securityContext` for each generated container. The supported paths include `spec.initializer.securityContext`, `spec.prometheus.securityContext`, `spec.grafana.securityContext`, `spec.reloader.securityContext`, `spec.prometheusReloader.securityContext`, `spec.thanos.securityContext`, and `spec.dm.initializer.securityContext`.
+
+`TidbInitializer`, `Backup`, `BackupSchedule`, and `Restore` do not support container-level `securityContext`.
+
+For the complete `ComponentSpec.securityContext` schema, refer to the [`ComponentSpec` API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md#componentspec>).
+
+For example, the following configuration runs the PD container as a non-root user, sets the group ownership of its volumes, and prevents container processes from gaining more privileges than their parent processes:
 
 ```yaml
 spec:
   pd:
+    podSecurityContext:
+      fsGroup: 2000
     securityContext:
       runAsNonRoot: true
       runAsUser: 1000
@@ -69,6 +89,11 @@ spec:
 
 > **Note:**
 >
+> - Container-level settings apply only to the corresponding container and override overlapping fields in the effective `podSecurityContext`.
 > - Fields that affect Pod volumes, such as `fsGroup`, can only be configured in `podSecurityContext`.
-> - To configure a security context separately for a sidecar or init container, set `securityContext` in the corresponding container configuration.
-> - `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. Use `securityContext.privileged` for the corresponding component instead. If `securityContext` is configured, TiDB Operator ignores the legacy `privileged` field.
+> - Updating `securityContext` for a deployed component changes its Pod template and triggers a rolling update of the affected Pods.
+> - To configure the TiDB slow-log tailer, TiKV log tailer, TiFlash log tailer, or TiFlash initializer separately, use `spec.tidb.slowLogTailer.securityContext`, `spec.tikv.logTailer.securityContext`, `spec.tiflash.logTailer.securityContext`, or `spec.tiflash.initializer.securityContext`.
+
+> **Warning:**
+>
+> `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. When you configure any field in the corresponding component's `securityContext`, TiDB Operator ignores the legacy `privileged` field. If the container still needs privileged mode, explicitly configure `securityContext.privileged: true`; otherwise, the component might fail to start.
