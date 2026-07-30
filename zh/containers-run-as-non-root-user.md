@@ -59,14 +59,15 @@ controllerManager:
 
 如果同时配置了这两个级别，该组件将使用组件级别的 `podSecurityContext` 替代集群级别的 `podSecurityContext`。
 
-`TidbInitializer`、`TidbMonitor`、`Backup`、`BackupSchedule` 和 `Restore` 等其他 CR 也支持 Pod 级别的安全上下文设置。有关支持的字段和路径，请参考 [API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>)。
+`TidbDashboard`、`TidbNGMonitoring`、`TidbInitializer`、`TidbMonitor`、`Backup`、`BackupSchedule` 和 `Restore` 等其他 CR 也支持 Pod 级别的安全上下文设置。有关支持的字段和路径，请参考 [API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>)。
 
 ### 配置容器级别的安全上下文
 
 从 TiDB Operator v1.6.6 起，以下 CR 支持[容器级别的安全上下文](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)：
 
 - 对于 `TidbCluster` 和 `DMCluster`，配置 `spec.<component>.securityContext`，例如 `spec.pd.securityContext`、`spec.tidb.securityContext`、`spec.master.securityContext` 或 `spec.worker.securityContext`。这些 CR 不支持集群级别的 `spec.securityContext`。
-- 对于 `TidbDashboard` 和 `TidbNGMonitoring`，配置 `spec.securityContext`。
+- 对于 `TidbDashboard`，配置 `spec.securityContext`。
+- 对于 `TidbNGMonitoring`，配置 `spec.ngMonitoring.securityContext`。在顶层配置 `spec.securityContext` 不会对生成的容器生效。
 - 对于 `TidbMonitor`，分别为生成的容器配置 `securityContext`。支持的路径包括 `spec.initializer.securityContext`、`spec.prometheus.securityContext`、`spec.grafana.securityContext`、`spec.reloader.securityContext`、`spec.prometheusReloader.securityContext`、`spec.thanos.securityContext` 和 `spec.dm.initializer.securityContext`。
 
 `TidbInitializer`、`Backup`、`BackupSchedule` 和 `Restore` 不支持容器级别的 `securityContext`。
@@ -89,7 +90,7 @@ spec:
 
 > **注意：**
 >
-> - 容器级别的配置仅对相应容器生效，并覆盖有效 `podSecurityContext` 中的同名字段。
+> - 容器级别的配置仅应用于对应字段所生成的容器定义，并覆盖有效 `podSecurityContext` 中的同名字段。
 > - `fsGroup` 等影响 Pod 卷的字段只能配置在 `podSecurityContext` 中。
 > - 更新已部署组件的 `securityContext` 会修改其 Pod 模板，并触发受影响 Pod 的滚动更新。
 > - 如需单独配置 TiDB 慢日志 sidecar、TiKV 日志 sidecar、TiFlash 日志 sidecar 或 TiFlash init container，请分别使用 `spec.tidb.slowLogTailer.securityContext`、`spec.tikv.logTailer.securityContext`、`spec.tiflash.logTailer.securityContext` 或 `spec.tiflash.initializer.securityContext`。
