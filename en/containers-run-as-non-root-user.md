@@ -59,14 +59,15 @@ For `TidbCluster` and `DMCluster`, you can configure `podSecurityContext` at the
 
 If both levels are configured, the component-level `podSecurityContext` replaces the cluster-level `podSecurityContext` for that component.
 
-Other CRs, including `TidbInitializer`, `TidbMonitor`, `Backup`, `BackupSchedule`, and `Restore`, also support Pod-level security context settings. For the supported fields and paths, refer to the [API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>).
+Other CRs, including `TidbDashboard`, `TidbNGMonitoring`, `TidbInitializer`, `TidbMonitor`, `Backup`, `BackupSchedule`, and `Restore`, also support Pod-level security context settings. For the supported fields and paths, refer to the [API documentation](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>).
 
 ### Configure the container-level security context
 
 Starting from TiDB Operator v1.6.6, the following CRs support [container-level security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container):
 
 - For `TidbCluster` and `DMCluster`, configure `spec.<component>.securityContext`, such as `spec.pd.securityContext`, `spec.tidb.securityContext`, `spec.master.securityContext`, or `spec.worker.securityContext`. These CRs do not support cluster-level `spec.securityContext`.
-- For `TidbDashboard` and `TidbNGMonitoring`, configure `spec.securityContext`.
+- For `TidbDashboard`, configure `spec.securityContext`.
+- For `TidbNGMonitoring`, configure `spec.ngMonitoring.securityContext`. Configuring top-level `spec.securityContext` has no effect on the generated container.
 - For `TidbMonitor`, configure `securityContext` for each generated container. The supported paths include `spec.initializer.securityContext`, `spec.prometheus.securityContext`, `spec.grafana.securityContext`, `spec.reloader.securityContext`, `spec.prometheusReloader.securityContext`, `spec.thanos.securityContext`, and `spec.dm.initializer.securityContext`.
 
 `TidbInitializer`, `Backup`, `BackupSchedule`, and `Restore` do not support container-level `securityContext`.
@@ -89,7 +90,7 @@ spec:
 
 > **Note:**
 >
-> - Container-level settings apply only to the corresponding container and override overlapping fields in the effective `podSecurityContext`.
+> - Container-level settings apply only to container definitions generated from the corresponding field and override overlapping fields in the effective `podSecurityContext`.
 > - Fields that affect Pod volumes, such as `fsGroup`, can only be configured in `podSecurityContext`.
 > - Updating `securityContext` for a deployed component changes its Pod template and triggers a rolling update of the affected Pods.
 > - To configure the TiDB slow-log tailer, TiKV log tailer, TiFlash log tailer, or TiFlash initializer separately, use `spec.tidb.slowLogTailer.securityContext`, `spec.tikv.logTailer.securityContext`, `spec.tiflash.logTailer.securityContext`, or `spec.tiflash.initializer.securityContext`.
