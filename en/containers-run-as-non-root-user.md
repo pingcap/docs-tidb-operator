@@ -97,4 +97,4 @@ spec:
 
 > **Warning:**
 >
-> `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. When you configure any field in the corresponding component's `securityContext`, TiDB Operator ignores the legacy `privileged` field. If the container still needs privileged mode, explicitly configure `securityContext.privileged: true`; otherwise, the component might fail to start.
+> `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. Once you configure the corresponding component's `securityContext` object, even as an empty object, TiDB Operator ignores the legacy `privileged` field. If the container still needs privileged mode, explicitly configure `securityContext.privileged: true`; otherwise, the component might fail to start.
