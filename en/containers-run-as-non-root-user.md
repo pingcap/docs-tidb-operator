@@ -52,3 +52,23 @@ You can use either of the following two types of configuration. If you configure
           runAsGroup: 2000
           fsGroup: 2000
     ```
+
+Starting from TiDB Operator v1.6.6, you can also configure the [container-level security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container) for the main container of a component using `spec.<component>.securityContext`. Container-level settings apply only to that container. If the same field is set at both the container and Pod levels, the container-level setting takes precedence.
+
+For example, the following configuration runs the main PD container as a non-root user and prevents its processes from gaining additional privileges:
+
+```yaml
+spec:
+  pd:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 2000
+      allowPrivilegeEscalation: false
+```
+
+> **Note:**
+>
+> - Fields that affect Pod volumes, such as `fsGroup`, can only be configured in `podSecurityContext`.
+> - To configure a security context separately for a sidecar or init container, set `securityContext` in the corresponding container configuration.
+> - `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. Use `securityContext.privileged` for the corresponding component instead. If `securityContext` is configured, TiDB Operator ignores the legacy `privileged` field.

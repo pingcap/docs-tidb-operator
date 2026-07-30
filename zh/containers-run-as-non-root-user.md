@@ -52,3 +52,23 @@ controllerManager:
           runAsGroup: 2000
           fsGroup: 2000
     ```
+
+从 TiDB Operator v1.6.6 起，你还可以通过 `spec.<component>.securityContext` 为组件的主容器配置[容器级别的安全上下文](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)。容器级别的配置仅对该容器生效。当容器级别和 Pod 级别配置了相同字段时，容器级别的配置优先生效。
+
+例如，以下配置让 PD 主容器以非 root 用户运行，并禁止进程获取更多权限：
+
+```yaml
+spec:
+  pd:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 2000
+      allowPrivilegeEscalation: false
+```
+
+> **注意：**
+>
+> - `fsGroup` 等影响 Pod 卷的字段只能配置在 `podSecurityContext` 中。
+> - 如果需要为 sidecar 容器或 init container 单独配置安全上下文，请在对应容器的配置中设置 `securityContext`。
+> - `spec.tikv.privileged` 和 `spec.tiflash.privileged` 已弃用。请改用对应组件的 `securityContext.privileged`。如果配置了 `securityContext`，TiDB Operator 会忽略原有的 `privileged` 字段。
