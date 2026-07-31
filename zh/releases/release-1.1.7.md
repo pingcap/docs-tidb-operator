@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.7 Release Notes
 summary: TiDB Operator 1.1.7 版本发布日期为 2020 年 11 月 13 日。此版本中兼容性变化包括配置项 `prometheus.spec.config.commandOptions` 的行为变化。新增功能包括对 `Backup` 和 `Restore` CR 的配置项 `spec.toolImage` 的新增，以及对 `spec.pd.storageVolumes`、`spec.tidb.storageVolumes` 和 `spec.tikv.storageVolumes` 的支持。优化提升方面包括禁止缩容 TiKV 实例和新增 `BackupStatus` 和 `RestoreStatus` 中的 `phase` 状态。此外还修复了当前 `TidbCluster` 之外存在 PD member 时无法把 PD scale 到 0 的 bug。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.1.7/','/zh/tidb-in-kubernetes/v1.3/release-1.1.7/','/zh/tidb-in-kubernetes/v1.4/release-1.1.7/','/zh/tidb-in-kubernetes/v1.5/release-1.1.7/','/zh/tidb-in-kubernetes/v1.6/release-1.1.7/','/zh/tidb-in-kubernetes/v2.0/release-1.1.7/']
 ---
 
 # TiDB Operator 1.1.7 Release Notes

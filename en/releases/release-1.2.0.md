@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.0 Release Notes
 summary: TiDB Operator 1.2.0 was released on July 29, 2021. The update includes changes to the rolling update process, new features such as setting Prometheus retentionTime and priorityClassName, improvements to the default Region leader eviction timeout, and bug fixes related to URL parsing in TiDBMonitor.
+aliases: ['/tidb-in-kubernetes/dev/release-1.2.0/','/tidb-in-kubernetes/v1.3/release-1.2.0/','/tidb-in-kubernetes/v1.4/release-1.2.0/','/tidb-in-kubernetes/v1.5/release-1.2.0/','/tidb-in-kubernetes/v1.6/release-1.2.0/','/tidb-in-kubernetes/v2.0/release-1.2.0/']
 ---
 
 # TiDB Operator 1.2.0 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 RC.1 Release Notes
 summary: The new release includes action required changes such as configuring `--advertise-address` for `tidb-server` and adding `tlsClient.tlsSecret` field in the backup and restore spec. Other notable changes include using `tidb-lightning` in `Restore`, adding `cert-allowed-cn` support to TiDB components, and fixing PD `location-labels` configuration. Additionally, there are several fixes and updates for TiDB clusters, including support for deploying clusters with TidbCluster and TidbMonitor CRs via Terraform. TLS support has been added for Pump, Drainer, and MySQL clients, and various bug fixes and improvements have been made.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.0-rc.1/','/tidb-in-kubernetes/v1.3/release-1.1.0-rc.1/','/tidb-in-kubernetes/v1.4/release-1.1.0-rc.1/','/tidb-in-kubernetes/v1.5/release-1.1.0-rc.1/','/tidb-in-kubernetes/v1.6/release-1.1.0-rc.1/','/tidb-in-kubernetes/v2.0/release-1.1.0-rc.1/']
 ---
 
 # TiDB Operator 1.1 RC.1 Release Notes

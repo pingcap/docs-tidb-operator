@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.12 Release Notes
 summary: TiDB Operator 1.1.12 was released on April 15, 2021. New features include support for customized environment variables for backup and restore job containers, additional volume and volumeMount configurations for TidbMonitor, and the use of new service account resources in the tidb-operator chart. Improvements include DNS lookup failure exception retry, support for multiple PVCs for PD during scaling and failover, and optimization of the PodsAreChanged function. Bug fixes address issues with PVC size configuration, panic issue with TLS enabled TidbCluster CR, and wrong PVC status in UnjoinedMembers for PD and DM.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.12/','/tidb-in-kubernetes/v1.3/release-1.1.12/','/tidb-in-kubernetes/v1.4/release-1.1.12/','/tidb-in-kubernetes/v1.5/release-1.1.12/','/tidb-in-kubernetes/v1.6/release-1.1.12/','/tidb-in-kubernetes/v2.0/release-1.1.12/']
 ---
 
 # TiDB Operator 1.1.12 Release Notes

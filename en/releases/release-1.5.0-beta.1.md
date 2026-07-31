@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.5.0-beta.1 Release Notes
 summary: TiDB Operator 1.5.0-beta.1 was released on April 11, 2023. The new features include support for graceful restart of PD and TiDB Pods, managing TiCDC and TiProxy with Advanced StatefulSet, and defining a strategy to restart failed backup jobs. Improvements include upgrading Kubernetes dependencies, adding metrics for observability, and customizing Prometheus scraping settings. Bug fixes address the issue of unreachable pprof endpoint due to route conflicts with the metrics endpoint.
+aliases: ['/tidb-in-kubernetes/dev/release-1.5.0-beta.1/','/tidb-in-kubernetes/v1.3/release-1.5.0-beta.1/','/tidb-in-kubernetes/v1.4/release-1.5.0-beta.1/','/tidb-in-kubernetes/v1.5/release-1.5.0-beta.1/','/tidb-in-kubernetes/v1.6/release-1.5.0-beta.1/','/tidb-in-kubernetes/v2.0/release-1.5.0-beta.1/']
 ---
 
 # TiDB Operator 1.5.0-beta.1 Release Notes

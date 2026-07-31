@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0-beta.3 Release Notes
 summary: TiDB Operator 1.4.0-beta.3 was released on December 2, 2022. The new features include experimental support for TiProxy and GA for snapshot backup and restore based on Amazon EBS. The release also includes bug fixes for error messages, volume-snapshot backup cleanup failure, and backup failure with massive TiKV nodes.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.0-beta.3/','/tidb-in-kubernetes/v1.3/release-1.4.0-beta.3/','/tidb-in-kubernetes/v1.4/release-1.4.0-beta.3/','/tidb-in-kubernetes/v1.5/release-1.4.0-beta.3/','/tidb-in-kubernetes/v1.6/release-1.4.0-beta.3/','/tidb-in-kubernetes/v2.0/release-1.4.0-beta.3/']
 ---
 
 # TiDB Operator 1.4.0-beta.3 Release Notes

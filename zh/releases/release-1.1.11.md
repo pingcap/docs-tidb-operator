@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.11 Release Notes
 summary: TiDB Operator 1.1.11 版本发布，新增优化 LeaderElection 和自定义 Store 标签功能。优化 TiFlash 滚动更新机制，改进获取 region leader 数量方式。支持打印 RocksDB 和 Raft 日志到 stdout。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.1.11/','/zh/tidb-in-kubernetes/v1.3/release-1.1.11/','/zh/tidb-in-kubernetes/v1.4/release-1.1.11/','/zh/tidb-in-kubernetes/v1.5/release-1.1.11/','/zh/tidb-in-kubernetes/v1.6/release-1.1.11/','/zh/tidb-in-kubernetes/v2.0/release-1.1.11/']
 ---
 
 # TiDB Operator 1.1.11 Release Notes

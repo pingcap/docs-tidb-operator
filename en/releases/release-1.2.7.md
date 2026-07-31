@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.7 Release Notes
 summary: TiDB Operator 1.2.7 was released on February 17, 2022. The new feature includes the addition of a new field `spec.pd.startUpScriptVersion` to use the `dig` command instead of `nslookup` to lookup domain in the startup script of PD. An improvement was made to pre-check whether `VolumeMount` exists when the StatefulSet of components is deployed or updated to avoid failed rolling upgrade.
+aliases: ['/tidb-in-kubernetes/dev/release-1.2.7/','/tidb-in-kubernetes/v1.3/release-1.2.7/','/tidb-in-kubernetes/v1.4/release-1.2.7/','/tidb-in-kubernetes/v1.5/release-1.2.7/','/tidb-in-kubernetes/v1.6/release-1.2.7/','/tidb-in-kubernetes/v2.0/release-1.2.7/']
 ---
 # TiDB Operator 1.2.7 Release Notes
 

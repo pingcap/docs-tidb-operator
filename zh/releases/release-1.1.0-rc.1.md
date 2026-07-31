@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 RC.1 Release Notes
 summary: 此版本包括对 tidb-server 的配置选项的更新，备份和恢复规范的修改，以及对 TiDB 组件的一些修复和改进。还支持通过 Terraform 在 AWS 和 ACK 上部署 TiDB 集群，并添加了一些新的功能和文档。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.1.0-rc.1/','/zh/tidb-in-kubernetes/v1.3/release-1.1.0-rc.1/','/zh/tidb-in-kubernetes/v1.4/release-1.1.0-rc.1/','/zh/tidb-in-kubernetes/v1.5/release-1.1.0-rc.1/','/zh/tidb-in-kubernetes/v1.6/release-1.1.0-rc.1/','/zh/tidb-in-kubernetes/v2.0/release-1.1.0-rc.1/']
 ---
 
 # TiDB Operator 1.1 RC.1 Release Notes

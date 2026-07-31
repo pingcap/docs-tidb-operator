@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.3 Release Notes
 summary: TiDB Operator version 1.4.3 was released on February 24, 2023. Bug fixes include resolving the TiFlash metric server not listening on correct IPv6 addresses when the `preferIPv6` configuration is enabled, and fixing the issue of TiDB Operator continuously modifying EBS disks in AWS when the feature gate `VolumeModifying` is enabled and EBS parameters are missing in `StorageClass`.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.3/','/tidb-in-kubernetes/v1.3/release-1.4.3/','/tidb-in-kubernetes/v1.4/release-1.4.3/','/tidb-in-kubernetes/v1.5/release-1.4.3/','/tidb-in-kubernetes/v1.6/release-1.4.3/','/tidb-in-kubernetes/v2.0/release-1.4.3/']
 ---
 
 # TiDB Operator 1.4.3 Release Notes

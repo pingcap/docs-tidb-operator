@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.9 Release Notes
 summary: TiDB Operator 1.1.9 版本发布日期为 2020 年 12 月 28 日。此版本优化了支持使用 `spec.toolImage` 来为 `Backup` 和 `Restore` 指定 Dumpling/TiDB Lightning 的二进制可执行文件。同时修复了 Prometheus 不能拉取 TiKV Importer 的 metrics 以及用 BR 和 GCS 进行备份与恢复时的兼容性问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.1.9/','/zh/tidb-in-kubernetes/v1.3/release-1.1.9/','/zh/tidb-in-kubernetes/v1.4/release-1.1.9/','/zh/tidb-in-kubernetes/v1.5/release-1.1.9/','/zh/tidb-in-kubernetes/v1.6/release-1.1.9/','/zh/tidb-in-kubernetes/v2.0/release-1.1.9/']
 ---
 
 # TiDB Operator 1.1.9 Release Notes

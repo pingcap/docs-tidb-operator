@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.9 Release Notes
 summary: TiDB Operator 1.1.9 was released on December 28, 2020. The new version includes support for defining the image used for Backup and Restore operations, as well as bug fixes for issues with Prometheus metrics and compatibility with GCS for backup and restore operations.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.9/','/tidb-in-kubernetes/v1.3/release-1.1.9/','/tidb-in-kubernetes/v1.4/release-1.1.9/','/tidb-in-kubernetes/v1.5/release-1.1.9/','/tidb-in-kubernetes/v1.6/release-1.1.9/','/tidb-in-kubernetes/v2.0/release-1.1.9/']
 ---
 
 # TiDB Operator 1.1.9 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.0.4 Release Notes
 summary: TiDB Operator version 1.0.4 was released on November 23, 2019. The new features include HostNetwork support, podSecurityContext support, and new Helm charts for TiDB Lightning and TiDB Binlog. There are also bug fixes and changes, and a recommendation to upgrade to v1.0.4 from v1.1.0.alpha.
+aliases: ['/tidb-in-kubernetes/dev/release-1.0.4/','/tidb-in-kubernetes/v1.3/release-1.0.4/','/tidb-in-kubernetes/v1.4/release-1.0.4/','/tidb-in-kubernetes/v1.5/release-1.0.4/','/tidb-in-kubernetes/v1.6/release-1.0.4/','/tidb-in-kubernetes/v2.0/release-1.0.4/']
 ---
 
 # TiDB Operator 1.0.4 Release Notes

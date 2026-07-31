@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.6.5 Release Notes
 summary: Learn about new features, improvements, and bug fixes in TiDB Operator 1.6.5.
+aliases: ['/tidb-in-kubernetes/dev/release-1.6.5/','/tidb-in-kubernetes/v1.3/release-1.6.5/','/tidb-in-kubernetes/v1.4/release-1.6.5/','/tidb-in-kubernetes/v1.5/release-1.6.5/','/tidb-in-kubernetes/v1.6/release-1.6.5/','/tidb-in-kubernetes/v2.0/release-1.6.5/']
 ---
 
 # TiDB Operator 1.6.5 Release Notes

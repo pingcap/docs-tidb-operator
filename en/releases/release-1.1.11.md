@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.11 Release Notes
 summary: TiDB Operator 1.1.11 was released on February 26, 2021. New features include support for configuring leader election durations and setting customized store labels. Improvements include TiFlash rolling upgrade logic, retrieving region leader count from TiKV Pod directly, and printing RocksDB and Raft logs to stdout for Grafana support.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.11/','/tidb-in-kubernetes/v1.3/release-1.1.11/','/tidb-in-kubernetes/v1.4/release-1.1.11/','/tidb-in-kubernetes/v1.5/release-1.1.11/','/tidb-in-kubernetes/v1.6/release-1.1.11/','/tidb-in-kubernetes/v2.0/release-1.1.11/']
 ---
 
 # TiDB Operator 1.1.11 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 0.2.1 Release Notes
 summary: TiDB Operator 0.2.1 was released on September 20, 2018. This version includes bug fixes for retry on conflict logic, TiDB timezone configuration, failover, and repeated updating of pod and pd/tidb StatefulSet.
+aliases: ['/tidb-in-kubernetes/dev/release-0.2.1/','/tidb-in-kubernetes/v1.3/release-0.2.1/','/tidb-in-kubernetes/v1.4/release-0.2.1/','/tidb-in-kubernetes/v1.5/release-0.2.1/','/tidb-in-kubernetes/v1.6/release-0.2.1/','/tidb-in-kubernetes/v2.0/release-0.2.1/']
 ---
 
 # TiDB Operator 0.2.1 Release Notes

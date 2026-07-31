@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 Beta.1 Release Notes
 summary: 支持配置时区，备份到 S3，基础默认设置，增强型 StatefulSet 扩缩容，自定义资源初始化 TiDB 集群，优化配置结构，支持临时存储，发布 Terraform Aliyun ACK 版本，优化报错信息，支持 TLS 加密连接，支持动态扩展云存储 PV，支持自动生成证书，支持暂停备份计划，升级 TiDB 版本。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.1.0-beta.1/','/zh/tidb-in-kubernetes/v1.3/release-1.1.0-beta.1/','/zh/tidb-in-kubernetes/v1.4/release-1.1.0-beta.1/','/zh/tidb-in-kubernetes/v1.5/release-1.1.0-beta.1/','/zh/tidb-in-kubernetes/v1.6/release-1.1.0-beta.1/','/zh/tidb-in-kubernetes/v2.0/release-1.1.0-beta.1/']
 ---
 
 # TiDB Operator 1.1 Beta.1 Release Notes

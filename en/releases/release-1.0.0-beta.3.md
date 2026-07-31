@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.0 Beta.3 Release Notes
 summary: TiDB Operator 1.0 Beta.3 was released on June 6, 2019. The new version includes the removal of `nodeSelectorRequired` from values.yaml and the addition of stability cases, new features, documentation improvements, and bug fixes. Some notable new features include ConfigMap rollout management, stable scheduling for pods, and support for adding additional pod annotations. The default TiDB version has been upgraded to v3.0.0-rc.1, and various bug fixes and changes have been implemented. Overall, the release focuses on stability, new features, and documentation improvements.
+aliases: ['/tidb-in-kubernetes/dev/release-1.0.0-beta.3/','/tidb-in-kubernetes/v1.3/release-1.0.0-beta.3/','/tidb-in-kubernetes/v1.4/release-1.0.0-beta.3/','/tidb-in-kubernetes/v1.5/release-1.0.0-beta.3/','/tidb-in-kubernetes/v1.6/release-1.0.0-beta.3/','/tidb-in-kubernetes/v2.0/release-1.0.0-beta.3/']
 ---
 
 # TiDB Operator 1.0 Beta.3 Release Notes

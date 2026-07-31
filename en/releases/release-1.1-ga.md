@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 GA Release Notes
 summary: Upgrade from v1.0.x, breaking changes, and other notable changes. Notable changes include support for preemption in tidb-scheduler, update BR to v4.0.0-rc.2, and support TiCDC in TidbCluster. The release also includes improvements in performance and updates to TiDB/TiKV/PD configuration to 4.0.0 GA version.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1-ga/','/tidb-in-kubernetes/v1.3/release-1.1-ga/','/tidb-in-kubernetes/v1.4/release-1.1-ga/','/tidb-in-kubernetes/v1.5/release-1.1-ga/','/tidb-in-kubernetes/v1.6/release-1.1-ga/','/tidb-in-kubernetes/v2.0/release-1.1-ga/']
 ---
 
 # TiDB Operator 1.1 GA Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.4 Release Notes
 summary: TiDB Operator 1.4.4 released on March 13, 2023. New features include support for volume-snapshot backup and restore on TiDB cluster with TiFlash, accurate backup size display, retries for snapshot backups, and integrated management of log and snapshot backups. Bug fixes address sync failure with custom TiDB builds, volume-snapshot backup data restoration, panic during snapshot backup, and potential failure during restore.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.4/','/tidb-in-kubernetes/v1.3/release-1.4.4/','/tidb-in-kubernetes/v1.4/release-1.4.4/','/tidb-in-kubernetes/v1.5/release-1.4.4/','/tidb-in-kubernetes/v1.6/release-1.4.4/','/tidb-in-kubernetes/v2.0/release-1.4.4/']
 ---
 
 # TiDB Operator 1.4.4 Release Notes

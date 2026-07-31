@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.3.3 Release Notes
 summary: TiDB Operator 1.3.3 was released on May 17, 2022. The new feature includes adding a new field to customize the tidb service port. Several bug fixes were made, including fixing issues with leader scheduler leakage, incompatibility with ARM architecture, panic when tidb Service has no Endpoints, and loss of Labels and Annotations after TiDB Operator fails to access the Kubernetes server.
+aliases: ['/tidb-in-kubernetes/dev/release-1.3.3/','/tidb-in-kubernetes/v1.3/release-1.3.3/','/tidb-in-kubernetes/v1.4/release-1.3.3/','/tidb-in-kubernetes/v1.5/release-1.3.3/','/tidb-in-kubernetes/v1.6/release-1.3.3/','/tidb-in-kubernetes/v2.0/release-1.3.3/']
 ---
 
 # TiDB Operator 1.3.3 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.0 Beta.1 P2 Release Notes
 summary: TiDB Operator 1.0 Beta.1 P2 was released on February 21, 2019. Notable changes include a new algorithm for scheduler HA predicate, addition of TiDB discovery service, serial scheduling, change in tolerations type to an array, direct start when there is a join file, addition of code coverage icon, omission of just the empty leaves in `values.yml`, backup to ceph object storage in charts, and addition of `ClusterIDLabelKey` label to TidbCluster.
+aliases: ['/tidb-in-kubernetes/dev/release-1.0.0-beta.1-p2/','/tidb-in-kubernetes/v1.3/release-1.0.0-beta.1-p2/','/tidb-in-kubernetes/v1.4/release-1.0.0-beta.1-p2/','/tidb-in-kubernetes/v1.5/release-1.0.0-beta.1-p2/','/tidb-in-kubernetes/v1.6/release-1.0.0-beta.1-p2/','/tidb-in-kubernetes/v2.0/release-1.0.0-beta.1-p2/']
 ---
 
 # TiDB Operator 1.0 Beta.1 P2 Release Notes

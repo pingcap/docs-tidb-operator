@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.3.2 Release Notes
 summary: TiDB Operator 1.3.2 版本发布，优化支持在启用 Istio 的 Kubernetes 集群上部署与运行 TiDB，支持多架构 Docker 镜像包括 ARM 系统。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.3.2/','/zh/tidb-in-kubernetes/v1.3/release-1.3.2/','/zh/tidb-in-kubernetes/v1.4/release-1.3.2/','/zh/tidb-in-kubernetes/v1.5/release-1.3.2/','/zh/tidb-in-kubernetes/v1.6/release-1.3.2/','/zh/tidb-in-kubernetes/v2.0/release-1.3.2/']
 ---
 
 # TiDB Operator 1.3.2 Release Notes

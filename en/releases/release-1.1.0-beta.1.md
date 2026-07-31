@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 Beta.1 Release Notes
 summary: The new version requires action to add timezone support for all charts. Other notable changes include support for backup to S3, scaling in/out with deleted slots feature, and managing Pump cluster. Additional changes involve refining configuration schema, setting default name of instance label key, and upgrading default backup image. The release also includes fixes and improvements for various components.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.0-beta.1/','/tidb-in-kubernetes/v1.3/release-1.1.0-beta.1/','/tidb-in-kubernetes/v1.4/release-1.1.0-beta.1/','/tidb-in-kubernetes/v1.5/release-1.1.0-beta.1/','/tidb-in-kubernetes/v1.6/release-1.1.0-beta.1/','/tidb-in-kubernetes/v2.0/release-1.1.0-beta.1/']
 ---
 
 # TiDB Operator 1.1 Beta.1 Release Notes

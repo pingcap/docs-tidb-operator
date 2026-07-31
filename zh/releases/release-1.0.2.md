@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.0.2 Release Notes
 summary: TiDB Operator version 1.0.2 was released on November 1, 2019. The new version includes improvements such as suspending the ReplaceUnhealthy process for AWS TiKV auto-scaling-group, adding a new VM manager 'qm' in stability test, and setting default externalTrafficPolicy to 'Local' for TiDB service in AWS/GCP/Aliyun. Bug fixes include issues with tkctl version, create_tidb_cluster_release variable in AWS Terraform script, and compatibility issues with Kubernetes 1.16 and above versions. Other fixes and changes are also included in this release.
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.0.2/','/zh/tidb-in-kubernetes/v1.3/release-1.0.2/','/zh/tidb-in-kubernetes/v1.4/release-1.0.2/','/zh/tidb-in-kubernetes/v1.5/release-1.0.2/','/zh/tidb-in-kubernetes/v1.6/release-1.0.2/','/zh/tidb-in-kubernetes/v2.0/release-1.0.2/']
 ---
 
 # TiDB Operator 1.0.2 Release Notes

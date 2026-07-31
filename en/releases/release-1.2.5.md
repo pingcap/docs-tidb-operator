@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.5 Release Notes
 summary: TiDB Operator 1.2.5 was released on December 27, 2021. The release includes improvements such as support for configuring all fields in `ComponentSpec` for DM, init container `resources` for TiFlash, and the `ssl-ca` parameter for TiDB. Bug fixes include issues with component roll update, TidbCluster spec update, goroutine leak, and high-level security issues.
+aliases: ['/tidb-in-kubernetes/dev/release-1.2.5/','/tidb-in-kubernetes/v1.3/release-1.2.5/','/tidb-in-kubernetes/v1.4/release-1.2.5/','/tidb-in-kubernetes/v1.5/release-1.2.5/','/tidb-in-kubernetes/v1.6/release-1.2.5/','/tidb-in-kubernetes/v2.0/release-1.2.5/']
 ---
 
 # TiDB Operator 1.2.5 Release Notes

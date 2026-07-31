@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.6.4 Release Notes
 summary: 了解 TiDB Operator 1.6.4 版本的新功能。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.6.4/','/zh/tidb-in-kubernetes/v1.3/release-1.6.4/','/zh/tidb-in-kubernetes/v1.4/release-1.6.4/','/zh/tidb-in-kubernetes/v1.5/release-1.6.4/','/zh/tidb-in-kubernetes/v1.6/release-1.6.4/','/zh/tidb-in-kubernetes/v2.0/release-1.6.4/']
 ---
 
 # TiDB Operator 1.6.4 Release Notes

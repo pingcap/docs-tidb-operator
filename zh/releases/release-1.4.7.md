@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4. Release Notes
 summary: TiDB Operator 1.4.7 发布，修复了 BackupSchedule CR 字段中的 `logBackupTemplate` 字段变成可选值的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.7/','/zh/tidb-in-kubernetes/v1.3/release-1.4.7/','/zh/tidb-in-kubernetes/v1.4/release-1.4.7/','/zh/tidb-in-kubernetes/v1.5/release-1.4.7/','/zh/tidb-in-kubernetes/v1.6/release-1.4.7/','/zh/tidb-in-kubernetes/v2.0/release-1.4.7/']
 ---
 
 # TiDB Operator 1.4.7 Release Notes

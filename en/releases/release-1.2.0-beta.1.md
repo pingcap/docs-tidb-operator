@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.0-beta.1 Release Notes
 summary: TiDB Operator 1.2.0-beta.1 was released on April 7, 2021. The new version includes compatibility changes, rolling update changes, new features, improvements, and bug fixes. Some notable new features include support for setting customized environment variables for backup and restore job containers, additional volume and volumeMount configurations to TidbMonitor, and support for configuring durations for leader election. The release also includes various improvements and bug fixes to enhance the performance and stability of the TiDB Operator.
+aliases: ['/tidb-in-kubernetes/dev/release-1.2.0-beta.1/','/tidb-in-kubernetes/v1.3/release-1.2.0-beta.1/','/tidb-in-kubernetes/v1.4/release-1.2.0-beta.1/','/tidb-in-kubernetes/v1.5/release-1.2.0-beta.1/','/tidb-in-kubernetes/v1.6/release-1.2.0-beta.1/','/tidb-in-kubernetes/v2.0/release-1.2.0-beta.1/']
 ---
 
 # TiDB Operator 1.2.0-beta.1 Release Notes

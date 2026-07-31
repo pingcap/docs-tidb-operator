@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.4 Release Notes
 summary: TiDB Operator 1.2.4 was released on October 21, 2021. The update includes changes to the rolling update process, new features such as customizing prometheus rules and reloading configurations, improvements to the TiFlash rolling upgrade process and support for deleting backup data in batches. Bug fixes were also made to address security vulnerabilities in the images and to resolve issues with retaining backup data when the Backup job is running.
+aliases: ['/tidb-in-kubernetes/dev/release-1.2.4/','/tidb-in-kubernetes/v1.3/release-1.2.4/','/tidb-in-kubernetes/v1.4/release-1.2.4/','/tidb-in-kubernetes/v1.5/release-1.2.4/','/tidb-in-kubernetes/v1.6/release-1.2.4/','/tidb-in-kubernetes/v2.0/release-1.2.4/']
 ---
 
 # TiDB Operator 1.2.4 Release Notes

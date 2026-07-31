@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.3.5 Release Notes
 summary: TiDB Operator 1.3.5 was released on June 29, 2022. The new feature includes support for backing up and restoring data from Azure Blob Storage.
+aliases: ['/tidb-in-kubernetes/dev/release-1.3.5/','/tidb-in-kubernetes/v1.3/release-1.3.5/','/tidb-in-kubernetes/v1.4/release-1.3.5/','/tidb-in-kubernetes/v1.5/release-1.3.5/','/tidb-in-kubernetes/v1.6/release-1.3.5/','/tidb-in-kubernetes/v2.0/release-1.3.5/']
 ---
 
 # TiDB Operator 1.3.5 Release Notes
