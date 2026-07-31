@@ -19,7 +19,7 @@ TiDB Operator version: 1.6.6
 
 ## Improvements
 
-- Support using a Bash shebang and skipping the DNS readiness check in component start scripts via the `ShebangBash` and `NoWaitDNS` flags ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
+- Support using a Bash shebang and skipping the DNS readiness check in component start scripts via the `BashShebang` and `NoWaitDNS` flags ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
 - Remove wildcard selectors from the Helm charts ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
 - Support explicitly mounting the ServiceAccount token for the BR and discovery components when `automountServiceAccountToken` is disabled. This helps TiDB Operator run in restricted environments such as FedRAMP/Gatekeeper that enforce the `block-automount-serviceaccount-token-pod` policy ([#6815](https://github.com/pingcap/tidb-operator/pull/6815), [@liubog2008](https://github.com/liubog2008))
 - Add projected ServiceAccount token volume support for controller-manager when `automountServiceAccountToken` is disabled ([#6873](https://github.com/pingcap/tidb-operator/pull/6873), [@tennix](https://github.com/tennix))

@@ -19,7 +19,7 @@ TiDB Operator 版本：1.6.6
 
 ## 优化提升
 
-- 支持通过 `ShebangBash` 和 `NoWaitDNS` 标志，分别控制组件启动脚本是否使用 Bash shebang，以及是否跳过 DNS 就绪检查 ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
+- 支持通过 `BashShebang` 和 `NoWaitDNS` 标志，分别控制组件启动脚本是否使用 Bash shebang，以及是否跳过 DNS 就绪检查 ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
 - 将 Helm Chart 中 RBAC 规则使用的通配符资源和操作权限替换为显式配置 ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
 - 当 `automountServiceAccountToken` 被禁用时，支持为 BR 和 `discovery` 组件显式挂载 ServiceAccount token，便于在执行 `block-automount-serviceaccount-token-pod` 策略的限制环境（如 FedRAMP/Gatekeeper）中运行 TiDB Operator ([#6815](https://github.com/pingcap/tidb-operator/pull/6815), [@liubog2008](https://github.com/liubog2008))
 - 为 `controller-manager` 新增 projected ServiceAccount token 卷支持，使 `automountServiceAccountToken` 被禁用时 controller-manager 仍能向 Kubernetes API 进行身份认证  ([#6873](https://github.com/pingcap/tidb-operator/pull/6873), [@tennix](https://github.com/tennix))
