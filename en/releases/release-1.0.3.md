@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.0.3 Release Notes
 summary: TiDB Operator 1.0.3 was released on November 13, 2019. The new version requires an upgrade to TiDB v3.0.5 and adds timezone support for all charts. Existing TiDB clusters with customized timezones will trigger a rolling update. Improvements include timezone support and configuring resource requests and limits for all containers of the TiDB cluster. Bug fixes include upgrading default TiDB version to v3.0.5 and adding timezone support for all containers of the TiDB cluster.
+aliases: ['/tidb-in-kubernetes/dev/release-1.0.3/','/tidb-in-kubernetes/v1.3/release-1.0.3/','/tidb-in-kubernetes/v1.4/release-1.0.3/','/tidb-in-kubernetes/v1.5/release-1.0.3/','/tidb-in-kubernetes/v1.6/release-1.0.3/','/tidb-in-kubernetes/v2.0/release-1.0.3/']
 ---
 
 # TiDB Operator 1.0.3 Release Notes

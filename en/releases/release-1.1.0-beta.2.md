@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 Beta.2 Release Notes
 summary: TiDB Operator 1.1 Beta.2 has been released on February 26, 2020. The default storage class now defaults to Kubernetes default storage class. Users need to set default storage class explicitly in their TiDB cluster helm or YAML files if different than Kubernetes default. Other changes include the ability to configure affinity and tolerations for Backup and Restore, support for TidbCluster Auto-scaling based on CPU average utilization load, and more. Additionally, several bug fixes and improvements have been made.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.0-beta.2/','/tidb-in-kubernetes/v1.3/release-1.1.0-beta.2/','/tidb-in-kubernetes/v1.4/release-1.1.0-beta.2/','/tidb-in-kubernetes/v1.5/release-1.1.0-beta.2/','/tidb-in-kubernetes/v1.6/release-1.1.0-beta.2/','/tidb-in-kubernetes/v2.0/release-1.1.0-beta.2/']
 ---
 
 # TiDB Operator 1.1 Beta.2 Release Notes

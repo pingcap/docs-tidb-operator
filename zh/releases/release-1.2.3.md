@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.3 Release Notes
 summary: TiDB Operator 1.2.3 版本发布日期为 2021 年 9 月 7 日。此版本修复了升级到 TiDB Operator v1.2.2 时导致 TiFlash Pod 滚动重启的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.2.3/','/zh/tidb-in-kubernetes/v1.3/release-1.2.3/','/zh/tidb-in-kubernetes/v1.4/release-1.2.3/','/zh/tidb-in-kubernetes/v1.5/release-1.2.3/','/zh/tidb-in-kubernetes/v1.6/release-1.2.3/','/zh/tidb-in-kubernetes/v2.0/release-1.2.3/']
 ---
 
 # TiDB Operator 1.2.3 Release Notes

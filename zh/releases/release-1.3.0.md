@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.3.0 Release Notes
 summary: TiDB Operator 1.3.0 版本发布，包括兼容性改动、新功能、优化提升和 Bug 修复。兼容性改动包括跨集群部署 TiDB 集群升级操作，TiFlash 升级操作需注意。新增功能包括支持内部组件访问 TiDB 时跳过服务端证书验证、设置所有组件 Pod 的 DNS 配置等。优化提升包括部署或更新组件的 StatefulSet 预先检查配置的 VolumeMount 是否存在，跨集群部署 TiDB 集群功能增强。Bug 修复包括修复 Kubernetes v1.23 及之后版本无法部署 tidb scheduler 的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.3.0/','/zh/tidb-in-kubernetes/v1.3/release-1.3.0/','/zh/tidb-in-kubernetes/v1.4/release-1.3.0/','/zh/tidb-in-kubernetes/v1.5/release-1.3.0/','/zh/tidb-in-kubernetes/v1.6/release-1.3.0/','/zh/tidb-in-kubernetes/v2.0/release-1.3.0/']
 ---
 
 # TiDB Operator 1.3.0 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.0-rc.2 Release Notes
 summary: TiDB Operator 1.2.0-rc.2 发布，新增支持透传 TiCDC 的 TOML 格式配置、为 TiCDC 设置存储卷和挂载、自定义 Discovery、TidbMonitor 和 TidbInitializer 的标签和注释、修改 Grafana 仪表盘。优化支持未指定 BR toolImage tag 时将 TiKV 版本作为 tag、扩缩容 TiDB 过程中协调 PVC、增加 liveness 与 readiness 探测器。修复部署异构集群时可能 panic 的问题、TidbCluster spec 未更改时 TiDB service 与 TidbCluster 状态持续更新的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.2.0-rc.2/','/zh/tidb-in-kubernetes/v1.3/release-1.2.0-rc.2/','/zh/tidb-in-kubernetes/v1.4/release-1.2.0-rc.2/','/zh/tidb-in-kubernetes/v1.5/release-1.2.0-rc.2/','/zh/tidb-in-kubernetes/v1.6/release-1.2.0-rc.2/','/zh/tidb-in-kubernetes/v2.0/release-1.2.0-rc.2/']
 ---
 
 # TiDB Operator 1.2.0-rc.2 Release Notes

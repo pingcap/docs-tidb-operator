@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.0-beta.2 Release Notes
 summary: TiDB Operator 1.2.0-beta.2 版本发布，包括滚动升级改动、新功能、优化提升和 Bug 修复。新功能包括 TidbMonitor 支持监控多个启用了 TLS 的 TidbCluster，以及为所有 TiDB 组件设置安全上下文和拓扑约束。优化提升包括为 TidbMonitor Pod 增加 readiness 探测器和支持不生成 Prometheus 的告警规则。 Bug 修复包括修复 TiDB 实例缩容后仍在 TiDB Dashboard 中展示的问题和解决 TidbCluster CR 同步问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.2.0-beta.2/','/zh/tidb-in-kubernetes/v1.3/release-1.2.0-beta.2/','/zh/tidb-in-kubernetes/v1.4/release-1.2.0-beta.2/','/zh/tidb-in-kubernetes/v1.5/release-1.2.0-beta.2/','/zh/tidb-in-kubernetes/v1.6/release-1.2.0-beta.2/','/zh/tidb-in-kubernetes/v2.0/release-1.2.0-beta.2/']
 ---
 
 # TiDB Operator 1.2.0-beta.2 Release Notes

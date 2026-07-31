@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.8 Release Notes
 summary: TiDB Operator 1.1.8 was released on December 21, 2020. New features include support for arbitrary Volume and VolumeMount for various components, enabling the use of NFS or other Kubernetes supported volume sources for backup/restore workflow. Improvements include support for cluster and client TLS, setting additional ports for TiDB service, and Prometheus to scrape metrics data from multiple TiDB clusters. Bug fixes address issues such as TiDB cluster deployment failure, non-ASCII character password error, misrecognition of TiFlash Pods, and crashing of tidb-controller-manager Pod.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.8/','/tidb-in-kubernetes/v1.3/release-1.1.8/','/tidb-in-kubernetes/v1.4/release-1.1.8/','/tidb-in-kubernetes/v1.5/release-1.1.8/','/tidb-in-kubernetes/v1.6/release-1.1.8/','/tidb-in-kubernetes/v2.0/release-1.1.8/']
 ---
 
 # TiDB Operator 1.1.8 Release Notes

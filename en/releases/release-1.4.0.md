@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0 Release Notes
 summary: TiDB Operator 1.4.0 was released on December 29, 2022. New features include support for managing TiDB Dashboard in a separate CRD, configuring Readiness Probe for TiKV and PD, and backup and restore based on Amazon EBS volume-snapshot. Bug fixes address issues with backup based on EBS snapshot and log backup stopping in the Complete state.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.0/','/tidb-in-kubernetes/v1.3/release-1.4.0/','/tidb-in-kubernetes/v1.4/release-1.4.0/','/tidb-in-kubernetes/v1.5/release-1.4.0/','/tidb-in-kubernetes/v1.6/release-1.4.0/','/tidb-in-kubernetes/v2.0/release-1.4.0/']
 ---
 
 # TiDB Operator 1.4.0 Release Notes

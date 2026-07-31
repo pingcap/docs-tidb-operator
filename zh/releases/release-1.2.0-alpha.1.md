@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.0-alpha.1 Release Notes
 summary: TiDB Operator 1.2.0-alpha.1 版本发布。滚动升级改动包括 TidbMonitor Pod 重建。新增功能包括跨多个 Kubernetes 集群部署 TiDB 集群、管理 DM 2.0、PD API 弹性伸缩、灰度升级 TiDB Operator。优化提升包括 TiDB Lightning chart 支持 local backend、TLS、持久化 checkpoint，TidbMonitor 支持配置 Thanos sidecar，管理资源从 Deployment 变为 StatefulSet。其他改进包括优化队列 rate limiter 间隔，修改 TidbMonitor 自定义告警规则存储目录。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.2.0-alpha.1/','/zh/tidb-in-kubernetes/v1.3/release-1.2.0-alpha.1/','/zh/tidb-in-kubernetes/v1.4/release-1.2.0-alpha.1/','/zh/tidb-in-kubernetes/v1.5/release-1.2.0-alpha.1/','/zh/tidb-in-kubernetes/v1.6/release-1.2.0-alpha.1/','/zh/tidb-in-kubernetes/v2.0/release-1.2.0-alpha.1/']
 ---
 
 # TiDB Operator 1.2.0-alpha.1 Release Notes

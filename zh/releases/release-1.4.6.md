@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.6 Release Notes
 summary: TiDB Operator 1.4.6 发布，优化默认启用 volume resize 支持，修复备份恢复时报错问题，修复 TiCDC image tag 不符合语义化版本时无法 Graceful Drain TiCDC 的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.6/','/zh/tidb-in-kubernetes/v1.3/release-1.4.6/','/zh/tidb-in-kubernetes/v1.4/release-1.4.6/','/zh/tidb-in-kubernetes/v1.5/release-1.4.6/','/zh/tidb-in-kubernetes/v1.6/release-1.4.6/','/zh/tidb-in-kubernetes/v2.0/release-1.4.6/']
 ---
 
 # TiDB Operator 1.4.6 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.1 Release Notes
 summary: TiDB Operator 1.4.1 版本发布，新增故障自动转移功能，优化了 TiDB Controller Manager 中 Kubernetes 客户端的配置，修复了未配置 PV 权限时 TiDB Controller Manager panic 的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.1/','/zh/tidb-in-kubernetes/v1.3/release-1.4.1/','/zh/tidb-in-kubernetes/v1.4/release-1.4.1/','/zh/tidb-in-kubernetes/v1.5/release-1.4.1/','/zh/tidb-in-kubernetes/v1.6/release-1.4.1/','/zh/tidb-in-kubernetes/v2.0/release-1.4.1/']
 ---
 
 # TiDB Operator 1.4.1 Release Notes

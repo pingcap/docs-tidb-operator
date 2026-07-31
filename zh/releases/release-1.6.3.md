@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.6.3 Release Notes
 summary: 了解 TiDB Operator 1.6.3 版本的 Bug 修复。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.6.3/','/zh/tidb-in-kubernetes/v1.3/release-1.6.3/','/zh/tidb-in-kubernetes/v1.4/release-1.6.3/','/zh/tidb-in-kubernetes/v1.5/release-1.6.3/','/zh/tidb-in-kubernetes/v1.6/release-1.6.3/','/zh/tidb-in-kubernetes/v2.0/release-1.6.3/']
 ---
 
 # TiDB Operator 1.6.3 Release Notes

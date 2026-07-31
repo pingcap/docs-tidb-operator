@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.7 Release Notes
 summary: TiDB Operator 1.1.7 was released on November 13, 2020. The new version includes compatibility changes, new features, improvements, and bug fixes. Some notable changes include the support for specifying the tool image for backup and restore, support for mounting multiple PVs for TiDB, TiKV, and PD, and the ability to support HA scheduling when failover happens. Additionally, the release includes improvements such as forbidding the scaling in of TiKV when the number of UP stores is equal to or less than 3, and bug fixes including fixing the issue that PD cannot scale into zero if there are other PD members outside of the TidbCluster.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.7/','/tidb-in-kubernetes/v1.3/release-1.1.7/','/tidb-in-kubernetes/v1.4/release-1.1.7/','/tidb-in-kubernetes/v1.5/release-1.1.7/','/tidb-in-kubernetes/v1.6/release-1.1.7/','/tidb-in-kubernetes/v2.0/release-1.1.7/']
 ---
 
 # TiDB Operator 1.1.7 Release Notes

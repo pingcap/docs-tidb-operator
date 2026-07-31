@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0-beta.1 Release Notes
 summary: TiDB Operator 1.4.0-beta.1 was released on October 27, 2022. The new feature includes support for snapshot backup and restore based on Amazon EBS, with benefits such as reducing the impact of backup on QPS to less than 5% and shortening the backup and restore time. Bug fixes include updating the log backup checkpoint ts after TiDB Operator restarts and when TLS is enabled for the TiDB cluster.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.0-beta.1/','/tidb-in-kubernetes/v1.3/release-1.4.0-beta.1/','/tidb-in-kubernetes/v1.4/release-1.4.0-beta.1/','/tidb-in-kubernetes/v1.5/release-1.4.0-beta.1/','/tidb-in-kubernetes/v1.6/release-1.4.0-beta.1/','/tidb-in-kubernetes/v2.0/release-1.4.0-beta.1/']
 ---
 
 # TiDB Operator 1.4.0-beta.1 Release Notes

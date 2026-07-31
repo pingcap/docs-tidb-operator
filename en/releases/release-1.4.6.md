@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.6 Release Notes
 summary: TiDB Operator 1.4.6 was released on July 19, 2023. The improvements include enabling volume resizing by default. Bug fixes address issues with executing backup and restore with BR >=v6.6.0 and the graceful drain for TiCDC when a non-SemVer image tag is used.
+aliases: ['/tidb-in-kubernetes/dev/release-1.4.6/','/tidb-in-kubernetes/v1.3/release-1.4.6/','/tidb-in-kubernetes/v1.4/release-1.4.6/','/tidb-in-kubernetes/v1.5/release-1.4.6/','/tidb-in-kubernetes/v1.6/release-1.4.6/','/tidb-in-kubernetes/v2.0/release-1.4.6/']
 ---
 
 # TiDB Operator 1.4.6 Release Notes

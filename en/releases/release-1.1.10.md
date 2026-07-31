@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.10 Release Notes
 summary: TiDB Operator 1.1.10 was released on January 28, 2021. The new version includes compatibility changes, rolling update changes, new features, improvements, and bug fixes. Some notable changes include the support for canary upgrade, `remotewrite` configuration for TidbMonitor, and customizing storage config for TiDB slow log. The update also fixes issues related to TLS-enabled backup and restore jobs, advanced StatefulSet, and recovery of TiKV component.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.10/','/tidb-in-kubernetes/v1.3/release-1.1.10/','/tidb-in-kubernetes/v1.4/release-1.1.10/','/tidb-in-kubernetes/v1.5/release-1.1.10/','/tidb-in-kubernetes/v1.6/release-1.1.10/','/tidb-in-kubernetes/v2.0/release-1.1.10/']
 ---
 
 # TiDB Operator 1.1.10 Release Notes

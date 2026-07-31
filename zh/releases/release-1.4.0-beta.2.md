@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0-beta.2 Release Notes
 summary: TiDB Operator 1.4.0-beta.2 发布日期为 2022 年 11 月 11 日。此版本修复了使用 Azure Blob Storage 时未设置前缀的问题，并升级了 AWS SDK 到 v1.44.72 以支持使用 AWS 的 Asia Pacific (Jakarta) 区域 (`ap-southeast-3`)。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.0-beta.2/','/zh/tidb-in-kubernetes/v1.3/release-1.4.0-beta.2/','/zh/tidb-in-kubernetes/v1.4/release-1.4.0-beta.2/','/zh/tidb-in-kubernetes/v1.5/release-1.4.0-beta.2/','/zh/tidb-in-kubernetes/v1.6/release-1.4.0-beta.2/','/zh/tidb-in-kubernetes/v2.0/release-1.4.0-beta.2/']
 ---
 
 # TiDB Operator 1.4.0-beta.2 Release Notes

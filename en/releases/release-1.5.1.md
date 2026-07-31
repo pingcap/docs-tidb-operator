@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.5.1 Release Notes
 summary: TiDB Operator 1.5.1 was released on October 20, 2023. The new feature includes support for replacing volumes for PD, TiKV, and TiDB. Bug fixes include resolving errors from PVC modifier during manual TiKV eviction, fixing deadlock issues caused by TiKV eviction during volume replacement, addressing TidbCluster rollback during the upgrade process, and resolving the issue with the `MaxReservedTime` option for scheduled backup.
+aliases: ['/tidb-in-kubernetes/dev/release-1.5.1/','/tidb-in-kubernetes/v1.3/release-1.5.1/','/tidb-in-kubernetes/v1.4/release-1.5.1/','/tidb-in-kubernetes/v1.5/release-1.5.1/','/tidb-in-kubernetes/v1.6/release-1.5.1/','/tidb-in-kubernetes/v2.0/release-1.5.1/']
 ---
 
 # TiDB Operator 1.5.1 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0 Release Notes
 summary: TiDB Operator 1.4.0 版本发布，新增支持独立管理 TiDB Dashboard，配置 TiKV 和 PD 的 Readiness Probe，以及基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复。优化支持 IPv6 网络环境，修复了基于 EBS 快照备份无法恢复到不同 namespace 的问题和日志备份停止占用 Complete 状态的 bug。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.0/','/zh/tidb-in-kubernetes/v1.3/release-1.4.0/','/zh/tidb-in-kubernetes/v1.4/release-1.4.0/','/zh/tidb-in-kubernetes/v1.5/release-1.4.0/','/zh/tidb-in-kubernetes/v1.6/release-1.4.0/','/zh/tidb-in-kubernetes/v2.0/release-1.4.0/']
 ---
 
 # TiDB Operator 1.4.0 Release Notes

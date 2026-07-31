@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1 RC.3 Release Notes
 summary: TiDB Operator 1.1 RC.3 was released on April 30, 2020. Notable changes include support for TiFlash metrics in TidbMonitor, fixing bugs related to failover pods and statefulsets, and adding new features like configuring Ingress in TidbMonitor and supporting failover for TiFlash. Other changes include updates to terraform scripts and adding new fields in TiKVConfig.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.0-rc.3/','/tidb-in-kubernetes/v1.3/release-1.1.0-rc.3/','/tidb-in-kubernetes/v1.4/release-1.1.0-rc.3/','/tidb-in-kubernetes/v1.5/release-1.1.0-rc.3/','/tidb-in-kubernetes/v1.6/release-1.1.0-rc.3/','/tidb-in-kubernetes/v2.0/release-1.1.0-rc.3/']
 ---
 
 # TiDB Operator 1.1 RC.3 Release Notes

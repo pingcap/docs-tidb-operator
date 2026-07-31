@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 2.0.0-beta.0 Release Notes
 summary: TiDB Operator 2.0.0-beta.0 版本发布。v2 版本对 v1 版本进行了大幅重构，主要改动包括将 `TidbCluster` 拆分为多个 CRD、移除对 StatefulSet 的依赖，并引入 Overlay 功能以实现更灵活的自定义配置。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-2.0.0-beta.0/','/zh/tidb-in-kubernetes/v1.3/release-2.0.0-beta.0/','/zh/tidb-in-kubernetes/v1.4/release-2.0.0-beta.0/','/zh/tidb-in-kubernetes/v1.5/release-2.0.0-beta.0/','/zh/tidb-in-kubernetes/v1.6/release-2.0.0-beta.0/','/zh/tidb-in-kubernetes/v2.0/release-2.0.0-beta.0/']
 ---
 
 # TiDB Operator 2.0.0-beta.0 Release Notes

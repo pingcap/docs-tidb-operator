@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.2.5 Release Notes
 summary: TiDB Operator 1.2.5 版本发布，优化了 DM 配置、TiFlash init container 资源配置和 TiDB TLS 客户端认证参数配置。修复了组件启动脚本更新后的滚动更新问题、启用 TLS 后 TidbCluster spec 自动更新问题、TiKV Region leader 数量计算可能导致 goroutine 泄露的问题和一些高级别的安全问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.2.5/','/zh/tidb-in-kubernetes/v1.3/release-1.2.5/','/zh/tidb-in-kubernetes/v1.4/release-1.2.5/','/zh/tidb-in-kubernetes/v1.5/release-1.2.5/','/zh/tidb-in-kubernetes/v1.6/release-1.2.5/','/zh/tidb-in-kubernetes/v2.0/release-1.2.5/']
 ---
 
 # TiDB Operator 1.2.5 Release Notes

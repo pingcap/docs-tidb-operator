@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 2.0.0 Release Notes
 summary: TiDB Operator 2.0.0 is released. The v2 version introduces major refactoring from v1, with key changes including splitting the `TidbCluster` CRD into multiple CRDs, removing the dependency on StatefulSet, and introducing the Overlay feature for more flexible custom configurations.
+aliases: ['/tidb-in-kubernetes/dev/release-2.0.0/','/tidb-in-kubernetes/v1.3/release-2.0.0/','/tidb-in-kubernetes/v1.4/release-2.0.0/','/tidb-in-kubernetes/v1.5/release-2.0.0/','/tidb-in-kubernetes/v1.6/release-2.0.0/','/tidb-in-kubernetes/v2.0/release-2.0.0/']
 ---
 
 # TiDB Operator 2.0.0 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.5 Release Notes
 summary: TiDB Operator 1.4.5 版本发布，优化了 TidbCluster 的错误处理相关 metrics 和 worker 队列相关 metrics，增加了 DM master 组件的 `startUpScriptVersion` 字段，以及跨 Kubernetes 集群滚动重启或缩容 TiCDC 集群的能力。同时修复了定时备份中取消 GC、Backup CR 字段可选值、TiDB Operator 未配置权限时的 panic 问题，以及 TidbCluster 中设置 `AdditionalVolumeMounts` 时可能的 panic 问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.5/','/zh/tidb-in-kubernetes/v1.3/release-1.4.5/','/zh/tidb-in-kubernetes/v1.4/release-1.4.5/','/zh/tidb-in-kubernetes/v1.5/release-1.4.5/','/zh/tidb-in-kubernetes/v1.6/release-1.4.5/','/zh/tidb-in-kubernetes/v2.0/release-1.4.5/']
 ---
 
 # TiDB Operator 1.4.5 Release Notes

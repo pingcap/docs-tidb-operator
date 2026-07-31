@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.1.6 Release Notes
 summary: TiDB Operator 1.1.6 was released on October 16, 2020. Compatibility changes include migration of `spec.pd.config` from YAML to TOML format, with some parameters requiring manual editing. New features include customizing arguments for BR, configurable TiKV evict leader timeout, and monitoring multiple TiDB clusters with one TidbMonitor CR. Improvements involve support for passing raw TOML config for various components and bug fixes address the problem of bootstrapping multiple PD clusters.
+aliases: ['/tidb-in-kubernetes/dev/release-1.1.6/','/tidb-in-kubernetes/v1.3/release-1.1.6/','/tidb-in-kubernetes/v1.4/release-1.1.6/','/tidb-in-kubernetes/v1.5/release-1.1.6/','/tidb-in-kubernetes/v1.6/release-1.1.6/','/tidb-in-kubernetes/v2.0/release-1.1.6/']
 ---
 
 # TiDB Operator 1.1.6 Release Notes

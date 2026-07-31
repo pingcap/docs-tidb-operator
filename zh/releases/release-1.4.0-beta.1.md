@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.0-beta.1 Release Notes
 summary: TiDB Operator 1.4.0-beta.1 发布，新增支持基于 Amazon EBS 的 TiDB 集群 volume-snapshot 备份和恢复（实验特性），修复了日志备份的 checkpoint ts 无法更新的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.0-beta.1/','/zh/tidb-in-kubernetes/v1.3/release-1.4.0-beta.1/','/zh/tidb-in-kubernetes/v1.4/release-1.4.0-beta.1/','/zh/tidb-in-kubernetes/v1.5/release-1.4.0-beta.1/','/zh/tidb-in-kubernetes/v1.6/release-1.4.0-beta.1/','/zh/tidb-in-kubernetes/v2.0/release-1.4.0-beta.1/']
 ---
 
 # TiDB Operator 1.4.0-beta.1 Release Notes

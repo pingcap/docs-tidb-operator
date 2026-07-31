@@ -1,6 +1,7 @@
 ---
 title: TiDB Operator 1.4.3 Release Notes
 summary: TiDB Operator 1.4.3 发布，修复了开启 `preferIPv6` 时 TiFlash 的 metric server 未监听正确 IPv6 地址的问题，以及在 AWS 环境中打开了 feature gate `VolumeModifying` 且 `StorageClass` 缺少 EBS 相关参数时 TiDB Operator 会一直尝试修改 EBS 参数的问题。
+aliases: ['/zh/tidb-in-kubernetes/dev/release-1.4.3/','/zh/tidb-in-kubernetes/v1.3/release-1.4.3/','/zh/tidb-in-kubernetes/v1.4/release-1.4.3/','/zh/tidb-in-kubernetes/v1.5/release-1.4.3/','/zh/tidb-in-kubernetes/v1.6/release-1.4.3/','/zh/tidb-in-kubernetes/v2.0/release-1.4.3/']
 ---
 
 # TiDB Operator 1.4.3 Release Notes
