@@ -20,11 +20,11 @@ TiDB Operator version: 1.6.6
 ## Improvements
 
 - Support the `BashShebang` and `NoWaitDNS` flags to separately control whether component startup scripts use Bash shebangs and whether to skip DNS readiness checks ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
-- Replace wildcard resource and action permissions in Helm Chart RBAC rules with explicit configurations ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
+- Replace wildcard resource and action permissions in Helm chart RBAC rules with explicit configurations ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
 - Support explicitly mounting ServiceAccount tokens for the BR and `discovery` components when `automountServiceAccountToken` is disabled. This improvement enables TiDB Operator to run in restricted environments, such as FedRAMP/Gatekeeper environments that enforce the `block-automount-serviceaccount-token-pod` policy ([#6815](https://github.com/pingcap/tidb-operator/pull/6815), [@liubog2008](https://github.com/liubog2008))
 - Add projected ServiceAccount token volume support for `controller-manager`, so that controller-manager can still authenticate to the Kubernetes API when `automountServiceAccountToken` is disabled ([#6873](https://github.com/pingcap/tidb-operator/pull/6873), [@tennix](https://github.com/tennix))
 - Pause user DDL operations during eligible TiDB upgrades by calling the TiDB smooth upgrade API (`/upgrade/start` and `/upgrade/finish`), reducing the impact of DDL operations on rolling upgrades and improving upgrade stability ([#6904](https://github.com/pingcap/tidb-operator/pull/6904), [@tennix](https://github.com/tennix))
-- Record the IDs of the last 10 BR operations in the `Backup` and `Restore` status, making it easier to correlate Kubernetes backup and restore tasks with BR-side diagnostics and lock metadata ([#6954](https://github.com/pingcap/tidb-operator/pull/6954), [@RidRisR](https://github.com/RidRisR))
+- Record the IDs of the last 10 BR operations in the `Backup` and `Restore` status fields, making it easier to correlate Kubernetes backup and restore tasks with BR-side diagnostics and lock metadata ([#6954](https://github.com/pingcap/tidb-operator/pull/6954), [@RidRisR](https://github.com/RidRisR))
 
 ## Bug fixes
 

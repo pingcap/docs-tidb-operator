@@ -20,11 +20,11 @@ TiDB Operator 版本：1.6.6
 ## 优化提升
 
 - 支持通过 `BashShebang` 和 `NoWaitDNS` 标志，分别控制组件启动脚本是否使用 Bash shebang，以及是否跳过 DNS 就绪检查 ([#6767](https://github.com/pingcap/tidb-operator/pull/6767), [@liubog2008](https://github.com/liubog2008))
-- 将 Helm Chart 中 RBAC 规则使用的通配符资源和操作权限替换为显式配置 ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
+- 将 Helm chart 中 RBAC 规则使用的通配符资源和操作权限替换为显式配置 ([#6762](https://github.com/pingcap/tidb-operator/pull/6762), [@liubog2008](https://github.com/liubog2008))
 - 当 `automountServiceAccountToken` 被禁用时，支持为 BR 和 `discovery` 组件显式挂载 ServiceAccount token，便于在执行 `block-automount-serviceaccount-token-pod` 策略的限制环境（如 FedRAMP/Gatekeeper）中运行 TiDB Operator ([#6815](https://github.com/pingcap/tidb-operator/pull/6815), [@liubog2008](https://github.com/liubog2008))
-- 为 `controller-manager` 新增 projected ServiceAccount token 卷支持，使 `automountServiceAccountToken` 被禁用时 controller-manager 仍能向 Kubernetes API 进行身份认证  ([#6873](https://github.com/pingcap/tidb-operator/pull/6873), [@tennix](https://github.com/tennix))
+- 为 `controller-manager` 新增 projected ServiceAccount token 卷支持，使 `automountServiceAccountToken` 被禁用时 controller-manager 仍能向 Kubernetes API 进行身份认证 ([#6873](https://github.com/pingcap/tidb-operator/pull/6873), [@tennix](https://github.com/tennix))
 - 在符合条件的 TiDB 升级过程中，通过调用 TiDB 平滑升级 API（`/upgrade/start` 和 `/upgrade/finish`）暂停用户 DDL 操作，降低 DDL 操作对滚动升级的影响，提升升级稳定性 ([#6904](https://github.com/pingcap/tidb-operator/pull/6904), [@tennix](https://github.com/tennix))
-- 在 `Backup` 和 `Restore` 状态中记录最近 10 次 BR 操作的 ID，便于将 Kubernetes 备份/恢复任务与 BR 侧的诊断信息及锁元数据关联 ([#6954](https://github.com/pingcap/tidb-operator/pull/6954), [@RidRisR](https://github.com/RidRisR))
+- 在 `Backup` 和 `Restore` 状态字段中记录最近 10 次 BR 操作的 ID，便于将 Kubernetes 备份和恢复任务与 BR 侧的诊断信息及锁元数据关联 ([#6954](https://github.com/pingcap/tidb-operator/pull/6954), [@RidRisR](https://github.com/RidRisR))
 
 ## Bug 修复
 
