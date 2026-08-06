@@ -97,4 +97,4 @@ spec:
 
 > **警告：**
 >
-> `spec.tikv.privileged` 和 `spec.tiflash.privileged` 已弃用。一旦配置了对应组件的 `securityContext` 对象，即使对象为空，TiDB Operator 也会忽略原有的 `privileged` 字段。如果容器仍需以 privileged 模式运行，请显式配置 `securityContext.privileged: true`，否则组件可能无法启动。
+> `spec.tikv.privileged` 和 `spec.tiflash.privileged` 已弃用。一旦配置了对应组件的 `securityContext` 对象，即使对象为空，TiDB Operator 也会忽略原有的 `privileged` 字段。如果 TiKV 或 TiFlash 容器仍需以 privileged 模式运行，请分别显式配置 `spec.tikv.securityContext.privileged: true` 或 `spec.tiflash.securityContext.privileged: true`，否则组件可能无法启动。

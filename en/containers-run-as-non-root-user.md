@@ -27,7 +27,7 @@ For containers controlled by Custom Resources (CRs), you can configure the secur
 
 ### Configure the Pod-level security context
 
-`podSecurityContext` applies to all containers in the generated Pod and controls Pod-level settings such as volume ownership.
+`podSecurityContext` defines Pod-level security settings, such as volume ownership, and provides default security settings for all containers in the generated Pod.
 
 For `TidbCluster` and `DMCluster`, you can configure `podSecurityContext` at the following levels:
 
@@ -97,4 +97,4 @@ spec:
 
 > **Warning:**
 >
-> `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. Once you configure the corresponding component's `securityContext` object, even as an empty object, TiDB Operator ignores the legacy `privileged` field. If the container still needs privileged mode, explicitly configure `securityContext.privileged: true`; otherwise, the component might fail to start.
+> `spec.tikv.privileged` and `spec.tiflash.privileged` are deprecated. Once you configure the corresponding component's `securityContext` object, even as an empty object, TiDB Operator ignores the legacy `privileged` field. If the TiKV or TiFlash container still requires privileged mode, explicitly configure `spec.tikv.securityContext.privileged: true` or `spec.tiflash.securityContext.privileged: true`; otherwise, the component might fail to start.
