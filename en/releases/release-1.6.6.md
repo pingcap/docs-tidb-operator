@@ -5,7 +5,7 @@ summary: Learn about new features, improvements, and bug fixes in TiDB Operator 
 
 # TiDB Operator 1.6.6 Release Notes
 
-Release date: August 3, 2026
+Release date: August 11, 2026
 
 TiDB Operator version: 1.6.6
 
@@ -28,7 +28,6 @@ TiDB Operator version: 1.6.6
 
 ## Bug fixes
 
-- Fix the issue that the `--stderrthreshold` flag does not take effect when `--logtostderr` is enabled ([#6786](https://github.com/pingcap/tidb-operator/pull/6786), [@pierluigilenoci](https://github.com/pierluigilenoci))
 - Fix the issue that the `TidbInitializer` job Pod does not disable ServiceAccount token automount as expected, which causes the Pod to fail the FedRAMP/Gatekeeper `block-automount-serviceaccount-token-pod` policy check ([#6838](https://github.com/pingcap/tidb-operator/pull/6838), [@tennix](https://github.com/tennix))
 - Fix an issue where backup and restore jobs using GKE Workload Identity Federation could not access Google Cloud Storage because TiDB Operator referenced an empty service account credential file ([#6888](https://github.com/pingcap/tidb-operator/pull/6888), [@Leavrth](https://github.com/Leavrth))
 - Fix the `TidbMonitor` reconciliation failure (`Invalid Semantic version`) that occurs when the Prometheus image tag is not semver-compatible and `remote_write` is not configured. Previously, the system unconditionally parsed the image tag as a semantic version, even though the parsed result is only used when processing the `remote_write` configuration ([#7007](https://github.com/pingcap/tidb-operator/pull/7007), [@time-and-fate](https://github.com/time-and-fate))

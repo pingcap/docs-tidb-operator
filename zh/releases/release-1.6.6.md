@@ -5,7 +5,7 @@ summary: 了解 TiDB Operator 1.6.6 版本的新功能、优化提升，以及 B
 
 # TiDB Operator 1.6.6 Release Notes
 
-发布日期：2026 年 8 月 3 日
+发布日期：2026 年 8 月 11 日
 
 TiDB Operator 版本：1.6.6
 
@@ -28,7 +28,6 @@ TiDB Operator 版本：1.6.6
 
 ## Bug 修复
 
-- 修复当启用 `--logtostderr` 时 `--stderrthreshold` 标志不生效的问题 ([#6786](https://github.com/pingcap/tidb-operator/pull/6786), [@pierluigilenoci](https://github.com/pierluigilenoci))
 - 修复 `TidbInitializer` Job Pod 未按预期禁用 ServiceAccount token 自动挂载的问题，该问题会导致该 Pod 无法通过 FedRAMP/Gatekeeper 的 `block-automount-serviceaccount-token-pod` 策略检查 ([#6838](https://github.com/pingcap/tidb-operator/pull/6838), [@tennix](https://github.com/tennix))
 - 修复使用 GKE Workload Identity Federation 的备份和恢复任务因 TiDB Operator 引用了空的服务账号凭证文件而无法访问 Google Cloud Storage 的问题 ([#6888](https://github.com/pingcap/tidb-operator/pull/6888), [@Leavrth](https://github.com/Leavrth))
 - 修复当 Prometheus 镜像 tag 不兼容 semver 且未配置 `remote_write` 时，`TidbMonitor` 调谐失败（`Invalid Semantic version`）的问题。此前，系统会无条件将镜像标签解析为语义化版本，尽管解析结果仅在处理 `remote_write` 配置时使用 ([#7007](https://github.com/pingcap/tidb-operator/pull/7007), [@time-and-fate](https://github.com/time-and-fate))
