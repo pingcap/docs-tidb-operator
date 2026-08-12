@@ -27,7 +27,7 @@ controllerManager:
 
 ### 配置 Pod 级别的安全上下文
 
-`podSecurityContext` 对生成的 Pod 中的所有容器生效，并控制卷所有权等 Pod 级别的设置。
+`podSecurityContext` 用于定义 Pod 级别的安全设置，例如卷的所有权，同时也会为 Pod 中所有容器提供默认的安全设置。
 
 对于 `TidbCluster` 和 `DMCluster`，你可以在以下级别配置 `podSecurityContext`：
 
