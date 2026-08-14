@@ -93,7 +93,7 @@ spec:
 > - 容器级别的配置仅应用于对应字段所生成的容器定义，并覆盖有效 `podSecurityContext` 中的同名字段。
 > - `fsGroup` 等影响 Pod 卷的字段只能配置在 `podSecurityContext` 中。
 > - 更新已部署组件的 `securityContext` 会修改其 Pod 模板，并触发受影响 Pod 的滚动更新。
-> - 如需单独配置 TiDB 慢日志 sidecar、TiKV 日志 sidecar、TiFlash 日志 sidecar 或 TiFlash init container，请分别使用 `spec.tidb.slowLogTailer.securityContext`、`spec.tikv.logTailer.securityContext`、`spec.tiflash.logTailer.securityContext` 或 `spec.tiflash.initializer.securityContext`。
+> - 如需单独配置 TiDB 慢日志 tailer 容器、TiKV 日志 tailer 容器、TiFlash 日志 tailer 容器或 TiFlash initializer 容器，请分别使用 `spec.tidb.slowLogTailer.securityContext`、`spec.tikv.logTailer.securityContext`、`spec.tiflash.logTailer.securityContext` 或 `spec.tiflash.initializer.securityContext`。
 
 > **警告：**
 >
