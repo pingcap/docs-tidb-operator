@@ -23,11 +23,15 @@ controllerManager:
 
 ## 配置按照 CR 生成的容器
 
-对于按照 Custom Resource (CR) 生成的容器，你同样可以在任意一种 CR (`TidbCluster`/`DmCluster`/`TidbInitializer`/`TidbMonitor`/`Backup`/`BackupSchedule`/`Restore`) 中配置安全上下文 (security context)。
+对于按照 Custom Resource (CR) 生成的容器，你可以配置 Pod 级别或容器级别的安全上下文。不同 CR 支持的字段有所不同。
 
-你可以采用以下两种 `podSecurityContext` 配置。如果同时配置了集群级别和组件级别，则该组件以组件级别的配置为准。
+### 配置 Pod 级别的安全上下文
 
-- 配置在集群级别 (`spec.podSecurityContext`)，对所有组件生效。配置示例如下：
+`podSecurityContext` 用于定义 Pod 级别的安全设置，例如卷的所有权，同时也会为 Pod 中所有容器提供默认的安全设置。
+
+对于 `TidbCluster` 和 `DMCluster`，你可以在以下级别配置 `podSecurityContext`：
+
+- 集群级别：配置 `spec.podSecurityContext`，对所有组件生效：
 
     ```yaml
     spec:
@@ -37,7 +41,7 @@ controllerManager:
         fsGroup: 2000
     ```
 
-- 配置在组件级别，仅对该组件生效。例如，为 PD 组件配置 `spec.pd.podSecurityContext`，为 TiDB 组件配置 `spec.tidb.podSecurityContext`。配置示例如下：
+- 组件级别：配置 `spec.<component>.podSecurityContext`，仅对指定组件生效。例如，为 `TidbCluster` 的 TiDB 组件配置 `spec.tidb.podSecurityContext`，或为 `DMCluster` 的 master 组件配置 `spec.master.podSecurityContext`：
 
     ```yaml
     spec:
@@ -52,3 +56,45 @@ controllerManager:
           runAsGroup: 2000
           fsGroup: 2000
     ```
+
+如果同时配置了这两个级别，该组件将使用组件级别的 `podSecurityContext` 替代集群级别的 `podSecurityContext`。
+
+`TidbDashboard`、`TidbNGMonitoring`、`TidbInitializer`、`TidbMonitor`、`Backup`、`BackupSchedule` 和 `Restore` 等其他 CR 也支持 Pod 级别的安全上下文设置。有关支持的字段和路径，请参考 [API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md>)。
+
+### 配置容器级别的安全上下文
+
+从 TiDB Operator v1.6.6 起，以下 CR 支持[容器级别的安全上下文](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)：
+
+- 对于 `TidbCluster` 和 `DMCluster`，配置 `spec.<component>.securityContext`，例如 `spec.pd.securityContext`、`spec.tidb.securityContext`、`spec.master.securityContext` 或 `spec.worker.securityContext`。这些 CR 不支持集群级别的 `spec.securityContext`。
+- 对于 `TidbDashboard`，配置 `spec.securityContext`。
+- 对于 `TidbNGMonitoring`，配置 `spec.ngMonitoring.securityContext`。在顶层配置 `spec.securityContext` 不会对生成的容器生效。
+- 对于 `TidbMonitor`，分别为生成的容器配置 `securityContext`。支持的路径包括 `spec.initializer.securityContext`、`spec.prometheus.securityContext`、`spec.grafana.securityContext`、`spec.reloader.securityContext`、`spec.prometheusReloader.securityContext`、`spec.thanos.securityContext` 和 `spec.dm.initializer.securityContext`。
+
+`TidbInitializer`、`Backup`、`BackupSchedule` 和 `Restore` 不支持容器级别的 `securityContext`。
+
+有关 `ComponentSpec.securityContext` 的完整字段说明，请参考 [`ComponentSpec` API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb_operator_version }}}/docs/api-references/docs.md#componentspec>)。
+
+例如，以下配置让 PD 容器以非 root 用户运行，设置其卷的组所有权，并禁止容器进程获得超出其父进程的特权：
+
+```yaml
+spec:
+  pd:
+    podSecurityContext:
+      fsGroup: 2000
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 2000
+      allowPrivilegeEscalation: false
+```
+
+> **注意：**
+>
+> - 容器级别的配置仅应用于对应字段所生成的容器定义，并覆盖有效 `podSecurityContext` 中的同名字段。
+> - `fsGroup` 等影响 Pod 卷的字段只能配置在 `podSecurityContext` 中。
+> - 更新已部署组件的 `securityContext` 会修改其 Pod 模板，并触发受影响 Pod 的滚动更新。
+> - 如需单独配置 TiDB 慢日志 tailer 容器、TiKV 日志 tailer 容器、TiFlash 日志 tailer 容器或 TiFlash initializer 容器，请分别使用 `spec.tidb.slowLogTailer.securityContext`、`spec.tikv.logTailer.securityContext`、`spec.tiflash.logTailer.securityContext` 或 `spec.tiflash.initializer.securityContext`。
+
+> **警告：**
+>
+> `spec.tikv.privileged` 和 `spec.tiflash.privileged` 已弃用。一旦配置了对应组件的 `securityContext` 对象，即使对象为空，TiDB Operator 也会忽略原有的 `privileged` 字段。如果 TiKV 或 TiFlash 容器仍需以 privileged 模式运行，请分别显式配置 `spec.tikv.securityContext.privileged: true` 或 `spec.tiflash.securityContext.privileged: true`，否则组件可能无法启动。
