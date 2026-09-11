@@ -12,7 +12,7 @@ To enable TLS between TiDB components, perform the following steps:
 
 1. Generate certificates for each component of the TiDB cluster to be created:
 
-   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
+   - A set of server-side certificates for the PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiDB Lightning local backend (TiKV Importer)/TiDB Lightning component, saved as the Kubernetes Secret objects: `${cluster_name}-${component_name}-cluster-secret`.
    - A set of shared client-side certificates for the various clients of each component, saved as the Kubernetes Secret objects: `${cluster_name}-cluster-client-secret`.
 
     > **Note:**
@@ -284,6 +284,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - Pump
 
+        > **Warning:**
+        >
+        > Pump and Drainer are part of TiDB Binlog. Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, and TiDB Binlog is removed in v8.4.0. For incremental data replication, use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview/) instead.
+
         First, create the default `pump-server.json` file:
 
         {{< copyable "shell-regular" >}}
@@ -318,6 +322,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         ```
 
     - Drainer
+
+        > **Warning:**
+        >
+        > Pump and Drainer are part of TiDB Binlog. Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, and TiDB Binlog is removed in v8.4.0. For incremental data replication, use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview/) instead.
 
         First, generate the default `drainer-server.json` file:
 
@@ -512,9 +520,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
             cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
             ```
 
-    - TiKV Importer
+    - TiDB Lightning local backend (TiKV Importer)
 
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md) with the local backend, you need to generate a server-side certificate for the TiKV Importer component.
 
         1. Generate the default `importer-server.json` file:
 
@@ -545,7 +553,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
             `${cluster_name}` is the name of the cluster. `${namespace}` is the namespace in which the TiDB cluster is deployed. You can also add your customized `hosts`.
 
-        3. Generate the TiKV Importer server-side certificate:
+        3. Generate the TiDB Lightning local backend (TiKV Importer) server-side certificate:
 
             {{< copyable "shell-regular" >}}
 
@@ -675,7 +683,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
         ```
 
-    - The TiKV Importer cluster certificate Secret:
+    - The TiDB Lightning local backend (TiKV Importer) cluster certificate Secret:
 
         ``` shell
         kubectl create secret generic ${cluster_name}-importer-cluster-secret --namespace=${namespace} --from-file=tls.crt=importer-server.pem --from-file=tls.key=importer-server-key.pem --from-file=ca.crt=ca.pem
@@ -963,6 +971,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
     - Pump
 
+        > **Warning:**
+        >
+        > Pump and Drainer are part of TiDB Binlog. Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, and TiDB Binlog is removed in v8.4.0. For incremental data replication, use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview/) instead.
+
         ``` yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
@@ -1012,6 +1024,10 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         After the object is created, `cert-manager` generates a `${cluster_name}-pump-cluster-secret` Secret object to be used by the Pump component of the TiDB server.
 
     - Drainer
+
+        > **Warning:**
+        >
+        > Pump and Drainer are part of TiDB Binlog. Starting from TiDB v7.5.0, TiDB Binlog replication is deprecated. Starting from v8.3.0, TiDB Binlog is fully deprecated, and TiDB Binlog is removed in v8.4.0. For incremental data replication, use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview/) instead.
 
         Drainer is deployed using Helm. The `dnsNames` field varies with different configuration of the `values.yaml` file.
 
@@ -1291,9 +1307,9 @@ This section describes how to issue certificates using two methods: `cfssl` and 
 
         After the object is created, `cert-manager` generates a `${cluster_name}-tiflash-cluster-secret` Secret object to be used by the TiFlash component of the TiDB server.
 
-    - TiKV Importer
+    - TiDB Lightning local backend (TiKV Importer)
 
-        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md), you need to generate a server-side certificate for the TiKV Importer component.
+        If you need to [restore data using TiDB Lightning](restore-data-using-tidb-lightning.md) with the local backend, you need to generate a server-side certificate for the TiKV Importer component.
 
         ```yaml
         apiVersion: cert-manager.io/v1
@@ -1344,7 +1360,7 @@ This section describes how to issue certificates using two methods: `cfssl` and 
         - Add the Issuer created above in `issuerRef`.
         - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec).
 
-        After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of the TiDB server.
+        After the object is created, `cert-manager` generates a `${cluster_name}-importer-cluster-secret` Secret object to be used by the TiKV Importer component of TiDB Lightning local backend.
 
     - TiDB Lightning
 
