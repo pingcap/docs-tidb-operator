@@ -9,7 +9,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 本文主要描述了在 Kubernetes 上如何为 TiDB 集群组件间开启 TLS。TiDB Operator 从 v1.1 开始已经支持为 Kubernetes 上 TiDB 集群组件间开启 TLS。开启步骤为：
 
 1. 为即将被创建的 TiDB 集群的每个组件生成证书：
-    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiKV Importer/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
+    - 为 PD/TiKV/TiDB/Pump/Drainer/TiFlash/TiProxy/TiDB Lightning local backend（TiKV Importer）/TiDB Lightning 组件分别创建一套 Server 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-${component_name}-cluster-secret`
     - 为它们的各种客户端创建一套共用的 Client 端证书，保存为 Kubernetes Secret 对象：`${cluster_name}-cluster-client-secret`
 
     > **注意：**
@@ -279,6 +279,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     - Pump Server 端证书
 
+        > **警告：**
+        >
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+
         首先生成默认的 `pump-server.json` 文件：
 
         {{< copyable "shell-regular" >}}
@@ -313,6 +317,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         ```
 
     - Drainer Server 端证书
+
+        > **警告：**
+        >
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         首先生成默认的 `drainer-server.json` 文件：
 
@@ -507,9 +515,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
-    - TiKV Importer Server 端证书
+    - TiDB Lightning（local backend / TiKV Importer）Server 端证书
 
-        如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
+        如需使用 [TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md) 且选择 `local` 后端，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
 
         首先生成默认的 `importer-server.json` 文件：
 
@@ -539,7 +547,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 TiKV Importer Server 端证书：
+        最后生成 TiDB Lightning（local backend / TiKV Importer）Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
@@ -675,7 +683,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    TiKV Importer 集群证书 Secret：
+    TiDB Lightning local backend（TiKV Importer）集群证书 Secret：
 
     {{< copyable "shell-regular" >}}
 
@@ -958,6 +966,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
     - Pump 组件的 Server 端证书。
 
+        > **警告：**
+        >
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+
         ``` yaml
         apiVersion: cert-manager.io/v1
         kind: Certificate
@@ -1005,6 +1017,10 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-pump-cluster-secret` 的 Secret 对象供 TiDB 集群的 Pump 组件使用。
 
     - Drainer 组件的 Server 端证书。
+
+        > **警告：**
+        >
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         现在 Drainer 组件是通过 Helm 来部署的，根据 `values.yaml` 文件配置方式不同，所需要填写的 `dnsNames` 字段也不相同。
 
@@ -1280,9 +1296,9 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiflash-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiFlash 组件使用。
 
-    - TiKV Importer 组件的 Server 端证书。
+    - TiDB Lightning（local backend / TiKV Importer）组件的 Server 端证书。
 
-      如需要[使用 TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md)，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
+      如需使用 [TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md) 且选择 `local` 后端，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
 
         ```yaml
         apiVersion: cert-manager.io/v1
@@ -1331,7 +1347,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         - `issuerRef` 请填写上面创建的 Issuer；
         - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
-        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiKV Importer 组件使用。
+        创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-importer-cluster-secret` 的 Secret 对象供 TiDB Lightning 的 local backend 中的 TiKV Importer 组件使用。
 
     - TiDB Lightning 组件的 Server 端证书。
 
