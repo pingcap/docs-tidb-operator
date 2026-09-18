@@ -11,7 +11,7 @@ TiDB Operator version: 2.0.0
 
 With the rapid development of TiDB and the Kubernetes ecosystem, TiDB Operator releases v2.0.0, which includes comprehensive refactoring from v1 to provide a more stable, efficient, and maintainable cluster management experience.
 
-For a detailed comparison between v2 and v1, see [Comparison Between TiDB Operator v2 and v1](../v2-vs-v1.md).
+For a detailed comparison between v2 and v1, see [Comparison Between TiDB Operator v2 and v1](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/v2-vs-v1/).
 
 ## Major changes and improvements
 
