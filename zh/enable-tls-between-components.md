@@ -281,7 +281,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **警告：**
         >
-        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据同步已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据同步，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         首先生成默认的 `pump-server.json` 文件：
 
@@ -320,7 +320,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **警告：**
         >
-        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据同步已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据同步，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         首先生成默认的 `drainer-server.json` 文件：
 
@@ -968,7 +968,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **警告：**
         >
-        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据同步已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据同步，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         ``` yaml
         apiVersion: cert-manager.io/v1
@@ -1020,7 +1020,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         > **警告：**
         >
-        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据复制已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据复制，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
+        > Pump 和 Drainer 属于 TiDB Binlog。自 TiDB v7.5.0 起，TiDB Binlog 数据同步已被弃用；自 v8.3.0 起，TiDB Binlog 已完全弃用，并已在 v8.4.0 中移除。对于增量数据同步，建议改用 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview/)。
 
         现在 Drainer 组件是通过 Helm 来部署的，根据 `values.yaml` 文件配置方式不同，所需要填写的 `dnsNames` 字段也不相同。
 
