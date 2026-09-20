@@ -46,17 +46,17 @@ TiDB Operator v2 includes a comprehensive redesign of the v1 architecture, with 
     - Improve compatibility with the Kubernetes ecosystem.
 
 - **Support feature gates to control change behavior**:
-    - You can use [Feature Gates](../feature-gates.md) to control changes that might trigger cluster node restarts, reducing the impact on cluster stability.
+    - You can use [Feature Gates](https://docs.pingcap.com/tidb-in-kubernetes/v2.0/feature-gates/) to control changes that might trigger cluster node restarts, reducing the impact on cluster stability.
 
 - **Support canceling TiKV and TiFlash scale-in operations**:
     - If you add new TiKV or TiFlash nodes while a scale-in operation is in progress, TiDB Operator prioritizes canceling the scale-in for nodes that are not yet fully decommissioned. This prevents the unnecessary re-creation of nodes.
 
 ### Removed features
 
-- Remove the support for [Backup and Restore Based on EBS Volume Snapshots](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/volume-snapshot-backup-restore/).
+- Remove the support for [Back Up a TiDB Cluster across Multiple Kubernetes Using EBS Volume Snapshots](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/backup-by-ebs-snapshot-across-multiple-kubernetes/) and [Restore a TiDB Cluster across Multiple Kubernetes from EBS Volume Snapshots](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-ebs-snapshot-across-multiple-kubernetes/).
 - Remove the `tidb-scheduler` component.
 - Remove the following CRDs: `TiDBInitializer`, `TiDBDashboard`, `DMCluster`, `FedVolumeBackup`, `FedVolumeBackupSchedule`, and `FedVolumeRestore`.
-- Remove the `TiDBMonitor` and `TiDBNGMonitoring` CRDs. Related features are integrated through other methods. For details, see [Deploy Monitoring and Alerts for a TiDB Cluster](../monitor-a-tidb-cluster.md).
+- Remove the `TiDBMonitor` and `TiDBNGMonitoring` CRDs. Related features are integrated through other methods. For details, see [Deploy Monitoring and Alerts for a TiDB Cluster](https://docs.pingcap.com/tidb-in-kubernetes/v1.6/monitor-a-tidb-cluster/).
 
 ## Acknowledgments
 

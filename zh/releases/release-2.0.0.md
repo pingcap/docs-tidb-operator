@@ -46,7 +46,7 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
     - 增强与 Kubernetes 生态系统的集成能力
 
 - **支持使用 Feature Gates 控制变更行为**：
-    - 支持通过[特性门控 (Feature Gates)](../feature-gates.md) 功能控制可能触发集群节点重启的变更操作，从而降低对集群稳定性的影响
+    - 支持通过[特性门控 (Feature Gates)](https://docs.pingcap.com/zh/tidb-in-kubernetes/v2.0/feature-gates/) 功能控制可能触发集群节点重启的变更操作，从而降低对集群稳定性的影响
 
 - **支持取消 TiKV 和 TiFlash 节点下线**：
     - 在对 TiKV 或 TiFlash 执行缩容 (scale in) 过程中，如果执行扩容 (scale out) 操作，TiDB Operator 会优先取消尚未完成下线的节点，从而避免不必要的节点重建
@@ -56,7 +56,7 @@ TiDB Operator v2 对 v1 的核心架构进行了全面重构，主要包括：
 - 移除[基于 AWS EBS 卷快照的备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/volume-snapshot-backup-restore/)相关功能。
 - 移除 `tidb-scheduler` 组件。
 - 移除 `TiDBInitializer`、`TiDBDashboard`、`DMCluster`、`FedVolumeBackup`、`FedVolumeBackupSchedule`、`FedVolumeRestore` 等 CRD。
-- 移除 `TiDBMonitor`、`TiDBNGMonitoring` 等 CRD，相关功能已通过其他方式集成，详情请查阅 [TiDB 集群的监控与告警](../monitor-a-tidb-cluster.md)。
+- 移除 `TiDBMonitor`、`TiDBNGMonitoring` 等 CRD，相关功能已通过其他方式集成，详情请查阅 [TiDB 集群的监控与告警](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/monitor-a-tidb-cluster/)。
 
 ## 致谢
 
