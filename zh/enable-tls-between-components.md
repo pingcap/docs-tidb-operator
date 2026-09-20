@@ -515,7 +515,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
         cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=internal tiflash-server.json | cfssljson -bare tiflash-server
         ```
 
-    - TiDB Lightning（local backend / TiKV Importer）Server 端证书
+    - TiDB Lightning local backend (TiKV Importer) Server 端证书
 
         如需使用 [TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md) 且选择 `local` 后端，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
 
@@ -547,7 +547,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         其中 `${cluster_name}` 为集群的名字，`${namespace}` 为 TiDB 集群部署的命名空间，用户也可以添加自定义 `hosts`。
 
-        最后生成 TiDB Lightning（local backend / TiKV Importer）Server 端证书：
+        最后生成 TiDB Lightning local backend (TiKV Importer) Server 端证书：
 
         {{< copyable "shell-regular" >}}
 
@@ -683,7 +683,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
     kubectl create secret generic ${cluster_name}-tiflash-cluster-secret --namespace=${namespace} --from-file=tls.crt=tiflash-server.pem --from-file=tls.key=tiflash-server-key.pem --from-file=ca.crt=ca.pem
     ```
 
-    TiDB Lightning local backend（TiKV Importer）集群证书 Secret：
+    TiDB Lightning local backend (TiKV Importer) 集群证书 Secret：
 
     {{< copyable "shell-regular" >}}
 
@@ -1296,7 +1296,7 @@ aliases: ['/docs-cn/tidb-in-kubernetes/dev/enable-tls-between-components/']
 
         创建这个对象以后，`cert-manager` 会生成一个名字为 `${cluster_name}-tiflash-cluster-secret` 的 Secret 对象供 TiDB 集群的 TiFlash 组件使用。
 
-    - TiDB Lightning（local backend / TiKV Importer）组件的 Server 端证书。
+    - TiDB Lightning local backend (TiKV Importer) 组件的 Server 端证书。
 
       如需使用 [TiDB Lightning 恢复 Kubernetes 上的集群数据](restore-data-using-tidb-lightning.md) 且选择 `local` 后端，则需要为其中的 TiKV Importer 组件生成如下的 Server 端证书。
 
