@@ -15,6 +15,7 @@ jobs:
       - name: Download Exclude Path
         run: |
           curl https://raw.githubusercontent.com/pingcap/docs/master/.lycheeignore --output .lycheeignore
+          echo 'https://.*github.*/%7B%7B%7B%20.tidb_operator_release_branch%20%7D%7D%7D' >> .lycheeignore
 
       - name: Check Links
         uses: lycheeverse/lychee-action@v1.6.1

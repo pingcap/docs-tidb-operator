@@ -20,6 +20,7 @@ jobs:
       - name: Download Exclude Path
         run: |
           curl https://raw.githubusercontent.com/pingcap/docs/master/.lycheeignore -O
+          echo 'https://.*github.*/%7B%7B%7B%20.tidb_operator_release_branch%20%7D%7D%7D' >> .lycheeignore
 
       - name: Link Checker
         if: ${{ steps.changed-files.outputs.all_changed_files }}
