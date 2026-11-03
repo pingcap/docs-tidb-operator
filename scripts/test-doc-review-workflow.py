@@ -68,18 +68,19 @@ class DocReviewWorkflowTest(unittest.TestCase):
         }.items():
             expression = expression.replace(field, variable)
 
-        allowed_logins = {"hfxsd", "likidu", "lilin90", "Oreoxmt", "qiancai"}
+        dispatch_logins = {"lilin90", "qiancai"}
+        comment_logins = {"lilin90", "qiancai"}
         allowed_associations = {"OWNER", "MEMBER", "COLLABORATOR"}
         for event_name in ["issue_comment", "workflow_dispatch", "push"]:
-            for login in sorted(allowed_logins | {"outsider"}):
+            for login in sorted(dispatch_logins | comment_logins | {"outsider"}):
                 for association in [
                     "OWNER", "MEMBER", "COLLABORATOR", "CONTRIBUTOR",
                     "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MANNEQUIN", "NONE", "",
                 ]:
                     for comment in ["/bot-review", "unrelated comment"]:
-                        expected = (event_name == "workflow_dispatch" and login in allowed_logins) or (
+                        expected = (event_name == "workflow_dispatch" and login in dispatch_logins) or (
                             event_name == "issue_comment"
-                            and login in allowed_logins
+                            and login in comment_logins
                             and association in allowed_associations
                             and "/bot-review" in comment
                         )
