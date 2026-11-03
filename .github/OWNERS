@@ -1,0 +1,10 @@
+# Sensitive automation must not inherit the repository-wide approver set.
+options:
+  no_parent_owners: true
+approvers:
+  - hfxsd
+  - lilin90
+  - Oreoxmt
+  - qiancai
+reviewers:
+  - sig-community-reviewers
