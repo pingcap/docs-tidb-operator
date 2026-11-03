@@ -69,7 +69,7 @@ class DocReviewWorkflowTest(unittest.TestCase):
             expression = expression.replace(field, variable)
 
         dispatch_logins = {"lilin90", "qiancai"}
-        comment_logins = {"likidu", "lilin90", "qiancai"}
+        comment_logins = {"lilin90", "qiancai"}
         allowed_associations = {"OWNER", "MEMBER", "COLLABORATOR"}
         for event_name in ["issue_comment", "workflow_dispatch", "push"]:
             for login in sorted(dispatch_logins | comment_logins | {"outsider"}):
