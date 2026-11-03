@@ -8,9 +8,17 @@ const lib = require("./lib");
 
 const fileAnchors = {};
 
+function safeDecodeURIComponent(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 function resolveHeadingSlugs(content) {
   const slugs = lib.resolveHeadingSlugs(content);
-  const result = {};
+  const result = Object.create(null);
   slugs.forEach((slug) => {
     result[slug] = true;
   });
@@ -19,7 +27,11 @@ function resolveHeadingSlugs(content) {
 
 function checkAnchorCurrentFile(file, node, url, currentFileAnchors) {
   const anchor = url.substring(1);
-  if (currentFileAnchors[anchor] === undefined) {
+  const decodedAnchor = safeDecodeURIComponent(anchor);
+  if (
+    currentFileAnchors[anchor] === undefined &&
+    currentFileAnchors[decodedAnchor] === undefined
+  ) {
     let message = `Dead anchor: ${url}`;
     const suggestion = didYouMean(anchor, Object.keys(currentFileAnchors), {
       threshold: 0.7,
@@ -33,6 +45,7 @@ function checkAnchorCurrentFile(file, node, url, currentFileAnchors) {
 
 function checkAnchorRemoteFile(file, node, url) {
   const [relativePath, anchor] = url.split("#");
+  const decodedAnchor = safeDecodeURIComponent(anchor);
   const realPath = path.isAbsolute(relativePath)
     ? path.join(file.cwd, relativePath)
     : path.resolve(file.cwd, file.dirname, relativePath);
@@ -50,7 +63,8 @@ function checkAnchorRemoteFile(file, node, url) {
 
   if (
     fileAnchors[realPath] === undefined ||
-    fileAnchors[realPath][anchor] === undefined
+    (fileAnchors[realPath][anchor] === undefined &&
+      fileAnchors[realPath][decodedAnchor] === undefined)
   ) {
     let message = `Dead anchor: ${url}`;
     if (fileAnchors[realPath] !== undefined) {

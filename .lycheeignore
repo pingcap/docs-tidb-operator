@@ -1,6 +1,6 @@
 https://mvnrepository\.com/artifact/mysql/mysql-connector-java/8\.0\.28
-https://github\.com/.*/issues/?
-https://github\.com/.*/pull/?
+https://github\.com/.*/issues/?$
+https://github\.com/.*/pull/?$
 https://github\.com/.*/pull/[0-9]+
 https://github\.com/.*/issues/[0-9]+
 https://github\.com/pingcap/tiflow/blob/master/dm/docs/.*
