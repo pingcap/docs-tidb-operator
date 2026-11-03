@@ -1,0 +1,8 @@
+# Require the repository's trusted CI maintainers to review changes that can
+# alter approval policy, execute privileged automation, or consume secrets.
+/.github/ @lilin90 @qiancai
+/hack/ @lilin90 @qiancai
+/scripts/ @lilin90 @qiancai
+/OWNERS @lilin90 @qiancai
+/OWNERS_ALIASES @lilin90 @qiancai
+/variables.json @lilin90 @qiancai
