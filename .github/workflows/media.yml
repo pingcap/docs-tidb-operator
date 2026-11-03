@@ -8,15 +8,19 @@ on:
       - media/**
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   upload:
     name: Upload media files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           # Must use at least depth 2!
           fetch-depth: 2
+          persist-credentials: false
 
       #- name: Configure awscli
       #  run: |
@@ -25,8 +29,10 @@ jobs:
       #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Install coscli
         run: |
-          wget https://cosbrowser.cloud.tencent.com/software/coscli/coscli-linux-amd64
-          mv coscli-linux-amd64 coscli
+          curl --fail --location --silent --show-error \
+            --output coscli \
+            https://github.com/tencentyun/coscli/releases/download/v1.0.9/coscli-v1.0.9-linux-amd64
+          printf '%s  %s\n' 'a07de5ba2800147a700ed29036b0c76a4229088cee68e1682d0eae19b638a915' coscli | sha256sum --check
           chmod 755 coscli
       - name: Upload to COS
         run: |
@@ -46,17 +52,19 @@ jobs:
       TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
       TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
       - name: Set up Python environment
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
           architecture: 'x64'
 
       - name: Install Tencent Cloud CLI
-        run: pipx install tccli
+        run: |
+          curl --fail --location --silent --show-error \
+            --output tccli-3.1.194.1-py2.py3-none-any.whl \
+            https://files.pythonhosted.org/packages/db/75/0cc24c0bc1fee2d88ebde777bea01f57a8f5b271eee9fff20f662e5ba32e/tccli-3.1.194.1-py2.py3-none-any.whl
+          printf '%s  %s\n' '8d2ab8f4111c5a770aa7d98cbbf01a0cdc378dbecee5ba3e5836312dc12c0ba3' tccli-3.1.194.1-py2.py3-none-any.whl | sha256sum --check
+          pipx install ./tccli-3.1.194.1-py2.py3-none-any.whl
 
       - name: Purge production CDN cache
         run: tccli cdn PurgePathCache --Paths '["https://docs-download.pingcap.com/media/images/tidb-in-kubernetes/"]' --FlushType delete

@@ -1,0 +1,10 @@
+{
+  "name": "docs-tidb-operator-ci",
+  "private": true,
+  "dependencies": {
+    "markdown-link-check": "3.8.1",
+    "remark-cli": "9.0.0",
+    "remark-lint": "8.0.0",
+    "remark-lint-pingcap-docs-anchor": "file:hack/remark-lint-pingcap-docs-anchor"
+  }
+}
