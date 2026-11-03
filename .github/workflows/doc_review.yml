@@ -18,7 +18,7 @@ jobs:
     if: >
       (
         github.event_name == 'workflow_dispatch' &&
-        (github.actor == 'hfxsd' || github.actor == 'likidu' || github.actor == 'lilin90' || github.actor == 'Oreoxmt' || github.actor == 'qiancai')
+        (github.actor == 'lilin90' || github.actor == 'qiancai')
       ) ||
       (
         github.event_name == 'issue_comment' &&
