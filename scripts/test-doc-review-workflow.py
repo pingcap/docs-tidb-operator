@@ -5,6 +5,7 @@ Run with: python3 scripts/test-doc-review-workflow.py
 
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
@@ -23,6 +24,10 @@ class DocReviewWorkflowTest(unittest.TestCase):
         cls.step = next(
             step for step in workflow["jobs"]["prepare"]["steps"]
             if step.get("id") == "extract"
+        )
+        cls.diff_step = next(
+            step for step in workflow["jobs"]["prepare"]["steps"]
+            if step.get("id") == "diff"
         )
 
     def run_comment(self, comment, expected, succeeds=True):
@@ -55,6 +60,7 @@ class DocReviewWorkflowTest(unittest.TestCase):
         # Evaluate the workflow's condition for the supported event fields.
         expression = self.condition.replace("&&", " and ").replace("||", " or ")
         for field, variable in {
+            "github.actor": "actor",
             "github.event_name": "event_name",
             "github.event.comment.body": "comment",
             "github.event.comment.user.login": "login",
@@ -71,7 +77,7 @@ class DocReviewWorkflowTest(unittest.TestCase):
                     "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MANNEQUIN", "NONE", "",
                 ]:
                     for comment in ["/bot-review", "unrelated comment"]:
-                        expected = event_name == "workflow_dispatch" or (
+                        expected = (event_name == "workflow_dispatch" and login in allowed_logins) or (
                             event_name == "issue_comment"
                             and login in allowed_logins
                             and association in allowed_associations
@@ -80,11 +86,39 @@ class DocReviewWorkflowTest(unittest.TestCase):
                         with self.subTest(event=event_name, login=login,
                                           association=association, comment=comment):
                             actual = eval(expression, {"__builtins__": {}}, {
-                                "event_name": event_name, "login": login,
+                                "event_name": event_name,
+                                "actor": login if event_name == "workflow_dispatch" else "outsider",
+                                "login": "" if event_name == "workflow_dispatch" else login,
                                 "association": association, "comment": comment,
                                 "contains": lambda value, part: part in value,
                             })
                             self.assertEqual(actual, expected)
+
+    def test_ref_is_passed_as_data(self):
+        self.assertEqual(self.diff_step["env"]["REVIEW_REF"], "${{ github.ref }}")
+        self.assertNotIn("${{ github.ref }}", self.diff_step["run"])
+        # Exercise the ref-handling branch even though dispatch currently has no mode.
+        values = {
+            "steps.extract.outputs.REVIEW_MODE": "latest",
+            "github.event_name": "workflow_dispatch",
+            "github.repository": "pingcap/docs-tidb-operator",
+        }
+        script = re.sub(
+            r"\$\{\{\s*(.*?)\s*\}\}",
+            lambda match: values.get(match.group(1), ""),
+            self.diff_step["run"],
+        )
+        for ref in ["refs/heads/$(touch${IFS}injected)", "refs/heads/`touch${IFS}injected`"]:
+            with self.subTest(ref=ref), tempfile.TemporaryDirectory(prefix="doc-review-test-") as directory:
+                output = Path(directory) / "output"
+                result = subprocess.run(
+                    ["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", script],
+                    env={**os.environ, "REVIEW_REF": ref, "GITHUB_OUTPUT": str(output)},
+                    cwd=directory, capture_output=True, text=True, timeout=5,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertFalse((Path(directory) / "injected").exists())
+                self.assertEqual(output.read_text(), "zh_files_count=0\nen_files_count=0\n")
 
     def test_valid_commands(self):
         cases = [
