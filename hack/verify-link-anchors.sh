@@ -13,4 +13,4 @@ npm ci --ignore-scripts
 
 echo "info: checking links anchors under $ROOT directory..."
 
-npx --no-install remark --ignore-path .gitignore -u lint -u remark-lint-pingcap-docs-anchor . --frail --quiet
+npx --no-install remark --ignore-path .gitignore -u lint -u @breeswish-org/remark-lint-pingcap-docs-anchor . --frail --quiet
