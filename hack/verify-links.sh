@@ -7,7 +7,7 @@
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-npm ci --ignore-scripts
+npm ci --ignore-scripts || exit 1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
