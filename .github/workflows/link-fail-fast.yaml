@@ -15,6 +15,7 @@ jobs:
           fetch-depth: 2
           persist-credentials: false
 
+      # Discover first so unrelated PRs do not depend on downloading lychee.
       - name: Find changed Markdown files
         id: changed-files
         shell: bash
