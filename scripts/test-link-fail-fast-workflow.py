@@ -21,7 +21,13 @@ def test_workflow_uses_array_safe_path_handling() -> None:
             echo "Failed to discover changed Markdown files." >&2
             exit 1
           fi
-          mapfile -d '' -t changed_files < "$changed_list"
+
+          if [ -s "$changed_list" ]; then
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            echo "No changed Markdown files to check."
+          fi
 """
     assert discovery in workflow
 
@@ -29,12 +35,19 @@ def test_workflow_uses_array_safe_path_handling() -> None:
         "permissions:\n  contents: read",
         "persist-credentials: false",
         "2cb75e6bcaf97f049d4e0260433938a77c60d39bd347d704502ae96c1e6f481c",
+        "if: steps.changed-files.outputs.has_files == 'true'",
+        'mapfile -d \'\' -t changed_files < "$changed_list"',
         'LYCHEE_BIN="$RUNNER_TEMP/lychee" ./hack/check-links.sh "${changed_files[@]}"',
     )
     for text in required:
         assert text in workflow, f"workflow is missing: {text}"
 
-    forbidden = ("lycheeverse/lychee-action", "$GITHUB_OUTPUT")
+    assert workflow.count("if: steps.changed-files.outputs.has_files == 'true'") == 2
+    assert workflow.index("- name: Find changed Markdown files") < workflow.index(
+        "- name: Install lychee"
+    )
+
+    forbidden = ("lycheeverse/lychee-action", "all_changed_files")
     for text in forbidden:
         assert text not in workflow, f"workflow must not contain: {text}"
 

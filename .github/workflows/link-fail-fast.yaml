@@ -15,7 +15,26 @@ jobs:
           fetch-depth: 2
           persist-credentials: false
 
+      - name: Find changed Markdown files
+        id: changed-files
+        shell: bash
+        run: |
+          changed_list="$RUNNER_TEMP/changed-files.bin"
+          if ! git diff-tree --name-only --diff-filter 'AMT' -z -r HEAD^1 HEAD -- \
+            "zh/*.md" "en/*.md" > "$changed_list"; then
+            echo "Failed to discover changed Markdown files." >&2
+            exit 1
+          fi
+
+          if [ -s "$changed_list" ]; then
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            echo "No changed Markdown files to check."
+          fi
+
       - name: Install lychee
+        if: steps.changed-files.outputs.has_files == 'true'
         shell: bash
         run: |
           archive="$RUNNER_TEMP/lychee-v0.11.1-x86_64-unknown-linux-gnu.tar.gz"
@@ -26,21 +45,11 @@ jobs:
           tar -xzf "$archive" -C "$RUNNER_TEMP"
 
       - name: Check links in changed Markdown files
+        if: steps.changed-files.outputs.has_files == 'true'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           changed_list="$RUNNER_TEMP/changed-files.bin"
-          if ! git diff-tree --name-only --diff-filter 'AMT' -z -r HEAD^1 HEAD -- \
-            "zh/*.md" "en/*.md" > "$changed_list"; then
-            echo "Failed to discover changed Markdown files." >&2
-            exit 1
-          fi
           mapfile -d '' -t changed_files < "$changed_list"
-
-          if (( ${#changed_files[@]} == 0 )); then
-            echo "No changed Markdown files to check."
-            exit 0
-          fi
-
           LYCHEE_BIN="$RUNNER_TEMP/lychee" ./hack/check-links.sh "${changed_files[@]}"
