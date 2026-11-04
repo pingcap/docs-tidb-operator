@@ -2,12 +2,12 @@
 #
 # This script is used to verify links in markdown docs.
 #
-# See https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally if you meet permission problems when executing npm install.
+# Dependencies are installed exactly from the committed package-lock.json.
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-npm install markdown-link-check@3.8.1
+npm ci --ignore-scripts || exit 1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
@@ -27,7 +27,7 @@ for d in zh en; do
     while read -r tasks; do
         for task in $tasks; do
             (
-                output=$(npx markdown-link-check --config "$CONFIG_TMP" "$task" -q)
+                output=$(npx --no-install markdown-link-check --config "$CONFIG_TMP" "$task" -q)
                 if [ $? -ne 0 ]; then
                     printf "$output" >> $ERROR_REPORT
                 fi
