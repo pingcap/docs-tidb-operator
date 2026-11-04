@@ -30,9 +30,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          mapfile -d '' -t changed_files < <(
-            git diff-tree --name-only --diff-filter 'AM' -z -r HEAD^1 HEAD -- "zh/*.md" "en/*.md"
-          )
+          changed_list="$RUNNER_TEMP/changed-files.bin"
+          if ! git diff-tree --name-only --diff-filter 'AMT' -z -r HEAD^1 HEAD -- \
+            "zh/*.md" "en/*.md" > "$changed_list"; then
+            echo "Failed to discover changed Markdown files." >&2
+            exit 1
+          fi
+          mapfile -d '' -t changed_files < "$changed_list"
 
           if (( ${#changed_files[@]} == 0 )); then
             echo "No changed Markdown files to check."
