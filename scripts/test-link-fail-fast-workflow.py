@@ -57,6 +57,8 @@ def test_check_script_escapes_glob_metacharacters() -> None:
             "with open(os.environ['ARGS_FILE'], 'wb') as output:\n"
             "    for arg in sys.argv[1:]:\n"
             "        output.write(os.fsencode(arg) + b'\\0')\n"
+            "print('# Link report')\n"
+            "sys.exit(int(os.environ.get('MOCK_EXIT', '0')))\n"
         )
         os.chmod(mock_lychee, 0o755)
 
@@ -64,6 +66,8 @@ def test_check_script_escapes_glob_metacharacters() -> None:
         environment = os.environ.copy()
         environment["ARGS_FILE"] = str(args_file)
         environment["LYCHEE_BIN"] = str(mock_lychee)
+        summary_file = temp / "summary.md"
+        environment["GITHUB_STEP_SUMMARY"] = str(summary_file)
         subprocess.run(
             ["bash", str(CHECK_LINKS), *paths],
             cwd=temp,
@@ -97,6 +101,17 @@ def test_check_script_escapes_glob_metacharacters() -> None:
             "en/[[]draft[]][*][?].md",
         ]
         assert not (temp / "SHOULD_NOT_RUN").exists()
+        assert summary_file.read_text() == "# Link report\n"
+
+        environment["MOCK_EXIT"] = "2"
+        result = subprocess.run(
+            ["bash", str(CHECK_LINKS), *paths],
+            cwd=temp,
+            env=environment,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 2
 
 
 if __name__ == "__main__":

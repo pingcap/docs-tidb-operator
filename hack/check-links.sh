@@ -24,12 +24,19 @@ for path in "$@"; do
     literal_paths+=("$escaped_path")
 done
 
-exec "$LYCHEE_BIN" \
-    --format markdown \
-    -E \
-    --exclude-mail \
-    -i \
-    -n \
-    -t 45 \
-    -- \
+lychee_args=(
+    --format markdown
+    -E
+    --exclude-mail
+    -i
+    -n
+    -t 45
+    --
     "${literal_paths[@]}"
+)
+
+if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+    "$LYCHEE_BIN" "${lychee_args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+else
+    exec "$LYCHEE_BIN" "${lychee_args[@]}"
+fi
