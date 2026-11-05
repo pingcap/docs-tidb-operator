@@ -3,6 +3,9 @@ name: Links (Fail Fast)
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
@@ -10,18 +13,44 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 2
+          persist-credentials: false
 
-      - name: 'Get a list of changed markdown files to process'
+      # Discover first so unrelated PRs do not depend on downloading lychee.
+      - name: Find changed Markdown files
         id: changed-files
+        shell: bash
         run: |
-          CHANGED_FILES=$(git diff-tree --name-only --diff-filter 'AM' -r HEAD^1 HEAD -- "zh/*.md" "en/*.md" | sed -z "s/\n$//;s/\n/' '/g")
-          echo "all_changed_files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+          changed_list="$RUNNER_TEMP/changed-files.bin"
+          if ! git diff-tree --name-only --diff-filter 'AMT' -z -r HEAD^1 HEAD -- \
+            "zh/*.md" "en/*.md" > "$changed_list"; then
+            echo "Failed to discover changed Markdown files." >&2
+            exit 1
+          fi
 
-      - name: Link Checker
-        if: ${{ steps.changed-files.outputs.all_changed_files }}
-        uses: lycheeverse/lychee-action@9ace499fe66cee282a29eaa628fdac2c72fa087f # v1.6.1
-        with:
-          fail: true
-          args: -E --exclude-mail -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
+          if [ -s "$changed_list" ]; then
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            echo "No changed Markdown files to check."
+          fi
+
+      - name: Install lychee
+        if: steps.changed-files.outputs.has_files == 'true'
+        shell: bash
+        run: |
+          archive="$RUNNER_TEMP/lychee-v0.11.1-x86_64-unknown-linux-gnu.tar.gz"
+          curl --fail --location --silent --show-error \
+            --output "$archive" \
+            https://github.com/lycheeverse/lychee/releases/download/v0.11.1/lychee-v0.11.1-x86_64-unknown-linux-gnu.tar.gz
+          echo "2cb75e6bcaf97f049d4e0260433938a77c60d39bd347d704502ae96c1e6f481c  $archive" | sha256sum --check
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+
+      - name: Check links in changed Markdown files
+        if: steps.changed-files.outputs.has_files == 'true'
+        shell: bash
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          changed_list="$RUNNER_TEMP/changed-files.bin"
+          mapfile -d '' -t changed_files < "$changed_list"
+          LYCHEE_BIN="$RUNNER_TEMP/lychee" ./hack/check-links.sh "${changed_files[@]}"
