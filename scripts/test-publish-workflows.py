@@ -61,16 +61,19 @@ class PublishWorkflowTest(unittest.TestCase):
         self.assertEqual(self.media["permissions"], {"contents": "read"})
 
     def test_manual_dispatch_and_rerun_actors(self):
-        condition = self.media["jobs"]["upload"]["if"]
-        for actor in ["lilin90", "qiancai", "other-writer"]:
-            for triggering_actor in ["lilin90", "qiancai", "other-writer"]:
-                with self.subTest(actor=actor, triggering_actor=triggering_actor):
-                    self.assertEqual(
-                        allowed(condition, repository=REPOSITORY,
-                                event_name="workflow_dispatch", actor=actor,
-                                triggering_actor=triggering_actor),
-                        actor != "other-writer" and triggering_actor != "other-writer",
-                    )
+        # Evaluate each job independently: re-running failed CDN refresh need not
+        # re-run the successful upload or evaluate its actor check again.
+        for job in ["upload", "cdn-refresh"]:
+            condition = self.media["jobs"][job]["if"]
+            for actor in ["lilin90", "qiancai", "other-writer"]:
+                for triggering_actor in ["lilin90", "qiancai", "other-writer"]:
+                    with self.subTest(job=job, actor=actor, triggering_actor=triggering_actor):
+                        self.assertEqual(
+                            allowed(condition, repository=REPOSITORY,
+                                    event_name="workflow_dispatch", actor=actor,
+                                    triggering_actor=triggering_actor),
+                            actor != "other-writer" and triggering_actor != "other-writer",
+                        )
 
     def test_pushes_and_forks(self):
         for repository in [REPOSITORY, "other/docs-tidb-operator"]:
@@ -80,14 +83,18 @@ class PublishWorkflowTest(unittest.TestCase):
                 allowed(self.dispatch["jobs"]["trigger"]["if"], **context),
                 repository == REPOSITORY,
             )
-            self.assertEqual(
-                allowed(self.media["jobs"]["upload"]["if"], **context),
-                repository == REPOSITORY,
-            )
-        self.assertFalse(allowed(
-            self.media["jobs"]["upload"]["if"], repository=REPOSITORY,
-            event_name="pull_request", actor="qiancai", triggering_actor="qiancai",
-        ))
+            for job in ["upload", "cdn-refresh"]:
+                with self.subTest(job=job, repository=repository):
+                    self.assertEqual(
+                        allowed(self.media["jobs"][job]["if"], **context),
+                        repository == REPOSITORY,
+                    )
+        for job in ["upload", "cdn-refresh"]:
+            with self.subTest(job=job):
+                self.assertFalse(allowed(
+                    self.media["jobs"][job]["if"], repository=REPOSITORY,
+                    event_name="pull_request", actor="qiancai", triggering_actor="qiancai",
+                ))
 
 
 if __name__ == "__main__":
