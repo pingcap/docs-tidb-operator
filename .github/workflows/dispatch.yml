@@ -18,9 +18,7 @@ permissions: {}
 jobs:
   trigger:
     # Configure this environment and migrate its secret before merging.
-    # See ../publish-environments.md; workflow filters alone cannot protect secrets.
     environment: docs-publish
-    if: github.repository == 'pingcap/docs-tidb-operator'
     runs-on: ubuntu-latest
 
     steps:

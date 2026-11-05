@@ -22,18 +22,13 @@ permissions:
 jobs:
   upload:
     name: Upload media files
-    # Environment protection is the security boundary; the manual actor check
-    # also prevents accidental dispatches by other repository writers.
     environment: production-media
     if: >-
-      github.repository == 'pingcap/docs-tidb-operator' &&
+      github.event_name == 'push' ||
       (
-        github.event_name == 'push' ||
-        (
-          github.event_name == 'workflow_dispatch' &&
-          (github.actor == 'lilin90' || github.actor == 'qiancai') &&
-          (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
-        )
+        github.event_name == 'workflow_dispatch' &&
+        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
+        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
       )
     runs-on: ubuntu-latest
     steps:
@@ -70,14 +65,11 @@ jobs:
     environment: production-media
     # A failed-job re-run may reuse a successful upload without rechecking it.
     if: >-
-      github.repository == 'pingcap/docs-tidb-operator' &&
+      github.event_name == 'push' ||
       (
-        github.event_name == 'push' ||
-        (
-          github.event_name == 'workflow_dispatch' &&
-          (github.actor == 'lilin90' || github.actor == 'qiancai') &&
-          (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
-        )
+        github.event_name == 'workflow_dispatch' &&
+        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
+        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
       )
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
