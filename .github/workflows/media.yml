@@ -14,6 +14,13 @@ permissions:
 jobs:
   upload:
     name: Upload media files
+    if: >-
+      github.event_name == 'push' ||
+      (
+        github.event_name == 'workflow_dispatch' &&
+        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
+        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -46,6 +53,14 @@ jobs:
 
   cdn-refresh:
     needs: upload
+    # A failed-job re-run may reuse a successful upload without rechecking it.
+    if: >-
+      github.event_name == 'push' ||
+      (
+        github.event_name == 'workflow_dispatch' &&
+        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
+        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
+      )
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
     env:
