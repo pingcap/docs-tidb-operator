@@ -4,21 +4,13 @@ on:
   push:
     branches:
       - main
-      - release-1.0
-      - release-1.1
-      - release-1.2
-      - release-1.3
-      - release-1.4
-      - release-1.5
-      - release-1.6
-      - release-2.0
+      - release-*
+      - '!release-1.x'
 
 permissions: {}
 
 jobs:
   trigger:
-    # Configure this environment and migrate its secret before merging.
-    environment: docs-publish
     runs-on: ubuntu-latest
 
     steps:

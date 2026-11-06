@@ -3,15 +3,7 @@ on:
   push:
     branches:
       - main
-      - release-1.x
-      - release-1.0
-      - release-1.1
-      - release-1.2
-      - release-1.3
-      - release-1.4
-      - release-1.5
-      - release-1.6
-      - release-2.0
+      - release-*
     paths:
       - media/**
   workflow_dispatch:
@@ -22,7 +14,6 @@ permissions:
 jobs:
   upload:
     name: Upload media files
-    environment: production-media
     if: >-
       github.event_name == 'push' ||
       (
@@ -62,7 +53,6 @@ jobs:
 
   cdn-refresh:
     needs: upload
-    environment: production-media
     # A failed-job re-run may reuse a successful upload without rechecking it.
     if: >-
       github.event_name == 'push' ||
