@@ -46,13 +46,20 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 }
 ```
 
-如果 IAM 用户或角色仅用于恢复，可以进一步将策略限制为 `s3:ListBucket` 和 `s3:GetObject`。有关 TiKV 和备份恢复工具 BR 所需权限的更多信息，请参阅[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#认证)。
+使用此策略时，请注意以下情况：
+
+- 如果 Backup 和 Restore 资源通过同一个 IAM 用户或角色访问不同的存储桶，请将每个所需存储桶的存储桶 ARN 和对象 ARN 添加到对应的 `Resource` 元素中。不要将其替换为允许访问无关存储桶的通配符。
+- 对于 AWS 中国区域或 AWS GovCloud (US) 区域中的存储桶，请分别将两个 ARN 中的 `aws` 分区替换为 `aws-cn` 或 `aws-us-gov`。
+- 如果 Backup 资源设置了 `.spec.s3.acl`，且没有其他策略授予相应权限，请将 `s3:PutObjectAcl` 添加到对象操作中。
+- 如果存储桶使用客户托管 AWS KMS 密钥进行服务端加密，请为 IAM 用户或角色授予该密钥的 `kms:GenerateDataKey` 和 `kms:Decrypt` 权限，以用于备份或会写入检查点元数据的恢复版本（包括 BR v8.0.0）。对于只读恢复，请授予 `kms:Decrypt` 权限。还需确保 KMS 密钥策略直接允许这些主体执行所需操作，或者允许通过 IAM 策略授予这些权限。
+
+恢复所需的权限取决于 BR 版本。使用 BR v8.0.0 时，请保留 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限，因为恢复过程会在 S3 中写入和删除检查点元数据。对于其他 BR 版本，请遵循对应版本文档中的权限要求。有关更多信息，请参阅[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#认证)。
 
 ### 通过 AccessKey 和 SecretKey 授权
 
 按照以下步骤配置 AccessKey 和 SecretKey，以授权访问兼容 S3 的存储服务：
 
-1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并附加本节前文创建的存储桶级 IAM 策略。
+1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
 
 2. 参考[为自己创建访问密钥（控制台）](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-key-self-managed.html#Using_CreateAccessKey)，为 IAM 用户创建访问密钥 (Access Key)。完成后，你将获得 AccessKey 和 SecretKey。
 
@@ -150,7 +157,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 Pod 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加本节前文创建的存储桶级 IAM 策略。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
 
 2. 通过 [Overlay](overlay.md) 方式为目标组件（TiKV 或 TiFlash）绑定 IAM 角色。以下示例展示如何为 TiKVGroup 添加绑定：
 
@@ -178,7 +185,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 ServiceAccount 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加本节前文创建的存储桶级 IAM 策略。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
 
 2. 参考[为集群创建 IAM OIDC 提供商](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)，为 EKS 集群创建一个 IAM OIDC 提供商。
 
