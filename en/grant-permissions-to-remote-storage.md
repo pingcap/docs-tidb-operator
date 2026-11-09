@@ -15,11 +15,44 @@ Amazon Web Services (AWS) provides different methods to grant permissions for di
 - [Grant permissions by associating IAM with Pod](#grant-permissions-by-associating-iam-with-pod): applicable to self-managed Kubernetes clusters.
 - [Grant permissions by associating IAM with ServiceAccount](#grant-permissions-by-associating-iam-with-serviceaccount): applicable only to AWS EKS clusters.
 
+### Create a bucket-scoped IAM policy
+
+Before using any of the AWS authorization methods, create a customer managed IAM policy that grants access only to the S3 bucket used for backup and restore. Do not attach an account-wide AWS managed S3 policy, because it grants access to every S3 bucket in the account.
+
+The following policy includes the minimum S3 permissions required for both backup and restore. Replace `<bucket-name>` with the name of your backup bucket, and then attach the policy to the IAM user or role used by TiDB:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<bucket-name>"
+    },
+    {
+      "Sid": "AccessBackupObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": "arn:aws:s3:::<bucket-name>/*"
+    }
+  ]
+}
+```
+
+If the IAM user or role is used only for restore, you can further restrict the policy to `s3:ListBucket` and `s3:GetObject`. For more information about the permissions required by TiKV and Backup & Restore (BR), see [Backup storages](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#authentication).
+
 ### Grant permissions by AccessKey and SecretKey
 
 To grant permissions to S3-compatible storage using AccessKey and SecretKey, perform the following steps:
 
-1. Create an IAM user by following [Create an IAM user in your AWS account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) and grant the required permissions. Because backup and restore operations require access to AWS S3 storage, grant the `AmazonS3FullAccess` permission to the IAM user.
+1. Create an IAM user by following [Create an IAM user in your AWS account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html), and attach the bucket-scoped IAM policy created earlier in this section.
 
 2. Create an access key by following [Create an access key for yourself (console)](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-key-self-managed.html#Using_CreateAccessKey). After completion, you can obtain the AccessKey and SecretKey.
 
@@ -117,7 +150,7 @@ The method of granting permissions by associating IAM with a Pod is supported by
 
 To grant permissions by associating IAM with a Pod, perform the following steps:
 
-1. Follow the [IAM role creation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) document to create an IAM role in your AWS account and grant it the `AmazonS3FullAccess` policy.
+1. Follow the [IAM role creation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) document to create an IAM role in your AWS account, and attach the bucket-scoped IAM policy created earlier in this section.
 
 2. Use the [Overlay](overlay.md) feature to associate the IAM role with the target component (TiKV or TiFlash). The following example shows how to associate the role with a TiKVGroup:
 
@@ -145,7 +178,7 @@ By associating a user's [IAM](https://aws.amazon.com/iam/) role with a [`Service
 
 To grant permissions by associating IAM with a ServiceAccount, perform the following steps:
 
-1. Follow the [IAM role creation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) document to create an IAM role in your AWS account and grant it the `AmazonS3FullAccess` policy.
+1. Follow the [IAM role creation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) document to create an IAM role in your AWS account, and attach the bucket-scoped IAM policy created earlier in this section.
 
 2. Follow the instructions in [Create an IAM OIDC provider for your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) to create an IAM OIDC provider for your EKS cluster.
 

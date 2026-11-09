@@ -15,11 +15,44 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 - [通过 IAM 绑定 Pod 授权](#通过-iam-绑定-pod-授权)：适用于自建 Kubernetes 集群。
 - [通过 IAM 绑定 ServiceAccount 授权](#通过-iam-绑定-serviceaccount-授权)：只适用于 AWS EKS 集群。
 
+### 创建存储桶级 IAM 策略
+
+在使用任一 AWS 授权方式之前，请创建一个仅允许访问备份和恢复所用 S3 存储桶的客户托管 IAM 策略。不要附加账号级 AWS 托管 S3 策略，因为此类策略允许访问账号中的所有 S3 存储桶。
+
+以下策略包含备份和恢复所需的最小 S3 权限。请将 `<bucket-name>` 替换为备份存储桶的名称，然后将该策略附加到 TiDB 使用的 IAM 用户或角色：
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<bucket-name>"
+    },
+    {
+      "Sid": "AccessBackupObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": "arn:aws:s3:::<bucket-name>/*"
+    }
+  ]
+}
+```
+
+如果 IAM 用户或角色仅用于恢复，可以进一步将策略限制为 `s3:ListBucket` 和 `s3:GetObject`。有关 TiKV 和备份恢复工具 BR 所需权限的更多信息，请参阅[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#认证)。
+
 ### 通过 AccessKey 和 SecretKey 授权
 
 按照以下步骤配置 AccessKey 和 SecretKey，以授权访问兼容 S3 的存储服务：
 
-1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并为其赋予需要的权限。由于备份与恢复操作需要访问 AWS 的 S3 存储，请赋予该 IAM 用户 `AmazonS3FullAccess` 权限。
+1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并附加本节前文创建的存储桶级 IAM 策略。
 
 2. 参考[为自己创建访问密钥（控制台）](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-key-self-managed.html#Using_CreateAccessKey)，为 IAM 用户创建访问密钥 (Access Key)。完成后，你将获得 AccessKey 和 SecretKey。
 
@@ -117,7 +150,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 Pod 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并为其赋予 `AmazonS3FullAccess` 权限。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加本节前文创建的存储桶级 IAM 策略。
 
 2. 通过 [Overlay](overlay.md) 方式为目标组件（TiKV 或 TiFlash）绑定 IAM 角色。以下示例展示如何为 TiKVGroup 添加绑定：
 
@@ -145,7 +178,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 ServiceAccount 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并为其赋予 `AmazonS3FullAccess` 权限。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加本节前文创建的存储桶级 IAM 策略。
 
 2. 参考[为集群创建 IAM OIDC 提供商](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)，为 EKS 集群创建一个 IAM OIDC 提供商。
 
