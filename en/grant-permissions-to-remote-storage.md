@@ -50,14 +50,14 @@ When you use this policy, note the following conditions:
 
 - If Backup and Restore resources use different buckets with the same IAM user or role, add the bucket and object ARNs for every required bucket to the corresponding `Resource` elements. Do not replace them with a wildcard that grants access to unrelated buckets.
 - For buckets in AWS China Regions or AWS GovCloud (US) Regions, replace the `aws` partition in both ARNs with `aws-cn` or `aws-us-gov`, respectively.
-- If a Backup resource sets `.spec.s3.acl`, add `s3:PutObjectAcl` to the object actions unless another policy already grants it.
-- If the bucket uses server-side encryption with a customer-managed AWS KMS key, grant the IAM user or role `kms:GenerateDataKey` and `kms:Decrypt` on that key for backup or any restore version that writes checkpoint metadata, including BR v8.0.0. For a read-only restore, grant `kms:Decrypt`. Make sure that the KMS key policy also permits these principals to use the required actions, either directly or through IAM policies.
+- If a Backup resource, or a Restore resource that writes checkpoint metadata, sets `.spec.s3.acl`, add `s3:PutObjectAcl` to the object actions unless another policy already grants it. BR v8.0.0 Restore resources write checkpoint metadata.
+- If bucket default encryption or a Backup or Restore resource selects a customer-managed AWS KMS key, grant the IAM user or role `kms:GenerateDataKey` and `kms:Decrypt` on the key used to write backup objects or checkpoint metadata. For a read-only restore, grant `kms:Decrypt` on every key that encrypted the backup objects, including an older key if the bucket's default KMS key has changed since the backup was created. Make sure that each KMS key policy also permits these principals to use the required actions, either directly or through IAM policies.
 
 The permissions required for restore depend on the BR version. For BR v8.0.0, retain `s3:ListBucket`, `s3:GetObject`, `s3:PutObject`, and `s3:DeleteObject` because restore checkpoint metadata is written to and deleted from S3. For other BR versions, follow the requirements in the documentation for that version. For more information, see [Backup storages](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#authentication).
 
 ### Grant permissions by AccessKey and SecretKey
 
-To grant permissions to S3-compatible storage using AccessKey and SecretKey, perform the following steps:
+To grant permissions to Amazon S3 using AccessKey and SecretKey, perform the following steps. For Ceph, MinIO, or another S3-compatible storage service, obtain credentials from that service and grant bucket permissions through its access-control mechanism. AWS IAM users and policies might not be recognized by other storage services.
 
 1. Create an IAM user by following [Create an IAM user in your AWS account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html), and attach the [bucket-scoped IAM policy](#create-a-bucket-scoped-iam-policy).
 
