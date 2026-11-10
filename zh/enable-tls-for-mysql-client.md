@@ -219,11 +219,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
 按照以下步骤规划迁移：
 
-1. 停止分发旧的 MySQL 客户端凭据，并确认已分发的所有副本。
-2. 创建专用的 MySQL TLS CA 和 Issuer，将替换用的服务端和客户端证书签发到临时 Secret 中，不要覆盖正在使用的 Secret。
-3. 配置 TiDB 用于验证 MySQL 客户端的 CA bundle，以及 MySQL 客户端用于验证 TiDB 的 CA bundle，使其同时信任新旧 CA。在切换证书之前，重启或滚动重启 TiDB，使其加载更新后的信任 bundle，并确认现有连接仍可正常工作。
-4. 将 TiDB 和所有 MySQL 客户端切换到新证书。确认新连接正常后，从 MySQL TLS 信任 bundle 中移除旧 CA，并删除不再需要的临时凭据。
-5. 替换 MySQL 证书不会使组件间 CA 已签发的旧客户端证书失效。要防止这些证书副本继续向组件端点进行身份验证，请安排维护窗口，轮换组件间 CA 和所有组件证书，重启受影响的组件以加载新 CA，然后从组件信任配置中移除旧 CA。重启步骤请参阅[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)。
+1. 停止分发旧的 MySQL 客户端凭据，并确认已分发的所有副本。同时确认使用 `REQUIRE SUBJECT` 或 `REQUIRE ISSUER` 的 MySQL 账号。计划在切换期间更新这些账号，或者创建与新客户端证书匹配的替代账号。详情请参阅[基于证书的身份验证](https://docs.pingcap.com/zh/tidb/stable/certificate-authentication/)。
+2. 创建专用的 MySQL TLS CA 和 Issuer，将替换用的服务端和客户端证书签发到临时 Secret 中，不要覆盖正在使用的 Secret。临时服务端 Secret 仅用于暂存。TiDB Operator v2 仍从固定名称 `${tidb_group_name}-tidb-server-secret` 读取服务端证书。
+3. 创建同时包含新旧 CA 的 bundle。在迁移期间，确保只有一个证书管理流程写入正在使用的 `${tidb_group_name}-tidb-server-secret`。如果对应的 cert-manager `Certificate` 仍在调谐，不要依赖一次性的手动更新，因为续期可能会覆盖 `ca.crt`。请暂时使用能够保留双 CA bundle 的流程管理正在使用的 Secret。保留其中当前的 `tls.crt` 和 `tls.key`，将 `ca.crt` 替换为双 CA bundle，并配置 MySQL 客户端信任同一个 bundle。
+4. 在每个 TiDB 实例上执行 `ALTER INSTANCE RELOAD TLS`，或者执行滚动重启。在切换证书之前，确认现有连接仍可正常工作。详情请参阅[重加载证书、密钥和 CA](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers/#重加载证书密钥和-ca)。
+5. 将暂存的服务端证书和密钥复制到正在使用的 `${tidb_group_name}-tidb-server-secret`，同时保留双 CA bundle。将客户端切换到新的客户端证书，并在同一切换窗口中更新第 1 步确认的账号。再次重加载每个 TiDB 实例，并确认新连接正常。
+6. 所有客户端完成迁移后，从正在使用的服务端 Secret 和客户端信任配置中移除旧 CA。让 cert-manager 使用新 Issuer 重新正常管理正在使用的 Secret，并删除不再需要的临时凭据。再次重加载每个 TiDB 实例。确认使用新凭据的连接成功，并确认使用旧凭据的连接失败。
+7. 替换 MySQL 证书不会使组件间 CA 已签发的旧客户端证书失效。要防止这些证书副本继续向组件端点进行身份验证，请安排维护窗口，轮换组件间 CA 和所有组件证书。切换组件证书后，从组件信任配置中移除旧 CA，再次重启受影响的组件，并确认旧客户端凭据无法连接。重启步骤请参阅[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)。
 
 ## 第二步：部署 TiDBGroup
 
