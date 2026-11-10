@@ -30,7 +30,7 @@ jobs:
     - name: "Check file encoding"
       run: |
         ./hack/download-doc-check.sh check-file-encoding.py
-        ./hack/run-doc-check.sh check-file-encoding.py '..' '*.md' ':(exclude).github/*'
+        bash ./hack/run-doc-check.sh check-file-encoding.py '..' '*.md' ':(exclude).github/*'
   check-git-conflicts:
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
     - name: "Check git conflicts"
       run: |
         ./hack/download-doc-check.sh check-conflicts.py
-        ./hack/run-doc-check.sh check-conflicts.py '..' '*.md' '*.yml' '*.yaml'
+        bash ./hack/run-doc-check.sh check-conflicts.py '..' '*.md' '*.yml' '*.yaml'
   markdownlint:
     runs-on: ubuntu-latest
     steps:
@@ -104,7 +104,7 @@ jobs:
     - name: "Check control characters"
       run: |
         ./hack/download-doc-check.sh check-control-char.py
-        ./hack/run-doc-check.sh check-control-char.py '..' '*.md' ':(exclude).github/*'
+        bash ./hack/run-doc-check.sh check-control-char.py '..' '*.md' ':(exclude).github/*'
   check-unclosed-tags:
     runs-on: ubuntu-latest
     steps:
@@ -121,7 +121,7 @@ jobs:
     - name: "Check unclosed tags"
       run: |
         ./hack/download-doc-check.sh check-tags.py
-        ./hack/run-doc-check.sh check-tags.py '...' ':(glob)zh/**/*.md' ':(glob)en/**/*.md'
+        bash ./hack/run-doc-check.sh check-tags.py '...' ':(glob)zh/**/*.md' ':(glob)en/**/*.md'
   check-manual-line-breaks:
     runs-on: ubuntu-latest
     steps:
@@ -138,7 +138,7 @@ jobs:
     - name: "Check manual line breaks"
       run: |
         ./hack/download-doc-check.sh check-manual-line-breaks.py
-        ./hack/run-doc-check.sh check-manual-line-breaks.py '..' '*.md' ':(exclude).github/*'
+        bash ./hack/run-doc-check.sh check-manual-line-breaks.py '..' '*.md' ':(exclude).github/*'
 
   test-ci-file-handling:
     runs-on: ubuntu-latest
