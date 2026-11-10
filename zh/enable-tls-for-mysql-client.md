@@ -35,7 +35,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
 
     请参考官网安装：[cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html)。
 
-2. 创建一个 Issuer 用于给 TiDB 集群颁发证书。
+2. 创建一个 Issuer，用于给 TiDB 集群颁发 MySQL TLS 证书。
 
     为了配置 `cert-manager` 颁发证书，必须先创建 Issuer 资源。
 
@@ -46,13 +46,13 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     cd cert-manager
     ```
 
-    然后创建一个 `tidb-server-issuer.yaml` 文件，输入以下内容：
+    然后创建一个 `tidb-mysql-issuer.yaml` 文件，输入以下内容：
 
     ```yaml
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-selfsigned-ca-issuer
+      name: ${cluster_name}-mysql-selfsigned-ca-issuer
       namespace: ${namespace}
     spec:
       selfSigned: {}
@@ -60,38 +60,40 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
-      name: ${cluster_name}-ca
+      name: ${cluster_name}-mysql-ca
       namespace: ${namespace}
     spec:
-      secretName: ${cluster_name}-ca-secret
-      commonName: "TiDB CA"
+      secretName: ${cluster_name}-mysql-ca-secret
+      commonName: "TiDB MySQL CA"
       isCA: true
       duration: 87600h # 10yrs
       renewBefore: 720h # 30d
       issuerRef:
-        name: ${cluster_name}-selfsigned-ca-issuer
+        name: ${cluster_name}-mysql-selfsigned-ca-issuer
         kind: Issuer
     ---
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-cert-issuer
+      name: ${cluster_name}-mysql-certs-issuer
       namespace: ${namespace}
     spec:
       ca:
-        secretName: ${cluster_name}-ca-secret
+        secretName: ${cluster_name}-mysql-ca-secret
     ```
 
     上面的文件创建三个对象：
 
     - 一个 SelfSigned 类型的 Issuer 对象（用于生成 CA 类型 Issuer 所需要的 CA 证书）;
     - 一个 Certificate 对象，`isCa` 属性设置为 `true`；
-    - 一个可以用于颁发 TiDB Server TLS 证书的 Issuer。
+    - 一个可以用于颁发 TiDB Server 和 MySQL Client TLS 证书的 Issuer。
+
+    MySQL TLS CA 和 Issuer 的名称与[为 TiDB 组件间开启 TLS](enable-tls-between-components.md)所用对象的名称不同。不要为 MySQL TLS 复用组件间 CA 或 Issuer。MySQL 客户端私钥可能会分发给数据库用户，因此不能将其作为集群组件凭据来信任。
 
     最后执行下面的命令进行创建：
 
     ```shell
-    kubectl apply -f tidb-server-issuer.yaml
+    kubectl apply -f tidb-mysql-issuer.yaml
     ```
 
 3. 创建 Server 端证书。
@@ -130,7 +132,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
         - 127.0.0.1
         - ::1
       issuerRef:
-        name: ${cluster_name}-cert-issuer
+        name: ${cluster_name}-mysql-certs-issuer
         kind: Issuer
         group: cert-manager.io
     ```
@@ -180,11 +182,11 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
       subject:
         organizations:
         - PingCAP
-      commonName: "TiDB"
+      commonName: "TiDB MySQL Client"
       usages:
         - client auth
       issuerRef:
-        name: ${cluster_name}-cert-issuer
+        name: ${cluster_name}-mysql-certs-issuer
         kind: Issuer
         group: cert-manager.io
     ```
@@ -194,6 +196,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     - `spec.secretName` 请设置为 `${tidb_group_name}-tidb-client-secret`；
     - `usages` 请添加上 `client auth`；
     - `dnsNames` 和 `ipAddresses` 不需要填写；
+    - `commonName` 请设置为组件间 TLS 的 `cert-allowed-cn` 或 `cluster-verify-cn` 配置不接受的值；
     - `issuerRef` 请填写上面创建的 Issuer；
     - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
@@ -208,7 +211,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     > **注意：**
     >
     > - 由 cert-manager 签发的 Secret 中包含的 `ca.crt` 是该证书的签发 CA，并非用于验证对端 mTLS 证书的 CA。
-    > - 本示例中，客户端和服务端的 TLS 证书由同一个 CA 签发，因此可以直接使用。如果客户端和服务端的证书由不同 CA 签发，建议使用 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发对应的 `ca.crt`。
+    > - 本示例中，MySQL 客户端和服务端的 TLS 证书由同一个 MySQL TLS CA 签发，因此可以直接使用。请确保该 CA 与 TiDB 组件间 TLS 使用的 CA 相互独立。如果 MySQL 客户端和服务端证书由不同 CA 签发，建议使用 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发对应的 `ca.crt`。
 
 ## 第二步：部署 TiDBGroup
 
