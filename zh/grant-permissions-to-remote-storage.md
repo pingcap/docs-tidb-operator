@@ -50,10 +50,10 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 - 如果 Backup 和 Restore 资源通过同一个 IAM 用户或角色访问不同的存储桶，请将每个所需存储桶的存储桶 ARN 和对象 ARN 添加到对应的 `Resource` 元素中。不要将其替换为允许访问无关存储桶的通配符。
 - 对于 AWS 中国区域或 AWS GovCloud (US) 区域中的存储桶，请分别将两个 ARN 中的 `aws` 分区替换为 `aws-cn` 或 `aws-us-gov`。
-- 如果 Backup 资源或将检查点元数据写入 S3 的 Restore 资源设置了 `.spec.s3.acl`，且没有其他策略授予相应权限，请将 `s3:PutObjectAcl` 添加到对象操作中。
-- 如果存储桶的默认加密配置或 Backup/Restore 资源选择了客户托管 AWS KMS 密钥，请为 IAM 用户或角色授予写入备份对象或检查点元数据所用密钥的 `kms:GenerateDataKey` 和 `kms:Decrypt` 权限。对于只读恢复，请为加密备份对象的每个密钥授予 `kms:Decrypt` 权限；如果创建备份后存储桶的默认 KMS 密钥发生了变化，这些密钥也包括之前使用的旧密钥。还需确保每个 KMS 密钥的策略直接允许这些主体执行所需操作，或者允许通过 IAM 策略授予这些权限。
+- 如果 Backup 资源或将恢复元数据写入 S3 的 Restore 资源设置了 `.spec.s3.acl`，且没有其他策略授予相应权限，请将 `s3:PutObjectAcl` 添加到对象操作中。
+- 如果存储桶的默认加密配置或 Backup/Restore 资源选择了客户托管 AWS KMS 密钥，请为 IAM 用户或角色授予写入备份对象或恢复元数据所用密钥的 `kms:GenerateDataKey` 和 `kms:Decrypt` 权限。对于只读恢复，请为加密备份对象的每个密钥授予 `kms:Decrypt` 权限；如果创建备份后存储桶的默认 KMS 密钥发生了变化，这些密钥也包括之前使用的旧密钥。还需确保每个 KMS 密钥的策略直接允许这些主体执行所需操作，或者允许通过 IAM 策略授予这些权限。
 
-恢复所需的权限取决于 BR 存储检查点元数据的位置。如果 BR 将检查点元数据写入 S3，请保留 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限。否则，可以将只读恢复的权限限制为 `s3:ListBucket` 和 `s3:GetObject`。检查点的存储行为取决于 BR 版本和配置。有关更多信息，请参阅[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#认证)。
+恢复所需的权限取决于 BR 是否将恢复元数据写入 S3。如果 BR 将检查点元数据写入 S3，请保留 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限。从 BR v8.5.5 开始，如果目标集群中不存在 `mysql.tidb_pitr_id_map` 且未指定 `--checkpoint-storage`，PITR 会将 ID 映射写入日志备份目录。如果该目录位于 S3，请保留 `s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject` 权限。如果 BR 不会将恢复元数据写入 S3，可以将只读恢复的权限限制为 `s3:ListBucket` 和 `s3:GetObject`。有关更多信息，请参阅[检查点恢复](https://docs.pingcap.com/zh/tidb/v8.5/br-checkpoint-restore)和[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#认证)。
 
 ### 通过 AccessKey 和 SecretKey 授权
 
