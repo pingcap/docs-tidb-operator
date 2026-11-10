@@ -18,7 +18,7 @@ def test_workflow_passes_context_and_filenames_as_data() -> None:
     assert "env:\n  BASE_REF: ${{ github.base_ref }}" in workflow
     assert workflow.count("${{ github.base_ref }}") == 1
     assert "$(git diff-tree" not in workflow
-    assert workflow.count("./hack/run-doc-check.sh") == 5
+    assert workflow.count("bash ./hack/run-doc-check.sh") == 5
     assert "python3 scripts/test-ci-workflow.py" in workflow
 
 
