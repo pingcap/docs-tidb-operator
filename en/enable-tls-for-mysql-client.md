@@ -37,7 +37,7 @@ This section describes how to issue certificates for the TiDB cluster using `cer
 
     Refer to [cert-manager installation on Kubernetes](https://docs.cert-manager.io/en/release-0.11/getting-started/install/kubernetes.html).
 
-2. Create an Issuer to issue certificates for the TiDB cluster.
+2. Create an Issuer to issue MySQL TLS certificates for the TiDB cluster.
 
     To configure `cert-manager`, create the Issuer resources.
 
@@ -48,13 +48,13 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     cd cert-manager
     ```
 
-    Then, create a `tidb-server-issuer.yaml` file with the following content:
+    Then, create a `tidb-mysql-issuer.yaml` file with the following content:
 
     ```yaml
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-selfsigned-ca-issuer
+      name: ${cluster_name}-mysql-selfsigned-ca-issuer
       namespace: ${namespace}
     spec:
       selfSigned: {}
@@ -62,38 +62,40 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
-      name: ${cluster_name}-ca
+      name: ${cluster_name}-mysql-ca
       namespace: ${namespace}
     spec:
-      secretName: ${cluster_name}-ca-secret
-      commonName: "TiDB CA"
+      secretName: ${cluster_name}-mysql-ca-secret
+      commonName: "TiDB MySQL CA"
       isCA: true
       duration: 87600h # 10yrs
       renewBefore: 720h # 30d
       issuerRef:
-        name: ${cluster_name}-selfsigned-ca-issuer
+        name: ${cluster_name}-mysql-selfsigned-ca-issuer
         kind: Issuer
     ---
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-      name: ${cluster_name}-cert-issuer
+      name: ${cluster_name}-mysql-certs-issuer
       namespace: ${namespace}
     spec:
       ca:
-        secretName: ${cluster_name}-ca-secret
+        secretName: ${cluster_name}-mysql-ca-secret
     ```
 
     This `.yaml` file creates three objects:
 
     - An Issuer object of SelfSigned class, used to generate the CA certificate needed by the Issuer of the CA class
     - A Certificate object, whose `isCa` is set to `true`
-    - An Issuer, used to issue TLS certificates for the TiDB server
+    - An Issuer, used to issue MySQL TLS certificates for the TiDB server and clients
+
+    The MySQL TLS CA and Issuer names deliberately differ from the objects used for [TLS between TiDB components](enable-tls-between-components.md). Do not reuse the inter-component CA or Issuer for MySQL TLS. MySQL client private keys might be distributed to database users and must not be trusted as cluster component credentials.
 
     Finally, execute the following command to create an Issuer:
 
     ```shell
-    kubectl apply -f tidb-server-issuer.yaml
+    kubectl apply -f tidb-mysql-issuer.yaml
     ```
 
 3. Generate the server-side certificate.
@@ -132,7 +134,7 @@ This section describes how to issue certificates for the TiDB cluster using `cer
         - 127.0.0.1
         - ::1
       issuerRef:
-        name: ${cluster_name}-cert-issuer
+        name: ${cluster_name}-mysql-certs-issuer
         kind: Issuer
         group: cert-manager.io
     ```
@@ -182,11 +184,11 @@ This section describes how to issue certificates for the TiDB cluster using `cer
       subject:
         organizations:
         - PingCAP
-      commonName: "TiDB"
+      commonName: "TiDB MySQL Client"
       usages:
         - client auth
       issuerRef:
-        name: ${cluster_name}-cert-issuer
+        name: ${cluster_name}-mysql-certs-issuer
         kind: Issuer
         group: cert-manager.io
     ```
@@ -196,6 +198,7 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     - Set `spec.secretName` to `${tidb_group_name}-tidb-client-secret`
     - Add `client auth` in `usages`
     - `dnsNames` and `ipAddresses` are not required
+    - Set `commonName` to a value that is not accepted by the `cert-allowed-cn` or `cluster-verify-cn` configuration for TLS between TiDB components
     - Add the Issuer created above in the `issuerRef`
     - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)
 
@@ -210,7 +213,7 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     > **Note:**
     >
     > - The `ca.crt` included in the Secret issued by cert-manager is the CA that signed the certificate, not the CA used to validate the peer's mTLS certificate.
-    > - In this example, the client and server TLS certificates are issued by the same CA, so they can be used directly. If the client and server certificates are issued by different CAs, it is recommended to use the [Trust Manager](https://cert-manager.io/docs/trust/trust-manager/) to distribute the appropriate `ca.crt`.
+    > - In this example, the MySQL client and server TLS certificates are issued by the same MySQL TLS CA, so they can be used directly. Keep this CA separate from the CA used for TLS between TiDB components. If the MySQL client and server certificates are issued by different CAs, it is recommended to use the [Trust Manager](https://cert-manager.io/docs/trust/trust-manager/) to distribute the appropriate `ca.crt`.
 
 ## Step 2: Deploy the TiDBGroup
 
