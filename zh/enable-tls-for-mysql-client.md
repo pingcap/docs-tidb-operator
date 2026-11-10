@@ -196,7 +196,7 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     - `spec.secretName` 请设置为 `${tidb_group_name}-tidb-client-secret`；
     - `usages` 请添加上 `client auth`；
     - `dnsNames` 和 `ipAddresses` 不需要填写；
-    - `commonName` 请设置为组件间 TLS 的 `cert-allowed-cn` 或 `cluster-verify-cn` 配置不接受的值；
+    - `commonName` 请设置为组件间 TLS 的 `cert-allowed-cn` 或 `cluster-verify-cn` 配置不接受的值，避免 MySQL 客户端证书被认可为组件间凭据；
     - `issuerRef` 请填写上面创建的 Issuer；
     - 其他属性请参考 [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)。
 
@@ -211,7 +211,19 @@ summary: 在 Kubernetes 上如何为 TiDB 集群的 MySQL 客户端开启 TLS。
     > **注意：**
     >
     > - 由 cert-manager 签发的 Secret 中包含的 `ca.crt` 是该证书的签发 CA，并非用于验证对端 mTLS 证书的 CA。
-    > - 本示例中，MySQL 客户端和服务端的 TLS 证书由同一个 MySQL TLS CA 签发，因此可以直接使用。请确保该 CA 与 TiDB 组件间 TLS 使用的 CA 相互独立。如果 MySQL 客户端和服务端证书由不同 CA 签发，建议使用 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发对应的 `ca.crt`。
+    > - 本示例中，MySQL 客户端和服务端的 TLS 证书由同一个 MySQL TLS CA 签发，因此可以直接使用。请确保该 CA 与 TiDB 组件间 TLS 使用的 CA 相互独立。否则，如果分发的 MySQL 客户端证书的 CN 在组件 CN 允许列表中，该证书也可能被信任为组件凭据。如果 MySQL 客户端和服务端证书由不同 CA 签发，建议使用 [Trust manager](https://cert-manager.io/docs/trust/trust-manager/) 分发对应的 `ca.crt`。
+
+### 将使用共享 CA 的现有部署迁移到独立 CA
+
+如果你之前按照本文操作，同时启用了 TiDB 组件间 TLS，则 MySQL 证书和组件间证书可能共享同一个 CA。请勿将更新后的 `Certificate` 资源直接应用到现有对象。更改 `issuerRef` 可能会导致 cert-manager 在 TiDB 和所有客户端信任新 CA 之前，重新签发现有的服务端和客户端 Secret。
+
+按照以下步骤规划迁移：
+
+1. 停止分发旧的 MySQL 客户端凭据，并确认已分发的所有副本。
+2. 创建专用的 MySQL TLS CA 和 Issuer，将替换用的服务端和客户端证书签发到临时 Secret 中，不要覆盖正在使用的 Secret。
+3. 配置 TiDB 用于验证 MySQL 客户端的 CA bundle，以及 MySQL 客户端用于验证 TiDB 的 CA bundle，使其同时信任新旧 CA。在切换证书之前，重启或滚动重启 TiDB，使其加载更新后的信任 bundle，并确认现有连接仍可正常工作。
+4. 将 TiDB 和所有 MySQL 客户端切换到新证书。确认新连接正常后，从 MySQL TLS 信任 bundle 中移除旧 CA，并删除不再需要的临时凭据。
+5. 替换 MySQL 证书不会使组件间 CA 已签发的旧客户端证书失效。要防止这些证书副本继续向组件端点进行身份验证，请安排维护窗口，轮换组件间 CA 和所有组件证书，重启受影响的组件以加载新 CA，然后从组件信任配置中移除旧 CA。重启步骤请参阅[滚动重启 TiDB 集群](restart-a-tidb-cluster.md)。
 
 ## 第二步：部署 TiDBGroup
 

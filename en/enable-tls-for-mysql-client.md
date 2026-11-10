@@ -198,7 +198,7 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     - Set `spec.secretName` to `${tidb_group_name}-tidb-client-secret`
     - Add `client auth` in `usages`
     - `dnsNames` and `ipAddresses` are not required
-    - Set `commonName` to a value that is not accepted by the `cert-allowed-cn` or `cluster-verify-cn` configuration for TLS between TiDB components
+    - Set `commonName` to a value that is not accepted by the `cert-allowed-cn` or `cluster-verify-cn` configuration for TLS between TiDB components. This prevents a MySQL client certificate from being accepted as an inter-component credential.
     - Add the Issuer created above in the `issuerRef`
     - For other attributes, refer to [cert-manager API](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec)
 
@@ -213,7 +213,19 @@ This section describes how to issue certificates for the TiDB cluster using `cer
     > **Note:**
     >
     > - The `ca.crt` included in the Secret issued by cert-manager is the CA that signed the certificate, not the CA used to validate the peer's mTLS certificate.
-    > - In this example, the MySQL client and server TLS certificates are issued by the same MySQL TLS CA, so they can be used directly. Keep this CA separate from the CA used for TLS between TiDB components. If the MySQL client and server certificates are issued by different CAs, it is recommended to use the [Trust Manager](https://cert-manager.io/docs/trust/trust-manager/) to distribute the appropriate `ca.crt`.
+    > - In this example, the MySQL client and server TLS certificates are issued by the same MySQL TLS CA, so they can be used directly. Keep this CA separate from the CA used for TLS between TiDB components. Otherwise, a distributed MySQL client certificate whose CN is accepted by the component allowlist might also be trusted as a component credential. If the MySQL client and server certificates are issued by different CAs, it is recommended to use the [Trust Manager](https://cert-manager.io/docs/trust/trust-manager/) to distribute the appropriate `ca.crt`.
+
+### Migrate an existing deployment from a shared CA
+
+If you previously followed this guide while TLS between TiDB components was enabled, the MySQL and inter-component certificates might share a CA. Do not apply the updated `Certificate` resources directly to the existing objects. Changing `issuerRef` can cause cert-manager to reissue the existing server and client Secrets before TiDB and all clients trust the new CA.
+
+Plan the migration as follows:
+
+1. Stop distributing the old MySQL client credentials, and identify all copies that have already been distributed.
+2. Create the dedicated MySQL TLS CA and Issuer, and issue replacement server and client certificates into temporary Secrets without overwriting the active Secrets.
+3. Configure the CA bundle used by TiDB to verify MySQL clients, and the CA bundle used by MySQL clients to verify TiDB, to trust both the old and new CAs. Restart or roll TiDB so that it loads the updated trust bundle before switching certificates. Verify that existing connections still work.
+4. Switch TiDB and every MySQL client to the new certificates. After verifying the new connections, remove the old CA from the MySQL TLS trust bundles and delete the temporary credentials that are no longer needed.
+5. Replacing the MySQL certificates does not invalidate old client certificates that were issued by the inter-component CA. To prevent those copies from authenticating to component endpoints, schedule a maintenance window, rotate the inter-component CA and all component certificates, restart the affected components so that they load the new CA, and then remove the old CA from component trust. For the restart procedure, see [Rolling Restart a TiDB Cluster](restart-a-tidb-cluster.md).
 
 ## Step 2: Deploy the TiDBGroup
 
