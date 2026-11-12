@@ -122,7 +122,7 @@ spec:
     - 203.0.113.0/24 # 替换为实际的可信客户端 CIDR。
 ```
 
-请勿使用 `0.0.0.0/0`。请确认云平台会强制实施 `loadBalancerSourceRanges`；如果不支持，请配置等效的云防火墙或安全组规则。`LoadBalancer` Service 通常还会分配 NodePort，即使负载均衡器流量已受限制，该端口也可能仍可被直接访问。请在节点防火墙中限制该 NodePort；如果云平台支持不依赖 NodePort 的负载均衡，也可以设置 `allocateLoadBalancerNodePorts: false`。如果在已有 Service 上关闭 NodePort 分配，还需要删除所有已分配的 `spec.ports[].nodePort`，因为 Kubernetes 不会自动删除这些值。不同云平台配置内部负载均衡器所需的 annotation 及上述能力不同，应用 Service 前请查阅对应云平台的文档。
+请勿使用 `0.0.0.0/0`。请确认云平台会强制实施 `loadBalancerSourceRanges`；如果不支持，请配置等效的云防火墙或安全组规则。`LoadBalancer` Service 通常还会分配 NodePort，即使负载均衡器流量已受限制，该 NodePort 也可能仍可被直接访问。请在节点防火墙中限制该 NodePort；如果云平台支持不依赖 NodePort 的负载均衡，也可以设置 `allocateLoadBalancerNodePorts: false`。如果在已有 Service 上关闭 NodePort 分配，还需要删除所有已分配的 `spec.ports[].nodePort`，因为 Kubernetes 不会自动删除这些值。不同云平台配置内部负载均衡器所需的 annotation 及上述能力不同，应用 Service 前请查阅对应云平台的文档。
 
 你可以参考以下官方文档，通过创建 LoadBalancer Service 访问 TiDB 服务：
 
