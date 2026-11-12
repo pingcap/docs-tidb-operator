@@ -17,7 +17,7 @@ summary: 介绍如何访问 Kubernetes 上的 TiDB 集群。
 
 1. 先通过 `kubectl port-forward` 等可信的内部连接方式，为 TiDB `root` 用户设置高强度密码。为应用创建单独的最小权限 SQL 用户，不要使用 `root` 用户连接应用。账号管理方法参见 [TiDB 用户账户管理](https://docs.pingcap.com/zh/tidb/stable/user-account-management/)。
 2. [为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)，配置客户端验证 TiDB Server 证书，并在服务端强制使用加密连接。根据访问策略，将 TiDB [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/stable/system-variables/#require_secure_transport-从-v610-版本开始引入) 系统变量设置为 `ON`，或者为每个允许从外部访问的账号配置 `REQUIRE SSL`。
-3. 限制可以访问 Service 的来源网络。内部负载均衡器本身并不能保证只有可信客户端可以访问，因此内部和外部 `LoadBalancer` Service 都需要配置来源过滤。对于 `NodePort`，使用云防火墙、安全组或网络 ACL，仅允许可信网络访问。
+3. 限制可以访问 Service 的来源网络。内部负载均衡器本身并不能保证只有可信客户端可以访问，因此内部和外部 `LoadBalancer` Service 都需要配置来源过滤。对于 `NodePort`，使用云防火墙、安全组或网络 ACL，仅允许可信网络访问，防止绕过 LoadBalancer 的来源过滤。
 
 > **警告：**
 >
