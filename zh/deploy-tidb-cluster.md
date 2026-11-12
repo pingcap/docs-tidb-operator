@@ -185,6 +185,10 @@ spec:
 
 在准备好 TiDB 集群各组件的 YAML 配置文件后，按照以下步骤部署 TiDB 集群：
 
+> **警告：**
+>
+> 对于生产集群，请在部署前规划身份认证和 TLS 配置。在为 `root` 设置高强度密码、创建最小权限应用用户并为 MySQL 客户端启用 TLS 之前，只允许从可信内部网络访问 TiDB。不要先创建面向公网的 `NodePort` 或 `LoadBalancer`，再补充安全配置。详情参见[安全前置条件](access-tidb.md#安全前置条件)和[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)。
+
 1. 创建命名空间 Namespace：
 
     > **注意：**
