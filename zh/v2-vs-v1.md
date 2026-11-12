@@ -98,7 +98,7 @@ spec:
     name: cluster-bootstrap-sql
 ```
 
-ConfigMap 不是密钥存储系统，请勿在其中保存可重复使用的生产密码。在将 TiDB 暴露到 Kubernetes 集群外部之前，请通过可信内部连接或一次性的密钥管理初始化流程设置凭据。完整检查清单参见[安全前置条件](access-tidb.md#安全前置条件)。
+ConfigMap 不是密钥存储系统，请勿在其中保存可重复使用的生产密码。在将 TiDB 暴露到 Kubernetes 集群外部之前，请通过可信的内部连接，或通过一次性的密钥管理初始化流程来设置凭据，以避免使用空密码或默认密码。完整检查清单参见[安全前置条件](access-tidb.md#安全前置条件)。
 
 #### `TidbMonitor`
 
