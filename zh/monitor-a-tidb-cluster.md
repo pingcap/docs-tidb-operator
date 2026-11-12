@@ -231,6 +231,10 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
 
 配置监控面板的步骤如下：
 
+> **警告：**
+>
+> 使用新的 Grafana 数据库时，请配置安装流程，使其在 Grafana 启动前从 Kubernetes Secret 读取唯一的管理员密码。复用已有 Grafana 数据库时，配置的初始密码不会修改已有管理员账号，请先限制访问并重置该账号的密码，再允许常规访问。如果所用安装方式无法在启动前设置唯一密码，请确认集群的网络插件会强制实施 NetworkPolicy。检查所有选中 Grafana 的 NetworkPolicy，删除或限制任何允许其他 Pod 访问的策略，并在修改密码前通过策略仅允许管理 Pod 或 Namespace 访问 Grafana。如果共享策略还选中了其他工作负载，请从该策略中排除 Grafana 或拆分策略，以保留这些工作负载原有的访问规则。还需要检查 Grafana Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，也只能通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
+
 1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
 
 2. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Grafana 监控面板：
@@ -239,11 +243,13 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. 在浏览器中访问 <http://localhost:3000>，默认用户名和密码都为 `admin`。如果是通过 Helm 安装，可以使用以下命令查看 `admin` 密码：
+3. 在浏览器中访问 <http://localhost:3000>。如果通过 Helm 安装，Grafana 的 `admin` 用户密码是自动生成的，可使用以下命令获取：
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
+
+    如果你的安装方式将 Grafana 初始化为 `admin`/`admin`，请只通过端口转发访问 Grafana，并在首次登录后立即修改密码。在仍使用默认凭据（`admin`/`admin`）时，不要将 Grafana 暴露到集群外部。请将新密码保存在组织的密钥管理系统中。更多信息参见[修改密码](https://grafana.com/docs/grafana/latest/administration/user-management/user-preferences/#change-your-password)。
 
 4. 在 Grafana 中添加 Prometheus 类型的数据源，并配置 Prometheus Server URL：
 
