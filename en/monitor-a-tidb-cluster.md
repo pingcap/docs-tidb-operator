@@ -243,13 +243,13 @@ To configure the monitoring dashboard, perform the following steps:
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. Access <http://localhost:3000> in your browser. If you install Grafana using Helm, retrieve the generated password for the `admin` account by executing the following command:
+3. Access <http://localhost:3000> in your browser. If you install Grafana using Helm, Grafana automatically generates the password for the `admin` account. Retrieve it by executing the following command:
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
 
-    If your installation method initializes Grafana with `admin`/`admin`, keep Grafana accessible only through port forwarding and change the password immediately after the first login. Do not expose Grafana outside the cluster while it uses default credentials. Store the replacement password in your organization's secret manager. For more information, see [Change your password](https://grafana.com/docs/grafana/latest/administration/user-management/user-preferences/#change-your-password).
+    If your installation method initializes Grafana with `admin`/`admin`, keep Grafana accessible only through port forwarding and change the password immediately after the first login. Do not expose Grafana outside the cluster while it uses the default credentials (`admin`/`admin`). Store the replacement password in your organization's secret manager. For more information, see [Change your password](https://grafana.com/docs/grafana/latest/administration/user-management/user-preferences/#change-your-password).
 
 4. Add a data source of type Prometheus in Grafana and set the Prometheus Server URL based on your monitoring setup:
 
