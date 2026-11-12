@@ -122,7 +122,7 @@ spec:
     - 203.0.113.0/24 # Replace with an actual trusted client CIDR.
 ```
 
-Do not use `0.0.0.0/0`. Verify that your cloud provider enforces `loadBalancerSourceRanges`; if it does not, apply equivalent provider firewall or security-group rules. A `LoadBalancer` Service normally also allocates a NodePort, which might remain directly reachable even when load balancer traffic is restricted. Restrict that NodePort at the node firewall, or set `allocateLoadBalancerNodePorts: false` if your provider supports load balancing without NodePorts. Internal-load-balancer annotations and these capabilities differ by provider; review the provider documentation before applying the Service.
+Do not use `0.0.0.0/0`. Verify that your cloud provider enforces `loadBalancerSourceRanges`; if it does not, apply equivalent provider firewall or security-group rules. A `LoadBalancer` Service normally also allocates a NodePort, which might remain directly reachable even when load balancer traffic is restricted. Restrict that NodePort at the node firewall, or set `allocateLoadBalancerNodePorts: false` if your provider supports load balancing without NodePorts. When you disable NodePort allocation on an existing Service, also remove every allocated `spec.ports[].nodePort`, because Kubernetes does not remove these values automatically. Internal-load-balancer annotations and these capabilities differ by provider; review the provider documentation before applying the Service.
 
 For more information, see the following documents:
 

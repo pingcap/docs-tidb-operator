@@ -78,7 +78,7 @@ TiDB Operator 不再提供对 Dumpling 和 TiDB Lightning 的直接支持，建�
 
 #### `TidbInitializer`
 
-TiDB Operator v2 不再支持 `TidbInitializer` CRD。在 v2 `Cluster` CR 中，你可以通过 `spec.bootstrapSQL.name` 引用同一 Namespace 中的 ConfigMap。该 ConfigMap 的 `bootstrap-sql` key 用于保存仅在集群首次初始化时执行的 SQL。例如：
+TiDB Operator v2 不再支持 `TidbInitializer` CRD。在 v2 `Cluster` CR 中，你可以通过 `spec.bootstrapSQL.name` 引用同一 Namespace 中的 ConfigMap。该 ConfigMap 的 `bootstrap-sql` key 用于保存仅在集群首次初始化时执行的 SQL。你只能在创建 Cluster 时设置 `spec.bootstrapSQL`。之后可以删除该字段，但不能在已有 Cluster 中新增该字段或修改其引用的 ConfigMap 名称。例如：
 
 ```yaml
 apiVersion: v1

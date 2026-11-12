@@ -233,7 +233,7 @@ To configure the monitoring dashboard, perform the following steps:
 
 > **Warning:**
 >
-> Before applying a Grafana manifest, inspect its Service and set `spec.type` to `ClusterIP`. Do not deploy Grafana through a `LoadBalancer` or `NodePort` Service while initial credentials are active. After you rotate the administrator password, expose Grafana only through an authenticated ingress or another access path restricted to trusted networks.
+> Before deploying Grafana, configure the installation to read a unique administrator password from a Kubernetes Secret. If your installation method cannot set a unique password before Grafana starts, first apply an enforced NetworkPolicy that permits ingress only from an administrative Pod or namespace until you rotate the password. Also inspect the Grafana Service and set `spec.type` to `ClusterIP`. Do not deploy Grafana through a `LoadBalancer` or `NodePort` Service while initial credentials are active. After you rotate the administrator password, expose Grafana only through an authenticated ingress or another access path restricted to trusted networks.
 
 1. Follow the [Grafana official documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes) to deploy Grafana. This document uses version `12.0.0-security-01` as an example.
 

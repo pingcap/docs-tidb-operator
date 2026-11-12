@@ -233,7 +233,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
 
 > **警告：**
 >
-> 应用 Grafana manifest 前，请检查其中的 Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，也只能通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
+> 部署 Grafana 前，请配置安装流程，使其从 Kubernetes Secret 读取唯一的管理员密码。如果所用安装方式无法在 Grafana 启动前设置唯一密码，请先实施 NetworkPolicy，并在修改密码前仅允许管理 Pod 或 Namespace 访问 Grafana。还需要检查 Grafana Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，也只能通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
 
 1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
 
