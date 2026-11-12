@@ -78,7 +78,27 @@ TiDB Operator no longer provides direct support. It is recommended to use native
 
 #### `TidbInitializer`
 
-TiDB Operator v2 no longer supports this CRD. You can use `spec.bootstrapSQL` to reference a ConfigMap whose `bootstrap-sql` key contains SQL statements that run only when the cluster is first bootstrapped. Because a ConfigMap is not a secret store, do not put a reusable production password in it. Establish credentials through a trusted internal connection or a one-time, secret-managed initialization process before exposing TiDB outside the Kubernetes cluster. For the complete access checklist, see [Security prerequisites](access-tidb.md#security-prerequisites).
+TiDB Operator v2 no longer supports this CRD. In the v2 `Cluster` CR, you can use `spec.bootstrapSQL.name` to reference a ConfigMap in the same namespace. The ConfigMap's `bootstrap-sql` key contains SQL statements that run only when the cluster is first bootstrapped. For example:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-bootstrap-sql
+data:
+  bootstrap-sql: |
+    CREATE DATABASE IF NOT EXISTS app;
+---
+apiVersion: core.pingcap.com/v1alpha1
+kind: Cluster
+metadata:
+  name: basic
+spec:
+  bootstrapSQL:
+    name: cluster-bootstrap-sql
+```
+
+Because a ConfigMap is not a secret store, do not put a reusable production password in it. Establish credentials through a trusted internal connection or a one-time, secret-managed initialization process before exposing TiDB outside the Kubernetes cluster. For the complete access checklist, see [Security prerequisites](access-tidb.md#security-prerequisites).
 
 #### `TidbMonitor`
 

@@ -231,6 +231,10 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
 
 配置监控面板的步骤如下：
 
+> **警告：**
+>
+> 应用 Grafana manifest 前，请检查其中的 Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，也只能通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
+
 1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
 
 2. 运行以下 `kubectl port-forward` 命令，通过端口转发访问 Grafana 监控面板：

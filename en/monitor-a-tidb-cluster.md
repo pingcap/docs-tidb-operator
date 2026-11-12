@@ -231,6 +231,10 @@ To collect monitoring data using VictoriaMetrics, perform the following steps:
 
 To configure the monitoring dashboard, perform the following steps:
 
+> **Warning:**
+>
+> Before applying a Grafana manifest, inspect its Service and set `spec.type` to `ClusterIP`. Do not deploy Grafana through a `LoadBalancer` or `NodePort` Service while initial credentials are active. After you rotate the administrator password, expose Grafana only through an authenticated ingress or another access path restricted to trusted networks.
+
 1. Follow the [Grafana official documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes) to deploy Grafana. This document uses version `12.0.0-security-01` as an example.
 
 2. Execute the following `kubectl port-forward` command to access Grafana through port forwarding:

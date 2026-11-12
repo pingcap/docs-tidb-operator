@@ -16,8 +16,8 @@ This document describes how to access a TiDB cluster through a Kubernetes [Servi
 Complete the following steps before you make port `4000` reachable from outside the Kubernetes cluster:
 
 1. From a trusted internal connection such as `kubectl port-forward`, set a strong password for the TiDB `root` account. Create separate least-privileged SQL accounts for applications instead of using `root`. For account-management guidance, see [TiDB User Account Management](https://docs.pingcap.com/tidb/stable/user-account-management/).
-2. [Enable TLS for the MySQL client](enable-tls-for-mysql-client.md), and configure clients to verify the TiDB server certificate.
-3. Restrict the source networks that can reach the Service. For a `LoadBalancer` Service, prefer an internal load balancer or configure `loadBalancerSourceRanges`. For `NodePort`, apply cloud firewall rules, security groups, or network ACLs to trusted networks only.
+2. [Enable TLS for the MySQL client](enable-tls-for-mysql-client.md), configure clients to verify the TiDB server certificate, and enforce encrypted connections on the server. Depending on your access policy, set the TiDB [`require_secure_transport`](https://docs.pingcap.com/tidb/stable/system-variables/#require_secure_transport-new-in-v610) system variable to `ON`, or configure each externally accessible account with `REQUIRE SSL`.
+3. Restrict the source networks that can reach the Service. An internal load balancer alone does not limit access to trusted clients, so apply source filtering to both internal and external `LoadBalancer` Services. For `NodePort`, apply cloud firewall rules, security groups, or network ACLs to trusted networks only.
 
 > **Warning:**
 >
@@ -113,7 +113,7 @@ spec:
 
 On cloud platforms that support LoadBalancer (such as Google Cloud or AWS), it is recommended to use the platform's LoadBalancer feature to expose TiDB. This approach provides higher availability and better load balancing.
 
-Cloud providers can create an internet-facing load balancer by default. Prefer a provider-specific internal load balancer. If clients must connect through an external load balancer, restrict the Service to the required client CIDR ranges, for example:
+Cloud providers can create an internet-facing load balancer by default. Prefer a provider-specific internal load balancer, but do not treat it as a source-network restriction. For both internal and external load balancers, restrict the Service to the required client CIDR ranges, for example:
 
 ```yaml
 spec:
@@ -122,7 +122,7 @@ spec:
     - 203.0.113.0/24 # Replace with an actual trusted client CIDR.
 ```
 
-Do not use `0.0.0.0/0`. Internal-load-balancer annotations differ by provider; review the provider documentation before applying the Service.
+Do not use `0.0.0.0/0`. Verify that your cloud provider enforces `loadBalancerSourceRanges`; if it does not, apply equivalent provider firewall or security-group rules. A `LoadBalancer` Service normally also allocates a NodePort, which might remain directly reachable even when load balancer traffic is restricted. Restrict that NodePort at the node firewall, or set `allocateLoadBalancerNodePorts: false` if your provider supports load balancing without NodePorts. Internal-load-balancer annotations and these capabilities differ by provider; review the provider documentation before applying the Service.
 
 For more information, see the following documents:
 
