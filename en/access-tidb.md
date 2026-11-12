@@ -11,6 +11,18 @@ This document describes how to access a TiDB cluster through a Kubernetes [Servi
 * [`NodePort`](#nodeport): for access from outside the cluster (recommended for test environments).
 * [`LoadBalancer`](#loadbalancer): for access through your cloud provider's LoadBalancer feature (recommended for production environments).
 
+## Security prerequisites
+
+Complete the following steps before you make port `4000` reachable from outside the Kubernetes cluster:
+
+1. From a trusted internal connection such as `kubectl port-forward`, set a strong password for the TiDB `root` account. Create separate least-privileged SQL accounts for applications instead of using `root`. For account-management guidance, see [TiDB User Account Management](https://docs.pingcap.com/tidb/stable/user-account-management/).
+2. [Enable TLS for the MySQL client](enable-tls-for-mysql-client.md), and configure clients to verify the TiDB server certificate.
+3. Restrict the source networks that can reach the Service. For a `LoadBalancer` Service, prefer an internal load balancer or configure `loadBalancerSourceRanges`. For `NodePort`, apply cloud firewall rules, security groups, or network ACLs to trusted networks only.
+
+> **Warning:**
+>
+> A newly bootstrapped TiDB cluster can accept `root` connections without a password. Never expose the MySQL port to the public internet before authentication, TLS, and source-network restrictions are in place. The Service examples in this document configure routing only; they do not establish an authentication boundary.
+
 ## ClusterIP
 
 The `ClusterIP` Service type exposes the TiDB cluster using an internal IP address. It is only accessible from within the Kubernetes cluster.
@@ -74,7 +86,7 @@ In environments without a LoadBalancer, you can use a `NodePort` Service to expo
 
 > **Note:**
 >
-> It is not recommended to use `NodePort` in production environments. For production environments on cloud platforms, use the `LoadBalancer` type instead.
+> It is not recommended to use `NodePort` in production environments. For production environments on cloud platforms, use the `LoadBalancer` type instead. In either case, allow access only from trusted source networks after completing the [security prerequisites](#security-prerequisites).
 
 The following is an example:
 
@@ -100,6 +112,17 @@ spec:
 ## LoadBalancer
 
 On cloud platforms that support LoadBalancer (such as Google Cloud or AWS), it is recommended to use the platform's LoadBalancer feature to expose TiDB. This approach provides higher availability and better load balancing.
+
+Cloud providers can create an internet-facing load balancer by default. Prefer a provider-specific internal load balancer. If clients must connect through an external load balancer, restrict the Service to the required client CIDR ranges, for example:
+
+```yaml
+spec:
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 203.0.113.0/24 # Replace with an actual trusted client CIDR.
+```
+
+Do not use `0.0.0.0/0`. Internal-load-balancer annotations differ by provider; review the provider documentation before applying the Service.
 
 For more information, see the following documents:
 

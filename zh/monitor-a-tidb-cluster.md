@@ -239,11 +239,13 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. 在浏览器中访问 <http://localhost:3000>，默认用户名和密码都为 `admin`。如果是通过 Helm 安装，可以使用以下命令查看 `admin` 密码：
+3. 在浏览器中访问 <http://localhost:3000>。如果通过 Helm 安装，使用以下命令获取自动生成的 `admin` 用户密码：
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
+
+    如果你的安装方式将 Grafana 初始化为 `admin`/`admin`，请只通过端口转发访问 Grafana，并在首次登录后立即修改密码。在仍使用默认凭据时，不要将 Grafana 暴露到集群外部。请将新密码保存在组织的密钥管理系统中。更多信息参见[修改密码](https://grafana.com/docs/grafana/latest/administration/user-management/user-preferences/#change-your-password)。
 
 4. 在 Grafana 中添加 Prometheus 类型的数据源，并配置 Prometheus Server URL：
 

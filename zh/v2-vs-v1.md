@@ -78,7 +78,7 @@ TiDB Operator 不再提供对 Dumpling 和 TiDB Lightning 的直接支持，建�
 
 #### `TidbInitializer`
 
-TiDB Operator v2 不再支持 `TidbInitializer` CRD，你可以使用 BootstrapSQL 的方式运行初始化的 SQL。
+TiDB Operator v2 不再支持 `TidbInitializer` CRD。你可以通过 `spec.bootstrapSQL` 引用 ConfigMap，并在其中使用 `bootstrap-sql` key 保存仅在集群首次初始化时执行的 SQL。ConfigMap 不是密钥存储系统，请勿在其中保存可重复使用的生产密码。在将 TiDB 暴露到 Kubernetes 集群外部之前，请通过可信内部连接或一次性的密钥管理初始化流程设置凭据。完整检查清单参见[安全前置条件](access-tidb.md#安全前置条件)。
 
 #### `TidbMonitor`
 

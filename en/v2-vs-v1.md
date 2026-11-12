@@ -78,7 +78,7 @@ TiDB Operator no longer provides direct support. It is recommended to use native
 
 #### `TidbInitializer`
 
-TiDB Operator v2 no longer supports this CRD. You can use BootstrapSQL to run initialization SQL statements.
+TiDB Operator v2 no longer supports this CRD. You can use `spec.bootstrapSQL` to reference a ConfigMap whose `bootstrap-sql` key contains SQL statements that run only when the cluster is first bootstrapped. Because a ConfigMap is not a secret store, do not put a reusable production password in it. Establish credentials through a trusted internal connection or a one-time, secret-managed initialization process before exposing TiDB outside the Kubernetes cluster. For the complete access checklist, see [Security prerequisites](access-tidb.md#security-prerequisites).
 
 #### `TidbMonitor`
 
