@@ -231,6 +231,10 @@ To collect monitoring data using VictoriaMetrics, perform the following steps:
 
 To configure the monitoring dashboard, perform the following steps:
 
+> **Warning:**
+>
+> For a new Grafana database, configure the installation to read a unique administrator password from a Kubernetes Secret before Grafana starts. When reusing an existing Grafana database, the configured initial password does not change the existing administrator account. Restrict access and reset that account's password before allowing general access. If your installation method cannot set a unique password before startup, verify that the cluster network plugin enforces NetworkPolicy. Review every NetworkPolicy that selects Grafana, remove or restrict any policy that permits ingress from other Pods, and apply a policy that permits ingress only from an administrative Pod or namespace until you rotate the password. If a shared policy also selects other workloads, exclude Grafana from that policy or split the policy so that you preserve the existing allowances for those workloads. Also inspect the Grafana Service and set `spec.type` to `ClusterIP`. Do not deploy Grafana through a `LoadBalancer` or `NodePort` Service while initial credentials are active. After you rotate the administrator password, expose Grafana only through an authenticated ingress or another access path restricted to trusted networks.
+
 1. Follow the [Grafana official documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes) to deploy Grafana. This document uses version `12.0.0-security-01` as an example.
 
 2. Execute the following `kubectl port-forward` command to access Grafana through port forwarding:
@@ -239,11 +243,13 @@ To configure the monitoring dashboard, perform the following steps:
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. Then, you can access <http://localhost:3000> in your browser. The default username and password are both `admin`. If you install Grafana using Helm, execute the following command to get the password of `admin`:
+3. Access <http://localhost:3000> in your browser. If you install Grafana using Helm, Grafana automatically generates the password for the `admin` account. Retrieve it by executing the following command:
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
+
+    If your installation method initializes Grafana with `admin`/`admin`, keep Grafana accessible only through port forwarding and change the password immediately after the first login. Do not expose Grafana outside the cluster while it uses the default credentials (`admin`/`admin`). Store the replacement password in your organization's secret manager. For more information, see [Change your password](https://grafana.com/docs/grafana/latest/administration/user-management/user-preferences/#change-your-password).
 
 4. Add a data source of type Prometheus in Grafana and set the Prometheus Server URL based on your monitoring setup:
 
