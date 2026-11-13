@@ -58,11 +58,6 @@ jobs:
           ref: refs/heads/${{ inputs.source_branch }}
           persist-credentials: false
 
-      #- name: Configure awscli
-      #  run: |
-      #    pip3 install --upgrade setuptools
-      #    pip3 install awscli
-      #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Install coscli
         run: |
           curl --fail --location --silent --show-error \
@@ -71,14 +66,54 @@ jobs:
           printf '%s  %s\n' 'a07de5ba2800147a700ed29036b0c76a4229088cee68e1682d0eae19b638a915' coscli | sha256sum --check
           chmod 755 coscli
       - name: Upload to COS
+        env:
+          TENCENTCLOUD_BUCKET_ID: ${{ secrets.TENCENTCLOUD_BUCKET_ID }}
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: |
-          ./coscli sync media/ cos://${{ secrets.TENCENTCLOUD_BUCKET_ID }}/media/images/tidb-in-kubernetes \
-            --init-skip \
+          set -euo pipefail
+          umask 077
+          COSCLI_CONFIG=$(mktemp "$RUNNER_TEMP/coscli.XXXXXX.yaml")
+          export COSCLI_CONFIG
+          trap 'rm -f -- "$COSCLI_CONFIG"' EXIT
+
+          python3 <<'PY'
+          import json
+          import os
+
+          bucket = os.environ["TENCENTCLOUD_BUCKET_ID"]
+          secret_id = os.environ["TENCENTCLOUD_SECRET_ID"]
+          secret_key = os.environ["TENCENTCLOUD_SECRET_KEY"]
+          if not all((bucket, secret_id, secret_key)):
+              raise SystemExit("COS bucket and credentials are required.")
+
+          config = {
+              "cos": {
+                  "base": {
+                      "mode": "SecretKey",
+                      "protocol": "https",
+                      "disableencryption": "true",
+                      "secretid": secret_id,
+                      "secretkey": secret_key,
+                  },
+                  "buckets": [
+                      {
+                          "name": bucket,
+                          "alias": "operator-media",
+                          "region": "ap-beijing",
+                      },
+                  ],
+              },
+          }
+          with open(os.environ["COSCLI_CONFIG"], "w", encoding="utf-8") as config_file:
+              json.dump(config, config_file)
+          PY
+
+          unset TENCENTCLOUD_BUCKET_ID TENCENTCLOUD_SECRET_ID TENCENTCLOUD_SECRET_KEY
+          ./coscli sync media/ cos://operator-media/media/images/tidb-in-kubernetes \
+            --config-path "$COSCLI_CONFIG" \
             --recursive \
-            --routines 16 \
-            --secret-id ${{ secrets.TENCENTCLOUD_SECRET_ID }} \
-            --secret-key ${{ secrets.TENCENTCLOUD_SECRET_KEY }} \
-            --endpoint cos.ap-beijing.myqcloud.com
+            --routines 16
 
   cdn-refresh:
     needs: upload
