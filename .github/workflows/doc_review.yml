@@ -9,8 +9,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
-  issues: write
 
 jobs:
   prepare:
@@ -233,6 +231,10 @@ jobs:
           REVIEW_REF: ${{ github.ref }}
 
   review-zh:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     needs: prepare
     if: needs.prepare.outputs.zh_files_count > 0
     runs-on: ubuntu-latest
@@ -258,6 +260,10 @@ jobs:
           PROMPT_PATH: "doc-review-prompt-zh.txt"
 
   review-en:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     needs: prepare
     if: needs.prepare.outputs.en_files_count > 0
     runs-on: ubuntu-latest
