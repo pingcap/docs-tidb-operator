@@ -1,12 +1,23 @@
 name: Upload media files when they change
 on:
-  push:
-    branches:
-      - main
-      - release-*
-    paths:
-      - media/**
   workflow_dispatch:
+    inputs:
+      source_branch:
+        description: Branch whose media files should be published (run this workflow from main)
+        type: choice
+        required: true
+        default: main
+        options:
+          - main
+          - release-1.x
+          - release-1.0
+          - release-1.1
+          - release-1.2
+          - release-1.3
+          - release-1.4
+          - release-1.5
+          - release-1.6
+          - release-2.0
 
 permissions:
   contents: read
@@ -15,25 +26,38 @@ jobs:
   upload:
     name: Upload media files
     if: >-
-      github.event_name == 'push' ||
-      (
-        github.event_name == 'workflow_dispatch' &&
-        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
-        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
-      )
+      github.repository == 'pingcap/docs-tidb-operator' &&
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.run_attempt == '1' &&
+      contains(fromJSON('["30922556","79440533","47792576"]'), github.actor_id)
     runs-on: ubuntu-latest
     steps:
+      - name: Authorize production publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTOR_ID: ${{ github.actor_id }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          set -euo pipefail
+          case "$SOURCE_BRANCH" in
+            main|release-1.x|release-1.[0-6]|release-2.0) ;;
+            *)
+              echo "::error::Select an existing publishing branch."
+              exit 1
+              ;;
+          esac
+          gh api "repos/$GITHUB_REPOSITORY/collaborators/$GITHUB_ACTOR/permission" |
+            jq -e --arg id "$ACTOR_ID" '
+              (.user.id | tostring) == $id and
+              (.permission == "write" or .permission == "maintain" or .permission == "admin")
+            ' > /dev/null
+
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          # Must use at least depth 2!
-          fetch-depth: 2
+          ref: refs/heads/${{ inputs.source_branch }}
           persist-credentials: false
 
-      #- name: Configure awscli
-      #  run: |
-      #    pip3 install --upgrade setuptools
-      #    pip3 install awscli
-      #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Install coscli
         run: |
           curl --fail --location --silent --show-error \
@@ -42,30 +66,67 @@ jobs:
           printf '%s  %s\n' 'a07de5ba2800147a700ed29036b0c76a4229088cee68e1682d0eae19b638a915' coscli | sha256sum --check
           chmod 755 coscli
       - name: Upload to COS
+        env:
+          TENCENTCLOUD_BUCKET_ID: ${{ secrets.TENCENTCLOUD_BUCKET_ID }}
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: |
-          ./coscli sync media/ cos://${{ secrets.TENCENTCLOUD_BUCKET_ID }}/media/images/tidb-in-kubernetes \
-            --init-skip \
+          set -euo pipefail
+          umask 077
+          COSCLI_CONFIG=$(mktemp "$RUNNER_TEMP/coscli.XXXXXX.yaml")
+          export COSCLI_CONFIG
+          trap 'rm -f -- "$COSCLI_CONFIG"' EXIT
+
+          python3 <<'PY'
+          import json
+          import os
+
+          bucket = os.environ["TENCENTCLOUD_BUCKET_ID"]
+          secret_id = os.environ["TENCENTCLOUD_SECRET_ID"]
+          secret_key = os.environ["TENCENTCLOUD_SECRET_KEY"]
+          if not all((bucket, secret_id, secret_key)):
+              raise SystemExit("COS bucket and credentials are required.")
+
+          config = {
+              "cos": {
+                  "base": {
+                      "mode": "SecretKey",
+                      "protocol": "https",
+                      "disableencryption": "true",
+                      "secretid": secret_id,
+                      "secretkey": secret_key,
+                  },
+                  "buckets": [
+                      {
+                          "name": bucket,
+                          "alias": "operator-media",
+                          "region": "ap-beijing",
+                      },
+                  ],
+              },
+          }
+          with open(os.environ["COSCLI_CONFIG"], "w", encoding="utf-8") as config_file:
+              json.dump(config, config_file)
+          PY
+
+          unset TENCENTCLOUD_BUCKET_ID TENCENTCLOUD_SECRET_ID TENCENTCLOUD_SECRET_KEY
+          ./coscli sync media/ cos://operator-media/media/images/tidb-in-kubernetes \
+            --config-path "$COSCLI_CONFIG" \
             --recursive \
-            --routines 16 \
-            --secret-id ${{ secrets.TENCENTCLOUD_SECRET_ID }} \
-            --secret-key ${{ secrets.TENCENTCLOUD_SECRET_KEY }} \
-            --endpoint cos.ap-beijing.myqcloud.com
+            --routines 16
 
   cdn-refresh:
     needs: upload
-    # A failed-job re-run may reuse a successful upload without rechecking it.
+    # Require a fresh dispatch if either job fails. A partial rerun can reuse an earlier upload.
     if: >-
-      github.event_name == 'push' ||
-      (
-        github.event_name == 'workflow_dispatch' &&
-        (github.actor == 'lilin90' || github.actor == 'qiancai') &&
-        (github.triggering_actor == 'lilin90' || github.triggering_actor == 'qiancai')
-      )
+      github.repository == 'pingcap/docs-tidb-operator' &&
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.run_attempt == '1' &&
+      contains(fromJSON('["30922556","79440533","47792576"]'), github.actor_id)
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
-    env:
-      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
-      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+    permissions: {}
     steps:
       - name: Set up Python environment
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -82,4 +143,7 @@ jobs:
           pipx install ./tccli-3.1.194.1-py2.py3-none-any.whl
 
       - name: Purge production CDN cache
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: tccli cdn PurgePathCache --Paths '["https://docs-download.pingcap.com/media/images/tidb-in-kubernetes/"]' --FlushType delete
