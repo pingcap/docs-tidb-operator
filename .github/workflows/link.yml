@@ -12,10 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Exclude Path
-        run: |
-          curl https://raw.githubusercontent.com/pingcap/docs/master/.lycheeignore --output .lycheeignore
-
       - name: Check Links
         uses: lycheeverse/lychee-action@v1.6.1
         with:
