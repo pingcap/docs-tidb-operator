@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 
@@ -20,6 +21,31 @@ def test_workflow_passes_context_and_filenames_as_data() -> None:
     assert "$(git diff-tree" not in workflow
     assert workflow.count("bash ./hack/run-doc-check.sh") == 5
     assert "python3 scripts/test-ci-workflow.py" in workflow
+
+
+def test_checkout_credentials_are_not_persisted() -> None:
+    for name in ("ci.yaml", "doc_review.yml", "link.yml", "prevent-deletion.yaml", "vale.yaml"):
+        workflow = (WORKFLOW.parent / name).read_text()
+        # Match checkout steps in the repository's block-style workflow YAML.
+        checkouts = re.finditer(
+            r"^( +)(- )?uses: actions/checkout@[^\n]+$",
+            workflow,
+            re.MULTILINE,
+        )
+        seen_checkout = False
+        lines = workflow.splitlines()
+        for checkout in checkouts:
+            seen_checkout = True
+            indent = len(checkout[1]) + (2 if checkout[2] else 0)
+            start = workflow.count("\n", 0, checkout.end()) + 1
+            step_lines = []
+            for line in lines[start:]:
+                if line.strip() and len(line) - len(line.lstrip()) < indent:
+                    break
+                step_lines.append(line)
+            expected = r"^ {%d}with:\s*\n(?:^ {%d,}[^\n]*\n)*?^ {%d}persist-credentials: false\s*$"
+            assert re.search(expected % (indent, indent + 2, indent + 2), "\n".join(step_lines), re.MULTILINE), name
+        assert seen_checkout, name
 
 
 def run(command: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -108,5 +134,6 @@ def test_runner_preserves_untrusted_inputs() -> None:
 
 if __name__ == "__main__":
     test_workflow_passes_context_and_filenames_as_data()
+    test_checkout_credentials_are_not_persisted()
     test_runner_preserves_untrusted_inputs()
     print("CI workflow tests passed")
