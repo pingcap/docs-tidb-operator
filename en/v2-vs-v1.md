@@ -78,7 +78,11 @@ TiDB Operator no longer provides direct support. It is recommended to use native
 
 #### `TidbInitializer`
 
+<<<<<<< HEAD
 TiDB Operator v2 no longer supports this CRD. In the v2 `Cluster` CR, you can use `spec.bootstrapSQL.name` to reference a ConfigMap in the same namespace. The ConfigMap's `bootstrap-sql` key contains SQL statements that run only when the cluster is first bootstrapped. You can set `spec.bootstrapSQL` only when you create the Cluster. After you create the Cluster, you can remove the field, but you cannot add it to an existing Cluster or change the referenced ConfigMap name. For example:
+=======
+TiDB Operator v2 no longer supports this CRD. In the v2 `Cluster` CR, you can use `spec.bootstrapSQL.name` to reference a ConfigMap in the same namespace. The ConfigMap's `bootstrap-sql` key contains SQL statements that run only when the cluster is first bootstrapped. You can set `spec.bootstrapSQL` only when you create the Cluster. Keep the field and its ConfigMap until the cluster finishes its first bootstrap. You can remove the field after that, but you cannot add it to an existing Cluster or change the referenced ConfigMap name. For example:
+>>>>>>> 65a9c99f (docs: require authentication before exposing TiDB (#3206) (#3207))
 
 ```yaml
 apiVersion: v1

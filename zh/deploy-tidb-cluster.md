@@ -187,7 +187,11 @@ spec:
 
 > **警告：**
 >
+<<<<<<< HEAD
 > 对于生产集群，请在部署前规划身份认证和 TLS 配置。在为 `root` 设置高强度密码、创建最小权限应用用户并为 MySQL 客户端启用 TLS 之前，只允许从可信内部网络访问 TiDB。不要先创建面向公网的 `NodePort` 或 `LoadBalancer`，再补充安全配置。详情参见[安全前置条件](access-tidb.md#安全前置条件)和[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)。
+=======
+> 对于生产集群，请使用可信的内部连接（例如通过本机回环地址执行 `kubectl port-forward`）完成初始安全配置。在通过任何 `NodePort` 或 `LoadBalancer` Service（包括内部负载均衡器）开放访问前，请为 `root` 设置高强度密码、创建最小权限应用用户、在 TiDB 服务端强制使用加密连接，并配置 Service 或网络访问控制，仅允许可信来源网络访问。详情参见[安全前置条件](access-tidb.md#安全前置条件)和[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)。
+>>>>>>> 65a9c99f (docs: require authentication before exposing TiDB (#3206) (#3207))
 
 1. 创建命名空间 Namespace：
 
