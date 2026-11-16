@@ -11,12 +11,14 @@ concurrency:
 jobs:
   check:
     permissions:
+      contents: read
       checks: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout base
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Fetch head
         env:
