@@ -187,11 +187,7 @@ After preparing the YAML files for each component, deploy the TiDB cluster by fo
 
 > **Warning:**
 >
-<<<<<<< HEAD
-> For a production cluster, plan the authentication and TLS configuration before deployment. Keep TiDB reachable only from trusted internal networks until you have set a strong `root` password, created least-privileged application accounts, and enabled MySQL client TLS. Do not create an internet-facing `NodePort` or `LoadBalancer` first and secure it later. For details, see [Security prerequisites](access-tidb.md#security-prerequisites) and [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md).
-=======
 > For a production cluster, use a trusted internal connection such as a loopback `kubectl port-forward` to complete the initial security setup. Before exposing TiDB through any `NodePort` or `LoadBalancer` Service, including an internal load balancer, set a strong `root` password, create least-privileged application accounts, enforce encrypted connections on the TiDB server, and configure the Service or network controls to allow only trusted source networks. For details, see [Security prerequisites](access-tidb.md#security-prerequisites) and [Enable TLS for the MySQL Client](enable-tls-for-mysql-client.md).
->>>>>>> 65a9c99f (docs: require authentication before exposing TiDB (#3206) (#3207))
 
 1. Create a namespace:
 

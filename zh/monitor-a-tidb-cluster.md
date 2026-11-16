@@ -233,11 +233,7 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
 
 > **警告：**
 >
-<<<<<<< HEAD
-> 使用新的 Grafana 数据库时，请配置安装流程，使其在 Grafana 启动前从 Kubernetes Secret 读取唯一的管理员密码。复用已有 Grafana 数据库时，配置的初始密码不会修改已有管理员账号，请先限制访问并重置该账号的密码，再允许常规访问。如果所用安装方式无法在启动前设置唯一密码，请确认集群的网络插件会强制实施 NetworkPolicy。检查所有选中 Grafana 的 NetworkPolicy，删除或限制任何允许其他 Pod 访问的策略，并在修改密码前通过策略仅允许管理 Pod 或 Namespace 访问 Grafana。如果共享策略还选中了其他工作负载，请从该策略中排除 Grafana 或拆分策略，以保留这些工作负载原有的访问规则。还需要检查 Grafana Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，也只能通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
-=======
 > 使用新的 Grafana 数据库时，请配置安装流程，使其在 Grafana 启动前从 Kubernetes Secret 读取唯一的管理员密码。复用已有 Grafana 数据库时，配置的初始密码不会修改已有管理员账号，请先限制访问并重置该账号的密码，再允许常规访问。如果所用安装方式无法在启动前设置唯一密码，请确认集群的网络插件会强制实施 NetworkPolicy。检查所有选中 Grafana 的 NetworkPolicy，删除或限制任何允许其他 Pod 访问的策略，并在修改密码前通过策略仅允许管理 Pod 或 Namespace 访问 Grafana。如果共享策略还选中了其他工作负载，请从该策略中排除 Grafana 或拆分策略，以保留这些工作负载原有的访问规则。还需要检查 Grafana Service，并将 `spec.type` 设置为 `ClusterIP`。初始凭据仍有效时，不要通过 `LoadBalancer` 或 `NodePort` Service 部署 Grafana。修改管理员密码后，所有外部访问都必须使用 HTTPS，并使用客户端信任的证书。请通过带身份认证的 Ingress 或其他仅允许可信网络访问的方式对外提供服务。
->>>>>>> 65a9c99f (docs: require authentication before exposing TiDB (#3206) (#3207))
 
 1. 参考 [Grafana 官方文档](https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/#deploy-grafana-on-kubernetes)，在 Kubernetes 集群中部署 Grafana，本文档以 `12.0.0-security-01` 版本为例。
 
@@ -247,13 +243,9 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-<<<<<<< HEAD
-3. 在浏览器中访问 <http://localhost:3000>。如果通过 Helm 安装，Grafana 的 `admin` 用户密码是自动生成的，可使用以下命令获取：
-=======
 3. 在浏览器中访问 <http://localhost:3000>。对于新的 Grafana 数据库，请从配置的 Kubernetes Secret 中获取初始管理员密码。如果由 Helm chart 创建 Secret 且未指定密码，chart 会自动生成初始密码，保存在 `admin-password` 键中。如果使用自定义 Secret，请将 `${grafana_secret_name}` 设为该 Secret 的名称，并将 `admin-password` 替换为配置的密码键名。对于已有的 Grafana 数据库，轮换密码后，请使用组织的密钥管理系统中保存的当前管理员密码。
 
     执行以下命令可获取初始密码：
->>>>>>> 65a9c99f (docs: require authentication before exposing TiDB (#3206) (#3207))
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
