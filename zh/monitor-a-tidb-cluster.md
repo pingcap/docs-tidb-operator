@@ -243,7 +243,9 @@ TiDB 集群的监控包括两部分：[监控数据采集](#监控数据采集)�
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. 在浏览器中访问 <http://localhost:3000>。如果通过 Helm 安装，Grafana 的 `admin` 用户密码是自动生成的，可使用以下命令获取：
+3. 在浏览器中访问 <http://localhost:3000>。对于新的 Grafana 数据库，请从配置的 Kubernetes Secret 中获取初始管理员密码。如果由 Helm chart 创建 Secret 且未指定密码，chart 会自动生成初始密码，保存在 `admin-password` 键中。如果使用自定义 Secret，请将 `${grafana_secret_name}` 设为该 Secret 的名称，并将 `admin-password` 替换为配置的密码键名。对于已有的 Grafana 数据库，轮换密码后，请使用组织的密钥管理系统中保存的当前管理员密码。
+
+    执行以下命令可获取初始密码：
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

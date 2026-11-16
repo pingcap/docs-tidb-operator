@@ -243,7 +243,9 @@ To configure the monitoring dashboard, perform the following steps:
     kubectl port-forward -n ${namespace} ${grafana_pod_name} 3000:3000 &>/tmp/portforward-grafana.log &
     ```
 
-3. Access <http://localhost:3000> in your browser. If you install Grafana using Helm, Grafana automatically generates the password for the `admin` account. Retrieve it by executing the following command:
+3. Access <http://localhost:3000> in your browser. For a new Grafana database, retrieve the initial administrator password from the configured Kubernetes Secret. If the Helm chart creates the Secret and you have not supplied a password, the chart generates an initial password under `admin-password`. If you use a custom Secret, set `${grafana_secret_name}` to its name and replace `admin-password` with the configured password key. For an existing Grafana database, use the current administrator password from your organization's secret manager after rotation.
+
+    Run the following command to retrieve the initial password:
 
     ```shell
     kubectl get secret --namespace ${namespace} ${grafana_secret_name} -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
