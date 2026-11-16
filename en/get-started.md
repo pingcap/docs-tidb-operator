@@ -318,8 +318,12 @@ If port `14000` is already in use, you can use a different available port. The c
 ### Connect to the TiDB service
 
 ```shell
-mysql --comments -h 127.0.0.1 -P 14000 -u root
+mysql --comments -h 127.0.0.1 -P 14000 -u root -p
 ```
+
+> **Warning:**
+>
+> The client prompts for a password. For a newly created quick-start cluster, press **Enter** only when you are connecting through this loopback port-forward in an isolated environment. Do not expose the cluster through `NodePort` or `LoadBalancer` while `root` has no password. Before allowing any external access, set a strong `root` password from this trusted connection and create least-privileged application accounts. Also complete the [security prerequisites for accessing TiDB](access-tidb.md#security-prerequisites). Keep using the `-p` option for subsequent connections so the client prompts for the password instead of placing it on the command line.
 
 <details>
 <summary>Expected output</summary>

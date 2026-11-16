@@ -318,8 +318,12 @@ kubectl port-forward -n db svc/tidb-tidb 14000:4000 > pf14000.out &
 ### 连接 TiDB 服务
 
 ```shell
-mysql --comments -h 127.0.0.1 -P 14000 -u root
+mysql --comments -h 127.0.0.1 -P 14000 -u root -p
 ```
+
+> **警告：**
+>
+> 客户端会提示输入密码。对于新创建的快速上手集群，只有在隔离环境中通过本机回环地址进行端口转发连接时，才能直接按 **Enter** 键使用初始空密码。当 `root` 用户尚未设置密码时，请勿通过 `NodePort` 或 `LoadBalancer` 暴露此集群。在允许任何外部访问之前，请通过当前可信连接为 `root` 设置高强度密码，并为应用创建最小权限用户。同时，请完成[访问 TiDB 的安全前置条件](access-tidb.md#安全前置条件)。后续连接请继续使用 `-p` 选项，由客户端提示输入密码，避免将密码放入命令行。
 
 <details>
 <summary>点击查看期望输出</summary>

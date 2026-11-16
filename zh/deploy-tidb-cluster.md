@@ -185,6 +185,10 @@ spec:
 
 在准备好 TiDB 集群各组件的 YAML 配置文件后，按照以下步骤部署 TiDB 集群：
 
+> **警告：**
+>
+> 对于生产集群，请使用可信的内部连接（例如通过本机回环地址执行 `kubectl port-forward`）完成初始安全配置。在通过任何 `NodePort` 或 `LoadBalancer` Service（包括内部负载均衡器）开放访问前，请为 `root` 设置高强度密码、创建最小权限应用用户、在 TiDB 服务端强制使用加密连接，并配置 Service 或网络访问控制，仅允许可信来源网络访问。详情参见[安全前置条件](access-tidb.md#安全前置条件)和[为 MySQL 客户端开启 TLS](enable-tls-for-mysql-client.md)。
+
 1. 创建命名空间 Namespace：
 
     > **注意：**
