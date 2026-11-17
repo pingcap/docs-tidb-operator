@@ -1,6 +1,13 @@
 # See the OWNERS docs at https://www.kubernetes.dev/docs/guide/owners/#owners
 # The members of 'sig-community-*' are synced from memberships defined in repository: https://github.com/pingcap/community.
 filters:
+  '^OWNERS(_ALIASES)?$':
+    approvers:
+      - lilin90
+      - qiancai
+    reviewers:
+      - sig-community-reviewers
+  # Prow applies the literal .* filter as a fallback when no approvers match.
   .*:
     approvers:
       - sig-community-approvers
