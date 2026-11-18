@@ -1,6 +1,15 @@
 # See the OWNERS docs at https://www.kubernetes.dev/docs/guide/owners/#owners
 # The members of 'sig-community-*' are synced from memberships defined in repository: https://github.com/pingcap/community.
 filters:
+  '^OWNERS(_ALIASES)?$':
+    approvers:
+      - lilin90
+      - qiancai
+    reviewers:
+      - sig-community-reviewers
+  # TiDB Prow stores the literal .* as a default and uses it when no specific
+  # filter supplies approvers. Keep this exact spelling.
+  # https://github.com/ti-community-infra/prow/blob/51a7f0e617a6bb98a93ce17be4569a1c6a521626/pkg/repoowners/repoowners.go#L866-L882
   .*:
     approvers:
       - sig-community-approvers
