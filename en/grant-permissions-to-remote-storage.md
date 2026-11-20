@@ -25,7 +25,7 @@ Scope the policy according to the `s3` fields in the CR:
 - If `.spec.s3.prefix` is empty, grant access to the whole bucket.
 - If `.spec.s3.prefix` is set, scope object access to `arn:aws:s3:::<bucket-name>/<prefix>/*`. The read-only restore example also restricts `s3:ListBucket` with an `s3:prefix` condition; backup requires an unconditional `s3:ListBucket` grant, as explained below.
 
-Replace `<bucket-name>` with the bucket name and `<prefix>` with `.spec.s3.prefix` without leading or trailing slashes. For example, for a prefix of `backup/`, use `backup`.
+Replace `<bucket-name>` with the bucket name and `<prefix>` with `.spec.s3.prefix` without leading or trailing slashes. For example, for a prefix of `backup/`, use `backup`. For these policy examples, use a prefix that does not contain `*` or `?`, because IAM interprets these characters as wildcards and can grant access outside the intended prefix.
 
 For point-in-time recovery (PITR), also grant read access to the snapshot backup location specified by `.spec.pitrFullBackupStorageProvider.s3`. Add separate policy statements if the snapshot and log backups use different buckets or prefixes.
 
@@ -146,6 +146,8 @@ When you use these policies, note the following conditions:
 The permissions required for restore depend on whether BR writes restore metadata to S3. If BR writes checkpoint metadata to S3, grant `s3:ListBucket`, `s3:GetObject`, `s3:PutObject`, and `s3:DeleteObject` for the checkpoint storage location. When `--checkpoint-storage` points to a different bucket or prefix, add policy statements for that location instead of adding write permissions to the backup location. Keep `s3:ListBucket` unconditional on the checkpoint bucket so that checks for missing checkpoint objects can succeed.
 
 Starting from BR v8.5.5, if the target cluster does not contain `mysql.tidb_pitr_id_map` and `--checkpoint-storage` is not specified, PITR writes the ID map to the log backup directory. If that directory is in S3, add `s3:PutObject` for the log backup location and keep `s3:ListBucket` unconditional on that bucket so that BR can check whether the ID map exists.
+
+For PITR into a target cluster with an existing S3 log backup task, BR also writes a table ID blocklist to that task's storage. This location can differ from both the source backup and checkpoint locations. Grant `s3:PutObject` and `s3:GetObject` to the credentials BR uses for the target task's storage, scoped to the `v1/log_restore_tables_blocklists/` directory under that task's S3 prefix. BR uses `HeadObject` to confirm the write, which requires `s3:GetObject`. Without these permissions, BR can report failure after restoring the data.
 
 If the same IAM user or role is shared by both Backup and Restore resources, you can combine the required actions into a single policy. For more information, see [Checkpoint Restore](https://docs.pingcap.com/tidb/stable/br-checkpoint-restore) and [Backup storages](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#authentication).
 

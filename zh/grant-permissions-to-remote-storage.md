@@ -25,7 +25,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 - 如果 `.spec.s3.prefix` 为空，则授予整个存储桶的访问权限。
 - 如果 `.spec.s3.prefix` 已设置，则将对象访问范围限制为 `arn:aws:s3:::<bucket-name>/<prefix>/*`。只读恢复的示例还为 `s3:ListBucket` 添加了 `s3:prefix` 条件；备份需要不带此条件的 `s3:ListBucket` 权限，原因见下文。
 
-请将 `<bucket-name>` 替换为存储桶名称，将 `<prefix>` 替换为 `.spec.s3.prefix` 的值，并去掉开头和结尾的 `/`。例如，前缀为 `backup/` 时，使用 `backup`。
+请将 `<bucket-name>` 替换为存储桶名称，将 `<prefix>` 替换为 `.spec.s3.prefix` 的值，并去掉开头和结尾的 `/`。例如，前缀为 `backup/` 时，使用 `backup`。使用这些策略示例时，请选择不包含 `*` 或 `?` 的前缀，因为 IAM 会将这些字符解释为通配符，可能授予预期前缀以外的访问权限。
 
 对于时间点恢复 (PITR)，还需为 `.spec.pitrFullBackupStorageProvider.s3` 指定的快照备份位置授予读取权限。如果快照备份和日志备份使用不同的存储桶或前缀，请分别添加策略语句。
 
@@ -146,6 +146,8 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 恢复所需的权限取决于 BR 是否将恢复元数据写入 S3。如果 BR 将检查点元数据写入 S3，请为检查点存储位置授予 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限。如果 `--checkpoint-storage` 指向不同的存储桶或前缀，请为该位置添加策略语句，而不是为备份位置添加写入权限。检查点存储桶的 `s3:ListBucket` 权限不应带有 `s3:prefix` 条件，以便检查不存在的检查点对象。
 
 从 BR v8.5.5 开始，如果目标集群中不存在 `mysql.tidb_pitr_id_map` 且未指定 `--checkpoint-storage`，PITR 会将 ID 映射写入日志备份目录。如果该目录位于 S3，请为日志备份位置添加 `s3:PutObject` 权限，并使用不带 `s3:prefix` 条件的 `s3:ListBucket` 权限，以便检查 ID 映射文件是否存在。
+
+如果 PITR 的目标集群已有 S3 日志备份任务，BR 还会将表 ID 阻止列表 (blocklist) 写入该任务的存储位置。该位置可能与源备份和检查点位置不同。请为 BR 访问目标任务存储所用的凭证授予 `s3:PutObject` 和 `s3:GetObject` 权限，并将对象权限范围限制在该任务 S3 前缀下的 `v1/log_restore_tables_blocklists/` 目录。BR 使用 `HeadObject` 确认写入，该操作需要 `s3:GetObject` 权限。如果缺少这些权限，BR 可能在恢复数据后报告失败。
 
 如果同一个 IAM 用户或角色同时供 Backup 和 Restore 资源使用，你可以将所需操作合并到一个策略中。有关更多信息，请参阅[检查点恢复](https://docs.pingcap.com/zh/tidb/stable/br-checkpoint-restore)和[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#鉴权)。
 
