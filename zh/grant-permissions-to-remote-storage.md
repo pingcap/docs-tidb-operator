@@ -15,11 +15,23 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 - [通过 IAM 绑定 Pod 授权](#通过-iam-绑定-pod-授权)：适用于自建 Kubernetes 集群。
 - [通过 IAM 绑定 ServiceAccount 授权](#通过-iam-绑定-serviceaccount-授权)：只适用于 AWS EKS 集群。
 
-### 创建存储桶级 IAM 策略
+### 创建最小权限 IAM 策略
 
-在使用任一 AWS 授权方式之前，请创建一个仅允许访问备份和恢复所用 S3 存储桶的客户托管 IAM 策略。不要附加账号级 AWS 托管 S3 策略，因为此类策略允许访问账号中的所有 S3 存储桶。
+在使用任一 AWS 授权方式之前，请为 `Backup` 或 `Restore` CR 使用的 S3 位置创建客户托管 IAM 策略。不要附加 `AmazonS3FullAccess` 之类的账号级 AWS 托管 S3 策略，因为此类策略允许访问账号中的所有 S3 存储桶。
 
-以下策略包含备份和恢复所需的最小 S3 权限。请将 `<bucket-name>` 替换为备份存储桶的名称，然后将该策略附加到 TiDB 使用的 IAM 用户或角色：
+根据 CR 中的 `s3` 字段来限定策略范围：
+
+- 使用 `.spec.s3.bucket` 构造存储桶 ARN。
+- 如果 `.spec.s3.prefix` 为空，则授予整个存储桶的访问权限。
+- 如果 `.spec.s3.prefix` 已设置，则将对象访问范围限制为 `arn:aws:s3:::<bucket-name>/<prefix>/*`。只读恢复的示例还为 `s3:ListBucket` 添加了 `s3:prefix` 条件；备份需要不带此条件的 `s3:ListBucket` 权限，原因见下文。
+
+请将 `<bucket-name>` 替换为存储桶名称，将 `<prefix>` 替换为 `.spec.s3.prefix` 的值，并去掉开头和结尾的 `/`。例如，前缀为 `backup/` 时，使用 `backup`。使用这些策略示例时，请选择不包含 `*` 或 `?` 的前缀，因为 IAM 会将这些字符解释为通配符，可能授予预期前缀以外的访问权限。
+
+对于时间点恢复 (PITR)，还需为 `.spec.pitrFullBackupStorageProvider.s3` 指定的快照备份位置授予读取权限。如果快照备份和日志备份使用不同的存储桶或前缀，请分别添加策略语句。
+
+以下示例展示了 `Backup` CR 以及只读 `Restore` CR 所需的最小 S3 权限。
+
+#### `Backup` CR 的存储桶级策略
 
 ```json
 {
@@ -46,20 +58,104 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 }
 ```
 
-使用此策略时，请注意以下情况：
+#### `Backup` CR 的前缀级策略
+
+此策略将对象访问限制在备份前缀内，但允许列出存储桶中的所有对象键。BR 在开始备份前会检查 `backupmeta` 是否存在。如果 `s3:ListBucket` 权限带有 `s3:prefix` 条件，S3 可能对不存在的对象返回 `403 Forbidden`，导致备份失败。如果需要隐藏其他对象键，请使用专用的备份存储桶。
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<bucket-name>"
+    },
+    {
+      "Sid": "AccessBackupObjectsInPrefix",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": "arn:aws:s3:::<bucket-name>/<prefix>/*"
+    }
+  ]
+}
+```
+
+#### 只读 `Restore` CR 的存储桶级策略
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<bucket-name>"
+    },
+    {
+      "Sid": "ReadBackupObjects",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::<bucket-name>/*"
+    }
+  ]
+}
+```
+
+#### 只读 `Restore` CR 的前缀级策略
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<bucket-name>",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": "<prefix>/*"
+        }
+      }
+    },
+    {
+      "Sid": "ReadBackupObjectsInPrefix",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::<bucket-name>/<prefix>/*"
+    }
+  ]
+}
+```
+
+使用这些策略时，请注意以下情况：
 
 - 如果 Backup 和 Restore 资源通过同一个 IAM 用户或角色访问不同的存储桶，请将每个所需存储桶的存储桶 ARN 和对象 ARN 添加到对应的 `Resource` 元素中。不要将其替换为允许访问无关存储桶的通配符。
 - 对于 AWS 中国区域或 AWS GovCloud (US) 区域中的存储桶，请分别将两个 ARN 中的 `aws` 分区替换为 `aws-cn` 或 `aws-us-gov`。
 - 如果 Backup 资源或将恢复元数据写入 S3 的 Restore 资源设置了 `.spec.s3.acl`，且没有其他策略授予相应权限，请将 `s3:PutObjectAcl` 添加到对象操作中。
 - 如果存储桶的默认加密配置或 Backup/Restore 资源选择了客户托管 AWS KMS 密钥，请为 IAM 用户或角色授予写入备份对象或恢复元数据所用密钥的 `kms:GenerateDataKey` 和 `kms:Decrypt` 权限。对于只读恢复，请为加密备份对象的每个密钥授予 `kms:Decrypt` 权限；如果创建备份后存储桶的默认 KMS 密钥发生了变化，这些密钥也包括之前使用的旧密钥。还需确保每个 KMS 密钥的策略直接允许这些主体执行所需操作，或者允许通过 IAM 策略授予这些权限。
 
-恢复所需的权限取决于 BR 是否将恢复元数据写入 S3。如果 BR 将检查点元数据写入 S3，请保留 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限。从 BR v8.5.5 开始，如果目标集群中不存在 `mysql.tidb_pitr_id_map` 且未指定 `--checkpoint-storage`，PITR 会将 ID 映射写入日志备份目录。如果该目录位于 S3，请保留 `s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject` 权限。如果 BR 不会将恢复元数据写入 S3，可以将只读恢复的权限限制为 `s3:ListBucket` 和 `s3:GetObject`。有关更多信息，请参阅[检查点恢复](https://docs.pingcap.com/zh/tidb/stable/br-checkpoint-restore)和[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#鉴权)。
+恢复所需的权限取决于 BR 是否将恢复元数据写入 S3。如果 BR 将检查点元数据写入 S3，请为检查点存储位置授予 `s3:ListBucket`、`s3:GetObject`、`s3:PutObject` 和 `s3:DeleteObject` 权限。如果 `--checkpoint-storage` 指向不同的存储桶或前缀，请为该位置添加策略语句，而不是为备份位置添加写入权限。检查点存储桶的 `s3:ListBucket` 权限不应带有 `s3:prefix` 条件，以便检查不存在的检查点对象。
+
+从 BR v8.5.5 开始，如果目标集群中不存在 `mysql.tidb_pitr_id_map` 且未指定 `--checkpoint-storage`，PITR 会将 ID 映射写入日志备份目录。如果该目录位于 S3，请为日志备份位置添加 `s3:PutObject` 权限，并使用不带 `s3:prefix` 条件的 `s3:ListBucket` 权限，以便检查 ID 映射文件是否存在。
+
+如果 PITR 的目标集群已有 S3 日志备份任务，BR 还会将表 ID 阻止列表 (blocklist) 写入该任务的存储位置。该位置可能与源备份和检查点位置不同。请为 BR 访问目标任务存储所用的凭证授予 `s3:PutObject` 和 `s3:GetObject` 权限，并将对象权限范围限制在该任务 S3 前缀下的 `v1/log_restore_tables_blocklists/` 目录。BR 使用 `HeadObject` 确认写入，该操作需要 `s3:GetObject` 权限。如果缺少这些权限，BR 可能在恢复数据后报告失败。
+
+如果同一个 IAM 用户或角色同时供 Backup 和 Restore 资源使用，你可以将所需操作合并到一个策略中。有关更多信息，请参阅[检查点恢复](https://docs.pingcap.com/zh/tidb/stable/br-checkpoint-restore)和[备份存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#鉴权)。
 
 ### 通过 AccessKey 和 SecretKey 授权
 
 按照以下步骤配置 AccessKey 和 SecretKey，以授权访问 Amazon S3。对于 Ceph、MinIO 或其他兼容 S3 的存储服务，请从对应服务获取凭证，并通过该服务的访问控制机制授予存储桶权限。其他存储服务不一定支持 AWS IAM 用户和策略。
 
-1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
+1. 参考[在 AWS 账户中创建 IAM 用户](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)，创建一个 IAM 用户，并附加[最小权限 IAM 策略](#创建最小权限-iam-策略)。
 
 2. 参考[为自己创建访问密钥（控制台）](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-key-self-managed.html#Using_CreateAccessKey)，为 IAM 用户创建访问密钥 (Access Key)。完成后，你将获得 AccessKey 和 SecretKey。
 
@@ -157,7 +253,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 Pod 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[最小权限 IAM 策略](#创建最小权限-iam-策略)。
 
 2. 通过 [Overlay](overlay.md) 方式为目标组件（TiKV 或 TiFlash）绑定 IAM 角色。以下示例展示如何为 TiKVGroup 添加绑定：
 
@@ -185,7 +281,7 @@ summary: 介绍如何授权访问远程存储从而实现 TiDB 集群的备份�
 
 通过 IAM 绑定 ServiceAccount 授权的步骤如下：
 
-1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[存储桶级 IAM 策略](#创建存储桶级-iam-策略)。
+1. 参考 [IAM 角色创建](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html)，为你的 AWS 账号创建一个 IAM 角色，并附加[最小权限 IAM 策略](#创建最小权限-iam-策略)。
 
 2. 参考[为集群创建 IAM OIDC 提供商](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)，为 EKS 集群创建一个 IAM OIDC 提供商。
 
